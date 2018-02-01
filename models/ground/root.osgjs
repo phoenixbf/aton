@@ -12,7 +12,7 @@
             "TextureAttributeList": [ [ {
               "osg.Texture": {
                 "UniqueID": 2, 
-                "File": "ground-col.jpg", 
+                "File": "ground.jpg", 
                 "MagFilter": "LINEAR", 
                 "MinFilter": "LINEAR_MIPMAP_LINEAR", 
                 "WrapS": "REPEAT", 
@@ -23,7 +23,7 @@
             [ {
               "osg.Texture": {
                 "UniqueID": 3, 
-                "File": "ground-nrm.png", 
+                "File": "ground-nrm.jpg", 
                 "MagFilter": "LINEAR", 
                 "MinFilter": "LINEAR_MIPMAP_LINEAR", 
                 "WrapS": "REPEAT", 
@@ -33,7 +33,7 @@
             [ {
               "osg.Texture": {
                 "UniqueID": 4, 
-                "File": "ground-combo.png", 
+                "File": "ground-RME.jpg", 
                 "MagFilter": "LINEAR", 
                 "MinFilter": "LINEAR_MIPMAP_LINEAR", 
                 "WrapS": "REPEAT", 

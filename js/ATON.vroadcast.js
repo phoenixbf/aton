@@ -11,10 +11,15 @@
 
 ATON.vroadcast = {};
 
+ATON.vroadcast.resPath = "res/";
 
 ATON.vroadcast.socket     = undefined;
 ATON.vroadcast.connected  = false;
 ATON.vroadcast.uStateFreq = 0.1;
+
+// custom events
+ATON.vroadcast.onIDassigned = undefined;
+
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -28,12 +33,6 @@ ATON.vroadcast = {
     uStateFreq: 0.1,
 };
 */
-
-// Interface audio/sounds
-ATON.vroadcast._audioLibEnter = new Audio("res/audio/alert1.mp3");
-ATON.vroadcast._audioLibEnter.loop = false;
-ATON.vroadcast._audioLibMSG = new Audio("res/audio/pling.mp3");
-ATON.vroadcast._audioLibMSG.loop = false;
 
 ATON.vroadcast.onUserEnter = function(){
     ATON.vroadcast._audioLibEnter.play();
@@ -67,6 +66,16 @@ ATON.user = function(){
 
 ATON.user.prototype = {
     // todo
+};
+
+ATON.vroadcast.setupResPath = function(path){
+    ATON.vroadcast.resPath = path;
+
+    // Interface audio/sounds
+    ATON.vroadcast._audioLibEnter = new Audio(path+"audio/alert1.mp3");
+    ATON.vroadcast._audioLibEnter.loop = false;
+    ATON.vroadcast._audioLibMSG = new Audio(path+"audio/pling.mp3");
+    ATON.vroadcast._audioLibMSG.loop = false;
 };
 
 
@@ -366,7 +375,7 @@ ATON.vroadcast.realizeUserModel = function(id){
 
     u._at.addChild( bg );
 
-    osgDB.readImageURL("res/assets/userlabel.png").then( function ( data ){
+    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel.png").then( function ( data ){
         var bgTex = new osg.Texture();
         bgTex.setImage( data );
 
@@ -472,6 +481,8 @@ ATON.vroadcast._registerEventHandlers = function(){
     ATON.vroadcast.socket.on('ID', function(data){
         console.log("Your ID is " + data.id);
         ATON.vroadcast._myUser.id = data.id;
+
+        if (ATON.vroadcast.onIDassigned) ATON.vroadcast.onIDassigned();
         });
 
     // A different user state update

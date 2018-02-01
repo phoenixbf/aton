@@ -6,27 +6,30 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
 <title>ATON sample FrontEnd</title>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-<link rel="stylesheet" type="text/css" href="css/aton.css">
+<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="../css/aton.css">
 
-<script type="text/javascript" src="vendors/gunzip.min.js"></script>
-<script type="text/javascript" src="vendors/jquery.min.js"></script>
-<script type="text/javascript" src="vendors/bluebird.min.js"></script>
-<script type="text/javascript" src="vendors/hammer.min.js"></script>
-<!--<script type="text/javascript" src="vendors/hammer-time.min.js"></script> -->
+<script type="text/javascript" src="../vendors/gunzip.min.js"></script>
+<script type="text/javascript" src="../vendors/jquery.min.js"></script>
+<script type="text/javascript" src="../vendors/bluebird.min.js"></script>
+<script type="text/javascript" src="../vendors/hammer.min.js"></script>
+<!--<script type="text/javascript" src="../vendors/hammer-time.min.js"></script> -->
 
-<script type="text/javascript" src="vendors/OSG.min.js"></script>
+<script type="text/javascript" src="../vendors/OSG.min.js"></script>
 
-<script type="text/javascript" src="js/fullscreen.js"></script>
-<script type="text/javascript" src="js/ATON.core.js"></script>
+<script type="text/javascript" src="../js/fullscreen.js"></script>
+<script type="text/javascript" src="../js/ATON.core.js"></script>
 
 <!--  Collaborative services -->
-<script type="text/javascript" src="js/socket.io.min.js"></script>
-<script type="text/javascript" src="js/ATON.vroadcast.js"></script>
+<script type="text/javascript" src="../js/socket.io.min.js"></script>
+<script type="text/javascript" src="../js/ATON.vroadcast.js"></script>
 
 
 <!--  Our basic setup  -->
 <script>
+
+const MODELS_ROOT = "../models/";
+
 var logPOV = function(){
     console.log(
         "&pov="+
@@ -55,7 +58,7 @@ window.addEventListener( 'load', function () {
     var canvas = document.getElementById( 'View' );
 
     // Sample Viewer
-    //ATON.shadersFolder = "../shaders";
+    ATON.shadersFolder = "../shaders";
     ATON.realize(canvas);
 
     // home
@@ -79,20 +82,20 @@ window.addEventListener( 'load', function () {
         assets.forEach(asset => {
             switch (asset) {
                 case "complex":
-                    ATON.addGraph("models/complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: "models/complex/Capriata1-inst.txt" });
-                    ATON.addGraph("models/complex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: "models/complex/ColonnaCorinzia-inst.txt" });
+                    ATON.addGraph(MODELS_ROOT+"complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: MODELS_ROOT+"complex/Capriata1-inst.txt" });
+                    ATON.addGraph(MODELS_ROOT+"complex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
                     break;
                 
                 case "sqcolumns":
-                    ATON.addGraph("models/complex/ColonnaCorinzia.osgjs", { layer: "COLUMNS", transformRules: "models/tl-square-4x.txt" });
+                    ATON.addGraph(MODELS_ROOT+"complex/ColonnaCorinzia.osgjs", { layer: "COLUMNS", transformRules: MODELS_ROOT+"tl-square-4x.txt" });
                     break;
 
                 case "groundx":
-                    ATON.addGraph("models/ground/root.osgjs", { layer: "GROUND", transformRules: "models/ground/tl-grid.txt" });
+                    ATON.addGraph(MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND", transformRules: MODELS_ROOT+"ground/tl-grid.txt" });
                     break;
             
                 default:
-                    ATON.addGraph("models/"+asset+"/root.osgjs", { layer: asset });
+                    ATON.addGraph(MODELS_ROOT+asset+"/root.osgjs", { layer: asset });
                     break;
                 }
             });
@@ -190,17 +193,18 @@ if (asset === "sf"){
     //ATON.switchLayer("KARANIS", false);
 
     var lpParam = ATON.utils.getURLparams().lp;
-    if (lpParam) ATON.addLightProbe("LP/"+lpParam);
-    else ATON.addLightProbe("LP/default");
+    if (lpParam) ATON.addLightProbe("../LP/"+lpParam);
+    else ATON.addLightProbe("../LP/default");
 
-    //ATON.setVRcontrollerModel("models/controllers/vr_controller_vive_1_5.osgjs");
-    ATON.setVRcontrollerModel("res/assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
-    ATON.setVRcontrollerModel("res/assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
+    //ATON.setVRcontrollerModel("../models/controllers/vr_controller_vive_1_5.osgjs");
+    ATON.setVRcontrollerModel("../res/assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
+    ATON.setVRcontrollerModel("../res/assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
 
     // Hide controllers
     ATON._controllerTransLeft.setNodeMask(0x0);
     ATON._controllerTransRight.setNodeMask(0x0);
 
+    // POVs
     var povstr = ATON.utils.getURLparams().pov;
     if (povstr){
         var values = povstr.split(',');
@@ -225,10 +229,22 @@ if (asset === "sf"){
         //IP = "192.167.233.180";
         //IP = "seth.itabc.cnr.it";
 
+        ATON.vroadcast.setupResPath("../res/");
+        ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
+
         ATON.vroadcast.uStateFreq = 0.01;
         ATON.vroadcast.connect("http://"+vrcIP+":8080/");
 
-        ATON.vroadcast.setUserModel("res/assets/hmd/hmd-z-nt.osgjs");
+        // User MagNet
+        ATON.vroadcast.onIDassigned = function(){
+            var magstr = ATON.utils.getURLparams().mag;
+            if (magstr){
+                var v = magstr.split(',');
+
+                ATON.vroadcast.setWeight( parseFloat(v[0]) );
+                if (v[1]) ATON.vroadcast.setMagRadius( parseFloat(v[1]) );
+                }
+            };
         }
 });
 </script>
@@ -359,6 +375,6 @@ var toggleGravity = function(){
 
 </script>
 
-<script type="text/javascript" src="vendors/bootstrap.min.js"></script>
+<script type="text/javascript" src="../vendors/bootstrap.min.js"></script>
 </body>
 </html>

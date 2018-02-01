@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+
+<title>ATON sample FrontEnd</title>
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="css/aton.css">
+
+<script type="text/javascript" src="vendors/gunzip.min.js"></script>
+<script type="text/javascript" src="vendors/jquery.min.js"></script>
+<script type="text/javascript" src="vendors/bluebird.min.js"></script>
+<script type="text/javascript" src="vendors/hammer.min.js"></script>
+<!--<script type="text/javascript" src="vendors/hammer-time.min.js"></script> -->
+
+<script type="text/javascript" src="vendors/OSG.min.js"></script>
+
+<script type="text/javascript" src="js/fullscreen.js"></script>
+<script type="text/javascript" src="js/ATON.core.js"></script>
+
+<!--  Collaborative services -->
+<script type="text/javascript" src="js/socket.io.min.js"></script>
+<script type="text/javascript" src="js/ATON.vroadcast.js"></script>
+
+
+<!--  Our basic setup  -->
+<script>
+    window.addEventListener( 'load', function () {
+        // First we grab canvas element
+        var canvas = document.getElementById( 'View' );
+
+        // Sample Viewer
+        //ATON.shadersFolder = "../shaders";
+        ATON.realize(canvas);
+
+        // home
+        //ATON.setHome([9.39,-12.22,4.78], [0.028,-0.43,2.77]);
+        //ATON.setHome([-5.23,4.38,10], [0.028,-0.43,0.0] );
+        //ATON.setHome([-0.58,-0.287,1.5], [-6.0,-2.87,1.5]);
+
+        // Sample POV
+        var p = new ATON.pov("Anfora");
+        p.pos    = [-1.0,-1.2,2.4];
+        p.target = [-0.5,0.2,2.0];
+        p.fov    = 90.0;
+        p.classList = ["detail", "anfora"];
+
+        ATON.addPOV(p);
+
+        var asset = ATON.utils.getURLparams().m;
+        if (asset){
+            var assets = asset.split(',');
+
+            assets.forEach(a => {
+                ATON.addGraph("models/"+a+"/root.osgjs", { layer: a });
+                });
+            }
+
+        // Sample MagNodes
+
+        if (asset === "magnet"){
+/*
+            var M = new ATON.magNode();
+            M.setRadius(2.0);
+            M.setPositionAndTarget([0.658,-0.776,4.005]);
+            //ATON.addMagNode(M);
+
+            var M2 = new ATON.magNode();
+            M2.setRadius(3.0);
+            M2.setTarget([0.144,-0.462,4.723]);
+            M2.setPosition([1.369,-1.544,4.254]);
+            //M2.forces[0] = 0.01;
+            ATON.addMagNode(M2);
+
+            var M3 = new ATON.magNode();
+            M3.setRadius(3.0);
+            M3.setPosition([-2.5716285936594505,-2.0389141070658536,3.134113601993949]);
+            M3.setTarget([-0.749320343566681,-0.4619313257452175,2.1931752975431884]);
+            //M3.forces[0] = 0.01;
+            ATON.addMagNode(M3);
+*/
+
+            //ATON.addGraph("models/ground/ground.osgjs", { layer: "SCENE" });
+            //ATON.addGraph("res/assets/hmd/hmd-z-nt.osgjs", { layer: "HMD" });
+            ATON.addGraph("models/hebe/hebe.osgjs", { layer: "HEBE" });
+            }
+        
+        if (asset === "complex"){
+            ATON.addGraph("models/thermalcomplex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: "models/thermalcomplex/Capriata1-inst.txt" });
+            ATON.addGraph("models/thermalcomplex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: "models/thermalcomplex/ColonnaCorinzia-inst.txt" });
+            }
+    
+        if (asset === "karanis"){
+            ATON.addGraph("models/karanis/karanis_architectures.osgjs", { layer: "KARANIS" });
+            }
+
+        if (asset === "gogh"){
+            ATON.addGraph("models/glTF/scene.gltf", { layer: "TEST" });
+            }
+        
+        //ATON.addGraph("models/medievalcity/citt_medievale_terrain_s6.osgjs", { layer: "MedCity" });
+        //ATON.addGraph("models/medievalcity/citt_medievale.osgjs", { layer: "MedCity" });
+
+        //ATON.addGraph("models/mywinger/mywinger.osgjs", { layer: "MY" });
+        //ATON.addGraph("models/test/lamp_g1.osgjs");
+
+    if (asset === "faug"){
+        ATON.addGraph("models/faug/exedrae.osgjs", { layer: "FAUG" });
+        ATON.addGraph("models/faug/floor.osgjs", { layer: "FAUG" });
+        ATON.addGraph("models/faug/rooves.osgjs", { layer: "FAUG" });
+        ATON.addGraph("models/faug/temple_exterior.osgjs", { layer: "FAUG" });
+        ATON.addGraph("models/faug/walls.osgjs", { layer: "FAUG" });
+        }
+    
+        //ATON.addGraph("models/atoncube/cube.osgjs");
+        //ATON.addGraph("models/sphere/sphere.osgjs");
+/*
+        ATON.addGraph("models/sphere/sphere.osgjs", {
+            layer: "COMPLEX", 
+            transformRules: "models/thermalcomplex/ColonnaCorinzia-inst.txt"
+            });
+*/
+    if (asset === "domus"){
+        ATON.addGraph("models/domus/LOD1_DP_Hor_1.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_2.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_3.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_4.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_5.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_6.osgjs", { layer: "DOMUS" });
+        ATON.addGraph("models/domus/LOD1_DP_Hor_7.osgjs", { layer: "DOMUS" });
+        }
+    
+    if (asset === "sf"){
+        ATON.addGraph("models/SF/vhlab__SF-200916_L0_X0_Y0_subtile.osgjs", { layer: "terrain" } );
+        }
+
+/*
+        ATON.addDescriptor("proxies/T36.osgjs", "T36");
+        ATON.addParentToDescriptor("T36", "PIPPO200");
+        ATON.addParentToDescriptor("PIPPO200", "PLUTO");
+*/
+
+        //ATON.addGraph("models/gcanyon/vhlab__testwgl_L0_X0_Y0_subtile.osgjs");
+
+        //ATON.switchLayer("HEBE", false);
+        //ATON.switchLayer("COMPLEX", false);
+        //ATON.switchLayer("KARANIS", false);
+
+        ATON.addLightProbe("LP/default");
+
+        //ATON.setVRcontrollerModel("models/controllers/vr_controller_vive_1_5.osgjs");
+        ATON.setVRcontrollerModel("res/assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
+        ATON.setVRcontrollerModel("res/assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
+
+        //ATON.requestPOVbyName("Anfora")
+        
+        var hoverAudio = new Audio("res/audio/pling.mp3");
+        hoverAudio.loop = false;
+
+        //ATON.onUpdate = function(){ console.log("Bella Zio!"); };
+        ATON.onDescriptorHover = function(){
+            hoverAudio.play();
+            console.log(ATON._pickedDescriptorsPath);
+            };
+
+        // TEST
+        //var em = new ATON.emviq.EM();
+        //em.parseGraphML("test/em.graphml");
+
+
+        // Test user webService =====================
+        var vrcIP = ATON.utils.getURLparams().vrc;
+        if (vrcIP !== undefined){
+            //IP = "127.0.0.1";
+            //IP = "192.168.0.193";
+            //IP = "192.167.233.180";
+            //IP = "seth.itabc.cnr.it";
+
+            ATON.vroadcast.uStateFreq = 0.01;
+            ATON.vroadcast.connect("http://"+vrcIP+":8080/");
+
+            ATON.vroadcast.setUserModel("res/assets/hmd/hmd-z-nt.osgjs");
+            }
+        });
+</script>
+</head>
+
+
+<body class="dark-bg">
+
+	<!-- Our 3D View -->
+	<div id="ViewContainer" class="view3D">
+	<canvas id="View" oncontextmenu="return false;"></canvas>
+	</div>
+
+    <!-- NavBar -->
+    <nav class="navbar navbar-default" id="iContainer" style="opacity:0.7;">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">ATON</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">NAV<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a></li>
+                <li><a href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a></li>
+                <li class="divider"></li>
+                <li><a href="#">One more separated link</a></li>
+            </ul>
+            </li>
+        </ul>
+
+<!--
+        <div class="btn-group">
+        <a href="#" class="btn btn-primary">Primary</a>
+        <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+        <ul class="dropdown-menu">
+            <li><a href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a></li>
+            <li><a href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a></li>
+            <li class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+        </ul>
+        </div>
+-->
+        <form class="navbar-form navbar-left" role="search">
+            <div class="form-group">
+            <input id="uname" type="text" size="10" onchange="setUserName()" class="form-control" placeholder="Username">
+            <input id="ustatus" type="text" size="30" onchange="setStatus()" class="form-control" placeholder="Status">
+            <input style="width:80%" id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="setWeight()">
+            <input style="width:80%" id="umagrad" type="range" min="0.5" max="100.0" step="0.5" onchange="setMagRadius()">
+            </div>
+<!--
+            <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        </div>
+    </div>
+    </nav>
+
+<!--
+    <div id="iContainer" class="infoContainer" style="background-color: rgba(0,0,0, 0.5); padding: 5px;">
+    UserName:<input id="uname" type="text" size="10" onchange="setUserName()">
+    Status:<input id="ustatus" type="text" size="30" onchange="setStatus()">
+    Weight:<input id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="setWeight()">
+
+    FirstPerson:<input id="ufp" type="checkbox" onchange="toggleFirstPerson()" >
+
+    <button type="button" onClick="ATON.requestFullScreenVR()">FS VR</button>
+
+    Collisions:<input id="bcollisions" type="checkbox" onchange="toggleCollisions()" >
+    Gravity:<input id="bgravity" type="checkbox" onchange="toggleGravity()" >
+
+    </div>
+-->
+
+
+<script>
+
+var iContainer = document.getElementById( "iContainer" );
+iContainer.addEventListener( 'keydown', function ( e ) {
+    e.stopPropagation();
+}, false );
+
+var setUserName = function(){
+    var el = document.getElementById('uname');
+    ATON.vroadcast.setUserName(el.value);
+};
+
+var setStatus = function(){
+    var el = document.getElementById('ustatus');
+    ATON.vroadcast.setStatus(el.value);
+    el.value = "";
+};
+var setWeight = function(){
+    var el = document.getElementById('uweight');
+    console.log(el.value);
+    ATON.vroadcast.setWeight(el.value);
+};
+var setMagRadius = function(){
+    var el = document.getElementById('umagrad');
+    console.log(el.value);
+    ATON.vroadcast.setMagRadius(el.value);
+};
+
+var toggleFirstPerson = function(){
+    var el = document.getElementById('ufp');
+    ATON.setFirstPersonMode(el.checked);
+};
+
+var toggleCollisions = function(){
+    var el = document.getElementById('bcollisions');
+    console.log(el.checked);
+    ATON._bUseCollisions = el.checked;
+};
+var toggleGravity = function(){
+    var el = document.getElementById('bgravity');
+    console.log(el.checked);
+    ATON._bUseGravity = el.checked;
+};
+
+</script>
+
+<script type="text/javascript" src="vendors/bootstrap.min.js"></script>
+</body>
+</html>

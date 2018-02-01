@@ -1,0 +1,149 @@
+{
+  "Generator": "OpenSceneGraph 3.3.8", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "sphere-latitude-longitude-low.obj", 
+        "StateSet": {
+          "osg.StateSet": {
+            "UniqueID": 1, 
+            "TextureAttributeList": [ [ {
+              "osg.Texture": {
+                "UniqueID": 2, 
+                "File": "s-diff.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 3, 
+                "File": "s-ao.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 4, 
+                "File": "s-norm.png", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 5, 
+                "File": "s-combo.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ] ]
+          }
+        }, 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 6, 
+            "Name": "Sphere001", 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 7, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 11, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "earth_12.bin",
+                          "Size": 6396,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 12, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "earth_13.bin",
+                          "Size": 405,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 9, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "earth_14.bin",
+                        "Size": 2699,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 10, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "earth_15.bin",
+                        "Size": 2699,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord1": {
+                    "UniqueID": 10
+                  }, 
+                  "TexCoord2": {
+                    "UniqueID": 10
+                  }, 
+                  "TexCoord3": {
+                    "UniqueID": 10
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 8, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "earth_16.bin",
+                        "Size": 2699,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

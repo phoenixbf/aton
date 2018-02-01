@@ -49,19 +49,36 @@
 
         ATON.addPOV(p);
 
-        var asset = ATON.utils.getURLparams().m;
-        if (asset){
-            var assets = asset.split(',');
+        var assetParam = ATON.utils.getURLparams().m;
+        if (assetParam){
+            var assets = assetParam.split(',');
 
-            assets.forEach(a => {
-                ATON.addGraph("models/"+a+"/root.osgjs", { layer: a });
+            assets.forEach(asset => {
+                switch (asset) {
+                    case "complex":
+                        ATON.addGraph("models/complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: "models/complex/Capriata1-inst.txt" });
+                        ATON.addGraph("models/complex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: "models/complex/ColonnaCorinzia-inst.txt" });
+                        break;
+                    
+                    case "sqcolumns":
+                        ATON.addGraph("models/complex/ColonnaCorinzia.osgjs", { layer: "COLUMNS", transformRules: "models/tl-square-4x.txt" });
+                        break;
+
+                    case "groundx":
+                        ATON.addGraph("models/ground/root.osgjs", { layer: "GROUND", transformRules: "models/ground/tl-grid.txt" });
+                        break;
+                
+                    default:
+                        ATON.addGraph("models/"+asset+"/root.osgjs", { layer: asset });
+                        break;
+                    }
                 });
             }
 
         // Sample MagNodes
-
-        if (asset === "magnet"){
 /*
+        if (asset === "magnet"){
+
             var M = new ATON.magNode();
             M.setRadius(2.0);
             M.setPositionAndTarget([0.658,-0.776,4.005]);
@@ -80,7 +97,7 @@
             M3.setTarget([-0.749320343566681,-0.4619313257452175,2.1931752975431884]);
             //M3.forces[0] = 0.01;
             ATON.addMagNode(M3);
-*/
+
 
             //ATON.addGraph("models/ground/ground.osgjs", { layer: "SCENE" });
             //ATON.addGraph("res/assets/hmd/hmd-z-nt.osgjs", { layer: "HMD" });
@@ -116,12 +133,12 @@
     
         //ATON.addGraph("models/atoncube/cube.osgjs");
         //ATON.addGraph("models/sphere/sphere.osgjs");
-/*
-        ATON.addGraph("models/sphere/sphere.osgjs", {
-            layer: "COMPLEX", 
-            transformRules: "models/thermalcomplex/ColonnaCorinzia-inst.txt"
-            });
-*/
+
+        //ATON.addGraph("models/sphere/sphere.osgjs", {
+        //    layer: "COMPLEX", 
+        //    transformRules: "models/thermalcomplex/ColonnaCorinzia-inst.txt"
+        //    });
+
     if (asset === "domus"){
         ATON.addGraph("models/domus/LOD1_DP_Hor_1.osgjs", { layer: "DOMUS" });
         ATON.addGraph("models/domus/LOD1_DP_Hor_2.osgjs", { layer: "DOMUS" });
@@ -135,6 +152,7 @@
     if (asset === "sf"){
         ATON.addGraph("models/SF/vhlab__SF-200916_L0_X0_Y0_subtile.osgjs", { layer: "terrain" } );
         }
+*/
 
 /*
         ATON.addDescriptor("proxies/T36.osgjs", "T36");

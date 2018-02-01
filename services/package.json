@@ -1,0 +1,16 @@
+{
+  "name": "ATON.SERVICE.vroadcast",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ATON.SERVICE.vroadcast.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Bruno Fanini",
+  "license": "ISC",
+  "dependencies": {
+    "command-line-args": "^4.0.7",
+    "express": "^4.16.2",
+    "socket.io": "^1.7.3"
+  }
+}

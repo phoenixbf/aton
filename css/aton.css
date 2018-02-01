@@ -1,0 +1,90 @@
+/*
+    Base CSS for DPF js
+    Bruno Fanini (bruno.fanini++AT++gmail.com)
+
+====================================================================*/
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    font-family: sans-serif;
+
+    font-size: 13px;
+    font-family: Tahoma, Verdana, Geneva;
+
+    touch-action: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.dark-bg {
+    color: #FFF;
+    background: rgba(127,127,127, 1.0);
+}
+
+canvas {
+    display: block; /* Fix middle button drag on FF */
+    height: 100%;
+    width: 100%;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    cursor: default;
+    cursor: -moz-default;
+    cursor: -webkit-default;
+
+    touch-action: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+.grabbable {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+.grabbable:active { 
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+.view3D {
+    position: absolute !important;
+    width: 100%;
+    height: 100%;
+}
+
+.infoContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    padding: 0px 0px 0px 0px;
+
+    text-align: center;
+
+    z-index: 2;
+    margin: 0px 0px 0px 0px;
+
+    /*pointer-events: none;*/
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    overflow: hidden;
+}

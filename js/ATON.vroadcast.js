@@ -375,7 +375,9 @@ ATON.vroadcast.realizeUserModel = function(id){
 
     u._at.addChild( bg );
 
-    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel.png").then( function ( data ){
+    var ulabID = id % 6; // no. colors
+
+    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel"+ulabID+".png").then( function ( data ){
         var bgTex = new osg.Texture();
         bgTex.setImage( data );
 

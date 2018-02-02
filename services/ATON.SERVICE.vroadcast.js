@@ -23,6 +23,10 @@ const io = require('socket.io')(http);
 
 // For record trace
 const fs = require('fs');
+const distance = require('euclidean-distance');
+const aabb = require('aabb-3d');
+const now = require("performance-now");
+
 
 // Command line
 const commandLineArgs = require('command-line-args');
@@ -47,14 +51,19 @@ if (serviceOptions.production){
 var bRecord = false;
 if (serviceOptions.trace) bRecord = true;
 var outRecordFolder = __dirname+"/record/";
-var currDate = new Date();
-
+var currDate = new Date(); // unused
+var tLastMark   = 0.0;
+var tRecordFreq = 0.2; // in seconds
 
 // Scene Nodes (rooms)
 var sceneNodes = {};
 
 // Global Time
-var time = process.hrtime();
+const tick = function(){ return (now() * 0.001).toFixed(3); };
+var time = tick();
+
+
+
 
 
 // WebServer
@@ -69,6 +78,7 @@ else app.use('/', express.static( __dirname + '/' ));
 var touchSceneNode = function(sname){
     if (sceneNodes[sname]) return sceneNodes[sname];
 
+    // First time
     sceneNodes[sname] = {};
     var scene = sceneNodes[sname];
 
@@ -76,6 +86,8 @@ var touchSceneNode = function(sname){
     scene.numClients = 0;
     console.log("Created scene "+sname);
     //console.log(scene);
+
+    if (bRecord) initGlobalRecord(sname);
 
     return scene;
 };
@@ -228,7 +240,96 @@ var getRecordFilepath = function(c){
     return outRecordFolder+"U"+c.id+'.csv';
 };
 
-// On
+var getGlobalRecordFilepath = function(scenename){
+    return outRecordFolder+scenename+".swarm.csv";
+};
+
+var initGlobalRecord = function(scenename){
+    if (!fs.existsSync(outRecordFolder)) fs.mkdirSync(outRecordFolder);
+
+    // Header
+    var recStream = fs.createWriteStream(getGlobalRecordFilepath(scenename), {'flags': 'w'});
+
+    // 'Hours'+RECORD_SEPARATOR+'Minutes'+RECORD_SEPARATOR+'Seconds'
+    recStream.write('Time'+RECORD_SEPARATOR+'Users'+RECORD_SEPARATOR+'swarmX'+RECORD_SEPARATOR+'swarmY'+RECORD_SEPARATOR+'swarmZ'+RECORD_SEPARATOR+'swarmRadius'+RECORD_SEPARATOR+'swarmFX'+RECORD_SEPARATOR+'swarmFY'+RECORD_SEPARATOR+'swarmFZ'+RECORD_SEPARATOR+'swarmFocRadius\n');
+
+    console.log("Global Record initialized for scene "+scenename);
+};
+
+var writeGlobalRecord = function(scenename){
+    if (scenename === undefined) return;
+
+    var S = sceneNodes[scenename];
+    if (S === undefined) return;
+
+    var numUsers = S.clients.length;
+    if (numUsers < 1) return;
+
+    // Time freq barrier
+    var ts = tick();
+    //if ((ts - tLastMark) < tRecordFreq) return;
+    //tLastMark = ts;
+
+    var x=0.0,y=0.0,z=0.0;
+    var fx=0.0,fy=0.0,fz=0.0;
+
+    var locMin = [ undefined, undefined, undefined];
+    var locMax = [ undefined, undefined, undefined];
+    var focMin = [ undefined, undefined, undefined];
+    var focMax = [ undefined, undefined, undefined];
+    var locRad=0.0, focRad=0.0;
+
+    S.clients.forEach(u => {
+        x += u.position[0];
+        y += u.position[1];
+        z += u.position[2];
+
+        if (locMin[0] === undefined || u.position[0] < locMin[0]) locMin[0] = u.position[0];
+        if (locMin[1] === undefined || u.position[1] < locMin[1]) locMin[1] = u.position[1];
+        if (locMin[2] === undefined || u.position[2] < locMin[2]) locMin[2] = u.position[2];
+
+        if (locMax[0] === undefined || u.position[0] > locMax[0]) locMax[0] = u.position[0];
+        if (locMax[1] === undefined || u.position[1] > locMax[1]) locMax[1] = u.position[1];
+        if (locMax[2] === undefined || u.position[2] > locMax[2]) locMax[2] = u.position[2];
+
+        fx += u.focus[0];
+        fy += u.focus[1];
+        fz += u.focus[2];
+
+        if (focMin[0] === undefined || u.focus[0] < focMin[0]) focMin[0] = u.focus[0];
+        if (focMin[1] === undefined || u.focus[1] < focMin[1]) focMin[1] = u.focus[1];
+        if (focMin[2] === undefined || u.focus[2] < focMin[2]) focMin[2] = u.focus[2];
+
+        if (focMax[0] === undefined || u.focus[0] > focMax[0]) focMax[0] = u.focus[0];
+        if (focMax[1] === undefined || u.focus[1] > focMax[1]) focMax[1] = u.focus[1];
+        if (focMax[2] === undefined || u.focus[2] > focMax[2]) focMax[2] = u.focus[2];
+        });
+
+    x /= numUsers;
+    y /= numUsers;
+    z /= numUsers;
+
+    fx /= numUsers;
+    fy /= numUsers;
+    fz /= numUsers;
+
+    locRad = distance(locMax,locMin) * 0.5;
+    focRad = distance(focMax,focMin) * 0.5;
+
+    //console.log("SwarmAVG: "+x+", "+y+", "+z);
+    
+    var posstr = x.toFixed(3) +RECORD_SEPARATOR+ y.toFixed(3) +RECORD_SEPARATOR+ z.toFixed(3) +RECORD_SEPARATOR+ locRad.toFixed(3);
+    var focstr = fx.toFixed(3) +RECORD_SEPARATOR+ fy.toFixed(3) +RECORD_SEPARATOR+ fz.toFixed(3) +RECORD_SEPARATOR+ focRad.toFixed(3);
+
+    // Write
+    // appendFileSync
+    fs.appendFile(
+        getGlobalRecordFilepath(scenename),
+        ts+RECORD_SEPARATOR+parseInt(S.numClients)+RECORD_SEPARATOR+posstr+RECORD_SEPARATOR+focstr+"\n",
+        function (err) { });
+};
+
+// User trace
 var initClientRecord = function(c){
     if (c === undefined) return;
 
@@ -249,7 +350,11 @@ var writeClientRecord = function(c){
     // Timestamp (H M S)
     //currDate = new Date();
     //var ts = currDate.getHours()+RECORD_SEPARATOR+currDate.getMinutes() +RECORD_SEPARATOR+ currDate.getSeconds();
-    var ts = process.hrtime(time)[0];
+
+    // Time freq barrier
+    var ts = tick();
+    //if ((ts - tLastMark) < tRecordFreq) return;
+    //tLastMark = ts;
 
     var posString   = c.position[0].toFixed(3) +RECORD_SEPARATOR+c.position[1].toFixed(3)+RECORD_SEPARATOR+c.position[2].toFixed(3);
     var focusString = c.focus[0].toFixed(3) +RECORD_SEPARATOR+c.focus[1].toFixed(3)+RECORD_SEPARATOR+c.focus[2].toFixed(3);
@@ -261,6 +366,10 @@ var writeClientRecord = function(c){
         ts+RECORD_SEPARATOR+posString+RECORD_SEPARATOR+focusString+"\n",
         function (err) { });
 };
+
+
+
+
 
 // Socket.io Server
 //=======================================================
@@ -350,7 +459,10 @@ io.on('connection', function(socket){
         clientInfo.orientation = u.ori.slice(0);
 
         // Record on file
-        if (assignedID>=0 && bRecord) writeClientRecord(clientInfo);
+        if (assignedID>=0 && bRecord){
+            writeClientRecord(clientInfo);
+            writeGlobalRecord(sceneName);
+            }
 
         //console.log(clientInfo);
 
@@ -372,7 +484,10 @@ io.on('connection', function(socket){
         clientInfo.focus[2] = clientInfo.position[2] + dFocus[2];
 
         // Record on file
-        if (assignedID>=0 && bRecord) writeClientRecord(clientInfo);
+        if (assignedID>=0 && bRecord){
+            writeClientRecord(clientInfo);
+            writeGlobalRecord(sceneName);
+            }
 
         //clientInfo.targDist = data.readFloatLE(0);
         socket.broadcast.to(sceneName).emit("UFOCUSD", data );

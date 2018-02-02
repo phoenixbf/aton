@@ -32,13 +32,28 @@ var req  = 0;
 
 var uColors = [
     {
-        locomotion: 'rgb(0, 0, 127)',
-        focus: 'rgb(127, 127, 255)',
+        locomotion: 'rgb(127, 0, 0)',
+        focus: 'rgb(255, 127, 127)',
     },
-
+    {
+        locomotion: 'rgb(127, 127, 0)',
+        focus: 'rgb(255, 255, 127)',
+    },
     {
         locomotion: 'rgb(0, 127, 0)',
         focus: 'rgb(127, 255, 127)',
+    },
+    {
+        locomotion: 'rgb(0, 127, 127)',
+        focus: 'rgb(127, 255, 255)',
+    },
+    {
+        locomotion: 'rgb(0, 0, 127)',
+        focus: 'rgb(127, 127, 255)',
+    },
+    {
+        locomotion: 'rgb(127, 0, 127)',
+        focus: 'rgb(255, 127, 255)',
     }
 ];
 
@@ -96,18 +111,19 @@ var plotUser = function(uid){
             x: unpack2(rows, 'px'),
             y: unpack2(rows, 'py'),
             z: unpack2(rows, 'pz'),
+            t: unpack2(rows, 'Time'),
 
             mode: 'lines',
-            width: 4,
-            color: uColors[uid].locomotion,
-/*
+            //width: 4,
+            //color: uColors[uid].locomotion,
+
             marker: {
                 size: 12,
                 color: uColors[uid].locomotion,
                 opacity: 1.0,
                 width: 10
                 },
-*/
+
             type: 'scatter3d',
             name: 'USER'+uid + ' Locomotion'
             };
@@ -115,7 +131,8 @@ var plotUser = function(uid){
         var focus = {
             x: unpack2(rows, 'fx'),
             y: unpack2(rows, 'fy'),
-            z: unpack2(rows, 'fz'), 
+            z: unpack2(rows, 'fz'),
+            t: unpack2(rows, 'Time'), 
             
             mode: 'markers',
             marker: {

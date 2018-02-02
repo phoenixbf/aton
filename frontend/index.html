@@ -47,7 +47,30 @@ var attachListeners = function(){
 		$(document).keydown(function(e) {
 	    	if (e.keyCode == 67){ // c
 				logPOV();
-	    		}
+                }
+                
+            if (e.keyCode == 77){ // m
+                var M = new ATON.magNode();
+
+                M.setTarget(ATON._hoveredVisData.p.slice(0));
+                M.setPosition(ATON._currPOV.pos.slice(0));
+
+                var d = osg.vec3.squaredDistance(ATON._hoveredVisData.p, ATON._currPOV.pos);
+                M.setRadius( Math.sqrt(d) );
+                M.setKernel(0.0);
+
+                M.forces[0] = 0.0;
+                M.forces[1] = 0.02;
+
+                ATON.addMagNode(M);
+                }
+
+                if (e.keyCode == 13){ // enter
+                    var jMag = JSON.stringify(ATON.MagNet);
+                    console.log(jMag);
+
+                    console.log(JSON.parse(jMag));
+                    }
             });
         });
 };

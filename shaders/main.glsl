@@ -225,7 +225,7 @@ vec3 envmapVector(const in mat4 transform, const in vec3 normal){
     vec3 y = vec3(transform[0][1], transform[1][1], transform[2][1]);
     vec3 z = vec3(transform[0][2], transform[1][2], transform[2][2]);
     mat3 m = mat3(x,y,z);
-    
+
     return normalize(m*lv);
 }
 
@@ -302,7 +302,7 @@ void main(){
     
     // move to user
     float nrmWeight = 0.9;
-    float giContrib = 0.3;
+    float giContrib = 0.2; // 0.3
 
 
 #if 0 // DEBUG
@@ -407,8 +407,8 @@ void main(){
     vec4 giFrag     = getLPvalue(normWorld, 0.8); // 0.75
     vec4 ptFrag     = getLPvalue(nPT, 0.5);
 
-    float emRefl = 1.0 - reflFrag.a;
-    float emGI   = 1.0 - giFrag.a;
+    float emRefl = (1.0 - reflFrag.a);
+    float emGI   = (1.0 - giFrag.a);
 
 #if 0 // DEBUG
     gl_FragColor = ptFrag;
@@ -472,9 +472,10 @@ void main(){
     
     //diffFrag += mix(vec4(0,0,0,0), giFrag*uExposure, giContrib); // OK
     
-    diffFrag *= mix( vec4(1.0), giFrag*3.0, giContrib );
-    diffFrag += (giFrag*0.2);
+    diffFrag *= mix( vec4(1.0), giFrag*5.0, giContrib ); // 3.0
+    diffFrag += (giFrag*0.1); // 0.2
     
+
     ////diffFrag = mix(diffFrag, giFrag, giContrib);
 
     //FinalFragment = diffFrag;

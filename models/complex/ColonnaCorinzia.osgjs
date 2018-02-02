@@ -19,7 +19,7 @@
                     "TextureAttributeList": [ [ {
                       "osg.Texture": {
                         "UniqueID": 4, 
-                        "File": "Colonna.jpg", 
+                        "File": "colonna.jpg", 
                         "MagFilter": "LINEAR", 
                         "MinFilter": "LINEAR_MIPMAP_LINEAR", 
                         "WrapS": "REPEAT", 

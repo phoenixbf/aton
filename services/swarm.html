@@ -54,7 +54,7 @@ var plotSwarm = function(scenename){
     console.log("SCENE "+scenename);
     req++;
 
-    Plotly.d3.csv('record/'+scenename+'.swarm.csv', function(err, rows){
+    Plotly.d3.csv('record/'+scenename+'/swarm.csv', function(err, rows){
 /*
         function unpack(rows, key) {
             var A = rows.map(

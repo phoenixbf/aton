@@ -76,12 +76,12 @@ var drawFinalPlot = function(){
     document.getElementById("idTimeRange").innerHTML = tMin+"s to "+tMax+"s";
 };
 
-var plotUser = function(uid){
+var plotUser = function(scenename, uid){
 
     console.log("USER "+uid);
     req++;
 
-    Plotly.d3.csv('record/U'+uid+'.csv', function(err, rows){
+    Plotly.d3.csv('record/'+scenename+'/U'+uid+'.csv', function(err, rows){
 /*
         function unpack(rows, key) {
             var A = rows.map(
@@ -162,13 +162,15 @@ if (tRange){
     timerange[1] = tR[1];
 }
 
+var scenename = getURLparams().s;
+if (scenename === undefined) scenename = "_SHARED_";
 
 var uString = getURLparams().u;
 if (uString){
     uIDs = uString.split(',');
 
     for (let u = 0; u < uIDs.length; u++){
-        plotUser(uIDs[u]);
+        plotUser(scenename, uIDs[u]);
         }
 }
 

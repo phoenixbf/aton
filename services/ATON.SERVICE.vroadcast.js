@@ -67,8 +67,8 @@ var TraceDaemon = function(){
         // Loop users in this scene
         scene.clients.forEach(user => {
 
-            if (user.bRecordWrite){
-                writeClientRecord(user);
+            if (user && user.bRecordWrite){
+                writeClientRecord(user, sn);
                 user.bRecordWrite = false;
                 }
             });
@@ -110,7 +110,7 @@ var touchSceneNode = function(sname){
     var scene = sceneNodes[sname];
 
     scene.clients      = [];
-    scene.numClients   = 0; // FIXME: redundant
+    scene.numClients   = 0; // Note: scene.clients[] may not be contiguous
     scene.bRecordWrite = false;
 
     console.log("Created scene "+sname);
@@ -158,6 +158,7 @@ var assignIDinScene = function(scene){
 };
 
 // DEPRECATED
+/*
 var assignID = function(){
     var clientsTableSize = clients.length;
 
@@ -171,6 +172,7 @@ var assignID = function(){
 
     return -1;
 };
+*/
 
 var decodeUserStateData = function(data){
     var user = {};
@@ -234,6 +236,7 @@ var encodeUserStateData = function(c){
 // Send a snapshot of a specific client ID
 var sendClientSnapshot = function(socket, id, scene){
     var clientInfo = scene.clients[id];
+    if (clientInfo === undefined) return;
 
     var binData = encodeUserStateData(clientInfo);
 
@@ -267,16 +270,17 @@ var sendGlobalSnapshot = function(socket, myid, scene){
 
 // Record/Trace
 //================================
-var getRecordFilepath = function(c){
-    return outRecordFolder+"U"+c.id+'.csv';
+var getRecordFilepath = function(c, scenename){
+    return outRecordFolder+scenename+"/U"+c.id+'.csv';
 };
 
 var getGlobalRecordFilepath = function(scenename){
-    return outRecordFolder+scenename+".swarm.csv";
+    return outRecordFolder+scenename+"/swarm.csv";
 };
 
 var initGlobalRecord = function(scenename){
     if (!fs.existsSync(outRecordFolder)) fs.mkdirSync(outRecordFolder);
+    if (!fs.existsSync(outRecordFolder+scenename)) fs.mkdirSync(outRecordFolder+scenename);
 
     // Header
     var recStream = fs.createWriteStream(getGlobalRecordFilepath(scenename), {'flags': 'w'});
@@ -293,7 +297,7 @@ var writeGlobalRecord = function(scenename){
     var S = sceneNodes[scenename];
     if (S === undefined) return;
 
-    var numUsers = S.clients.length;
+    var numUsers = S.numClients; //S.clients.length;
     if (numUsers < 1) return;
 
     // Time freq barrier
@@ -311,29 +315,31 @@ var writeGlobalRecord = function(scenename){
     var locRad=0.0, focRad=0.0;
 
     S.clients.forEach(u => {
-        x += u.position[0];
-        y += u.position[1];
-        z += u.position[2];
+        if (u !== undefined){
+            x += u.position[0];
+            y += u.position[1];
+            z += u.position[2];
 
-        if (locMin[0] === undefined || u.position[0] < locMin[0]) locMin[0] = u.position[0];
-        if (locMin[1] === undefined || u.position[1] < locMin[1]) locMin[1] = u.position[1];
-        if (locMin[2] === undefined || u.position[2] < locMin[2]) locMin[2] = u.position[2];
+            if (locMin[0] === undefined || u.position[0] < locMin[0]) locMin[0] = u.position[0];
+            if (locMin[1] === undefined || u.position[1] < locMin[1]) locMin[1] = u.position[1];
+            if (locMin[2] === undefined || u.position[2] < locMin[2]) locMin[2] = u.position[2];
 
-        if (locMax[0] === undefined || u.position[0] > locMax[0]) locMax[0] = u.position[0];
-        if (locMax[1] === undefined || u.position[1] > locMax[1]) locMax[1] = u.position[1];
-        if (locMax[2] === undefined || u.position[2] > locMax[2]) locMax[2] = u.position[2];
+            if (locMax[0] === undefined || u.position[0] > locMax[0]) locMax[0] = u.position[0];
+            if (locMax[1] === undefined || u.position[1] > locMax[1]) locMax[1] = u.position[1];
+            if (locMax[2] === undefined || u.position[2] > locMax[2]) locMax[2] = u.position[2];
 
-        fx += u.focus[0];
-        fy += u.focus[1];
-        fz += u.focus[2];
+            fx += u.focus[0];
+            fy += u.focus[1];
+            fz += u.focus[2];
 
-        if (focMin[0] === undefined || u.focus[0] < focMin[0]) focMin[0] = u.focus[0];
-        if (focMin[1] === undefined || u.focus[1] < focMin[1]) focMin[1] = u.focus[1];
-        if (focMin[2] === undefined || u.focus[2] < focMin[2]) focMin[2] = u.focus[2];
+            if (focMin[0] === undefined || u.focus[0] < focMin[0]) focMin[0] = u.focus[0];
+            if (focMin[1] === undefined || u.focus[1] < focMin[1]) focMin[1] = u.focus[1];
+            if (focMin[2] === undefined || u.focus[2] < focMin[2]) focMin[2] = u.focus[2];
 
-        if (focMax[0] === undefined || u.focus[0] > focMax[0]) focMax[0] = u.focus[0];
-        if (focMax[1] === undefined || u.focus[1] > focMax[1]) focMax[1] = u.focus[1];
-        if (focMax[2] === undefined || u.focus[2] > focMax[2]) focMax[2] = u.focus[2];
+            if (focMax[0] === undefined || u.focus[0] > focMax[0]) focMax[0] = u.focus[0];
+            if (focMax[1] === undefined || u.focus[1] > focMax[1]) focMax[1] = u.focus[1];
+            if (focMax[2] === undefined || u.focus[2] > focMax[2]) focMax[2] = u.focus[2];
+            }
         });
 
     x /= numUsers;
@@ -361,22 +367,25 @@ var writeGlobalRecord = function(scenename){
 };
 
 // User trace
-var initClientRecord = function(c){
+var initClientRecord = function(c, scenename){
     if (c === undefined) return;
+    if (scenename === undefined) return;
 
     if (!fs.existsSync(outRecordFolder)) fs.mkdirSync(outRecordFolder);
+    if (!fs.existsSync(outRecordFolder+scenename)) fs.mkdirSync(outRecordFolder+scenename);
 
     // Header
-    var recStream = fs.createWriteStream(getRecordFilepath(c), {'flags': 'w'});
+    var recStream = fs.createWriteStream(getRecordFilepath(c,scenename), {'flags': 'w'});
 
     // 'Hours'+RECORD_SEPARATOR+'Minutes'+RECORD_SEPARATOR+'Seconds'
     recStream.write('Time'+RECORD_SEPARATOR+'px'+RECORD_SEPARATOR+'py'+RECORD_SEPARATOR+'pz'+RECORD_SEPARATOR+'fx'+RECORD_SEPARATOR+'fy'+RECORD_SEPARATOR+'fz\n');
 
-    console.log("Initialised Record "+getRecordFilepath(c));
+    console.log("Initialised Record "+getRecordFilepath(c,scenename));
 };
 
-var writeClientRecord = function(c){
+var writeClientRecord = function(c, scenename){
     if (c === undefined) return;
+    if (scenename === undefined) return;
 
     // Timestamp (H M S)
     //currDate = new Date();
@@ -393,7 +402,7 @@ var writeClientRecord = function(c){
     // Write
     // appendFileSync
     fs.appendFile(
-        getRecordFilepath(c),
+        getRecordFilepath(c, scenename),
         time+RECORD_SEPARATOR+posString+RECORD_SEPARATOR+focusString+"\n",
         function (err) { });
 };
@@ -450,7 +459,7 @@ io.on('connection', function(socket){
             socket.broadcast.to(sceneName).emit("ENTER", { id: assignedID } );
 
             // Record
-            if (bRecord) initClientRecord(clientInfo);
+            if (bRecord) initClientRecord(clientInfo, sceneName);
 
             console.log("USER '"+assignedID+"' joined scene '"+sceneName+"'");
             }

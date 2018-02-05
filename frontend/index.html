@@ -48,7 +48,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">ATON</a>
+        <a class="navbar-brand" href="#" id="idUserColor">ATON</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -81,9 +81,16 @@
             <div class="form-group">
             <input id="uname" type="text" size="10" onchange="ATON.FrontEnd.setUserName()" class="form-control" placeholder="Username">
             <input id="ustatus" type="text" size="30" onchange="ATON.FrontEnd.setStatus()" class="form-control" placeholder="Status">
-            <input style="width:80%" id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="ATON.FrontEnd.setWeight()">
-            <input style="width:80%" id="umagrad" type="range" min="0.5" max="100.0" step="0.5" onchange="ATON.FrontEnd.setMagRadius()">
             </div>
+
+            <div id="idMagSetup" class="form-group">
+                <div style="display:inline-block"><input id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="ATON.FrontEnd.setWeight()">
+                MagWeight: <span id="idMagWeight"></span></div>
+
+                <div style="display:inline-block"><input id="umagrad" type="range" min="0.5" max="100.0" step="0.5" onchange="ATON.FrontEnd.setMagRadius()">
+                MagRadius: <span id="idMagRadius"></span></div>
+            </div>
+
 <!--
             <button type="submit" class="btn btn-default">Submit</button>
 -->

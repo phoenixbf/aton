@@ -32,7 +32,7 @@ const now = require("performance-now");
 const commandLineArgs = require('command-line-args');
 
 const optDefs = [
-    { name: 'trace', alias: 't', type: Boolean},
+    { name: 'trace', alias: 't', type: Number}, // in milliseconds
     { name: 'www', type: String, defaultOption: __dirname+"/" },
     { name: 'production', type: Boolean}
 //    { name: 'timeout', alias: 't', type: Number }
@@ -46,15 +46,6 @@ if (serviceOptions.production){
     console.log = function() {};
 }
 
-
-// Session file record
-var bRecord = false;
-if (serviceOptions.trace) bRecord = true;
-var outRecordFolder = __dirname+"/record/";
-var currDate = new Date(); // unused
-var tLastMark   = 0.0;
-var tRecordFreq = 0.2; // in seconds
-
 // Scene Nodes (rooms)
 var sceneNodes = {};
 
@@ -62,7 +53,43 @@ var sceneNodes = {};
 const tick = function(){ return (now() * 0.001).toFixed(3); };
 var time = tick();
 
+// Session file record
+//=====================================================
+// Record Daemon
+var TraceDaemon = function(){
+    time = tick();
 
+    // Loop all scenes
+    for (var sn in sceneNodes){
+
+        var scene = sceneNodes[sn];
+        
+        // Loop users in this scene
+        scene.clients.forEach(user => {
+
+            if (user.bRecordWrite){
+                writeClientRecord(user);
+                user.bRecordWrite = false;
+                }
+            });
+        
+        if (scene.bRecordWrite){
+            writeGlobalRecord(sn);
+            scene.bRecordWrite = false;
+            }
+        }
+
+    //console.log( tick() + " Record Daemon...");
+};
+
+var outRecordFolder = __dirname+"/record/";
+var currDate = new Date(); // unused
+
+var bRecord = false;
+if (serviceOptions.trace && (serviceOptions.trace > 0)){
+    bRecord = true;
+    setInterval(TraceDaemon, serviceOptions.trace);
+    }
 
 
 
@@ -82,8 +109,10 @@ var touchSceneNode = function(sname){
     sceneNodes[sname] = {};
     var scene = sceneNodes[sname];
 
-    scene.clients    = [];
-    scene.numClients = 0;
+    scene.clients      = [];
+    scene.numClients   = 0; // FIXME: redundant
+    scene.bRecordWrite = false;
+
     console.log("Created scene "+sname);
     //console.log(scene);
 
@@ -105,6 +134,8 @@ var touchClient = function(id, scene){
     clientInfo.id          = id;
     clientInfo.target      = [0.0,0.0,0.0];
     clientInfo.focus       = [0.0,0.0,0.0];
+
+    clientInfo.bRecordWrite = false;
 
     return clientInfo;
 };
@@ -266,7 +297,7 @@ var writeGlobalRecord = function(scenename){
     if (numUsers < 1) return;
 
     // Time freq barrier
-    var ts = tick();
+    //var ts = tick();
     //if ((ts - tLastMark) < tRecordFreq) return;
     //tLastMark = ts;
 
@@ -325,7 +356,7 @@ var writeGlobalRecord = function(scenename){
     // appendFileSync
     fs.appendFile(
         getGlobalRecordFilepath(scenename),
-        ts+RECORD_SEPARATOR+parseInt(S.numClients)+RECORD_SEPARATOR+posstr+RECORD_SEPARATOR+focstr+"\n",
+        time+RECORD_SEPARATOR+parseInt(S.numClients)+RECORD_SEPARATOR+posstr+RECORD_SEPARATOR+focstr+"\n",
         function (err) { });
 };
 
@@ -352,7 +383,7 @@ var writeClientRecord = function(c){
     //var ts = currDate.getHours()+RECORD_SEPARATOR+currDate.getMinutes() +RECORD_SEPARATOR+ currDate.getSeconds();
 
     // Time freq barrier
-    var ts = tick();
+    //var ts = tick();
     //if ((ts - tLastMark) < tRecordFreq) return;
     //tLastMark = ts;
 
@@ -363,7 +394,7 @@ var writeClientRecord = function(c){
     // appendFileSync
     fs.appendFile(
         getRecordFilepath(c),
-        ts+RECORD_SEPARATOR+posString+RECORD_SEPARATOR+focusString+"\n",
+        time+RECORD_SEPARATOR+posString+RECORD_SEPARATOR+focusString+"\n",
         function (err) { });
 };
 
@@ -460,8 +491,10 @@ io.on('connection', function(socket){
 
         // Record on file
         if (assignedID>=0 && bRecord){
-            writeClientRecord(clientInfo);
-            writeGlobalRecord(sceneName);
+            //writeClientRecord(clientInfo);
+            //writeGlobalRecord(sceneName);
+            clientInfo.bRecordWrite = true;
+            scene.bRecordWrite      = true;
             }
 
         //console.log(clientInfo);
@@ -485,8 +518,10 @@ io.on('connection', function(socket){
 
         // Record on file
         if (assignedID>=0 && bRecord){
-            writeClientRecord(clientInfo);
-            writeGlobalRecord(sceneName);
+            //writeClientRecord(clientInfo);
+            //writeGlobalRecord(sceneName);
+            clientInfo.bRecordWrite = true;
+            scene.bRecordWrite      = true;
             }
 
         //clientInfo.targDist = data.readFloatLE(0);

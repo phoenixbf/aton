@@ -5,6 +5,15 @@ ATON.FrontEnd = {};
 ATON.FrontEnd.MODELS_ROOT = "../models/";
 ATON.FrontEnd.RES_ROOT    = "../res/";
 
+var uColors = [
+    'rgb(64, 0, 0)',
+    'rgb(64, 64, 0)',
+    'rgb(0, 64, 0)',
+    'rgb(0, 64, 64)',
+    'rgb(0, 0, 64)',
+    'rgb(64, 0, 64)'
+];
+
 
 ATON.FrontEnd.setupPage = function(){
     var iContainer = document.getElementById( "iContainer" );
@@ -26,11 +35,15 @@ ATON.FrontEnd.setupPage = function(){
         var el = document.getElementById('uweight');
         console.log(el.value);
         ATON.vroadcast.setWeight(el.value);
+
+        document.getElementById('idMagWeight').innerHTML = el.value;
     };
     ATON.FrontEnd.setMagRadius = function(){
         var el = document.getElementById('umagrad');
         console.log(el.value);
         ATON.vroadcast.setMagRadius(el.value);
+
+        document.getElementById('idMagRadius').innerHTML = el.value;
     };
     
     ATON.FrontEnd.toggleFirstPerson = function(){
@@ -273,6 +286,13 @@ if (asset === "sf"){
 
         // User MagNet
         ATON.vroadcast.onIDassigned = function(){
+            var uid = ATON.vroadcast._myUser.id;
+            $('#idUserColor').css("background-color", uColors[uid % 6]);
+            $('#idUserColor').html("U"+uid);
+
+            // disable controls for beta users
+            if (uid > 0) $('#idMagSetup').hide();
+/*
             var magstr = ATON.utils.getURLparams().mag;
             if (magstr){
                 var v = magstr.split(',');
@@ -280,6 +300,7 @@ if (asset === "sf"){
                 ATON.vroadcast.setWeight( parseFloat(v[0]) );
                 if (v[1]) ATON.vroadcast.setMagRadius( parseFloat(v[1]) );
                 }
+*/
             };
         }
 

@@ -12,11 +12,11 @@
     <body>
         <!-- Plotly chart will be drawn inside this DIV -->
         <div class="sessionView">
-            <div id="idSessionView" style="width:100%; height:100%"></div>
+            <div id="idSwarmView" style="width:100%; height:100%"></div>
         </div>
 
         <div style="position:fixed; bottom:5px; left:5px;">
-            <b>Sessions temporal range: </b>
+            <b>Swarm temporal range: </b>
             <span id="idTimeRange"></span>
         </div>
 <script>
@@ -29,33 +29,6 @@ var tMax = undefined;
 
 var data = [];
 var req  = 0;
-
-var uColors = [
-    {
-        locomotion: 'rgb(127, 0, 0)',
-        focus: 'rgb(255, 127, 127)',
-    },
-    {
-        locomotion: 'rgb(127, 127, 0)',
-        focus: 'rgb(255, 255, 127)',
-    },
-    {
-        locomotion: 'rgb(0, 127, 0)',
-        focus: 'rgb(127, 255, 127)',
-    },
-    {
-        locomotion: 'rgb(0, 127, 127)',
-        focus: 'rgb(127, 255, 255)',
-    },
-    {
-        locomotion: 'rgb(0, 0, 127)',
-        focus: 'rgb(127, 127, 255)',
-    },
-    {
-        locomotion: 'rgb(127, 0, 127)',
-        focus: 'rgb(255, 127, 255)',
-    }
-];
 
 var drawFinalPlot = function(){
     var layout = {
@@ -71,17 +44,17 @@ var drawFinalPlot = function(){
             }
         };
 
-    Plotly.newPlot('idSessionView', data, layout);
+    Plotly.newPlot('idSwarmView', data, layout);
 
     document.getElementById("idTimeRange").innerHTML = tMin+"s to "+tMax+"s";
 };
 
-var plotUser = function(uid){
+var plotSwarm = function(scenename){
 
-    console.log("USER "+uid);
+    console.log("SCENE "+scenename);
     req++;
 
-    Plotly.d3.csv('record/U'+uid+'.csv', function(err, rows){
+    Plotly.d3.csv('record/'+scenename+'.swarm.csv', function(err, rows){
 /*
         function unpack(rows, key) {
             var A = rows.map(
@@ -110,44 +83,32 @@ var plotUser = function(uid){
             return A;
             }
 
-        var locomotion = {
-            x: unpack2(rows, 'px'),
-            y: unpack2(rows, 'py'),
-            z: unpack2(rows, 'pz'),
+        var swarmLocomotion = {
+            x: unpack2(rows, 'swarmX'),
+            y: unpack2(rows, 'swarmY'),
+            z: unpack2(rows, 'swarmZ'),
             //t: unpack2(rows, 'Time'),
-
+            users: unpack2(rows, 'Users'), 
+/*
+            mode: 'markers',
+            marker: {
+                color: 'rgb(0, 0, 127)',
+                size: 30,
+                symbol: 'circle',
+                opacity: 0.004
+            },
+*/
             mode: 'lines',
             line: {
-                color: uColors[uid].locomotion,
-                width: 5
+                color: 'rgb(0, 0, 127)',
+                width: 10
                 },
 
             type: 'scatter3d',
-            name: 'USER'+uid + ' Locomotion'
+            name: 'Swarm Locomotion'
             };
 
-        var focus = {
-            x: unpack2(rows, 'fx'),
-            y: unpack2(rows, 'fy'),
-            z: unpack2(rows, 'fz'),
-            //t: unpack2(rows, 'Time'), 
-            
-            mode: 'markers',
-            marker: {
-                color: uColors[uid].focus,
-                size: 10,
-                symbol: 'circle',
-                opacity: 0.01
-            },
-            type: 'scatter3d',
-            name: 'USER'+uid + ' Focus'
-            };
-
-    //[locomotion, focus];
-    data.push(locomotion);
-    data.push(focus);
-
-    //console.log(focus);
+    data.push(swarmLocomotion);
 
     req--;
     if (req <= 0) drawFinalPlot();
@@ -163,13 +124,9 @@ if (tRange){
 }
 
 
-var uString = getURLparams().u;
-if (uString){
-    uIDs = uString.split(',');
-
-    for (let u = 0; u < uIDs.length; u++){
-        plotUser(uIDs[u]);
-        }
+var scene = getURLparams().s;
+if (scene){
+    plotSwarm(scene);
 }
 
 </script>

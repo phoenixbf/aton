@@ -1,0 +1,138 @@
+{
+  "Generator": "OpenSceneGraph 3.3.8", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "test-cube.osg", 
+        "StateSet": {
+          "osg.StateSet": {
+            "UniqueID": 1, 
+            "TextureAttributeList": [ [ {
+              "osg.Texture": {
+                "UniqueID": 2, 
+                "File": "pbr-cube-diff.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 3, 
+                "File": "pbr-cube-ao.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 4, 
+                "File": "pbr-cube-nrm.png", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 5, 
+                "File": "pbr-cube-multi.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ] ]
+          }
+        }, 
+        "Children": [ {
+          "osg.Geometry": {
+            "UniqueID": 6, 
+            "PrimitiveSetList": [ {
+              "DrawElementsUByte": {
+                "UniqueID": 11, 
+                "Indices": {
+                  "Array": { 
+                    "Uint8Array": { 
+                      "File": "test-cube_12.bin.gz",
+                      "Size": 34,
+                      "Offset": 0
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLE_STRIP"
+              }
+            } ], 
+            "VertexAttributeList": {
+              "Color": {
+                "UniqueID": 9, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "test-cube_13.bin.gz",
+                    "Size": 24,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 4, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Normal": {
+                "UniqueID": 8, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "test-cube_14.bin.gz",
+                    "Size": 24,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord0": {
+                "UniqueID": 10, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "test-cube_15.bin.gz",
+                    "Size": 24,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 2, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord1": {
+                "UniqueID": 10
+              }, 
+              "TexCoord2": {
+                "UniqueID": 10
+              }, 
+              "TexCoord3": {
+                "UniqueID": 10
+              }, 
+              "Vertex": {
+                "UniqueID": 7, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "test-cube_16.bin.gz",
+                    "Size": 24,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }
+            }
+          }
+        } ]
+      }
+    } ]
+  }
+}

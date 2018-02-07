@@ -19,6 +19,7 @@ ATON.vroadcast.uStateFreq = 0.1;
 
 // custom events
 ATON.vroadcast.onIDassigned = undefined;
+ATON.vroadcast.onDisconnect = undefined;
 
 
 ATON.vroadcast.users      = [];
@@ -479,6 +480,19 @@ ATON.vroadcast._registerEventHandlers = function(){
         //ATON.vroadcast.onUserEnter();
         });
 
+    ATON.vroadcast.socket.on('disconnect', function(){
+        console.log("DISCONNECT!!");
+
+        // Hide all user representations
+        for (let u = 0; u < ATON.vroadcast.users.length; u++) {
+            const user = ATON.vroadcast.users[u];
+
+            if (user) user._mt.setNodeMask(0x0);
+            }
+
+        if (ATON.vroadcast.onDisconnect) ATON.vroadcast.onDisconnect();
+        });
+
     // Server assigns an ID
     ATON.vroadcast.socket.on('ID', function(data){
         console.log("Your ID is " + data.id);
@@ -613,6 +627,13 @@ ATON.vroadcast._registerEventHandlers = function(){
 
             console.log("User #"+data.id+" has now weight: "+data.weight);
             }
+        });
+
+    // TODO: Object Spawning
+    ATON.vroadcast.socket.on('SPAWN', function(data){
+        var path = data.path;
+        var pos  = [data.x, data.y, data.z];
+
         });
 
 };

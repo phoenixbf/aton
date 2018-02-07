@@ -1,0 +1,248 @@
+{
+  "Generator": "OpenSceneGraph 3.4.2", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "obj0", 
+        "Children": [ {
+          "osg.Geometry": {
+            "UniqueID": 1, 
+            "StateSet": {
+              "osg.StateSet": {
+                "UniqueID": 2, 
+                "AttributeList": [ {
+                  "osg.Material": {
+                    "UniqueID": 4, 
+                    "Name": "Default_trunk", 
+                    "Ambient": [ 0.2, 0.2, 0.2, 1], 
+                    "Diffuse": [ 0.8, 0.8, 0.8, 1], 
+                    "Emission": [ 0, 0, 0, 1], 
+                    "Shininess": 25.6, 
+                    "Specular": [ 0, 0, 0, 1]
+                  }
+                } ], 
+                "TextureAttributeList": [ [ {
+                  "osg.Texture": {
+                    "UniqueID": 3, 
+                    "Name": "bark.jpg", 
+                    "File": "bark.jpg", 
+                    "MagFilter": "LINEAR", 
+                    "MinFilter": "LINEAR_MIPMAP_NEAREST", 
+                    "WrapS": "REPEAT", 
+                    "WrapT": "REPEAT"
+                  }
+                } ] ]
+              }
+            }, 
+            "PrimitiveSetList": [ {
+              "DrawElementsUShort": {
+                "UniqueID": 9, 
+                "Indices": {
+                  "Array": { 
+                    "Uint16Array": { 
+                      "File": "tree2-hi.bin",
+                      "Size": 756,
+                      "Offset": 0
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLE_STRIP"
+              }
+            },
+            {
+              "DrawElementsUShort": {
+                "UniqueID": 10, 
+                "Indices": {
+                  "Array": { 
+                    "Uint16Array": { 
+                      "File": "tree2-hi.bin",
+                      "Size": 84,
+                      "Offset": 1512
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLES"
+              }
+            } ], 
+            "VertexAttributeList": {
+              "Color": {
+                "UniqueID": 7, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 407,
+                    "Offset": 1680
+                  }
+                }, 
+                "ItemSize": 4, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Normal": {
+                "UniqueID": 6, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 407,
+                    "Offset": 8192
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord0": {
+                "UniqueID": 8, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 407,
+                    "Offset": 13076
+                  }
+                }, 
+                "ItemSize": 2, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Vertex": {
+                "UniqueID": 5, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 407,
+                    "Offset": 16332
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }
+            }
+          }
+        },
+        {
+          "osg.Geometry": {
+            "UniqueID": 11, 
+            "StateSet": {
+              "osg.StateSet": {
+                "UniqueID": 12, 
+                "AttributeList": [ {
+                  "osg.Material": {
+                    "UniqueID": 4
+                  }
+                },
+                {
+                  "osg.BlendFunc": {
+                    "UniqueID": 14, 
+                    "DestinationAlpha": "ONE_MINUS_SRC_ALPHA", 
+                    "DestinationRGB": "ONE_MINUS_SRC_ALPHA", 
+                    "SourceAlpha": "SRC_ALPHA", 
+                    "SourceRGB": "SRC_ALPHA"
+                  }
+                } ], 
+                "RenderingHint": "TRANSPARENT_BIN", 
+                "TextureAttributeList": [ [ {
+                  "osg.Texture": {
+                    "UniqueID": 13, 
+                    "Name": "blatt.png", 
+                    "File": "blatt.png", 
+                    "MagFilter": "LINEAR", 
+                    "MinFilter": "LINEAR_MIPMAP_NEAREST", 
+                    "WrapS": "REPEAT", 
+                    "WrapT": "REPEAT"
+                  }
+                } ] ]
+              }
+            }, 
+            "PrimitiveSetList": [ {
+              "DrawElementsUShort": {
+                "UniqueID": 19, 
+                "Indices": {
+                  "Array": { 
+                    "Uint16Array": { 
+                      "File": "tree2-hi.bin",
+                      "Size": 93307,
+                      "Offset": 21216
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLE_STRIP"
+              }
+            },
+            {
+              "DrawElementsUShort": {
+                "UniqueID": 20, 
+                "Indices": {
+                  "Array": { 
+                    "Uint16Array": { 
+                      "File": "tree2-hi.bin",
+                      "Size": 12999,
+                      "Offset": 207832
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLES"
+              }
+            } ], 
+            "VertexAttributeList": {
+              "Color": {
+                "UniqueID": 17, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 56513,
+                    "Offset": 233832
+                  }
+                }, 
+                "ItemSize": 4, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Normal": {
+                "UniqueID": 16, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 56513,
+                    "Offset": 1138040
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord0": {
+                "UniqueID": 18, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 56513,
+                    "Offset": 1816196
+                  }
+                }, 
+                "ItemSize": 2, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Vertex": {
+                "UniqueID": 15, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "tree2-hi.bin",
+                    "Size": 56513,
+                    "Offset": 2268300
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }
+            }
+          }
+        } ]
+      }
+    } ]
+  }
+}

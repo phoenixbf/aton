@@ -286,7 +286,19 @@ var initGlobalRecord = function(scenename){
     var recStream = fs.createWriteStream(getGlobalRecordFilepath(scenename), {'flags': 'w'});
 
     // 'Hours'+RECORD_SEPARATOR+'Minutes'+RECORD_SEPARATOR+'Seconds'
-    recStream.write('Time'+RECORD_SEPARATOR+'Users'+RECORD_SEPARATOR+'swarmX'+RECORD_SEPARATOR+'swarmY'+RECORD_SEPARATOR+'swarmZ'+RECORD_SEPARATOR+'swarmRadius'+RECORD_SEPARATOR+'swarmFX'+RECORD_SEPARATOR+'swarmFY'+RECORD_SEPARATOR+'swarmFZ'+RECORD_SEPARATOR+'swarmFocRadius\n');
+    recStream.write(
+        'Time'+RECORD_SEPARATOR+
+        'Users'+RECORD_SEPARATOR+
+        
+        'swarmX'+RECORD_SEPARATOR+
+        'swarmY'+RECORD_SEPARATOR+
+        'swarmZ'+RECORD_SEPARATOR+
+        'swarmRadius'+RECORD_SEPARATOR+
+        
+        'swarmFX'+RECORD_SEPARATOR+
+        'swarmFY'+RECORD_SEPARATOR+
+        'swarmFZ'+RECORD_SEPARATOR+
+        'swarmFocRadius\n');
 
     console.log("Global Record initialized for scene "+scenename);
 };
@@ -354,15 +366,23 @@ var writeGlobalRecord = function(scenename){
     focRad = distance(focMax,focMin) * 0.5;
 
     //console.log("SwarmAVG: "+x+", "+y+", "+z);
-    
-    var posstr = x.toFixed(3) +RECORD_SEPARATOR+ y.toFixed(3) +RECORD_SEPARATOR+ z.toFixed(3) +RECORD_SEPARATOR+ locRad.toFixed(3);
-    var focstr = fx.toFixed(3) +RECORD_SEPARATOR+ fy.toFixed(3) +RECORD_SEPARATOR+ fz.toFixed(3) +RECORD_SEPARATOR+ focRad.toFixed(3);
 
     // Write
     // appendFileSync
     fs.appendFile(
         getGlobalRecordFilepath(scenename),
-        time+RECORD_SEPARATOR+parseInt(S.numClients)+RECORD_SEPARATOR+posstr+RECORD_SEPARATOR+focstr+"\n",
+        time +RECORD_SEPARATOR+
+        parseInt(S.numClients) +RECORD_SEPARATOR+
+        
+        x.toFixed(3) +RECORD_SEPARATOR+ 
+        y.toFixed(3) +RECORD_SEPARATOR+ 
+        z.toFixed(3) +RECORD_SEPARATOR+ 
+        locRad.toFixed(3) +RECORD_SEPARATOR+
+
+        fx.toFixed(3) +RECORD_SEPARATOR+ 
+        fy.toFixed(3) +RECORD_SEPARATOR+ 
+        fz.toFixed(3) +RECORD_SEPARATOR+ 
+        focRad.toFixed(3) +"\n",
         function (err) { });
 };
 
@@ -378,7 +398,21 @@ var initClientRecord = function(c, scenename){
     var recStream = fs.createWriteStream(getRecordFilepath(c,scenename), {'flags': 'w'});
 
     // 'Hours'+RECORD_SEPARATOR+'Minutes'+RECORD_SEPARATOR+'Seconds'
-    recStream.write('Time'+RECORD_SEPARATOR+'px'+RECORD_SEPARATOR+'py'+RECORD_SEPARATOR+'pz'+RECORD_SEPARATOR+'fx'+RECORD_SEPARATOR+'fy'+RECORD_SEPARATOR+'fz\n');
+    recStream.write(
+        'Time'+RECORD_SEPARATOR+
+
+        'px'+RECORD_SEPARATOR+
+        'py'+RECORD_SEPARATOR+
+        'pz'+RECORD_SEPARATOR+
+
+        'ox'+RECORD_SEPARATOR+
+        'oy'+RECORD_SEPARATOR+
+        'oz'+RECORD_SEPARATOR+
+        'ow'+RECORD_SEPARATOR+
+        
+        'fx'+RECORD_SEPARATOR+
+        'fy'+RECORD_SEPARATOR+
+        'fz\n');
 
     console.log("Initialised Record "+getRecordFilepath(c,scenename));
 };
@@ -396,14 +430,24 @@ var writeClientRecord = function(c, scenename){
     //if ((ts - tLastMark) < tRecordFreq) return;
     //tLastMark = ts;
 
-    var posString   = c.position[0].toFixed(3) +RECORD_SEPARATOR+c.position[1].toFixed(3)+RECORD_SEPARATOR+c.position[2].toFixed(3);
-    var focusString = c.focus[0].toFixed(3) +RECORD_SEPARATOR+c.focus[1].toFixed(3)+RECORD_SEPARATOR+c.focus[2].toFixed(3);
-
     // Write
     // appendFileSync
     fs.appendFile(
         getRecordFilepath(c, scenename),
-        time+RECORD_SEPARATOR+posString+RECORD_SEPARATOR+focusString+"\n",
+        time +RECORD_SEPARATOR+
+        
+        c.position[0].toFixed(3) +RECORD_SEPARATOR+
+        c.position[1].toFixed(3) +RECORD_SEPARATOR+
+        c.position[2].toFixed(3) +RECORD_SEPARATOR+
+
+        c.orientation[0].toFixed(3) +RECORD_SEPARATOR+ 
+        c.orientation[1].toFixed(3) +RECORD_SEPARATOR+ 
+        c.orientation[2].toFixed(3) +RECORD_SEPARATOR+ 
+        c.orientation[3].toFixed(3) +RECORD_SEPARATOR+
+
+        c.focus[0].toFixed(3) +RECORD_SEPARATOR+
+        c.focus[1].toFixed(3) +RECORD_SEPARATOR+
+        c.focus[2].toFixed(3) +"\n",
         function (err) { });
 };
 

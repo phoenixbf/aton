@@ -124,6 +124,7 @@ window.addEventListener( 'load', function () {
     //ATON.setHome([-0.58,-0.287,1.5], [-6.0,-2.87,1.5]);
 
     // Sample POV
+/*
     var p = new ATON.pov("Anfora");
     p.pos    = [-1.0,-1.2,2.4];
     p.target = [-0.5,0.2,2.0];
@@ -131,6 +132,9 @@ window.addEventListener( 'load', function () {
     p.classList = ["detail", "anfora"];
 
     ATON.addPOV(p);
+*/
+
+    var scenename = undefined;
 
     var assetParam = ATON.utils.getURLparams().m;
     if (assetParam){
@@ -149,6 +153,26 @@ window.addEventListener( 'load', function () {
 
                 case "groundx":
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-grid.txt" });
+                    break;
+
+                case "test1":
+                    scenename = "TEST1";
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-border.txt" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"tree1/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-trees.txt" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-groundcubes.txt" });
+
+                    ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
+                    break;
+
+                case "test2":
+                    scenename = "TEST2";
+                    ATON.setFirstPersonMode(true);
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
+                    ATON.setHome([-1.49,-0.93,1.29],[-5.06,-0.70,1.10]);
                     break;
             
                 default:
@@ -282,9 +306,9 @@ if (asset === "sf"){
         ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
 
         ATON.vroadcast.uStateFreq = 0.01;
-        ATON.vroadcast.connect("http://"+vrcIP+":8080/");
+        ATON.vroadcast.connect("http://"+vrcIP+":8080/", scenename);
 
-        // User MagNet
+        // We have ID
         ATON.vroadcast.onIDassigned = function(){
             var uid = ATON.vroadcast._myUser.id;
             $('#idUserColor').css("background-color", uColors[uid % 6]);
@@ -301,6 +325,14 @@ if (asset === "sf"){
                 if (v[1]) ATON.vroadcast.setMagRadius( parseFloat(v[1]) );
                 }
 */
+            };
+
+        // Disconnection
+        ATON.vroadcast.onDisconnect = function(){
+            ATON.vroadcast.users = [];
+
+            $('#idUserColor').css("background-color", "rgb(0,0,0)");
+            $('#idUserColor').html("ATON");            
             };
         }
 

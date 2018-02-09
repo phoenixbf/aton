@@ -534,6 +534,21 @@ ATON.utils._decodeHDRHeader = function( buf ){
 };
 */
 
+// TODO: Actor
+//==========================================================================
+ATON.actor = function(){
+    this.id = -1;
+    this.transform = new osg.MatrixTransform();
+    this.representation = new osg.Node();
+};
+
+ATON.actor.prototype = {
+    // todo
+};
+
+
+
+
 // Descriptors
 //==========================================================================
 ATON.descriptor = function(uname){
@@ -1735,7 +1750,7 @@ ATON._updateCallback.prototype = {
         if (ATON._tPOVcall < 0.0 /*&& !ATON._vrState*/) ATON._handleMagNetClosest();
 
         // VR Controllers
-        if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
+        //if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
 
         // Updates direction
         osg.vec3.sub( ATON._direction, ATON._currPOV.target, ATON._currPOV.pos);
@@ -2682,7 +2697,7 @@ ATON._switchVR = function(){
                 ATON._vrFDpose = viewer._eventProxy.WebVR._frameData.pose;
 
                 if (ATON._wVR._hmd !== undefined){
-                    //console.log(wVR);
+                    //console.log(ATON._vrFDpose);
 
                     //ATON._wVR._worldScale = 10.0; // Trans. matrix mult.
 
@@ -2866,7 +2881,11 @@ ATON.setVRcontrollerModel = function(url, hand){
 };
 
 ATON._handlePositionalGamepad = function(gamepad){
+    if (ATON._vrFDpose === undefined) return;
+    //console.log(ATON._vrFDpose);
+
     var locPos = ATON._vrFDpose.position;
+    //if (locPos === undefined) return;
 
     var q = osg.quat.create(); // = gamepad.pose.orientation;
 

@@ -95,12 +95,40 @@ canvas {
     overflow: hidden;
 }
 
+/*
+    Toolbars
+==========================*/
+.atonToolbar {
+  z-index: 100;
+
+  position: fixed;
+  display: inline-block;
+
+  margin: 0;
+
+  color: #FFF;
+  text-align: center;
+
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.atonToolbar-top {
+  top: 0%;
+  width:100%;
+}
+.atonToolbar-bottom {
+  bottom: 0%;
+  width:100%;
+}
+
 
 /*
     Input Range Sliders
 ==========================*/
-
-
 input[type=range] {
     -webkit-appearance: none;
     width: 100%;

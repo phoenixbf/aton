@@ -294,16 +294,33 @@ if (asset === "sf"){
         }
 
 
+
+    // Tracer =====================
+    ATON.tracer.resPath = ATON.FrontEnd.RES_ROOT;
+    ATON.tracer.rootRecordFolder = "../services/record/";
+
+    var recstr = ATON.utils.getURLparams().rec;
+    if (recstr){
+        var values = recstr.split(',');
+
+        for (let u = 0; u < values.length; u++){
+            var uid = parseInt( values[u] );
+
+            ATON.tracer.loadUserRecord(scenename, uid);
+            //console.log("---- USER "+uid+ "RECORD");
+            }
+        }
+
     // VRoadcast =====================
+    ATON.vroadcast.setupResPath(ATON.FrontEnd.RES_ROOT);
+    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");    
+
     var vrcIP = ATON.utils.getURLparams().vrc;
     if (vrcIP !== undefined){
         //IP = "127.0.0.1";
         //IP = "192.168.0.193";
         //IP = "192.167.233.180";
         //IP = "seth.itabc.cnr.it";
-
-        ATON.vroadcast.setupResPath(ATON.FrontEnd.RES_ROOT);
-        ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
 
         ATON.vroadcast.uStateFreq = 0.01;
         ATON.vroadcast.connect("http://"+vrcIP+":8080/", scenename);

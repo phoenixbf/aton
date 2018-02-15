@@ -483,6 +483,8 @@ ATON.vroadcast._registerEventHandlers = function(){
     ATON.vroadcast.socket.on('disconnect', function(){
         console.log("DISCONNECT!!");
 
+        ATON.vroadcast.socket.disconnect();
+
         // Hide all user representations
         for (let u = 0; u < ATON.vroadcast.users.length; u++) {
             const user = ATON.vroadcast.users[u];

@@ -139,7 +139,7 @@ input[type=range] {
   }
   input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
-    height: 4.6px;
+    height: 5px;
     cursor: pointer;
     box-shadow: 1px 1px 6.5px #000000, 0px 0px 1px #0d0d0d;
     background: #7f7f7f;
@@ -151,7 +151,7 @@ input[type=range] {
     border: 1px solid #000000;
     height: 24px;
     width: 24px;
-    border-radius: 6px;
+    border-radius: 50%;
     background: #ffffff;
     cursor: pointer;
     -webkit-appearance: none;

@@ -17,7 +17,7 @@ ATON.tracer.rootRecordFolder = "record/";
 ATON.tracer.CSV_DELIMITER = ',';
 ATON.tracer.fileRecordReq = 0;
 ATON.tracer.discardSQfocusMin = 0.002;
-ATON.tracer.discardSQfocusMax = 200.0; //0.5;
+ATON.tracer.discardSQfocusMax = 0.05; //0.5;
 
 
 ATON.tracer._groupVRC = undefined;
@@ -62,21 +62,35 @@ ATON.tracer.filter = function(tper, trad){
 
 
     $('#idT').html(parseInt(tminutes) + "\' " + parseInt(tseconds) + "\'\'");
-    $('#idTR').html(trad.toFixed(1) + " seconds");
+    $('#idTR').html(trad.toFixed(1) + "\'\'");
 
     for (let s = 0; s < ATON.tracer._uSessions.length; s++) {
         var us = ATON.tracer._uSessions[s];
+
         if (us){
             var uid = parseInt(us.getName());
+            var minDT = undefined;
+            var cmarkID = 0;
+
             //console.log("UID: "+uid);
             for (let at = 0; at < us.getChildren().length; at++) {
                 var mark = us.getChild(at);
                 
                 tmark = parseFloat(mark.getName());
+                var dt = Math.abs(tpivot - tmark);
 
-                if (tmark > tmin && tmark <tmax) mark.setNodeMask(0xf);
+                // keep track of closest mark
+                if (minDT === undefined || dt < minDT ){
+                    minDT = dt;
+                    cmarkID = at;
+                    }
+
+                if (tmark > tmin && tmark < tmax) mark.setNodeMask(0xf);
                 else mark.setNodeMask(0x0);
                 }
+
+            // switch on closest mark anyways
+            us.getChild(cmarkID).setNodeMask(0xf);
             }
         
     }

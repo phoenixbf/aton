@@ -24,8 +24,13 @@ const io = require('socket.io')(http);
 // For record trace
 const fs = require('fs');
 const distance = require('euclidean-distance');
-const aabb = require('aabb-3d');
+const aabb  = require('aabb-3d');
+const clamp = require('clamp');
 const now = require("performance-now");
+
+//const Png = require("png").Png;
+//const PNG = require('pngjs').PNG;
+const Jimp = require('jimp');
 
 
 // Command line
@@ -52,6 +57,11 @@ var sceneNodes = {};
 // Global Time
 const tick = function(){ return (now() * 0.001).toFixed(3); };
 var time = tick();
+
+
+// Sign Boxes (min, max)
+var globalSignBox = aabb([-10.0, -10.0, -1.0], [10.0, 10.0, 20.0]);
+
 
 // Session file record
 //=====================================================
@@ -134,6 +144,10 @@ var touchClient = function(id, scene){
     clientInfo.id          = id;
     clientInfo.target      = [0.0,0.0,0.0];
     clientInfo.focus       = [0.0,0.0,0.0];
+
+    // signatures
+    clientInfo.signFocBin = undefined;
+    clientInfo.signFocIMG = undefined;
 
     clientInfo.bRecordWrite = false;
 
@@ -272,6 +286,10 @@ var sendGlobalSnapshot = function(socket, myid, scene){
 //================================
 var getRecordFilepath = function(c, scenename){
     return outRecordFolder+scenename+"/U"+c.id+'.csv';
+};
+
+var getSignatureFocusFilepath = function(c, scenename){
+    return outRecordFolder+scenename+"/focsign"+c.id+'.png';
 };
 
 var getGlobalRecordFilepath = function(scenename){
@@ -414,6 +432,10 @@ var initClientRecord = function(c, scenename){
         'fy'+RECORD_SEPARATOR+
         'fz\n');
 
+    //c.signFoc    = new Buffer(4096 * 3); // IMAGE_WIDTH * IMAGE_HEIGHT * 3
+    c.signFocIMG = new Jimp(4096, 1);
+    c.signFocBin = new Uint8Array(4);
+
     console.log("Initialised Record "+getRecordFilepath(c,scenename));
 };
 
@@ -449,6 +471,54 @@ var writeClientRecord = function(c, scenename){
         c.focus[1].toFixed(3) +RECORD_SEPARATOR+
         c.focus[2].toFixed(3) +"\n",
         function (err) { });
+
+    // Focus sign.
+    var w = Math.floor(time * serviceOptions.trace * 0.1);
+    w = w % 4096;
+/*
+    c.signFoc[p + 0] = parseInt(c.focus[0]); // r (0-255)
+    c.signFoc[p + 1] = parseInt(c.focus[1]); // g (0-255)
+    c.signFoc[p + 2] = parseInt(c.focus[2]); // b (0-255)
+*/
+
+    var sxi = (c.focus[0] - globalSignBox.x0()) / globalSignBox.width();
+    var syi = (c.focus[1] - globalSignBox.y0()) / globalSignBox.height();
+    var szi = (c.focus[2] - globalSignBox.z0()) / globalSignBox.depth();
+    var sa  = 255;
+/*
+    sxi = clamp(sxi, 0.0,1.0) * 255.0;
+    syi = clamp(syi, 0.0,1.0) * 255.0;
+    szi = clamp(szi, 0.0,1.0) * 255.0;
+*/
+    // full black & alpha=0 outside volume
+    if ( sxi < 0.0 || sxi > 1.0 || syi < 0.0 || syi > 1.0 || szi < 0.0 || szi > 1.0 ){
+        sxi = 0.0;
+        syi = 0.0;
+        szi = 0.0;
+        sa  = 0;
+        }
+
+    sxi *= 255.0;
+    syi *= 255.0;
+    szi *= 255.0;
+
+    c.signFocBin[0] = parseInt(sxi);
+    c.signFocBin[1] = parseInt(syi);
+    c.signFocBin[2] = parseInt(szi);
+    c.signFocBin[3] = sa;
+
+    //console.log(c.signFocBin);
+
+    c.signFocBUF = Buffer.from(c.signFocBin);
+    c.signFocCOL = c.signFocBUF.readUIntBE(0,4);
+    //c.signFocCOL = (c.signFocBin[2]*256) + (c.signFocBin[1]*256*256) + (c.signFocBin[0]*256*256*256) + 255;
+
+    //console.log(col);
+
+    if (c.signFocIMG){
+        c.signFocIMG.setPixelColor(c.signFocCOL, w, 0);
+        c.signFocIMG.write( getSignatureFocusFilepath(c,scenename) );
+        }
 };
 
 

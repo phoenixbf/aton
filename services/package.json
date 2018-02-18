@@ -16,7 +16,7 @@
     "express": "^4.16.2",
     "jimp": "^0.2.28",
     "performance-now": "^2.1.0",
-    "pngjs": "^3.3.1",
+    "pngjs": "^3.3.2",
     "socket.io": "^1.7.3"
   }
 }

@@ -155,6 +155,27 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-grid.txt" });
                     break;
 
+                case "armoury":
+                    scenename = "armoury";
+/*
+                    ATON.addNewLayer("MAIN");
+
+                    var T = ATON.utils.generateTransformFromString("0 0 0 0 0 0 0.25 0.25 0.25");
+                    osgDB.readNodeURL(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs").then( function ( node ){
+                        T.addChild(node);
+                        });
+                    
+                    ATON.layers["MAIN"].addChild( T );
+*/
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN"/*, transformRules: ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/t.txt"*/ });
+                    break;
+
+                case "picgallery":
+                    scenename = "picgallery";
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
+                    ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
+                    break;
+
                 case "test1":
                     scenename = "TEST1";
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
@@ -173,6 +194,10 @@ window.addEventListener( 'load', function () {
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-1.49,-0.93,1.29],[-5.06,-0.70,1.10]);
+                    break;
+
+                case "skf":
+                    ATON.addGraph("https://media.sketchfab.com/urls/afce4db089014d27a201c72d1cc1bcba/dist/models/4827386b0e674b0a9a33f0281c987fea/file.osgjs.gz", { layer: "MAIN" })
                     break;
             
                 default:

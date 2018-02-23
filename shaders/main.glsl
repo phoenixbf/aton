@@ -564,6 +564,7 @@ void main(){
     FinalFragment = mix(FinalFragment,HoverColor, uHoverAffordance);
     //alphaContrib = hpd;
 
+
     //=====================================================
     // FINALIZE
     //=====================================================

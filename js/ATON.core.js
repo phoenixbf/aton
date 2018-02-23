@@ -1749,8 +1749,9 @@ ATON._updateCallback.prototype = {
         // MagNet
         if (ATON._tPOVcall < 0.0 /*&& !ATON._vrState*/) ATON._handleMagNetClosest();
 
-        // VR Controllers
+        // VR Controllers FIXME:
         //if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
+        if (ATON._vrState && !ATON._isMobile) ATON._handleGamepads();
 
         // Updates direction
         osg.vec3.sub( ATON._direction, ATON._currPOV.target, ATON._currPOV.pos);
@@ -2880,6 +2881,30 @@ ATON.setVRcontrollerModel = function(url, hand){
         });
 };
 
+ATON._handleGamepads = function(){
+	this.gamepads = navigator.getGamepads();
+
+    for (var i = 0; i < this.gamepads.length; ++i){
+        var gamepad = this.gamepads[i];
+
+        // The array may contain undefined gamepads, so check for that as
+        // well as a non-null pose.
+        if (gamepad){
+			
+			for (var j = 0; j < gamepad.buttons.length; ++j) {
+				if (gamepad.buttons[j].pressed){
+					//console.log("GM: Pressed button "+j);
+
+					// 3 = A, 4 = B
+					if (j === 3) ATON.requestHome();
+					else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
+					}
+				}
+			}
+        }
+};
+
+// FIXME:
 ATON._handlePositionalGamepad = function(gamepad){
     if (ATON._vrFDpose === undefined) return;
     //console.log(ATON._vrFDpose);

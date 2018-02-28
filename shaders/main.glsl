@@ -564,6 +564,8 @@ void main(){
     FinalFragment = mix(FinalFragment,HoverColor, uHoverAffordance);
     //alphaContrib = hpd;
 
+    if(vWorldVertex.z > 7.0) discard;
+
 
     //=====================================================
     // FINALIZE

@@ -6,3 +6,4 @@ node_modules
 record
 _prv
 *.psd
+/build

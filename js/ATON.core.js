@@ -1918,7 +1918,7 @@ ATON.realize = function( canvas ){
 
     // Realize and run the main Viewer
     ATON._viewer = new osgViewer.Viewer( canvas, {
-        'antialias': true, // fixes VR issues 
+        'antialias': ATON._isMobile? false : true, // FIXME: some artifacts on mobile, fixes VR issues 
         //'stats': true,
         //'overrideDevicePixelRatio': 1, // if specified override the device pixel ratio
         'enableFrustumCulling': true,
@@ -2470,7 +2470,7 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uViewDirWorld' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uWorldEyePos' ) );
     ATON._mainSS.addUniform( osg.Uniform.createMatrix4( ATON._mLProtation, 'uLProtation' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 70.0, 'uFogDistance' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 300.0, 'uFogDistance' ) ); // 120
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
 

@@ -141,7 +141,18 @@ window.addEventListener( 'load', function () {
         var assets = assetParam.split(',');
 
         assets.forEach(asset => {
-            switch (asset) {
+            switch (asset){
+                case "faug":
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/exedrae.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/rooves.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
+
+                    ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
+                    break;
+
                 case "complex":
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1-inst.txt" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
@@ -168,6 +179,7 @@ window.addEventListener( 'load', function () {
                     ATON.layers["MAIN"].addChild( T );
 */
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN"/*, transformRules: ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/t.txt"*/ });
+                    ATON.setHome([-2.27,-10.81,7.50],[-0.87,0.13,5.41]);
                     break;
 
                 case "picgallery":

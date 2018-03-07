@@ -1749,6 +1749,9 @@ ATON._updateCallback.prototype = {
         // MagNet
         if (ATON._tPOVcall < 0.0 /*&& !ATON._vrState*/) ATON._handleMagNetClosest();
 
+        // Generic Constraints
+        if (ATON.applyPOVconstraints) ATON.applyPOVconstraints();
+
         // VR Controllers FIXME:
         //if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
         if (ATON._vrState && !ATON._isMobile) ATON._handleGamepads();

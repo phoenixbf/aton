@@ -60,7 +60,8 @@ var time = tick();
 
 
 // Sign Boxes (min, max)
-var globalSignBox = aabb([-10.0, -10.0, -1.0], [10.0, 10.0, 20.0]);
+var globalSignBox    = aabb([-10.0, -10.0, -1.0], [10.0, 10.0, 20.0]);
+var globalSignFocIMG = undefined;
 
 
 // Session file record
@@ -292,6 +293,10 @@ var getSignatureFocusFilepath = function(c, scenename){
     return outRecordFolder+scenename+"/focsign"+c.id+'.png';
 };
 
+var getGlobalSignatureFocusFilepath = function(scenename){
+    return outRecordFolder+scenename+"/gfocsign.png";
+};
+
 var getGlobalRecordFilepath = function(scenename){
     return outRecordFolder+scenename+"/swarm.csv";
 };
@@ -317,6 +322,9 @@ var initGlobalRecord = function(scenename){
         'swarmFY'+RECORD_SEPARATOR+
         'swarmFZ'+RECORD_SEPARATOR+
         'swarmFocRadius\n');
+
+    // 
+    globalSignFocIMG = new Jimp(4096, MAXCLIENTSPERSCENE);
 
     console.log("Global Record initialized for scene "+scenename);
 };
@@ -518,6 +526,11 @@ var writeClientRecord = function(c, scenename){
     if (c.signFocIMG){
         c.signFocIMG.setPixelColor(c.signFocCOL, w, 0);
         c.signFocIMG.write( getSignatureFocusFilepath(c,scenename) );
+        }
+
+    if (globalSignFocIMG){
+        globalSignFocIMG.setPixelColor(c.signFocCOL, w, c.id);
+        globalSignFocIMG.write( getGlobalSignatureFocusFilepath(scenename) );
         }
 };
 

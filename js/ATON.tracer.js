@@ -11,14 +11,20 @@
 
 ATON.tracer = {};
 
+ATON.tracer.FORMAT_STD = 0;
+ATON.tracer.FORMAT_OVR = 1;
+
 ATON.tracer.resPath = "res/";
 ATON.tracer.rootRecordFolder = "record/";
 
 ATON.tracer.CSV_DELIMITER = ',';
+ATON.tracer.CSV_FORMAT    = ATON.tracer.FORMAT_STD;
 ATON.tracer.fileRecordReq = 0;
 ATON.tracer.discardSQfocusMin = 0.002;
 ATON.tracer.discardSQfocusMax = 0.05; //0.5;
 
+ATON.tracer.activeVolume = undefined;
+ATON.tracer.bActiveVol = false;
 
 ATON.tracer._groupVRC = undefined;
 ATON.tracer._uMarkModels = [];
@@ -60,6 +66,9 @@ ATON.tracer.filter = function(tper, trad){
     var tminutes = Math.floor(tpivot / 60);
     var tseconds = tpivot - (tminutes * 60);
 
+    ATON.tracer.activeVolume = new osg.BoundingBox();
+    ATON.tracer.bActiveVol   = false;
+
 
     $('#idT').html(parseInt(tminutes) + "\' " + parseInt(tseconds) + "\'\'");
     $('#idTR').html(trad.toFixed(1) + "\'\'");
@@ -85,7 +94,15 @@ ATON.tracer.filter = function(tper, trad){
                     cmarkID = at;
                     }
 
-                if (tmark > tmin && tmark < tmax) mark.setNodeMask(0xf);
+                if (tmark > tmin && tmark < tmax){
+                    mark.setNodeMask(0xf);
+
+                    if (us.getChild(cmarkID)._boundingSphere){
+                        ATON.tracer.activeVolume.expandByVec3(us.getChild(cmarkID)._boundingSphere._center);
+                        ATON.tracer.bActiveVol = true;
+                        //console.log(us.getChild(cmarkID));
+                        }
+                    }
                 else mark.setNodeMask(0x0);
                 }
 
@@ -94,6 +111,23 @@ ATON.tracer.filter = function(tper, trad){
             }
         
     }
+
+    //console.log(ATON.tracer.activeVolume);
+    if (ATON.tracer.bActiveVol){
+        //ATON.requestPOV(ATON.tracer.activeVolume._center);
+        //ATON._currPOV.target = ATON.tracer.activeVolume.center([]);
+        var vPOV = new ATON.pov;
+
+        vPOV.pos      = ATON._currPOV.pos.slice(0);
+        vPOV.target   = ATON.tracer.activeVolume.center([]);
+        vPOV.fov      = ATON._currPOV.fov;
+
+        ATON.requestPOV(vPOV, 0.1);
+
+        //ATON._currPOV.target[0] = ATON.tracer.activeVolume.center[0];
+        //ATON._currPOV.target[1] = ATON.tracer.activeVolume.center[1];
+        //ATON._currPOV.target[2] = ATON.tracer.activeVolume.center[2];
+        }
 };
 
 // HTML ui
@@ -102,6 +136,23 @@ ATON.tracer.filterUI = function(){
     var tr = parseFloat($("#uSessionTRad").val());
 
     ATON.tracer.filter(t,tr);
+
+    ATON._mainSS.getUniform('uQUSVslider').setFloat( t * 0.1 );
+};
+
+
+// Encoding
+ATON.tracer.encodingVolume = function(vMin, vMax){
+    this.vMin = vMin;
+    this.vMax = vMax;
+
+    this.imgPath = undefined;
+};
+
+ATON.tracer.encodingVolume.prototype = {
+    setIMGpath: function(path){
+        this.imgPath = path;
+        },
 };
 
 
@@ -137,6 +188,8 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
 
         var t = undefined;
 
+        var marks = 0;
+
         // For each row
         $.each(lines, function(n, elem){
             var values = elem.split(ATON.tracer.CSV_DELIMITER);
@@ -149,20 +202,36 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                 // Header row
                 if (bHeader) attrNames.push( currVal );
                 else {
-                    if (attrNames[i] === 'Time' && currVal.length>0) t = parseFloat(currVal);
+                    if (ATON.tracer.CSV_FORMAT == ATON.tracer.FORMAT_OVR){
+                        t = (n * 0.1);
+                        //console.log(t);
 
-                    if (attrNames[i] === 'px' && currVal.length>0) pos[0] = parseFloat(currVal);
-                    if (attrNames[i] === 'py' && currVal.length>0) pos[1] = parseFloat(currVal);
-                    if (attrNames[i] === 'pz' && currVal.length>0) pos[2] = parseFloat(currVal);
+                        if (attrNames[i] === 'X' && currVal.length>0) foc[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'Y' && currVal.length>0) foc[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'Z' && currVal.length>0) foc[2] = parseFloat(currVal);
 
-                    if (attrNames[i] === 'fx' && currVal.length>0) foc[0] = parseFloat(currVal);
-                    if (attrNames[i] === 'fy' && currVal.length>0) foc[1] = parseFloat(currVal);
-                    if (attrNames[i] === 'fz' && currVal.length>0) foc[2] = parseFloat(currVal);
+                        if (attrNames[i] === 'OriX' && currVal.length>0) ori[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'OriY' && currVal.length>0) ori[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'OriZ' && currVal.length>0) ori[2] = parseFloat(currVal);
+                        if (attrNames[i] === 'OriW' && currVal.length>0) ori[3] = parseFloat(currVal);
+                        }
 
-                    if (attrNames[i] === 'ox' && currVal.length>0) ori[0] = parseFloat(currVal);
-                    if (attrNames[i] === 'oy' && currVal.length>0) ori[1] = parseFloat(currVal);
-                    if (attrNames[i] === 'oz' && currVal.length>0) ori[2] = parseFloat(currVal);
-                    if (attrNames[i] === 'ow' && currVal.length>0) ori[3] = parseFloat(currVal);
+                    else {
+                        if (attrNames[i] === 'Time' && currVal.length>0) t = parseFloat(currVal);
+
+                        if (attrNames[i] === 'px' && currVal.length>0) pos[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'py' && currVal.length>0) pos[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'pz' && currVal.length>0) pos[2] = parseFloat(currVal);
+
+                        if (attrNames[i] === 'fx' && currVal.length>0) foc[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'fy' && currVal.length>0) foc[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'fz' && currVal.length>0) foc[2] = parseFloat(currVal);
+
+                        if (attrNames[i] === 'ox' && currVal.length>0) ori[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'oy' && currVal.length>0) ori[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'oz' && currVal.length>0) ori[2] = parseFloat(currVal);
+                        if (attrNames[i] === 'ow' && currVal.length>0) ori[3] = parseFloat(currVal);
+                        }
                     }
 
                 }
@@ -218,6 +287,8 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
 
                     at.addChild( ATON.tracer._uMarkModels[uid] );
                     uSession.addChild( at );
+
+                    marks++;
                     
                     prevfoc[0] = foc[0];
                     prevfoc[1] = foc[1];

@@ -143,6 +143,8 @@ window.addEventListener( 'load', function () {
         assets.forEach(asset => {
             switch (asset){
                 case "faug":
+                    scenename = "faug";
+
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
 
@@ -151,6 +153,25 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
+
+                    //ATON.addILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
+                    //ATON.addILSign("../models/_prv/_QUSV/faug-qils.png");
+                    break;
+
+                case "fpacis":
+                    scenename = "fpacis";
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/01.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/02.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/03.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/04.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/05.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/06.osgjs", { layer: "FPACIS" });
+
+                    ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
+
+                    ATON.addILSign("../models/_prv/_QUSV/pacis/qils.png");
+                    //ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
                     break;
 
                 case "complex":
@@ -168,17 +189,10 @@ window.addEventListener( 'load', function () {
 
                 case "armoury":
                     scenename = "armoury";
-/*
-                    ATON.addNewLayer("MAIN");
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN" });
 
-                    var T = ATON.utils.generateTransformFromString("0 0 0 0 0 0 0.25 0.25 0.25");
-                    osgDB.readNodeURL(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs").then( function ( node ){
-                        T.addChild(node);
-                        });
+                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.25,0.25,0.25]));
                     
-                    ATON.layers["MAIN"].addChild( T );
-*/
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN"/*, transformRules: ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/t.txt"*/ });
                     ATON.setHome([-2.27,-10.81,7.50],[-0.87,0.13,5.41]);
                     break;
 
@@ -186,6 +200,20 @@ window.addEventListener( 'load', function () {
                     scenename = "picgallery";
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
+                    break;
+
+                case "dining":
+                    scenename = "dining-room";
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
+                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
+                    ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
+                    break;
+
+                case "vestibule":
+                    scenename = "upper-vestibule";
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
+                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
+                    ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
                     break;
 
                 case "test1":
@@ -200,12 +228,53 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
                     break;
 
+                case "cecilio":
+                    scenename = "cecilio";
+
+                    ATON.addNewLayer("PRESENT");
+                    ATON.addNewLayer("CEIL","PRESENT");
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_E/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_floor/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_c/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_d/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_e/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_f/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_g/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_h/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_i/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_N/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_W/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_garden/root.osgjs", { layer: "PRESENT" });
+                    
+                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_ceiling/root.osgjs", { layer: "CEIL" });
+                    
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_m_k/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_n/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_o/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_p_q/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_r/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_s/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_t/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs", { layer: "PRESENT" });
+
+                    //ATON.translateLayer("CEIL", [0,0,10]);
+                    //ATON.switchLayer("PRESENT", false);
+
+                    ATON.setHome([5.25,-20.15,39.11],[-8.41,-19.86,0.93]);
+                    break;
+
                 case "test2":
                     scenename = "TEST2";
                     ATON.setFirstPersonMode(true);
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
-                    ATON.setHome([-1.49,-0.93,1.29],[-5.06,-0.70,1.10]);
+                    ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
                     break;
 
                 case "skf":
@@ -339,6 +408,11 @@ if (asset === "sf"){
     var recstr = ATON.utils.getURLparams().rec;
     if (recstr){
         var values = recstr.split(',');
+
+        if (ATON.utils.getURLparams().ovr && ATON.utils.getURLparams().ovr == 1){
+            ATON.tracer.CSV_FORMAT = ATON.tracer.FORMAT_OVR;
+            console.log("Tracer: reading OVR file records");
+            }
 
         for (let u = 0; u < values.length; u++){
             var uid = parseInt( values[u] );

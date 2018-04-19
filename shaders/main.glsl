@@ -36,12 +36,17 @@ uniform sampler2D AmbientOcclusionSampler;	// 1
 uniform sampler2D NormalMapSampler;		    // 2
 uniform sampler2D ComboSampler;		        // 3 (Rough, Met, Emiss)
 uniform sampler2D LightProbeSampler;
+uniform sampler2D QUSVSampler;
 
 uniform vec3 uWorldEyePos;
 uniform vec3 uViewDirWorld;
 //uniform vec3 EyeWorld;
 uniform vec3 uHoverPos;
 uniform float uHoverAffordance;
+
+uniform vec3 uQUSVmin;
+uniform vec3 uQUSVsize;
+uniform float uQUSVslider;
 
 uniform float time;
 
@@ -54,6 +59,24 @@ struct User {
 
 uniform User Users[128];
 */
+
+vec4 QUSVEncodeLocation(vec3 worldLoc){
+    vec4 qusvCol;
+    qusvCol.r = (worldLoc.x - uQUSVmin.x) / uQUSVsize.x;
+    qusvCol.g = (worldLoc.y - uQUSVmin.y) / uQUSVsize.y;
+    qusvCol.b = (worldLoc.z - uQUSVmin.z) / uQUSVsize.z;
+
+    return qusvCol;
+}
+
+vec3 QUSVDecodeLocation(vec4 frag){
+    vec3 loc;
+    loc.x = (frag.r * uQUSVsize.x) + uQUSVmin.x;
+    loc.y = (frag.g * uQUSVsize.y) + uQUSVmin.y;
+    loc.z = (frag.b * uQUSVsize.z) + uQUSVmin.z;
+
+    return loc;
+}
 
 //=========================================================
 // VERTEX SHADER
@@ -140,6 +163,7 @@ uniform mat4 uViewMatrix;
 uniform mat4 uModelMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uLProtation;
+
 
 // GLOBALS
 //=========================================================
@@ -283,6 +307,8 @@ vec4 getLPvalue(vec3 norm, float roughness){
 }
 
 
+
+//========================================================
 // MAIN
 //==============
 void main(){
@@ -529,6 +555,40 @@ void main(){
     //=====================================================
     FinalFragment = mix(FinalFragment, max(baseAlbedo,FinalFragment), emContrib);
 
+
+    //=====================================================
+    // QUSV Pass
+    //=====================================================
+#if 1
+    vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
+
+    if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
+        //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
+        FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
+
+    vec4 mIL;
+    vec3 loc;
+    float ql;
+    float QF = 0.0;
+
+    const int QUSV_MAX_RANGE = 30;
+
+    for (int u=0; u<QUSV_MAX_RANGE; u++){
+        //mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/512.0)) );
+        mIL = texture2D(QUSVSampler, vec2(float(u)/512.0, 0.0));
+
+        loc = QUSVDecodeLocation(mIL);
+
+        ql = distance(loc, vWorldVertex) / 2.0;
+        ql = clamp(ql, 0.0,1.0);
+
+        QF += (1.0 - ql);
+        QF = clamp(QF, 0.0,1.0);
+        }
+
+    FinalFragment = mix(FinalFragment, 1.0 - FinalFragment, QF); // aoContrib*vec4(1,0,0,1)
+
+#endif
 
     //=====================================================
     // Hover Pass (IF)

@@ -15,13 +15,14 @@ var OSG = window.OSG;
 var osg = OSG.osg;
 OSG.globalify();    // All (osgDB, osgGA, etc...)
 */
-var OSG       = window.OSG;
-var osg       = OSG.osg;
-var osgDB     = OSG.osgDB;
-var osgViewer = OSG.osgViewer;
-var osgUtil   = OSG.osgUtil;
-var osgGA     = OSG.osgGA;
-var osgText   = OSG.osgText;
+var OSG         = window.OSG;
+var osg         = OSG.osg;
+var osgDB       = OSG.osgDB;
+var osgViewer   = OSG.osgViewer;
+var osgUtil     = OSG.osgUtil;
+var osgGA       = OSG.osgGA;
+var osgText     = OSG.osgText;
+var InputGroups = OSG.osgViewer.InputGroups;
 
 
 
@@ -52,6 +53,8 @@ const ATON_SM_UNIT_AO    = 1;
 const ATON_SM_UNIT_NORM  = 2;
 const ATON_SM_UNIT_COMBO = 3;
 const ATON_SM_UNIT_LP    = 4;
+
+const ATON_SM_UNIT_QUSV   = 6;
 
 
 
@@ -549,7 +552,7 @@ ATON.actor.prototype = {
 
 
 
-// Descriptors
+// Shape Descriptors
 //==========================================================================
 ATON.descriptor = function(uname){
     this.uname = uname;
@@ -900,10 +903,13 @@ ATON._requestFirstPersonTrans = function(pickedData){
     nPOV.target = T;
     nPOV.fov    = ATON._currPOV.fov;
 
+    // distance-based
+/*
     var dT = Math.sqrt(dist2);
     if (ATON._vrState) dT *= 0.7;
     else dT *= 0.3;
-
+*/
+    var dT = 0.3;
     ATON.requestPOV(nPOV, dT);
 };
 
@@ -1939,7 +1945,7 @@ ATON.realize = function( canvas ){
     ATON._orbitMan.setNode(ATON._groupVisible);
 
     // First person
-    ATON._firstPerMan = new osgGA.FirstPersonManipulator();
+    ATON._firstPerMan = new osgGA.FirstPersonManipulator({ inputManager: this._viewer.getInputManager() });
     ATON._firstPerMan.setNode( ATON._groupVisible );
     ATON.setFirstPersonStep(2.0);
 
@@ -2248,19 +2254,50 @@ ATON.addGraphXXX = function( url, onComplete ){
 };
 */
 
+/*
+    LAYERS
+==================================*/
 // Create new layer (visible sg)
-ATON.addNewLayer = function(uniqueName){
+ATON.addNewLayer = function(uniqueName, parentName){
     if (uniqueName.length <= 1) return; // too short
     if (ATON.layers[uniqueName]) return; // already created
 
     // First time, create the layer
-    ATON.layers[uniqueName] = new osg.Node();
+    ATON.layers[uniqueName] = new osg.MatrixTransform(); //new osg.Node();
     ATON.layers[uniqueName].setName(uniqueName);
     //ATON.layers[uniqueName].setNodeMask(ATON._maskVisible);
 
-    ATON._groupVisible.addChild( ATON.layers[uniqueName] );
+    var parentLayer = undefined;
+    if (parentName && ATON.layers[parentName]){
+        parentLayer = ATON.layers[parentName];
+        parentLayer.addChild(ATON.layers[uniqueName]);
+        }
+    else ATON._groupVisible.addChild( ATON.layers[uniqueName] );
+
     console.log("Created new layer "+uniqueName);
 };
+
+ATON.switchLayer = function(layerName, value){
+    if (ATON.layers[layerName] === undefined) return;
+
+    if (value === true) ATON.layers[layerName].setNodeMask(0xf);
+    else ATON.layers[layerName].setNodeMask(0x0);
+};
+
+ATON.transformLayerByMatrix = function(layerName, M){
+    if (ATON.layers[layerName] === undefined) return;
+
+    ATON.layers[layerName].setMatrix( M );
+};
+
+ATON.translateLayer = function(layerName, v){
+    if (ATON.layers[layerName] === undefined) return;
+
+    var M = ATON.layers[layerName].getMatrix();
+    osg.mat4.setTranslation(M, v );
+};
+
+
 
 // TODO: rename?
 ATON.addGraph = function( url, options, onComplete ){
@@ -2351,13 +2388,6 @@ ATON._onNodeRequestComplete = function(){
     console.timeEnd( 'kdtree build' );
 
     if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
-};
-
-ATON.switchLayer = function(layerName, value){
-    if (ATON.layers[layerName] === undefined) return;
-
-    if (value === true) ATON.layers[layerName].setNodeMask(0xf);
-    else ATON.layers[layerName].setNodeMask(0x0);
 };
 
 
@@ -2464,6 +2494,7 @@ ATON._initCoreUniforms = function(){
     ATON.GLSLuniforms.NormalMapSampler        = osg.Uniform.createInt1( ATON_SM_UNIT_NORM, 'NormalMapSampler' );
     ATON.GLSLuniforms.ComboSampler            = osg.Uniform.createInt1( ATON_SM_UNIT_COMBO, 'ComboSampler' );
     ATON.GLSLuniforms.LightProbeSampler       = osg.Uniform.createInt1( ATON_SM_UNIT_LP, 'LightProbeSampler' );
+    ATON.GLSLuniforms.QUSVSampler             = osg.Uniform.createInt1( ATON_SM_UNIT_QUSV, 'QUSVSampler' );
 
     // Globals
     osg.mat4.identity(ATON._mLProtation);
@@ -2478,6 +2509,24 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
 
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
+
+    // QUSV
+    ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQUSVslider') );
+
+    // FAug TOT
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-29, -40.0, 0.0], 'uQUSVmin' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [57.0, 120.0, 60.0], 'uQUSVsize' ) );
+    // Stairs
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-20.0, -6.0, 0.0], 'uQUSVmin' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [40.0, 10.0, 10.0], 'uQUSVsize' ) );
+
+    // FPacis
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-26, -58.0, -5.0], 'uQUSVmin' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [142.5, 50.0, 30.0], 'uQUSVsize' ) );
+    // FPacis lib
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [92, -50.0, -5.0], 'uQUSVmin' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [25, 32.5, 30.0], 'uQUSVsize' ) );
 
     // LP
     ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
@@ -2689,14 +2738,21 @@ ATON._switchVR = function(){
         if ( !ATON._vrNode ) {
             if ( navigator.getVRDisplays ) {
 
-                viewer.getEventProxy().WebVR.setEnable( true );
-                //var HMD = viewer._eventProxy.WebVR.getHmd();
+                // 7APR18
+                viewer.getInputManager().setEnable(InputGroups.FPS_MANIPULATOR_WEBVR, true);
+                //viewer.getEventProxy().WebVR.setEnable( true );
+                
+                ////var HMD = viewer._eventProxy.WebVR.getHmd();
 
-                ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer._eventProxy.WebVR.getHmd() );
+                // 7APR18
+                ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer.getVRDisplay() );
+                //ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer._eventProxy.WebVR.getHmd() );
+
 
                 //viewer._eventProxy.WebVR.setWorldScale(0.5);
 
-                // Save handy data
+                // Save handy data - DEPRECATED
+/*
                 ATON._wVR      = viewer._eventProxy.WebVR;
                 ATON._vrFDpose = viewer._eventProxy.WebVR._frameData.pose;
 
@@ -2707,18 +2763,27 @@ ATON._switchVR = function(){
 
                     //ATON._wVR._hmd.capabilities.hasExternalDisplay = false;
                     }
-
+*/
                 //console.log(viewer._eventProxy.WebVR);
                 //console.log(navigator.getVRDisplays);
             	}
 
             else {
+                viewer.getInputManager().setEnable(InputGroups.FPS_MANIPULATOR_DEVICEORIENTATION, true);
+                
+                ATON._vrNode = osgUtil.WebVRCustom.createScene(viewer, ATON._mainGroup, {
+                    isCardboard: true,
+                    vResolution: ATON._canvas.height,
+                    hResolution: ATON._canvas.width
+                    });
+/* 7APR18
                 viewer.getEventProxy().DeviceOrientation.setEnable( true );
                 ATON._vrNode = osgUtil.WebVRCustom.createScene( viewer, ATON._mainGroup, {
                     isCardboard: true,
                     vResolution: this._canvas.height,
                     hResolution: this._canvas.width
                     });
+*/
                 }
         }
 
@@ -2756,8 +2821,13 @@ ATON._switchVR = function(){
         //ATON._orbitMan.setEyePosition(ATON._currPOV.pos);
         //ATON._orbitMan.setTarget(ATON._currPOV.target);
 
+        viewer.getInputManager().setEnable(InputGroups.FPS_MANIPULATOR_WEBVR, false);
+        viewer.getInputManager().setEnable(InputGroups.FPS_MANIPULATOR_DEVICEORIENTATION, false);
+/* 7APR18
         viewer._eventProxy.WebVR.setEnable( false );
         viewer._eventProxy.DeviceOrientation.setEnable( false );
+*/      
+        
         // Detach the vrNode and reattach the modelNode
         ATON._root.removeChild( ATON._vrNode );
         ATON._root.addChild( ATON._mainGroup );
@@ -3073,3 +3143,19 @@ ATON._handleVRcontrollers = function(){
         }
 
 };
+
+
+ATON.addILSign = function(path){
+    var ILSTexture = new osg.Texture();
+    osgDB.readImageURL( path ).then( function ( data ){      
+        ILSTexture.setImage( data );
+
+        ILSTexture.setMinFilter( osg.Texture.NEAREST ); // important!
+        ILSTexture.setMagFilter( osg.Texture.NEAREST );
+        ILSTexture.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
+        ILSTexture.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+
+        ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QUSV, ILSTexture );
+        console.log("ILSignature "+path+" loaded.");
+        });
+}

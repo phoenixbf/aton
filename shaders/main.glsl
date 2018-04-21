@@ -559,7 +559,7 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
-#if 1
+#if 0
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
@@ -575,11 +575,11 @@ void main(){
 
     for (int u=0; u<QUSV_MAX_RANGE; u++){
         //mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/512.0)) );
-        mIL = texture2D(QUSVSampler, vec2(float(u)/512.0, 0.0));
+        mIL = texture2D(QUSVSampler, vec2(float(u)/1024.0, 0.0));
 
         loc = QUSVDecodeLocation(mIL);
 
-        ql = distance(loc, vWorldVertex) / 2.0;
+        ql = distance(loc, vWorldVertex) / 1.0;
         ql = clamp(ql, 0.0,1.0);
 
         QF += (1.0 - ql);

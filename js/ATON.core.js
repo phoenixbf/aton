@@ -54,8 +54,6 @@ const ATON_SM_UNIT_NORM  = 2;
 const ATON_SM_UNIT_COMBO = 3;
 const ATON_SM_UNIT_LP    = 4;
 
-const ATON_SM_UNIT_QUSV   = 6;
-
 
 
 // ATON Initialization
@@ -2494,7 +2492,6 @@ ATON._initCoreUniforms = function(){
     ATON.GLSLuniforms.NormalMapSampler        = osg.Uniform.createInt1( ATON_SM_UNIT_NORM, 'NormalMapSampler' );
     ATON.GLSLuniforms.ComboSampler            = osg.Uniform.createInt1( ATON_SM_UNIT_COMBO, 'ComboSampler' );
     ATON.GLSLuniforms.LightProbeSampler       = osg.Uniform.createInt1( ATON_SM_UNIT_LP, 'LightProbeSampler' );
-    ATON.GLSLuniforms.QUSVSampler             = osg.Uniform.createInt1( ATON_SM_UNIT_QUSV, 'QUSVSampler' );
 
     // Globals
     osg.mat4.identity(ATON._mLProtation);
@@ -2511,12 +2508,15 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
 
     // QUSV
+    ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QUSV, 'QUSVSampler' );
     ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQUSVslider') );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQUSVmin' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQUSVsize' ) );
 
     // FAug TOT
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-29, -40.0, 0.0], 'uQUSVmin' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [57.0, 120.0, 60.0], 'uQUSVsize' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-29, -40.0, 0.0], 'uQUSVmin' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [57.0, 120.0, 60.0], 'uQUSVsize' ) );
     // Stairs
     //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-20.0, -6.0, 0.0], 'uQUSVmin' ) );
     //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [40.0, 10.0, 10.0], 'uQUSVsize' ) );
@@ -3143,19 +3143,3 @@ ATON._handleVRcontrollers = function(){
         }
 
 };
-
-
-ATON.addILSign = function(path){
-    var ILSTexture = new osg.Texture();
-    osgDB.readImageURL( path ).then( function ( data ){      
-        ILSTexture.setImage( data );
-
-        ILSTexture.setMinFilter( osg.Texture.NEAREST ); // important!
-        ILSTexture.setMagFilter( osg.Texture.NEAREST );
-        ILSTexture.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
-        ILSTexture.setWrapT( osg.Texture.CLAMP_TO_EDGE );
-
-        ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QUSV, ILSTexture );
-        console.log("ILSignature "+path+" loaded.");
-        });
-}

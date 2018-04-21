@@ -170,7 +170,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
 
-                    ATON.addILSign("../models/_prv/_QUSV/pacis/qils.png");
+                    
+                    ATON.QUSV.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]);
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/pacis/qils.png");
                     //ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
                     break;
 

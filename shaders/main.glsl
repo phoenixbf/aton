@@ -559,7 +559,7 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
-#if 0
+#if 1
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)

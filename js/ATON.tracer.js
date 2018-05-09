@@ -20,8 +20,8 @@ ATON.tracer.rootRecordFolder = "record/";
 ATON.tracer.CSV_DELIMITER = ',';
 ATON.tracer.CSV_FORMAT    = ATON.tracer.FORMAT_STD;
 ATON.tracer.fileRecordReq = 0;
-ATON.tracer.discardSQfocusMin = 0.002;
-ATON.tracer.discardSQfocusMax = 0.05; //0.5;
+ATON.tracer.discardSQmarkMin = 0.005; // 0.002
+ATON.tracer.discardSQmarkMax = 0.05; //0.5;
 
 ATON.tracer.activeVolume = undefined;
 ATON.tracer.bActiveVol = false;
@@ -183,6 +183,9 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
         var foc = osg.vec3.create();
         var ori = osg.quat.create();
 
+        var markp      = osg.vec3.create();
+        var markp_prev = osg.vec3.create();
+
         var prevfoc = osg.vec3.create();
         var prevpos = osg.vec3.create();
 
@@ -242,14 +245,18 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                 if (ATON.tracer.tRange[0] === undefined || t < ATON.tracer.tRange[0]) ATON.tracer.tRange[0] = t;
                 if (ATON.tracer.tRange[1] === undefined || t > ATON.tracer.tRange[1]) ATON.tracer.tRange[1] = t;
 
-                var dFoc = osg.vec3.squaredDistance(foc, prevfoc);
-                if (dFoc >= ATON.tracer.discardSQfocusMax){
-                    prevfoc[0] = foc[0];
-                    prevfoc[1] = foc[1];
-                    prevfoc[2] = foc[2];
+                markp[0] = pos[0];
+                markp[1] = pos[1];
+                markp[2] = pos[2];
+
+                var dMark = osg.vec3.squaredDistance(markp, markp_prev);
+                if (dMark >= ATON.tracer.discardSQmarkMax){
+                    markp_prev[0] = markp[0];
+                    markp_prev[1] = markp[1];
+                    markp_prev[2] = markp[2];
                     }
 
-                if (dFoc > ATON.tracer.discardSQfocusMin && dFoc < ATON.tracer.discardSQfocusMax){
+                if (dMark > ATON.tracer.discardSQmarkMin && dMark < ATON.tracer.discardSQmarkMax){
                     //var at = new osg.MatrixTransform();
                     //osg.mat4.fromRotationTranslation(at.getMatrix(), ori, foc);
 
@@ -257,7 +264,7 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                     
                     at.setName(t); // timestamp
 
-                    at.setPosition([foc[0],foc[1],foc[2],0]);
+                    at.setPosition([markp[0],markp[1],markp[2],0]);
                     at.setAutoRotateToScreen(true);
                     //at.setAutoScaleToScreen(true);
 
@@ -290,9 +297,9 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
 
                     marks++;
                     
-                    prevfoc[0] = foc[0];
-                    prevfoc[1] = foc[1];
-                    prevfoc[2] = foc[2];
+                    markp_prev[0] = markp[0];
+                    markp_prev[1] = markp[1];
+                    markp_prev[2] = markp[2];
                     //console.log(x,y,z);
                     }
                 }

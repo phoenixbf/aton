@@ -559,7 +559,7 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
-#if 1
+#if 0
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
@@ -593,6 +593,7 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
+#if 1
     //applyHoverPass();
 
     vec4 HoverColor;
@@ -626,6 +627,7 @@ void main(){
 
     ////if(vWorldVertex.z > 7.0) discard;
 
+#endif
 
     //=====================================================
     // FINALIZE

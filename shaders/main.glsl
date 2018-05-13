@@ -559,41 +559,62 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
-#if 0
+#if 1
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
+#if 0
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
         FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
+#endif
 
     vec4 mIL;
     vec3 loc;
     float ql;
     float QF = 0.0;
 
-    const int QUSV_MAX_RANGE = 30;
+    vec4 fCol = vec4(1,0,0,1);
+    float uMul = 1.0;
+    float qRad = max(max(uQUSVsize.x,uQUSVsize.y),uQUSVsize.z) / 255.0;
+    qRad *= 20.0;
+
+    const int   QUSV_MAX_RANGE  = 32;
+    const float QUSV_PATCH_SIZE = 2048.0;
+    const float QUSV_ILS_SIZE   = 1024.0;
 
     for (int u=0; u<QUSV_MAX_RANGE; u++){
-        //mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/512.0)) );
-        mIL = texture2D(QUSVSampler, vec2(float(u)/1024.0, 0.0));
+        uMul = float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE);
 
-        loc = QUSVDecodeLocation(mIL);
+        //mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
+        mIL = texture2D(QUSVSampler, vec2(float(u)/QUSV_ILS_SIZE, 0.0));
 
-        ql = distance(loc, vWorldVertex) / 1.0;
-        ql = clamp(ql, 0.0,1.0);
+        if (mIL.a > 0.0){
+            loc = QUSVDecodeLocation(mIL);
 
-        QF += (1.0 - ql);
-        QF = clamp(QF, 0.0,1.0);
+            ql = distance(loc, vWorldVertex) / qRad;
+            ql = 1.0 - clamp(ql, 0.0,1.0);
+
+            //fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), ql);
+
+            //FinalFragment = mix(FinalFragment,fCol, ql*0.5*uMul);
+            //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uMul);
+
+            QF += (ql * mIL.a * 3.0); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
+            QF = clamp(QF, 0.0,1.0);
+            }
         }
 
-    FinalFragment = mix(FinalFragment, 1.0 - FinalFragment, QF); // aoContrib*vec4(1,0,0,1)
+    fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
+    
+    //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
+    FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
 
 #endif
 
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 1
+#if 0
     //applyHoverPass();
 
     vec4 HoverColor;

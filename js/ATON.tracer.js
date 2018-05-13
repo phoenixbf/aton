@@ -113,6 +113,7 @@ ATON.tracer.filter = function(tper, trad){
     }
 
     //console.log(ATON.tracer.activeVolume);
+/*
     if (ATON.tracer.bActiveVol){
         //ATON.requestPOV(ATON.tracer.activeVolume._center);
         //ATON._currPOV.target = ATON.tracer.activeVolume.center([]);
@@ -128,6 +129,7 @@ ATON.tracer.filter = function(tper, trad){
         //ATON._currPOV.target[1] = ATON.tracer.activeVolume.center[1];
         //ATON._currPOV.target[2] = ATON.tracer.activeVolume.center[2];
         }
+*/
 };
 
 // HTML ui
@@ -245,9 +247,9 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                 if (ATON.tracer.tRange[0] === undefined || t < ATON.tracer.tRange[0]) ATON.tracer.tRange[0] = t;
                 if (ATON.tracer.tRange[1] === undefined || t > ATON.tracer.tRange[1]) ATON.tracer.tRange[1] = t;
 
-                markp[0] = pos[0];
-                markp[1] = pos[1];
-                markp[2] = pos[2];
+                markp[0] = foc[0]; // pos[0];
+                markp[1] = foc[1]; // pos[1];
+                markp[2] = foc[2]; // pos[2];
 
                 var dMark = osg.vec3.squaredDistance(markp, markp_prev);
                 if (dMark >= ATON.tracer.discardSQmarkMax){

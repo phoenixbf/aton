@@ -209,13 +209,20 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
+
+                    ATON.QUSV.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
                     break;
 
                 case "vestibule":
                     scenename = "upper-vestibule";
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
-                    ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
+                    ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
+
+                    ATON.QUSV.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
                     break;
 
                 case "test1":

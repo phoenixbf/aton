@@ -1,4 +1,6 @@
 @echo off
 
 TITLE ATON Users Service
-node ATON.SERVICE.vroadcast.js --www ../ -t 100 --production
+rem --production
+
+node ATON.SERVICE.vroadcast.js --www ../ -t 100

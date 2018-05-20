@@ -139,7 +139,7 @@ ATON.tracer.filterUI = function(){
 
     ATON.tracer.filter(t,tr);
 
-    ATON._mainSS.getUniform('uQUSVslider').setFloat( t * 0.1 );
+    ATON._mainSS.getUniform('uQUSVslider').setFloat( t );
 };
 
 
@@ -247,9 +247,9 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                 if (ATON.tracer.tRange[0] === undefined || t < ATON.tracer.tRange[0]) ATON.tracer.tRange[0] = t;
                 if (ATON.tracer.tRange[1] === undefined || t > ATON.tracer.tRange[1]) ATON.tracer.tRange[1] = t;
 
-                markp[0] = foc[0]; // pos[0];
-                markp[1] = foc[1]; // pos[1];
-                markp[2] = foc[2]; // pos[2];
+                markp[0] = pos[0]; // pos[0];
+                markp[1] = pos[1]; // pos[1];
+                markp[2] = pos[2]; // pos[2];
 
                 var dMark = osg.vec3.squaredDistance(markp, markp_prev);
                 if (dMark >= ATON.tracer.discardSQmarkMax){

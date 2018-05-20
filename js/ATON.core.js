@@ -696,8 +696,11 @@ ATON.pov.prototype = {
 };
 
 ATON.setFOV = function(f){
-	ATON._currPOV.fov = f;
-	if (ATON._camera === undefined) return;
+    ATON._currPOV.fov = f;
+
+    if (ATON._camera === undefined) return;
+    
+    ATON._toPOV.fov = f; // while transitioning
 
 	var info = {};
 	osg.mat4.getPerspective( info, ATON._camera.getProjectionMatrix() );

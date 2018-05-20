@@ -60,6 +60,9 @@ struct User {
 uniform User Users[128];
 */
 
+//vec4 UCOLORS[6];
+
+
 vec4 QUSVEncodeLocation(vec3 worldLoc){
     vec4 qusvCol;
     qusvCol.r = (worldLoc.x - uQUSVmin.x) / uQUSVsize.x;
@@ -338,6 +341,7 @@ void main(){
 #endif
 
     float ed = distance(uWorldEyePos, vWorldVertex);
+    ed *= 2.0;
     aoContrib *= clamp(ed, 0.0,1.0);
 
     //%CUSTOMPBR%
@@ -559,10 +563,19 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
-#if 1
+#if 0
+    #define USE_ILSIGN 1
+/*
+    UCOLORS[0] = vec4(1.0,0.0,0.0, 0.0);
+    UCOLORS[1] = vec4(1.0,1.0,0.0, 0.0);
+    UCOLORS[2] = vec4(0.0,1.0,0.0, 0.0);
+    UCOLORS[3] = vec4(0.0,1.0,1.0, 0.0);
+    UCOLORS[4] = vec4(0.0,0.0,1.0, 0.0);
+    UCOLORS[5] = vec4(1.0,0.0,1.0, 0.0);
+*/
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
-#if 0
+#if 0   // Color-codes VE with QUSV voxel values
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
         FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
@@ -575,18 +588,27 @@ void main(){
 
     vec4 fCol = vec4(1,0,0,1);
     float uMul = 1.0;
-    float qRad = max(max(uQUSVsize.x,uQUSVsize.y),uQUSVsize.z) / 255.0;
-    qRad *= 20.0;
+    float qRad;
+    //qRad = max(max(uQUSVsize.x,uQUSVsize.y),uQUSVsize.z) / 255.0;
+    qRad = 1.0; // 3.0; //(uQUSVslider*500.0);
 
-    const int   QUSV_MAX_RANGE  = 32;
-    const float QUSV_PATCH_SIZE = 2048.0;
+#ifdef USE_ILSIGN
+    const int QUSV_MAX_RANGE  = 32;
+#else 
+    const int QUSV_MAX_RANGE  = 128;
+#endif
+
+    const float QUSV_PATCH_SIZE = 4096.0;
     const float QUSV_ILS_SIZE   = 1024.0;
 
     for (int u=0; u<QUSV_MAX_RANGE; u++){
         uMul = float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE);
 
-        //mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
+#ifdef USE_ILSIGN
         mIL = texture2D(QUSVSampler, vec2(float(u)/QUSV_ILS_SIZE, 0.0));
+#else 
+        mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
+#endif
 
         if (mIL.a > 0.0){
             loc = QUSVDecodeLocation(mIL);
@@ -599,13 +621,22 @@ void main(){
             //FinalFragment = mix(FinalFragment,fCol, ql*0.5*uMul);
             //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uMul);
 
-            QF += (ql * mIL.a * 3.0); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
+#ifdef USE_ILSIGN
+            QF += (ql * mIL.a * 200.0 * uQUSVslider); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
+            //QF += (ql * mIL.a * 2.0);
             QF = clamp(QF, 0.0,1.0);
+#else
+            QF += (ql * 0.03 * mIL.a);
+            //int uc = u - (6 * int(float(u)/6.0));
+            //FinalFragment += mix(vec4(0,0,0,0), UCOLORS[uc], ql);
+#endif
             }
         }
 
+//#ifdef USE_ILSIGN
     fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
-    
+//#endif
+
     //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
     FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
 
@@ -614,7 +645,7 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 0
+#if 1
     //applyHoverPass();
 
     vec4 HoverColor;

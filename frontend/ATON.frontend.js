@@ -154,8 +154,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
-                    //ATON.addILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    //ATON.addILSign("../models/_prv/_QUSV/faug-qils.png");
+                    ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
+                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
                     break;
 
                 case "fpacis":
@@ -172,13 +173,28 @@ window.addEventListener( 'load', function () {
 
                     
                     ATON.QUSV.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]);
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/pacis/qils.png");
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/pacis/P-qils.png");
                     //ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
+                    break;
+
+                case "sarmi":
+                    scenename = "sarmi";
+                    
+                    for (let i = 1; i <= 7; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/part-0"+i+".osgjs", { layer: "LANDSCAPE" });
+
+                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs", { layer: "LANDSCAPE" });
+
+                    ATON.setHome([111.72,160.66,15.20],[34.22,146.66,-11.13]);
+
+                    ATON.QUSV.setPositionAndExtents([-30.0,0.0,-2.5], [170.0,190.0,40.5]);
+                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
+                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/sarmi/P-qils.png");
                     break;
 
                 case "complex":
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1-inst.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia.osgjs",{ layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/corcol/root.osgjs",{ layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
                     break;
                 
                 case "sqcolumns":
@@ -221,15 +237,32 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
                     ATON.QUSV.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    
                     ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/P-qils.png");
                     //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
+                    break;
+
+                case "smoking":
+                    scenename = "smoking-room";
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
+                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
+                    ATON.setHome([0.33,1.02,1.93],[-0.41,-0.46,1.58]);
+
+                    ATON.QUSV.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/F-qils.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/P-qils.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/F_GLOB-TP0.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/P_GLOB-TP0.png");
                     break;
 
                 case "test1":
                     scenename = "TEST1";
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-border.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-cols.txt" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
                     //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"tree1/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-trees.txt" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-groundcubes.txt" });
@@ -477,6 +510,8 @@ if (asset === "sf"){
     ATON.onAllNodeRequestsCompleted = function(){
         ATON.requestHome();
         //$('#idLoader').hide();
+
+        ATON.setFOV(120);
         };
 
     ATON.FrontEnd.attachListeners();

@@ -107,7 +107,7 @@ ATON.tracer.filter = function(tper, trad){
                 }
 
             // switch on closest mark anyways
-            us.getChild(cmarkID).setNodeMask(0xf);
+            if (us.getChild(cmarkID)) us.getChild(cmarkID).setNodeMask(0xf);
             }
         
     }
@@ -211,9 +211,9 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
                         t = (n * 0.1);
                         //console.log(t);
 
-                        if (attrNames[i] === 'X' && currVal.length>0) foc[0] = parseFloat(currVal);
-                        if (attrNames[i] === 'Y' && currVal.length>0) foc[1] = parseFloat(currVal);
-                        if (attrNames[i] === 'Z' && currVal.length>0) foc[2] = parseFloat(currVal);
+                        if (attrNames[i] === 'X' && currVal.length>0) pos[0] = parseFloat(currVal);
+                        if (attrNames[i] === 'Y' && currVal.length>0) pos[1] = parseFloat(currVal);
+                        if (attrNames[i] === 'Z' && currVal.length>0) pos[2] = parseFloat(currVal);
 
                         if (attrNames[i] === 'OriX' && currVal.length>0) ori[0] = parseFloat(currVal);
                         if (attrNames[i] === 'OriY' && currVal.length>0) ori[1] = parseFloat(currVal);

@@ -563,6 +563,8 @@ void main(){
     //=====================================================
     // QUSV Pass
     //=====================================================
+    //if (vWorldVertex.z > 4.0) discard;
+
 #if 0
     #define USE_ILSIGN 1
 /*
@@ -590,7 +592,7 @@ void main(){
     float uMul = 1.0;
     float qRad;
     //qRad = max(max(uQUSVsize.x,uQUSVsize.y),uQUSVsize.z) / 255.0;
-    qRad = 1.0; // 3.0; //(uQUSVslider*500.0);
+    qRad = 3.0; // 3.0; //(uQUSVslider*500.0);
 
 #ifdef USE_ILSIGN
     const int QUSV_MAX_RANGE  = 32;
@@ -645,7 +647,24 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 1
+#if 0
+    float hpd = distance(uHoverPos, vWorldVertex);
+    hpd /= 0.5; // radius
+    hpd = 1.0- clamp(hpd, 0.0,1.0);
+
+    hpd *= 20.0;
+    hpd = clamp(hpd, 0.0,1.0);
+
+    vec4 HoverColor;
+    HoverColor = 1.0 - FinalFragment;
+    HoverColor.r -= 0.2;
+    HoverColor.g += 0.2;
+    HoverColor.b -= 0.2;
+
+    FinalFragment = mix(FinalFragment, HoverColor, hpd * uHoverAffordance);
+#endif
+
+#if 0 // OLD
     //applyHoverPass();
 
     vec4 HoverColor;

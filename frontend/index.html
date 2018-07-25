@@ -83,7 +83,7 @@
         </ul>
         </div>
 -->
-        <form class="navbar-form navbar-left" role="search">
+        <form class="navbar-form navbar-left" role="search" id="idVRoadcast">
             <div class="form-group">
             <input id="uname" type="text" size="10" onchange="ATON.FrontEnd.setUserName()" class="form-control" placeholder="Username">
             <input id="ustatus" type="text" size="30" onchange="ATON.FrontEnd.setStatus()" class="form-control" placeholder="Status">
@@ -106,7 +106,7 @@
     </nav>
 
     <!-- BOTTOM -->
-    <nav class="atonToolbar atonToolbar-bottom" style="background: rgba(0,0,0, 0.7);">
+    <nav id="idSession" class="atonToolbar atonToolbar-bottom" style="background: rgba(0,0,0, 0.7);">
         <div id="idTracer" class="form-group">
             <div style="display:inline-block; width:85%;"><input id="uSessionTime" type="range" min="0.0" max="1.0" step="0.0001" oninput="ATON.tracer.filterUI()">Time: <span id="idT"></span></div>
             <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()">t-Radius: <span id="idTR"></span></div>

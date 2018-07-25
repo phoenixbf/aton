@@ -165,6 +165,18 @@ window.addEventListener( 'load', function () {
                     ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
                     break;
 
+                case "acq":
+                    scenename = "acq";
+                    ATON.addLightProbe("../LP/w");
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/acq/root.osgjs", { layer: "PRESENT" });
+                    //ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
+
+                    //ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
+                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
+                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+                    break;
+
                 case "faug2":
                     scenename = "faug2";
                     ATON.addLightProbe("../LP/default");
@@ -486,9 +498,13 @@ if (asset === "sf"){
     ATON.tracer.resPath = ATON.FrontEnd.RES_ROOT;
     ATON.tracer.rootRecordFolder = "../services/record/";
 
+    $("#idSession").hide();
+
     var recstr = ATON.utils.getURLparams().rec;
     if (recstr){
         var values = recstr.split(',');
+
+        $("#idSession").show();
 
         if (ATON.utils.getURLparams().ovr && ATON.utils.getURLparams().ovr == 1){
             ATON.tracer.CSV_FORMAT = ATON.tracer.FORMAT_OVR;
@@ -505,7 +521,9 @@ if (asset === "sf"){
 
     // VRoadcast =====================
     ATON.vroadcast.setupResPath(ATON.FrontEnd.RES_ROOT);
-    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");    
+    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
+
+    $("#idVRoadcast").hide();
 
     var vrcIP = ATON.utils.getURLparams().vrc;
     if (vrcIP !== undefined){
@@ -516,6 +534,8 @@ if (asset === "sf"){
 
         ATON.vroadcast.uStateFreq = 0.01;
         ATON.vroadcast.connect("http://"+vrcIP+":8080/", scenename);
+
+        $("#idVRoadcast").show();
 
         // We have ID
         ATON.vroadcast.onIDassigned = function(){

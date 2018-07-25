@@ -170,7 +170,7 @@ window.addEventListener( 'load', function () {
                     ATON.addLightProbe("../LP/w");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/acq/root.osgjs", { layer: "PRESENT" });
-                    //ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
+                    ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
                     //ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
                     //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");

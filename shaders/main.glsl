@@ -647,7 +647,7 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 0
+#if 1
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= 0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
@@ -657,11 +657,12 @@ void main(){
 
     vec4 HoverColor;
     HoverColor = 1.0 - FinalFragment;
-    HoverColor.r -= 0.2;
-    HoverColor.g += 0.2;
+
+    HoverColor.r += mix(0.2,-0.2, uHoverAffordance);
+    HoverColor.g += mix(-0.2,0.2, uHoverAffordance);
     HoverColor.b -= 0.2;
 
-    FinalFragment = mix(FinalFragment, HoverColor, hpd * uHoverAffordance);
+    FinalFragment = mix(FinalFragment, HoverColor, hpd);
 #endif
 
 #if 0 // OLD

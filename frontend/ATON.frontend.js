@@ -299,6 +299,7 @@ window.addEventListener( 'load', function () {
 
                 case "test1":
                     scenename = "TEST1";
+                    ATON.addLightProbe("../LP/default");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-border.txt" });

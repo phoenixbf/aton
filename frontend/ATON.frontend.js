@@ -165,38 +165,23 @@ window.addEventListener( 'load', function () {
                     ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
                     break;
 
-                case "acq":
-                    scenename = "acq";
+                case "faug2":
+                    scenename = "faug2";
                     ATON.addLightProbe("../LP/w");
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/acq/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
+/*
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
+*/
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
                     //ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
                     //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
                     //ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
-                    break;
-
-                case "faug2":
-                    scenename = "faug2";
-                    ATON.addLightProbe("../LP/default");
-
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/colossus_hall/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/colossus_rooftop/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/exedra_left/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/exedra_right/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/forum_doors/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/forum_floor/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/forum_stairs/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/forum_wall/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/postguard/root.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/street_suburra/root.osgjs", { layer: "FAUG" });
-
-                    ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
-
-                    ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
-                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
                     break;
 
                 case "fpacis":

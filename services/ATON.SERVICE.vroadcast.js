@@ -210,22 +210,6 @@ var decodeUserStateData = function(data){
     return user;
 };
 
-// Focus
-var decodeDFocus = function(binData){
-    var a8 = new Int8Array(12);
-    for (var i=0; i<12; i++) a8[i] = binData[i];
-
-    var A = new Float32Array(a8.buffer);
-
-    var DT = [0.0,0.0,0.0];
-    DT[0] = A[0];
-    DT[1] = A[1];
-    DT[2] = A[2];
-
-    //console.log(DT);
-    return DT;
-};
-
 var encodeUserStateData = function(c){
     //var c = clients[index];
 
@@ -243,9 +227,28 @@ var encodeUserStateData = function(c){
     binData[18] = (c.orientation[2] * 128.0);
     binData[19] = (c.orientation[3] * 128.0);
 
-    binData[20] = c.id; // unsigned byte id
+    binData[20] = c.id;     // unsigned byte id
+    //binData[21] = c.rank;   // unsigned byte rank
+    //binData[22]
+    //binData[23]
 
     return binData;
+};
+
+// Focus
+var decodeDFocus = function(binData){
+    var a8 = new Int8Array(12);
+    for (var i=0; i<12; i++) a8[i] = binData[i];
+
+    var A = new Float32Array(a8.buffer);
+
+    var DT = [0.0,0.0,0.0];
+    DT[0] = A[0];
+    DT[1] = A[1];
+    DT[2] = A[2];
+
+    //console.log(DT);
+    return DT;
 };
 
 // Send a snapshot of a specific client ID

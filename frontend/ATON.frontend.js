@@ -136,7 +136,6 @@ window.addEventListener( 'load', function () {
 
     var scenename = undefined;
 
-    ATON.addLightProbe("../LP/w"); // default
     var lpParam = ATON.utils.getURLparams().lp;
     if (lpParam) ATON.addLightProbe("../LP/"+lpParam);
 
@@ -149,7 +148,6 @@ window.addEventListener( 'load', function () {
             switch (asset){
                 case "faug":
                     scenename = "faug";
-                    ATON.addLightProbe("../LP/w");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
@@ -167,26 +165,38 @@ window.addEventListener( 'load', function () {
 
                 case "faug2":
                     scenename = "faug2";
-                    ATON.addLightProbe("../LP/w");
+                    //ATON.addLightProbe("../LP/default");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
-/*
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
-*/
+
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
                     //ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
                     //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
                     //ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+
+                    var thit = 0;
+                    // CUSTOM KEYBOARD
+                    $(function() {
+                        $(document).keydown(function(e) {
+                            if (e.keyCode == 84){ // t
+                                e.preventDefault();
+
+                                if (thit==0) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
+                                if (thit==1) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
+                                if (thit==2) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
+                                if (thit==3) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
+                                if (thit==4) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
+
+                                thit++;
+                                }     
+                            });
+                        });
                     break;
 
                 case "fpacis":
                     scenename = "fpacis";
-                    ATON.addLightProbe("../LP/w");
+                    ATON.toggleAOPass(true);
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/01.osgjs", { layer: "FPACIS" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/02.osgjs", { layer: "FPACIS" });
@@ -252,7 +262,6 @@ window.addEventListener( 'load', function () {
 
                 case "dining":
                     scenename = "dining-room";
-                    ATON.addLightProbe("../LP/w");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
@@ -264,7 +273,6 @@ window.addEventListener( 'load', function () {
 
                 case "vestibule":
                     scenename = "upper-vestibule";
-                    ATON.addLightProbe("../LP/w");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
@@ -280,7 +288,6 @@ window.addEventListener( 'load', function () {
 
                 case "smoking":
                     scenename = "smoking-room";
-                    ATON.addLightProbe("../LP/w");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.3,0.3,0.3]));
@@ -310,7 +317,6 @@ window.addEventListener( 'load', function () {
 
                 case "cecilio":
                     scenename = "cecilio";
-                    ATON.addLightProbe("../LP/w");
 
                     ATON.addNewLayer("PRESENT");
                     ATON.addNewLayer("CEIL","PRESENT");
@@ -525,7 +531,8 @@ if (asset === "sf"){
         // We have ID
         ATON.vroadcast.onIDassigned = function(){
             var uid = ATON.vroadcast._myUser.id;
-            $('#idUserColor').css("background-color", uColors[uid % 6]);
+            //$('#idUserColor').css("background-color", uColors[uid % 6]);
+            $('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
             $('#idUserColor').html("U"+uid);
 
             // disable controls for beta users
@@ -545,14 +552,17 @@ if (asset === "sf"){
         ATON.vroadcast.onDisconnect = function(){
             ATON.vroadcast.users = [];
 
-            $('#idUserColor').css("background-color", "rgb(0,0,0)");
+            $('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
             $('#idUserColor').html("ATON");            
             };
         }
 
     // On completion
+    var bFirstHome = true;
     ATON.onAllNodeRequestsCompleted = function(){
-        ATON.requestHome();
+        if (bFirstHome) ATON.requestHome();
+        bFirstHome = false;
+
         //$('#idLoader').hide();
 
         //ATON.setFOV(120);

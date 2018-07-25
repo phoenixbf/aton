@@ -60,6 +60,7 @@ const ATON_SM_UNIT_LP    = 4;
 //==========================================================================
 ATON._canvas   = undefined;
 ATON._isMobile = false;
+ATON._useLP    = false;
 
 // STD resource folders
 ATON.shadersFolder = "shaders";
@@ -129,7 +130,7 @@ ATON._bSensorZready = false;
 ATON._mLProtation = osg.mat4.create();
 
 // User custom functions/event control
-ATON.onUpdate                   = undefined;
+ATON.onTickRoutines             = [];
 ATON.onDescriptorHover          = undefined;
 ATON.onAllNodeRequestsCompleted = undefined;
 
@@ -1808,11 +1809,19 @@ ATON._updateCallback.prototype = {
         ATON._handleVisHover();
 
 
-        // Custom user hook
-        if (ATON.onUpdate !== undefined) ATON.onUpdate();
+        // Execute custom onTick routines
+        for (let uf = 0; uf < ATON.onTickRoutines.length; uf++) {
+            const UF = ATON.onTickRoutines[uf];
+            UF();
+            }
 
         return true;
         }
+};
+
+// Used to add custom onTick routine
+ATON.addOnTickRoutine = function( uf ){
+    ATON.onTickRoutines.push( uf );
 };
 
 ATON._handleDescriptorsHover = function(){
@@ -2376,7 +2385,7 @@ ATON._onNodeRequestComplete = function(){
     //================================
 
     console.log("ALL COMPLETE");
-    ATON.requestHome();
+    //ATON.requestHome();
     //console.log(ATON._groupVisible);
 
     console.time( 'kdtree build' );
@@ -2466,12 +2475,22 @@ ATON.addLightProbe = function(folderurl /*, position*/){
         //ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( osg.LIGHTING, osg.StateAttribute.OFF);
 
         console.log("LP Color "+folderurl+" loaded.");
+
+        ATON.toggleLightProbePass(true);
         });
-    
-
-        
-
 };
+
+// GLSL flags
+ATON.toggleLightProbePass = function(b){
+    ATON._useLP = b;
+    ATON.loadCoreShaders( ATON.shadersFolder );   
+};
+
+ATON.toggleAOPass = function(b){
+    ATON._usePassAO = b;
+    ATON.loadCoreShaders( ATON.shadersFolder );   
+};
+
 
 // For LP
 ATON._cullCallback = function () {
@@ -2558,6 +2577,8 @@ ATON.loadCoreShaders = function(path){
 	$.get( path + "/main.glsl", function(glsldata){
 		// Pre-directives
 		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
+        if (ATON._useLP) glsldata = "#define USE_LP 1\n" + glsldata;
+        if (ATON._usePassAO) glsldata = "#define USE_PASS_AO 1\n" + glsldata;
 
 		glsldata += '\n';
 

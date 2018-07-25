@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 
 <title>ATON sample FrontEnd</title>
-<link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="../vendors/bootstrap/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../css/aton.css">
 
 <script type="text/javascript" src="../vendors/gunzip.min.js"></script>
@@ -32,102 +32,69 @@
 <!--  ATON FrontEnd -->
 <script type="text/javascript" src="ATON.frontend.js"></script>
 
-<script type="text/javascript" src="../vendors/bootstrap.min.js"></script>
+<script type="text/javascript" src="../vendors/bootstrap/bootstrap.min.js"></script>
 </head>
 
 
-<body class="dark-bg" oncontextmenu="return false;">
+<body oncontextmenu="return false;" style="background-color: white;">
 
 	<!-- Our 3D View -->
 	<div id="ViewContainer" class="view3D">
 	<canvas id="View" oncontextmenu="return false;"></canvas>
 	</div>
 
-    <!-- NavBar -->
-    
-    <nav class="navbar navbar-default" id="iContainer" style="opacity:0.7;">
-    <div class="container-fluid">
-        <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#" id="idUserColor">ATON</a>
-        </div>
+    <header>
+        <!-- TOP navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
+          <a class="navbar-brand" href="#" id="idUserColor">ATON</a>
+          
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">NAV</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                      <a class="dropdown-item" href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a>
+                      <a class="dropdown-item" href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a>
+                    </div>
+                  </li>
 
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">NAV<span class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a></li>
-                <li><a href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a></li>
-                <li class="divider"></li>
-                <li><a href="#">One more separated link</a></li>
+                  <!--
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                -->
             </ul>
-            </li>
-        </ul>
 
-<!--
-        <div class="btn-group">
-        <a href="#" class="btn btn-primary">Primary</a>
-        <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-        <ul class="dropdown-menu">
-            <li><a href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a></li>
-            <li><a href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a></li>
-            <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-        </ul>
-        </div>
--->
-        <form class="navbar-form navbar-left" role="search" id="idVRoadcast">
-            <div class="form-group">
-            <input id="uname" type="text" size="10" onchange="ATON.FrontEnd.setUserName()" class="form-control" placeholder="Username">
-            <input id="ustatus" type="text" size="30" onchange="ATON.FrontEnd.setStatus()" class="form-control" placeholder="Status">
+            <form class="form-inline mt-2 mt-md-0" id="idVRoadcast">    
+                <div id="idMagSetup" class="form-group">
+                    <div style="display:inline-block"><input class="form-control-range" id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="ATON.FrontEnd.setWeight()">
+                    MagWeight: <span id="idMagWeight"></span></div>
+    
+                    <div style="display:inline-block"><input class="form-control-range" id="umagrad" type="range" min="0.5" max="100.0" step="0.5" onchange="ATON.FrontEnd.setMagRadius()">
+                    MagRadius: <span id="idMagRadius"></span></div>
+                </div>
+
+                <div class="form-group">
+                    <input id="uname" type="text" size="10" onchange="ATON.FrontEnd.setUserName()" class="form-control form-control-sm" placeholder="Username">
+                    <input id="ustatus" type="text" size="30" onchange="ATON.FrontEnd.setStatus()" class="form-control form-control-sm" placeholder="Status">
+                </div>
+            </form>
+
+          </div>
+        </nav>
+      </header>
+
+      <!-- BOTTOM navbar -->
+      <nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark" style="opacity:0.7; background-color: black !important;">
+            <div id="idSession" style="width: 100%">
+                <div style="display:inline-block; width:85%;"><input id="uSessionTime" type="range" min="0.0" max="1.0" step="0.0001" oninput="ATON.tracer.filterUI()">t: <span id="idT"></span></div>
+                <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()">&Delta;t: <span id="idTR"></span></div>
             </div>
-
-            <div id="idMagSetup" class="form-group">
-                <div style="display:inline-block"><input id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="ATON.FrontEnd.setWeight()">
-                MagWeight: <span id="idMagWeight"></span></div>
-
-                <div style="display:inline-block"><input id="umagrad" type="range" min="0.5" max="100.0" step="0.5" onchange="ATON.FrontEnd.setMagRadius()">
-                MagRadius: <span id="idMagRadius"></span></div>
-            </div>
-
-<!--
-            <button type="submit" class="btn btn-default">Submit</button>
--->
-        </form>
-        </div>
-    </div>
-    </nav>
-
-    <!-- BOTTOM -->
-    <nav id="idSession" class="atonToolbar atonToolbar-bottom" style="background: rgba(0,0,0, 0.7);">
-        <div id="idTracer" class="form-group">
-            <div style="display:inline-block; width:85%;"><input id="uSessionTime" type="range" min="0.0" max="1.0" step="0.0001" oninput="ATON.tracer.filterUI()">Time: <span id="idT"></span></div>
-            <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()">t-Radius: <span id="idTR"></span></div>
-        </div>
-    </nav>
-
-<!--
-    <div id="iContainer" class="infoContainer" style="background-color: rgba(0,0,0, 0.5); padding: 5px;">
-    UserName:<input id="uname" type="text" size="10" onchange="setUserName()">
-    Status:<input id="ustatus" type="text" size="30" onchange="setStatus()">
-    Weight:<input id="uweight" type="range" min="0.0" max="0.005" step="0.0002" onchange="ATON.FrontEnd.setWeight()">
-
-    FirstPerson:<input id="ufp" type="checkbox" onchange="ATON.FrontEnd.toggleFirstPerson()" >
-
-    <button type="button" onClick="ATON.requestFullScreenVR()">FS VR</button>
-
-    Collisions:<input id="bcollisions" type="checkbox" onchange="ATON.FrontEnd.toggleCollisions()" >
-    Gravity:<input id="bgravity" type="checkbox" onchange="ATON.FrontEnd.toggleGravity()" >
-
-    </div>
--->
+      </nav>
 
 </body>
 </html>

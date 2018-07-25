@@ -27,6 +27,7 @@ body {
     background: rgba(127,127,127, 1.0);
 }
 
+
 canvas {
     display: block; /* Fix middle button drag on FF */
     height: 100%;

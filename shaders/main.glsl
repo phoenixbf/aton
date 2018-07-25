@@ -9,6 +9,9 @@
 
 //#define MOBILE_DEVICE 1
 
+//#define USE_LP 1
+//#define USE_PASS_AO 1
+
 #ifdef GL_ES
 precision mediump float;
 precision mediump int;
@@ -319,8 +322,10 @@ void main(){
     FinalFragment = baseAlbedo;
 
 #ifndef MOBILE_DEVICE
+#ifdef USE_LP
     // Fill in base values
     vec3 tsNorm = getTSnormal();
+#endif
 #endif
 
     float alphaContrib = baseAlbedo.a;
@@ -369,6 +374,7 @@ void main(){
     //=====================================================
 #if 1
 #ifndef MOBILE_DEVICE
+#ifdef USE_LP
     //if (flipGnorm) tsNorm.y = -tsNorm.y;
 
     vec3 tsn;
@@ -389,6 +395,7 @@ void main(){
 
 #endif
 #endif
+#endif
 
 #if 0 // DEBUG
     vec3 rgbN = (normWorld + 1.0) * 0.5;
@@ -397,6 +404,7 @@ void main(){
 #endif
 
 #ifndef MOBILE_DEVICE //======== Desktop
+#ifdef USE_LP
 
     // Fresnel
     float fresContrib;
@@ -517,20 +525,23 @@ void main(){
     //FinalFragment = dmrFrag;
 
 
+#endif // LP
 #endif //======== Desktop
 
 
     //=====================================================
     // AO Pass
     //=====================================================
-    //FinalFragment *= mix(aoContrib,1.0, emRefl);
+#ifdef USE_PASS_AO
+    ////FinalFragment *= mix(aoContrib,1.0, emRefl);
     FinalFragment *= aoContrib;
-
+#endif
 
     //=====================================================
     // Fresnel Pass
     //=====================================================
 #ifndef MOBILE_DEVICE //======== Desktop
+#ifdef USE_LP
 
 #if 1    
     float fr = fresContrib*0.5;
@@ -539,11 +550,17 @@ void main(){
     FinalFragment = mix(FinalFragment, reflFrag, fr);
 #endif
 
+#endif // LP
 
     //=====================================================
     // Fog Pass
     //=====================================================
+#ifdef USE_LP
     vec4 fogColor = ptFrag;
+#else
+    vec4 fogColor = vec4(1,1,1, 0.0);
+#endif
+
     fogColor.a = 0.0;
 
     float f = fragDist / uFogDistance;

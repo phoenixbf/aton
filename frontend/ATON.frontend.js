@@ -517,7 +517,7 @@ if (asset === "sf"){
         //IP = "192.167.233.180";
         //IP = "seth.itabc.cnr.it";
 
-        ATON.vroadcast.uStateFreq = 0.01;
+        ATON.vroadcast.uStateFreq = 0.05;
         ATON.vroadcast.connect("http://"+vrcIP+":8080/", scenename);
 
         $("#idVRoadcast").show();

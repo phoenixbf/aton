@@ -2751,6 +2751,8 @@ ATON._switchVR = function(){
                 ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer.getVRDisplay() );
                 //ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer._eventProxy.WebVR.getHmd() );
 
+                //console.log(viewer.getVRDisplay().getPose());
+                //ATON._vrFDpose = viewer.getVRDisplay().getPose();
 
                 //viewer._eventProxy.WebVR.setWorldScale(0.5);
 
@@ -3119,7 +3121,8 @@ ATON._handleVRcontrollers = function(){
     ATON._activeVRcontrollers[ATON_VR_CONTROLLER_L] = false;
     ATON._activeVRcontrollers[ATON_VR_CONTROLLER_R] = false;
 
-    if (ATON._vrFDpose === undefined) return;
+    //if (ATON._vrFDpose === undefined) return;
+
     // Loop over every gamepad and if we find any that have a pose use it.
     //var vrGamepads = [];
 

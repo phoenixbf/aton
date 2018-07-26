@@ -669,17 +669,26 @@ void main(){
     hpd /= 0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
 
-    hpd *= 20.0;
+    hpd *= 5.0; // 20 hardening
     hpd = clamp(hpd, 0.0,1.0);
 
+    vec4 HoverColor;
+    //vec4 hovMax, hovMin;
+    //hovMax = vec4((1.0-FinalFragment.r), 2.0, (1.0-FinalFragment.b), FinalFragment.a);
+    //hovMin = vec4(2.0, (1.0-FinalFragment.g), (1.0-FinalFragment.b), FinalFragment.a);
+
+    //HoverColor = mix(hovMin,hovMax, uHoverAffordance);
+    HoverColor = mix(vec4(1,0,0,1),vec4(0,1,0,1), uHoverAffordance);
+
+/*
     vec4 HoverColor;
     HoverColor = 1.0 - FinalFragment;
 
     HoverColor.r += mix(0.2,-0.2, uHoverAffordance);
     HoverColor.g += mix(-0.2,0.2, uHoverAffordance);
     HoverColor.b -= 0.2;
-
-    FinalFragment = mix(FinalFragment, HoverColor, hpd);
+*/
+    FinalFragment = mix(FinalFragment, HoverColor, hpd*0.3);
 #endif
 
 #if 0 // OLD

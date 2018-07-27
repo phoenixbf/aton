@@ -114,12 +114,16 @@ ATON.FrontEnd.attachListeners = function(){
                 ATON.addMagNode(M);
                 }
 
-                if (e.keyCode == 13){ // enter
-                    var jMag = JSON.stringify(ATON.MagNet);
-                    console.log(jMag);
+            if (e.keyCode == 13){ // enter
+                var jMag = JSON.stringify(ATON.MagNet);
+                console.log(jMag);
 
-                    console.log(JSON.parse(jMag));
-                    }
+                console.log(JSON.parse(jMag));
+                }
+
+            if (e.keyCode == 70){
+                ATON.vroadcast.toggleFocusPolarization();
+                }
             });
         });
 };
@@ -208,10 +212,6 @@ window.addEventListener( 'load', function () {
                             if (e.keyCode == 220){ // \
                                 ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png?"+new Date().getTime());
                                 console.log("QFV reloaded");
-                                }
-                                
-                            if (e.keyCode == 70){
-                                ATON.vroadcast.toggleFocusPolarization();
                                 }
                             });
                         });

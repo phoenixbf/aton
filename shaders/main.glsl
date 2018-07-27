@@ -97,6 +97,15 @@ vec3 QVAEncodeLocation(vec3 worldLoc){
     P.y = (worldLoc.y - uQUSVmin.y) / uQUSVsize.y;
     P.z = (worldLoc.z - uQUSVmin.z) / uQUSVsize.z;
 
+/*  NOT WORKING WHY?
+    R.x = P.x / float(QV_SIZE);
+    R.y = 1.0 - P.y;
+
+    int t = int(P.z * float(QV_TSIZE)); // tile index
+
+    R.x += (float(t)/float(QV_SIZE));
+*/
+
     int i,j,t;
     i = int(P.x * float(QV_TSIZE));
     j = int(P.y * float(QV_TSIZE));
@@ -641,7 +650,7 @@ void main(){
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
-    FinalFragment = mix(FinalFragment,QVAcol, 0.7);
+    FinalFragment = mix(FinalFragment,QVAcol, 0.9);
 #endif
 
 #if 0

@@ -186,7 +186,7 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
-                    ATON.QUSV.setPositionAndExtents([-60,-50,0], [100,70,20]);
+                    ATON.QUSV.setPositionAndExtents([-70,-50,0], [150,70,50]);
                     //ATON.QUSV.loadILSign("../services/record/faug2/_hold-qfv-blur.jpg");
                     ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png");
 
@@ -204,7 +204,11 @@ window.addEventListener( 'load', function () {
                                 if (thit==4) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
 
                                 thit++;
-                                }     
+                                }
+                            if (e.keyCode == 220){ // \
+                                ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png?"+new Date().getTime());
+                                console.log("QFV reloaded");
+                                }
                             });
                         });
                     break;

@@ -253,7 +253,7 @@ var touchSceneNode = function(sname){
     scene.bRecordWrite = false;
 
     scene.qfv = new QV(getGlobalQFVimgpath(sname));
-    scene.qfv.setExtents([-60,-50,0], [100,70,20]);
+    scene.qfv.setExtents([-70,-50,0], [150,70,50]);
 
     console.log("Created scene "+sname);
     //console.log(scene);

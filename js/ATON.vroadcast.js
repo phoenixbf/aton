@@ -141,6 +141,13 @@ ATON.vroadcast.setMagRadius = function(r){
     ATON.vroadcast.socket.emit("UMAGRADIUS", {id: ATON.vroadcast._myUser.id, radius: r } ); // TODO: optimize
 };
 
+ATON.vroadcast.requestRecording = function(msec){
+    if (ATON.vroadcast.socket === undefined) return;
+
+    ATON.vroadcast.socket.emit("REC", {dt: msec} );
+    console.log("Requested server-side RecordTrace");
+};
+
 
 ATON.vroadcast.setUserInfluence = function(user, radius, forces){
     //if (ATON.vroadcast._myUser === undefined) return;

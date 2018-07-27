@@ -16,6 +16,8 @@ var uColors = [
 
 
 ATON.FrontEnd.setupPage = function(){
+    ATON.FrontEnd.ssRec = false;
+
     var iContainer = document.getElementById( "iContainer" );
     iContainer.addEventListener( 'keydown', function ( e ) {
         e.stopPropagation();
@@ -61,6 +63,19 @@ ATON.FrontEnd.setupPage = function(){
         console.log(el.checked);
         ATON._bUseGravity = el.checked;
     };
+
+    ATON.FrontEnd.reqREC = function(){
+        ATON.FrontEnd.ssRec = !ATON.FrontEnd.ssRec;
+
+        if (ATON.FrontEnd.ssRec){
+            $('#idRecBTN').text("STOP");
+            ATON.vroadcast.requestRecording(300); // 100
+            }
+        else {
+            $('#idRecBTN').text("REC");
+            ATON.vroadcast.requestRecording();
+            }
+        };
 };
 
 
@@ -171,9 +186,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
-                    //ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
-                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+                    ATON.QUSV.setPositionAndExtents([-60,-50,0], [100,70,20]);
+                    //ATON.QUSV.loadILSign("../services/record/faug2/_hold-qfv-blur.jpg");
+                    ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png");
 
                     var thit = 0;
                     // CUSTOM KEYBOARD

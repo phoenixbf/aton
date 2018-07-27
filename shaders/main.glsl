@@ -22,6 +22,10 @@ precision mediump int;
 
 #define ATON_LP_MAX_H   480
 
+#define QV_SIZE     4096
+#define QV_TSIZE    64
+#define QV_TILING   8
+
 
 varying vec2 osg_TexCoord0;
 varying vec2 osg_TexCoord1;
@@ -82,6 +86,57 @@ vec3 QUSVDecodeLocation(vec4 frag){
     loc.z = (frag.b * uQUSVsize.z) + uQUSVmin.z;
 
     return loc;
+}
+
+// z: 0=outside
+vec3 QVAEncodeLocation(vec3 worldLoc){
+    vec3 P;
+    vec3 R;
+    // normalized
+    P.x = (worldLoc.x - uQUSVmin.x) / uQUSVsize.x;
+    P.y = (worldLoc.y - uQUSVmin.y) / uQUSVsize.y;
+    P.z = (worldLoc.z - uQUSVmin.z) / uQUSVsize.z;
+
+    int i,j,t;
+    i = int(P.x * float(QV_TSIZE));
+    j = int(P.y * float(QV_TSIZE));
+
+    t = int(P.z * float(QV_TSIZE)); // tile index
+
+    i += (t * QV_TSIZE);
+
+    R.x = float(i)/float(QV_SIZE);
+    R.y = 1.0 - float(j)/float(QV_TSIZE);
+
+/*
+    int i,j,z;
+    i = int(P.x * float(QV_TSIZE));
+    j = int(P.y * float(QV_TSIZE));
+    z = int(P.z * float(QV_TSIZE));
+
+    int offX = int( float(z) / float(QV_TILING) );
+    int offY = z - int(QV_TILING * offX);
+
+    i += (QV_TSIZE * offX);
+    j += (QV_TSIZE * offY);
+
+    R.x = float(i)/512.0;
+    R.y = float(j)/512.0;
+*/
+
+    // uv-coords
+/*
+    R.x = floor(P.x / float(QV_TILING));
+    R.y = floor(P.y / float(QV_TILING));
+
+    int z = int(P.z * float(QV_TSIZE));
+    int offX = int(z / QV_TILING);
+    int offY = z - int(QV_TILING * offX); //mod(z,int(QV_TILING)); // // mod(z,QV_TILING)
+
+    R.x += (float(offX) / float(QV_TILING));
+    R.y += (float(offY) / float(QV_TILING));
+*/
+    return R;
 }
 
 //=========================================================
@@ -578,9 +633,16 @@ void main(){
 
 
     //=====================================================
-    // QUSV Pass
+    // QUSV/QFV Pass
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
+
+#if 1   // QFV
+    vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
+
+    vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
+    FinalFragment = mix(FinalFragment,QVAcol, 0.7);
+#endif
 
 #if 0
     #define USE_ILSIGN 1

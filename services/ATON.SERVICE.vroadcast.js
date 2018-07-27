@@ -63,6 +63,105 @@ var time = tick();
 var globalSignBox    = aabb([-10.0, -10.0, -1.0], [10.0, 10.0, 20.0]);
 var globalSignFocIMG = undefined;
 
+// Quantized Volumes
+// - QVA: quantized volumetric atlas
+// - QFV: quantized focus volume
+// TODO: move & clean volume-based functions
+//=====================================================
+// Normalized location inside volume
+/*
+var getNormLocationInVolume = function(loc, vol){
+    var px = (loc[0] - vol.x0()) / vol.width();
+    var py = (loc[1] - vol.y0()) / vol.height();
+    var pz = (loc[2] - vol.z0()) / vol.depth();
+
+    return [px,py,pz];
+};
+*/
+
+
+QV = function(qvaPath){
+    this.vol     = aabb([-1.0, -1.0, -1.0], [1.0, 1.0, 1.0]);
+    //this.PA      = new Jimp(512,512); // 4096
+    this.PA      = new Jimp(4096,64);
+
+    this._PAbin  = undefined;
+    this._PAcol  = undefined;
+    this.imgpath = qvaPath;
+    this.tiling  = 8; //16
+    this.tsize   = 64; //256
+
+    // Init with opaque black
+    var vBlack = new Uint8Array(4);
+    vBlack[0] = 0;
+    vBlack[1] = 0;
+    vBlack[2] = 0;
+    vBlack[3] = 255;
+
+    var col = Buffer.from(vBlack).readUIntBE(0,4)
+    for (let i = 0; i < 4096; i++){ // 512
+        for (let j = 0; j < 64; j++){ // 512
+        this.PA.setPixelColor(col, i,j);
+        }
+    }
+};
+
+QV.prototype = {
+    setExtents: function(start,ext){
+        this.vol = aabb(start, ext);
+        },
+
+    getNormLocationInVolume: function(loc){
+        var px = (loc[0] - this.vol.x0()) / this.vol.width();
+        var py = (loc[1] - this.vol.y0()) / this.vol.height();
+        var pz = (loc[2] - this.vol.z0()) / this.vol.depth();
+
+        return [px,py,pz];
+        },
+
+    setValue: function(loc,valbin){
+        //vbin = new Uint8Array(4);
+        this._PAbuf = Buffer.from(valbin);
+        this._PAcol = this._PAbuf.readUIntBE(0,4);
+
+        // Normalized location inside volume
+        var P = this.getNormLocationInVolume(loc);
+
+        if (P[0] > 1.0 || P[0] < 0) return;
+        if (P[1] > 1.0 || P[1] < 0) return;
+        if (P[2] > 1.0 || P[2] < 0) return;
+
+        var i,j,t;
+        i = parseInt(P[0] * this.tsize);
+        j = parseInt(P[1] * this.tsize);
+
+        t = parseInt(P[2] * this.tsize); // tile index
+
+        i += (t*this.tsize);
+
+
+/*      GRID LAYOUT
+        var i,j,z;
+        i = parseInt(P[0] * this.tsize);
+        j = parseInt(P[1] * this.tsize);
+        z = parseInt(P[2] * this.tsize);
+
+        var offX = parseInt(z / this.tiling);
+        var offY = z % this.tiling;
+
+        i += (this.tsize * offX);
+        j += (this.tsize * offY);
+*/
+
+        //console.log("write to: ",i,j);
+        this.PA.setPixelColor(this._PAcol, i,j);
+        },
+
+    writePA: function(){
+        this.PA.write( this.imgpath );
+        },
+};
+
 
 // Session file record
 //=====================================================
@@ -83,25 +182,54 @@ var TraceDaemon = function(){
                 user.bRecordWrite = false;
                 }
             });
+
+        if (scene.qfv){
+            scene.qfv.writePA();
+            scene.bRecordWrite = false;
+            }
         
+/*  DISABLED
         if (scene.bRecordWrite){
             writeGlobalRecord(sn);
             scene.bRecordWrite = false;
             }
+*/
         }
-
-    //console.log( tick() + " Record Daemon...");
 };
 
 var outRecordFolder = __dirname+"/record/";
 var currDate = new Date(); // unused
 
 var bRecord = false;
-if (serviceOptions.trace && (serviceOptions.trace > 0)){
-    bRecord = true;
-    setInterval(TraceDaemon, serviceOptions.trace);
-    }
+var rDaemon = undefined;
 
+// Trace recording
+var enableTrace = function(dt){
+    if (dt <= 0) return;
+
+    bRecord = true;
+
+    for (var sn in sceneNodes){
+        var scene = sceneNodes[sn];
+
+        // DISABLED
+        //initGlobalRecord(sn);
+
+        scene.clients.forEach(user => {
+            initClientRecord(user, sn);
+            });
+        }
+
+    rDaemon = setInterval(TraceDaemon, dt);
+    console.log("RECORDING enabled");
+};
+var disableTrace = function(){
+    bRecord = false;
+    if (rDaemon) clearInterval(rDaemon);
+};
+
+
+if (serviceOptions.trace) enableTrace(serviceOptions.trace);
 
 
 // WebServer
@@ -124,10 +252,14 @@ var touchSceneNode = function(sname){
     scene.numClients   = 0; // Note: scene.clients[] may not be contiguous
     scene.bRecordWrite = false;
 
+    scene.qfv = new QV(getGlobalQFVimgpath(sname));
+    scene.qfv.setExtents([-60,-50,0], [100,70,20]);
+
     console.log("Created scene "+sname);
     //console.log(scene);
 
-    if (bRecord) initGlobalRecord(sname);
+    // DISABLED
+    //if (bRecord) initGlobalRecord(sname);
 
     return scene;
 };
@@ -302,6 +434,10 @@ var getGlobalSignatureFocusFilepath = function(scenename){
 
 var getGlobalRecordFilepath = function(scenename){
     return outRecordFolder+scenename+"/swarm.csv";
+};
+
+var getGlobalQFVimgpath = function(scenename){
+    return outRecordFolder+scenename+"/qfv.png";
 };
 
 var initGlobalRecord = function(scenename){
@@ -526,15 +662,35 @@ var writeClientRecord = function(c, scenename){
 
     //console.log(col);
 
+
+    // TEST QFV (quantized focus volume)
+    if (sceneNodes[scenename] && sceneNodes[scenename].qfv){
+        var qfv = sceneNodes[scenename].qfv;
+        var F = qfv.getNormLocationInVolume(c.focus);
+
+        var fv = new Uint8Array(4);
+        fv[0] = (F[0] * 255.0); //60;
+        fv[1] = (F[1] * 255.0); //255;
+        fv[2] = (F[2] * 255.0); //60;
+        fv[3] = 255;
+
+        qfv.setValue(/*c.position*/c.focus, fv);
+        }
+
+
+/* DISABLED
     if (c.signFocIMG){
         c.signFocIMG.setPixelColor(c.signFocCOL, w, 0);
         c.signFocIMG.write( getSignatureFocusFilepath(c,scenename) );
         }
+*/
 
+/* DISABLED
     if (globalSignFocIMG){
         globalSignFocIMG.setPixelColor(c.signFocCOL, w, c.id);
         globalSignFocIMG.write( getGlobalSignatureFocusFilepath(scenename) );
         }
+*/
 };
 
 
@@ -630,8 +786,6 @@ io.on('connection', function(socket){
 
         // Record on file
         if (assignedID>=0 && bRecord){
-            //writeClientRecord(clientInfo);
-            //writeGlobalRecord(sceneName);
             clientInfo.bRecordWrite = true;
             scene.bRecordWrite      = true;
             }
@@ -657,8 +811,6 @@ io.on('connection', function(socket){
 
         // Record on file
         if (assignedID>=0 && bRecord){
-            //writeClientRecord(clientInfo);
-            //writeGlobalRecord(sceneName);
             clientInfo.bRecordWrite = true;
             scene.bRecordWrite      = true;
             }
@@ -715,6 +867,18 @@ io.on('connection', function(socket){
         console.log(data);
         //socket.broadcast.emit("UNAME", data );
         socket.broadcast.to(sceneName).emit("UMAGRADIUS", data );
+        });
+
+    // Request Record enable
+    socket.on('REC', function(data){
+        if (!bRecord){
+            if (data.dt) enableTrace(data.dt);
+            console.log("Trace Recording ENABLED");
+            }
+        else {
+            disableTrace();
+            console.log("Trace Recording DISABLED");
+            }
         });
 
 });

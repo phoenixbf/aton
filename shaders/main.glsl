@@ -22,9 +22,9 @@ precision mediump int;
 
 #define ATON_LP_MAX_H   480
 
-#define QV_SIZE     4096
-#define QV_TSIZE    64
-#define QV_TILING   8
+#define QV_SLICE_RES  64 //256
+#define QV_Z_SLICES   64 //32
+#define QV_SIZE       QV_SLICE_RES*QV_Z_SLICES
 
 
 varying vec2 osg_TexCoord0;
@@ -107,15 +107,15 @@ vec3 QVAEncodeLocation(vec3 worldLoc){
 */
 
     int i,j,t;
-    i = int(P.x * float(QV_TSIZE));
-    j = int(P.y * float(QV_TSIZE));
+    i = int(P.x * float(QV_SLICE_RES));
+    j = int(P.y * float(QV_SLICE_RES));
 
-    t = int(P.z * float(QV_TSIZE)); // tile index
+    t = int(P.z * float(QV_Z_SLICES)); // tile index
 
-    i += (t * QV_TSIZE);
+    i += (t * QV_SLICE_RES);
 
     R.x = float(i)/float(QV_SIZE);
-    R.y = 1.0 - float(j)/float(QV_TSIZE);
+    R.y = 1.0 - float(j)/float(QV_SLICE_RES);
 
 /*
     int i,j,z;

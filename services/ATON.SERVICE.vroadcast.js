@@ -79,17 +79,24 @@ var getNormLocationInVolume = function(loc, vol){
 };
 */
 
+const QV_SLICE_RES = 64; //256; //128;
+const QV_Z_SLICES  = 64; //16; //32;
+const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
+
+var QFsync = 0;
+const QFsyncFreq = 20;
+
 
 QV = function(qvaPath){
     this.vol     = aabb([-1.0, -1.0, -1.0], [1.0, 1.0, 1.0]);
     //this.PA      = new Jimp(512,512); // 4096
-    this.PA      = new Jimp(4096,64);
+    this.PA      = new Jimp(QV_SIZE,QV_SLICE_RES);
 
     this._PAbin  = undefined;
     this._PAcol  = undefined;
     this.imgpath = qvaPath;
-    this.tiling  = 8; //16
-    this.tsize   = 64; //256
+    //this.tiling  = 8; //16
+    //this.tsize   = 64; //256
 
     // Init with opaque black
     var vBlack = new Uint8Array(4);
@@ -99,8 +106,8 @@ QV = function(qvaPath){
     vBlack[3] = 255;
 
     var col = Buffer.from(vBlack).readUIntBE(0,4)
-    for (let i = 0; i < 4096; i++){ // 512
-        for (let j = 0; j < 64; j++){ // 512
+    for (let i = 0; i < QV_SIZE; i++){
+        for (let j = 0; j < QV_SLICE_RES; j++){
         this.PA.setPixelColor(col, i,j);
         }
     }
@@ -132,12 +139,12 @@ QV.prototype = {
         if (P[2] > 1.0 || P[2] < 0) return;
 
         var i,j,t;
-        i = parseInt(P[0] * this.tsize);
-        j = parseInt(P[1] * this.tsize);
+        i = parseInt(P[0] * QV_SLICE_RES);
+        j = parseInt(P[1] * QV_SLICE_RES);
 
-        t = parseInt(P[2] * this.tsize); // tile index
+        t = parseInt(P[2] * QV_Z_SLICES); // tile index
 
-        i += (t*this.tsize);
+        i += (t * QV_SLICE_RES); // offset
 
 
 /*      GRID LAYOUT
@@ -183,11 +190,13 @@ var TraceDaemon = function(){
                 }
             });
 
+/* DONE VIA MSG
         if (scene.qfv){
             scene.qfv.writePA();
             scene.bRecordWrite = false;
             }
-        
+*/
+
 /*  DISABLED
         if (scene.bRecordWrite){
             writeGlobalRecord(sn);
@@ -664,6 +673,7 @@ var writeClientRecord = function(c, scenename){
 
 
     // TEST QFV (quantized focus volume)
+/*
     if (sceneNodes[scenename] && sceneNodes[scenename].qfv){
         var qfv = sceneNodes[scenename].qfv;
         var F = qfv.getNormLocationInVolume(c.focus);
@@ -674,9 +684,9 @@ var writeClientRecord = function(c, scenename){
         fv[2] = (F[2] * 255.0); //60;
         fv[3] = 255;
 
-        qfv.setValue(/*c.position*/c.focus, fv);
+        qfv.setValue(c.focus, fv); c.position
         }
-
+*/
 
 /* DISABLED
     if (c.signFocIMG){
@@ -867,6 +877,28 @@ io.on('connection', function(socket){
         console.log(data);
         //socket.broadcast.emit("UNAME", data );
         socket.broadcast.to(sceneName).emit("UMAGRADIUS", data );
+        });
+
+    socket.on('POLFOC', function(data){
+        if (scene && scene.qfv){
+            var qfv = scene.qfv;
+
+            var F = qfv.getNormLocationInVolume(data.focus);
+            //console.log(data.focus);
+
+            var fv = new Uint8Array(4);
+            fv[0] = (F[0] * 255.0); //60;
+            fv[1] = (F[1] * 255.0); //255;
+            fv[2] = (F[2] * 255.0); //60;
+            fv[3] = 255; // rank
+
+            qfv.setValue(/*clientInfo.position*/ clientInfo.focus, fv);
+
+            // Timed atlas write on disk
+            if (QFsync == 0){ qfv.writePA(); /*console.log("WRITE");*/ }
+            QFsync = (QFsync + 1) % QFsyncFreq;
+            //console.log(".");
+            }
         });
 
     // Request Record enable

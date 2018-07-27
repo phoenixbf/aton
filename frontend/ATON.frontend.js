@@ -209,6 +209,10 @@ window.addEventListener( 'load', function () {
                                 ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png?"+new Date().getTime());
                                 console.log("QFV reloaded");
                                 }
+                                
+                            if (e.keyCode == 70){
+                                ATON.vroadcast.toggleFocusPolarization();
+                                }
                             });
                         });
                     break;

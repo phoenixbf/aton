@@ -34,7 +34,6 @@ ATON.QUSV.loadILSign = function(path){
         ILSTexture.setMinFilter( osg.Texture.NEAREST ); // important!
         ILSTexture.setMagFilter( osg.Texture.NEAREST );
 
-
         ILSTexture.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
         ILSTexture.setWrapT( osg.Texture.CLAMP_TO_EDGE );
 
@@ -48,13 +47,15 @@ ATON.QUSV.loadQVASign = function(path){
     osgDB.readImageURL( path ).then( function ( data ){      
         QVATexture.setImage( data );
 
-        QVATexture.setMinFilter( 'LINEAR' );
-        QVATexture.setMagFilter( 'LINEAR' );
+        //QVATexture.setMinFilter( 'LINEAR' );
+        //QVATexture.setMagFilter( 'LINEAR' );
+        QVATexture.setMinFilter( osg.Texture.NEAREST );
+        QVATexture.setMagFilter( osg.Texture.NEAREST );
 
         QVATexture.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
         QVATexture.setWrapT( osg.Texture.CLAMP_TO_EDGE );
 
         ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QUSV, QVATexture );
-        console.log("ILSignature "+path+" loaded.");
+        console.log("QVA Signature "+path+" loaded.");
         });
 };

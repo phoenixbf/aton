@@ -227,8 +227,19 @@ ATON.vroadcast._update = function(){
     ATON.vroadcast.socket.emit("UFOCUSD", {id: myUser.id, bin: binTargD});
     //console.log(binTargD);
 
+    // Polarize Focus
+    if (ATON.vroadcast._bQFpol){
+        var F = ATON._hoveredVisData.p.slice(0);
+        ATON.vroadcast.socket.emit("POLFOC", {/*id: myUser.id, */focus: DTarg});
+        }
+
     //console.log("User state sent.");
 };
+
+ATON.vroadcast.toggleFocusPolarization = function(){
+    ATON.vroadcast._bQFpol = !ATON.vroadcast._bQFpol;
+    console.log("Focus Polarization: "+ATON.vroadcast._bQFpol);
+}
 
 // Update (send state)
 // NOT USED (bug in adding multiple callbacks to same node in VR)

@@ -194,6 +194,8 @@ window.addEventListener( 'load', function () {
                     //ATON.QUSV.loadILSign("../services/record/faug2/_hold-qfv-blur.jpg");
                     ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png");
 
+                    //console.log(JSON.stringify(ATON.QUSV));
+
                     var thit = 0;
                     // CUSTOM KEYBOARD
                     $(function() {
@@ -201,11 +203,11 @@ window.addEventListener( 'load', function () {
                             if (e.keyCode == 84){ // t
                                 e.preventDefault();
 
-                                if (thit==0) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
+                                if (thit==0) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
                                 if (thit==1) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
                                 if (thit==2) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
-                                if (thit==3) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
-                                if (thit==4) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
+                                if (thit==3) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
+                                //if (thit==4) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
 
                                 thit++;
                                 }

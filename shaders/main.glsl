@@ -646,7 +646,7 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 1   // QFV
+#if 0   // QFV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));

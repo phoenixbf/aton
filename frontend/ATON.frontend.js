@@ -121,7 +121,7 @@ ATON.FrontEnd.attachListeners = function(){
                 console.log(JSON.parse(jMag));
                 }
 
-            if (e.keyCode == 70){
+            if (e.keyCode == 70){ // f
                 ATON.vroadcast.toggleFocusPolarization();
                 }
             });
@@ -177,9 +177,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
-                    ATON.QUSV.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
+                    ATON.QVhandler.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
                     //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
                     break;
 
                 case "faug2":
@@ -190,11 +190,17 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
-                    ATON.QUSV.setPositionAndExtents([-70,-50,0], [150,70,50]);
-                    //ATON.QUSV.loadILSign("../services/record/faug2/_hold-qfv-blur.jpg");
-                    ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png");
+                    var qv = ATON.QVhandler.addQV([-70,-50,0], [150,70,50]);
+                    qv.loadQVAimg("../services/record/faug2/qfv.png");
+                    
+                    console.log(qv.getResolution());
 
-                    //console.log(JSON.stringify(ATON.QUSV));
+/*
+                    ATON.QVhandler.setPositionAndExtents([-70,-50,0], [150,70,50]);
+                    //ATON.QVhandler.loadILSign("../services/record/faug2/_hold-qfv-blur.jpg");
+                    ATON.QVhandler.loadQVASign("../services/record/faug2/qfv.png");
+*/
+                    //console.log(JSON.stringify(ATON.QVhandler));
 
                     var thit = 0;
                     // CUSTOM KEYBOARD
@@ -212,8 +218,13 @@ window.addEventListener( 'load', function () {
                                 thit++;
                                 }
                             if (e.keyCode == 220){ // \
-                                ATON.QUSV.loadQVASign("../services/record/faug2/qfv.png?"+new Date().getTime());
-                                console.log("QFV reloaded");
+                                //ATON.QVhandler.loadQVASign("../services/record/faug2/qfv.png?"+new Date().getTime());
+                                qv.loadQVAimg("../services/record/faug2/qfv.png?"+new Date().getTime());
+                                //console.log("QFV reloaded");
+                                }
+
+                            if (e.keyCode == 71){
+                                console.log(qv.getValue(ATON._currPOV.pos));
                                 }
                             });
                         });
@@ -233,10 +244,10 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
 
                     
-                    //ATON.QUSV.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]); // TOT
-                    ATON.QUSV.setPositionAndExtents([92, -50.0, -5.0], [25, 32.5, 30.0]); // Lib
+                    //ATON.QVhandler.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]); // TOT
+                    ATON.QVhandler.setPositionAndExtents([92, -50.0, -5.0], [25, 32.5, 30.0]); // Lib
 
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/pacis/P-qils.png");
+                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/pacis/P-qils.png");
                     //ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
                     break;
 
@@ -250,9 +261,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([111.72,160.66,15.20],[34.22,146.66,-11.13]);
 
-                    ATON.QUSV.setPositionAndExtents([-30.0,0.0,-2.5], [170.0,190.0,40.5]);
+                    ATON.QVhandler.setPositionAndExtents([-30.0,0.0,-2.5], [170.0,190.0,40.5]);
                     //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/sarmi/P-qils.png");
+                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/sarmi/P-qils.png");
                     break;
 
                 case "complex":
@@ -292,8 +303,8 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
 
-                    ATON.QUSV.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
+                    ATON.QVhandler.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
                     break;
 
                 case "vestibule":
@@ -303,12 +314,12 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
-                    ATON.QUSV.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
                     
-                    ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/P-qils.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
+                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P-qils.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
                     break;
 
                 case "smoking":
@@ -318,12 +329,12 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.3,0.3,0.3]));
                     ATON.setHome([0.33,1.02,1.93],[-0.41,-0.46,1.58]);
 
-                    ATON.QUSV.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
                     
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/F-qils.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/P-qils.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/F_GLOB-TP0.png");
-                    //ATON.QUSV.loadILSign("../models/_prv/_QUSV/smoking/P_GLOB-TP0.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/F-qils.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/P-qils.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/F_GLOB-TP0.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/P_GLOB-TP0.png");
                     break;
 
                 case "test1":

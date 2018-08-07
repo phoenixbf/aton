@@ -90,31 +90,17 @@ const QFsyncFreq = 20;
 QV = function(qvaPath){
     this.vol     = aabb([-1.0, -1.0, -1.0], [1.0, 1.0, 1.0]);
     //this.PA      = new Jimp(512,512); // 4096
-    this.PA      = new Jimp(QV_SIZE,QV_SLICE_RES);
+    this.PA      = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // Init with opaque black (0x000000ff)
 
     this._PAbin  = undefined;
     this._PAcol  = undefined;
     this.imgpath = qvaPath;
     //this.tiling  = 8; //16
     //this.tsize   = 64; //256
-
-    // Init with opaque black
-    var vBlack = new Uint8Array(4);
-    vBlack[0] = 0;
-    vBlack[1] = 0;
-    vBlack[2] = 0;
-    vBlack[3] = 255;
-
-    var col = Buffer.from(vBlack).readUIntBE(0,4)
-    for (let i = 0; i < QV_SIZE; i++){
-        for (let j = 0; j < QV_SLICE_RES; j++){
-        this.PA.setPixelColor(col, i,j);
-        }
-    }
 };
 
 QV.prototype = {
-    setExtents: function(start,ext){
+    setPositionAndExtents: function(start,ext){
         this.vol = aabb(start, ext);
         },
 
@@ -126,17 +112,25 @@ QV.prototype = {
         return [px,py,pz];
         },
 
-    setValue: function(loc,valbin){
+    setValue: function(loc, col8){
         //vbin = new Uint8Array(4);
+/*
         this._PAbuf = Buffer.from(valbin);
         this._PAcol = this._PAbuf.readUIntBE(0,4);
+*/
 
         // Normalized location inside volume
         var P = this.getNormLocationInVolume(loc);
 
-        if (P[0] > 1.0 || P[0] < 0) return;
-        if (P[1] > 1.0 || P[1] < 0) return;
-        if (P[2] > 1.0 || P[2] < 0) return;
+        // Check outside volume
+        if (P[0] > 1.0 || P[0] < 0.0) return;
+        if (P[1] > 1.0 || P[1] < 0.0) return;
+        if (P[2] > 1.0 || P[2] < 0.0) return;
+
+        //P[0] -= (1.0/QV_SLICE_RES);
+        P[1] -= (1.0/QV_SLICE_RES);
+        //P[2] -= (1.0/QV_SLICE_RES);
+
 
         var i,j,t;
         i = parseInt(P[0] * QV_SLICE_RES);
@@ -161,6 +155,12 @@ QV.prototype = {
 */
 
         //console.log("write to: ",i,j);
+        var prevCol = this.PA.getPixelColor(i,j);
+        var A = Jimp.intToRGBA(prevCol).a + col8[3];
+        if (A > 255 ) A = 255;
+
+        this._PAcol = Jimp.rgbaToInt(col8[0],col8[1],col8[2], A);
+
         this.PA.setPixelColor(this._PAcol, i,j);
         },
 
@@ -207,7 +207,7 @@ var TraceDaemon = function(){
 };
 
 var outRecordFolder = __dirname+"/record/";
-var currDate = new Date(); // unused
+//var currDate = new Date(); // unused
 
 var bRecord = false;
 var rDaemon = undefined;
@@ -262,7 +262,7 @@ var touchSceneNode = function(sname){
     scene.bRecordWrite = false;
 
     scene.qfv = new QV(getGlobalQFVimgpath(sname));
-    scene.qfv.setExtents([-70,-50,0], [150,70,50]);
+    scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]);
 
     console.log("Created scene "+sname);
     //console.log(scene);
@@ -887,10 +887,10 @@ io.on('connection', function(socket){
             //console.log(data.focus);
 
             var fv = new Uint8Array(4);
-            fv[0] = (F[0] * 255.0); //60;
-            fv[1] = (F[1] * 255.0); //255;
-            fv[2] = (F[2] * 255.0); //60;
-            fv[3] = 255; // rank
+            fv[0] = 60; //(F[0] * 255.0);
+            fv[1] = 255; //(F[1] * 255.0);
+            fv[2] = 60; //(F[2] * 255.0);
+            fv[3] = 4; // rank
 
             qfv.setValue(/*clientInfo.position*/ clientInfo.focus, fv);
 

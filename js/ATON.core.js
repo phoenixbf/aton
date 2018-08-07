@@ -2530,25 +2530,11 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
 
     // QUSV
-    ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QUSV, 'QUSVSampler' );
+    ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );
     ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQUSVslider') );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQUSVmin' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQUSVsize' ) );
-
-    // FAug TOT
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-29, -40.0, 0.0], 'uQUSVmin' ) );
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [57.0, 120.0, 60.0], 'uQUSVsize' ) );
-    // Stairs
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-20.0, -6.0, 0.0], 'uQUSVmin' ) );
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [40.0, 10.0, 10.0], 'uQUSVsize' ) );
-
-    // FPacis
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [-26, -58.0, -5.0], 'uQUSVmin' ) );
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [142.5, 50.0, 30.0], 'uQUSVsize' ) );
-    // FPacis lib
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [92, -50.0, -5.0], 'uQUSVmin' ) );
-    //ATON._mainSS.addUniform( osg.Uniform.createFloat3( [25, 32.5, 30.0], 'uQUSVsize' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
 
     // LP
     ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );

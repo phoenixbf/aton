@@ -51,8 +51,8 @@ uniform vec3 uViewDirWorld;
 uniform vec3 uHoverPos;
 uniform float uHoverAffordance;
 
-uniform vec3 uQUSVmin;
-uniform vec3 uQUSVsize;
+uniform vec3 uQVmin;
+uniform vec3 uQVext;
 uniform float uQUSVslider;
 
 uniform float time;
@@ -72,18 +72,18 @@ uniform User Users[128];
 
 vec4 QUSVEncodeLocation(vec3 worldLoc){
     vec4 qusvCol;
-    qusvCol.r = (worldLoc.x - uQUSVmin.x) / uQUSVsize.x;
-    qusvCol.g = (worldLoc.y - uQUSVmin.y) / uQUSVsize.y;
-    qusvCol.b = (worldLoc.z - uQUSVmin.z) / uQUSVsize.z;
+    qusvCol.r = (worldLoc.x - uQVmin.x) / uQVext.x;
+    qusvCol.g = (worldLoc.y - uQVmin.y) / uQVext.y;
+    qusvCol.b = (worldLoc.z - uQVmin.z) / uQVext.z;
 
     return qusvCol;
 }
 
 vec3 QUSVDecodeLocation(vec4 frag){
     vec3 loc;
-    loc.x = (frag.r * uQUSVsize.x) + uQUSVmin.x;
-    loc.y = (frag.g * uQUSVsize.y) + uQUSVmin.y;
-    loc.z = (frag.b * uQUSVsize.z) + uQUSVmin.z;
+    loc.x = (frag.r * uQVext.x) + uQVmin.x;
+    loc.y = (frag.g * uQVext.y) + uQVmin.y;
+    loc.z = (frag.b * uQVext.z) + uQVmin.z;
 
     return loc;
 }
@@ -93,9 +93,9 @@ vec3 QVAEncodeLocation(vec3 worldLoc){
     vec3 P;
     vec3 R;
     // normalized
-    P.x = (worldLoc.x - uQUSVmin.x) / uQUSVsize.x;
-    P.y = (worldLoc.y - uQUSVmin.y) / uQUSVsize.y;
-    P.z = (worldLoc.z - uQUSVmin.z) / uQUSVsize.z;
+    P.x = (worldLoc.x - uQVmin.x) / uQVext.x;
+    P.y = (worldLoc.y - uQVmin.y) / uQVext.y;
+    P.z = (worldLoc.z - uQVmin.z) / uQVext.z;
 
 /*  NOT WORKING WHY?
     R.x = P.x / float(QV_SIZE);
@@ -646,11 +646,11 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 0   // QFV
+#if 1   // QFV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
-    FinalFragment = mix(FinalFragment,QVAcol, 0.9);
+    FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a);
 #endif
 
 #if 0
@@ -679,7 +679,7 @@ void main(){
     vec4 fCol = vec4(1,0,0,1);
     float uMul = 1.0;
     float qRad;
-    //qRad = max(max(uQUSVsize.x,uQUSVsize.y),uQUSVsize.z) / 255.0;
+    //qRad = max(max(uQVext.x,uQVext.y),uQVext.z) / 255.0;
     qRad = 3.0; // 3.0; //(uQUSVslider*500.0);
 
 #ifdef USE_ILSIGN

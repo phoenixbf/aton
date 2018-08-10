@@ -128,6 +128,22 @@ ATON.FrontEnd.attachListeners = function(){
         });
 };
 
+ATON._polarizeLocomotionQV = function(){
+    var qfv = ATON.QVhandler.getActiveQV();
+    if (qfv === undefined) return;
+
+    //console.log("P");
+
+    var v = qfv.getValue(ATON._currPOV.pos);
+    if (v === undefined || v[3] <= 0) return; // outside or null
+
+    var ft = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
+    //console.log(ft);
+
+    var conv = 0.01; // strenght
+    ATON._currPOV.target = osg.vec3.lerp( [], ATON._currPOV.target, ft, conv*(v[3]/255.0));
+};
+
 
 window.addEventListener( 'load', function () {
     // First we grab canvas element
@@ -224,7 +240,8 @@ window.addEventListener( 'load', function () {
                                 }
 
                             if (e.keyCode == 71){
-                                console.log(qv.getValue(ATON._currPOV.pos));
+                                var v = qv.getValue(ATON._currPOV.pos);
+                                if (v[3] > 0) console.log( qv.getWorldLocationFromRGB( v[0],v[1],v[2] ));
                                 }
                             });
                         });

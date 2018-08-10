@@ -1754,8 +1754,11 @@ ATON._updateCallback.prototype = {
             else ATON._handlePOVrequest();
             }
 
-        // MagNet
+        // Polarization
+        // MagNodes
         if (ATON._tPOVcall < 0.0 /*&& !ATON._vrState*/) ATON._handleMagNetClosest();
+        // QV
+        if (ATON._polarizeLocomotionQV) ATON._polarizeLocomotionQV();
 
         // Generic Constraints
         if (ATON.applyPOVconstraints) ATON.applyPOVconstraints();

@@ -79,8 +79,8 @@ var getNormLocationInVolume = function(loc, vol){
 };
 */
 
-const QV_SLICE_RES = 64; //256; //128;
-const QV_Z_SLICES  = 64; //16; //32;
+const QV_SLICE_RES = 32; //64; //256; //128;
+const QV_Z_SLICES  = 32; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 var QFsync = 0;
@@ -89,8 +89,10 @@ const QFsyncFreq = 20;
 
 QV = function(qvaPath){
     this.vol     = aabb([-1.0, -1.0, -1.0], [1.0, 1.0, 1.0]);
+    
     //this.PA      = new Jimp(512,512); // 4096
-    this.PA      = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // Init with opaque black (0x000000ff)
+    this.PA = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // Init with opaque black (0x000000ff)
+    this.PA.quality(100);
 
     this._PAbin  = undefined;
     this._PAcol  = undefined;
@@ -112,12 +114,29 @@ QV.prototype = {
         return [px,py,pz];
         },
 
-    setValue: function(loc, col8){
-        //vbin = new Uint8Array(4);
-/*
-        this._PAbuf = Buffer.from(valbin);
-        this._PAcol = this._PAbuf.readUIntBE(0,4);
-*/
+    encodeLocationToRGBA: function(loc){
+        var P = this.getNormLocationInVolume(loc);
+
+        var col = new Uint8Array(4);
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 0;
+
+        if (P[0] > 1.0 || P[0] < 0.0) return col;
+        if (P[1] > 1.0 || P[1] < 0.0) return col;
+        if (P[2] > 1.0 || P[2] < 0.0) return col;
+
+        col[0] = parseInt(P[0] * 255.0);
+        col[1] = parseInt(P[1] * 255.0);
+        col[2] = parseInt(P[2] * 255.0);
+        col[3] = 255;
+
+        return col;
+        },
+
+    // voxel ignition
+    igniteLocation: function(loc, col8){
 
         // Normalized location inside volume
         var P = this.getNormLocationInVolume(loc);
@@ -156,6 +175,7 @@ QV.prototype = {
 
         //console.log("write to: ",i,j);
         var prevCol = this.PA.getPixelColor(i,j);
+
         var A = Jimp.intToRGBA(prevCol).a + col8[3];
         if (A > 255 ) A = 255;
 
@@ -684,7 +704,7 @@ var writeClientRecord = function(c, scenename){
         fv[2] = (F[2] * 255.0); //60;
         fv[3] = 255;
 
-        qfv.setValue(c.focus, fv); c.position
+        qfv.igniteLocation(c.focus, fv); c.position
         }
 */
 
@@ -718,6 +738,10 @@ io.on('connection', function(socket){
     var sceneName    = undefined;
     var scene        = undefined;
     var clientInfo   = undefined;
+
+    // TODO: use this as client unique id
+    var ipAddr = socket.handshake.address;
+    console.log("New connection from "+ipAddr);
 
 /*
     //socket.emit(..); // only this client
@@ -886,13 +910,17 @@ io.on('connection', function(socket){
             var F = qfv.getNormLocationInVolume(data.focus);
             //console.log(data.focus);
 
+/*
             var fv = new Uint8Array(4);
             fv[0] = 60; //(F[0] * 255.0);
             fv[1] = 255; //(F[1] * 255.0);
             fv[2] = 60; //(F[2] * 255.0);
             fv[3] = 4; // rank
+*/
+            var fv = qfv.encodeLocationToRGBA(clientInfo.focus);
+            fv[3] = 4; // rank
 
-            qfv.setValue(/*clientInfo.position*/ clientInfo.focus, fv);
+            qfv.igniteLocation( clientInfo.position /*clientInfo.focus*/, fv);
 
             // Timed atlas write on disk
             if (QFsync == 0){ qfv.writePA(); /*console.log("WRITE");*/ }

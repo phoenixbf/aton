@@ -22,8 +22,8 @@ precision mediump int;
 
 #define ATON_LP_MAX_H   480
 
-#define QV_SLICE_RES  64 //256
-#define QV_Z_SLICES   64 //32
+#define QV_SLICE_RES  32 //64 //256
+#define QV_Z_SLICES   32 //64 //32
 #define QV_SIZE       QV_SLICE_RES*QV_Z_SLICES
 
 
@@ -646,7 +646,7 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 1   // QFV
+#if 0   // QFV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));

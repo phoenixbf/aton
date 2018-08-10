@@ -13,8 +13,8 @@ ATON.QVhandler = {};
 
 const ATON_SM_UNIT_QV = 6;
 
-const QV_SLICE_RES = 64; //256; //128;
-const QV_Z_SLICES  = 64; //16; //32;
+const QV_SLICE_RES = 32; //64; //256; //128;
+const QV_Z_SLICES  = 32; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 /*
@@ -93,8 +93,8 @@ ATON.QVhandler.QV.prototype = {
         return this._qvaContext.getImageData(x, y, 1, 1).data;
         },
     
-    getValue: function(pos){
-        var P = this.getNormLocationInVolume(pos);
+    getValue: function(loc){
+        var P = this.getNormLocationInVolume(loc);
 
         // Check outside volume
         if (P[0] > 1.0 || P[0] < 0.0) return undefined;
@@ -116,6 +116,18 @@ ATON.QVhandler.QV.prototype = {
         i += (t * QV_SLICE_RES); // offset
 
         return this.getPixel(i,j);
+        },
+
+    getWorldLocationFromRGB: function( r, g, b ){
+        var x = (r / 255.0) * this.vExt[0];
+        var y = (g / 255.0) * this.vExt[1];
+        var z = (b / 255.0) * this.vExt[2];
+
+        x += this.vMin[0];
+        y += this.vMin[1];
+        z += this.vMin[2];
+
+        return [x,y,z];
         },
 };
 
@@ -147,6 +159,12 @@ ATON.QVhandler.setActiveQVbyIndex = function(index){
     qv.loadQVAimg();
 
     console.log("QV #"+index+" now ACTIVE");
+};
+
+ATON.QVhandler.getActiveQV = function(){
+    if (ATON.QVhandler._activeQVi < 0) return undefined;
+
+    return ATON.QVhandler.QVList[ATON.QVhandler._activeQVi];
 };
 
 

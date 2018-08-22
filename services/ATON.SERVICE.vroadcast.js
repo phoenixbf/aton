@@ -491,8 +491,8 @@ var initGlobalRecord = function(scenename){
         'swarmFZ'+RECORD_SEPARATOR+
         'swarmFocRadius\n');
 
-    // 
-    globalSignFocIMG = new Jimp(4096, MAXCLIENTSPERSCENE);
+    // DISABLED
+    //globalSignFocIMG = new Jimp(4096, MAXCLIENTSPERSCENE);
 
     console.log("Global Record initialized for scene "+scenename);
 };

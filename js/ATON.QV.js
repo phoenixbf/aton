@@ -42,26 +42,28 @@ ATON.QVhandler.QV.prototype = {
 
     // (re)loads associated qva img (signature, etc...)
     loadQVAimg: function(url){
-        if (url !== undefined) this._qvaIMGurl = url;
+        this._qvaIMGloaded = false;
+        if (url !== undefined) this.qvaIMGurl = url;
 
-        if (this._qvaIMGurl === undefined) return;
+        if (this.qvaIMGurl === undefined) return;
 
         var qTex = this._qvaTex;
         qTex.setMinFilter( this.qvaIMGfilter );
         qTex.setMagFilter( this.qvaIMGfilter );
 
-        osgDB.readImageURL( this._qvaIMGurl ).then( function ( data ){     
+        osgDB.readImageURL( this.qvaIMGurl ).then( function ( data ){     
             qTex.setImage( data );
 
             //qTex.setMinFilter( 'LINEAR' );
             //qTex.setMagFilter( 'LINEAR' );
 
             ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, qTex );
+            this._qvaIMGloaded = true;
             console.log("QVA image "+url+" loaded.");
             });
 
         // For ReadPixels
-        this._qvaIMG.src = this._qvaIMGurl;
+        this._qvaIMG.src = this.qvaIMGurl;
         this._qvaCanvas  = document.createElement('canvas');
         this._qvaCanvas.width  = QV_SIZE;
         this._qvaCanvas.height = QV_SLICE_RES;

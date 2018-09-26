@@ -106,6 +106,7 @@ ATON._bFirstPersonMode = false;
 ATON._tPOVprogress     = 0.0;
 ATON._povLerP          = osg.vec3.create();
 ATON._povLerT          = osg.vec3.create();
+ATON._surfAff          = 0.0;
 
 // RTT colliders
 ATON._frontDistance      = 0.0;
@@ -877,29 +878,40 @@ ATON.setFirstPersonMode = function(b){
 
 ATON._requestFirstPersonTrans = function(pickedData){
     if (pickedData === undefined) return;
-    if (!ATON._bSurfaceWalkable) return; // we do nothing if target surface has no affordance - FIXME we should update target anyway
-
     var pn = pickedData.n;
     var pp = pickedData.p;
+    
+    if (!ATON._bSurfAffordable) return; // we do nothing if target surface has no affordance - FIXME we should update target anyway
 
     var nPOV = new ATON.pov;
     var E  = osg.vec3.create();
     var T  = osg.vec3.create();
 
-    pn[2] *= ATON._collideShape[1];
-    osg.vec3.add(E, pp,pn);
+    if (ATON._polPos){
+        E[0] = ATON._polPos[0];
+        E[1] = ATON._polPos[1];
+        E[2] = ATON._polPos[2];
 
-    var dist2 = osg.vec3.squaredDistance(E,ATON._currPOV.pos);
+        T[0] = pp[0];
+        T[1] = pp[1];
+        T[2] = pp[2];
+        }
+    else {
+        pn[2] *= ATON._collideShape[1];
+        osg.vec3.add(E, pp,pn);
 
-    T = ATON._firstPerMan._direction.slice(0);
-    T[0] *= 20.0;
-    T[1] *= 20.0;
-    T[2] *= 20.0; // 0.0
- 
-    //osg.vec3.sub(T, E,ATON._currPOV.pos);
-    //osg.vec3.add(T, T,ATON._currPOV.pos);
+        var dist2 = osg.vec3.squaredDistance(E,ATON._currPOV.pos);
 
-    osg.vec3.add(T, E,T);
+        T = ATON._firstPerMan._direction.slice(0);
+        T[0] *= 20.0;
+        T[1] *= 20.0;
+        T[2] *= 20.0; // 0.0
+     
+        //osg.vec3.sub(T, E,ATON._currPOV.pos);
+        //osg.vec3.add(T, T,ATON._currPOV.pos);
+    
+        osg.vec3.add(T, E,T);
+        }
 
     nPOV.pos    = E;
     nPOV.target = T;
@@ -1889,22 +1901,27 @@ ATON._computeAffordanceHover = function(){
     //if (ATON._hoveredVisData === undefined) return;
 
     // Surface Affordance
-    var aff = 0.0; // cumulative with other parameters
+    ATON._surfAff = 0.0; // cumulative with other parameters
     var pn = ATON._hoveredVisData.n;
     var pp = ATON._hoveredVisData.p;
     
     // Determine walkable surface
     if (pn[2] < 0.8 && ATON._bFirstPersonMode){
-        ATON._bSurfaceWalkable = false;
-        aff = 0.1;
+        ATON._bSurfAffordable = false;
+        ATON._surfAff = 0.1;
         }
     else {
-        ATON._bSurfaceWalkable = true;
-        aff = 1.0;
+        ATON._bSurfAffordable = true;
+        ATON._surfAff = 1.0;
+        }
+
+    // if using QVs
+    if (ATON._polarizeLocomotionQV){
+        if (ATON.polarizedAffordance) ATON.polarizedAffordance();
         }
 
     //console.log(aff);
-    ATON._mainSS.getUniform('uHoverAffordance').setFloat( aff );
+    ATON._mainSS.getUniform('uHoverAffordance').setFloat( ATON._surfAff );
 };
 
 
@@ -2979,13 +2996,17 @@ ATON._handleGamepads = function(){
         // well as a non-null pose.
         if (gamepad){
 			
-			for (var j = 0; j < gamepad.buttons.length; ++j) {
+			for (var j = 0; j < gamepad.buttons.length; ++j){
+                // QV polarization
+                if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
+
 				if (gamepad.buttons[j].pressed){
 					//console.log("GM: Pressed button "+j);
 
-					// 3 = A, 4 = B
+                    // 3 = A, 4 = B
+                    if (j === 1) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
 					if (j === 3) ATON.requestHome();
-					else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
+					//else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
 					}
 				}
 			}

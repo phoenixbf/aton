@@ -61,8 +61,9 @@ ATON.user = function(){
     this.id = -1;
     this.username = "";
     this.status   = "...";
-    this.weight   = 0.0; // Rank
+    this.weight   = 0.0; // old
     this.radius   = 30.0;
+    this.rank     = 0;
 
     // Only for my user
     this.lastPos = osg.vec3.create();
@@ -207,7 +208,7 @@ ATON.vroadcast._update = function(){
         myUser.lastOri[3] = ori[3];
 
         // Encode and Send my data to server
-        var binData = ATON.vroadcast.encodeUserStateData(pos, ori);
+        var binData = ATON.vroadcast.encodeUserStateData(pos, ori, myUser.rank);
         ATON.vroadcast.socket.emit("USTATE", binData.buffer);
         }
 
@@ -254,10 +255,11 @@ ATON.vroadcast._uState.prototype = {
 */
 
 // Encode my state
-ATON.vroadcast.encodeUserStateData = function(pos, ori, scale){
+ATON.vroadcast.encodeUserStateData = function(pos, ori, rank, scale){
     if (scale === undefined) scale = 0.64;
+    if (rank === undefined)  rank = 0;
 
-    var A = new Float32Array(5); // make sufficient room (4 floats + last float)
+    var A = new Float32Array(6); // make sufficient room
     A[0] = pos[0];
     A[1] = pos[1];
     A[2] = pos[2];
@@ -271,6 +273,8 @@ ATON.vroadcast.encodeUserStateData = function(pos, ori, scale){
     binData[17] = (ori[1] * 128.0);
     binData[18] = (ori[2] * 128.0);
     binData[19] = (ori[3] * 128.0);
+
+    binData[21] = parseInt(rank);
 
     //console.log(binData);
     return binData;
@@ -290,7 +294,8 @@ ATON.vroadcast.decodeUserStateData = function(binData){
                 binData[19] / 128.0
                 ];
 
-    user.id = binData[20];
+    user.id   = binData[20];
+    user.rank = binData[21];
 
 
     // Now decode floats
@@ -609,6 +614,7 @@ ATON.vroadcast._registerEventHandlers = function(){
         var user = ATON.vroadcast.users[u.id];
 
         if (user !== undefined){
+            user.rank = u.rank;
             ATON.vroadcast.requestUserTransition(u.id, u.pos, u.ori);
             
             if (user.magNode !== undefined){

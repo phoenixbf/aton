@@ -646,11 +646,11 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 0   // QFV
+#if 1   // QFV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
-    FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a);
+    FinalFragment = mix(FinalFragment,QVAcol, mix(0.0,0.5,QVAcol.a) /*QVAcol.a*/);
 #endif
 
 #if 0
@@ -759,7 +759,7 @@ void main(){
     HoverColor.g += mix(-0.2,0.2, uHoverAffordance);
     HoverColor.b -= 0.2;
 */
-    FinalFragment = mix(FinalFragment, HoverColor, hpd*0.3);
+    FinalFragment = mix(FinalFragment, HoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3);
 #endif
 
 #if 0 // OLD

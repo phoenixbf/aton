@@ -282,7 +282,8 @@ var touchSceneNode = function(sname){
     scene.bRecordWrite = false;
 
     scene.qfv = new QV(getGlobalQFVimgpath(sname));
-    scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]);
+    //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
+    scene.qfv.setPositionAndExtents([-15.0,-40,0], [30,38,30]); // cecilio
 
     console.log("Created scene "+sname);
     //console.log(scene);
@@ -306,6 +307,7 @@ var touchClient = function(id, scene){
     clientInfo.id          = id;
     clientInfo.target      = [0.0,0.0,0.0];
     clientInfo.focus       = [0.0,0.0,0.0];
+    clientInfo.rank        = 0;
 
     // signatures
     clientInfo.signFocBin = undefined;
@@ -368,6 +370,8 @@ var decodeUserStateData = function(data){
                 data.readInt8(19) / 128.0
                 ];
 
+    user.rank = data.readInt8(21);
+
     return user;
 };
 
@@ -389,7 +393,7 @@ var encodeUserStateData = function(c){
     binData[19] = (c.orientation[3] * 128.0);
 
     binData[20] = c.id;     // unsigned byte id
-    //binData[21] = c.rank;   // unsigned byte rank
+    binData[21] = c.rank;   // unsigned byte rank
     //binData[22]
     //binData[23]
 
@@ -817,6 +821,7 @@ io.on('connection', function(socket){
         clientInfo.position    = u.pos.slice(0);
         clientInfo.scale       = u.scale;
         clientInfo.orientation = u.ori.slice(0);
+        clientInfo.rank        = u.rank;
 
         // Record on file
         if (assignedID>=0 && bRecord){
@@ -907,10 +912,10 @@ io.on('connection', function(socket){
         if (scene && scene.qfv){
             var qfv = scene.qfv;
 
+/*
             var F = qfv.getNormLocationInVolume(data.focus);
             //console.log(data.focus);
 
-/*
             var fv = new Uint8Array(4);
             fv[0] = 60; //(F[0] * 255.0);
             fv[1] = 255; //(F[1] * 255.0);
@@ -918,9 +923,16 @@ io.on('connection', function(socket){
             fv[3] = 4; // rank
 */
             var fv = qfv.encodeLocationToRGBA(clientInfo.focus);
-            fv[3] = 4; // rank
+            var pv = qfv.encodeLocationToRGBA(clientInfo.position);
 
-            qfv.igniteLocation( clientInfo.position /*clientInfo.focus*/, fv);
+            if (fv[3] === 0 || pv[3] === 0) return;
+
+            fv[3] = 4; // rank
+            pv[3] = 4; // rank
+
+            //qfv.igniteLocation( clientInfo.position, fv);
+            //qfv.igniteLocation( clientInfo.focus, fv);
+            qfv.igniteLocation( clientInfo.focus, pv);
 
             // Timed atlas write on disk
             if (QFsync == 0){ qfv.writePA(); /*console.log("WRITE");*/ }

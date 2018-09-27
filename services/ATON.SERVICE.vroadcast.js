@@ -136,7 +136,9 @@ QV.prototype = {
         },
 
     // voxel ignition
-    igniteLocation: function(loc, col8){
+    igniteLocation: function(loc, col8, rank){
+        if (rank <= 2) return; // low rank
+        if (rank > 255) rank = 255; // max rank
 
         // Normalized location inside volume
         var P = this.getNormLocationInVolume(loc);
@@ -176,9 +178,14 @@ QV.prototype = {
         //console.log("write to: ",i,j);
         var prevCol = this.PA.getPixelColor(i,j);
 
-        var A = Jimp.intToRGBA(prevCol).a + col8[3];
-        if (A > 255 ) A = 255;
+        // Cumulative
+        //var A = Jimp.intToRGBA(prevCol).a + col8[3];
+        //if (A > 255 ) A = 255;
 
+        var A = Jimp.intToRGBA(prevCol).a;
+        if (A > rank) return;
+
+        A = rank;
         this._PAcol = Jimp.rgbaToInt(col8[0],col8[1],col8[2], A);
 
         this.PA.setPixelColor(this._PAcol, i,j);
@@ -283,7 +290,10 @@ var touchSceneNode = function(sname){
 
     scene.qfv = new QV(getGlobalQFVimgpath(sname));
     //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
-    scene.qfv.setPositionAndExtents([-15.0,-40,0], [30,38,30]); // cecilio
+    scene.qfv.setPositionAndExtents([-17.0,-40,0], [30,38,30]); // cecilio
+
+    // Init QVA
+    if (!fs.existsSync(getGlobalQFVimgpath(sname))) scene.qfv.writePA();
 
     console.log("Created scene "+sname);
     //console.log(scene);
@@ -925,17 +935,22 @@ io.on('connection', function(socket){
             var fv = qfv.encodeLocationToRGBA(clientInfo.focus);
             var pv = qfv.encodeLocationToRGBA(clientInfo.position);
 
-            if (fv[3] === 0 || pv[3] === 0) return;
+            if (fv[3] === 0 || pv[3] === 0) return; // outside
 
             fv[3] = 4; // rank
             pv[3] = 4; // rank
 
             //qfv.igniteLocation( clientInfo.position, fv);
             //qfv.igniteLocation( clientInfo.focus, fv);
-            qfv.igniteLocation( clientInfo.focus, pv);
+            qfv.igniteLocation( clientInfo.focus, pv, clientInfo.rank);
 
             // Timed atlas write on disk
-            if (QFsync == 0){ qfv.writePA(); /*console.log("WRITE");*/ }
+            if (QFsync == 0){
+                qfv.writePA();
+                /*console.log("WRITE");*/
+
+                socket.broadcast.to(sceneName).emit("POLFOC");
+                }
             QFsync = (QFsync + 1) % QFsyncFreq;
             //console.log(".");
             }

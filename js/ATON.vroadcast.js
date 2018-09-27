@@ -17,6 +17,8 @@ ATON.vroadcast.socket     = undefined;
 ATON.vroadcast.connected  = false;
 ATON.vroadcast.uStateFreq = 0.1;
 
+ATON.vroadcast._bPOLdirty = true;
+
 // custom events
 ATON.vroadcast.onIDassigned = undefined;
 ATON.vroadcast.onDisconnect = undefined;
@@ -137,6 +139,14 @@ ATON.vroadcast.setWeight = function(w){
     ATON.vroadcast._myUser.weight = w;
     ATON.vroadcast.socket.emit("UMAGWEIGHT", {id: ATON.vroadcast._myUser.id, weight: w } ); // TODO: optimize
 };
+ATON.vroadcast.setRank = function(r){
+    ATON.vroadcast._myUser.rank = parseInt(r);
+
+    var binData = ATON.vroadcast.encodeUserStateData(ATON.vroadcast._myUser);
+    ATON.vroadcast.socket.emit("USTATE", binData.buffer);
+    console.log("My rank is now: "+r);
+}
+
 ATON.vroadcast.setMagRadius = function(r){
     ATON.vroadcast._myUser.radius = r;
     ATON.vroadcast.socket.emit("UMAGRADIUS", {id: ATON.vroadcast._myUser.id, radius: r } ); // TODO: optimize
@@ -208,7 +218,7 @@ ATON.vroadcast._update = function(){
         myUser.lastOri[3] = ori[3];
 
         // Encode and Send my data to server
-        var binData = ATON.vroadcast.encodeUserStateData(pos, ori, myUser.rank);
+        var binData = ATON.vroadcast.encodeUserStateData(/*pos, ori, myUser.rank*/ myUser);
         ATON.vroadcast.socket.emit("USTATE", binData.buffer);
         }
 
@@ -228,10 +238,11 @@ ATON.vroadcast._update = function(){
     ATON.vroadcast.socket.emit("UFOCUSD", {id: myUser.id, bin: binTargD});
     //console.log(binTargD);
 
-    // Polarize Focus
+    // Interactive Polarization
     if (ATON.vroadcast._bQFpol){
         var F = ATON._hoveredVisData.p.slice(0);
         ATON.vroadcast.socket.emit("POLFOC", {/*id: myUser.id, */focus: DTarg});
+        ATON.vroadcast._bPOLdirty = true;
         }
 
     //console.log("User state sent.");
@@ -254,27 +265,28 @@ ATON.vroadcast._uState.prototype = {
 };
 */
 
-// Encode my state
-ATON.vroadcast.encodeUserStateData = function(pos, ori, rank, scale){
-    if (scale === undefined) scale = 0.64;
-    if (rank === undefined)  rank = 0;
+// Encode user state
+ATON.vroadcast.encodeUserStateData = function(/*pos, ori, rank, scale*/ user){
+    //if (scale === undefined) scale = 0.64;
+    //if (rank === undefined)  rank = 0;
+    if (user === undefined) return;
 
     var A = new Float32Array(6); // make sufficient room
-    A[0] = pos[0];
-    A[1] = pos[1];
-    A[2] = pos[2];
+    A[0] = user.lastPos[0]; //pos[0];
+    A[1] = user.lastPos[1]; //pos[1];
+    A[2] = user.lastPos[2]; //pos[2];
 
-    A[3] = scale;
+    //A[3] = scale;
 
     // Convert to byte array, we use last float storage (4 bytes)
     var binData = new Int8Array(A.buffer);
 
-    binData[16] = (ori[0] * 128.0);
-    binData[17] = (ori[1] * 128.0);
-    binData[18] = (ori[2] * 128.0);
-    binData[19] = (ori[3] * 128.0);
+    binData[16] = (user.lastOri[0] * 128.0);
+    binData[17] = (user.lastOri[1] * 128.0);
+    binData[18] = (user.lastOri[2] * 128.0);
+    binData[19] = (user.lastOri[3] * 128.0);
 
-    binData[21] = parseInt(rank);
+    binData[21] = parseInt(user.rank);
 
     //console.log(binData);
     return binData;
@@ -348,7 +360,7 @@ ATON.vroadcast.touchUser = function(id){
 
     if (ATON.vroadcast.users[id] !== undefined){
         ATON.vroadcast.users[id]._mt.setNodeMask(0xf);
-        ATON.vroadcast.users[id]._focAT.setNodeMask(0xf);
+        //ATON.vroadcast.users[id]._focAT.setNodeMask(0xf);
         return;
         }
 
@@ -369,6 +381,7 @@ ATON.vroadcast.touchUser = function(id){
     u._mt = new osg.MatrixTransform();
     u._mt.setCullingActive( false ); // sometimes user repr. disappears, why?
 
+/*
     u._focAT = new osg.AutoTransform();
     u._focAT.setPosition([0,0,0]);
     u._focAT.setAutoRotateToScreen(true);
@@ -384,7 +397,7 @@ ATON.vroadcast.touchUser = function(id){
     DFoc.setRange(0.9, 1.0);
     u._focAT.getOrCreateStateSet().setAttributeAndModes( DFoc );
     u._focAT.setCullingActive( false );
-
+*/
 
     u._at = new osg.AutoTransform();
     u._at.setPosition([0,0.1,0]);
@@ -400,7 +413,7 @@ ATON.vroadcast.touchUser = function(id){
     ATON.vroadcast.realizeUserModel(id);
 
     ATON._groupUI.addChild(u._mt);
-    ATON._groupUI.addChild(u._focAT);
+    //ATON._groupUI.addChild(u._focAT);
 
     // Test (MagUsers)
     ATON.vroadcast.setUserInfluence(u, 30.0, [0.0, 0.0]); // 0.0005
@@ -417,7 +430,7 @@ ATON.vroadcast.realizeUserModel = function(id){
 
     // clear
     u._mt.removeChildren();
-    u._focAT.removeChildren();
+    //u._focAT.removeChildren();
     u._at.removeChildren();
 
     u._mt.addChild(ATON.vroadcast.userModel);
@@ -458,7 +471,6 @@ ATON.vroadcast.realizeUserModel = function(id){
     u._focAT.getOrCreateStateSet().setAttributeAndModes( material );
     
     u._focAT.addChild(focGeom);
-*/
 
     var focGeom = osg.createTexturedQuadGeometry(
         -(focSize*0.5), -(focSize*0.5), 0,      // corner
@@ -480,6 +492,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         u._focAT.getOrCreateStateSet().setTextureAttributeAndModes(0, focTex);
         console.log("FocusMark loaded");        
         });
+*/
 
     // Name Label node
     u.nameNode = new osgText.Text(u.name);
@@ -643,7 +656,7 @@ ATON.vroadcast._registerEventHandlers = function(){
             u.target[1] = u.lastPos[1] + dtarg[1];
             u.target[2] = u.lastPos[2] + dtarg[2];
 
-            u._focAT.setPosition(u.target);
+            //u._focAT.setPosition(u.target);
 
             //console.log("Received Target: "+u.target);
             }
@@ -701,6 +714,12 @@ ATON.vroadcast._registerEventHandlers = function(){
             console.log("User #"+data.id+" changed status to: "+data.status);
             ATON.vroadcast.onUserMSG();
             }
+        });
+
+    ATON.vroadcast.socket.on('POLFOC', function(data){
+        //console.log(data.binaryData);
+
+        ATON.vroadcast._bPOLdirty = true;
         });
 
     // A user updates weight

@@ -40,6 +40,13 @@ ATON.FrontEnd.setupPage = function(){
 
         document.getElementById('idMagWeight').innerHTML = el.value;
     };
+    ATON.FrontEnd.setRank = function(){
+        var el = document.getElementById('urank');
+        console.log(el.value);
+        ATON.vroadcast.setRank(el.value);
+
+        document.getElementById('idRank').innerHTML = el.value;
+    };
     ATON.FrontEnd.setMagRadius = function(){
         var el = document.getElementById('umagrad');
         console.log(el.value);
@@ -170,8 +177,11 @@ ATON._polarizeLocomotionQV = function(){
 };
 
 // QVA
-ATON.FrontEnd.QVArequester = function(qv, url){
-    if (ATON.vroadcast._bQFpol) qv.loadQVAimg(url+"?"+new Date().getTime());
+ATON.FrontEnd.QVArequestNew = function(qv, url){
+    if (!ATON.vroadcast._bPOLdirty) return;
+
+    qv.loadQVAimg(url+"?"+new Date().getTime());
+    if (!ATON.vroadcast._bQFpol) ATON.vroadcast._bPOLdirty = false;
 };
 
 ATON.polarizedAffordance = function(){
@@ -461,11 +471,11 @@ window.addEventListener( 'load', function () {
                     //ATON.translateLayer("CEIL", [0,0,10]);
                     //ATON.switchLayer("PRESENT", false);
 
-                    var qv = ATON.QVhandler.addQV([-15.0,-40,0], [30,38,30]);
-                    qv.loadQVAimg("../services/record/cecilio/qfv.png");
+                    var qv = ATON.QVhandler.addQV([-17.0,-40,0], [30,38,30]);
+                    qv.loadQVAimg("../services/record/cecilio/qfv.png?"+new Date().getTime());
 
                     setInterval(function(){
-                        ATON.FrontEnd.QVArequester(qv, "../services/record/cecilio/qfv.png");
+                        ATON.FrontEnd.QVArequestNew(qv, "../services/record/cecilio/qfv.png");
                         }, 1000);
 
                     ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
@@ -652,6 +662,11 @@ if (asset === "sf"){
 
             // disable controls for beta users
             if (uid > 0) $('#idMagSetup').hide();
+
+            // Custom RANK
+            var rankstr = ATON.utils.getURLparams().rank;
+            if (rankstr) ATON.vroadcast.setRank(parseInt(rankstr));
+
 /*
             var magstr = ATON.utils.getURLparams().mag;
             if (magstr){

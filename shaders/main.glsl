@@ -646,12 +646,24 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 1   // QFV
+#if 1   // QV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
-    FinalFragment = mix(FinalFragment,QVAcol, mix(0.0,0.5,QVAcol.a) /*QVAcol.a*/);
+    ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
+    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*4.0, QVAcol.a*0.5);
+
+#if 0   // Color-codes VE with QUSV voxel values
+    vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
+
+    if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
+        //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
+        FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
 #endif
+
+#endif
+
+
 
 #if 0
     #define USE_ILSIGN 1

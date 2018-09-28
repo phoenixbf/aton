@@ -290,7 +290,7 @@ var touchSceneNode = function(sname){
 
     scene.qfv = new QV(getGlobalQFVimgpath(sname));
     //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
-    scene.qfv.setPositionAndExtents([-17.0,-40,0], [30,38,30]); // cecilio
+    scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
 
     // Init QVA
     if (!fs.existsSync(getGlobalQFVimgpath(sname))) scene.qfv.writePA();

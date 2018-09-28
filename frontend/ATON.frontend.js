@@ -137,6 +137,7 @@ ATON.FrontEnd.attachListeners = function(){
 
 ATON._polarizeLocomotionQV = function(){
     ATON._polPos = undefined;
+
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
 
@@ -151,15 +152,14 @@ ATON._polarizeLocomotionQV = function(){
     var v = qfv.getValue(ATON._hoveredVisData.p);
     if (v === undefined || v[3] <= 0) return; // outside or null
 
-    var ft = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
+    ATON._polPos = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
     var conv = 0.003; // strenght
 
     if (ATON._bFirstPersonMode){
         //ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ft, conv*(v[3]/255.0));
-        ATON._polPos = ft;
         }
     else {
-        ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ft, conv*(v[3]/255.0));
+        ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, conv*(v[3]/255.0));
         ATON._currPOV.target = osg.vec3.lerp( [], ATON._currPOV.target, ATON._hoveredVisData.p, conv*(v[3]/255.0));
         }
 
@@ -471,7 +471,7 @@ window.addEventListener( 'load', function () {
                     //ATON.translateLayer("CEIL", [0,0,10]);
                     //ATON.switchLayer("PRESENT", false);
 
-                    var qv = ATON.QVhandler.addQV([-17.0,-40,0], [30,38,30]);
+                    var qv = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
                     qv.loadQVAimg("../services/record/cecilio/qfv.png?"+new Date().getTime());
 
                     setInterval(function(){

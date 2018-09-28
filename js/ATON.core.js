@@ -2079,7 +2079,12 @@ ATON._attachListeners = function(){
                 var nPOV = new ATON.pov;
                 var E = osg.vec3.create();
 
-                osg.vec3.lerp(E, ATON._currPOV.pos, pp, 0.5);
+                if (ATON._polPos){
+                    E[0] = ATON._polPos[0];
+                    E[1] = ATON._polPos[1];
+                    E[2] = ATON._polPos[2];
+                    }
+                else osg.vec3.lerp(E, ATON._currPOV.pos, pp, 0.5);
 
                 nPOV.pos    = E;
                 nPOV.target = pp;
@@ -2091,8 +2096,15 @@ ATON._attachListeners = function(){
             }
 		});
 
+    Hammer(ATON._canvas).on("tap", function(evt){
+        ATON._screenQuery[0] = evt.center.x * ( ATON._canvas.width / ATON._canvas.clientWidth );;
+        ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.center.y ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
+
+        //console.log(evt.center);
+        });
+
     // MOUSE COORDS
-	ATON._canvas.addEventListener('mousemove', function(evt) {
+	ATON._canvas.addEventListener('mousemove', function(evt){
         if (ATON._vrState) return;
 
         /*
@@ -2105,7 +2117,7 @@ ATON._attachListeners = function(){
         ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.clientY ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
 
         ATON._screenQueryNormalized[0] = (ATON._screenQuery[0] / ATON._canvas.width).toFixed( 3 );
-        ATON._screenQueryNormalized[1] = (ATON._screenQuery[1] / ATON._canvas.height).toFixed( 3 )
+        ATON._screenQueryNormalized[1] = (ATON._screenQuery[1] / ATON._canvas.height).toFixed( 3 );
 
 
         //console.log( ATON._screenQueryNormalized );

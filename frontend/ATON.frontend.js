@@ -5,6 +5,10 @@ ATON.FrontEnd = {};
 ATON.FrontEnd.MODELS_ROOT = "../models/";
 ATON.FrontEnd.RES_ROOT    = "../res/";
 
+// VRoadcast
+var vrcIP = ATON.utils.getURLparams().vrc;
+var QAurl = undefined;
+
 var uColors = [
     'rgb(64, 0, 0)',
     'rgb(64, 64, 0)',
@@ -446,21 +450,24 @@ window.addEventListener( 'load', function () {
 
                 case "hebe":
                     scenename = "hebe";
+                    QAurl = "http://"+vrcIP+":8080/services/record/hebe/qfv.png";
+
                     ATON.addLightProbe("../LP/default");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
                     var qv = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
 
-                    qv.loadQVAimg("../services/record/hebe/qfv.png?"+new Date().getTime());
+                    qv.loadQVAimg(QAurl+"?"+new Date().getTime());
 
                     setInterval(function(){
-                        ATON.FrontEnd.QVArequestNew(qv, "../services/record/hebe/qfv.png");
+                        ATON.FrontEnd.QVArequestNew(qv, QAurl);
                         }, 1000);
                     break;
 
                 case "cecilio":
                     scenename = "cecilio";
+                    QAurl = "http://"+vrcIP+":8080/services/record/cecilio/qfv.png";
 
                     ATON.addNewLayer("PRESENT");
                     ATON.addNewLayer("CEIL","PRESENT");
@@ -502,10 +509,10 @@ window.addEventListener( 'load', function () {
                     //var qv = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
                     //var qv = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
 
-                    qv.loadQVAimg("../services/record/cecilio/qfv.png?"+new Date().getTime());
+                    qv.loadQVAimg(QAurl+"?"+new Date().getTime());
 
                     setInterval(function(){
-                        ATON.FrontEnd.QVArequestNew(qv, "../services/record/cecilio/qfv.png");
+                        ATON.FrontEnd.QVArequestNew(qv, QAurl);
                         }, 1000);
 
                     ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
@@ -671,7 +678,7 @@ if (asset === "sf"){
 
     $("#idVRoadcast").hide();
 
-    var vrcIP = ATON.utils.getURLparams().vrc;
+    //vrcIP = ATON.utils.getURLparams().vrc;
     if (vrcIP !== undefined){
         //IP = "127.0.0.1";
         //IP = "192.168.0.193";

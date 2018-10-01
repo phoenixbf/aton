@@ -17,6 +17,7 @@
     "jimp": "^0.2.28",
     "performance-now": "^2.1.0",
     "pngjs": "^3.3.2",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "zlibjs": "^0.3.1"
   }
 }

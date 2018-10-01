@@ -1861,7 +1861,7 @@ ATON._handleDescriptorsHover = function(){
 // Hover on Visible-Graph: Called each update
 ATON._handleVisHover = function(){
         // STD
-        if (!ATON._vrState){
+        if (!ATON._vrState && !ATON._bDevOri){
             ATON._hoveredVisData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskVisible);
             }
         // VR
@@ -1937,6 +1937,7 @@ ATON.realize = function( canvas ){
 
     // Mobile detection
     ATON._isMobile = ATON.utils.detectMobileDevice();
+    ATON._bDevOri  = false;
 
     ATON._initGraph();
 
@@ -2218,6 +2219,12 @@ ATON._onResize = function(){
     console.log("On resize");
 };
 
+ATON.toggleDeviceOrientation = function(b){
+    ATON._bDevOri = b;
+    ATON._viewer.getInputManager().setEnable(InputGroups.FPS_MANIPULATOR_DEVICEORIENTATION, b);
+
+    //ATON._viewer.getEventProxy().DeviceOrientation.setEnable( b );
+};
 
 // Scene Management
 //==========================================================================

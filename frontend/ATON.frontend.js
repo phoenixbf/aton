@@ -83,6 +83,11 @@ ATON.FrontEnd.setupPage = function(){
             ATON.vroadcast.requestRecording();
             }
         };
+
+    ATON.FrontEnd.toggleDeviceOrientation = function(){
+        var el = document.getElementById('idDevOri');
+        ATON.toggleDeviceOrientation(el.checked);
+        };
 };
 
 
@@ -130,6 +135,9 @@ ATON.FrontEnd.attachListeners = function(){
 
             if (e.keyCode == 70){ // f
                 ATON.vroadcast.toggleFocusPolarization();
+
+                if (ATON.vroadcast._bQFpol) $("#idPOL").css("background-color","green");
+                else $("#idPOL").css("background-color","black");
                 }
             });
         });
@@ -153,9 +161,12 @@ ATON._polarizeLocomotionQV = function(){
     if (v === undefined || v[3] <= 0) return; // outside or null
 
     ATON._polPos = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
-    var conv = 0.003; // strenght
+    var conv = 0.01; // strenght
 
     if (ATON._bFirstPersonMode){
+        if (!ATON._vrState){
+            ATON._currPOV.pos = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, conv*(v[3]/255.0));
+            }
         //ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ft, conv*(v[3]/255.0));
         }
     else {
@@ -433,6 +444,21 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
                     break;
 
+                case "hebe":
+                    scenename = "hebe";
+                    ATON.addLightProbe("../LP/default");
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+                    var qv = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
+
+                    qv.loadQVAimg("../services/record/hebe/qfv.png?"+new Date().getTime());
+
+                    setInterval(function(){
+                        ATON.FrontEnd.QVArequestNew(qv, "../services/record/hebe/qfv.png");
+                        }, 1000);
+                    break;
+
                 case "cecilio":
                     scenename = "cecilio";
 
@@ -472,6 +498,10 @@ window.addEventListener( 'load', function () {
                     //ATON.switchLayer("PRESENT", false);
 
                     var qv = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
+                    //var qv = ATON.QVhandler.addQV([-12.5,-17,0], [9,12,20]); // ingresso
+                    //var qv = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
+                    //var qv = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
+
                     qv.loadQVAimg("../services/record/cecilio/qfv.png?"+new Date().getTime());
 
                     setInterval(function(){

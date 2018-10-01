@@ -651,14 +651,14 @@ void main(){
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
-    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*4.0, QVAcol.a*0.5);
+    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*8.0, QVAcol.a*0.5);
 
 #if 0   // Color-codes VE with QUSV voxel values
     vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
-        //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
-        FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
+        FinalFragment = mix(qusvCol, FinalFragment, 0.2);
+        //FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
 #endif
 
 #endif

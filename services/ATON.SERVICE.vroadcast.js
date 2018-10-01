@@ -194,6 +194,16 @@ QV.prototype = {
     writePA: function(){
         this.PA.write( this.imgpath );
         },
+    
+    readPAfromURL: function(url){
+        var PA = this.PA;
+        Jimp.read(url, (err, pa) => {
+            if (err) return;
+
+            PA = pa;
+            console.log("PA read successfully");
+            });
+        }
 };
 
 
@@ -288,12 +298,18 @@ var touchSceneNode = function(sname){
     scene.numClients   = 0; // Note: scene.clients[] may not be contiguous
     scene.bRecordWrite = false;
 
-    scene.qfv = new QV(getGlobalQFVimgpath(sname));
+    var QFVpath = getGlobalQFVimgpath(sname);
+
+    scene.qfv = new QV(QFVpath);
+    
+    // TODO: parametrize
     //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
-    scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
+    if (sname === "cecilio") scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
+    if (sname === "hebe")    scene.qfv.setPositionAndExtents([-8.0,-8.0,-0.1], [16,16,6]); // hebe
 
     // Init QVA
-    if (!fs.existsSync(getGlobalQFVimgpath(sname))) scene.qfv.writePA();
+    if (!fs.existsSync(QFVpath)) scene.qfv.writePA();
+    else scene.qfv.readPAfromURL(QFVpath);
 
     console.log("Created scene "+sname);
     //console.log(scene);

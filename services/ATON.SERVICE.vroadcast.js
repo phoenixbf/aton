@@ -84,7 +84,7 @@ const QV_Z_SLICES  = 32; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 var QFsync = 0;
-const QFsyncFreq = 20;
+const QFsyncFreq = 4; //20;
 
 
 QV = function(qvaPath){
@@ -195,13 +195,16 @@ QV.prototype = {
         this.PA.write( this.imgpath );
         },
     
-    readPAfromURL: function(url){
+    // FIXME
+    readPAfromURL: function(url, onComplete){
         var PA = this.PA;
         Jimp.read(url, (err, pa) => {
             if (err) return;
 
             PA = pa;
             console.log("PA read successfully");
+
+            if (onComplete) onComplete();
             });
         }
 };
@@ -307,9 +310,20 @@ var touchSceneNode = function(sname){
     if (sname === "cecilio") scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
     if (sname === "hebe")    scene.qfv.setPositionAndExtents([-8.0,-8.0,-0.1], [16,16,6]); // hebe
 
+    var broadCastQFV = function(){
+        scene.qfv.PA.getBase64(Jimp.MIME_PNG, function(err, data){
+            if (data){
+                io.in(sname).emit("POLFOC",data);
+                //console.log("TouchScene, QPA: "+data);
+                }
+            });
+        };
+
     // Init QVA
     if (!fs.existsSync(QFVpath)) scene.qfv.writePA();
-    else scene.qfv.readPAfromURL(QFVpath);
+    else scene.qfv.readPAfromURL(QFVpath, broadCastQFV);
+
+    broadCastQFV();
 
     console.log("Created scene "+sname);
     //console.log(scene);
@@ -935,7 +949,7 @@ io.on('connection', function(socket){
         });
 
     socket.on('POLFOC', function(data){
-        if (scene && scene.qfv){
+        if (scene && scene.qfv && clientInfo.rank >= 2){
             var qfv = scene.qfv;
 
 /*
@@ -965,10 +979,27 @@ io.on('connection', function(socket){
                 qfv.writePA();
                 /*console.log("WRITE");*/
 
-                socket.broadcast.to(sceneName).emit("POLFOC");
+                //socket.broadcast.to(sceneName).emit("POLFOC");
+
+                qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
+                    if (b64data) io.in(sceneName).emit("POLFOC",b64data);
+                    //console.log(err,data);
+                    });
                 }
             QFsync = (QFsync + 1) % QFsyncFreq;
-            //console.log(".");
+            }
+        });
+
+    socket.on('POLREQ', function(data){
+        if (scene && scene.qfv){
+            var qfv = scene.qfv;
+
+            qfv.writePA();
+
+            qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
+                if (b64data) socket.emit("POLFOC",b64data);
+                
+                });
             }
         });
 

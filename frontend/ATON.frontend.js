@@ -8,6 +8,7 @@ ATON.FrontEnd.RES_ROOT    = "../res/";
 // VRoadcast
 var vrcIP = ATON.utils.getURLparams().vrc;
 var QAurl = undefined;
+var QPV   = undefined;
 
 var uColors = [
     'rgb(64, 0, 0)',
@@ -450,24 +451,22 @@ window.addEventListener( 'load', function () {
 
                 case "hebe":
                     scenename = "hebe";
-                    QAurl = "http://"+vrcIP+":8080/services/record/hebe/qfv.png";
+                    //QAurl = "http://"+vrcIP+":8080/services/record/hebe/qfv.png"; //REQ CORS!
+                    QAurl = "../services/record/hebe/qfv.png";
 
                     ATON.addLightProbe("../LP/default");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
-                    var qv = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
+                
+                    QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
+                    ATON.vroadcast.onPolDataReceived = function(){ QPV.setQVAimgBase64(ATON.vroadcast._polDATA); };
 
-                    qv.loadQVAimg(QAurl+"?"+new Date().getTime());
-
-                    setInterval(function(){
-                        ATON.FrontEnd.QVArequestNew(qv, QAurl);
-                        }, 1000);
                     break;
 
                 case "cecilio":
                     scenename = "cecilio";
-                    QAurl = "http://"+vrcIP+":8080/services/record/cecilio/qfv.png";
+                    QAurl = "../services/record/cecilio/qfv.png";
 
                     ATON.addNewLayer("PRESENT");
                     ATON.addNewLayer("CEIL","PRESENT");
@@ -504,17 +503,19 @@ window.addEventListener( 'load', function () {
                     //ATON.translateLayer("CEIL", [0,0,10]);
                     //ATON.switchLayer("PRESENT", false);
 
-                    var qv = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
-                    //var qv = ATON.QVhandler.addQV([-12.5,-17,0], [9,12,20]); // ingresso
-                    //var qv = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
-                    //var qv = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
+                    QPV = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
+                    //QPV = ATON.QVhandler.addQV([-12.5,-17,0], [9,12,20]); // ingresso
+                    //QPV = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
+                    //QPV = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
 
-                    qv.loadQVAimg(QAurl+"?"+new Date().getTime());
-
+                    //qv.loadQVAimg(QAurl+"?"+new Date().getTime());
+                    ATON.vroadcast.onPolDataReceived = function(){ QPV.setQVAimgBase64(ATON.vroadcast._polDATA); };
+                    //ATON.vroadcast.requestPol();
+/*
                     setInterval(function(){
                         ATON.FrontEnd.QVArequestNew(qv, QAurl);
                         }, 1000);
-
+*/
                     ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
                     break;
 
@@ -733,6 +734,8 @@ if (asset === "sf"){
         //$('#idLoader').hide();
 
         //ATON.setFOV(120);
+        //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
+        if (QPV) ATON.vroadcast.requestPol();
         };
 
     ATON.FrontEnd.attachListeners();

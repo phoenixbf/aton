@@ -75,6 +75,36 @@ ATON.QVhandler.QV.prototype = {
             }
         },
 
+    setQVAimgBase64: function(b64img){
+        if (b64img === undefined) return;
+
+        this._qvaIMGloaded = false;
+
+        this._qvaIMG = new window.Image();
+        this._qvaIMG.src = b64img;
+
+        var qTex = this._qvaTex;
+        qTex.setMinFilter( this.qvaIMGfilter );
+        qTex.setMagFilter( this.qvaIMGfilter );
+
+        qTex.setImage( this._qvaIMG );
+        ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, qTex );
+
+        // For read pixels
+        this._qvaCanvas  = document.createElement('canvas');
+        this._qvaCanvas.width  = QV_SIZE;
+        this._qvaCanvas.height = QV_SLICE_RES;
+        this._qvaContext = this._qvaCanvas.getContext('2d');
+
+        var that = this;
+        this._qvaIMG.onload = function(){
+            that._qvaContext.drawImage(that._qvaIMG, 0,0, that._qvaCanvas.width,that._qvaCanvas.height);
+            }
+
+        this._qvaIMGloaded = true;
+        //console.log("QVA base64 loaded.");
+        },
+
     getNormLocationInVolume: function(loc){
         var px = (loc[0] - this.vMin[0]) / this.vExt[0];
         var py = (loc[1] - this.vMin[1]) / this.vExt[1];
@@ -92,6 +122,7 @@ ATON.QVhandler.QV.prototype = {
         },
 
     getPixel: function(x, y){
+        if (this._qvaContext === undefined) return;
         return this._qvaContext.getImageData(x, y, 1, 1).data;
         },
     

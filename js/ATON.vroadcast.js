@@ -22,6 +22,7 @@ ATON.vroadcast._bPOLdirty = true;
 // custom events
 ATON.vroadcast.onIDassigned = undefined;
 ATON.vroadcast.onDisconnect = undefined;
+ATON.vroadcast.onPolDataReceived = undefined;
 
 
 ATON.vroadcast.users      = [];
@@ -157,6 +158,13 @@ ATON.vroadcast.requestRecording = function(msec){
 
     ATON.vroadcast.socket.emit("REC", {dt: msec} );
     console.log("Requested server-side RecordTrace");
+};
+
+ATON.vroadcast.requestPol = function(){
+    if (ATON.vroadcast.socket === undefined) return;
+
+    ATON.vroadcast.socket.emit("POLREQ");
+    //console.log("Requested polarization data");
 };
 
 
@@ -717,9 +725,12 @@ ATON.vroadcast._registerEventHandlers = function(){
         });
 
     ATON.vroadcast.socket.on('POLFOC', function(data){
-        //console.log(data.binaryData);
+        //console.log(data);
 
         ATON.vroadcast._bPOLdirty = true;
+        ATON.vroadcast._polDATA   = data;
+
+        if (ATON.vroadcast.onPolDataReceived) ATON.vroadcast.onPolDataReceived();
         });
 
     // A user updates weight

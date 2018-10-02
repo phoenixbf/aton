@@ -135,6 +135,37 @@ QV.prototype = {
         return col;
         },
 
+    encodeDeltaToRGBA: function(A,B){
+        var col = new Uint8Array(4);
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 0;
+
+        var dx = (A[0]-B[0]) / (this.vol.width());
+        var dy = (A[1]-B[1]) / (this.vol.height());
+        var dz = (A[2]-B[2]) / (this.vol.depth());
+
+        dx = clamp(dx, -1.0,1.0);
+        dy = clamp(dy, -1.0,1.0);
+        dz = clamp(dz, -1.0,1.0);
+
+        dx = (dx*0.5) + 0.5;
+        dy = (dy*0.5) + 0.5;
+        dz = (dz*0.5) + 0.5;
+
+        //console.log(dx,dy,dz);
+
+        col[0] = parseInt(dx * 255.0);
+        col[1] = parseInt(dy * 255.0);
+        col[2] = parseInt(dz * 255.0);
+        col[3] = 255;
+
+        //console.log(col);
+
+        return col;
+        },
+
     // voxel ignition
     igniteLocation: function(loc, col8, rank){
         if (rank <= 2) return; // low rank
@@ -197,14 +228,17 @@ QV.prototype = {
     
     // FIXME
     readPAfromURL: function(url, onComplete){
-        var PA = this.PA;
+        var self = this;
         Jimp.read(url, (err, pa) => {
             if (err) return;
 
-            PA = pa;
-            console.log("PA read successfully");
+            if (pa){
+                self.PA = pa;
+                self.PA.write( self.imgpath );
+                console.log("PA read successfully");
 
-            if (onComplete) onComplete();
+                if (onComplete) onComplete();
+                }
             });
         }
 };
@@ -964,6 +998,7 @@ io.on('connection', function(socket){
 */
             var fv = qfv.encodeLocationToRGBA(clientInfo.focus);
             var pv = qfv.encodeLocationToRGBA(clientInfo.position);
+            //var df = qfv.encodeDeltaToRGBA(clientInfo.focus, clientInfo.position);
 
             if (fv[3] === 0 || pv[3] === 0) return; // outside
 
@@ -972,7 +1007,7 @@ io.on('connection', function(socket){
 
             //qfv.igniteLocation( clientInfo.position, fv);
             //qfv.igniteLocation( clientInfo.focus, fv);
-            qfv.igniteLocation( clientInfo.focus, pv, clientInfo.rank);
+            qfv.igniteLocation( clientInfo.focus, pv/*df*/, clientInfo.rank);
 
             // Timed atlas write on disk
             if (QFsync == 0){

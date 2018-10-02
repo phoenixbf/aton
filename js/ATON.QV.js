@@ -162,6 +162,22 @@ ATON.QVhandler.QV.prototype = {
 
         return [x,y,z];
         },
+
+    getDeltaFromRGB: function(r, g, b){
+        var dx = (r / 255.0);
+        var dy = (g / 255.0);
+        var dz = (b / 255.0);
+
+        dx = (dx - 0.5) * 2.0;
+        dy = (dy - 0.5) * 2.0;
+        dz = (dz - 0.5) * 2.0;
+
+        dx *= this.vExt[0]; // * 0.25;
+        dy *= this.vExt[1]; // * 0.25;
+        dz *= this.vExt[2]; // * 0.25;
+
+        return [dx,dy,dz];
+        },
 };
 
 

@@ -149,7 +149,7 @@ ATON.FrontEnd.attachListeners = function(){
 };
 
 ATON._polarizeLocomotionQV = function(){
-    ATON._polPos = undefined;
+    //ATON._polPos = undefined;
 
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
@@ -163,20 +163,54 @@ ATON._polarizeLocomotionQV = function(){
 
     // TODO: use ATON.FrontEnd.QVhoverValue
     var v = qfv.getValue(ATON._hoveredVisData.p);
-    if (v === undefined || v[3] <= 0) return; // outside or null
+    if (v === undefined || v[3] <= 0){ // outside
+        if (ATON._polForce > 0.0) ATON._polForce -= 0.0001;
+        /*
+        ATON._polForce = 0.0;
+        return;
+        */
+        }
+    else {
+        ATON._qpVal = v.slice(0);
+        if (ATON._polForce < 0.01) ATON._polForce += 0.00005;
+        }
 
-    ATON._polPos = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
-    var conv = 0.01; // strenght
+    var newPolPos = qfv.getWorldLocationFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2] ); // absolute loc
+    //var newPolPos = osg.vec3.sub([], ATON._hoveredVisData.p,qfv.getDeltaFromRGB( v[0],v[1],v[2] )); // delta
+
+    ATON._polPos = newPolPos;
+/*
+    if (ATON._polPos === undefined) ATON._polPos = newPolPos;
+    else ATON._polPos = osg.vec3.lerp( [], newPolPos, ATON._polPos, 0.8);
+*/  
+    //if (ATON._polPos === undefined) return;
+
+    var pForce = ATON._polForce * (ATON._qpVal[3]/255.0);
+
+    // Distance-based
+/*  var d2 = osg.vec3.squaredDistance(ATON._hoveredVisData.p, ATON._currPOV.pos);
+    if (d2 < 100.0) pForce *= (1.0 - (d2 / 100.0)); // 10 m
+    else pForce = 0.0;
+*/
+    // Angle-based
+    var polDir = osg.vec3.sub([], ATON._hoveredVisData.p,ATON._polPos);
+    osg.vec3.normalize(polDir,polDir);
+    var dotPol = osg.vec3.dot(ATON._direction, polDir);
+
+    if (dotPol < 0.2) pForce = 0.0;
+    else pForce *= dotPol;
+
+    //console.log(dotPol);
 
     if (ATON._bFirstPersonMode){
         if (!ATON._vrState){
-            ATON._currPOV.pos = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, conv*(v[3]/255.0));
+            ATON._currPOV.pos = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, pForce);
             }
-        //ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ft, conv*(v[3]/255.0));
+        //ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ft, ATON._polForce*(v[3]/255.0));
         }
     else {
-        ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, conv*(v[3]/255.0));
-        ATON._currPOV.target = osg.vec3.lerp( [], ATON._currPOV.target, ATON._hoveredVisData.p, conv*(v[3]/255.0));
+        ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, pForce);
+        ATON._currPOV.target = osg.vec3.lerp( [], ATON._currPOV.target, ATON._hoveredVisData.p, pForce);
         }
 
     /*  Position 2 Focus
@@ -468,8 +502,10 @@ window.addEventListener( 'load', function () {
                     scenename = "cecilio";
                     QAurl = "../services/record/cecilio/qfv.png";
 
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
+
                     ATON.addNewLayer("PRESENT");
-                    ATON.addNewLayer("CEIL","PRESENT");
+                    //ATON.addNewLayer("CEIL","PRESENT");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });

@@ -651,6 +651,8 @@ void main(){
 #if 1   // QV
     vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
 
+    //float polDec = clamp(1.0 - (fragDist / 10.0), 0.0,1.0);
+
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
     FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*8.0, QVAcol.a*0.5);

@@ -108,6 +108,10 @@ ATON._povLerP          = osg.vec3.create();
 ATON._povLerT          = osg.vec3.create();
 ATON._surfAff          = 0.0;
 
+ATON._polForce = 0.0;
+ATON._polPos   = undefined;
+ATON._qpVal    = [0,0,0,0];
+
 // RTT colliders
 ATON._frontDistance      = 0.0;
 ATON._frontCollideNormal = osg.vec3.create();
@@ -887,7 +891,7 @@ ATON._requestFirstPersonTrans = function(pickedData){
     var E  = osg.vec3.create();
     var T  = osg.vec3.create();
 
-    if (ATON._polPos){
+    if (ATON._polPos && ATON._polForce>0.0){
         E[0] = ATON._polPos[0];
         E[1] = ATON._polPos[1];
         E[2] = ATON._polPos[2];
@@ -1770,7 +1774,7 @@ ATON._updateCallback.prototype = {
         // MagNodes
         if (ATON._tPOVcall < 0.0 /*&& !ATON._vrState*/) ATON._handleMagNetClosest();
         // QV
-        if (ATON._polarizeLocomotionQV) ATON._polarizeLocomotionQV();
+        if (ATON._tPOVcall < 0.0 && ATON._polarizeLocomotionQV) ATON._polarizeLocomotionQV();
 
         // Generic Constraints
         if (ATON.applyPOVconstraints) ATON.applyPOVconstraints();
@@ -2080,7 +2084,7 @@ ATON._attachListeners = function(){
                 var nPOV = new ATON.pov;
                 var E = osg.vec3.create();
 
-                if (ATON._polPos){
+                if (ATON._polPos && ATON._polForce>0.0){
                     E[0] = ATON._polPos[0];
                     E[1] = ATON._polPos[1];
                     E[2] = ATON._polPos[2];

@@ -24,8 +24,8 @@ precision highp int;
 
 #define ATON_LP_MAX_H   480
 
-#define QV_SLICE_RES  32 //64 //256
-#define QV_Z_SLICES   32 //64 //32
+#define QV_SLICE_RES  64 //64 //256
+#define QV_Z_SLICES   64 //64 //32
 #define QV_SIZE       QV_SLICE_RES*QV_Z_SLICES
 
 

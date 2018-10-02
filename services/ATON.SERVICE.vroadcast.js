@@ -79,8 +79,8 @@ var getNormLocationInVolume = function(loc, vol){
 };
 */
 
-const QV_SLICE_RES = 32; //64; //256; //128;
-const QV_Z_SLICES  = 32; //64; //16; //32;
+const QV_SLICE_RES = 64; //64; //256; //128;
+const QV_Z_SLICES  = 64; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 var QFsync = 0;

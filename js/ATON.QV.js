@@ -23,6 +23,7 @@ const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 ATON.QVhandler.QV = function(){
     this.vMin = [0.0,0.0,0.0];
     this.vExt = [10.0,10.0,10.0];
+    this._xC  = [0.07,0.07,0.07];
 
     this.qvaIMGurl    = undefined;
     this.qvaIMGfilter = osg.Texture.NEAREST;
@@ -38,6 +39,10 @@ ATON.QVhandler.QV.prototype = {
     setPositionAndExtents: function(pos,ext){
         this.vMin = pos.slice(0);
         this.vExt = ext.slice(0);
+
+        this._xC[0] = this.vExt[0]/127.0;
+        this._xC[1] = this.vExt[1]/127.0;
+        this._xC[2] = this.vExt[2]/127.0;
         },
 
     // (re)loads associated qva img (signature, etc...)
@@ -156,9 +161,9 @@ ATON.QVhandler.QV.prototype = {
         var y = (g / 255.0) * this.vExt[1];
         var z = (b / 255.0) * this.vExt[2];
 
-        x += this.vMin[0];
-        y += this.vMin[1];
-        z += this.vMin[2];
+        x += (this.vMin[0] + this._xC[0]);
+        y += (this.vMin[1] + this._xC[1]);
+        z += (this.vMin[2] + this._xC[2]);
 
         return [x,y,z];
         },

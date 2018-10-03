@@ -110,11 +110,11 @@ ATON.FrontEnd.logPOV = function(){
 
 ATON.FrontEnd.attachListeners = function(){
 	$(function() {
-		$(document).keydown(function(e) {
+		$(document).keydown(function(e){
 	    	if (e.keyCode == 67){ // c
 				ATON.FrontEnd.logPOV();
                 }
-                
+/*                
             if (e.keyCode == 77){ // m
                 var M = new ATON.magNode();
 
@@ -137,13 +137,28 @@ ATON.FrontEnd.attachListeners = function(){
 
                 console.log(JSON.parse(jMag));
                 }
-
+*/
+/*
             if (e.keyCode == 70){ // f
                 ATON.vroadcast.toggleFocusPolarization();
 
                 if (ATON.vroadcast._bQFpol) $("#idPOL").css("background-color","green");
                 else $("#idPOL").css("background-color","black");
                 }
+*/
+            if (e.keyCode == 88){ // x
+                ATON.vroadcast._bQFpol = true;
+                $("#idPOL").css("background-color","green");
+                }      
+
+            });
+
+        // UP
+        $(document).keyup(function(e){
+            if (e.keyCode == 88){ // x
+                ATON.vroadcast._bQFpol = false;
+                $("#idPOL").css("background-color","black");
+                }   
             });
         });
 };
@@ -505,8 +520,36 @@ window.addEventListener( 'load', function () {
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
 
                     ATON.addNewLayer("PRESENT");
+                    ATON.addNewLayer("PAST").getOrCreateStateSet().setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+
                     //ATON.addNewLayer("CEIL","PRESENT");
 
+                    // CUSTOM KEYBOARD
+                    $(function() {
+                        $(document).keydown(function(e) {
+                            if (e.keyCode == 84){ // t
+                                e.preventDefault();
+
+                                ATON.switchLayer("PRESENT", false);
+
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_a/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_b/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_c/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_d/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_e/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_f/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_g/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_h/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_i/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_l/root.osgjs", { layer: "PAST" });
+                                }
+                            })
+                        });
+
+                    // PRESENT
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs", { layer: "PRESENT" });
@@ -535,6 +578,7 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs", { layer: "PRESENT" });
+                    
 
                     //ATON.translateLayer("CEIL", [0,0,10]);
                     //ATON.switchLayer("PRESENT", false);
@@ -739,7 +783,11 @@ if (asset === "sf"){
 
             // Custom RANK
             var rankstr = ATON.utils.getURLparams().rank;
-            if (rankstr) ATON.vroadcast.setRank(parseInt(rankstr));
+            if (rankstr){
+                var r = parseInt(rankstr);
+                ATON.vroadcast.setRank(r);
+                document.getElementById("urank").max = r;
+                }
 
 /*
             var magstr = ATON.utils.getURLparams().mag;

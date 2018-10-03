@@ -11,6 +11,7 @@
 
 //#define USE_LP 1
 //#define USE_PASS_AO 1
+#define USE_QV 1
 
 #ifdef GL_ES
 //precision mediump float;
@@ -72,7 +73,7 @@ uniform User Users[128];
 //vec4 UCOLORS[6];
 
 
-vec4 QUSVEncodeLocation(vec3 worldLoc){
+vec4 QVEncodeLocation(vec3 worldLoc){
     vec4 qusvCol;
     qusvCol.r = (worldLoc.x - uQVmin.x) / uQVext.x;
     qusvCol.g = (worldLoc.y - uQVmin.y) / uQVext.y;
@@ -81,23 +82,32 @@ vec4 QUSVEncodeLocation(vec3 worldLoc){
     return qusvCol;
 }
 
-vec3 QUSVDecodeLocation(vec4 frag){
+vec3 QVDecodeLocation(vec4 frag){
     vec3 loc;
     loc.x = (frag.r * uQVext.x) + uQVmin.x;
     loc.y = (frag.g * uQVext.y) + uQVmin.y;
     loc.z = (frag.b * uQVext.z) + uQVmin.z;
 
+    loc.x += (uQVext.x/127.0);
+    loc.y += (uQVext.y/127.0);
+    loc.z += (uQVext.z/127.0);
+
     return loc;
 }
 
-// z: 0=outside
-vec3 QVAEncodeLocation(vec3 worldLoc){
+vec3 QVgetNormalized(vec3 worldLoc){
     vec3 P;
-    vec3 R;
-    // normalized
     P.x = (worldLoc.x - uQVmin.x) / uQVext.x;
     P.y = (worldLoc.y - uQVmin.y) / uQVext.y;
     P.z = (worldLoc.z - uQVmin.z) / uQVext.z;
+
+    return P; 
+}
+
+// z: 0=outside
+vec3 QVAuvAdapter(vec3 worldLoc){
+    vec3 P = QVgetNormalized(worldLoc);
+    vec3 R;
 
 /*  NOT WORKING WHY?
     R.x = P.x / float(QV_SIZE);
@@ -198,8 +208,8 @@ void main(){
 	//normal   = vec3(uModelViewNormalMatrix * vec4(Normal, 1.0));
 	position = uModelViewMatrix * position;
 */
-    vec4 wPosition = uProjectionMatrix * vec4(vViewVertex,1.0);
 
+    vec4 wPosition = uProjectionMatrix * vec4(vViewVertex,1.0);
 
     //EyeDir = normalize(Vertex - uWorldEyePos); // OK for World
     EyeDir = normalize(Vertex); // OK (new)
@@ -648,17 +658,35 @@ void main(){
     //=====================================================
     //if (vWorldVertex.z > 4.0) discard;
 
-#if 1   // QV
-    vec3 qvaCoords = QVAEncodeLocation(vWorldVertex);
+#ifdef USE_QV   // QV
+    vec3 qvaCoords = QVAuvAdapter(vWorldVertex);
 
+    float qn = 1.0;
     //float polDec = clamp(1.0 - (fragDist / 10.0), 0.0,1.0);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
+    
+#ifndef MOBILE_DEVICE
+    vec3 qLoc   = QVDecodeLocation(QVAcol);
+    vec3 vQnrm = normalize(qLoc - vWorldVertex);
+    //float qn = abs( dot(normWorld,vQnrm) );
+
+    //vec3 qNP = QVgetNormalized(vWorldVertex) * PI * float(QV_SLICE_RES);
+    //float qn = abs(sin(qNP.x)) * abs(sin(qNP.y)) * abs(sin(qNP.z));
+    //qn = (qn * 0.5) + 0.5;
+
+    //float qn = (1.0 + sin(time*10.0)) * 0.5;
+    //float qn = sin((vWorldVertex.x * 20.0) + (vWorldVertex.y * 20.0) + (vWorldVertex.z * 20.0) + (time*20.0) );
+
+    qn = sin( (distance(qLoc,vWorldVertex) * 100.0) + (time * 5.0) );
+    qn = (qn * 0.3) + 0.7;
+#endif
+
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
-    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*8.0, QVAcol.a*0.5);
+    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
 
 #if 0   // Color-codes VE with QUSV voxel values
-    vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
+    vec4 qusvCol = QVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         FinalFragment = mix(qusvCol, FinalFragment, 0.2);
@@ -679,7 +707,7 @@ void main(){
     UCOLORS[4] = vec4(0.0,0.0,1.0, 0.0);
     UCOLORS[5] = vec4(1.0,0.0,1.0, 0.0);
 */
-    vec4 qusvCol = QUSVEncodeLocation(vWorldVertex);
+    vec4 qusvCol = QVEncodeLocation(vWorldVertex);
 
 #if 0   // Color-codes VE with QUSV voxel values
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
@@ -717,7 +745,7 @@ void main(){
 #endif
 
         if (mIL.a > 0.0){
-            loc = QUSVDecodeLocation(mIL);
+            loc = QVDecodeLocation(mIL);
 
             ql = distance(loc, vWorldVertex) / qRad;
             ql = 1.0 - clamp(ql, 0.0,1.0);
@@ -775,6 +803,11 @@ void main(){
     HoverColor.g += mix(-0.2,0.2, uHoverAffordance);
     HoverColor.b -= 0.2;
 */
+#ifdef USE_QV
+    //HoverColor = mix(HoverColor, vec4(1,1,1,1), QVAcol.a*10.0);
+    //hpd *= QVAcol.a;
+#endif
+
     FinalFragment = mix(FinalFragment, HoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3);
 #endif
 

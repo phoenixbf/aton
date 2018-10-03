@@ -256,6 +256,8 @@ ATON.utils.normIM     = new window.Image();
 ATON.utils.normIM.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAAA1BMVEV/f/99cpgDAAAACklEQVR4AWMAAwAABgABeV6XjwAAAABJRU5ErkJggg==';
 ATON.utils.redIM      = new window.Image();
 ATON.utils.redIM.src  = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAMAAAAoyzS7AAAAA1BMVEX/AAAZ4gk3AAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==';
+ATON.utils.aIM        = new window.Image();
+ATON.utils.aIM.src    = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAMAAABFaP0WAAAAA1BMVEX///+nxBvIAAAAAXRSTlMAQObYZgAAAApJREFUeAFjAAMAAAYAAXlel48AAAAASUVORK5CYII=';
 
 ATON.utils.fallbackBlackTex = new osg.Texture();
 ATON.utils.fallbackBlackTex.setImage( ATON.utils.bkIM );
@@ -284,6 +286,13 @@ ATON.utils.fallbackRedTex.setMinFilter( osg.Texture.LINEAR );
 ATON.utils.fallbackRedTex.setMagFilter( osg.Texture.LINEAR );
 ATON.utils.fallbackRedTex.setWrapS( osg.Texture.REPEAT );
 ATON.utils.fallbackRedTex.setWrapT( osg.Texture.REPEAT );
+
+ATON.utils.fallbackAlphaTex = new osg.Texture();
+ATON.utils.fallbackAlphaTex.setImage( ATON.utils.aIM );
+ATON.utils.fallbackAlphaTex.setMinFilter( osg.Texture.LINEAR );
+ATON.utils.fallbackAlphaTex.setMagFilter( osg.Texture.LINEAR );
+ATON.utils.fallbackAlphaTex.setWrapS( osg.Texture.REPEAT );
+ATON.utils.fallbackAlphaTex.setWrapT( osg.Texture.REPEAT );
 
 // Auxiliary
 // Get node names top-bottom from given nodepath
@@ -2074,8 +2083,8 @@ ATON._attachListeners = function(){
         var pData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskVisible);
         if (pData){
             var pp = pData.p;
-            console.log("Point: " + pp);
-            console.log("Eye:   " + ATON._currPOV.pos);
+            console.log("Point: ["+pp[0].toFixed(3)+","+pp[1].toFixed(3)+","+pp[2].toFixed(3)+"]");
+            console.log("Eye:   ["+ATON._currPOV.pos[0].toFixed(3)+","+ATON._currPOV.pos[1].toFixed(3)+","+ATON._currPOV.pos[2].toFixed(3)+"]");
 
             if (ATON._bFirstPersonMode){
                 ATON._requestFirstPersonTrans(pData);
@@ -2328,6 +2337,7 @@ ATON.addNewLayer = function(uniqueName, parentName){
     else ATON._groupVisible.addChild( ATON.layers[uniqueName] );
 
     console.log("Created new layer "+uniqueName);
+    return ATON.layers[uniqueName];
 };
 
 ATON.switchLayer = function(layerName, value){
@@ -2578,6 +2588,7 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQUSVslider') );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
+    ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, ATON.utils.fallbackAlphaTex );
 
     // LP
     ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );

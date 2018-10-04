@@ -733,6 +733,14 @@ ATON.vroadcast._registerEventHandlers = function(){
         if (ATON.vroadcast.onPolDataReceived) ATON.vroadcast.onPolDataReceived();
         });
 
+    ATON.vroadcast.socket.on('POLCELL', function(data){
+
+        ATON.vroadcast._polCELL = data;
+
+        //console.log(data);
+        if (ATON.vroadcast.onPolCellReceived) ATON.vroadcast.onPolCellReceived();
+        });
+
     // A user updates weight
     ATON.vroadcast.socket.on('UMAGWEIGHT', function(data){
         //console.log(data.binaryData);

@@ -84,7 +84,8 @@ const QV_Z_SLICES  = 64; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 var QFsync = 0;
-const QFsyncFreq = 4; //20;
+const QFsyncFreq = 8; //20;
+var bQPAdirty = false;
 
 
 QV = function(qvaPath){
@@ -99,6 +100,9 @@ QV = function(qvaPath){
     this.imgpath = qvaPath;
     //this.tiling  = 8; //16
     //this.tsize   = 64; //256
+
+    this._lastPolCol = 0;
+    this._lastPolIndexes = [0,0];
 };
 
 QV.prototype = {
@@ -168,16 +172,16 @@ QV.prototype = {
 
     // voxel ignition
     igniteLocation: function(loc, col8, rank){
-        if (rank <= 2) return; // low rank
+        if (rank <= 2) return false; // low rank
         if (rank > 255) rank = 255; // max rank
 
         // Normalized location inside volume
         var P = this.getNormLocationInVolume(loc);
 
         // Check outside volume
-        if (P[0] > 1.0 || P[0] < 0.0) return;
-        if (P[1] > 1.0 || P[1] < 0.0) return;
-        if (P[2] > 1.0 || P[2] < 0.0) return;
+        if (P[0] > 1.0 || P[0] < 0.0) return false;
+        if (P[1] > 1.0 || P[1] < 0.0) return false;
+        if (P[2] > 1.0 || P[2] < 0.0) return false;
 
         //P[0] -= (1.0/QV_SLICE_RES);
         P[1] -= (1.0/QV_SLICE_RES);
@@ -214,12 +218,17 @@ QV.prototype = {
         //if (A > 255 ) A = 255;
 
         var A = Jimp.intToRGBA(prevCol).a;
-        if (A > rank) return;
+        if (A > rank) return false;
 
         A = rank;
         this._PAcol = Jimp.rgbaToInt(col8[0],col8[1],col8[2], A);
 
+        this._lastPolIndexes[0] = i;
+        this._lastPolIndexes[1] = j;
+        this._lastPolCol = this._PAcol;
+
         this.PA.setPixelColor(this._PAcol, i,j);
+        return true;
         },
 
     writePA: function(){
@@ -1007,19 +1016,26 @@ io.on('connection', function(socket){
 
             //qfv.igniteLocation( clientInfo.position, fv);
             //qfv.igniteLocation( clientInfo.focus, fv);
-            qfv.igniteLocation( clientInfo.focus, pv/*df*/, clientInfo.rank);
+            bQPAdirty = qfv.igniteLocation( clientInfo.focus, pv/*df*/, clientInfo.rank);
+
+            if (bQPAdirty){
+                socket.emit("POLCELL",{ i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
+                }
 
             // Timed atlas write on disk
-            if (QFsync == 0){
+            if (QFsync == 0 && bQPAdirty){
                 qfv.writePA();
-                /*console.log("WRITE");*/
 
+                /*console.log("WRITE");*/
                 //socket.broadcast.to(sceneName).emit("POLFOC");
 
+/*
                 qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
                     if (b64data) io.in(sceneName).emit("POLFOC",b64data);
                     //console.log(err,data);
                     });
+*/              
+                bQPAdirty = false;
                 }
             QFsync = (QFsync + 1) % QFsyncFreq;
             }

@@ -149,6 +149,7 @@ ATON.FrontEnd.attachListeners = function(){
             if (e.keyCode == 88){ // x
                 ATON.vroadcast._bQFpol = true;
                 $("#idPOL").css("background-color","green");
+                ATON._mainSS.getUniform('uDim').setFloat( 0.2 );
                 }      
 
             });
@@ -158,6 +159,7 @@ ATON.FrontEnd.attachListeners = function(){
             if (e.keyCode == 88){ // x
                 ATON.vroadcast._bQFpol = false;
                 $("#idPOL").css("background-color","black");
+                ATON._mainSS.getUniform('uDim').setFloat( 1.0 );
                 }   
             });
         });

@@ -2579,6 +2579,7 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 300.0, 'uFogDistance' ) ); // 120
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uDim' ) );
 
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
 

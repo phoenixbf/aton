@@ -59,6 +59,7 @@ uniform vec3 uQVext;
 uniform float uQUSVslider;
 
 uniform float time;
+uniform float uDim;
 
 /*
 struct User {
@@ -683,7 +684,7 @@ void main(){
 #endif
 
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
-    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
+    FinalFragment = mix(FinalFragment*uDim, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
 
 #if 0   // Color-codes VE with QUSV voxel values
     vec4 qusvCol = QVEncodeLocation(vWorldVertex);

@@ -93,6 +93,14 @@ ATON.vroadcast.setupResPath = function(path){
     ATON.vroadcast._audioLibEnter.loop = false;
     ATON.vroadcast._audioLibMSG = new Audio(path+"audio/pling.mp3");
     ATON.vroadcast._audioLibMSG.loop = false;
+
+    // Test pol-audio
+/*
+    ATON.vroadcast._audioLibPol = new Audio(path+"audio/mag.wav");
+    ATON.vroadcast._audioLibPol.loop   = true;
+    ATON.vroadcast._audioLibPol.volume = 0.0;
+    ATON.vroadcast._audioLibPol.play();
+*/
 };
 
 

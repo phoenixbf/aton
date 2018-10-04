@@ -10,6 +10,23 @@ var vrcIP = ATON.utils.getURLparams().vrc;
 var QAurl = undefined;
 var QPV   = undefined;
 
+ATON.vroadcast.onPolDataReceived = function(){ 
+    QPV.setQVAimgBase64(ATON.vroadcast._polDATA);
+};
+ATON.vroadcast.onPolCellReceived = function(){
+    if (ATON.vroadcast._polCELL === undefined) return;
+
+    var col8 = new Uint8Array(4);
+    view = new DataView(col8.buffer);
+    view.setUint32(0, ATON.vroadcast._polCELL.v, false);
+
+    //console.log(col8);
+
+    QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
+};
+
+
+
 var uColors = [
     'rgb(64, 0, 0)',
     'rgb(64, 64, 0)',
@@ -160,11 +177,16 @@ ATON.FrontEnd.attachListeners = function(){
                 ATON.vroadcast._bQFpol = false;
                 $("#idPOL").css("background-color","black");
                 ATON._mainSS.getUniform('uDim').setFloat( 1.0 );
+
+                if (QPV) ATON.vroadcast.requestPol();
                 }   
             });
         });
 };
 
+/*===============================================
+TODO: move
+===============================================*/
 ATON._polarizeLocomotionQV = function(){
     //ATON._polPos = undefined;
 
@@ -217,6 +239,8 @@ ATON._polarizeLocomotionQV = function(){
     if (dotPol < 0.2) pForce = 0.0;
     else pForce *= dotPol;
 
+    if (pForce < 0.0) pForce = 0.0;
+
     //console.log(dotPol);
 
     if (ATON._bFirstPersonMode){
@@ -229,6 +253,8 @@ ATON._polarizeLocomotionQV = function(){
         ATON._currPOV.pos    = osg.vec3.lerp( [], ATON._currPOV.pos, ATON._polPos, pForce);
         ATON._currPOV.target = osg.vec3.lerp( [], ATON._currPOV.target, ATON._hoveredVisData.p, pForce);
         }
+
+    //if (ATON.vroadcast._audioLibPol) ATON.vroadcast._audioLibPol.volume = pForce;
 
     /*  Position 2 Focus
     ------------------
@@ -511,18 +537,6 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
                 
                     QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
-                    ATON.vroadcast.onPolDataReceived = function(){ QPV.setQVAimgBase64(ATON.vroadcast._polDATA); };
-                    ATON.vroadcast.onPolCellReceived = function(){
-                        if (ATON.vroadcast._polCELL === undefined) return;
-                        
-                        var col8 = new Uint8Array(4);
-                        view = new DataView(col8.buffer);
-                        view.setUint32(0, ATON.vroadcast._polCELL.v, false);
-
-                        //console.log(col8);
-
-                        QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
-                        };
 
                     break;
 
@@ -602,16 +616,6 @@ window.addEventListener( 'load', function () {
                     //QPV = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
 
                     //qv.loadQVAimg(QAurl+"?"+new Date().getTime());
-                    ATON.vroadcast.onPolDataReceived = function(){ QPV.setQVAimgBase64(ATON.vroadcast._polDATA); };
-                    ATON.vroadcast.onPolCellReceived = function(){
-                        var colbuf = new ArrayBuffer(4);
-                        view = new DataView(colbuf);
-                        view.setUint32(0, ATON.vroadcast._polCELL.v, false);
-
-                        console.log(colbuf);
-
-                        QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, colbuf);
-                        };
 
                     //ATON.vroadcast.requestPol();
 /*

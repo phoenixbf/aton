@@ -151,10 +151,14 @@ ATON.QVhandler.QV.prototype = {
 
         this._qvaContext.putImageData(imageData, 0, 0);
 */
-        var a = parseFloat(v[3]) / 255.0;
-        console.log(a);
+        var a = (parseFloat(v[3]) / 255.0).toFixed(2);
+        //console.log(a);
 
-        this._qvaContext.fillStyle = "rgba("+v[0]+","+v[1]+","+v[2]+","+a+")";
+        var fstr = "rgba("+v[0]+","+v[1]+","+v[2]+","+a+")";
+        console.log(fstr);
+
+        this._qvaContext.strokeStyle = fstr;
+        this._qvaContext.fillStyle   = fstr;
         this._qvaContext.fillRect( i, j, 1, 1 );
 
         var b64im = this._qvaCanvas.toDataURL('image/png',1.0);

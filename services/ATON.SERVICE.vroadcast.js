@@ -84,15 +84,16 @@ const QV_Z_SLICES  = 64; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
 
 var QFsync = 0;
-const QFsyncFreq = 8; //20;
+const QFsyncFreq = 10; //20;
 var bQPAdirty = false;
 
 
+// Quantized Volume Class
 QV = function(qvaPath){
     this.vol     = aabb([-1.0, -1.0, -1.0], [1.0, 1.0, 1.0]);
     
     //this.PA      = new Jimp(512,512); // 4096
-    this.PA = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // Init with opaque black (0x000000ff)
+    this.PA = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // ...or init with opaque black (0x000000ff)
     this.PA.quality(100);
 
     this._PAbin  = undefined;
@@ -324,8 +325,43 @@ var disableTrace = function(){
 if (serviceOptions.trace) enableTrace(serviceOptions.trace);
 
 
+// POL STATS
+//=========================================================================
+var sPOLfile             = outRecordFolder+"/POLstats.csv";
+var sPOLstream           = fs.createWriteStream(sPOLfile, {'flags': 'w'});
+var sPOLnumCellsSENT     = 0;
+var sPOLnumCellsRCV      = 0;
+var sPOLnumQPAsent       = 0;
+
+sPOLstream.write(
+    'Time'+RECORD_SEPARATOR+
+    'QPA sent'+RECORD_SEPARATOR+
+    'CELLS sent'+RECORD_SEPARATOR+
+    'CELLS rcv'+RECORD_SEPARATOR+
+    '\n'
+);
+
+setInterval(function(){
+    time = tick();
+
+    fs.appendFileSync(
+        sPOLfile,
+        time +RECORD_SEPARATOR+
+        sPOLnumQPAsent +RECORD_SEPARATOR+
+        sPOLnumCellsSENT +RECORD_SEPARATOR+
+        sPOLnumCellsRCV+"\n"
+        );
+
+    console.log("--------- POL-STATS Daemon");
+
+},4000);
+
+
+
+
+//====================================================================================
 // WebServer
-//=======================================================
+//====================================================================================
 if (serviceOptions.www) app.use('/', express.static( serviceOptions.www ));
 else app.use('/', express.static( __dirname + '/' ));
 //app.use(compression());
@@ -453,7 +489,7 @@ var decodeUserStateData = function(data){
                 data.readInt8(19) / 128.0
                 ];
 
-    user.rank = data.readUInt8(21); // UINT!!
+    user.rank = data.readUInt8(21); // unsigned!
 
     return user;
 };
@@ -995,6 +1031,8 @@ io.on('connection', function(socket){
         if (scene && scene.qfv && clientInfo.rank >= 2){
             var qfv = scene.qfv;
 
+            sPOLnumCellsRCV++;
+
 /*
             var F = qfv.getNormLocationInVolume(data.focus);
             //console.log(data.focus);
@@ -1020,6 +1058,7 @@ io.on('connection', function(socket){
 
             if (bQPAdirty){
                 socket.emit("POLCELL",{ i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
+                sPOLnumCellsSENT++;
                 }
 
             // Timed atlas write on disk
@@ -1029,7 +1068,7 @@ io.on('connection', function(socket){
                 /*console.log("WRITE");*/
                 //socket.broadcast.to(sceneName).emit("POLFOC");
 
-/*
+/*              OLD - BROADCASTING WHOLE QPA
                 qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
                     if (b64data) io.in(sceneName).emit("POLFOC",b64data);
                     //console.log(err,data);
@@ -1049,7 +1088,7 @@ io.on('connection', function(socket){
 
             qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
                 if (b64data) socket.emit("POLFOC",b64data);
-                
+                sPOLnumQPAsent++;
                 });
             }
         });

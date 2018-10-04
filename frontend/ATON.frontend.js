@@ -513,11 +513,13 @@ window.addEventListener( 'load', function () {
                     QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.vroadcast.onPolDataReceived = function(){ QPV.setQVAimgBase64(ATON.vroadcast._polDATA); };
                     ATON.vroadcast.onPolCellReceived = function(){
+                        if (ATON.vroadcast._polCELL === undefined) return;
+                        
                         var col8 = new Uint8Array(4);
                         view = new DataView(col8.buffer);
                         view.setUint32(0, ATON.vroadcast._polCELL.v, false);
 
-                        console.log(col8);
+                        //console.log(col8);
 
                         QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
                         };

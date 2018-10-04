@@ -274,7 +274,7 @@ ATON.vroadcast._uState.prototype = {
 */
 
 // Encode user state
-ATON.vroadcast.encodeUserStateData = function(/*pos, ori, rank, scale*/ user){
+ATON.vroadcast.encodeUserStateData = function(user){
     //if (scale === undefined) scale = 0.64;
     //if (rank === undefined)  rank = 0;
     if (user === undefined) return;

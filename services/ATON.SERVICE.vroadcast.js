@@ -453,7 +453,7 @@ var decodeUserStateData = function(data){
                 data.readInt8(19) / 128.0
                 ];
 
-    user.rank = data.readInt8(21);
+    user.rank = data.readUInt8(21); // UINT!!
 
     return user;
 };
@@ -476,7 +476,7 @@ var encodeUserStateData = function(c){
     binData[19] = (c.orientation[3] * 128.0);
 
     binData[20] = c.id;     // unsigned byte id
-    binData[21] = c.rank;   // unsigned byte rank
+    binData[21] = parseInt(c.rank);   // unsigned byte rank
     //binData[22]
     //binData[23]
 

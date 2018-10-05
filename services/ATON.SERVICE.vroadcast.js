@@ -53,6 +53,7 @@ if (serviceOptions.production){
 
 // Scene Nodes (rooms)
 var sceneNodes = {};
+var totConnections = 0; // all connections (all scenes)
 
 // Global Time
 const tick = function(){ return (now() * 0.001).toFixed(3); };
@@ -342,6 +343,7 @@ var sPOLnumCellsNEG      = 0;
 
 sPOLstream.write(
     'Time'+RECORD_SEPARATOR+
+    'Connections' +RECORD_SEPARATOR+
     'QPA sent'+RECORD_SEPARATOR+
     'CELLS rcv'+RECORD_SEPARATOR+
     'CELLS sent'+RECORD_SEPARATOR+
@@ -350,21 +352,25 @@ sPOLstream.write(
     '\n'
 );
 
+// Daemon
 setInterval(function(){
     time = tick();
 
-    fs.appendFileSync(
-        sPOLfile,
-        time +RECORD_SEPARATOR+
-        sPOLnumQPAsent +RECORD_SEPARATOR+
-        sPOLnumCellsRCV +RECORD_SEPARATOR+
-        sPOLnumCellsSENT +RECORD_SEPARATOR+
-        sPOLnumCellsRW +RECORD_SEPARATOR+
-        sPOLnumCellsNEG +
-        "\n"
-        );
+    if (totConnections > 0){
+        fs.appendFileSync(
+            sPOLfile,
+            time +RECORD_SEPARATOR+
+            totConnections +RECORD_SEPARATOR+
+            sPOLnumQPAsent +RECORD_SEPARATOR+
+            sPOLnumCellsRCV +RECORD_SEPARATOR+
+            sPOLnumCellsSENT +RECORD_SEPARATOR+
+            sPOLnumCellsRW +RECORD_SEPARATOR+
+            sPOLnumCellsNEG +
+            "\n"
+            );
 
-    console.log("--------- POL-STATS Daemon");
+        console.log("--- POL-STATS Daemon");
+        }
 
 },4000);
 
@@ -866,6 +872,7 @@ var writeClientRecord = function(c, scenename){
 //=======================================================
 // Whenever someone connects this gets executed
 io.on('connection', function(socket){
+    totConnections++;
 
     // Local to this connected client
     var assignedID = -1;
@@ -923,6 +930,7 @@ io.on('connection', function(socket){
     // Whenever someone disconnects this piece of code executed
     socket.on('disconnect', function () {
         socket.leave(sceneName);
+        totConnections--;
 
         if (scene !== undefined && assignedID>=0){
             delete scene.clients[assignedID];

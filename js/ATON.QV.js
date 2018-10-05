@@ -155,7 +155,7 @@ ATON.QVhandler.QV.prototype = {
         //console.log(a);
 
         var fstr = "rgba("+v[0]+","+v[1]+","+v[2]+","+a+")";
-        console.log(fstr);
+        //console.log(fstr);
 
         this._qvaContext.strokeStyle = fstr;
         this._qvaContext.fillStyle   = fstr;

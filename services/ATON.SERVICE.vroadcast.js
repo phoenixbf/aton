@@ -219,7 +219,12 @@ QV.prototype = {
         //if (A > 255 ) A = 255;
 
         var A = Jimp.intToRGBA(prevCol).a;
-        if (A > rank) return false;
+        if (A > rank){
+            sPOLnumCellsNEG++;
+            return false;
+            }
+
+        if (A > 0) sPOLnumCellsRW++ // someone already written the cell
 
         A = rank;
         this._PAcol = Jimp.rgbaToInt(col8[0],col8[1],col8[2], A);
@@ -332,12 +337,16 @@ var sPOLstream           = fs.createWriteStream(sPOLfile, {'flags': 'w'});
 var sPOLnumCellsSENT     = 0;
 var sPOLnumCellsRCV      = 0;
 var sPOLnumQPAsent       = 0;
+var sPOLnumCellsRW       = 0;
+var sPOLnumCellsNEG      = 0;
 
 sPOLstream.write(
     'Time'+RECORD_SEPARATOR+
     'QPA sent'+RECORD_SEPARATOR+
-    'CELLS sent'+RECORD_SEPARATOR+
     'CELLS rcv'+RECORD_SEPARATOR+
+    'CELLS sent'+RECORD_SEPARATOR+
+    'CELLS rewritten'+RECORD_SEPARATOR+
+    'CELLS neg'+RECORD_SEPARATOR+
     '\n'
 );
 
@@ -348,8 +357,11 @@ setInterval(function(){
         sPOLfile,
         time +RECORD_SEPARATOR+
         sPOLnumQPAsent +RECORD_SEPARATOR+
+        sPOLnumCellsRCV +RECORD_SEPARATOR+
         sPOLnumCellsSENT +RECORD_SEPARATOR+
-        sPOLnumCellsRCV+"\n"
+        sPOLnumCellsRW +RECORD_SEPARATOR+
+        sPOLnumCellsNEG +
+        "\n"
         );
 
     console.log("--------- POL-STATS Daemon");

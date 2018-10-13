@@ -9,7 +9,7 @@ module.exports = {
     {
       name      : 'content',
       script    : 'services/ATON.SERVICE.vroadcast.js',
-      args      : ' --www .',
+      args      : '--www .',
       instances : 'max',
       exec_mode : 'cluster',
 
@@ -26,6 +26,7 @@ module.exports = {
       name      : 'collab',
       script    : 'services/ATON.SERVICE.vroadcast.js',
       instances : 1,
+      exec_mode : 'cluster'
     }
   ],
 

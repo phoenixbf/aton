@@ -9,7 +9,7 @@ module.exports = {
     {
       name      : 'content',
       script    : 'services/ATON.SERVICE.vroadcast.js',
-      args      : '--www ./',
+      args      : ' --www .',
       instances : 'max',
       exec_mode : 'cluster',
 

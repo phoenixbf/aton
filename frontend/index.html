@@ -62,9 +62,9 @@
                     </div>
                 </li>
 
-                <li class="nav-item">
-                <button id="idDevOri" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.toggleDeviceOrientation(true)">O</button>&nbsp;
-                <button type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.toggleVR()">VR</button>&nbsp;
+                <li class="nav-item" id="idCustomBTNs">
+                <button id="idDevOri" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.toggleDeviceOrientation(true)"><img src="../res/ii-inv-devori.png"></button>&nbsp;
+                <button type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.toggleVR()"><img src="../res/ii-inv-vr.png"></button>&nbsp;
                 <button id="idPOL" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" style="background-color: black;">POL</button>&nbsp;
                 </li>
 
@@ -106,6 +106,10 @@
                 <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()">&Delta;t: <span id="idTR"></span></div>
             </div>
       </nav>
+
+
+    <!-- Loader -->
+	<div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../res/loader.png"></div>
 
 </body>
 </html>

@@ -11,7 +11,10 @@
 
 //#define USE_LP 1
 //#define USE_PASS_AO 1
-#define USE_QV 1
+
+//#define USE_QV 1
+
+
 
 #ifdef GL_ES
 //precision mediump float;
@@ -56,7 +59,7 @@ uniform float uHoverAffordance;
 
 uniform vec3 uQVmin;
 uniform vec3 uQVext;
-uniform float uQUSVslider;
+uniform float uQVslider;
 
 uniform float time;
 uniform float uDim;
@@ -692,13 +695,14 @@ void main(){
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         FinalFragment = mix(qusvCol, FinalFragment, 0.2);
         //FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
+    else FinalFragment = vec4(0,0,0, 1);
 #endif
 
 #endif
 
 
 
-#if 0
+#if 1   // QUSV / Session Encoding
     #define USE_ILSIGN 1
 /*
     UCOLORS[0] = vec4(1.0,0.0,0.0, 0.0);
@@ -725,24 +729,31 @@ void main(){
     float uMul = 1.0;
     float qRad;
     //qRad = max(max(uQVext.x,uQVext.y),uQVext.z) / 255.0;
-    qRad = 3.0; // 3.0; //(uQUSVslider*500.0);
+    
 
 #ifdef USE_ILSIGN
-    const int QUSV_MAX_RANGE  = 32;
+    const int QUSV_MAX_RANGE  = 128; //64; //32;
+    qRad = 1.5;
 #else 
     const int QUSV_MAX_RANGE  = 128;
+    qRad = 4.0; // 3.0; //(uQVslider*500.0);
 #endif
 
     const float QUSV_PATCH_SIZE = 4096.0;
     const float QUSV_ILS_SIZE   = 1024.0;
 
+    int evalCap = int(uQVslider*float(QUSV_MAX_RANGE));
     for (int u=0; u<QUSV_MAX_RANGE; u++){
+#ifdef USE_ILSIGN
+        if (u < evalCap){
+#endif
+
         uMul = float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE);
 
 #ifdef USE_ILSIGN
         mIL = texture2D(QUSVSampler, vec2(float(u)/QUSV_ILS_SIZE, 0.0));
 #else 
-        mIL = texture2D(QUSVSampler, vec2(uQUSVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
+        mIL = texture2D(QUSVSampler, vec2(uQVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
 #endif
 
         if (mIL.a > 0.0){
@@ -757,7 +768,7 @@ void main(){
             //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uMul);
 
 #ifdef USE_ILSIGN
-            QF += (ql * mIL.a * 200.0 * uQUSVslider); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
+            QF += (ql * mIL.a * 2.0); // * 200.0 * uQVslider); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
             //QF += (ql * mIL.a * 2.0);
             QF = clamp(QF, 0.0,1.0);
 #else
@@ -766,6 +777,9 @@ void main(){
             //FinalFragment += mix(vec4(0,0,0,0), UCOLORS[uc], ql);
 #endif
             }
+#ifdef USE_ILSIGN
+            }
+#endif
         }
 
 //#ifdef USE_ILSIGN
@@ -780,7 +794,7 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 1
+#if 0
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= 0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);

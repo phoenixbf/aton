@@ -137,6 +137,7 @@ ATON._mLProtation = osg.mat4.create();
 // User custom functions/event control
 ATON.onTickRoutines             = [];
 ATON.onDescriptorHover          = undefined;
+ATON.onNodeRequestFired         = undefined;
 ATON.onAllNodeRequestsCompleted = undefined;
 
 
@@ -2384,6 +2385,7 @@ ATON.addGraph = function( url, options, onComplete ){
         }
 
     console.log("...Loading "+ url);
+    if (ATON.onNodeRequestFired) ATON.onNodeRequestFired();
 
     var request = osgDB.readNodeURL( url /*, { databasePath: basepath }*/ /*, opt*/ );
     request.then( function ( node ){
@@ -2586,7 +2588,7 @@ ATON._initCoreUniforms = function(){
     // QUSV
     ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );
     ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQUSVslider') );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVslider') );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
     ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, ATON.utils.fallbackAlphaTex );

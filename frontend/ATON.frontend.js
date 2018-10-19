@@ -36,9 +36,16 @@ var uColors = [
     'rgb(64, 0, 64)'
 ];
 
+// On node requests
+ATON.onNodeRequestFired = function(){
+    $('#idLoader').show();
+};
+
 
 ATON.FrontEnd.setupPage = function(){
     ATON.FrontEnd.ssRec = false;
+
+    $("#idSession").hide();
 
     var iContainer = document.getElementById( "iContainer" );
     iContainer.addEventListener( 'keydown', function ( e ) {
@@ -187,7 +194,7 @@ ATON.FrontEnd.attachListeners = function(){
 /*===============================================
 TODO: move
 ===============================================*/
-ATON._polarizeLocomotionQV = function(){
+var PolNav = function(){
     //ATON._polPos = undefined;
 
     var qfv = ATON.QVhandler.getActiveQV();
@@ -304,6 +311,9 @@ ATON.polarizedAffordance = function(){
 
 // MAIN =============================================================================
 window.addEventListener( 'load', function () {
+
+    ATON.FrontEnd.setupPage();
+
     // First we grab canvas element
     var canvas = document.getElementById( 'View' );
 
@@ -478,8 +488,14 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
 
-                    ATON.QVhandler.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
-                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
+                    QPV = ATON.QVhandler.addQV([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    QPV.loadQVAimg("../models/_prv/_QUSV/dining/F-qils.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/dining/F_GLOB-TP0.png");
+
+                    $("#idSession").show();
+
+                    //ATON.QVhandler.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
                     break;
 
                 case "vestibule":
@@ -489,12 +505,21 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
+                    QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F-qils.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P-qils.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
+                    $("#idSession").show();
+
+/*
                     ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
                     
                     ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P-qils.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
+*/
                     break;
 
                 case "smoking":
@@ -531,6 +556,8 @@ window.addEventListener( 'load', function () {
                     //QAurl = "http://"+vrcIP+":8080/services/record/hebe/qfv.png"; //REQ CORS!
                     QAurl = "../services/record/hebe/qfv.png";
 
+                    ATON._polarizeLocomotionQV = PolNav;
+
                     ATON.addLightProbe("../LP/default");
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
@@ -543,6 +570,8 @@ window.addEventListener( 'load', function () {
                 case "cecilio":
                     scenename = "cecilio";
                     QAurl = "../services/record/cecilio/qfv.png";
+
+                    ATON._polarizeLocomotionQV = PolNav;
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
 
@@ -632,6 +661,92 @@ window.addEventListener( 'load', function () {
 
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
+                    break;
+
+                case "ls": // Landscape Services
+                    scenename = "LS";
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 20000.0 );
+
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs", { layer: "XIX" });
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
+                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
+
+                    ATON.switchLayer("2016", false);
+                    ATON.switchLayer("XIX", true);
+                    //ATON.switchLayer("HS", false);
+
+                    ATON.LSswitch = function(id){
+                        if (id == 1){
+                            ATON.switchLayer("XIX", true);
+                            ATON.switchLayer("2016", false);
+                            ATON.switchLayer("HS", false);
+                            }
+                        if (id == 2){
+                            ATON.switchLayer("XIX", false);
+                            ATON.switchLayer("2016", true);
+                            ATON.switchLayer("HS", false);
+                            }
+                        };
+
+                    ATON.LSzx = function(){
+                        var el = document.getElementById('idLSzx');
+
+                        var f = parseFloat(el.value);
+
+                        ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [1.0,1.0,f]));
+                        ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [1.0,1.0,f]));
+                        };
+
+                    $("#idCustomBTNs").append("<button type='button' class='btn btn-info btn-sm' data-toggle='button' aria-pressed='false' onclick='ATON.LSswitch(1)'>XIX</button>");
+                    $("#idCustomBTNs").append("<button type='button' class='btn btn-info btn-sm' data-toggle='button' aria-pressed='false' onclick='ATON.LSswitch(2)'>2016</button>");
+                    $("#idCustomBTNs").append("<input class='form-control-range' id='idLSzx' type='range' min='1.0' max='8.0' step='0.1' oninput='ATON.LSzx()'>");
+
+                    // CUSTOM KEYBOARD
+                    $(function() {
+                        $(document).keydown(function(e) {
+                            if (e.keyCode == 49){ // 1
+                                e.preventDefault();
+
+                                ATON.switchLayer("XIX", true);
+                                ATON.switchLayer("2016", false);
+                                ATON.switchLayer("HS", false);
+                                }
+                            if (e.keyCode == 50){ // 2
+                                e.preventDefault();
+
+                                ATON.switchLayer("XIX", false);
+                                ATON.switchLayer("2016", true);
+                                ATON.switchLayer("HS", false);
+                                }
+                            if (e.keyCode == 51){ // 3
+                                e.preventDefault();
+
+                                ATON.switchLayer("XIX", false);
+                                ATON.switchLayer("2016", false);
+                                ATON.switchLayer("HS", true);
+                                }
+                            })
+                        });
+
+
+                    //ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
+                    break;
+
+                case "ls2":
+                    //scenename = "LS2";
+                    scenename = "LS3";
+
+                    ATON.LSzx = function(){
+                        var el = document.getElementById('idLSzx');
+                        var f = parseFloat(el.value);
+                        ATON.transformLayerByMatrix("G", osg.mat4.fromScaling( [], [1.0,1.0,f]));
+                        };
+
+                    $("#idCustomBTNs").append("<input class='form-control-range' id='idLSzx' type='range' min='1.0' max='8.0' step='0.1' oninput='ATON.LSzx()'>");
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 20000.0 );
+                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/Test_Gorropu_IGM/inrap__Test_Gorropu_IGM_L0_X0_Y0_subtile.osgjs", { layer: "G" });
                     break;
 
                 case "skf":
@@ -759,8 +874,6 @@ if (asset === "sf"){
     ATON.tracer.resPath = ATON.FrontEnd.RES_ROOT;
     ATON.tracer.rootRecordFolder = "../services/record/";
 
-    $("#idSession").hide();
-
     var recstr = ATON.utils.getURLparams().rec;
     if (recstr){
         var values = recstr.split(',');
@@ -842,6 +955,8 @@ if (asset === "sf"){
         if (bFirstHome) ATON.requestHome();
         bFirstHome = false;
 
+        $('#idLoader').hide();
+
         //$('#idLoader').hide();
 
         //ATON.setFOV(120);
@@ -850,6 +965,4 @@ if (asset === "sf"){
         };
 
     ATON.FrontEnd.attachListeners();
-
-    ATON.FrontEnd.setupPage();
 });

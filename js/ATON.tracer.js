@@ -139,7 +139,7 @@ ATON.tracer.filterUI = function(){
 
     ATON.tracer.filter(t,tr);
 
-    ATON._mainSS.getUniform('uQUSVslider').setFloat( t );
+    ATON._mainSS.getUniform('uQVslider').setFloat( t );
 };
 
 

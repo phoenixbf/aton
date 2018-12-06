@@ -8,7 +8,7 @@
 
 ==================================================================================*/
 
-const PORT = 8080;
+const PORT = 8081;
 const MAXCLIENTSPERSCENE = 100;
 const MAXTARGDIST = 40.0;
 const RECORD_SEPARATOR = ",";
@@ -333,13 +333,14 @@ if (serviceOptions.trace) enableTrace(serviceOptions.trace);
 
 // POL STATS
 //=========================================================================
-var sPOLfile             = outRecordFolder+"/POLstats.csv";
-var sPOLstream           = fs.createWriteStream(sPOLfile, {'flags': 'w'});
 var sPOLnumCellsSENT     = 0;
 var sPOLnumCellsRCV      = 0;
 var sPOLnumQPAsent       = 0;
 var sPOLnumCellsRW       = 0;
 var sPOLnumCellsNEG      = 0;
+
+var sPOLfile             = outRecordFolder+"/POLstats.csv";
+var sPOLstream           = fs.createWriteStream(sPOLfile, {'flags': 'w'});
 
 sPOLstream.write(
     'Time'+RECORD_SEPARATOR+
@@ -373,7 +374,6 @@ setInterval(function(){
         }
 
 },4000);
-
 
 
 

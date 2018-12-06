@@ -98,6 +98,7 @@ ATON._hoveringDescriptor    = false;
 ATON._screenQuery           = osg.vec2.create();
 ATON._screenQueryNormalized = osg.vec2.create();    // in 0--1
 ATON._hoveredVisData        = undefined; // hovered 3D point & norm in visible graph
+ATON._bQueryAxisAligned     = false;
 
 ATON._bZflat = false;
 
@@ -2111,10 +2112,19 @@ ATON._attachListeners = function(){
             }
 		});
 
-    Hammer(ATON._canvas).on("tap", function(evt){
-        ATON._screenQuery[0] = evt.center.x * ( ATON._canvas.width / ATON._canvas.clientWidth );;
-        ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.center.y ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
+    var midX = ( 0.5 * ATON._canvas.width); /// (ATON._canvas.clientWidth * 0.5) );
+    var midY = ( 0.5 * ATON._canvas.height); /// (ATON._canvas.clientHeight * 0.5) );
 
+    Hammer(ATON._canvas).on("tap", function(evt){
+        if (ATON._bQueryAxisAligned){
+            ATON._screenQuery[0] = midX;
+            ATON._screenQuery[1] = midY;
+            }
+
+        else {
+            ATON._screenQuery[0] = evt.center.x * ( ATON._canvas.width / ATON._canvas.clientWidth );
+            ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.center.y ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
+            }
         //console.log(evt.center);
         });
 
@@ -2128,11 +2138,21 @@ ATON._attachListeners = function(){
 		var my = evt.clientY - rect.top;
         */
 
-        ATON._screenQuery[0] = evt.clientX * ( ATON._canvas.width / ATON._canvas.clientWidth );
-        ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.clientY ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
+        if (ATON._bQueryAxisAligned){
+            ATON._screenQuery[0] = midX;
+            ATON._screenQuery[1] = midY;
 
-        ATON._screenQueryNormalized[0] = (ATON._screenQuery[0] / ATON._canvas.width).toFixed( 3 );
-        ATON._screenQueryNormalized[1] = (ATON._screenQuery[1] / ATON._canvas.height).toFixed( 3 );
+            ATON._screenQueryNormalized[0] = 0.5;
+            ATON._screenQueryNormalized[1] = 0.5;
+            }
+
+        else {
+            ATON._screenQuery[0] = evt.clientX * ( ATON._canvas.width / ATON._canvas.clientWidth );
+            ATON._screenQuery[1] = ( ATON._canvas.clientHeight - evt.clientY ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
+
+            ATON._screenQueryNormalized[0] = (ATON._screenQuery[0] / ATON._canvas.width).toFixed( 3 );
+            ATON._screenQueryNormalized[1] = (ATON._screenQuery[1] / ATON._canvas.height).toFixed( 3 );
+            }
 
 
         //console.log( ATON._screenQueryNormalized );

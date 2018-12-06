@@ -12,7 +12,7 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-//#define USE_QV 1
+#define USE_QV 1
 
 
 
@@ -695,15 +695,15 @@ void main(){
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         FinalFragment = mix(qusvCol, FinalFragment, 0.2);
         //FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
-    else FinalFragment = vec4(0,0,0, 1);
+    else FinalFragment = mix(vec4(0,0,0, 1), FinalFragment, 0.0);
 #endif
 
 #endif
 
 
 
-#if 1   // QUSV / Session Encoding
-    #define USE_ILSIGN 1
+#if 0   // QUSV / Session Encoding
+    //#define USE_ILSIGN 1
 /*
     UCOLORS[0] = vec4(1.0,0.0,0.0, 0.0);
     UCOLORS[1] = vec4(1.0,1.0,0.0, 0.0);
@@ -736,7 +736,7 @@ void main(){
     qRad = 1.5;
 #else 
     const int QUSV_MAX_RANGE  = 128;
-    qRad = 4.0; // 3.0; //(uQVslider*500.0);
+    qRad = 3.0; // 3.0; //(uQVslider*500.0);
 #endif
 
     const float QUSV_PATCH_SIZE = 4096.0;
@@ -794,7 +794,7 @@ void main(){
     //=====================================================
     // Hover Pass (IF)
     //=====================================================
-#if 0
+#if 1
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= 0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);

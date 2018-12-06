@@ -8,7 +8,7 @@
 
 ==================================================================================*/
 
-const PORT = 80;
+const PORT = 8080;
 const WWW_FOLDER = __dirname + "/../";
 
 const express = require('express');

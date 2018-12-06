@@ -488,7 +488,10 @@ window.addEventListener( 'load', function () {
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
 
+
+                    //QPV = ATON.QVhandler.addQV([-2.6, -2.1, 0.4], [4, 4.2, 2.0]);
                     QPV = ATON.QVhandler.addQV([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    
                     QPV.loadQVAimg("../models/_prv/_QUSV/dining/F-qils.png");
                     //QPV.loadQVAimg("../models/_prv/_QUSV/dining/F_GLOB-TP0.png");
 
@@ -506,9 +509,9 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
                     QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
-                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F-qils.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F-qils.png");
                     //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P-qils.png");
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
+                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
                     //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
                     $("#idSession").show();
 
@@ -672,6 +675,10 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
                     //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
 
+                    var s = 1.0; //0.003;
+                    ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s]));
+                    ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [s,s,s]));
+
                     ATON.switchLayer("2016", false);
                     ATON.switchLayer("XIX", true);
                     //ATON.switchLayer("HS", false);
@@ -694,8 +701,8 @@ window.addEventListener( 'load', function () {
 
                         var f = parseFloat(el.value);
 
-                        ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [1.0,1.0,f]));
-                        ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [1.0,1.0,f]));
+                        ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s*f]));
+                        ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [s,s,s*f]));
                         };
 
                     $("#idCustomBTNs").append("<button type='button' class='btn btn-info btn-sm' data-toggle='button' aria-pressed='false' onclick='ATON.LSswitch(1)'>XIX</button>");
@@ -907,7 +914,7 @@ if (asset === "sf"){
         //IP = "seth.itabc.cnr.it";
 
         ATON.vroadcast.uStateFreq = 0.05;
-        ATON.vroadcast.connect("http://"+vrcIP+":8080/", scenename);
+        ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
 
         $("#idVRoadcast").show();
 
@@ -962,6 +969,8 @@ if (asset === "sf"){
         //ATON.setFOV(120);
         //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
         if (QPV) ATON.vroadcast.requestPol();
+
+        if (ATON._isMobile) ATON._bQueryAxisAligned = true;
         };
 
     ATON.FrontEnd.attachListeners();

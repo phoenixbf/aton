@@ -338,7 +338,7 @@ var sPOLnumCellsRCV      = 0;
 var sPOLnumQPAsent       = 0;
 var sPOLnumCellsRW       = 0;
 var sPOLnumCellsNEG      = 0;
-
+/*
 var sPOLfile             = outRecordFolder+"/POLstats.csv";
 var sPOLstream           = fs.createWriteStream(sPOLfile, {'flags': 'w'});
 
@@ -374,7 +374,7 @@ setInterval(function(){
         }
 
 },4000);
-
+*/
 
 
 //====================================================================================

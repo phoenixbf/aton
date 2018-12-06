@@ -1,3 +1,0 @@
-#!/bin/bash
-
-node ATON.SERVICE.vroadcast.js --www ../ -t 100 --production

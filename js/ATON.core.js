@@ -1924,10 +1924,12 @@ ATON._computeAffordanceHover = function(){
     if (pn[2] < 0.8 && ATON._bFirstPersonMode){
         ATON._bSurfAffordable = false;
         ATON._surfAff = 0.1;
+        ATON._mainSS.getUniform('uHover').setFloat4([1.0,0.0,0.0, ATON._hoverRadius]);
         }
     else {
         ATON._bSurfAffordable = true;
         ATON._surfAff = 1.0;
+        ATON._mainSS.getUniform('uHover').setFloat4([0.0,1.0,0.0, ATON._hoverRadius]);
         }
 
     // if using QVs
@@ -2591,6 +2593,8 @@ ATON._initCoreUniforms = function(){
     ATON.GLSLuniforms.LightProbeSampler       = osg.Uniform.createInt1( ATON_SM_UNIT_LP, 'LightProbeSampler' );
 
     // Globals
+    ATON._hoverRadius = 0.5;
+
     osg.mat4.identity(ATON._mLProtation);
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'time' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.7, 'uExposure' ) );
@@ -2601,6 +2605,7 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 300.0, 'uFogDistance' ) ); // 120
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat4( osg.vec4.fromValues(0.0,1.0,0.0, ATON._hoverRadius), 'uHover' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uDim' ) );
 
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );

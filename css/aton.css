@@ -161,6 +161,12 @@ canvas {
   animation: loader 2s linear infinite;
 }
 
+.atonUserBG {
+  background-color: black;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 
 /*
     Input Range Sliders
@@ -170,10 +176,10 @@ input[type=range] {
     width: 100%;
     margin: 9.7px 0;
   }
-  input[type=range]:focus {
+input[type=range]:focus {
     outline: none;
-  }
-  input[type=range]::-webkit-slider-runnable-track {
+}
+input[type=range]::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
@@ -181,8 +187,8 @@ input[type=range] {
     background: #7f7f7f;
     border-radius: 5.8px;
     border: 0px solid #000000;
-  }
-  input[type=range]::-webkit-slider-thumb {
+}
+input[type=range]::-webkit-slider-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 24px;
@@ -192,11 +198,11 @@ input[type=range] {
     cursor: pointer;
     -webkit-appearance: none;
     margin-top: -9.7px;
-  }
-  input[type=range]:focus::-webkit-slider-runnable-track {
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
     background: #c1c1c1;
-  }
-  input[type=range]::-moz-range-track {
+}
+input[type=range]::-moz-range-track {
     width: 100%;
     height: 4.6px;
     cursor: pointer;
@@ -204,8 +210,8 @@ input[type=range] {
     background: #7f7f7f;
     border-radius: 5.8px;
     border: 0px solid #000000;
-  }
-  input[type=range]::-moz-range-thumb {
+}
+input[type=range]::-moz-range-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 24px;
@@ -213,28 +219,28 @@ input[type=range] {
     border-radius: 6px;
     background: #ffffff;
     cursor: pointer;
-  }
-  input[type=range]::-ms-track {
+}
+input[type=range]::-ms-track {
     width: 100%;
     height: 4.6px;
     cursor: pointer;
     background: transparent;
     border-color: transparent;
     color: transparent;
-  }
-  input[type=range]::-ms-fill-lower {
+}
+input[type=range]::-ms-fill-lower {
     background: #3d3d3d;
     border: 0px solid #000000;
     border-radius: 11.6px;
     box-shadow: 1px 1px 6.5px #000000, 0px 0px 1px #0d0d0d;
-  }
-  input[type=range]::-ms-fill-upper {
+}
+input[type=range]::-ms-fill-upper {
     background: #7f7f7f;
     border: 0px solid #000000;
     border-radius: 11.6px;
     box-shadow: 1px 1px 6.5px #000000, 0px 0px 1px #0d0d0d;
-  }
-  input[type=range]::-ms-thumb {
+}
+input[type=range]::-ms-thumb {
     box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
     border: 1px solid #000000;
     height: 24px;
@@ -243,11 +249,11 @@ input[type=range] {
     background: #ffffff;
     cursor: pointer;
     height: 4.6px;
-  }
-  input[type=range]:focus::-ms-fill-lower {
+}
+input[type=range]:focus::-ms-fill-lower {
     background: #7f7f7f;
-  }
-  input[type=range]:focus::-ms-fill-upper {
+}
+input[type=range]:focus::-ms-fill-upper {
     background: #c1c1c1;
-  }
+}
   

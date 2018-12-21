@@ -296,12 +296,14 @@ ATON.polarizedAffordance = function(){
     var pval = ATON.FrontEnd.QVhoverValue[3] / 255.0;
 
     if (pval <= 0.0){
-        //ATON._bSurfAffordable = false;
         ATON._surfAff = 0.0;
+        //ATON._bSurfAffordable = false;
+        //ATON._mainSS.getUniform('uHover').setFloat4([1.0,0.0,0.0, ATON._hoverRadius]);
         }
     else {
-        ATON._bSurfAffordable = true;
         ATON._surfAff = 1.0; //Math.max(ATON._surfAff, pval);
+        ATON._bSurfAffordable = true;
+        ATON._mainSS.getUniform('uHover').setFloat4([0.0,1.0,1.0, ATON._hoverRadius]);
         }
    
 };
@@ -921,8 +923,8 @@ if (asset === "sf"){
         // We have ID
         ATON.vroadcast.onIDassigned = function(){
             var uid = ATON.vroadcast._myUser.id;
-            //$('#idUserColor').css("background-color", uColors[uid % 6]);
-            $('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
+            $('#idUserColor').css("background-color", uColors[uid % 6]);
+            //$('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
             $('#idUserColor').html("U"+uid);
 
             // disable controls for beta users

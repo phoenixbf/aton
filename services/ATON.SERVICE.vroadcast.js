@@ -83,6 +83,7 @@ var getNormLocationInVolume = function(loc, vol){
 const QV_SLICE_RES = 64; //64; //256; //128;
 const QV_Z_SLICES  = 64; //64; //16; //32;
 const QV_SIZE      = QV_SLICE_RES*QV_Z_SLICES;
+const QV_ROOT_FOLDER = __dirname+"/../qv/";
 
 var QFsync = 0;
 const QFsyncFreq = 10; //20;
@@ -191,7 +192,7 @@ QV.prototype = {
 
 
         var i,j,t;
-        i = parseInt(P[0] * QV_SLICE_RES);
+        i = parseInt(P[0] * QV_SLICE_RES); // FIXME!!! (-1)
         j = parseInt(P[1] * QV_SLICE_RES);
 
         t = parseInt(P[2] * QV_Z_SLICES); // tile index
@@ -401,12 +402,24 @@ var touchSceneNode = function(sname){
     var QFVpath = getGlobalQFVimgpath(sname);
 
     scene.qfv = new QV(QFVpath);
+
+    // FIXME: add support to qv list per scene
+    //var QVdata = JSON.parse(fs.readFileSync(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8'));
+    fs.readFile(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8', (err, data) => {
+        if (err) throw err;
+  
+        //console.log(data);
+        var QVdata = JSON.parse(data);
+        if (QVdata.list){
+            scene.qfv.setPositionAndExtents(QVdata.list[0].position, QVdata.list[0].extents);
+            }
+        });
     
-    // TODO: parametrize
+/*
     //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
     if (sname === "cecilio") scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
     if (sname === "hebe")    scene.qfv.setPositionAndExtents([-8.0,-8.0,-0.1], [16,16,6]); // hebe
-
+*/
     var broadCastQFV = function(){
         scene.qfv.PA.getBase64(Jimp.MIME_PNG, function(err, data){
             if (data){
@@ -1074,7 +1087,7 @@ io.on('connection', function(socket){
 
             //qfv.igniteLocation( clientInfo.position, fv);
             //qfv.igniteLocation( clientInfo.focus, fv);
-            bQPAdirty = qfv.igniteLocation( clientInfo.focus, pv/*df*/, clientInfo.rank);
+            bQPAdirty = qfv.igniteLocation( clientInfo.focus, pv /*df*/, clientInfo.rank);
 
             if (bQPAdirty){
                 socket.emit("POLCELL",{ i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });

@@ -216,9 +216,13 @@ ATON.QVhandler.QV.prototype = {
         var y = (g / 255.0) * this.vExt[1];
         var z = (b / 255.0) * this.vExt[2];
 
-        x += (this.vMin[0] + this._xC[0]);
-        y += (this.vMin[1] + this._xC[1]);
-        z += (this.vMin[2] + this._xC[2]);
+        x += this.vMin[0];
+        y += this.vMin[1];
+        z += this.vMin[2];
+
+        x += this._xC[0];
+        y += this._xC[1];
+        z += this._xC[2];
 
         return [x,y,z];
         },
@@ -254,6 +258,21 @@ ATON.QVhandler.addQV = function(pos, ext){
     if (ATON.QVhandler.QVList.length === 1) ATON.QVhandler.setActiveQVbyIndex(0);
 
     return QV;
+};
+
+ATON.QVhandler.addFromJSON = function(qvpath, onSuccess){
+    $.getJSON( qvpath, function( data ){
+        console.log("QV-json Loaded!");
+
+        if (data.list === undefined) return;
+        var qvList = data.list;
+
+        for (let v = 0; v < qvList.length; v++) {
+            ATON.QVhandler.addQV( qvList[v].position, qvList[v].extents);
+            }
+
+		if (onSuccess !== undefined) onSuccess();
+		});
 };
 
 ATON.QVhandler.setActiveQVbyIndex = function(index){

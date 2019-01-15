@@ -1,9 +1,19 @@
+/*!
+    @preserve
 
-ATON.FrontEnd = {};
+ 	ATON FrontEnd
+
+ 	@author Bruno Fanini
+	VHLab, CNR ITABC
+
+==================================================================================*/
+
+ATON.FE = {};
 
 // root paths
-ATON.FrontEnd.MODELS_ROOT = "../models/";
-ATON.FrontEnd.RES_ROOT    = "../res/";
+ATON.FE.MODELS_ROOT = "../models/";
+ATON.FE.RES_ROOT    = "../res/";
+ATON.FE.QV_ROOT     = "../qv/";
 
 // VRoadcast
 var vrcIP = ATON.utils.getURLparams().vrc;
@@ -42,8 +52,8 @@ ATON.onNodeRequestFired = function(){
 };
 
 
-ATON.FrontEnd.setupPage = function(){
-    ATON.FrontEnd.ssRec = false;
+ATON.FE.setupPage = function(){
+    ATON.FE.ssRec = false;
 
     $("#idSession").hide();
 
@@ -52,31 +62,31 @@ ATON.FrontEnd.setupPage = function(){
         e.stopPropagation();
     }, false );
     
-    ATON.FrontEnd.setUserName = function(){
+    ATON.FE.setUserName = function(){
         var el = document.getElementById('uname');
         ATON.vroadcast.setUserName(el.value);
     };
     
-    ATON.FrontEnd.setStatus = function(){
+    ATON.FE.setStatus = function(){
         var el = document.getElementById('ustatus');
         ATON.vroadcast.setStatus(el.value);
         el.value = "";
     };
-    ATON.FrontEnd.setWeight = function(){
+    ATON.FE.setWeight = function(){
         var el = document.getElementById('uweight');
         console.log(el.value);
         ATON.vroadcast.setWeight(el.value);
 
         document.getElementById('idMagWeight').innerHTML = el.value;
     };
-    ATON.FrontEnd.setRank = function(){
+    ATON.FE.setRank = function(){
         var el = document.getElementById('urank');
         console.log(el.value);
         ATON.vroadcast.setRank(el.value);
 
         document.getElementById('idRank').innerHTML = el.value;
     };
-    ATON.FrontEnd.setMagRadius = function(){
+    ATON.FE.setMagRadius = function(){
         var el = document.getElementById('umagrad');
         console.log(el.value);
         ATON.vroadcast.setMagRadius(el.value);
@@ -84,26 +94,26 @@ ATON.FrontEnd.setupPage = function(){
         document.getElementById('idMagRadius').innerHTML = el.value;
     };
     
-    ATON.FrontEnd.toggleFirstPerson = function(){
+    ATON.FE.toggleFirstPerson = function(){
         var el = document.getElementById('ufp');
         ATON.setFirstPersonMode(el.checked);
     };
     
-    ATON.FrontEnd.toggleCollisions = function(){
+    ATON.FE.toggleCollisions = function(){
         var el = document.getElementById('bcollisions');
         console.log(el.checked);
         ATON._bUseCollisions = el.checked;
     };
-    ATON.FrontEnd.toggleGravity = function(){
+    ATON.FE.toggleGravity = function(){
         var el = document.getElementById('bgravity');
         console.log(el.checked);
         ATON._bUseGravity = el.checked;
     };
 
-    ATON.FrontEnd.reqREC = function(){
-        ATON.FrontEnd.ssRec = !ATON.FrontEnd.ssRec;
+    ATON.FE.reqREC = function(){
+        ATON.FE.ssRec = !ATON.FE.ssRec;
 
-        if (ATON.FrontEnd.ssRec){
+        if (ATON.FE.ssRec){
             $('#idRecBTN').text("STOP");
             ATON.vroadcast.requestRecording(300); // 100
             }
@@ -113,14 +123,14 @@ ATON.FrontEnd.setupPage = function(){
             }
         };
 
-    ATON.FrontEnd.toggleDeviceOrientation = function(){
+    ATON.FE.toggleDeviceOrientation = function(){
         var el = document.getElementById('idDevOri');
         ATON.toggleDeviceOrientation(el.checked);
         };
 };
 
 
-ATON.FrontEnd.logPOV = function(){
+ATON.FE.logPOV = function(){
     console.log(
         "&pov="+
         ATON._currPOV.pos[0].toFixed(2)+","+
@@ -132,11 +142,11 @@ ATON.FrontEnd.logPOV = function(){
     );
 };
 
-ATON.FrontEnd.attachListeners = function(){
+ATON.FE.attachListeners = function(){
 	$(function() {
 		$(document).keydown(function(e){
 	    	if (e.keyCode == 67){ // c
-				ATON.FrontEnd.logPOV();
+				ATON.FE.logPOV();
                 }
 /*                
             if (e.keyCode == 77){ // m
@@ -207,7 +217,7 @@ var PolNav = function(){
     if (ATON._hoveredVisData === undefined) return;
     if (ATON.vroadcast._bQFpol) return;
 
-    // TODO: use ATON.FrontEnd.QVhoverValue
+    // TODO: use ATON.FE.QVhoverValue
     var v = qfv.getValue(ATON._hoveredVisData.p);
     if (v === undefined || v[3] <= 0){ // outside
         if (ATON._polForce > 0.0) ATON._polForce -= 0.0001;
@@ -222,7 +232,7 @@ var PolNav = function(){
         }
 
     var newPolPos = qfv.getWorldLocationFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2] ); // absolute loc
-    //var newPolPos = osg.vec3.sub([], ATON._hoveredVisData.p,qfv.getDeltaFromRGB( v[0],v[1],v[2] )); // delta
+    //var newPolPos = osg.vec3.sub([], ATON._hoveredVisData.p,qfv.getDeltaFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2])); // delta
 
     ATON._polPos = newPolPos;
 /*
@@ -277,7 +287,7 @@ var PolNav = function(){
 };
 
 // QVA
-ATON.FrontEnd.QVArequestNew = function(qv, url){
+ATON.FE.QVArequestNew = function(qv, url){
     if (!ATON.vroadcast._bPOLdirty) return;
 
     qv.loadQVAimg(url+"?"+new Date().getTime());
@@ -290,10 +300,10 @@ ATON.polarizedAffordance = function(){
     
     if (ATON._hoveredVisData === undefined) return;
 
-    ATON.FrontEnd.QVhoverValue = qfv.getValue(ATON._hoveredVisData.p);
-    if (ATON.FrontEnd.QVhoverValue === undefined) return;
+    ATON.FE.QVhoverValue = qfv.getValue(ATON._hoveredVisData.p);
+    if (ATON.FE.QVhoverValue === undefined) return;
 
-    var pval = ATON.FrontEnd.QVhoverValue[3] / 255.0;
+    var pval = ATON.FE.QVhoverValue[3] / 255.0;
 
     if (pval <= 0.0){
         ATON._surfAff = 0.0;
@@ -314,14 +324,23 @@ ATON.polarizedAffordance = function(){
 // MAIN =============================================================================
 window.addEventListener( 'load', function () {
 
-    ATON.FrontEnd.setupPage();
+    ATON.FE.setupPage();
 
     // First we grab canvas element
     var canvas = document.getElementById( 'View' );
 
-    // Sample Viewer
+    // Realize
     ATON.shadersFolder = "../shaders";
     ATON.realize(canvas);
+
+    // Mobile/Desktop Config
+    if (ATON._isMobile){
+        $('#idDevOri').show();
+        ATON._bQueryAxisAligned = true;
+        }
+    else {
+        $('#idDevOri').hide();
+        }
 
     // home
     //ATON.setHome([9.39,-12.22,4.78], [0.028,-0.43,2.77]);
@@ -354,12 +373,12 @@ window.addEventListener( 'load', function () {
                 case "faug":
                     scenename = "faug";
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/exedrae.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/rooves.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/exedrae.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/rooves.osgjs", { layer: "FAUG" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
@@ -372,7 +391,7 @@ window.addEventListener( 'load', function () {
                     scenename = "faug2";
                     //ATON.addLightProbe("../LP/default");
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
@@ -395,11 +414,11 @@ window.addEventListener( 'load', function () {
                             if (e.keyCode == 84){ // t
                                 e.preventDefault();
 
-                                if (thit==0) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
-                                if (thit==1) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
-                                if (thit==2) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
-                                if (thit==3) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
-                                //if (thit==4) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
+                                if (thit==0) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/temple_podium/root.osgjs", { layer: "PAST" });
+                                if (thit==1) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/temple_exterior/root.osgjs", { layer: "PAST" });
+                                if (thit==2) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/temple_entrance/root.osgjs", { layer: "PAST" });
+                                if (thit==3) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/temple_columns/root.osgjs", { layer: "PAST" });
+                                //if (thit==4) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/temple_roof/root.osgjs", { layer: "PAST" });
 
                                 thit++;
                                 }
@@ -421,12 +440,12 @@ window.addEventListener( 'load', function () {
                     scenename = "fpacis";
                     ATON.toggleAOPass(true);
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/01.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/02.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/03.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/04.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/05.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/fpacis/06.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/01.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/02.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/03.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/04.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/05.osgjs", { layer: "FPACIS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/06.osgjs", { layer: "FPACIS" });
 
                     ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
 
@@ -441,10 +460,10 @@ window.addEventListener( 'load', function () {
                 case "sarmi":
                     scenename = "sarmi";
                     
-                    for (let i = 1; i <= 7; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/part-0"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 7; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/part-0"+i+".osgjs", { layer: "LANDSCAPE" });
 
-                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs", { layer: "LANDSCAPE" });
-                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"../models/_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs", { layer: "LANDSCAPE" });
 
                     ATON.setHome([111.72,160.66,15.20],[34.22,146.66,-11.13]);
 
@@ -454,21 +473,21 @@ window.addEventListener( 'load', function () {
                     break;
 
                 case "complex":
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/Capriata1-inst.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/corcol/root.osgjs",{ layer: "COMPLEX", transformRules: ATON.FrontEnd.MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"complex/Capriata1.osgjs", { layer: "COMPLEX", transformRules: ATON.FE.MODELS_ROOT+"complex/Capriata1-inst.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs",{ layer: "COMPLEX", transformRules: ATON.FE.MODELS_ROOT+"complex/ColonnaCorinzia-inst.txt" });
                     break;
                 
                 case "sqcolumns":
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/table/TavoloEsedra.glb", { layer: "COLUMNS", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-4x.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/table/TavoloEsedra.glb", { layer: "COLUMNS", transformRules: ATON.FE.MODELS_ROOT+"tl-square-4x.txt" });
                     break;
 
                 case "groundx":
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-grid.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-grid.txt" });
                     break;
 
                 case "armoury":
                     scenename = "armoury";
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN" });
 
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.25,0.25,0.25]));
                     
@@ -477,16 +496,16 @@ window.addEventListener( 'load', function () {
 
                 case "picgallery":
                     scenename = "picgallery";
-                    ATON.addLightProbe("../LP/w");
+                    //ATON.addLightProbe("../LP/w");
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
                     break;
 
                 case "dining":
                     scenename = "dining-room";
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
 
@@ -506,7 +525,7 @@ window.addEventListener( 'load', function () {
                 case "vestibule":
                     scenename = "upper-vestibule";
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
@@ -530,7 +549,7 @@ window.addEventListener( 'load', function () {
                 case "smoking":
                     scenename = "smoking-room";
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.3,0.3,0.3]));
                     ATON.setHome([0.33,1.02,1.93],[-0.41,-0.46,1.58]);
 
@@ -543,15 +562,15 @@ window.addEventListener( 'load', function () {
                     break;
 
                 case "test1":
-                    scenename = "TEST1";
+                    scenename = "test1";
                     ATON.addLightProbe("../LP/default");
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FrontEnd.MODELS_ROOT+"ground/tl-border.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-cols.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
-                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"tree1/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-trees.txt" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FrontEnd.MODELS_ROOT+"tl-square-groundcubes.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt" });
 
                     ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
                     break;
@@ -565,10 +584,13 @@ window.addEventListener( 'load', function () {
 
                     ATON.addLightProbe("../LP/default");
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
                 
-                    QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
+                    //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
 
                     break;
 
@@ -596,65 +618,68 @@ window.addEventListener( 'load', function () {
 
                                 ATON.switchLayer("PRESENT", false);
 
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_a/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_b/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_c/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_d/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_e/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_f/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_g/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_h/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_i/root.osgjs", { layer: "PAST" });
-                                ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/_rec/room_l/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_a/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_b/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_c/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_d/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_e/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_f/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_g/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_h/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_i/root.osgjs", { layer: "PAST" });
+                                ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_l/root.osgjs", { layer: "PAST" });
                                 }
                             })
                         });
 
                     // PRESENT
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_E/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_b_floor/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_c/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_d/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_e/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_f/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_g/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_h/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_i/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_N/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_W/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_garden/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_E/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_floor/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_c/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_d/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_e/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_f/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_g/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_h/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/root.osgjs", { layer: "PRESENT" });
                     
-                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_l_ceiling/root.osgjs", { layer: "CEIL" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_ceiling/root.osgjs", { layer: "CEIL" });
                     
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_m_k/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_n/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_o/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_p_q/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_r/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_s/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_t/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs", { layer: "PRESENT" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs", { layer: "PRESENT" });
                     
 
                     //ATON.translateLayer("CEIL", [0,0,10]);
                     //ATON.switchLayer("PRESENT", false);
 
-                    QPV = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
+                    //QPV = ATON.QVhandler.addQV([-17.0,-41,0], [30,40,20]);
                     //QPV = ATON.QVhandler.addQV([-12.5,-17,0], [9,12,20]); // ingresso
                     //QPV = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
                     //QPV = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
 
                     //qv.loadQVAimg(QAurl+"?"+new Date().getTime());
 
                     //ATON.vroadcast.requestPol();
 /*
                     setInterval(function(){
-                        ATON.FrontEnd.QVArequestNew(qv, QAurl);
+                        ATON.FE.QVArequestNew(qv, QAurl);
                         }, 1000);
 */
                     ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
@@ -664,7 +689,7 @@ window.addEventListener( 'load', function () {
                     scenename = "TEST2";
                     ATON.setFirstPersonMode(true);
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/karanis/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
                     break;
 
@@ -673,9 +698,9 @@ window.addEventListener( 'load', function () {
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 20000.0 );
 
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs", { layer: "XIX" });
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
-                    //ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs", { layer: "XIX" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
 
                     var s = 1.0; //0.003;
                     ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s]));
@@ -755,7 +780,21 @@ window.addEventListener( 'load', function () {
                     $("#idCustomBTNs").append("<input class='form-control-range' id='idLSzx' type='range' min='1.0' max='8.0' step='0.1' oninput='ATON.LSzx()'>");
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 20000.0 );
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+"_prv/t/Test_Gorropu_IGM/inrap__Test_Gorropu_IGM_L0_X0_Y0_subtile.osgjs", { layer: "G" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/Test_Gorropu_IGM/inrap__Test_Gorropu_IGM_L0_X0_Y0_subtile.osgjs", { layer: "G" });
+                    break;
+
+                case "rsm":
+                    scenename = "rsm";
+                    //ATON.setFirstPersonMode(true);
+
+                    for (let b = 1; b <= 36; b++) {
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"/root.osgjs", { layer: "PRESENT" });
+                    }
+                    
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT2/root.osgjs", { layer: "PRESENT" });
+                    //ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
+
+                    //ATON.translateLayer("PRESENT",[-590282,-9734840, 0.0]);
                     break;
 
                 case "skf":
@@ -763,7 +802,7 @@ window.addEventListener( 'load', function () {
                     break;
             
                 default:
-                    ATON.addGraph(ATON.FrontEnd.MODELS_ROOT+asset+"/root.osgjs", { layer: asset });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+asset+"/root.osgjs", { layer: asset });
                     break;
                 }
             });
@@ -862,8 +901,8 @@ if (asset === "sf"){
 
 
     //ATON.setVRcontrollerModel("../models/controllers/vr_controller_vive_1_5.osgjs");
-    ATON.setVRcontrollerModel(ATON.FrontEnd.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
-    ATON.setVRcontrollerModel(ATON.FrontEnd.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
+    ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
+    ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
 
     // Hide controllers
     ATON._controllerTransLeft.setNodeMask(0x0);
@@ -880,7 +919,7 @@ if (asset === "sf"){
 
 
     // Tracer =====================
-    ATON.tracer.resPath = ATON.FrontEnd.RES_ROOT;
+    ATON.tracer.resPath = ATON.FE.RES_ROOT;
     ATON.tracer.rootRecordFolder = "../services/record/";
 
     var recstr = ATON.utils.getURLparams().rec;
@@ -903,7 +942,7 @@ if (asset === "sf"){
         }
 
     // VRoadcast =====================
-    ATON.vroadcast.setupResPath(ATON.FrontEnd.RES_ROOT);
+    ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
     ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
 
     $("#idVRoadcast").hide();
@@ -953,7 +992,8 @@ if (asset === "sf"){
         ATON.vroadcast.onDisconnect = function(){
             ATON.vroadcast.users = [];
 
-            $('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
+            //$('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
+            $('#idUserColor').css("background-color", "black");
             $('#idUserColor').html("ATON");            
             };
         }
@@ -969,11 +1009,10 @@ if (asset === "sf"){
         //$('#idLoader').hide();
 
         //ATON.setFOV(120);
+
         //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
         if (QPV) ATON.vroadcast.requestPol();
-
-        if (ATON._isMobile) ATON._bQueryAxisAligned = true;
         };
 
-    ATON.FrontEnd.attachListeners();
+    ATON.FE.attachListeners();
 });

@@ -132,7 +132,7 @@ vec3 QVAuvAdapter(vec3 worldLoc){
     i += (t * QV_SLICE_RES);
 
     R.x = float(i)/float(QV_SIZE);
-    R.y = 1.0 - float(j)/float(QV_SLICE_RES);
+    R.y = float(QV_SLICE_RES-j)/float(QV_SLICE_RES);
 
 /*
     int i,j,z;

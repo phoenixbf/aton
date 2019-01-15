@@ -1,0 +1,14 @@
+{
+    "list": [
+        {
+            "name": "global",
+            "position": [-17.0,-41,0],
+            "extents": [30,40,20]
+        },
+        {
+            "name": "stanza1",
+            "position": [0.0,-34,0.0],
+            "extents": [8,7,20]
+        }
+    ]
+}

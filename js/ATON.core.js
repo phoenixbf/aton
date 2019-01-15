@@ -490,6 +490,14 @@ ATON.utils.generateProduction = function(template, instfileURL, prodGroup){
             });
 };
 
+// https://medium.com/@dee_bloo/make-multithreading-easier-with-inline-web-workers-a58723428a42
+ATON.utils.createWorker = function(fn){
+    var blob = new Blob(['self.onmessage = ', fn.toString()], { type: 'text/javascript' });
+    var url = URL.createObjectURL(blob);
+  
+    return new Worker(url);
+}
+
 
 // HDR
 /*

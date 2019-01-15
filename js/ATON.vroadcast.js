@@ -25,6 +25,9 @@ ATON.vroadcast.onIDassigned = undefined;
 ATON.vroadcast.onDisconnect = undefined;
 ATON.vroadcast.onPolDataReceived = undefined;
 
+//ATON.vroadcast.events = {}; // TODO
+//ATON.vroadcast.events["IDassigned"] = undefined;
+
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;

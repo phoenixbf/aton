@@ -55,8 +55,9 @@ uniform vec3 uWorldEyePos;
 uniform vec3 uViewDirWorld;
 //uniform vec3 EyeWorld;
 uniform vec3 uHoverPos;
-uniform float uHoverAffordance;
-uniform vec4 uHover;
+//uniform float uHoverAffordance;
+uniform vec4 uHoverColor;
+uniform float uHoverRadius;
 
 uniform vec3 uQVmin;
 uniform vec3 uQVext;
@@ -797,13 +798,13 @@ void main(){
     //=====================================================
 #if 1
     float hpd = distance(uHoverPos, vWorldVertex);
-    hpd /= uHover.w; //0.5; // radius
+    hpd /= uHoverRadius; //0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
 
     hpd *= 5.0; // 20 hardening
     hpd = clamp(hpd, 0.0,1.0);
 
-    vec4 HoverColor;
+    //vec4 HoverColor;
     //vec4 hovMax, hovMin;
     //hovMax = vec4((1.0-FinalFragment.r), 2.0, (1.0-FinalFragment.b), FinalFragment.a);
     //hovMin = vec4(2.0, (1.0-FinalFragment.g), (1.0-FinalFragment.b), FinalFragment.a);
@@ -811,7 +812,7 @@ void main(){
     ////HoverColor = mix(hovMin,hovMax, uHoverAffordance);
     //HoverColor = mix(vec4(1,0,0,1),vec4(0,1,0,1), uHoverAffordance);
 
-    HoverColor = vec4(uHover.rgb, 1.0);
+    //HoverColor = vec4(uHover.rgb, 1.0);
 
 /*
     vec4 HoverColor;
@@ -826,7 +827,7 @@ void main(){
     //hpd *= QVAcol.a;
 #endif
 
-    FinalFragment = mix(FinalFragment, HoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3);
+    FinalFragment = mix(FinalFragment, uHoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3*uHoverColor.a);
 #endif
 
 #if 0 // OLD
@@ -861,8 +862,12 @@ void main(){
     FinalFragment = mix(FinalFragment,HoverColor, uHoverAffordance);
     //alphaContrib = hpd;
 
-    ////if(vWorldVertex.z > 7.0) discard;
+    //if(vWorldVertex.z > 7.0) discard;
 
+#endif
+
+#if 0 // Sections
+    if(vWorldVertex.z > 780.0) discard;
 #endif
 
     //=====================================================

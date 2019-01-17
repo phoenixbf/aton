@@ -35,7 +35,8 @@ ATON.vroadcast.onPolCellReceived = function(){
     QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
 };
 
-
+ATON.FE._growVolume = new osg.BoundingBox();
+ATON.FE._growVolume.init();
 
 var uColors = [
     'rgb(64, 0, 0)',
@@ -145,8 +146,25 @@ ATON.FE.logPOV = function(){
 ATON.FE.attachListeners = function(){
 	$(function() {
 		$(document).keydown(function(e){
-	    	if (e.keyCode == 67){ // c
+	    	if (e.key == 'c'){
 				ATON.FE.logPOV();
+                }
+            if (e.key == '.'){
+                if (ATON._hoveredVisData){
+                    ATON.FE._growVolume.expandByVec3(ATON._hoveredVisData.p);
+                    //console.log("Volume min: "+ATON.FE._growVolume.getMin());
+                    //console.log("Volume max: "+ATON.FE._growVolume.getMax());
+                    console.log("Vol position: ["+
+                        ATON.FE._growVolume.getMin()[0].toFixed(2)+","+
+                        ATON.FE._growVolume.getMin()[1].toFixed(2)+","+
+                        ATON.FE._growVolume.getMin()[2].toFixed(2)+"]"
+                        );
+                    console.log("Vol extents: ["+
+                        (ATON.FE._growVolume.getMax()[0]-ATON.FE._growVolume.getMin()[0]).toFixed(2)+","+
+                        (ATON.FE._growVolume.getMax()[1]-ATON.FE._growVolume.getMin()[1]).toFixed(2)+","+
+                        (ATON.FE._growVolume.getMax()[2]-ATON.FE._growVolume.getMin()[2]).toFixed(2)+"]"
+                        );
+                    }
                 }
 /*                
             if (e.keyCode == 77){ // m
@@ -180,7 +198,7 @@ ATON.FE.attachListeners = function(){
                 else $("#idPOL").css("background-color","black");
                 }
 */
-            if (e.keyCode == 88){ // x
+            if (e.key == 'x'){ // x
                 ATON.vroadcast._bQFpol = true;
                 $("#idPOL").css("background-color","green");
                 ATON._mainSS.getUniform('uDim').setFloat( 0.4 );
@@ -190,7 +208,7 @@ ATON.FE.attachListeners = function(){
 
         // UP
         $(document).keyup(function(e){
-            if (e.keyCode == 88){ // x
+            if (e.key == 'x'){ // x
                 ATON.vroadcast._bQFpol = false;
                 $("#idPOL").css("background-color","black");
                 ATON._mainSS.getUniform('uDim').setFloat( 1.0 );
@@ -313,7 +331,7 @@ ATON.polarizedAffordance = function(){
     else {
         ATON._surfAff = 1.0; //Math.max(ATON._surfAff, pval);
         ATON._bSurfAffordable = true;
-        ATON._mainSS.getUniform('uHover').setFloat4([0.0,1.0,1.0, ATON._hoverRadius]);
+        ATON._mainSS.getUniform('uHoverColor').setFloat4([0.0,1.0,1.0, 1.0]);
         }
    
 };
@@ -787,12 +805,24 @@ window.addEventListener( 'load', function () {
                     scenename = "rsm";
                     //ATON.setFirstPersonMode(true);
 
-                    for (let b = 1; b <= 36; b++) {
-                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"/root.osgjs", { layer: "PRESENT" });
+                    for (let b = 1; b <= 37; b++) {
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs", { layer: "PRESENT" });
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD2/root.osgjs", { 
+                            layer: "PRESENT", 
+                            hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs",
+                            hirespxsize: 6000000
+                            });
+
+                    ATON._polarizeLocomotionQV = PolNav;
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     }
                     
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT2/root.osgjs", { layer: "PRESENT" });
-                    //ATON.setHome([-19.82,-20.99,29.27],[-5.43,-20.68,2.10]);
+                    ATON.setHome([318.57,802.01,781.72],[295.32,841.14,786.00]);
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
 
                     //ATON.translateLayer("PRESENT",[-590282,-9734840, 0.0]);
                     break;

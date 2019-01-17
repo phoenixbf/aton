@@ -107,7 +107,7 @@ ATON._bFirstPersonMode = false;
 ATON._tPOVprogress     = 0.0;
 ATON._povLerP          = osg.vec3.create();
 ATON._povLerT          = osg.vec3.create();
-ATON._surfAff          = 0.0;
+//ATON._surfAff          = 0.0;
 
 ATON._polForce = 0.0;
 ATON._polPos   = undefined;
@@ -1764,16 +1764,18 @@ ATON._handleCollisions = function(){
 //==========================================================================
 ATON._updateCallback = function(){
     ATON._time = 0;
+    ATON._tLastLowFreq = 0;
+    ATON._prevDirection = osg.vec3.create();
 };
 /** @lends ATON._updateCallback.prototype */
 ATON._updateCallback.prototype = {
     update: function ( node, nv ){
+        // CHECK if this value is reliable
+        //ATON._dtFrame = (nv.getFrameStamp().getSimulationTime() - ATON._time);
+        //if ( ATON._dtFrame < 0 ) return true;
+
         ATON._time = nv.getFrameStamp().getSimulationTime();
         ATON._mainSS.getUniform('time').setFloat( ATON._time );
-        
-        // CHECK if this value is reliable
-        ATON._dtFrame = (ATON._time - ATON._time);
-        if ( ATON._dtFrame < 0 ) return true;
 
         //console.log(1.0/ATON._dtFrame);
 
@@ -1782,6 +1784,9 @@ ATON._updateCallback.prototype = {
         //================ Navigation computations: we grab _currPOV and modify it, then update manip 
         manip.getTarget( ATON._currPOV.target );
         manip.getEyePosition( ATON._currPOV.pos );
+        ATON._prevDirection[0] = ATON._direction[0];
+        ATON._prevDirection[1] = ATON._direction[1];
+        ATON._prevDirection[2] = ATON._direction[2];
 
         // POV transitions
         if (ATON._tPOVcall >= 0.0){
@@ -1824,6 +1829,21 @@ ATON._updateCallback.prototype = {
         ATON._vVelocity[2] = (ATON._currPOV.pos[2] - ATON._prevPOV.pos[2]);
         //console.log(ATON._vVelocity);
 
+        if (ATON._vrState || ATON._isMobile) ATON._dOriF = 0.99999;
+        else ATON._dOriF = 0.999;
+        var dOri = osg.vec3.dot(ATON._prevDirection, ATON._direction);
+        
+        if (dOri > ATON._dOriF){
+            ATON._handleVisHover();
+            
+            // Handle Descriptors HOVER
+            if (ATON._numDescriptors > 0) ATON._handleDescriptorsHover();
+            //console.log(dOri);
+            }
+        else ATON._hoverColor[3] *= 0.7;
+        ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
+
+
         // Store prev-POV
         ATON._prevPOV.pos[0] = ATON._currPOV.pos[0];
         ATON._prevPOV.pos[1] = ATON._currPOV.pos[1];
@@ -1840,11 +1860,10 @@ ATON._updateCallback.prototype = {
         if (ATON._LProtM){
             osg.mat4.setTranslation(ATON._LProtM, ATON._currPOV.pos);
             }
-
-        // Handle Descriptors HOVER
-        if (ATON._numDescriptors > 0) ATON._handleDescriptorsHover();
         
-        ATON._handleVisHover();
+
+        //ATON._handleVisHover();
+
 
 
         // Execute custom onTick routines
@@ -1856,6 +1875,21 @@ ATON._updateCallback.prototype = {
         return true;
         }
 };
+
+// Low-freq update callbacks
+/*
+ATON._lowUpdateCallback = setInterval(function(){
+    //ATON._handleVisHover();
+    console.time( 'kdtree build' );
+    var treeBuilder = new osg.KdTreeBuilder({
+        _numVerticesProcessed: 0,
+        _targetNumTrianglesPerLeaf: 50,
+        _maxNumLevels: 20
+        });
+    treeBuilder.apply( ATON._groupVisible );
+    console.timeEnd( 'kdtree build' );
+}, 4000);
+*/
 
 // Used to add custom onTick routine
 ATON.addOnTickRoutine = function( uf ){
@@ -1915,7 +1949,7 @@ ATON._handleVisHover = function(){
             ATON._mainSS.getUniform('uHoverPos').setFloat3(ATON._hoveredVisData.p);
             ATON._computeAffordanceHover();
             }
-        else ATON._mainSS.getUniform('uHoverAffordance').setFloat( 0.0 );
+        //else ATON._mainSS.getUniform('uHoverAffordance').setFloat( 0.0 );
 };
 
 // Compute Surface Affordance
@@ -1924,20 +1958,26 @@ ATON._computeAffordanceHover = function(){
     //if (ATON._hoveredVisData === undefined) return;
 
     // Surface Affordance
-    ATON._surfAff = 0.0; // cumulative with other parameters
+    //ATON._surfAff = 0.0; // cumulative with other parameters
     var pn = ATON._hoveredVisData.n;
     var pp = ATON._hoveredVisData.p;
     
     // Determine walkable surface
     if (pn[2] < 0.8 && ATON._bFirstPersonMode){
         ATON._bSurfAffordable = false;
-        ATON._surfAff = 0.1;
-        ATON._mainSS.getUniform('uHover').setFloat4([1.0,0.0,0.0, ATON._hoverRadius]);
+        //ATON._surfAff = 0.1;
+        ATON._hoverColor[0] = 1.0;
+        ATON._hoverColor[1] = 0.0;
+        ATON._hoverColor[2] = 0.0;
+        ATON._hoverColor[3] = 0.3;
         }
     else {
         ATON._bSurfAffordable = true;
-        ATON._surfAff = 1.0;
-        ATON._mainSS.getUniform('uHover').setFloat4([0.0,1.0,0.0, ATON._hoverRadius]);
+        //ATON._surfAff = 1.0;
+        ATON._hoverColor[0] = 0.0;
+        ATON._hoverColor[1] = 1.0;
+        ATON._hoverColor[2] = 0.0;
+        ATON._hoverColor[3] = 1.0;
         }
 
     // if using QVs
@@ -1945,8 +1985,7 @@ ATON._computeAffordanceHover = function(){
         if (ATON.polarizedAffordance) ATON.polarizedAffordance();
         }
 
-    //console.log(aff);
-    ATON._mainSS.getUniform('uHoverAffordance').setFloat( ATON._surfAff );
+    ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
 };
 
 
@@ -2191,31 +2230,35 @@ ATON._attachListeners = function(){
 
                 ATON.setFOV(currFOV);
 	    		}
-	    	if (e.keyCode == 86){ // v
+	    	if (e.key == 'v'){ // v
 				ATON.toggleVR();
 	    		}
             if (e.keyCode == 13){ // ENTER
                 if (ATON._vrState) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
                 }
 
-	    	if (e.keyCode == 67){ // c
+	    	if (e.key == 'c'){ // c
 				ATON._bUseCollisions = !ATON._bUseCollisions;
 	    		}
-	    	if (e.keyCode == 71){ // g
+	    	if (e.key == 'g'){ // g
 				ATON._bUseGravity = !ATON._bUseGravity;
 	    		}
-
-	    	if (e.keyCode == 73){ // i
-
-	    		}
-	    	if (e.keyCode == 75){ // k
+/*
+	    	if (e.key == 'i'){ // i
 
 	    		}
-
-	    	if (e.keyCode == 81){ // q
+	    	if (e.key == 'k'){ // k
 
 	    		}
-	    	if (e.keyCode == 80){ // p
+
+	    	if (e.key == 'q'){ // q
+
+                }
+            if (e.key == 'x'){ // x
+                //
+                }
+*/
+	    	if (e.key == 'p'){ // p
                 var P = new ATON.pov;
                 P.pos    = ATON._currPOV.pos.slice(0);
                 P.target = ATON._currPOV.target.slice(0);
@@ -2225,9 +2268,7 @@ ATON._attachListeners = function(){
 
                 console.log(ATON._currPOV);
 	    		}
-	    	if (e.keyCode == 88){ // x
-				//
-	    		}
+
 	    	if (e.keyCode == 102){ // numpad right
                 var nexti = (ATON._reqPOVi + 1) % ATON.POVlist.length;
                 ATON.requestPOVbyIndex( nexti );
@@ -2441,6 +2482,44 @@ ATON.addGraph = function( url, options, onComplete ){
             }
         else N = node;
 
+        // Two-Phase pLOD
+        if (options && options.hiresurl && options.hirespxsize){
+            var plod = new osg.PagedLOD();
+            plod.setRangeMode(osg.PagedLOD.PIXEL_SIZE_ON_SCREEN);
+            //plod.addChild(node, options.hirespxsize, Number.MAX_VALUE);
+            plod.addChild(node, 0.0, options.hirespxsize);
+
+            //plod.setFileName(1, options.hiresurl);
+
+            //plod.setRange(1, 0.0,options.hirespxsize);
+            plod.setRange(1, options.hirespxsize, Number.MAX_VALUE);
+
+            plod.setFunction(1, function(parent){
+                console.log("fire!");
+                
+                var g = new osg.Node();
+                g.addChild(node);
+                var r = osgDB.readNodeURL( options.hiresurl);
+                ATON._nodeReqs++;
+                r.then( function ( hrnode ){
+                    //g.addChild( hrnode );
+                    g.children[0] = hrnode;
+                    ATON._buildKDTree(ATON._groupVisible);
+                    
+                    if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+                    });
+
+                return g;
+                });
+/*
+            plod.setFunction(0, ()=>{ 
+                console.log("HELLO")
+                });
+*/
+            N = plod;
+            //console.log(N._perRangeDataList[1]);
+            }
+
         // Layer
         if (layerName) ATON.layers[layerName].addChild( N );
         else ATON._groupVisible.addChild( N );
@@ -2459,6 +2538,17 @@ ATON.addGraph = function( url, options, onComplete ){
         });
 };
 
+ATON._buildKDTree = function(node){
+    console.time( 'kdtree build' );
+    var treeBuilder = new osg.KdTreeBuilder({
+        _numVerticesProcessed: 0,
+        _targetNumTrianglesPerLeaf: 50,
+        _maxNumLevels: 20
+        });
+    treeBuilder.apply( node );
+    console.timeEnd( 'kdtree build' );
+};
+
 ATON._onNodeRequestComplete = function(){
 
     // Bound recomputation
@@ -2473,14 +2563,8 @@ ATON._onNodeRequestComplete = function(){
     //ATON.requestHome();
     //console.log(ATON._groupVisible);
 
-    console.time( 'kdtree build' );
-    var treeBuilder = new osg.KdTreeBuilder({
-        _numVerticesProcessed: 0,
-        _targetNumTrianglesPerLeaf: 50,
-        _maxNumLevels: 20
-        });
-    treeBuilder.apply( ATON._groupVisible );
-    console.timeEnd( 'kdtree build' );
+    // KD-tree
+    ATON._buildKDTree(ATON._groupVisible);
 
     if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
 };
@@ -2602,6 +2686,7 @@ ATON._initCoreUniforms = function(){
 
     // Globals
     ATON._hoverRadius = 0.5;
+    ATON._hoverColor  = osg.vec4.fromValues(0.0,1.0,0.0, 1.0);
 
     osg.mat4.identity(ATON._mLProtation);
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'time' ) );
@@ -2612,8 +2697,9 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createMatrix4( ATON._mLProtation, 'uLProtation' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 300.0, 'uFogDistance' ) ); // 120
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat4( osg.vec4.fromValues(0.0,1.0,0.0, ATON._hoverRadius), 'uHover' ) );
+    //ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat4( ATON._hoverColor, 'uHoverColor' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( ATON._hoverRadius, 'uHoverRadius' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uDim' ) );
 
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );

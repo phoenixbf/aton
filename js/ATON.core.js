@@ -94,7 +94,8 @@ ATON._IVvis   = new osgUtil.IntersectionVisitor();
 ATON._numDescriptors        = 0;
 ATON._pickedDescriptorsPath = []; // Array of unique names (picked descriptors-path)
 ATON._pickedDescriptorData  = undefined; // 3D point & norm of picked descriptor
-ATON._hoveringDescriptor    = false;
+//ATON._hoveringDescriptor    = false;
+ATON._hoveredDescriptor     = undefined;
 ATON._screenQuery           = osg.vec2.create();
 ATON._screenQueryNormalized = osg.vec2.create();    // in 0--1
 ATON._hoveredVisData        = undefined; // hovered 3D point & norm in visible graph
@@ -136,10 +137,32 @@ ATON._bSensorZready = false;
 ATON._mLProtation = osg.mat4.create();
 
 // User custom functions/event control
-ATON.onTickRoutines             = [];
-ATON.onDescriptorHover          = undefined;
-ATON.onNodeRequestFired         = undefined;
-ATON.onAllNodeRequestsCompleted = undefined;
+ATON.onTickRoutines = [];
+
+// Centralized custom event handling
+ATON.eventHandlers = {};
+ATON.on = function(evtname, f){
+    ATON.eventHandlers[evtname] = f;
+    //console.log("Custom event handler for '"+evtname+ "' registered.");
+};
+ATON.fireEvent = function(evtname, param){
+    var f = ATON.eventHandlers[evtname];
+    if (f === undefined){
+        //console.log("Warning: event "+evtname+" not registered.");
+        return undefined;
+        }
+    return f(param);
+};
+
+//ATON.on("myEvent", function(txt){ console.log(txt); });
+//ATON._fireEvtHandler("onSample", 'ciao');
+ATON.on("ShapeDescriptorHovered", undefined);
+ATON.on("ShapeDescriptorSelected", undefined);
+ATON.on("ShapeDescriptorLeft", undefined);
+ATON.on("NodeRequestFired", undefined);
+ATON.on("NodeRequestCompleted", undefined);
+ATON.on("AllNodeRequestsCompleted", undefined);
+//console.log(ATON.eventHandlers);
 
 
 // ATON Utils
@@ -309,6 +332,7 @@ ATON.utils._getPickedNodeNames = function(np){
         //    }
         }
 
+    //console.log(uNames);
     return uNames;
 };
 
@@ -585,9 +609,11 @@ ATON.descriptor = function(uname){
     this._onLoadComplete = undefined;
 
     // Init event handlers
-    this.onHover  = undefined;
-    this.onSelect = undefined;
+    this._onHover  = undefined;
+    this._onSelect = undefined;
     //this.onLeave  = undefined;
+
+    this._triggers = {}; // TODO:
 };
 
 ATON.descriptor.prototype = {
@@ -598,7 +624,23 @@ ATON.descriptor.prototype = {
     getUniqueID: function(){
         if (this.node === undefined) return undefined;
         return this.node.getName();
+        },
+
+    onHover: function(f){
+        this._onHover = f;
+        },
+    onSelect: function(f){
+        this._onSelect = f;
+        },
+
+    // TODO: add custom trigger condition > function
+    addTrigger: function(cond_f, f){
+        //this._triggers
         }
+};
+
+ATON.getDescriptor = function(unid){
+    return ATON.descriptors[unid];
 };
 
 // Adds a semantic 3D descriptor (typically a simple shape)
@@ -620,12 +662,13 @@ ATON.addDescriptor = function(url, unid, options){
     var request = osgDB.readNodeURL( url );
     request.then( function ( data ){
 
+        // remove all names inside loaded shape
         var CLV = new ATON.utils.clearNamesVisitor();
         data.accept( CLV );
 
         if (options && options.transformRules){
             var N = new osg.Node();
-            ATON.utils.generateProduction(node, options.transformRules, N);
+            ATON.utils.generateProduction(data, options.transformRules, N);
             ATON.descriptors[unid].node  = N;
             }
         else ATON.descriptors[unid].node = data;
@@ -639,7 +682,9 @@ ATON.addDescriptor = function(url, unid, options){
         if (ATON.descriptors[unid]._onLoadComplete !== undefined) ATON.descriptors[unid]._onLoadComplete();
 
         console.log("Descriptor node "+url+" loaded and registered as: "+unid);
-        }); 
+        });
+
+    return ATON.descriptors[unid];
 
 };
 
@@ -1906,12 +1951,24 @@ ATON._handleDescriptorsHover = function(){
             }
         
         if (ATON._pickedDescriptorData){
-            //console.log(dp);
-            if (!ATON._hoveringDescriptor && ATON.onDescriptorHover !== undefined) ATON.onDescriptorHover();
-            ATON._hoveringDescriptor = true;
+            ATON._descrSS.getUniform('uHoverPos').setFloat3(ATON._pickedDescriptorData.p);
+
+            // last (closest) descriptorID on the path
+            var hovD = undefined;
+            if (ATON._pickedDescriptorsPath.length>1) hovD = ATON._pickedDescriptorsPath[ATON._pickedDescriptorsPath.length-1];
+
+            // On Hover
+            if (hovD !== ATON._hoveredDescriptor){
+                
+                ATON._hoveredDescriptor = hovD;
+                if (ATON.descriptors[ATON._hoveredDescriptor]) ATON.descriptors[ATON._hoveredDescriptor]._onHover();
+                ATON.fireEvent("ShapeDescriptorHovered");
+                }
             }
+        // On Leave
         else {
-            ATON._hoveringDescriptor = false;
+            if (ATON._hoveredDescriptor) ATON.fireEvent("ShapeDescriptorLeft");
+            ATON._hoveredDescriptor = undefined;
             } 
 };
 
@@ -2456,7 +2513,7 @@ ATON.addGraph = function( url, options, onComplete ){
         }
 
     console.log("...Loading "+ url);
-    if (ATON.onNodeRequestFired) ATON.onNodeRequestFired();
+    ATON.fireEvent("NodeRequestFired");    //ATON.onNodeRequestFired();
 
     var request = osgDB.readNodeURL( url /*, { databasePath: basepath }*/ /*, opt*/ );
     request.then( function ( node ){
@@ -2500,22 +2557,18 @@ ATON.addGraph = function( url, options, onComplete ){
                 var g = new osg.Node();
                 g.addChild(node);
                 var r = osgDB.readNodeURL( options.hiresurl);
-                ATON._nodeReqs++;
+                //ATON._nodeReqs++;
                 r.then( function ( hrnode ){
                     //g.addChild( hrnode );
                     g.children[0] = hrnode;
                     ATON._buildKDTree(ATON._groupVisible);
                     
-                    if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+                    //if (ATON._nodeReqs > 0) ATON._nodeReqs--;
                     });
 
                 return g;
                 });
-/*
-            plod.setFunction(0, ()=>{ 
-                console.log("HELLO")
-                });
-*/
+
             N = plod;
             //console.log(N._perRangeDataList[1]);
             }
@@ -2533,7 +2586,7 @@ ATON.addGraph = function( url, options, onComplete ){
 
         if (onComplete !== undefined) onComplete();
         })
-    .catch(function (e) {
+    .catch( function(e) {
         console.error("Unable to load "+url+" - "+e);
         });
 };
@@ -2555,9 +2608,9 @@ ATON._onNodeRequestComplete = function(){
     //ATON._viewer.getManipulator().computeHomePosition();
     if (ATON._homeAuto) ATON.recomputeHome();
 
-    if (ATON._nodeReqs > 0) return;
-    // All node requests are completed
-    //================================
+    ATON.fireEvent("NodeRequestCompleted");
+
+    if (ATON._nodeReqs > 0) return; // All node requests are completed
 
     console.log("ALL COMPLETE");
     //ATON.requestHome();
@@ -2566,7 +2619,8 @@ ATON._onNodeRequestComplete = function(){
     // KD-tree
     ATON._buildKDTree(ATON._groupVisible);
 
-    if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
+    ATON.fireEvent("AllNodeRequestsCompleted");
+    //if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
 };
 
 
@@ -2703,6 +2757,9 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uDim' ) );
 
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
+
+    // Descriptors
+    ATON._descrSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
 
     // QUSV
     ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );

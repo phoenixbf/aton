@@ -20,7 +20,10 @@ precision mediump int;
 //varying vec3 osg_FragNormal;
 //varying vec3 osg_FragNormalWorld;
 varying vec4 vColor;
+varying vec3 vWorldVertex;
+varying vec3 vViewNormal;
 
+uniform vec3 uHoverPos;
 
 //=========================================================
 // VERTEX SHADER
@@ -32,12 +35,19 @@ attribute vec3 Vertex;
 attribute vec4 Color;
 //attribute Material;
 
+uniform mat3 uModelViewNormalMatrix;
+uniform mat3 uModelNormalMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelViewMatrix;
-
+uniform mat4 uModelMatrix;
 
 void main(){
 	vColor = Color;
+	vWorldVertex = vec3(uModelMatrix * vec4(Vertex, 1.0));
+
+    vViewNormal = uModelViewNormalMatrix * Normal;
+    vViewNormal = normalize(vViewNormal);
+
 	gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(Vertex, 1.0));
 }
 
@@ -69,7 +79,17 @@ void main(){
 		}
 	else alpha = 0.2;
 
-    FinalFragment.a = alpha;
+	float hpd = distance(uHoverPos, vWorldVertex);
+    hpd /= 5.0; // radius
+    hpd = 1.0- clamp(hpd, 0.0,1.0);
+	
+	hpd = (hpd*0.9) + 0.1;
+
+	float f = dot(vViewNormal, vec3(0,0,1));
+	f *= 0.7;
+	f = 1.0 - f;
+
+    FinalFragment.a = alpha * hpd * f;
 
 	gl_FragColor = FinalFragment;
 }

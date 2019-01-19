@@ -1061,11 +1061,13 @@ io.on('connection', function(socket){
         });
 
     socket.on('POLFOC', function(data){
+        //console.log(clientInfo.rank);
+
         if (scene && scene.qfv && clientInfo.rank >= 2){
             var qfv = scene.qfv;
 
             sPOLnumCellsRCV++;
-
+            //console.log("POLFOC "+data);
 /*
             var F = qfv.getNormLocationInVolume(data.focus);
             //console.log(data.focus);

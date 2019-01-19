@@ -16,7 +16,7 @@
     "euclidean-distance": "^1.0.0",
     "express": "^4.16.4",
     "jimp": "^0.2.28",
-    "npm": "^6.5.0",
+    "npm": "^6.6.0",
     "performance-now": "^2.1.0",
     "pngjs": "^3.3.2",
     "socket.io": "^1.7.3",

@@ -20,10 +20,12 @@ var vrcIP = ATON.utils.getURLparams().vrc;
 var QAurl = undefined;
 var QPV   = undefined;
 
-ATON.vroadcast.onPolDataReceived = function(){ 
+//ATON.vroadcast.onPolDataReceived = function(){
+ATON.on("VRC_PolDataReceived", function(){
     QPV.setQVAimgBase64(ATON.vroadcast._polDATA);
-};
-ATON.vroadcast.onPolCellReceived = function(){
+});
+//ATON.vroadcast.onPolCellReceived = function(){
+ATON.on("VRC_PolCellReceived", function(){
     if (ATON.vroadcast._polCELL === undefined) return;
 
     var col8 = new Uint8Array(4);
@@ -33,7 +35,7 @@ ATON.vroadcast.onPolCellReceived = function(){
     //console.log(col8);
 
     QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
-};
+});
 
 ATON.FE._growVolume = new osg.BoundingBox();
 ATON.FE._growVolume.init();
@@ -48,9 +50,9 @@ var uColors = [
 ];
 
 // On node requests
-ATON.onNodeRequestFired = function(){
+ATON.on("NodeRequestFired", ()=>{
     $('#idLoader').show();
-};
+});
 
 
 ATON.FE.setupPage = function(){
@@ -604,6 +606,11 @@ window.addEventListener( 'load', function () {
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36").onHover(
+                        function(){ console.log("T36"); });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", "col", {transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" }).onHover(
+                        function(){ console.log("col"); });
                 
                     //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
@@ -826,11 +833,11 @@ window.addEventListener( 'load', function () {
 
                     //ATON.translateLayer("PRESENT",[-590282,-9734840, 0.0]);
                     break;
-
+/*
                 case "skf":
                     ATON.addGraph("https://media.sketchfab.com/urls/afce4db089014d27a201c72d1cc1bcba/dist/models/4827386b0e674b0a9a33f0281c987fea/file.osgjs.gz", { layer: "MAIN" })
                     break;
-            
+*/          
                 default:
                     ATON.addGraph(ATON.FE.MODELS_ROOT+asset+"/root.osgjs", { layer: asset });
                     break;
@@ -990,7 +997,8 @@ if (asset === "sf"){
         $("#idVRoadcast").show();
 
         // We have ID
-        ATON.vroadcast.onIDassigned = function(){
+        //ATON.vroadcast.onIDassigned = function(){
+        ATON.on("VRC_IDassigned", function(){
             var uid = ATON.vroadcast._myUser.id;
             $('#idUserColor').css("background-color", uColors[uid % 6]);
             //$('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
@@ -1016,21 +1024,22 @@ if (asset === "sf"){
                 if (v[1]) ATON.vroadcast.setMagRadius( parseFloat(v[1]) );
                 }
 */
-            };
+            });
 
         // Disconnection
-        ATON.vroadcast.onDisconnect = function(){
+        //ATON.vroadcast.onDisconnect = function(){
+        ATON.on("VRC_Disconnect", function(){
             ATON.vroadcast.users = [];
 
             //$('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
             $('#idUserColor').css("background-color", "black");
             $('#idUserColor').html("ATON");            
-            };
+            });
         }
 
     // On completion
     var bFirstHome = true;
-    ATON.onAllNodeRequestsCompleted = function(){
+    ATON.on("AllNodeRequestsCompleted", function(){
         if (bFirstHome) ATON.requestHome();
         bFirstHome = false;
 
@@ -1042,7 +1051,7 @@ if (asset === "sf"){
 
         //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
         if (QPV) ATON.vroadcast.requestPol();
-        };
+        });
 
     ATON.FE.attachListeners();
 });

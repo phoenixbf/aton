@@ -21,13 +21,14 @@ ATON.vroadcast.uStateFreq = 0.1;
 ATON.vroadcast._bPOLdirty = true;
 
 // custom events
-ATON.vroadcast.onIDassigned = undefined;
-ATON.vroadcast.onDisconnect = undefined;
-ATON.vroadcast.onPolDataReceived = undefined;
+//ATON.vroadcast.onIDassigned = undefined;
+//ATON.vroadcast.onDisconnect = undefined;
+//ATON.vroadcast.onPolDataReceived = undefined;
 
-//ATON.vroadcast.events = {}; // TODO
-//ATON.vroadcast.events["IDassigned"] = undefined;
-
+ATON.on("VRC_IDassigned", undefined);
+ATON.on("VRC_Disconnect", undefined);
+ATON.on("VRC_PolDataReceived", undefined);
+ATON.on("VRC_PolCellReceived", undefined);
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -626,7 +627,8 @@ ATON.vroadcast._registerEventHandlers = function(){
             if (user) user._mt.setNodeMask(0x0);
             }
 
-        if (ATON.vroadcast.onDisconnect) ATON.vroadcast.onDisconnect();
+        //if (ATON.vroadcast.onDisconnect) ATON.vroadcast.onDisconnect();
+        ATON.fireEvent("VRC_Disconnect");
         });
 
     // Server assigns an ID
@@ -634,7 +636,8 @@ ATON.vroadcast._registerEventHandlers = function(){
         console.log("Your ID is " + data.id);
         ATON.vroadcast._myUser.id = data.id;
 
-        if (ATON.vroadcast.onIDassigned) ATON.vroadcast.onIDassigned();
+        //if (ATON.vroadcast.onIDassigned) ATON.vroadcast.onIDassigned();
+        ATON.fireEvent("VRC_IDassigned", data.id);
         });
 
     // A different user state update
@@ -742,7 +745,8 @@ ATON.vroadcast._registerEventHandlers = function(){
         ATON.vroadcast._bPOLdirty = true;
         ATON.vroadcast._polDATA   = data;
 
-        if (ATON.vroadcast.onPolDataReceived) ATON.vroadcast.onPolDataReceived();
+        //if (ATON.vroadcast.onPolDataReceived) ATON.vroadcast.onPolDataReceived();
+        ATON.fireEvent("VRC_PolDataReceived");
         });
 
     ATON.vroadcast.socket.on('POLCELL', function(data){
@@ -750,7 +754,8 @@ ATON.vroadcast._registerEventHandlers = function(){
         ATON.vroadcast._polCELL = data;
 
         //console.log(data);
-        if (ATON.vroadcast.onPolCellReceived) ATON.vroadcast.onPolCellReceived();
+        //if (ATON.vroadcast.onPolCellReceived) ATON.vroadcast.onPolCellReceived();
+        ATON.fireEvent("VRC_PolCellReceived");
         });
 
     // A user updates weight

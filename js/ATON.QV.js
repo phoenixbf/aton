@@ -34,6 +34,7 @@ ATON.QVhandler.QV = function(){
     this._qvaTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
 
     this._qvaIMG = new Image();
+    this._qvaIMG.setAttribute('crossOrigin', '');
 
     // For read pixels
     this._qvaCanvas  = document.createElement('canvas');
@@ -79,6 +80,7 @@ ATON.QVhandler.QV.prototype = {
 
         // For ReadPixels
         this._qvaIMG.src = this.qvaIMGurl;
+        this._qvaIMG.setAttribute('crossOrigin', '');
 
         var that = this;
         this._qvaIMG.onload = function(){
@@ -94,6 +96,7 @@ ATON.QVhandler.QV.prototype = {
 
         this._qvaIMG = new window.Image();
         this._qvaIMG.src = b64img;
+        this._qvaIMG.setAttribute('crossOrigin', '');
 
         var qTex = this._qvaTex;
         qTex.setMinFilter( this.qvaIMGfilter );

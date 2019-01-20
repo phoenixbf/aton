@@ -20,14 +20,21 @@ const compression = require('compression');
 
 // On req received (client)
 function logger(req, res, next){
-        console.log('Request from: ' + req.ip + ' For: ' + req.path);
-        next(); // Run the next handler
+    console.log('Request from: ' + req.ip + ' For: ' + req.path);
+    next(); // Run the next handler
 };
 
 // Configure webserver
 //==============================================   
 app.use(compression());
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
 app.use('/', express.static(WWW_FOLDER));
+
 
 /*
 app.get('/r/:roomid', function(req, res) {

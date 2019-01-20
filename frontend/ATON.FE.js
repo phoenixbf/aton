@@ -630,10 +630,10 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
 
                     // TEST descriptors
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36");
+                    //ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36");
                     //.onHover(function(){ console.log("T36"); });
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", "column", { transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"cube/root.osgjs", "cube", { transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"cube/root.osgjs", "hebe-box", { transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" });
                 
                     //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){

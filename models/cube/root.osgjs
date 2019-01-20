@@ -1,0 +1,89 @@
+{
+  "Generator": "OpenSceneGraph 3.6.3",
+  "Version": 9,
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0,
+        "Name": "cube",
+        "Children": [ {
+          "osg.Geometry": {
+            "UniqueID": 2,
+            "PrimitiveSetList": [ {
+              "DrawElementsUByte": {
+                "UniqueID": 7,
+                "Indices": {
+                  "UniqueID": 8,
+                  "Array": { 
+                    "Uint8Array": { 
+                      "File": "cube.bin",
+                      "Size": 36,
+                      "Offset": 0
+                    }
+                  },
+                  "ItemSize": 1,
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                },
+                "Mode": "TRIANGLES"
+              }
+            } ],
+            "VertexAttributeList": {
+              "Color": {
+                "UniqueID": 5,
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "cube.bin",
+                    "Size": 24,
+                    "Offset": 36
+                  }
+                },
+                "ItemSize": 4,
+                "Type": "ARRAY_BUFFER"
+              },
+              "Normal": {
+                "UniqueID": 4,
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "cube.bin",
+                    "Size": 24,
+                    "Offset": 420
+                  }
+                },
+                "ItemSize": 3,
+                "Type": "ARRAY_BUFFER"
+              },
+              "TexCoord0": {
+                "UniqueID": 6,
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "cube.bin",
+                    "Size": 24,
+                    "Offset": 708
+                  }
+                },
+                "ItemSize": 2,
+                "Type": "ARRAY_BUFFER"
+              },
+              "Vertex": {
+                "UniqueID": 3,
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "cube.bin",
+                    "Size": 24,
+                    "Offset": 900
+                  }
+                },
+                "ItemSize": 3,
+                "Type": "ARRAY_BUFFER"
+              }
+            }
+          }
+        } ],
+        "UserDataContainer": {
+          "UniqueID": 1,
+          "Values": [  ]
+        }
+      }
+    } ]
+  }
+}

@@ -14,6 +14,7 @@ ATON.FE = {};
 ATON.FE.MODELS_ROOT = "../models/";
 ATON.FE.RES_ROOT    = "../res/";
 ATON.FE.QV_ROOT     = "../qv/";
+ATON.FE.AUDIO_ROOT  = "../res/audio/";
 
 // VRoadcast
 var vrcIP = ATON.utils.getURLparams().vrc;
@@ -98,9 +99,28 @@ ATON.FE.setupPage = function(){
     };
     
     ATON.FE.toggleFirstPerson = function(){
-        var el = document.getElementById('ufp');
-        ATON.setFirstPersonMode(el.checked);
+        //var el = document.getElementById('ufp');
+        //ATON.setFirstPersonMode(el.checked);
+        if (ATON._bFirstPersonMode){
+            $("#idFP").css("background-color","rgba(127,127,127, 0.5)");
+            ATON.setFirstPersonMode(false);
+            }
+        else {
+            $("#idFP").css("background-color","rgba(0,255,0, 0.5)");
+            ATON.setFirstPersonMode(true);
+            }
     };
+
+    ATON.FE.toggleDevOri = function(){
+        if (ATON._bDevOri){
+            $("#idDevOri").css("background-color","rgba(127,127,127, 0.5)");
+            ATON.toggleDeviceOrientation(false);
+            }
+        else {
+            $("#idDevOri").css("background-color","rgba(0,255,0, 0.5)");
+            ATON.toggleDeviceOrientation(true);
+            }
+        };
     
     ATON.FE.toggleCollisions = function(){
         var el = document.getElementById('bcollisions');
@@ -117,11 +137,13 @@ ATON.FE.setupPage = function(){
         ATON.FE.ssRec = !ATON.FE.ssRec;
 
         if (ATON.FE.ssRec){
-            $('#idRecBTN').text("STOP");
+            //$('#idRecBTN').text("STOP");
+            $("#idRecBTN").css("background-color","rgba(255,0,0, 0.5)");
             ATON.vroadcast.requestRecording(300); // 100
             }
         else {
-            $('#idRecBTN').text("REC");
+            //$('#idRecBTN').text("REC");
+            $("#idDevOri").css("background-color","rgba(127,127,127, 0.5)");
             ATON.vroadcast.requestRecording();
             }
         };
@@ -607,10 +629,11 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
 
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36").onHover(
-                        function(){ console.log("T36"); });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", "col", {transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" }).onHover(
-                        function(){ console.log("col"); });
+                    // TEST descriptors
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36");
+                    //.onHover(function(){ console.log("T36"); });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", "column", { transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"cube/root.osgjs", "cube", { transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" });
                 
                     //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
@@ -937,9 +960,8 @@ if (asset === "sf"){
     //ATON.switchLayer("KARANIS", false);
 
 
-    //ATON.setVRcontrollerModel("../models/controllers/vr_controller_vive_1_5.osgjs");
-    ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
-    ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
+    //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
+    //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
 
     // Hide controllers
     ATON._controllerTransLeft.setNodeMask(0x0);
@@ -953,7 +975,28 @@ if (asset === "sf"){
         ATON.setHome([values[0],values[1],values[2]], [values[3],values[4],values[5]]);
         }
 
+    // Register onTick FrontEnd routine
+    ATON.addOnTickRoutine(function(){
+        //console.log("x");
+        
+        if (ATON._hoveredVisData) $("#idHoverPos").html(ATON._hoveredVisData.p[0].toFixed(3)+","+
+            ATON._hoveredVisData.p[1].toFixed(3)+","+
+            ATON._hoveredVisData.p[2].toFixed(3)
+            );
+        else $("#idHoverPos").html("");
+    });
 
+    // TEST Shape Descriptors
+    var auDHover = new Audio(ATON.FE.AUDIO_ROOT+"blop.mp3");
+    auDHover.loop = false;
+
+    ATON.on("ShapeDescriptorHovered", function(d){
+        $("#idShapeDescr").html(d.getUniqueID());
+        auDHover.play();
+        });
+    ATON.on("ShapeDescriptorLeft", ()=>{
+        $("#idShapeDescr").html("none");
+        });
 
     // Tracer =====================
     ATON.tracer.resPath = ATON.FE.RES_ROOT;
@@ -983,6 +1026,7 @@ if (asset === "sf"){
     ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
 
     $("#idVRoadcast").hide();
+    $('#idUserColor').hide();
 
     //vrcIP = ATON.utils.getURLparams().vrc;
     if (vrcIP !== undefined){
@@ -995,6 +1039,7 @@ if (asset === "sf"){
         ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
 
         $("#idVRoadcast").show();
+        $('#idUserColor').show();
 
         // We have ID
         //ATON.vroadcast.onIDassigned = function(){
@@ -1012,7 +1057,7 @@ if (asset === "sf"){
             if (rankstr){
                 var r = parseInt(rankstr);
                 ATON.vroadcast.setRank(r);
-                document.getElementById("urank").max = r;
+                //document.getElementById("urank").max = r;
                 }
 
 /*

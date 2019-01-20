@@ -622,8 +622,9 @@ ATON.descriptor.prototype = {
         },
     
     getUniqueID: function(){
-        if (this.node === undefined) return undefined;
-        return this.node.getName();
+        //if (this.node === undefined) return undefined;
+        //return this.node.getName();
+        return this.uname;
         },
 
     onHover: function(f){
@@ -1961,8 +1962,10 @@ ATON._handleDescriptorsHover = function(){
             if (hovD !== ATON._hoveredDescriptor){
                 
                 ATON._hoveredDescriptor = hovD;
-                if (ATON.descriptors[ATON._hoveredDescriptor]) ATON.descriptors[ATON._hoveredDescriptor]._onHover();
-                ATON.fireEvent("ShapeDescriptorHovered");
+                if (ATON.descriptors[ATON._hoveredDescriptor]){
+                    if (ATON.descriptors[ATON._hoveredDescriptor]._onHover) ATON.descriptors[ATON._hoveredDescriptor]._onHover();
+                    ATON.fireEvent("ShapeDescriptorHovered", ATON.descriptors[ATON._hoveredDescriptor]);
+                    }
                 }
             }
         // On Leave
@@ -2423,6 +2426,12 @@ ATON._initGraph = function(){
         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
+    /*
+    ATON._descrSS.setAttributeAndModes(
+        new osg.CullFace( 'DISABLE' ),
+        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+        );
+    */
     ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
 
     // UI ss

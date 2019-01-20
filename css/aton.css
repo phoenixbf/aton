@@ -167,6 +167,26 @@ canvas {
   border-radius: 10px;
 }
 
+/* icon / button */
+.atonBTN {
+    border: 0px;
+    display: inline-block;
+    cursor: pointer;
+
+    color: #FFF;
+
+    width: 45px;
+    height: 45px;
+
+    background-color: rgba(127, 127, 127, 0.5);
+    border-radius: 5px;
+    padding: 7px;
+}
+
+.atonBTN:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+}
+
 
 /*
     Input Range Sliders

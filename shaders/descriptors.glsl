@@ -14,6 +14,9 @@ precision mediump float;
 precision mediump int;
 #endif
 
+#define PI 		3.1415926535897932
+#define PI2 	(PI*0.5)
+
 //varying vec2 osg_TexCoord0;
 //varying vec3 osg_FragVertex;
 //varying vec3 osg_FragEye;
@@ -67,29 +70,38 @@ uniform float time;
 //==============
 void main(){
     //vec4 baseAlbedo = texture2D(BaseSampler, osg_TexCoord0);
+	vec4 FinalFragment;
 
     // FIXME: get color from ???
-    vec4 FinalFragment = vec4(0.5,1,0, 1.0);
+    FinalFragment = vec4(0.5,1,0, 1.0);
 
-	float alpha;
-	if (true){ // bHighlight
-		float f = (sin(time*3.0) + 1.0);
-		f *= 0.5;
-		alpha = mix(0.7, 0.3, f);
-		}
-	else alpha = 0.2;
+/*
+	FinalFragment.r = (cos(time) + 1.0) * 0.5;
+	FinalFragment.g = (cos(time + PI2) + 1.0) * 0.5;
+	FinalFragment.b = (cos(time + PI) + 1.0) * 0.5;
+*/
+	float alpha = 0.2;
+
+#ifndef MOBILE_DEVICE	// bHighlight
+	float t = (sin(time*3.0) + 1.0);
+	t *= 0.5;
+	alpha = mix(0.7, 0.3, t);
 
 	float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= 5.0; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
 	
-	hpd = (hpd*0.9) + 0.1;
+	hpd = (hpd*0.8) + 0.2;
 
 	float f = dot(vViewNormal, vec3(0,0,1));
-	f *= 0.7;
+	f *= 0.8;
 	f = 1.0 - f;
 
-    FinalFragment.a = alpha * hpd * f;
+	alpha *= hpd * f;
+	//if (hpd > 0.95) alpha += 0.2;
+#endif
+
+    FinalFragment.a = alpha;
 
 	gl_FragColor = FinalFragment;
 }

@@ -261,8 +261,29 @@ ATON.vroadcast._update = function(){
 
     // Interactive Polarization
     if (ATON.vroadcast._bQFpol){
-        var F = ATON._hoveredVisData.p.slice(0);
+        //var F = ATON._hoveredVisData.p.slice(0); // NOT USED?
+
         ATON.vroadcast.socket.emit("POLFOC", {/*id: myUser.id, */focus: DTarg});
+/*
+        var DT = DTarg.slice(0);
+        var aQV = ATON.QVhandler.getActiveQV();
+
+        var ir = parseInt((ATON._hoverRadius / (aQV.vExt[0]*0.5)) * QV_SLICE_RES);
+        var jr = parseInt((ATON._hoverRadius / (aQV.vExt[1]*0.5)) * QV_SLICE_RES);
+        var kr = parseInt((ATON._hoverRadius / (aQV.vExt[2]*0.5)) * QV_SLICE_RES);
+
+        for (i=-ir; i<=ir; i++){
+            for (j=-jr; j<=jr; j++){
+                for (k=-kr; k<=kr; k++){
+                    DT[0] = DTarg[0]+i;
+                    DT[1] = DTarg[1]+j;
+                    DT[2] = DTarg[2]+k;
+
+                    ATON.vroadcast.socket.emit("POLFOC", {focus: DT});
+                    }   
+                }
+            }
+*/
         ATON.vroadcast._bPOLdirty = true;
         }
 

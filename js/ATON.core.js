@@ -2454,6 +2454,11 @@ ATON.addGraphXXX = function( url, onComplete ){
 };
 */
 
+ATON.updateHoverRadius = function(r){
+    if (r !== undefined) ATON._hoverRadius = r;
+    ATON._mainSS.getUniform('uHoverRadius').setFloat(ATON._hoverRadius);
+};
+
 /*
     LAYERS
 ==================================*/

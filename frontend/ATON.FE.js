@@ -21,6 +21,10 @@ var vrcIP = ATON.utils.getURLparams().vrc;
 var QAurl = undefined;
 var QPV   = undefined;
 
+
+var auPOL = new Audio(ATON.FE.AUDIO_ROOT+"mag.wav");
+auPOL.loop = true;
+
 //ATON.vroadcast.onPolDataReceived = function(){
 ATON.on("VRC_PolDataReceived", function(){
     QPV.setQVAimgBase64(ATON.vroadcast._polDATA);
@@ -226,6 +230,7 @@ ATON.FE.attachListeners = function(){
                 ATON.vroadcast._bQFpol = true;
                 $("#idPOL").css("background-color","green");
                 ATON._mainSS.getUniform('uDim').setFloat( 0.4 );
+                auPOL.play();
                 }      
 
             });
@@ -236,6 +241,7 @@ ATON.FE.attachListeners = function(){
                 ATON.vroadcast._bQFpol = false;
                 $("#idPOL").css("background-color","black");
                 ATON._mainSS.getUniform('uDim').setFloat( 1.0 );
+                auPOL.pause();
 
                 if (QPV) ATON.vroadcast.requestPol();
                 }   

@@ -47,7 +47,7 @@
         <!-- TOP navbar -->
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
 <!--          <a class="navbar-brand atonUserBG" href="#" id="idUserColor">ATON</a> -->
-            <button id="idUserColor" type="button" class="atonBTN"></button>&nbsp;
+            <button id="idUserColor" type="button" class="atonBTN"></button>&nbsp;&nbsp;&nbsp;
           
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
             </button>
@@ -69,7 +69,10 @@
                 <button id="idFP" type="button" class="atonBTN" onclick="ATON.FE.toggleFirstPerson()"><img src="../res/ii-inv-fp.png"></button>
                 <button id="idDevOri" type="button" class="atonBTN" onclick="ATON.FE.toggleDevOri()"><img src="../res/ii-inv-devori.png"></button>
                 <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../res/ii-inv-vr.png"></button>
+                
+                <!--
                 <div style="display:inline-block; width:40px;"><input class="form-control-range" type="range" min="0.1" max="20.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)"></div>
+                -->
 <!--
                 <button id="idPOL" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" style="background-color: black;">POL</button>&nbsp;
 -->
@@ -84,7 +87,7 @@
 
             <form class="form-inline mt-2 mt-md-0" id="idVRoadcast">
                 <div id="idMagSetup" class="form-group">
-                    <button id="idRecBTN" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.FE.reqREC()"><img src="../res/ii-inv-rec.png"></button>
+                    <button id="idRecBTN" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" onclick="ATON.FE.reqREC(100)"><img src="../res/ii-inv-rec.png"></button>
 <!--
                     <div style="display:inline-block"><input class="form-control-range" id="urank" type="range" min="0" max="250" step="5" onchange="ATON.FE.setRank()">Rank: <span id="idRank"></span></div>
 -->
@@ -108,17 +111,18 @@
         </nav>
       </header>
 
-      <!-- BOTTOM navbar -->
-    <nav id="idSession" class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark" style="opacity:0.7; background-color: black !important; height: 40px; margin-bottom: 20px; ">
-        <div style="width: 100% !important;">
-            <div style="display:inline-block; width:85%;"><input id="uSessionTime" type="range" min="0.0" max="1.0" step="0.0001" oninput="ATON.tracer.filterUI()">t: <span id="idT"></span></div>
-            <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()">&Delta;t: <span id="idTR"></span></div>
-        </div>
-    </nav>
+    <!-- BOTTOM navbar -->
+    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
 
-    <div class="atonToolbar atonToolbar-bottom" style="height: 20px; background-color: rgba(0,0,0, 0.5)">
+        <div id="idSession" style="width: 100%">
+            <div style="display:inline-block; width:85%;"><input id="uSessionTime" type="range" min="0.0" max="1.0" step="0.0001" oninput="ATON.tracer.filterUI()"><span id="idT"></span></div>
+            <div style="display:inline-block; width:10%;"><input id="uSessionTRad" type="range" min="0.1" max="60.0" step="0.1" oninput="ATON.tracer.filterUI()"><span id="idTR"></span></div>
+        </div>
+    
+        <div style="width: 100%; background-color: rgba(0,0,0, 0.5)">
         Hover: (<span id="idHoverPos"></span>)&nbsp;|&nbsp;
         ShapeDescriptor: <span id="idShapeDescr"></span>
+        </div>
     </div>
 
     <!-- Loader -->

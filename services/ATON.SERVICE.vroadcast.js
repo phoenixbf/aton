@@ -406,12 +406,12 @@ var touchSceneNode = function(sname){
     // FIXME: add support to qv list per scene
     //var QVdata = JSON.parse(fs.readFileSync(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8'));
     fs.readFile(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8', (err, data) => {
-        if (err) throw err;
-  
-        //console.log(data);
-        var QVdata = JSON.parse(data);
-        if (QVdata.list){
-            scene.qfv.setPositionAndExtents(QVdata.list[0].position, QVdata.list[0].extents);
+        if (err) console.log("QV json not found!");
+        else {
+            var QVdata = JSON.parse(data);
+            if (QVdata.list){
+                scene.qfv.setPositionAndExtents(QVdata.list[0].position, QVdata.list[0].extents);
+                }
             }
         });
     

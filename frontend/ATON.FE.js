@@ -46,12 +46,12 @@ ATON.FE._growVolume = new osg.BoundingBox();
 ATON.FE._growVolume.init();
 
 var uColors = [
-    'rgb(64, 0, 0)',
-    'rgb(64, 64, 0)',
-    'rgb(0, 64, 0)',
-    'rgb(0, 64, 64)',
-    'rgb(0, 0, 64)',
-    'rgb(64, 0, 64)'
+    '255, 0, 0',
+    '255, 255, 0',
+    '0, 255, 0',
+    '0, 255, 255',
+    '0, 0, 255',
+    '255, 0, 255'
 ];
 
 // On node requests
@@ -137,13 +137,13 @@ ATON.FE.setupPage = function(){
         ATON._bUseGravity = el.checked;
     };
 
-    ATON.FE.reqREC = function(){
+    ATON.FE.reqREC = function(dt){
         ATON.FE.ssRec = !ATON.FE.ssRec;
 
         if (ATON.FE.ssRec){
             //$('#idRecBTN').text("STOP");
             $("#idRecBTN").css("background-color","rgba(255,0,0, 0.5)");
-            ATON.vroadcast.requestRecording(300); // 100
+            ATON.vroadcast.requestRecording(dt); // 100
             }
         else {
             //$('#idRecBTN').text("REC");
@@ -361,7 +361,10 @@ ATON.polarizedAffordance = function(){
     else {
         ATON._surfAff = 1.0; //Math.max(ATON._surfAff, pval);
         ATON._bSurfAffordable = true;
-        ATON._mainSS.getUniform('uHoverColor').setFloat4([0.0,1.0,1.0, 1.0]);
+        ATON._hoverColor[0] = 0.0;
+        ATON._hoverColor[1] = 1.0;
+        ATON._hoverColor[2] = 1.0;
+        //ATON._mainSS.getUniform('uHoverColor').setFloat4([0.0,1.0,1.0, 1.0]);
         }
    
 };
@@ -548,6 +551,11 @@ window.addEventListener( 'load', function () {
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
+
+                    //ATON._polarizeLocomotionQV = PolNav;
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "dining":
@@ -579,8 +587,8 @@ window.addEventListener( 'load', function () {
 
                     QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
                     //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F-qils.png");
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P-qils.png");
-                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
+                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P-qils.png");
+                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
                     //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
                     $("#idSession").show();
 
@@ -595,18 +603,24 @@ window.addEventListener( 'load', function () {
                     break;
 
                 case "smoking":
-                    scenename = "smoking-room";
+                    scenename = "smoking";
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.3,0.3,0.3]));
                     ATON.setHome([0.33,1.02,1.93],[-0.41,-0.46,1.58]);
 
-                    ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    //ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
                     
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/F-qils.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/P-qils.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/F_GLOB-TP0.png");
                     //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/smoking/P_GLOB-TP0.png");
+
+                    ATON._polarizeLocomotionQV = PolNav;
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
+
                     break;
 
                 case "test1":
@@ -617,8 +631,18 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
-                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "TREES", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt" });
+
+                    var trSS = ATON.layers["TREES"].getOrCreateStateSet();
+/*
+                    trSS.setAttributeAndModes( 
+                        //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.DST_ALPHA), 
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
+*/
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 60.0 );
 
                     ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
                     break;
@@ -862,6 +886,23 @@ window.addEventListener( 'load', function () {
 
                     //ATON.translateLayer("PRESENT",[-590282,-9734840, 0.0]);
                     break;
+
+                case "domus":
+                    scenename = "domus";
+
+                    for (let b = 1; b <= 7; b++) {
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"domus/_lo-LOD1_DP_Hor_"+b+".osgjs", { 
+                            layer: "PRESENT", 
+                            hiresurl: ATON.FE.MODELS_ROOT+"domus/LOD1_DP_Hor_"+b+".osgjs",
+                            hirespxsize: 200000
+                            });
+                        }
+
+                    ATON.setHome([-10.52,156.28,1.37],[5.33,168.50,-1.63]);
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
+
+                    break;
+
 /*
                 case "skf":
                     ATON.addGraph("https://media.sketchfab.com/urls/afce4db089014d27a201c72d1cc1bcba/dist/models/4827386b0e674b0a9a33f0281c987fea/file.osgjs.gz", { layer: "MAIN" })
@@ -985,11 +1026,13 @@ if (asset === "sf"){
     ATON.addOnTickRoutine(function(){
         //console.log("x");
         
-        if (ATON._hoveredVisData) $("#idHoverPos").html(ATON._hoveredVisData.p[0].toFixed(3)+","+
-            ATON._hoveredVisData.p[1].toFixed(3)+","+
-            ATON._hoveredVisData.p[2].toFixed(3)
-            );
-        else $("#idHoverPos").html("");
+        if (!ATON._vrState){
+            if (ATON._hoveredVisData) $("#idHoverPos").html(ATON._hoveredVisData.p[0].toFixed(3)+","+
+                ATON._hoveredVisData.p[1].toFixed(3)+","+
+                ATON._hoveredVisData.p[2].toFixed(3)
+                );
+            else $("#idHoverPos").html("");
+            }
     });
 
     // TEST Shape Descriptors
@@ -1051,9 +1094,11 @@ if (asset === "sf"){
         //ATON.vroadcast.onIDassigned = function(){
         ATON.on("VRC_IDassigned", function(){
             var uid = ATON.vroadcast._myUser.id;
-            $('#idUserColor').css("background-color", uColors[uid % 6]);
+            var strColor = uColors[uid % 6];
+
+            $('#idUserColor').css("cssText", "background-color: rgba("+strColor+", 0.7); box-shadow: 0 0px 30px rgba("+strColor+",1.0);" );
             //$('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
-            $('#idUserColor').html("U"+uid);
+            $('#idUserColor').html("<b>U"+uid+"</b>");
 
             // disable controls for beta users
             if (uid > 0) $('#idMagSetup').hide();
@@ -1084,7 +1129,8 @@ if (asset === "sf"){
 
             //$('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
             $('#idUserColor').css("background-color", "black");
-            $('#idUserColor').html("ATON");            
+            $('#idUserColor').html("");
+            $('#idUserColor').hide();
             });
         }
 

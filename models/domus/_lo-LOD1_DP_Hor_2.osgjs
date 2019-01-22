@@ -1,0 +1,110 @@
+{
+  "Generator": "OpenSceneGraph 3.4.0", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "E:\\Owncloud1\\VirtualSarmizegetusa\\3Deditables\\DomusProcuratoris\\LOD1_DP_Hor_2.obj", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Name": "LOD1_DP_Hor_2_2", 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 2, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 3, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 4, 
+                        "File": "data:image/jpg;base64,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", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 8, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD1_DP_Hor_2_10.bin.gz",
+                          "Size": 42509,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 9, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD1_DP_Hor_2_11.bin.gz",
+                          "Size": 3651,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 6, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_2_12.bin.gz",
+                        "Size": 16656,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 7, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_2_13.bin.gz",
+                        "Size": 16656,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 5, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_2_14.bin.gz",
+                        "Size": 16656,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

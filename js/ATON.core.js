@@ -1884,9 +1884,17 @@ ATON._updateCallback.prototype = {
             
             // Handle Descriptors HOVER
             if (ATON._numDescriptors > 0) ATON._handleDescriptorsHover();
+
+            // Polarization (QVs)
+            if (ATON._polarizeLocomotionQV){
+                if (ATON.polarizedAffordance) ATON.polarizedAffordance();
+                }
+            
+            //if (ATON._hoverColor[3]<1.0) ATON._hoverColor[3] += 0.1;
             //console.log(dOri);
             }
-        else ATON._hoverColor[3] *= 0.7;
+        else if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+
         ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
 
 
@@ -1906,11 +1914,6 @@ ATON._updateCallback.prototype = {
         if (ATON._LProtM){
             osg.mat4.setTranslation(ATON._LProtM, ATON._currPOV.pos);
             }
-        
-
-        //ATON._handleVisHover();
-
-
 
         // Execute custom onTick routines
         for (let uf = 0; uf < ATON.onTickRoutines.length; uf++) {
@@ -2039,13 +2042,6 @@ ATON._computeAffordanceHover = function(){
         ATON._hoverColor[2] = 0.0;
         ATON._hoverColor[3] = 1.0;
         }
-
-    // if using QVs
-    if (ATON._polarizeLocomotionQV){
-        if (ATON.polarizedAffordance) ATON.polarizedAffordance();
-        }
-
-    ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
 };
 
 
@@ -2633,6 +2629,13 @@ ATON._onNodeRequestComplete = function(){
     // KD-tree
     ATON._buildKDTree(ATON._groupVisible);
 
+    // LP/Sky - near plane issues
+/*
+    var rVis = ATON._groupVisible.getBoundingSphere()._radius;
+    var cVis = ATON._groupVisible.getBoundingSphere()._center.slice(0);
+    osg.mat4.setTranslation(ATON._LProtM, cVis);
+    osg.mat4.scale(ATON._LProtM, ATON._LProtM, [rVis,rVis,rVis]);
+*/
     ATON.fireEvent("AllNodeRequestsCompleted");
     //if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
 };
@@ -2779,6 +2782,7 @@ ATON._initCoreUniforms = function(){
     ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );
     ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVslider') );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVradius') );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
     ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, ATON.utils.fallbackAlphaTex );

@@ -12,8 +12,9 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-#define USE_QV 1
-
+//#define USE_QV 1
+#define USE_QUSV_SENC 1
+#define USE_ILSIGN 1
 
 
 #ifdef GL_ES
@@ -59,9 +60,14 @@ uniform vec3 uHoverPos;
 uniform vec4 uHoverColor;
 uniform float uHoverRadius;
 
+// TODO: box for sections/cuts
+uniform vec3 uCutMin;
+uniform vec3 uCutMax;
+
 uniform vec3 uQVmin;
 uniform vec3 uQVext;
 uniform float uQVslider;
+uniform float uQVradius;
 
 uniform float time;
 uniform float uDim;
@@ -446,7 +452,7 @@ void main(){
     vec3 viewLocal = normalize(vViewVertex); //vec3( uViewMatrix * vec4(vViewVertex,1.0) );
 
     vec3 norm      = vViewNormal;
-    vec3 normWorld = vWorldNormal ;
+    vec3 normWorld = vWorldNormal;
 
     float fragDist = (gl_FragCoord.z / gl_FragCoord.w);
 
@@ -662,8 +668,6 @@ void main(){
     //=====================================================
     // QUSV/QFV Pass
     //=====================================================
-    //if (vWorldVertex.z > 4.0) discard;
-
 #ifdef USE_QV   // QV
     vec3 qvaCoords = QVAuvAdapter(vWorldVertex);
 
@@ -684,6 +688,7 @@ void main(){
     //float qn = (1.0 + sin(time*10.0)) * 0.5;
     //float qn = sin((vWorldVertex.x * 20.0) + (vWorldVertex.y * 20.0) + (vWorldVertex.z * 20.0) + (time*20.0) );
 
+    // waves
     qn = sin( (distance(qLoc,vWorldVertex) * 100.0) + (time * 5.0) );
     qn = (qn * 0.3) + 0.7;
 #endif
@@ -704,8 +709,7 @@ void main(){
 
 
 
-#if 0   // QUSV / Session Encoding
-    //#define USE_ILSIGN 1
+#ifdef USE_QUSV_SENC   // QUSV - Session Encoding
 /*
     UCOLORS[0] = vec4(1.0,0.0,0.0, 0.0);
     UCOLORS[1] = vec4(1.0,1.0,0.0, 0.0);
@@ -735,10 +739,10 @@ void main(){
 
 #ifdef USE_ILSIGN
     const int QUSV_MAX_RANGE  = 128; //64; //32;
-    qRad = 1.5;
+    qRad = uQVradius; //1.5;
 #else 
     const int QUSV_MAX_RANGE  = 128;
-    qRad = 3.0; // 3.0; //(uQVslider*500.0);
+    qRad = uQVradius; //3.0; // 3.0; //(uQVslider*500.0);
 #endif
 
     const float QUSV_PATCH_SIZE = 4096.0;
@@ -770,7 +774,7 @@ void main(){
             //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uMul);
 
 #ifdef USE_ILSIGN
-            QF += (ql * mIL.a * 2.0); // * 200.0 * uQVslider); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
+            QF += (ql * mIL.a ); //* 2.0); // * 200.0 * uQVslider); // * (float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE));
             //QF += (ql * mIL.a * 2.0);
             QF = clamp(QF, 0.0,1.0);
 #else
@@ -822,10 +826,13 @@ void main(){
     HoverColor.g += mix(-0.2,0.2, uHoverAffordance);
     HoverColor.b -= 0.2;
 */
+
+/*
 #ifdef USE_QV
     //HoverColor = mix(HoverColor, vec4(1,1,1,1), QVAcol.a*10.0);
     //hpd *= QVAcol.a;
 #endif
+*/
 
     FinalFragment = mix(FinalFragment, uHoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3*uHoverColor.a);
 #endif

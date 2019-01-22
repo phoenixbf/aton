@@ -55,7 +55,15 @@ ATON.tracer._touchVRCgroup = function(){
 };
 
 ATON.tracer.filter = function(tper, trad){
-    if (ATON.tracer._groupVRC === undefined) return;
+    if (ATON.tracer._groupVRC === undefined){
+        // HACK: just for QUSV and ILS
+        $('#idT').html((tper).toFixed(2));
+        $('#idTR').html((trad * 0.1).toFixed(1));
+
+        ATON._mainSS.getUniform('uQVslider').setFloat( tper );
+        ATON._mainSS.getUniform('uQVradius').setFloat( trad * 0.1 );
+        return;
+        }
 
     var tpivot = ATON.tracer.tRange[0] + tper*(ATON.tracer.tRange[1] - ATON.tracer.tRange[0]);
 
@@ -138,8 +146,6 @@ ATON.tracer.filterUI = function(){
     var tr = parseFloat($("#uSessionTRad").val());
 
     ATON.tracer.filter(t,tr);
-
-    ATON._mainSS.getUniform('uQVslider').setFloat( t );
 };
 
 

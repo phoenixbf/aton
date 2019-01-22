@@ -1,0 +1,110 @@
+{
+  "Generator": "OpenSceneGraph 3.4.0", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "E:\\Owncloud1\\VirtualSarmizegetusa\\3Deditables\\DomusProcuratoris\\LOD1_DP_Hor_3.obj", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Name": "LOD1_DP_Hor_3_3", 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 2, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 3, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 4, 
+                        "File": "data:image/jpg;base64,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", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 8, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD1_DP_Hor_3_10.bin.gz",
+                          "Size": 41720,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 9, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD1_DP_Hor_3_11.bin.gz",
+                          "Size": 3462,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 6, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_3_12.bin.gz",
+                        "Size": 15827,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 7, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_3_13.bin.gz",
+                        "Size": 15827,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 5, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD1_DP_Hor_3_14.bin.gz",
+                        "Size": 15827,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

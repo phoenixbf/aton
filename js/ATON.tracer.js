@@ -20,11 +20,13 @@ ATON.tracer.rootRecordFolder = "record/";
 ATON.tracer.CSV_DELIMITER = ',';
 ATON.tracer.CSV_FORMAT    = ATON.tracer.FORMAT_STD;
 ATON.tracer.fileRecordReq = 0;
-ATON.tracer.discardSQmarkMin = 0.005; // 0.002
-ATON.tracer.discardSQmarkMax = 0.05; //0.5;
+ATON.tracer.discardSQmarkMin = 0.05; //0.005; // 0.002
+ATON.tracer.discardSQmarkMax = 3.0; //0.05; //0.5;
 
 ATON.tracer.activeVolume = undefined;
 ATON.tracer.bActiveVol = false;
+ATON.tracer.bLinkTarget = false;
+
 
 ATON.tracer._groupVRC = undefined;
 ATON.tracer._uMarkModels = [];
@@ -58,10 +60,10 @@ ATON.tracer.filter = function(tper, trad){
     if (ATON.tracer._groupVRC === undefined){
         // HACK: just for QUSV and ILS
         $('#idT').html((tper).toFixed(2));
-        $('#idTR').html((trad * 0.1).toFixed(1));
+        $('#idTR').html((trad).toFixed(1));
 
         ATON._mainSS.getUniform('uQVslider').setFloat( tper );
-        ATON._mainSS.getUniform('uQVradius').setFloat( trad * 0.1 );
+        ATON._mainSS.getUniform('uQVradius').setFloat( trad );
         return;
         }
 
@@ -121,7 +123,9 @@ ATON.tracer.filter = function(tper, trad){
     }
 
     //console.log(ATON.tracer.activeVolume);
-/*
+
+    if (!ATON.tracer.bLinkTarget) return;
+
     if (ATON.tracer.bActiveVol){
         //ATON.requestPOV(ATON.tracer.activeVolume._center);
         //ATON._currPOV.target = ATON.tracer.activeVolume.center([]);
@@ -131,13 +135,12 @@ ATON.tracer.filter = function(tper, trad){
         vPOV.target   = ATON.tracer.activeVolume.center([]);
         vPOV.fov      = ATON._currPOV.fov;
 
-        ATON.requestPOV(vPOV, 0.1);
+        ATON.requestPOV(vPOV, 0.5);
 
         //ATON._currPOV.target[0] = ATON.tracer.activeVolume.center[0];
         //ATON._currPOV.target[1] = ATON.tracer.activeVolume.center[1];
         //ATON._currPOV.target[2] = ATON.tracer.activeVolume.center[2];
         }
-*/
 };
 
 // HTML ui
@@ -316,14 +319,18 @@ ATON.tracer.loadUserRecord = function(scenename, uid){
             });
 
         ATON.tracer.fileRecordReq--;
-        if (ATON.tracer.fileRecordReq <= 0) ATON.tracer._onAllFileRequestsCompleted();
+
+        // All loaded
+        if (ATON.tracer.fileRecordReq <= 0){
+            console.log("All record files loading COMPLETE!");
+            console.log(ATON.tracer.tRange);
+
+            ATON.tracer.onAllFileRequestsCompleted();
+            }
         });
 };
 
 
-ATON.tracer._onAllFileRequestsCompleted = function(){
-    console.log("All record files loading COMPLETE!");
-    console.log(ATON.tracer.tRange);
-
+ATON.tracer.onAllFileRequestsCompleted = function(){
     //ATON.tracer.filter(0.8, 0.3);
 };

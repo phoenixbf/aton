@@ -42,6 +42,33 @@ ATON.on("VRC_PolCellReceived", function(){
     QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
 });
 
+
+// QV / QUSV
+ATON.tracer.onAllFileRequestsCompleted = function(){
+    $("#uSessionTime").val(0.0);
+    $("#uSessionTRad").val(0.0);
+
+    ATON.tracer.filterUI();
+};
+ATON.FE.loadSencData = function(qv, scenename, attrib, bILS){
+    if (qv === undefined) return;
+
+    ATON.toggleSessionEncoderPass(true, bILS);
+    if (bILS) qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"-qils.png");
+    else qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"_GLOB-TP0.png");
+
+    $("#idSession").show();
+
+    ATON.setDim(0.1);
+    $('body').css('background-color', 'black');
+    ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0))
+
+    $("#uSessionTime").val(0.0);
+    $("#uSessionTRad").val(0.8); // 80 cm (arm len)
+    ATON.tracer.filterUI();
+};
+
+
 ATON.FE._growVolume = new osg.BoundingBox();
 ATON.FE._growVolume.init();
 
@@ -57,6 +84,11 @@ var uColors = [
 // On node requests
 ATON.on("NodeRequestFired", ()=>{
     $('#idLoader').show();
+});
+
+ATON.on("VRmode", function(v){
+    if (v) $('#iContainer').hide();
+    else $('#iContainer').show();
 });
 
 
@@ -125,6 +157,17 @@ ATON.FE.setupPage = function(){
             ATON.toggleDeviceOrientation(true);
             }
         };
+
+    ATON.FE.toggleFullscreen = function(b){
+        if (screenfull.enabled){
+            if (b === undefined) screenfull.toggle();
+            else {
+                if (b) screenfull.request();
+                //else
+                }
+            }
+        };
+    
     
     ATON.FE.toggleCollisions = function(){
         var el = document.getElementById('bcollisions');
@@ -229,7 +272,7 @@ ATON.FE.attachListeners = function(){
             if (e.key == 'x'){ // x
                 ATON.vroadcast._bQFpol = true;
                 $("#idPOL").css("background-color","green");
-                ATON._mainSS.getUniform('uDim').setFloat( 0.4 );
+                ATON.setDim(0.4);
                 auPOL.play();
                 }      
 
@@ -388,6 +431,8 @@ window.addEventListener( 'load', function () {
     if (ATON._isMobile){
         $('#idDevOri').show();
         ATON._bQueryAxisAligned = true;
+
+        ATON.FE.toggleFullscreen(true);
         }
     else {
         $('#idDevOri').hide();
@@ -433,9 +478,11 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
-                    ATON.QVhandler.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
-                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+                    //ATON.QVhandler.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "faug2":
@@ -501,11 +548,14 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
 
                     
-                    //ATON.QVhandler.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]); // TOT
-                    ATON.QVhandler.setPositionAndExtents([92, -50.0, -5.0], [25, 32.5, 30.0]); // Lib
+                    ////ATON.QVhandler.setPositionAndExtents([-26, -58.0, -5.0], [142.5, 50.0, 30.0]); // TOT
+                    //ATON.QVhandler.setPositionAndExtents([92, -50.0, -5.0], [25, 32.5, 30.0]); // Lib
 
-                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/pacis/P-qils.png");
-                    //ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
+                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/pacis/P-qils.png");
+                    ////ATON.addILSign("../models/_prv/_QUSV/pacis/P_GLOB-TP0.png");
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "sarmi":
@@ -518,9 +568,9 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([111.72,160.66,15.20],[34.22,146.66,-11.13]);
 
-                    ATON.QVhandler.setPositionAndExtents([-30.0,0.0,-2.5], [170.0,190.0,40.5]);
-                    //ATON.loadILSign("../models/_prv/_QUSV/P_GLOB-TP0.png");
-                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/sarmi/P-qils.png");
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "complex":
@@ -559,7 +609,7 @@ window.addEventListener( 'load', function () {
                     break;
 
                 case "dining":
-                    scenename = "dining-room";
+                    scenename = "dining";
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
@@ -567,39 +617,23 @@ window.addEventListener( 'load', function () {
 
 
                     //QPV = ATON.QVhandler.addQV([-2.6, -2.1, 0.4], [4, 4.2, 2.0]);
-                    QPV = ATON.QVhandler.addQV([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
-                    
-                    QPV.loadQVAimg("../models/_prv/_QUSV/dining/F-qils.png");
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/dining/F_GLOB-TP0.png");
-
-                    $("#idSession").show();
-
-                    //ATON.QVhandler.setPositionAndExtents([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
-                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/dining/F-qils.png");
+                    //QPV = ATON.QVhandler.addQV([-6, -7.5, 0.4], [12.0, 14.0, 7.3]);
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "vestibule":
-                    scenename = "upper-vestibule";
+                    scenename = "vestibule";
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
-                    QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F-qils.png");
-                    QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P-qils.png");
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
-                    //QPV.loadQVAimg("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
-                    $("#idSession").show();
-
-/*
-                    ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
-                    
-                    ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F-qils.png");
-                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P-qils.png");
-                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/F_GLOB-TP0.png");
-                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/vestibule/P_GLOB-TP0.png");
-*/
+                    //QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
+                        QPV = ATON.QVhandler.getActiveQV();
+                        });
                     break;
 
                 case "smoking":
@@ -864,6 +898,7 @@ window.addEventListener( 'load', function () {
                 case "rsm":
                     scenename = "rsm";
                     //ATON.setFirstPersonMode(true);
+                    //ATON.addLightProbe("../LP/default");
 
                     for (let b = 1; b <= 37; b++) {
                         //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs", { layer: "PRESENT" });
@@ -1147,7 +1182,21 @@ if (asset === "sf"){
         //ATON.setFOV(120);
 
         //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
-        if (QPV) ATON.vroadcast.requestPol();
+        if (QPV) {
+            ATON.vroadcast.requestPol();
+
+            var qusvstr = ATON.utils.getURLparams().qv;
+            if (qusvstr){
+                var values = qusvstr.split(',');
+                if (values.length === 2){
+                    var layout = values[0];
+                    var stateattrib = values[1];
+        
+                    if (layout === "time") ATON.FE.loadSencData(QPV, scenename, stateattrib, false);
+                    if (layout === "ils")  ATON.FE.loadSencData(QPV, scenename, stateattrib, true);
+                    }
+                }
+            }
         });
 
     ATON.FE.attachListeners();

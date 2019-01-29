@@ -162,6 +162,7 @@ ATON.on("ShapeDescriptorLeft", undefined);
 ATON.on("NodeRequestFired", undefined);
 ATON.on("NodeRequestCompleted", undefined);
 ATON.on("AllNodeRequestsCompleted", undefined);
+ATON.on("VRmode", undefined);
 //console.log(ATON.eventHandlers);
 
 
@@ -2562,7 +2563,7 @@ ATON.addGraph = function( url, options, onComplete ){
             plod.setRange(1, options.hirespxsize, Number.MAX_VALUE);
 
             plod.setFunction(1, function(parent){
-                console.log("fire!");
+                //console.log("fire!");
                 
                 var g = new osg.Node();
                 g.addChild(node);
@@ -2731,6 +2732,12 @@ ATON.toggleAOPass = function(b){
     ATON.loadCoreShaders( ATON.shadersFolder );   
 };
 
+ATON.toggleSessionEncoderPass = function(b, ils){
+    ATON._useQUSVsenc = b;
+    ATON._useQUSVils  = ils;
+    ATON.loadCoreShaders( ATON.shadersFolder ); 
+};
+
 
 // For LP
 ATON._cullCallback = function () {
@@ -2758,6 +2765,7 @@ ATON._initCoreUniforms = function(){
     // Globals
     ATON._hoverRadius = 0.5;
     ATON._hoverColor  = osg.vec4.fromValues(0.0,1.0,0.0, 1.0);
+    ATON._fogColor    = osg.vec4.fromValues(1.0,1.0,1.0, 0.0);
 
     osg.mat4.identity(ATON._mLProtation);
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'time' ) );
@@ -2767,6 +2775,7 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uWorldEyePos' ) );
     ATON._mainSS.addUniform( osg.Uniform.createMatrix4( ATON._mLProtation, 'uLProtation' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 300.0, 'uFogDistance' ) ); // 120
+    ATON._mainSS.addUniform( osg.Uniform.createFloat4( ATON._fogColor, 'uFogColor') );
     ATON._mainSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
     //ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uHoverAffordance' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat4( ATON._hoverColor, 'uHoverColor' ) );
@@ -2808,6 +2817,15 @@ ATON._initCoreUniforms = function(){
     ATON._uiSS.setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
 };
 
+ATON.setDim = function(v){
+    ATON._mainSS.getUniform('uDim').setFloat( v );
+};
+
+ATON.setFogColor = function(fogcol){
+    ATON._fogColor = fogcol.slice(0);
+    ATON._mainSS.getUniform('uFogColor').setFloat4(ATON._fogColor);
+};
+
 ATON.loadCoreShaders = function(path){
     //var self = this;
 
@@ -2816,6 +2834,9 @@ ATON.loadCoreShaders = function(path){
 		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
         if (ATON._useLP) glsldata = "#define USE_LP 1\n" + glsldata;
         if (ATON._usePassAO) glsldata = "#define USE_PASS_AO 1\n" + glsldata;
+
+        if (ATON._useQUSVsenc) glsldata = "#define USE_QUSV_SENC 1\n" + glsldata;
+        if (ATON._useQUSVils)  glsldata = "#define USE_ILSIGN 1\n" + glsldata;
 
 		glsldata += '\n';
 
@@ -2901,41 +2922,8 @@ ATON._onFrontShaderLoaded = function(){
 
 // VR
 //==========================================================================
-ATON.requestFullScreenVR = function () {
 
-    if ( !navigator.getVRDisplays && window.screenfull ) {
-        window.screenfull.request( ATON._canvas );
-        } 
-    else {
-        // no fullscreen use the canvas or webvr
-        ATON.toggleVR();
-    }
-
-    //$( '#button-enter-fullscreen' ).hide();
-    //$( '#button-exit-fullscreen' ).show();
-};
-ATON.exitFullScreenVR = function () {
-
-    if ( !navigator.getVRDisplays && window.screenfull ) {
-        window.screenfull.exit();
-        }
-    else {
-        ATON.toggleVR();
-        }
-};
-ATON.initFullscreenEvent = function () {
-
-    if ( window.screenfull && window.screenfull.enabled ) {
-        document.addEventListener( window.screenfull.raw.fullscreenchange, function () {
-            console.log( 'Am I fullscreen? ' + ( window.screenfull.isFullscreen ? 'Yes' : 'No' ) );
-            ATON.toggleVR();
-        } );
-    }
-};
-
-
-// AlcuTrans
-//==================
+// AlcuTrans (FIXME:)
 ATON.setAlcuTransFactor = function(f){
     if (ATON._wVR === undefined) return;
     ATON._wVR._worldScale = f;
@@ -3068,6 +3056,7 @@ ATON._switchVR = function(){
 
         //viewer.setPresentVR( true );
         //if (ATON._vrHMD) ATON._vrHMD.requestPresent( [{ source: ATON._canvas }] );
+        ATON.fireEvent("VRmode", true);
     	}
 
     // Disable VR
@@ -3094,6 +3083,8 @@ ATON._switchVR = function(){
         // Detach the vrNode and reattach the modelNode
         ATON._root.removeChild( ATON._vrNode );
         ATON._root.addChild( ATON._mainGroup );
+
+        ATON.fireEvent("VRmode", false);
     	}
 
     ATON._vrState = !ATON._vrState;
@@ -3240,6 +3231,11 @@ ATON._handleGamepads = function(){
 					//else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
 					}
 				}
+            
+            // Axes
+            if (i === 0){
+                //gamepad.axes[0] TODO:
+                }
 			}
         }
 };

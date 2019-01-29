@@ -14,9 +14,11 @@ const MAXTARGDIST = 40.0;
 const RECORD_SEPARATOR = ",";
 
 
-const express = require('express');
-const app     = express();
-const http    = require('http').Server(app);
+//const express = require('express');
+//const app     = express();
+//const http    = require('http').Server(app);
+const ContentServ = require("./ContentServer.js");
+const http = require('http').Server(ContentServ.app);
 
 // creates a new socket.io instance attached to the http server
 const io = require('socket.io')(http);
@@ -381,9 +383,13 @@ setInterval(function(){
 //====================================================================================
 // WebServer
 //====================================================================================
-if (serviceOptions.www) app.use('/', express.static( serviceOptions.www ));
-else app.use('/', express.static( __dirname + '/' ));
-//app.use(compression());
+if (serviceOptions.www) ContentServ.WWW_FOLDER = serviceOptions.www;
+//else ContentServ.WWW_FOLDER = __dirname + '/';
+
+ContentServ.configure();
+
+//if (serviceOptions.www) app.use('/', express.static( serviceOptions.www ));
+//else app.use('/', express.static( __dirname + '/' ));
 
 // Common
 //=======================================================

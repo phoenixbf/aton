@@ -764,7 +764,7 @@ void main(){
 #ifdef USE_ILSIGN
         mIL = texture2D(QUSVSampler, vec2(float(u)/QUSV_ILS_SIZE, 0.0));
 #else 
-        mIL = texture2D(QUSVSampler, vec2(uQVslider, 1.0-(float(u)/QUSV_PATCH_SIZE)) );
+        mIL = texture2D(QUSVSampler, vec2(uQVslider, 1.0-(float(u)/QUSV_PATCH_SIZE) ));
 #endif
 
         if (mIL.a > 0.0){
@@ -791,12 +791,13 @@ void main(){
 #endif
             }
 #ifdef USE_ILSIGN
-            }
+        }
 #endif
         }
 
 //#ifdef USE_ILSIGN
     fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
+    //fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), QF);
 //#endif
 
     //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)

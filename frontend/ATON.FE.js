@@ -927,12 +927,12 @@ window.addEventListener( 'load', function () {
                             hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs",
                             hirespxsize: 6000000
                             });
+                        }
 
                     ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });
-                    }
                     
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT2/root.osgjs", { layer: "PRESENT" });
                     ATON.setHome([318.57,802.01,781.72],[295.32,841.14,786.00]);

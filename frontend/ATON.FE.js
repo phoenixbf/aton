@@ -50,12 +50,12 @@ ATON.tracer.onAllFileRequestsCompleted = function(){
 
     ATON.tracer.filterUI();
 };
-ATON.FE.loadSencData = function(qv, scenename, attrib, bILS){
+ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
     if (qv === undefined) return;
 
-    ATON.toggleSessionEncoderPass(true, bILS);
-    if (bILS) qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"-qils.png");
-    else qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"_GLOB-TP0.png");
+    ATON.toggleSessionEncoderPass(true, bSIG);
+    if (bSIG) qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"-sig.png");
+    else qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"_qsa0.png");
 
     $("#idSession").show();
 
@@ -199,8 +199,28 @@ ATON.FE.setupPage = function(){
         var el = document.getElementById('idDevOri');
         ATON.toggleDeviceOrientation(el.checked);
         };
+
+    ATON.FE.buildLayerMenu = function(){
+        for (var key in ATON.layers){
+
+            $('#idLayers').append('<option value="' + key + '">' + key + '</option>');
+
+            }
+        };
 };
 
+ATON.FE.selectLayerMenu = function(layername){
+    if (layername === "__ALL__"){
+        ATON.switchAllLayers(true);
+        return;
+        }
+    if (layername === "__NONE__"){
+        ATON.switchAllLayers(false);
+        return;
+        }
+
+    ATON.isolateLayer(layername);
+};
 
 ATON.FE.logPOV = function(){
     console.log(
@@ -1181,6 +1201,8 @@ if (asset === "sf"){
 
         //ATON.setFOV(120);
 
+        ATON.FE.buildLayerMenu();
+
         //if (QPV) QPV.loadQVAimg(QAurl+"?"+new Date().getTime());
         if (QPV) {
             ATON.vroadcast.requestPol();
@@ -1192,8 +1214,8 @@ if (asset === "sf"){
                     var layout = values[0];
                     var stateattrib = values[1];
         
-                    if (layout === "time") ATON.FE.loadSencData(QPV, scenename, stateattrib, false);
-                    if (layout === "ils")  ATON.FE.loadSencData(QPV, scenename, stateattrib, true);
+                    if (layout === "qsa") ATON.FE.loadSencData(QPV, scenename, stateattrib, false);
+                    if (layout === "sig") ATON.FE.loadSencData(QPV, scenename, stateattrib, true);
                     }
                 }
             }

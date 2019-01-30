@@ -2487,6 +2487,20 @@ ATON.switchLayer = function(layerName, value){
     else ATON.layers[layerName].setNodeMask(0x0);
 };
 
+ATON.isolateLayer = function(layerName){
+    for (var key in ATON.layers){
+        if (key === layerName) ATON.layers[key].setNodeMask(0xf);
+        else ATON.layers[key].setNodeMask(0x0);
+        }
+};
+
+ATON.switchAllLayers = function(value){
+    for (var key in ATON.layers){
+        if (value) ATON.layers[key].setNodeMask(0xf);
+        else ATON.layers[key].setNodeMask(0x0);
+        }
+};
+
 ATON.transformLayerByMatrix = function(layerName, M){
     if (ATON.layers[layerName] === undefined) return;
 

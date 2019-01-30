@@ -71,6 +71,10 @@
                 <button id="idFP" type="button" class="atonBTN" onclick="ATON.FE.toggleFirstPerson()"><img src="../res/ii-inv-fp.png"></button>
                 <button id="idDevOri" type="button" class="atonBTN" onclick="ATON.FE.toggleDevOri()"><img src="../res/ii-inv-devori.png"></button>
                 <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../res/ii-inv-vr.png"></button>
+                <select id="idLayers" name="layers-list" class="atonBTN" style="width:auto;" onchange="ATON.FE.selectLayerMenu(this.value)">
+                    <option value="__ALL__">&#9724;&nbsp;SHOW ALL</option>
+                    <option value="__NONE__">&#9724;&nbsp;HIDE ALL</option>
+                </select>
                 
                 <!--
                 <div style="display:inline-block; width:40px;"><input class="form-control-range" type="range" min="0.1" max="20.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)"></div>

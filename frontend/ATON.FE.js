@@ -220,7 +220,7 @@ ATON.FE.selectLayerMenu = function(layername){
         }
 
     ATON.isolateLayer(layername);
-    ATON.gotoLayer(layername, 0.5);
+    //ATON.gotoLayer(layername, 0.5);
 };
 
 ATON.FE.logPOV = function(){
@@ -931,27 +931,37 @@ window.addEventListener( 'load', function () {
 
                     //ATON.setFirstPersonMode(true);
                     //ATON.addLightProbe("../LP/default");
+
+                    for (let b = 1; b <= 37; b++) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/main/PT"+b+"__LOD2_m.osgjs", { layer: "Castle" });
+
+/*
                     for (let b = 1; b <= 37; b++) 
-                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/new/LOD2/PT"+b+"__LOD2_m.osgjs", { 
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/main/PT"+b+"__LOD2_m.osgjs", { 
                             layer: "Castle",
-                            hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/new/LOD1/PT"+b+"__LOD1_m.osgjs",
+                            hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/main/PT"+b+"__LOD1_m.osgjs",
                             hirespxsize: 600000
                             });
+*/
+
 /*
                     for (let b = 1; b <= 37; b++) {
                         //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs", { layer: "PRESENT" });
                         ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD2/root.osgjs", { 
-                            layer: "PRESENT", 
+                            layer: "Castle OLD", 
                             hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs",
-                            hirespxsize: 6000000
+                            hirespxsize: 600000
                             });
                         }
+
+                    ATON.switchLayer("Castle OLD", false);
 */
 
+/*
                     ATON.getLayer("Castle").getOrCreateStateSet().setAttributeAndModes(
                         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
                         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
                         );
+*/
 
                     // veg
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });

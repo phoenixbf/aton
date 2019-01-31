@@ -972,7 +972,9 @@ ATON.setFirstPersonMode = function(b){
 };
 
 ATON._requestFirstPersonTrans = function(pickedData){
+    if (ATON._tPOVcall >= 0.0) return; // already requested
     if (pickedData === undefined) return;
+
     var pn = pickedData.n;
     var pp = pickedData.p;
     
@@ -1854,8 +1856,17 @@ ATON._updateCallback.prototype = {
         var manip = ATON._viewer.getManipulator();
 
         //================ Navigation computations: we grab _currPOV and modify it, then update manip 
+        // Store prev-POV
+        ATON._prevPOV.pos[0] = ATON._currPOV.pos[0];
+        ATON._prevPOV.pos[1] = ATON._currPOV.pos[1];
+        ATON._prevPOV.pos[2] = ATON._currPOV.pos[2];
+        ATON._prevPOV.target[0] = ATON._currPOV.target[0];
+        ATON._prevPOV.target[1] = ATON._currPOV.target[1];
+        ATON._prevPOV.target[2] = ATON._currPOV.target[2];
+
         manip.getTarget( ATON._currPOV.target );
         manip.getEyePosition( ATON._currPOV.pos );
+
         ATON._prevDirection[0] = ATON._direction[0];
         ATON._prevDirection[1] = ATON._direction[1];
         ATON._prevDirection[2] = ATON._direction[2];
@@ -1891,21 +1902,32 @@ ATON._updateCallback.prototype = {
             if (ATON._bUseCollisions) ATON._handleCollisions();
             }
 */
-
+/*
+        // SAFE
         manip.setTarget(ATON._currPOV.target);
         manip.setEyePosition(ATON._currPOV.pos);
-
-        // Store velocity vector
+*/
+        // Store velocity vector (NOT USED)
+/*
         ATON._vVelocity[0] = (ATON._currPOV.pos[0] - ATON._prevPOV.pos[0]);
         ATON._vVelocity[1] = (ATON._currPOV.pos[1] - ATON._prevPOV.pos[1]);
         ATON._vVelocity[2] = (ATON._currPOV.pos[2] - ATON._prevPOV.pos[2]);
         //console.log(ATON._vVelocity);
-
-        if (ATON._vrState || ATON._isMobile) ATON._dOriF = 0.99999;
-        else ATON._dOriF = 0.999;
-        var dOri = osg.vec3.dot(ATON._prevDirection, ATON._direction);
+*/
+        if (ATON._vrState || ATON._isMobile){
+            ATON._dOriTol = 0.99999;
+            ATON._dPosTol = 0.000001;
+            }
+        else {
+            ATON._dOriTol = 0.999;
+            ATON._dPosTol = 0.02;
+            }
         
-        if (dOri > ATON._dOriF){
+        ATON._dOri = osg.vec3.dot(ATON._prevDirection, ATON._direction);
+        ATON._dPos = osg.vec3.squaredDistance(ATON._currPOV.pos, ATON._prevPOV.pos);
+        //console.log(ATON._dPos);
+        
+        if (ATON._dOri > ATON._dOriTol && ATON._dPos < ATON._dPosTol && (ATON._tPOVcall < 0.0)){
             ATON._handleVisHover();
             
             // Handle Descriptors HOVER
@@ -1919,11 +1941,14 @@ ATON._updateCallback.prototype = {
             //if (ATON._hoverColor[3]<1.0) ATON._hoverColor[3] += 0.1;
             //console.log(dOri);
             }
-        else if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+        else {
+            ATON._hoveredVisData = undefined;
+            if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+            }
 
         ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
 
-
+/*
         // Store prev-POV
         ATON._prevPOV.pos[0] = ATON._currPOV.pos[0];
         ATON._prevPOV.pos[1] = ATON._currPOV.pos[1];
@@ -1931,9 +1956,12 @@ ATON._updateCallback.prototype = {
         ATON._prevPOV.target[0] = ATON._currPOV.target[0];
         ATON._prevPOV.target[1] = ATON._currPOV.target[1];
         ATON._prevPOV.target[2] = ATON._currPOV.target[2];
-
+*/
         ATON._mainSS.getUniform('uViewDirWorld').setFloat3( ATON._direction );
         ATON._mainSS.getUniform('uWorldEyePos').setFloat3(ATON._currPOV.pos);
+
+        manip.setTarget(ATON._currPOV.target);
+        manip.setEyePosition(ATON._currPOV.pos);
         //================ End of Navigation
 
         // LP/Env

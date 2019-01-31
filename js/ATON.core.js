@@ -1916,17 +1916,19 @@ ATON._updateCallback.prototype = {
 */
         if (ATON._vrState || ATON._isMobile){
             ATON._dOriTol = 0.99999;
-            ATON._dPosTol = 0.000001;
+            ATON._dPosTol = 0.000005;
             }
         else {
             ATON._dOriTol = 0.999;
             ATON._dPosTol = 0.02;
             }
         
+        // Deltas
         ATON._dOri = osg.vec3.dot(ATON._prevDirection, ATON._direction);
         ATON._dPos = osg.vec3.squaredDistance(ATON._currPOV.pos, ATON._prevPOV.pos);
         //console.log(ATON._dPos);
         
+        // Query/Intersection routines
         if (ATON._dOri > ATON._dOriTol && ATON._dPos < ATON._dPosTol && (ATON._tPOVcall < 0.0)){
             ATON._handleVisHover();
             

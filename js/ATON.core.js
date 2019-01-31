@@ -462,7 +462,6 @@ ATON.utils.generateTransformFromString = function( transtring ){
         var rmy = osg.mat4.create();
         var rmz = osg.mat4.create();
 
-/*      FIXME: ?
         osg.mat4.rotate(rmx, rmx, values[3], ATON_X_AXIS);
         osg.mat4.rotate(rmy, rmy, values[4], ATON_Y_AXIS);
         osg.mat4.rotate(rmz, rmz, values[5], ATON_Z_AXIS);
@@ -472,7 +471,6 @@ ATON.utils.generateTransformFromString = function( transtring ){
         osg.mat4.multiply(M, M, rmx);
         osg.mat4.multiply(M, M, rmy);
         osg.mat4.multiply(M, M, rmz);
-*/
 
         //console.log('Rot: '+values[3]+' '+values[4]+' '+values[5]);
 

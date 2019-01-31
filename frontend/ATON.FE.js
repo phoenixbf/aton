@@ -61,7 +61,7 @@ ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
 
     ATON.setDim(0.1);
     $('body').css('background-color', 'black');
-    ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0))
+    ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0));
 
     $("#uSessionTime").val(0.0);
     $("#uSessionTRad").val(0.8); // 80 cm (arm len)
@@ -968,7 +968,7 @@ window.addEventListener( 'load', function () {
 
                     ATON.setLayerMask("Vegetation", ATON._maskLP);
 
-                    ATON._polarizeLocomotionQV = PolNav;
+                    //ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });
@@ -977,6 +977,8 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([318.57,802.01,781.72],[295.32,841.14,786.00]);
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
+                    $('body').css('background-color', 'rgb(65,70,79)');
+                    ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
 
                     //ATON.translateLayer("PRESENT",[-590282,-9734840, 0.0]);
                     break;

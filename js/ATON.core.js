@@ -2569,6 +2569,25 @@ ATON.translateLayer = function(layerName, v){
     osg.mat4.setTranslation(M, v );
 };
 
+ATON.gotoLayer = function(layerName, r, duration){
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
+
+    if (r === undefined) r = 0.2;
+
+    layer.dirtyBound();
+
+    //var r = layer.getBoundingSphere()._radius;
+    var tgt = layer.getBoundingSphere()._center;
+    var pos = osg.vec3.create();
+
+    osg.vec3.lerp(pos, tgt, ATON._currPOV.pos, r);
+
+    var pov = new ATON.pov("", pos, tgt);
+
+    ATON.requestPOV(pov, duration);
+};
+
 
 
 // TODO: rename?

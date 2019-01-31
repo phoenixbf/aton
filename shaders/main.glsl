@@ -894,6 +894,12 @@ void main(){
     //if(vWorldVertex.z > (cutH-0.2)) FinalFragment = vec4(1,0,0, 0.0);
 #endif
 
+#if 0
+    float xx = distance(uHoverPos, vWorldVertex);
+
+    if (xx < 1.0) discard;
+#endif
+
     //=====================================================
     // FINALIZE
     //=====================================================

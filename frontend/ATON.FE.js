@@ -920,6 +920,14 @@ window.addEventListener( 'load', function () {
 
                 case "rsm":
                     scenename = "rsm";
+
+                    ATON.addNewLayer("GLOBAL");
+                    ATON.addNewLayer("Castle","SanMarino");
+                    ATON.addNewLayer("Vegetation","SanMarino");
+
+                    //let rsmTrans = [-295.586,-834.496,-770.0];
+                    //ATON.translateLayer("SanMarino",rsmTrans);
+
                     //ATON.setFirstPersonMode(true);
                     //ATON.addLightProbe("../LP/default");
                     for (let b = 1; b <= 37; b++) 
@@ -945,7 +953,7 @@ window.addEventListener( 'load', function () {
                         );
 
                     // veg
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/root.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });
                     let vegLayer = ATON.layers["Vegetation"];
                     let vegSS = vegLayer.getOrCreateStateSet();
 
@@ -968,13 +976,45 @@ window.addEventListener( 'load', function () {
 
                     ATON.setLayerMask("Vegetation", ATON._maskLP);
 
+                    // Custom Keyboard
+/*
+                    var s = 1.0;
+                    $(function() {
+                        $(document).keydown(function(e) {
+                            if (e.key == 'k'){
+                                e.preventDefault();
+
+                                if (s > 0.06) s -= 0.05;
+                                //s = 0.1;
+
+                                var M = osg.mat4.create();
+                                osg.mat4.multiply(M, M, osg.mat4.fromScaling( [], [s,s,s]));
+                                osg.mat4.translate(M, M, rsmTrans );
+
+                                ATON.transformLayerByMatrix("SanMarino", M);
+
+                                //ATON.gotoLayer("Castle", s*0.01, 0.0);
+                                }
+                            if (e.key == 'l'){
+                                e.preventDefault();
+
+                                s = 1.0;
+
+                                ATON.transformLayerByMatrix("Castle", osg.mat4.fromScaling( [], [s,s,s]));
+                                ATON.transformLayerByMatrix("Vegetation", osg.mat4.fromScaling( [], [s,s,s]));
+                                }
+                            });
+                        });
+*/
+
+
                     //ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });
                     
-                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT2/root.osgjs", { layer: "PRESENT" });
                     ATON.setHome([262.01,802.84,803.52],[295.16,842.49,778.58]);
+                    //ATON.setHome([-34.01,-27.26,30.95],[-4.41,5.53,10.13]);
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
                     $('body').css('background-color', 'rgb(65,70,79)');

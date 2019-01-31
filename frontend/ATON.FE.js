@@ -220,6 +220,7 @@ ATON.FE.selectLayerMenu = function(layername){
         }
 
     ATON.isolateLayer(layername);
+    ATON.gotoLayer(layername, 0.5);
 };
 
 ATON.FE.logPOV = function(){
@@ -921,9 +922,9 @@ window.addEventListener( 'load', function () {
                 case "rsm":
                     scenename = "rsm";
 
-                    ATON.addNewLayer("GLOBAL");
-                    ATON.addNewLayer("Castle","SanMarino");
-                    ATON.addNewLayer("Vegetation","SanMarino");
+                    //ATON.addNewLayer("GLOBAL");
+                    //ATON.addNewLayer("Castle","SanMarino");
+                    //ATON.addNewLayer("Vegetation","SanMarino");
 
                     //let rsmTrans = [-295.586,-834.496,-770.0];
                     //ATON.translateLayer("SanMarino",rsmTrans);

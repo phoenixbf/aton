@@ -2569,7 +2569,7 @@ ATON.translateLayer = function(layerName, v){
     osg.mat4.setTranslation(M, v );
 };
 
-ATON.gotoLayer = function(layerName, r, duration){
+ATON.gotoLayer = function(layerName, duration){
     let layer = ATON.layers[layerName];
     if (layer === undefined) return;
 
@@ -2577,13 +2577,16 @@ ATON.gotoLayer = function(layerName, r, duration){
 
     layer.dirtyBound();
 
-    //var r = layer.getBoundingSphere()._radius;
+    var r = layer.getBoundingSphere()._radius;
     var tgt = layer.getBoundingSphere()._center;
     var pos = osg.vec3.create();
+    pos[0] = tgt[0] + r;
+    pos[1] = tgt[1] + r;
+    pos[2] = tgt[2] + r;
 
-    osg.vec3.lerp(pos, tgt, ATON._currPOV.pos, r);
-
-    var pov = new ATON.pov("", pos, tgt);
+    //osg.vec3.lerp(pos, tgt, ATON._currPOV.pos, r);
+    //var pov = new ATON.pov("", pos, tgt);
+    var pov = new ATON.pov("", ATON._currPOV.pos, tgt);
 
     ATON.requestPOV(pov, duration);
 };

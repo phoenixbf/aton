@@ -1,0 +1,95 @@
+{
+  "Generator": "OpenSceneGraph 3.3.8", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "ColonnaCorinzia.osg", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Name": "Colonna.def", 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 2, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 8, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "ColonnaCorinzia_10.bin",
+                          "Size": 2285,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 9, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "ColonnaCorinzia_11.bin",
+                          "Size": 30,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 6, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "ColonnaCorinzia_12.bin",
+                        "Size": 948,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 7, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "ColonnaCorinzia_13.bin",
+                        "Size": 948,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 5, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "ColonnaCorinzia_14.bin",
+                        "Size": 948,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

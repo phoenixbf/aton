@@ -451,8 +451,6 @@ window.addEventListener( 'load', function () {
     if (ATON._isMobile){
         $('#idDevOri').show();
         ATON._bQueryAxisAligned = true;
-
-        ATON.FE.toggleFullscreen(true);
         }
     else {
         $('#idDevOri').hide();
@@ -716,8 +714,13 @@ window.addEventListener( 'load', function () {
                     // TEST descriptors
                     //ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36");
                     //.onHover(function(){ console.log("T36"); });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", "column", { transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"cube/root.osgjs", "hebe-box", { transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/column/root.osgjs", "column", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt",
+                        color: [1,0,0, 1] 
+                        });
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "hebe-box", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" 
+                        });
                 
                     //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
@@ -919,7 +922,13 @@ window.addEventListener( 'load', function () {
                     scenename = "rsm";
                     //ATON.setFirstPersonMode(true);
                     //ATON.addLightProbe("../LP/default");
-
+                    for (let b = 1; b <= 37; b++) 
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/new/LOD2/PT"+b+"__LOD2_m.osgjs", { 
+                            layer: "Castle",
+                            hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/new/LOD1/PT"+b+"__LOD1_m.osgjs",
+                            hirespxsize: 600000
+                            });
+/*
                     for (let b = 1; b <= 37; b++) {
                         //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs", { layer: "PRESENT" });
                         ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD2/root.osgjs", { 
@@ -928,6 +937,36 @@ window.addEventListener( 'load', function () {
                             hirespxsize: 6000000
                             });
                         }
+*/
+
+                    ATON.getLayer("Castle").getOrCreateStateSet().setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+
+                    // veg
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/root.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });
+                    let vegLayer = ATON.layers["Vegetation"];
+                    let vegSS = vegLayer.getOrCreateStateSet();
+
+                    vegSS.setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+
+                    vegSS.setAttributeAndModes( 
+                        new osg.Depth( osg.Depth.LESS ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
+                        );
+
+                    vegSS.setAttributeAndModes( 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+                        //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
+                        //new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
+
+                    ATON.setLayerMask("Vegetation", ATON._maskLP);
 
                     ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
@@ -1064,10 +1103,6 @@ if (asset === "sf"){
 
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
-
-    // Hide controllers
-    ATON._controllerTransLeft.setNodeMask(0x0);
-    ATON._controllerTransRight.setNodeMask(0x0);
 
     // POVs
     var povstr = ATON.utils.getURLparams().pov;

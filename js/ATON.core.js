@@ -320,6 +320,33 @@ ATON.utils.fallbackAlphaTex.setMagFilter( osg.Texture.LINEAR );
 ATON.utils.fallbackAlphaTex.setWrapS( osg.Texture.REPEAT );
 ATON.utils.fallbackAlphaTex.setWrapT( osg.Texture.REPEAT );
 
+// Create and fill texture with uniform color 
+ATON.utils.createFillTexture = function(col){
+    let canvas1 = document.createElement('canvas');
+    let ctx = canvas1.getContext('2d');
+    canvas1.width  = 1;
+    canvas1.height = 1;
+    
+    ctx.fillStyle = 'rgba(' + [col[0]*255.0, col[1]*255.0, col[2]*255.0, col[3]].join() + ')';
+    ctx.fillRect(0,0,1,1);
+    // 'data:image/png;base64,'.length => 22
+    var b64 = /*"data:image/png;base64," + */canvas1.toDataURL('image/png',''); //.substring(22);
+    //console.log(b64);
+    
+    var img = new window.Image();
+    img.src = b64;
+
+    //console.log(img);
+    var tex = new osg.Texture();
+    tex.setImage( img );
+    tex.setMinFilter( osg.Texture.LINEAR );
+    tex.setMagFilter( osg.Texture.LINEAR );
+    tex.setWrapS( osg.Texture.REPEAT );
+    tex.setWrapT( osg.Texture.REPEAT );
+
+    return tex;
+};
+
 // Auxiliary
 // Get node names top-bottom from given nodepath
 ATON.utils._getPickedNodeNames = function(np){
@@ -434,11 +461,8 @@ ATON.utils.generateTransformFromString = function( transtring ){
         var rmx = osg.mat4.create();
         var rmy = osg.mat4.create();
         var rmz = osg.mat4.create();
-/*$
-        osg.Matrix.makeRotate( values[3], 1.0, 0.0, 0.0, rmx );
-        osg.Matrix.makeRotate( values[4], 0.0, 1.0, 0.0, rmy );
-        osg.Matrix.makeRotate( values[5], 0.0, 0.0, 1.0, rmz );
-*/
+
+/*      FIXME: ?
         osg.mat4.rotate(rmx, rmx, values[3], ATON_X_AXIS);
         osg.mat4.rotate(rmy, rmy, values[4], ATON_Y_AXIS);
         osg.mat4.rotate(rmz, rmz, values[5], ATON_Z_AXIS);
@@ -448,11 +472,8 @@ ATON.utils.generateTransformFromString = function( transtring ){
         osg.mat4.multiply(M, M, rmx);
         osg.mat4.multiply(M, M, rmy);
         osg.mat4.multiply(M, M, rmz);
-/*$
-        osg.Matrix.preMult( M, rmx );
-        osg.Matrix.preMult( M, rmy );
-        osg.Matrix.preMult( M, rmz );
 */
+
         //console.log('Rot: '+values[3]+' '+values[4]+' '+values[5]);
 
         if (values.length >= 9){
@@ -675,13 +696,19 @@ ATON.addDescriptor = function(url, unid, options){
             }
         else ATON.descriptors[unid].node = data;
 
+        let D = ATON.descriptors[unid];
 
-        ATON.descriptors[unid].node.setName(unid); // FIXME: maybe set from outside?
-        ATON.descriptors[unid].loading = false;
+        if (options && options.color){
+            var texcol = ATON.utils.createFillTexture(options.color);
+            D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol);
+            }
 
-        ATON._groupDescriptors.addChild( ATON.descriptors[unid].node ); // data
+        D.node.setName(unid); // FIXME: maybe set from outside?
+        D.loading = false;
 
-        if (ATON.descriptors[unid]._onLoadComplete !== undefined) ATON.descriptors[unid]._onLoadComplete();
+        ATON._groupDescriptors.addChild( D.node ); // data
+
+        if (D._onLoadComplete !== undefined) D._onLoadComplete();
 
         console.log("Descriptor node "+url+" loaded and registered as: "+unid);
         });
@@ -2418,18 +2445,27 @@ ATON._initGraph = function(){
     ATON._descrSS = ATON._groupDescriptors.getOrCreateStateSet();
     ATON._uiSS    = ATON._groupUI.getOrCreateStateSet();
 
+    // Best blending
+/*
+    ATON._mainSS.setAttributeAndModes( 
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+        osg.StateAttribute.ON
+        );
+*/
     // Descriptors ss
     ATON._descrSS.setAttributeAndModes( 
         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
+
+    ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.fallbackWhiteTex); // def color
+    ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
     /*
     ATON._descrSS.setAttributeAndModes(
         new osg.CullFace( 'DISABLE' ),
         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
         );
     */
-    ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
 
     // UI ss
     ATON._uiSS.setRenderingHint('TRANSPARENT_BIN');
@@ -2440,7 +2476,7 @@ ATON._initGraph = function(){
         );
 
     // TODO, move to VR onswitch?
-    ATON._createVRcontrollers();
+    //ATON.createVRcontrollers();
 };
 
 /* TODO: use loading webWorkers
@@ -2469,6 +2505,8 @@ ATON.addNewLayer = function(uniqueName, parentName){
     ATON.layers[uniqueName].setName(uniqueName);
     //ATON.layers[uniqueName].setNodeMask(ATON._maskVisible);
 
+    ATON.layers[uniqueName]._layerMask = 0xf;
+
     var parentLayer = undefined;
     if (parentName && ATON.layers[parentName]){
         parentLayer = ATON.layers[parentName];
@@ -2480,37 +2518,56 @@ ATON.addNewLayer = function(uniqueName, parentName){
     return ATON.layers[uniqueName];
 };
 
-ATON.switchLayer = function(layerName, value){
-    if (ATON.layers[layerName] === undefined) return;
+ATON.getLayer = function(layerName){
+    return ATON.layers[layerName];
+};
 
-    if (value === true) ATON.layers[layerName].setNodeMask(0xf);
-    else ATON.layers[layerName].setNodeMask(0x0);
+ATON.setLayerMask = function(layerName, mask){
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
+
+    layer._layerMask = mask;
+    layer.setNodeMask(mask);
+};
+
+ATON.switchLayer = function(layerName, value){
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
+
+    if (value === true) layer.setNodeMask(layer._layerMask);
+    else layer.setNodeMask(0x0);
 };
 
 ATON.isolateLayer = function(layerName){
     for (var key in ATON.layers){
-        if (key === layerName) ATON.layers[key].setNodeMask(0xf);
-        else ATON.layers[key].setNodeMask(0x0);
+        let layer = ATON.layers[key];
+
+        if (key === layerName) layer.setNodeMask(layer._layerMask);
+        else layer.setNodeMask(0x0);
         }
 };
 
 ATON.switchAllLayers = function(value){
     for (var key in ATON.layers){
-        if (value) ATON.layers[key].setNodeMask(0xf);
-        else ATON.layers[key].setNodeMask(0x0);
+        let layer = ATON.layers[key];
+
+        if (value) layer.setNodeMask(layer._layerMask);
+        else layer.setNodeMask(0x0);
         }
 };
 
 ATON.transformLayerByMatrix = function(layerName, M){
-    if (ATON.layers[layerName] === undefined) return;
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
 
-    ATON.layers[layerName].setMatrix( M );
+    layer.setMatrix( M );
 };
 
 ATON.translateLayer = function(layerName, v){
-    if (ATON.layers[layerName] === undefined) return;
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
 
-    var M = ATON.layers[layerName].getMatrix();
+    var M = layer.getMatrix();
     osg.mat4.setTranslation(M, v );
 };
 
@@ -3166,7 +3223,7 @@ ATON._handle3DPick = function(gnode, mask, lookAhead, pStart, pEnd){
     return ATON._hitsOperator(hits, mask);
 };
 
-ATON._createVRcontrollers = function(){
+ATON.createVRcontrollers = function(){
     //if (ATON._controllerModel !== undefined) return;
 
     ATON._vrContrDH = 0.0;

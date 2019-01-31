@@ -201,7 +201,8 @@ void main(){
 	osg_TexCoord2 = TexCoord0;
     osg_TexCoord3 = TexCoord0;
 
-    vViewVertex    = vec3(uModelViewMatrix * vec4(Vertex, 1.0));
+    //vViewVertex    = vec3(uModelViewMatrix * vec4(Vertex, 1.0));
+    vViewVertex    = vec3(uViewMatrix * vec4(vWorldVertex,1.0));
 
     vViewNormal = uModelViewNormalMatrix * Normal;
     vViewNormal = normalize(vViewNormal);
@@ -418,6 +419,7 @@ void main(){
 #endif
 
     float alphaContrib = baseAlbedo.a;
+
     float aoContrib  = getAmbientOcclusionWeight();
     float emContrib  = getEmissionWeight();
     float rouContrib = getRoughnessWeight();
@@ -883,14 +885,21 @@ void main(){
 
 #endif
 
-#if 0 // Sections
-    if(vWorldVertex.z > 780.0) discard;
+#if 0 // Sections (TEST)
+    float cutH = 790.0 + (sin(time*0.3)*15.0);
+
+    if(vWorldVertex.z > (cutH-0.3)) FinalFragment = mix(FinalFragment, vec4(1,0,0, 0.0), 0.5);
+    if(vWorldVertex.z > cutH) discard;
+
+    //if(vWorldVertex.z > (cutH-0.2)) FinalFragment = vec4(1,0,0, 0.0);
 #endif
 
     //=====================================================
     // FINALIZE
     //=====================================================
-    FinalFragment.a = alphaContrib;
+    FinalFragment.a    = alphaContrib;
+    FinalFragment.rgb *= alphaContrib;
+
 	gl_FragColor = FinalFragment;
 }
 #endif

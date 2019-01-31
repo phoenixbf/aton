@@ -66,26 +66,28 @@ void main(){
 
 uniform float time;
 
+uniform sampler2D BaseSampler;
+
 // MAIN
 //==============
 void main(){
-    //vec4 baseAlbedo = texture2D(BaseSampler, osg_TexCoord0);
 	vec4 FinalFragment;
 
-    // FIXME: get color from ???
-    FinalFragment = vec4(0.5,1,0, 1.0);
+    FinalFragment = texture2D(BaseSampler, vec2(0,0));
+	float alpha = 0.2;
 
 /*
 	FinalFragment.r = (cos(time) + 1.0) * 0.5;
 	FinalFragment.g = (cos(time + PI2) + 1.0) * 0.5;
 	FinalFragment.b = (cos(time + PI) + 1.0) * 0.5;
 */
-	float alpha = 0.2;
-
+	
 #ifndef MOBILE_DEVICE	// bHighlight
+	alpha = 0.8;
+
 	float t = (sin(time*3.0) + 1.0);
 	t *= 0.5;
-	alpha = mix(0.7, 0.3, t);
+	alpha = mix(alpha, alpha*0.5, t);
 
 	float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= 5.0; // radius

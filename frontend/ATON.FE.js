@@ -974,7 +974,7 @@ window.addEventListener( 'load', function () {
                         });
                     
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT2/root.osgjs", { layer: "PRESENT" });
-                    ATON.setHome([318.57,802.01,781.72],[295.32,841.14,786.00]);
+                    ATON.setHome([262.01,802.84,803.52],[295.16,842.49,778.58]);
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
                     $('body').css('background-color', 'rgb(65,70,79)');

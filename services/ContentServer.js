@@ -64,7 +64,7 @@ ContentServer.start = function(){
     // Create an HTTPS service identical to the HTTP service
     ContentServer.httpsOptions = {
         key: fs.readFileSync(__dirname+'/keys/_prv/server.key', 'utf8'),
-        cert: fs.readFileSync(__dirname+'/keys/é_prv/server.cert', 'utf8')
+        cert: fs.readFileSync(__dirname+'/keys/_prv/server.cert', 'utf8')
         };
     https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{
         console.log('Secure Content Server running on *.' + ContentServer.SECURE_PORT)

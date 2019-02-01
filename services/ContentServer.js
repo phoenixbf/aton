@@ -13,7 +13,7 @@ const compression = require('compression');
 var ContentServer = {};
 
 ContentServer.PORT = 8080;
-ContentServer.SECURE_PORT = 443;
+ContentServer.SECURE_PORT = 8083; //443;
 ContentServer.WWW_FOLDER = __dirname + "/../";
 
 // Debug on req received (client)

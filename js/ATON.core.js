@@ -163,6 +163,7 @@ ATON.on("NodeRequestFired", undefined);
 ATON.on("NodeRequestCompleted", undefined);
 ATON.on("AllNodeRequestsCompleted", undefined);
 ATON.on("VRmode", undefined);
+ATON.on("LayerON", undefined);
 //console.log(ATON.eventHandlers);
 
 
@@ -2562,7 +2563,10 @@ ATON.switchLayer = function(layerName, value){
     let layer = ATON.layers[layerName];
     if (layer === undefined) return;
 
-    if (value === true) layer.setNodeMask(layer._layerMask);
+    if (value === true){
+        layer.setNodeMask(layer._layerMask);
+        ATON.fireEvent("LayerON", layerName);
+        }
     else layer.setNodeMask(0x0);
 };
 
@@ -2570,7 +2574,10 @@ ATON.isolateLayer = function(layerName){
     for (var key in ATON.layers){
         let layer = ATON.layers[key];
 
-        if (key === layerName) layer.setNodeMask(layer._layerMask);
+        if (key === layerName){
+            layer.setNodeMask(layer._layerMask);
+            ATON.fireEvent("LayerON", key);
+            }
         else layer.setNodeMask(0x0);
         }
 };
@@ -2579,9 +2586,24 @@ ATON.switchAllLayers = function(value){
     for (var key in ATON.layers){
         let layer = ATON.layers[key];
 
-        if (value) layer.setNodeMask(layer._layerMask);
+        if (value){
+            layer.setNodeMask(layer._layerMask);
+            ATON.fireEvent("LayerON", key);
+            }
         else layer.setNodeMask(0x0);
         }
+};
+
+ATON.getActiveLayersBoundingSphere = function(){
+    let bs = new osg.getBoundingSphere();
+
+    for (var key in ATON.layers){
+        let layer = ATON.layers[key];
+
+        if (value) bs.expandByBoundingSphere( layer.getBoundingSphere() );
+        }
+        
+    return bs;
 };
 
 ATON.transformLayerByMatrix = function(layerName, M){

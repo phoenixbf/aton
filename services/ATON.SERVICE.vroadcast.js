@@ -383,7 +383,10 @@ setInterval(function(){
 //====================================================================================
 // WebServer
 //====================================================================================
-if (serviceOptions.www) ContentServ.WWW_FOLDER = serviceOptions.www;
+if (serviceOptions.www){
+    ContentServ.WWW_FOLDER = serviceOptions.www;
+    ContentServ.PORT = PORT;   
+}
 //else ContentServ.WWW_FOLDER = __dirname + '/';
 
 ContentServ.configure();

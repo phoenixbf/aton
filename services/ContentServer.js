@@ -8,13 +8,14 @@ const http        = require('http');
 const https       = require('https');
 const url         = require('url');
 const compression = require('compression');
+const request     = require('request');
 
 
 var ContentServer = {};
 
-ContentServer.PORT = 8080;
-ContentServer.SECURE_PORT = 8083; //443;
-ContentServer.WWW_FOLDER = __dirname + "/../";
+ContentServer.PORT        = 8080;
+ContentServer.SECURE_PORT = 443;
+ContentServer.WWW_FOLDER  = __dirname + "/../";
 
 // Debug on req received (client)
 ContentServer.logger = function(req, res, next){
@@ -36,47 +37,29 @@ ContentServer.configure = function(){
     this.app.use('/', express.static(this.WWW_FOLDER));
 
     // All routing here
-
-    /*
-    this.app.get('/r/:roomid', function(req, res) {
-        var roomid = req.params.roomid;
-        //res.send('/index.html?r='+roomid);
+    this.app.get("/s/:scene", function(req,res){
+        var scene = req.params.scene;
 
         res.redirect(url.format({
-            pathname:"/",
-            query: {
-                "r": roomid
-                }
+            pathname:"/frontend",
+            query: { "m": scene }
             }));
-    });
-    */
-
+        });
 };
 
 
 ContentServer.start = function(){
     this.configure();
 
-    http.createServer(this.app).listen(ContentServer.PORT, ()=>{
-        console.log('Content Server running on *.' + ContentServer.PORT)
-        });
+    http.createServer(this.app).listen(ContentServer.PORT, ()=>{ console.log('Content Server running on *.' + ContentServer.PORT); });
     
     // Create an HTTPS service identical to the HTTP service
+/*
     ContentServer.httpsOptions = {
         key: fs.readFileSync(__dirname+'/keys/_prv/server.key', 'utf8'),
         cert: fs.readFileSync(__dirname+'/keys/_prv/server.cert', 'utf8')
         };
-    https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{
-        console.log('Secure Content Server running on *.' + ContentServer.SECURE_PORT)
-        });
-
-    //console.log(this);
-/*
-    this.app.listen(ContentServer.PORT, function () {
-        console.log('Content Server running on *.' + ContentServer.PORT);
-
-        //require("openurl").open("http://localhost:"+ContentServer.PORT+"/r/room1");
-    });
+    https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{ console.log('Secure Content Server running on *.' + ContentServer.SECURE_PORT); });
 */
 }
 

@@ -913,10 +913,10 @@ ATON.setHome = function(position, target){
     ATON._homePOV.target = target;
 };
 
-ATON.requestHome = function(){
+ATON.requestHome = function(duration){
     if (ATON._homePOV === undefined) return;
 
-    ATON.requestPOV(ATON._homePOV);
+    ATON.requestPOV(ATON._homePOV, duration);
 };
 
 // FP step: m/sec
@@ -1900,7 +1900,7 @@ ATON._updateCallback.prototype = {
         var manip = ATON._viewer.getManipulator();
 
         //================ Navigation computations: we grab _currPOV and modify it, then update manip 
-        // Store prev-POV
+        // Store previous view data
         ATON._prevPOV.pos[0] = ATON._currPOV.pos[0];
         ATON._prevPOV.pos[1] = ATON._currPOV.pos[1];
         ATON._prevPOV.pos[2] = ATON._currPOV.pos[2];
@@ -1973,7 +1973,7 @@ ATON._updateCallback.prototype = {
         //console.log(ATON._dPos);
         
         // Query/Intersection routines
-        if (ATON._dOri > ATON._dOriTol && ATON._dPos < ATON._dPosTol && (ATON._tPOVcall < 0.0)){
+        if (ATON._dOri > ATON._dOriTol && ATON._dPos < ATON._dPosTol && (ATON._tPOVcall < 0.0) && (ATON._nodeReqs==0)){
             ATON._handleVisHover();
             
             // Handle Descriptors HOVER
@@ -1989,10 +1989,14 @@ ATON._updateCallback.prototype = {
             }
         else {
             ATON._hoveredVisData = undefined;
-            if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+            //if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
             }
 
         ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);
+
+        if (ATON._hoveredVisData === undefined){
+            if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+            }
 
 /*
         // Store prev-POV

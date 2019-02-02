@@ -37,7 +37,7 @@
 </head>
 
 
-<body oncontextmenu="return false;" style="background-color: white;">
+<body oncontextmenu="return false;" style="background-color: rgba(255,255,255, 0);">
 
 	<!-- Our 3D View -->
 	<div id="ViewContainer" class="view3D">
@@ -53,7 +53,7 @@
             <li class="nav-item">
                 <button id="idUserColor" type="button" class="atonBTN"></button>
                 <button id="idFS" type="button" class="atonBTN" onclick="ATON.FE.toggleFullscreen()"><img src="../res/ii-inv-fs.png"></button>
-                <button type="button" class="atonBTN" onclick="ATON.requestHome()"><img src="../res/ii-inv-home.png"></button>
+                <button type="button" class="atonBTN" onclick="ATON.requestHome(1.0)"><img src="../res/ii-inv-home.png"></button>
             </li>
             </ul>
             &nbsp;
@@ -77,7 +77,7 @@
                 <button id="idFP" type="button" class="atonBTN" onclick="ATON.FE.toggleFirstPerson()"><img src="../res/ii-inv-fp.png"></button>
                 <button id="idDevOri" type="button" class="atonBTN" onclick="ATON.FE.toggleDevOri()"><img src="../res/ii-inv-devori.png"></button>
                 <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../res/ii-inv-vr.png"></button>
-                </li>&nbsp;
+                </li>
 <!--
                 <select id="idLayers" name="layers-list" class="atonBTN" style="width:auto;" onchange="ATON.FE.selectLayerMenu(this.value)">
                     <option value="__ALL__">&#9724;&nbsp;SHOW ALL</option>
@@ -85,10 +85,27 @@
                 </select>
 -->
            
-                <li class="nav-item dropdown">
+                &nbsp;<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle atonBTN" style="width:auto;" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../res/ii-inv-layers.png"></a>
                     <div class="dropdown-menu" id="idLayers"></div>
                 </li>
+
+                &nbsp;<li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle atonBTN" style="width:auto;" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../res/ii-inv-hover.png"></a>
+                        <div class="dropdown-menu" id="idHoverSize">
+                            <div class="form-group">
+                            <input type="radio" name="HoverRadius" value="0.1" onchange="ATON.updateHoverRadius(this.value)">Radius: 10 cm<br>
+                            <input type="radio" name="HoverRadius" value="0.5" onchange="ATON.updateHoverRadius(this.value)">Radius: 50 cm<br>
+                            <input type="radio" name="HoverRadius" value="1.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 1 m<br>
+                            <input type="radio" name="HoverRadius" value="2.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 2 m<br>
+                            <input type="radio" name="HoverRadius" value="5.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 5 m<br>
+                            <input type="radio" name="HoverRadius" value="10.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 10 m<br>
+                            </div>
+<!--
+                            <input id="idDIM" type="range" orient="vertical" min="0.1" max="50.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)">
+-->
+                        </div>
+                    </li>
 
                 <!--
                 <div style="display:inline-block; width:40px;"><input class="form-control-range" type="range" min="0.1" max="20.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)"></div>

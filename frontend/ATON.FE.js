@@ -201,16 +201,19 @@ ATON.FE.setupPage = function(){
         };
 
     ATON.FE.buildLayerMenu = function(){
+        if (ATON.layers.length == 0) return;
+
         for (var layername in ATON.layers){
             let checked = "checked";
             if (ATON.layers[layername].getNodeMask() === 0) checked = "";
             console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
-            $('#idLayers').append('&nbsp;<input type="checkbox" name="'+layername+'" onchange=\'ATON.switchLayer("'+layername+'", this.checked)\' '+checked+' >&nbsp;'+layername+'<br>');
+            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.switchLayer("'+layername+'", this.checked)\' '+checked+' >'+layername+'<br>');
             }
 
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
+        //$('#idLayers').append('<input type="checkbox" name="idIsolateLayer">Isolate');
         };
 };
 
@@ -685,14 +688,24 @@ window.addEventListener( 'load', function () {
                     scenename = "test1";
                     ATON.addLightProbe("../LP/default");
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "GROUND", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "TREES", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", { layer: "MAIN", transformRules: ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "Ground" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "Ground", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "Hebe" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", { layer: "Cubes", transformRules: ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt" });
 
-                    var trSS = ATON.layers["TREES"].getOrCreateStateSet();
+                    ATON.setLayerMask("Vegetation", ATON._maskLP);
+
+                    var trSS = ATON.layers["Vegetation"].getOrCreateStateSet();
+                    trSS.setAttributeAndModes( 
+                        new osg.Depth( osg.Depth.LESS ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
+                        );
+                    trSS.setAttributeAndModes( 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
+                        );
 /*
                     trSS.setAttributeAndModes( 
                         //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
@@ -701,8 +714,10 @@ window.addEventListener( 'load', function () {
                         );
 */
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 60.0 );
+                    //$('body').css('background-color', 'black');
 
-                    ATON.setHome([-0.77,-17.02,2.81],[0,0,2.81]);
+                    ATON.setHome([-0.28,-19.14,2.87],[-0.30,-0.39,4.58]);
+                    ATON.requestHome(0.01);
                     break;
 
                 case "hebe":
@@ -749,9 +764,23 @@ window.addEventListener( 'load', function () {
                         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
                         );
 
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_a/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_b/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_c/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_d/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_e/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_f/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_g/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_h/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_i/root.osgjs", { layer: "PAST" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_l/root.osgjs", { layer: "PAST" });
+
+                    ATON.switchLayer("PAST", false);
+
                     //ATON.addNewLayer("CEIL","PRESENT");
 
                     // CUSTOM KEYBOARD
+/*
                     $(function() {
                         $(document).keydown(function(e) {
                             if (e.keyCode == 84){ // t
@@ -772,7 +801,7 @@ window.addEventListener( 'load', function () {
                                 }
                             })
                         });
-
+*/
                     // PRESENT
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
@@ -824,6 +853,7 @@ window.addEventListener( 'load', function () {
                         }, 1000);
 */
                     ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
+                    ATON.requestHome(0.01);
                     break;
 
                 case "test2":
@@ -1066,6 +1096,8 @@ window.addEventListener( 'load', function () {
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
                     $('body').css('background-color', 'rgb(65,70,79)');
                     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
+
+                    ATON.requestHome(0.01);
                     break;
 
                 case "domus":
@@ -1313,10 +1345,8 @@ if (asset === "sf"){
         }
 
     // On completion
-    var bFirstHome = true;
     ATON.on("AllNodeRequestsCompleted", function(){
-        if (bFirstHome) ATON.requestHome();
-        bFirstHome = false;
+        ATON.requestHome();
 
         $('#idLoader').hide();
 

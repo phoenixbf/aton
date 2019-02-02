@@ -282,7 +282,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 
-input[type=checkbox] {
+input[type="checkbox"] {
     -webkit-appearance: none;
     cursor: pointer;
     width: 25px;
@@ -290,36 +290,38 @@ input[type=checkbox] {
     background: black;
     border-radius: 5px;
     line-height: 12px;
-  }
-input[type=checkbox]:checked {
+    vertical-align: middle;
+    margin: 5px;
+}
+input[type="checkbox"]:checked {
     -webkit-appearance: none;
     cursor: pointer;
-    width: 25px;
-    height: 25px;
     background: green;
-    border-radius: 5px;
-  }
-input[type=checkbox]:hover {
+}
+input[type="checkbox"]:hover {
     border: 2px solid black;
 }
 
-input[type=radio] {
+input[type="radio"] {
     -webkit-appearance: none;
     cursor: pointer;
     width: 25px;
     height: 25px;
     background: black;
-    border-radius: 5px;
+    border-radius: 50%;
     line-height: 12px;
-  }
-input[type=radio]:checked {
+    vertical-align: middle;
+    margin: 5px;
+}
+
+input[type="radio"]:not(:checked) {
+    background: black;
+}
+input[type="radio"]:checked {
     -webkit-appearance: none;
     cursor: pointer;
-    width: 25px;
-    height: 25px;
     background: green;
-    border-radius: 5px;
-  }
-input[type=radio]:hover {
+}
+input[type="radio"]:hover {
     border: 2px solid black;
 }

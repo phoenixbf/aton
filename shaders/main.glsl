@@ -653,11 +653,12 @@ void main(){
 #endif
 
     fogColor.a = 0.0;
+    fogColor.rgb *= alphaContrib;
 
     float f = fragDist / uFogDistance;
     f = clamp(f, 0.0,1.0);
 
-    fogColor = max(fogColor, (FinalFragment*0.6));
+    //fogColor = max(fogColor, (FinalFragment*0.6));
     FinalFragment = mix(FinalFragment,fogColor, f);
 
 #endif //======== Desktop

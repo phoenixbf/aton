@@ -9,11 +9,6 @@
 
 //#define MOBILE_DEVICE 1
 
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
-
 varying vec2 osg_TexCoord0;
 //varying vec3 osg_FragVertex;
 //varying vec3 osg_FragEye;

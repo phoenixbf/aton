@@ -9,11 +9,6 @@
 
 //#define MOBILE_DEVICE 1
 
-#ifdef GL_ES
-precision highp float;
-precision highp int;
-#endif
-
 #define PI 		3.1415926535897932
 #define PI2 	(PI*0.5)
 

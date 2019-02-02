@@ -17,13 +17,6 @@
 //#define USE_ILSIGN 1
 
 
-#ifdef GL_ES
-//precision mediump float;
-//precision mediump int;
-precision highp float;
-precision highp int;
-#endif
-
 #define PI     3.1415926535897932
 #define PI_DBL 6.2831853071795865
 

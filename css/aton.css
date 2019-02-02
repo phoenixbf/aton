@@ -184,7 +184,8 @@ canvas {
 
     background-color: rgba(127, 127, 127, 0.5);
     border-radius: 5px;
-    padding: 7px;
+    padding: 4px;
+    margin: 4px;
 }
 
 .atonBTN:hover {

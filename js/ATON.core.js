@@ -202,6 +202,30 @@ ATON.utils.detectMobileDevice = function(){
     return false;
 };
 
+// Detect HW capabilities
+ATON.utils.detectGLSLcapab = function(){
+
+    let gl = ATON._canvas.getContext('experimental-webgl');
+    if (gl == null){ 
+        gl = ATON._canvas.getContext('webgl');
+        }
+
+    if(gl != null){ // WebGL is supported 
+
+        let highp = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT);
+        ATON._bHighP     = (highp.precision != 0);
+        ATON._maxTexSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+
+        console.log("HighP support: "+ATON._bHighP);
+        console.log("Max Texture size: "+ATON._maxTexSize);
+        }
+
+    else{ // WebGL is not supported
+        console.log("WebGL not supported. Time to upgrade ur phone m8");
+        }
+};
+
+
 // From https://www.sitepoint.com/get-url-parameters-with-javascript/
 /*
     E.g.:
@@ -2235,6 +2259,7 @@ ATON.realize = function( canvas ){
 
 
     // Load Core Shaders
+    ATON.utils.detectGLSLcapab();
     ATON.loadCoreShaders( ATON.shadersFolder );
 
 /*
@@ -3042,10 +3067,23 @@ ATON.setFogColor = function(fogcol){
     ATON._mainSS.getUniform('uFogColor').setFloat4(ATON._fogColor);
 };
 
+ATON._addGLSLprecision = function(glsldata){
+    if (ATON._bHighP){
+        glsldata = "#ifdef GL_ES\nprecision highp int;\nprecision highp float;\n#endif\n" + glsldata;
+        }
+    else {
+        glsldata = "#ifdef GL_ES\nprecision mediump int;\nprecision mediump float;\n#endif\n" + glsldata;
+        }
+
+    return glsldata;
+};
+
 ATON.loadCoreShaders = function(path){
     //var self = this;
 
 	$.get( path + "/main.glsl", function(glsldata){
+        glsldata = ATON._addGLSLprecision(glsldata);
+
 		// Pre-directives
 		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
         if (ATON._useLP) glsldata = "#define USE_LP 1\n" + glsldata;
@@ -3066,6 +3104,8 @@ ATON.loadCoreShaders = function(path){
 		}, "text");
 
 	$.get( path + "/descriptors.glsl", function(glsldata){
+        glsldata = ATON._addGLSLprecision(glsldata);
+
 		// Pre-directives
 		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
 
@@ -3081,6 +3121,8 @@ ATON.loadCoreShaders = function(path){
 		}, "text");
 
 	$.get( path + "/ui.glsl", function(glsldata){
+        glsldata = ATON._addGLSLprecision(glsldata);
+
 		// Pre-directives
 		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
 

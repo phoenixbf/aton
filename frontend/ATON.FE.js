@@ -209,6 +209,8 @@ ATON.FE.setupPage = function(){
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
             $('#idLayers').append('&nbsp;<input type="checkbox" name="'+layername+'" onchange=\'ATON.switchLayer("'+layername+'", this.checked)\' '+checked+' >&nbsp;'+layername+'<br>');
             }
+
+        //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
         };
 };
 
@@ -1202,8 +1204,9 @@ if (asset === "sf"){
         //console.log("x");
         
         if (!ATON._vrState){
-            if (ATON._hoveredVisData) $("#idHoverPos").html(ATON._hoveredVisData.p[0].toFixed(3)+","+
-                ATON._hoveredVisData.p[1].toFixed(3)+","+
+            if (ATON._hoveredVisData) $("#idHoverPos").html(
+                ATON._hoveredVisData.p[0].toFixed(3)+", "+
+                ATON._hoveredVisData.p[1].toFixed(3)+", "+
                 ATON._hoveredVisData.p[2].toFixed(3)
                 );
             else $("#idHoverPos").html("");

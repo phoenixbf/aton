@@ -178,6 +178,10 @@ canvas {
     width: 45px;
     height: 45px;
 
+    /*line-height: 18px;*/
+    text-align: center;
+    vertical-align: center;
+
     background-color: rgba(127, 127, 127, 0.5);
     border-radius: 5px;
     padding: 7px;
@@ -189,7 +193,7 @@ canvas {
 
 
 /*
-    Input Range Sliders
+    Input Types
 ==========================*/
 input[type=range] {
     -webkit-appearance: none;
@@ -275,4 +279,47 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
     background: #c1c1c1;
+}
+
+
+input[type=checkbox] {
+    -webkit-appearance: none;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background: black;
+    border-radius: 5px;
+    line-height: 12px;
+  }
+input[type=checkbox]:checked {
+    -webkit-appearance: none;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background: green;
+    border-radius: 5px;
+  }
+input[type=checkbox]:hover {
+    border: 2px solid black;
+}
+
+input[type=radio] {
+    -webkit-appearance: none;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background: black;
+    border-radius: 5px;
+    line-height: 12px;
+  }
+input[type=radio]:checked {
+    -webkit-appearance: none;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    background: green;
+    border-radius: 5px;
+  }
+input[type=radio]:hover {
+    border: 2px solid black;
 }

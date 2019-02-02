@@ -854,6 +854,49 @@ ATON.requestPOVbyIndex = function(i){
     ATON._reqPOVi = i;
 };
 
+// Request a POV by boundingsphere and radius multiplier d
+ATON.requestPOVbyBound = function(bs, d, duration){
+    let pov = new ATON.pov();
+
+    let c = bs._center;
+    let r = bs._radius;
+
+    r *= d;
+
+    let p = osg.vec3.create();
+    p[0] = c[0] - (ATON._direction[0]*r);
+    p[1] = c[1] - (ATON._direction[1]*r);
+    p[2] = c[2] - (ATON._direction[2]*r);
+
+    pov.target = c;
+    pov.pos    = p;
+    pov.fov    = ATON._currPOV.fov;
+
+    ATON.requestPOV(pov, duration);
+};
+
+ATON.requestPOVbyNode = function(node, d, duration){
+    if (node === undefined) return;
+
+    ATON.requestPOVbyBound(node.getBoundingSphere(), d, duration);
+};
+
+ATON.requestPOVbyActiveLayers = function(duration){
+    let bs = ATON.getActiveLayersBoundingSphere();
+    if (!bs.valid()) return;
+
+    ATON.requestPOVbyBound(bs, 2.0, duration);
+};
+
+ATON.requestPOVbyDescriptor = function(id, duration){
+    let d = ATON.descriptors[id];
+    if (d === undefined || d.node === undefined) return;
+
+    let n = d.node;
+
+    ATON.requestPOVbyNode(n, 2.0, duration);
+};
+
 ATON.recomputeHome = function(){
     var r = ATON._groupVisible.getBoundingSphere()._radius;
     ATON._homePOV.fov    = ATON_STD_FOV;
@@ -2350,11 +2393,17 @@ ATON._attachListeners = function(){
                 if (ATON._vrState) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
                 }
 
-	    	if (e.key == 'c'){ // c
+	    	if (e.key == 'c'){
 				ATON._bUseCollisions = !ATON._bUseCollisions;
 	    		}
-	    	if (e.key == 'g'){ // g
+	    	if (e.key == 'g'){
 				ATON._bUseGravity = !ATON._bUseGravity;
+	    		}
+	    	if (e.key == 'f'){
+                if (ATON._hoveredDescriptor){
+				    ATON.requestPOVbyDescriptor(ATON._hoveredDescriptor, 0.3);
+                    }
+                else ATON.requestPOVbyActiveLayers(0.3);
 	    		}
 /*
 	    	if (e.key == 'i'){ // i
@@ -2483,7 +2532,8 @@ ATON._initGraph = function(){
 */
     // Descriptors ss
     ATON._descrSS.setAttributeAndModes( 
-        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+        //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE), 
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
@@ -2524,6 +2574,24 @@ ATON.updateHoverRadius = function(r){
 /*
     LAYERS
 ==================================*/
+/*
+ATON.createNewLayer = function(uniqueName){
+    if (uniqueName.length <= 1) return; // too short
+    if (ATON.layers[uniqueName]) return; // already created
+
+    // First time, create the layer
+    let L = new osg.MatrixTransform();
+    L.setName(uniqueName);
+    L._layermask = 0xf;
+
+    ATON._groupVisible.addChild( L );
+    ATON.layers[uniqueName] = L;
+
+    console.log("Created new layer "+uniqueName);
+    return L;
+};
+*/
+
 // Create new layer (visible sg)
 ATON.addNewLayer = function(uniqueName, parentName){
     if (uniqueName.length <= 1) return; // too short
@@ -2595,14 +2663,14 @@ ATON.switchAllLayers = function(value){
 };
 
 ATON.getActiveLayersBoundingSphere = function(){
-    let bs = new osg.getBoundingSphere();
+    let bs = new osg.BoundingSphere();
 
     for (var key in ATON.layers){
         let layer = ATON.layers[key];
 
-        if (value) bs.expandByBoundingSphere( layer.getBoundingSphere() );
+        if (layer && (layer.getNodeMask()!==0)) bs.expandByBoundingSphere( layer.getBoundingSphere() );
         }
-        
+
     return bs;
 };
 
@@ -2621,6 +2689,7 @@ ATON.translateLayer = function(layerName, v){
     osg.mat4.setTranslation(M, v );
 };
 
+/*
 ATON.gotoLayer = function(layerName, duration){
     let layer = ATON.layers[layerName];
     if (layer === undefined) return;
@@ -2642,7 +2711,7 @@ ATON.gotoLayer = function(layerName, duration){
 
     ATON.requestPOV(pov, duration);
 };
-
+*/
 
 
 // TODO: rename?

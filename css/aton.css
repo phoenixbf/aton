@@ -119,12 +119,12 @@ canvas {
 }
 
 .atonToolbar-top {
-  top: 0%;
-  width:100%;
+    top: 0%;
+    width:100%;
 }
 .atonToolbar-bottom {
-  bottom: 0%;
-  width:100%;
+    bottom: 0%;
+    width:100%;
 }
 
 @keyframes loader {
@@ -145,26 +145,26 @@ canvas {
 }
 
 .atonCenterLoader {
-  position: fixed;
-  z-index: 10;
+    position: fixed;
+    z-index: 10;
 
-  display:inline-block;
-  width: 100px;
-  height: 100px;
+    display:inline-block;
+    width: 100px;
+    height: 100px;
 
-  top: 50%;
-  left: 50%;
-  /*transform: translate(-50%,-50%);*/
+    top: 50%;
+    left: 50%;
+    /*transform: translate(-50%,-50%);*/
 
-  pointer-events: none;
+    pointer-events: none;
 
-  animation: loader 2s linear infinite;
+    animation: loader 2s linear infinite;
 }
 
 .atonUserBG {
-  background-color: black;
-  padding: 10px;
-  border-radius: 10px;
+    background-color: black;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 /* icon / button */
@@ -180,18 +180,47 @@ canvas {
 
     /*line-height: 18px;*/
     text-align: center;
-    vertical-align: center;
+    vertical-align: middle;
 
     background-color: rgba(127, 127, 127, 0.5);
     border-radius: 5px;
+
     padding: 4px;
     margin: 4px;
+
+    outline: none;
 }
 
 .atonBTN:hover {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
+.switchedON {
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0px 5px rgba(255, 255, 255, 1.0);
+}
+
+.atonMenu {
+    background-color: rgba(0, 0, 0, 1.0);
+    color: white;
+}
+
+.atonMenuEntry {
+    /*background-color: rgba(255, 255, 255, 0.5);*/
+    border-radius: 5px;
+
+    width: 100%;
+    padding: 5px;
+
+    cursor: pointer;
+    color: white;
+
+    vertical-align: middle;
+
+    font-size: smaller;
+
+    outline: none;
+}
 
 /*
     Input Types
@@ -200,7 +229,9 @@ input[type=range] {
     -webkit-appearance: none;
     width: 100%;
     margin: 9.7px 0;
-  }
+
+    outline: none;
+}
 input[type=range]:focus {
     outline: none;
 }
@@ -290,17 +321,19 @@ input[type="checkbox"] {
     height: 25px;
     background: black;
     border-radius: 5px;
+    border: 2px solid gray;
     line-height: 12px;
     vertical-align: middle;
     margin: 5px;
+    outline: none;
 }
 input[type="checkbox"]:checked {
     -webkit-appearance: none;
     cursor: pointer;
-    background: green;
+    background: white;
 }
 input[type="checkbox"]:hover {
-    border: 2px solid black;
+    border: 2px solid white;
 }
 
 input[type="radio"] {
@@ -310,9 +343,11 @@ input[type="radio"] {
     height: 25px;
     background: black;
     border-radius: 50%;
+    border: 2px solid gray;
     line-height: 12px;
     vertical-align: middle;
     margin: 5px;
+    outline: none;
 }
 
 input[type="radio"]:not(:checked) {
@@ -321,8 +356,8 @@ input[type="radio"]:not(:checked) {
 input[type="radio"]:checked {
     -webkit-appearance: none;
     cursor: pointer;
-    background: green;
+    background: white;
 }
 input[type="radio"]:hover {
-    border: 2px solid black;
+    border: 2px solid white;
 }

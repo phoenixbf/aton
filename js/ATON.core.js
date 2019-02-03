@@ -822,7 +822,7 @@ ATON.setFOV = function(f){
 
     if (ATON._camera === undefined) return;
     
-    ATON._toPOV.fov = f; // while transitioning
+    //ATON._toPOV.fov = f; // while transitioning
 
 	var info = {};
 	osg.mat4.getPerspective( info, ATON._camera.getProjectionMatrix() );
@@ -964,6 +964,8 @@ ATON._handlePOVrequest = function(){
         ATON._currPOV.target[0] = ATON._toPOV.target[0];
         ATON._currPOV.target[1] = ATON._toPOV.target[1];
         ATON._currPOV.target[2] = ATON._toPOV.target[2];
+
+        ATON.setFOV(ATON._toPOV.fov);
         return;
         }
 
@@ -2449,30 +2451,21 @@ ATON._attachListeners = function(){
                 //
                 }
 */
-	    	if (e.key == 'p'){ // p
-                var P = new ATON.pov;
-                P.pos    = ATON._currPOV.pos.slice(0);
-                P.target = ATON._currPOV.target.slice(0);
-                P.fov    = ATON._currPOV.fov;
-
-                ATON.addPOV(P);
-
-                console.log(ATON._currPOV);
-	    		}
-
+/*
 	    	if (e.keyCode == 102){ // numpad right
                 var nexti = (ATON._reqPOVi + 1) % ATON.POVlist.length;
                 ATON.requestPOVbyIndex( nexti );
                 //console.log(nexti);
 	    		}
-				
+*/				
 	  		});
 		});
 
     // On resize
     $(window).on('load resize', ATON._onResize );
 
-    // HMD on / off
+    // HMD on / off FIXME:
+/*
     window.addEventListener("vrdisplayactivate", function() {
 
         if ( ATON._viewer.getVRDisplay() ) ATON._viewer.setPresentVR( true ).then( ATON._switchVR.bind(this) );
@@ -2487,7 +2480,7 @@ ATON._attachListeners = function(){
 
         console.log("HMD off");
         });
-
+*/
     console.log("Listeners registered.");
 };
 

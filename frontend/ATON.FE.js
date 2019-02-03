@@ -98,9 +98,7 @@ ATON.FE.setupPage = function(){
     $("#idSession").hide();
 
     var iContainer = document.getElementById( "iContainer" );
-    iContainer.addEventListener( 'keydown', function ( e ) {
-        e.stopPropagation();
-    }, false );
+    iContainer.addEventListener( 'keydown', function ( e ) { e.stopPropagation(); }, false );
     
     ATON.FE.setUserName = function(){
         var el = document.getElementById('uname');
@@ -138,22 +136,23 @@ ATON.FE.setupPage = function(){
         //var el = document.getElementById('ufp');
         //ATON.setFirstPersonMode(el.checked);
         if (ATON._bFirstPersonMode){
-            $("#idFP").css("background-color","rgba(127,127,127, 0.5)");
+            //$("#idFP").css("background-color","rgba(127,127,127, 0.5)");
+            $('#idFP').removeClass("switchedON");
             ATON.setFirstPersonMode(false);
             }
         else {
-            $("#idFP").css("background-color","rgba(0,255,0, 0.5)");
+            $('#idFP').addClass("switchedON");
             ATON.setFirstPersonMode(true);
             }
     };
 
     ATON.FE.toggleDevOri = function(){
         if (ATON._bDevOri){
-            $("#idDevOri").css("background-color","rgba(127,127,127, 0.5)");
+            $('#idDevOri').removeClass("switchedON");
             ATON.toggleDeviceOrientation(false);
             }
         else {
-            $("#idDevOri").css("background-color","rgba(0,255,0, 0.5)");
+            $('#idDevOri').addClass("switchedON");
             ATON.toggleDeviceOrientation(true);
             }
         };
@@ -215,6 +214,17 @@ ATON.FE.setupPage = function(){
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
         //$('#idLayers').append('<input type="checkbox" name="idIsolateLayer">Isolate');
         };
+
+    ATON.FE.buildPOVmenu = function(){
+        let povlen = ATON.POVlist.length;
+        if (povlen == 0) return;
+
+        for (let p = 0; p < povlen; p++) {
+            const pov = ATON.POVlist[p];
+            
+            $('#idPOVlist').append("<div style='width:100%' onclick='ATON.requestPOVbyIndex( "+p+" );' >POV #"+p+"</div>");
+            }
+        };
 };
 
 ATON.FE.selectLayerMenu = function(layername){
@@ -249,6 +259,21 @@ ATON.FE.attachListeners = function(){
 	    	if (e.key == 'c'){
 				ATON.FE.logPOV();
                 }
+
+	    	if (e.key == 'p'){
+                var P = new ATON.pov;
+                P.pos    = ATON._currPOV.pos.slice(0);
+                P.target = ATON._currPOV.target.slice(0);
+                P.fov    = ATON._currPOV.fov;
+
+                ATON.addPOV(P);
+
+                let povid = ATON.POVlist.length - 1;
+                $('#idPOVlist').append("<div class='atonMenuEntry' onclick='ATON.requestPOVbyIndex( "+povid+" );' >POV #"+povid+"</div>");
+
+                console.log(ATON._currPOV);
+	    		}
+
             if (e.key == '.'){
                 if (ATON._hoveredVisData){
                     ATON.FE._growVolume.expandByVec3(ATON._hoveredVisData.p);

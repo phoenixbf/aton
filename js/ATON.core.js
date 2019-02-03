@@ -2653,7 +2653,7 @@ ATON.switchLayer = function(layerName, value){
     let layer = ATON.layers[layerName];
     if (layer === undefined) return;
 
-    if (value === true){
+    if (value){
         layer.setNodeMask(layer._layerMask);
         ATON.fireEvent("LayerON", layerName);
         }

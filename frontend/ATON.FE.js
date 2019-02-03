@@ -22,15 +22,18 @@ var QAurl = undefined;
 var QPV   = undefined;
 
 
-var auPOL = new Audio(ATON.FE.AUDIO_ROOT+"mag.wav");
+var auPOL = new Audio(ATON.FE.AUDIO_ROOT+"forcefield.wav");
 auPOL.loop = true;
 
 //ATON.vroadcast.onPolDataReceived = function(){
 ATON.on("VRC_PolDataReceived", function(){
+    if (QPV === undefined) return;
     QPV.setQVAimgBase64(ATON.vroadcast._polDATA);
 });
+
 //ATON.vroadcast.onPolCellReceived = function(){
 ATON.on("VRC_PolCellReceived", function(){
+    if (QPV === undefined) return;
     if (ATON.vroadcast._polCELL === undefined) return;
 
     var col8 = new Uint8Array(4);
@@ -103,20 +106,21 @@ ATON.FE.setupPage = function(){
     ATON.FE.setUserName = function(){
         var el = document.getElementById('uname');
         ATON.vroadcast.setUserName(el.value);
-    };
+        $('#uname').hide();
+        };
     
     ATON.FE.setStatus = function(){
         var el = document.getElementById('ustatus');
         ATON.vroadcast.setStatus(el.value);
         el.value = "";
-    };
+        };
     ATON.FE.setWeight = function(){
         var el = document.getElementById('uweight');
         console.log(el.value);
         ATON.vroadcast.setWeight(el.value);
 
         document.getElementById('idMagWeight').innerHTML = el.value;
-    };
+        };
     ATON.FE.setRank = function(){
         var el = document.getElementById('urank');
         console.log(el.value);
@@ -222,7 +226,7 @@ ATON.FE.setupPage = function(){
         for (let p = 0; p < povlen; p++) {
             const pov = ATON.POVlist[p];
             
-            $('#idPOVlist').append("<div style='width:100%' onclick='ATON.requestPOVbyIndex( "+p+" );' >POV #"+p+"</div>");
+            $('#idPOVlist').append("<div style='width:100%' onclick='ATON.requestPOVbyIndex( "+p+" );' ><img src='../res/ii-inv-pov.png' style='width:16px; height:auto'>POV #"+p+"</div>");
             }
         };
 };
@@ -269,7 +273,7 @@ ATON.FE.attachListeners = function(){
                 ATON.addPOV(P);
 
                 let povid = ATON.POVlist.length - 1;
-                $('#idPOVlist').append("<div class='atonMenuEntry' onclick='ATON.requestPOVbyIndex( "+povid+" );' >POV #"+povid+"</div>");
+                $('#idPOVlist').append("<div class='atonMenuEntry' onclick='ATON.requestPOVbyIndex( "+povid+" );' ><img src='../res/ii-inv-pov.png' style='width:16px; height:auto'>POV #"+povid+"</div>");
 
                 console.log(ATON._currPOV);
 	    		}
@@ -325,8 +329,8 @@ ATON.FE.attachListeners = function(){
 */
             if (e.key == 'x'){ // x
                 ATON.vroadcast._bQFpol = true;
-                $("#idPOL").css("background-color","green");
-                ATON.setDim(0.4);
+                //$("#idPOL").css("background-color","green");
+                ATON.setDim(0.2);
                 auPOL.play();
                 }      
 
@@ -336,8 +340,8 @@ ATON.FE.attachListeners = function(){
         $(document).keyup(function(e){
             if (e.key == 'x'){ // x
                 ATON.vroadcast._bQFpol = false;
-                $("#idPOL").css("background-color","black");
-                ATON._mainSS.getUniform('uDim').setFloat( 1.0 );
+                //$("#idPOL").css("background-color","black");
+                ATON.setDim(1.0);
                 auPOL.pause();
 
                 if (QPV) ATON.vroadcast.requestPol();
@@ -379,7 +383,9 @@ var PolNav = function(){
     var newPolPos = qfv.getWorldLocationFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2] ); // absolute loc
     //var newPolPos = osg.vec3.sub([], ATON._hoveredVisData.p,qfv.getDeltaFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2])); // delta
 
-    ATON._polPos = newPolPos;
+    if (ATON._polPos === undefined) ATON._polPos = newPolPos;
+    else ATON._polPos = osg.vec3.lerp([], newPolPos, ATON._polPos, 0.5);
+
 /*
     if (ATON._polPos === undefined) ATON._polPos = newPolPos;
     else ATON._polPos = osg.vec3.lerp( [], newPolPos, ATON._polPos, 0.8);
@@ -654,7 +660,7 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
 
-                    //ATON._polarizeLocomotionQV = PolNav;
+                    ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });

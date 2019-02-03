@@ -263,7 +263,8 @@ ATON.vroadcast._update = function(){
     if (ATON.vroadcast._bQFpol){
         //var F = ATON._hoveredVisData.p.slice(0); // NOT USED?
 
-        ATON.vroadcast.socket.emit("POLFOC", {/*id: myUser.id, */focus: DTarg});
+        //ATON.vroadcast.socket.emit("POLFOC", {/*id: myUser.id, */focus: DTarg});
+        ATON.vroadcast.socket.emit("POLFOC", {r: ATON._hoverRadius});
 /*
         var DT = DTarg.slice(0);
         var aQV = ATON.QVhandler.getActiveQV();

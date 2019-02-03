@@ -53,9 +53,9 @@ ATON.QVhandler.QV.prototype = {
         this.vMin = pos.slice(0);
         this.vExt = ext.slice(0);
 
-        this._xC[0] = this.vExt[0]/127.0;
-        this._xC[1] = this.vExt[1]/127.0;
-        this._xC[2] = this.vExt[2]/127.0;
+        this._xC[0] = this.vExt[0]/510.0;
+        this._xC[1] = this.vExt[1]/510.0;
+        this._xC[2] = this.vExt[2]/510.0;
         },
 
     // (re)loads associated qva img (signature, etc...)

@@ -12,7 +12,7 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-//#define USE_QV 1
+#define USE_QV 1
 //#define USE_QUSV_SENC 1
 //#define USE_ILSIGN 1
 
@@ -93,9 +93,9 @@ vec3 QVDecodeLocation(vec4 frag){
     loc.y = (frag.g * uQVext.y) + uQVmin.y;
     loc.z = (frag.b * uQVext.z) + uQVmin.z;
 
-    loc.x += (uQVext.x/127.0);
-    loc.y += (uQVext.y/127.0);
-    loc.z += (uQVext.z/127.0);
+    loc.x += (uQVext.x/510.0);
+    loc.y += (uQVext.y/510.0);
+    loc.z += (uQVext.z/510.0);
 
     return loc;
 }
@@ -690,8 +690,12 @@ void main(){
     qn = (qn * 0.3) + 0.7;
 #endif
 
+    float waveAlpha = QVAcol.a * 0.5 * qn;
+
+#if 0   // Debug Voxels
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
     FinalFragment = mix(FinalFragment*uDim, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
+#endif
 
 #endif
 
@@ -799,7 +803,7 @@ void main(){
     //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
     FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
 
-    FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
+    //FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
 
 #endif
 
@@ -899,6 +903,8 @@ void main(){
     //=====================================================
     FinalFragment.a    = alphaContrib;
     FinalFragment.rgb *= alphaContrib;
+
+    FinalFragment.rgb *= uDim;
 
 	gl_FragColor = FinalFragment;
 }

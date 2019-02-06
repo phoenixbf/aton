@@ -1080,6 +1080,14 @@ ATON._requestFirstPersonTrans = function(pickedData){
         osg.vec3.add(T, E,T);
         }
 
+    // Adjust VR eye offset 
+    if (ATON._HMD && ATON._vrState){
+        let posep = ATON._HMD.getPose().position;
+        E[0] += posep[0];
+        E[1] += posep[2];
+        E[2] += posep[1];
+        }
+
     nPOV.pos    = E;
     nPOV.target = T;
     nPOV.fov    = ATON._currPOV.fov;
@@ -1958,7 +1966,7 @@ ATON._updateCallback.prototype = {
 
         // VR Controllers FIXME:
         //if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
-        if (ATON._vrState && !ATON._isMobile) ATON._handleGamepads();
+        if (!ATON._isMobile) ATON._handleGamepads();
 
         // Updates direction
         osg.vec3.sub( ATON._direction, ATON._currPOV.target, ATON._currPOV.pos);
@@ -2039,6 +2047,11 @@ ATON._updateCallback.prototype = {
         manip.setTarget(ATON._currPOV.target);
         manip.setEyePosition(ATON._currPOV.pos);
         //================ End of Navigation
+/*
+        if (ATON._HMD)
+            console.log(ATON._HMD.getPose().position[1]);
+            //console.log(ATON._HMD.stageParameters.sittingToStandingTransform[13]);
+*/
 
         // LP/Env
         if (ATON._LProtM){
@@ -2089,7 +2102,7 @@ ATON._handleDescriptorsHover = function(){
 
             // last (closest) descriptorID on the path
             var hovD = undefined;
-            if (ATON._pickedDescriptorsPath.length>1) hovD = ATON._pickedDescriptorsPath[ATON._pickedDescriptorsPath.length-1];
+            if (ATON._pickedDescriptorsPath.length>0) hovD = ATON._pickedDescriptorsPath[ATON._pickedDescriptorsPath.length-1];
 
             // On Hover
             if (hovD !== ATON._hoveredDescriptor){
@@ -3245,8 +3258,11 @@ ATON._switchVR = function(){
                 ////var HMD = viewer._eventProxy.WebVR.getHmd();
 
                 // 7APR18
-                ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer.getVRDisplay() );
+                ATON._HMD = viewer.getVRDisplay();
+                ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, ATON._HMD );
                 //ATON._vrNode = osgUtil.WebVR.createScene( viewer, ATON._mainGroup, viewer._eventProxy.WebVR.getHmd() );
+
+                //console.log(ATON._HMD.getPose().position);
 
                 //console.log(viewer.getVRDisplay().getPose());
                 //ATON._vrFDpose = viewer.getVRDisplay().getPose();
@@ -3335,6 +3351,7 @@ ATON._switchVR = function(){
         ATON._root.removeChild( ATON._vrNode );
         ATON._root.addChild( ATON._mainGroup );
 
+        ATON._HMD = undefined;
         ATON.fireEvent("VRmode", false);
     	}
 
@@ -3353,10 +3370,14 @@ ATON._handle3DPick = function(gnode, mask, lookAhead, pStart, pEnd){
     // Setup SegmentIntersector
     if (pStart === undefined) pStart = ATON._currPOV.pos;
     if (pEnd   === undefined){
-        var vrTGT = osg.vec3.create();
-        vrTGT = ATON._currPOV.pos.slice(0);
-        osg.vec3.add(vrTGT, vrTGT, osg.vec3.scale([], ATON._firstPerMan._direction, lookAhead ) );
-        pEnd = vrTGT;
+        //var vrTGT = osg.vec3.create();
+        //vrTGT = ATON._currPOV.pos.slice(0);
+        //osg.vec3.add(vrTGT, vrTGT, osg.vec3.scale([], ATON._firstPerMan._direction, lookAhead ) );
+        //pEnd = vrTGT;
+        pEnd = osg.vec3.create();
+        pEnd[0] = ATON._currPOV.pos[0] + (ATON._direction[0]*lookAhead);
+        pEnd[1] = ATON._currPOV.pos[1] + (ATON._direction[1]*lookAhead);
+        pEnd[2] = ATON._currPOV.pos[2] + (ATON._direction[2]*lookAhead);
         }
 
     var hits;
@@ -3460,7 +3481,10 @@ ATON.setVRcontrollerModel = function(url, hand){
 };
 
 ATON._handleGamepads = function(){
-	this.gamepads = navigator.getGamepads();
+    this.gamepads = navigator.getGamepads();
+    
+    let gpXaxis;
+    let gpYaxis;
 
     for (var i = 0; i < this.gamepads.length; ++i){
         var gamepad = this.gamepads[i];
@@ -3485,7 +3509,13 @@ ATON._handleGamepads = function(){
             
             // Axes
             if (i === 0){
-                //gamepad.axes[0] TODO:
+                gpXaxis = gamepad.axes[0]; // -1 left
+                gpYaxis = gamepad.axes[1]; // -1 fwd
+
+                if (gpXaxis){
+                    ATON._hoverRadius += (gpXaxis*0.01);
+                    ATON.updateHoverRadius(ATON._hoverRadius);
+                    }
                 }
 			}
         }

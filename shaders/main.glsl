@@ -652,6 +652,8 @@ void main(){
     f = clamp(f, 0.0,1.0);
 
     //fogColor = max(fogColor, (FinalFragment*0.6));
+
+    //FinalFragment.rgb *= alphaContrib;
     FinalFragment = mix(FinalFragment,fogColor, f);
 
 #endif //======== Desktop
@@ -676,6 +678,12 @@ void main(){
 #ifndef MOBILE_DEVICE
     vec3 qLoc   = QVDecodeLocation(QVAcol);
     vec3 vQnrm = normalize(qLoc - vWorldVertex);
+
+    float DDD = clamp(distance(uHoverPos,vWorldVertex), 0.0,2.0); // / distance(qLoc,vWorldVertex);
+    DDD = 2.0 - DDD;
+
+    DDD *= clamp(dot(normWorld,vQnrm), 0.0,1.0);
+    //DDD *= 0.5;
     //float qn = abs( dot(normWorld,vQnrm) );
 
     //vec3 qNP = QVgetNormalized(vWorldVertex) * PI * float(QV_SLICE_RES);
@@ -688,14 +696,17 @@ void main(){
     // waves
     qn = sin( (distance(qLoc,vWorldVertex) * 100.0) + (time * 5.0) );
     qn = (qn * 0.3) + 0.7;
+
+    float waveAlpha = QVAcol.a * qn; // * 0.5
 #endif
 
-    float waveAlpha = QVAcol.a * 0.5 * qn;
 
 #if 0   // Debug Voxels
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
-    FinalFragment = mix(FinalFragment*uDim, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
+    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
 #endif
+
+    FinalFragment = mix(FinalFragment, FinalFragment*vec4(0,1,1,QVAcol.a)*5.0, QVAcol.a * DDD * waveAlpha);
 
 #endif
 
@@ -901,8 +912,7 @@ void main(){
     //=====================================================
     // FINALIZE
     //=====================================================
-    FinalFragment.a    = alphaContrib;
-    FinalFragment.rgb *= alphaContrib;
+    FinalFragment.a = alphaContrib;
 
     FinalFragment.rgb *= uDim;
 

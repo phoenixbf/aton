@@ -367,8 +367,8 @@ var PolNav = function(){
     if (ATON.vroadcast._bQFpol) return;
 
     // TODO: use ATON.FE.QVhoverValue
-    var v = qfv.getValue(ATON._hoveredVisData.p);
-    if (v === undefined || v[3] <= 0){ // outside
+    var v = qfv.getRGBAfromLocation(ATON._hoveredVisData.p);
+    if (v[3] <= 0){
         if (ATON._polForce > 0.0) ATON._polForce -= 0.0001;
         /*
         ATON._polForce = 0.0;
@@ -426,7 +426,7 @@ var PolNav = function(){
 
     /*  Position 2 Focus
     ------------------
-    var v = qfv.getValue(ATON._currPOV.pos);
+    var v = qfv.getRGBAfromLocation(ATON._currPOV.pos);
     if (v === undefined || v[3] <= 0) return; // outside or null
 
     var ft = qfv.getWorldLocationFromRGB( v[0],v[1],v[2] );
@@ -451,7 +451,7 @@ ATON.polarizedAffordance = function(){
     
     if (ATON._hoveredVisData === undefined) return;
 
-    ATON.FE.QVhoverValue = qfv.getValue(ATON._hoveredVisData.p);
+    ATON.FE.QVhoverValue = qfv.getRGBAfromLocation(ATON._hoveredVisData.p);
     if (ATON.FE.QVhoverValue === undefined) return;
 
     var pval = ATON.FE.QVhoverValue[3] / 255.0;
@@ -585,7 +585,7 @@ window.addEventListener( 'load', function () {
                                 }
 
                             if (e.keyCode == 71){
-                                var v = qv.getValue(ATON._currPOV.pos);
+                                var v = qv.getRGBAfromLocation(ATON._currPOV.pos);
                                 if (v[3] > 0) console.log( qv.getWorldLocationFromRGB( v[0],v[1],v[2] ));
                                 }
                             });

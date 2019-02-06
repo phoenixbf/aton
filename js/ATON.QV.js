@@ -189,13 +189,19 @@ ATON.QVhandler.QV.prototype = {
 */
         },
     
-    getValue: function(loc){
-        var P = this.getNormLocationInVolume(loc);
+    getRGBAfromLocation: function(loc){
+        let P = this.getNormLocationInVolume(loc);
+
+        let v = new Uint8Array(4);
+        v[0] = 0;
+        v[1] = 0;
+        v[2] = 0;
+        v[3] = 0;
 
         // Check outside volume
-        if (P[0] > 1.0 || P[0] < 0.0) return undefined;
-        if (P[1] > 1.0 || P[1] < 0.0) return undefined;
-        if (P[2] > 1.0 || P[2] < 0.0) return undefined;
+        if (P[0] > 1.0 || P[0] < 0.0) return v;
+        if (P[1] > 1.0 || P[1] < 0.0) return v;
+        if (P[2] > 1.0 || P[2] < 0.0) return v;
 
         //console.log(P);
 

@@ -2478,7 +2478,6 @@ ATON._attachListeners = function(){
     $(window).on('load resize', ATON._onResize );
 
     // HMD on / off FIXME:
-/*
     window.addEventListener("vrdisplayactivate", function() {
 
         if ( ATON._viewer.getVRDisplay() ) ATON._viewer.setPresentVR( true ).then( ATON._switchVR.bind(this) );
@@ -2493,7 +2492,7 @@ ATON._attachListeners = function(){
 
         console.log("HMD off");
         });
-*/
+
     console.log("Listeners registered.");
 };
 

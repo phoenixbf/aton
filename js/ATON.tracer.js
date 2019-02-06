@@ -33,6 +33,9 @@ ATON.tracer._uMarkModels = [];
 ATON.tracer._uSessions   = [];
 ATON.tracer.tRange = [undefined, undefined];
 
+ATON.tracer._time = 0.0;
+ATON.tracer._tRad = 0.5;
+
 
 
 ATON.tracer._touchVRCgroup = function(){
@@ -145,10 +148,10 @@ ATON.tracer.filter = function(tper, trad){
 
 // HTML ui
 ATON.tracer.filterUI = function(){
-    var t  = parseFloat($("#uSessionTime").val());
-    var tr = parseFloat($("#uSessionTRad").val());
+    ATON.tracer._evalTime = parseFloat($("#uSessionTime").val());
+    ATON.tracer._evalTrad = parseFloat($("#uSessionTRad").val());
 
-    ATON.tracer.filter(t,tr);
+    ATON.tracer.filter(ATON.tracer._evalTime,ATON.tracer._evalTrad);
 };
 
 

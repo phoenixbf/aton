@@ -1993,7 +1993,7 @@ ATON._updateCallback.prototype = {
         //console.log(ATON._vVelocity);
 */
         if (ATON._vrState || ATON._isMobile){
-            ATON._dOriTol = 0.99999;
+            ATON._dOriTol = 0.999999;
             ATON._dPosTol = 0.000005;
             }
         else {

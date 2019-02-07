@@ -51,7 +51,7 @@ ATON.tracer.onAllFileRequestsCompleted = function(){
     $("#uSessionTime").val(0.0);
     $("#uSessionTRad").val(0.0);
 
-    ATON.tracer.filterUI();
+    ATON.FE.filterRecords();
 };
 ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
     if (qv === undefined) return;
@@ -68,7 +68,7 @@ ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
 
     $("#uSessionTime").val(0.0);
     $("#uSessionTRad").val(0.8); // 80 cm (arm len)
-    ATON.tracer.filterUI();
+    ATON.FE.filterRecords();
 };
 
 
@@ -227,6 +227,27 @@ ATON.FE.setupPage = function(){
             const pov = ATON.POVlist[p];
             
             $('#idPOVlist').append("<div style='width:100%' onclick='ATON.requestPOVbyIndex( "+p+" );' ><img src='../res/ii-inv-pov.png' style='width:16px; height:auto'>POV #"+p+"</div>");
+            }
+        };
+
+    ATON.FE.filterRecords = function(){
+        if (ATON.tracer === undefined) return;
+
+        ATON.tracer._tNorm = parseFloat($("#uSessionTime").val());
+        ATON.tracer._tRad  = parseFloat($("#uSessionTRad").val());
+
+        if (ATON.tracer._groupVRC === undefined){ // HACK: just for QUSV and SIGs
+            $('#idT').html((ATON.tracer._tNorm).toFixed(2));
+            $('#idTR').html((ATON.tracer._tRad).toFixed(1));
+    
+            ATON._mainSS.getUniform('uQVslider').setFloat( ATON.tracer._tNorm );
+            ATON._mainSS.getUniform('uQVradius').setFloat( ATON.tracer._tRad );
+            }
+        else {
+            ATON.tracer.filter();
+
+            $('#idT').html(parseInt(ATON.tracer.tminutes) + "\' " + parseInt(ATON.tracer.tseconds) + "\'\'");
+            $('#idTR').html(ATON.tracer._tRad.toFixed(1) + "\'\'");
             }
         };
 };
@@ -1146,6 +1167,29 @@ window.addEventListener( 'load', function () {
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
 
                     break;
+
+                    case "nora":
+                        scenename = "nora";
+
+                        let proxiesdir = ATON.FE.MODELS_ROOT+"_prv/nora/proxies/";
+                        let colUSVs = [0.031, 0.191, 0.026, 1];
+                        let colUSVn = [0.018, 0.275, 0.799, 1];
+
+                        ATON.addDescriptor(proxiesdir+"USV03_m.osgjs", "USV03", { color: colUSVs });
+                        ATON.addDescriptor(proxiesdir+"USV06_m.osgjs", "USV06", { color: colUSVs });
+                        ATON.addDescriptor(proxiesdir+"USV07_m.osgjs", "USV07", { color: [1,0,1, 1] });
+
+                        //ATON.addGraph(proxiesdir+"USV03_m.osgjs", { layer: "REC", });
+
+
+                        ATON.setHome([4.26,51.41,16.12],[9.16,68.64,6.35]);
+                        ATON.requestHome(0.01);
+
+                        //ATON._mainSS.getUniform('uFogDistance').setFloat( 900.0 );
+                        //$('body').css('background-color', 'rgb(0,0,0)');
+                        //ATON.setFogColor(osg.vec4.fromValues(0,0,0, 0.0));
+
+                        break;
 
 /*
                 case "skf":

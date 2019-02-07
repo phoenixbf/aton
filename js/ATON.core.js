@@ -3485,35 +3485,45 @@ ATON._handleGamepads = function(){
     let gpXaxis;
     let gpYaxis;
 
-    for (var i = 0; i < this.gamepads.length; ++i){
-        var gamepad = this.gamepads[i];
+    for (var g = 0; g < this.gamepads.length; ++g){
+        var gamepad = this.gamepads[g];
 
         // The array may contain undefined gamepads, so check for that as
         // well as a non-null pose.
         if (gamepad){
-			
-			for (var j = 0; j < gamepad.buttons.length; ++j){
+            
+            // buttons
+			for (var b = 0; b < gamepad.buttons.length; ++b){
                 // QV polarization
                 if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
 
-				if (gamepad.buttons[j].pressed){
-					//console.log("GM: Pressed button "+j);
+				if (gamepad.buttons[b].pressed){
+					//console.log("GM: Pressed button "+b);
 
                     // 3 = A, 4 = B
-                    if (j === 1) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
-					if (j === 3) ATON.requestHome();
+                    if (b === 1) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
+					if (b === 3) ATON.requestHome();
 					//else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
 					}
 				}
             
             // Axes
-            if (i === 0){
-                gpXaxis = gamepad.axes[0]; // -1 left
-                gpYaxis = gamepad.axes[1]; // -1 fwd
-
+            gpXaxis = gamepad.axes[0]; // -1 left
+            gpYaxis = gamepad.axes[1]; // -1 fwd
+            if (g === 0){
                 if (gpXaxis){
                     ATON._hoverRadius += (gpXaxis*0.01);
                     ATON.updateHoverRadius(ATON._hoverRadius);
+                    }
+                }
+            if (g === 1){
+                if (gpXaxis && ATON.tracer){
+                    ATON.tracer._tNorm += (0.0002 * gpXaxis);
+                    if (ATON.tracer._tNorm > 1.0) ATON.tracer._tNorm = 1.0;
+                    if (ATON.tracer._tNorm < 0.0) ATON.tracer._tNorm = 0.0;
+
+                    ATON._mainSS.getUniform('uQVslider').setFloat( ATON.tracer._tNorm );
+                    ATON._mainSS.getUniform('uQVradius').setFloat( ATON.tracer._tRad );
                     }
                 }
 			}

@@ -12,7 +12,8 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-#define USE_QV 1
+//#define USE_QV 1
+
 //#define USE_QUSV_SENC 1
 //#define USE_ILSIGN 1
 
@@ -557,7 +558,9 @@ void main(){
     
     // GI Influence
     float giInfl = giContrib*(1.0-emRefl);
-    dmrFrag += mix(vec4(0,0,0,0),giFrag*0.5, giContrib);
+    //float giG = (giFrag.r + giFrag.g + giFrag.b) / 3.0;
+
+    dmrFrag += mix(vec4(0,0,0,0), giFrag*0.5, giContrib); // 0.5
     //dmrFrag *= mix( vec4(1.0), giFrag, giInfl*0.5);
 
     //FinalFragment = reflFrag;
@@ -674,12 +677,15 @@ void main(){
     //float polDec = clamp(1.0 - (fragDist / 10.0), 0.0,1.0);
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
+
+    float DDD = 1.0;
+    float waveAlpha = 1.0;
     
 #ifndef MOBILE_DEVICE
     vec3 qLoc   = QVDecodeLocation(QVAcol);
     vec3 vQnrm = normalize(qLoc - vWorldVertex);
 
-    float DDD = clamp(distance(uHoverPos,vWorldVertex), 0.0,2.0); // / distance(qLoc,vWorldVertex);
+    DDD = clamp(distance(uHoverPos,vWorldVertex), 0.0,2.0); // / distance(qLoc,vWorldVertex);
     DDD = 2.0 - DDD;
 
     DDD *= clamp(dot(normWorld,vQnrm), 0.0,1.0);
@@ -697,7 +703,7 @@ void main(){
     qn = sin( (distance(qLoc,vWorldVertex) * 100.0) + (time * 5.0) );
     qn = (qn * 0.3) + 0.7;
 
-    float waveAlpha = QVAcol.a * qn; // * 0.5
+    waveAlpha = QVAcol.a * qn; // * 0.5
 #endif
 
 
@@ -712,7 +718,7 @@ void main(){
 
 
 #if 0   // Color-codes VE with QUSV voxel values
-#define USE_QUSV_SENC // hack
+//#define USE_QUSV_SENC // hack
     vec4 qusvCol = QVEncodeLocation(vWorldVertex);
 
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
@@ -814,7 +820,7 @@ void main(){
     //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
     FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
 
-    //FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
+    FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
 
 #endif
 
@@ -914,7 +920,7 @@ void main(){
     //=====================================================
     FinalFragment.a = alphaContrib;
 
-    FinalFragment.rgb *= uDim;
+    //FinalFragment.rgb *= uDim;
 
 	gl_FragColor = FinalFragment;
 }

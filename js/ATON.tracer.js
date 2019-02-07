@@ -33,8 +33,8 @@ ATON.tracer._uMarkModels = [];
 ATON.tracer._uSessions   = [];
 ATON.tracer.tRange = [undefined, undefined];
 
-ATON.tracer._time = 0.0;
-ATON.tracer._tRad = 0.5;
+ATON.tracer._tNorm = 0.0;
+ATON.tracer._tRad  = 0.5;
 
 
 
@@ -59,32 +59,19 @@ ATON.tracer._touchVRCgroup = function(){
     ATON._groupUI.addChild( ATON.tracer._groupVRC );
 };
 
-ATON.tracer.filter = function(tper, trad){
-    if (ATON.tracer._groupVRC === undefined){
-        // HACK: just for QUSV and ILS
-        $('#idT').html((tper).toFixed(2));
-        $('#idTR').html((trad).toFixed(1));
+ATON.tracer.filter = function(){
 
-        ATON._mainSS.getUniform('uQVslider').setFloat( tper );
-        ATON._mainSS.getUniform('uQVradius').setFloat( trad );
-        return;
-        }
+    var tpivot = ATON.tracer.tRange[0] + ATON.tracer._tNorm*(ATON.tracer.tRange[1] - ATON.tracer.tRange[0]);
 
-    var tpivot = ATON.tracer.tRange[0] + tper*(ATON.tracer.tRange[1] - ATON.tracer.tRange[0]);
-
-    tmin = tpivot - trad;
-    tmax = tpivot + trad;
+    tmin = tpivot - ATON.tracer._tRad;
+    tmax = tpivot + ATON.tracer._tRad;
 
     //console.log("tPivot: "+tpivot);
-    var tminutes = Math.floor(tpivot / 60);
-    var tseconds = tpivot - (tminutes * 60);
+    ATON.tracer.tminutes = Math.floor(tpivot / 60);
+    ATON.tracer.tseconds = tpivot - (ATON.tracer.tminutes * 60);
 
     ATON.tracer.activeVolume = new osg.BoundingBox();
     ATON.tracer.bActiveVol   = false;
-
-
-    $('#idT').html(parseInt(tminutes) + "\' " + parseInt(tseconds) + "\'\'");
-    $('#idTR').html(trad.toFixed(1) + "\'\'");
 
     for (let s = 0; s < ATON.tracer._uSessions.length; s++) {
         var us = ATON.tracer._uSessions[s];
@@ -145,15 +132,6 @@ ATON.tracer.filter = function(tper, trad){
         //ATON._currPOV.target[2] = ATON.tracer.activeVolume.center[2];
         }
 };
-
-// HTML ui
-ATON.tracer.filterUI = function(){
-    ATON.tracer._evalTime = parseFloat($("#uSessionTime").val());
-    ATON.tracer._evalTrad = parseFloat($("#uSessionTRad").val());
-
-    ATON.tracer.filter(ATON.tracer._evalTime,ATON.tracer._evalTrad);
-};
-
 
 // Encoding
 ATON.tracer.encodingVolume = function(vMin, vMax){

@@ -12,7 +12,7 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-//#define USE_QV 1
+#define USE_QV 1
 
 //#define USE_QUSV_SENC 1
 //#define USE_ILSIGN 1
@@ -913,6 +913,15 @@ void main(){
     float xx = distance(uHoverPos, vWorldVertex);
 
     if (xx < 1.0) discard;
+#endif
+
+#if 0 // TEST
+    float xxx = (vWorldVertex.z - 8.0) / 24.0;
+    xxx = clamp(xxx, 0.0,1.0);
+    //xxx = max(xxx, dot(vWorldNormal, vec3(0,0,-1)));
+    vec4 ccc = mix(vec4(0,1,0, 0.0), vec4(1,0,0, 0.0), xxx);
+
+    FinalFragment = mix(FinalFragment, ccc, 0.7);
 #endif
 
     //=====================================================

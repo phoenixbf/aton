@@ -78,7 +78,7 @@ void main(){
 */
 	
 #ifndef MOBILE_DEVICE	// bHighlight
-	alpha = 0.8;
+	alpha = 1.0;
 
 	float t = (sin(time*3.0) + 1.0);
 	t *= 0.5;

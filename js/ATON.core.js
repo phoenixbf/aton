@@ -68,6 +68,8 @@ ATON.shadersFolder = "shaders";
 // VR
 ATON._vrState = false;
 ATON._vrNode  = undefined;
+ATON._VR = {};
+ATON._VR.hmdNormPos = [0.0,0.0];
 
 ATON._activeVRcontrollers = [false, false];
 ATON._vrControllersPos    = [osg.vec3.create(), osg.vec3.create()];
@@ -723,7 +725,7 @@ ATON.addDescriptor = function(url, unid, options){
 
         if (options && options.color){
             var texcol = ATON.utils.createFillTexture(options.color);
-            D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol);
+            D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
             }
 
         D.node.setName(unid); // FIXME: maybe set from outside?
@@ -2032,6 +2034,8 @@ ATON._updateCallback.prototype = {
             if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
             }
 
+        ATON.trackVR();
+
 /*
         // Store prev-POV
         ATON._prevPOV.pos[0] = ATON._currPOV.pos[0];
@@ -2047,10 +2051,11 @@ ATON._updateCallback.prototype = {
         manip.setTarget(ATON._currPOV.target);
         manip.setEyePosition(ATON._currPOV.pos);
         //================ End of Navigation
+
 /*
         if (ATON._HMD)
-            console.log(ATON._HMD.getPose().position[1]);
-            //console.log(ATON._HMD.stageParameters.sittingToStandingTransform[13]);
+            console.log(ATON._HMD.stageParameters); // .sittingToStandingTransform[13]
+            //console.log(ATON._HMD.getPose());
 */
 
         // LP/Env
@@ -2668,19 +2673,15 @@ ATON.switchLayer = function(layerName, value){
     if (value){
         layer.setNodeMask(layer._layerMask);
         ATON.fireEvent("LayerON", layerName);
+        ATON._buildKDTree(ATON._groupVisible);
         }
     else layer.setNodeMask(0x0);
 };
 
 ATON.isolateLayer = function(layerName){
     for (var key in ATON.layers){
-        let layer = ATON.layers[key];
-
-        if (key === layerName){
-            layer.setNodeMask(layer._layerMask);
-            ATON.fireEvent("LayerON", key);
-            }
-        else layer.setNodeMask(0x0);
+        if (key === layerName) ATON.switchLayer(layerName, true);
+        else ATON.switchLayer(layerName, false);
         }
 };
 
@@ -3696,4 +3697,29 @@ ATON._handleVRcontrollers = function(){
             }
         }
 
+};
+
+// Update useful VR data
+ATON.trackVR = function(){
+    if (!ATON._vrState) return;
+    if (ATON._HMD === undefined) return;
+
+    let pose = ATON._HMD.getPose();
+
+    // Positional tracking
+    if (ATON._HMD.stageParameters === undefined) return;
+
+    ATON._VR.vel = pose.linearVelocity; // meters per second
+    ATON._VR.acc = pose.linearAcceleration; // meters per second per second
+    //console.log(ATON._VR.vel);
+
+    ATON._VR.Ax = ATON._HMD.stageParameters.sizeX;
+    ATON._VR.Az = ATON._HMD.stageParameters.sizeZ;
+
+    var hmdpos = pose.position; // in meters
+    if (hmdpos === undefined) return;
+
+    // should be -0.5 to 0.5
+    ATON._VR.hmdNormPos[0] = hmdpos[0] / ATON._VR.Ax;
+    ATON._VR.hmdNormPos[1] = hmdpos[2] / ATON._VR.Az;
 };

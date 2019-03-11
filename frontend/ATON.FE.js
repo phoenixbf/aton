@@ -567,15 +567,83 @@ window.addEventListener( 'load', function () {
                 case "faug2":
                     scenename = "faug2";
                     //ATON.addLightProbe("../LP/default");
-
+                    
+                    let pastDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
+                    let dSS = ATON._groupDescriptors.getOrCreateStateSet();
+/*
+                    ATON.addDescriptor(pastDir+"temple_podium/root.osgjs", "podium", { color: [1,0,0, 1] });
+                    ATON.addDescriptor(pastDir+"temple_exterior/root.osgjs", "temple", { color: [1,0,0, 1] });
+                    ATON.addDescriptor(pastDir+"temple_entrance/root.osgjs", "entrance", { color: [1,0,0, 1] });
+                    ATON.addDescriptor(pastDir+"temple_columns/root.osgjs", "columns", { color: [1,0,0, 1] });
+                    ATON.addDescriptor(pastDir+"temple_roof/root.osgjs", "roof", { color: [1,0,0, 1] });
+*/
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
-
+/*
                     var qv = ATON.QVhandler.addQV([-70,-50,0], [150,70,50]);
                     qv.loadQVAimg("../services/record/faug2/qfv.png");
                     
                     console.log(qv.getResolution());
+*/
+
+                    //ATON.addNewLayer("Reconstruction");
+                    //let opts = { layer: "Reconstruction" };
+
+                    ATON.addGraph(pastDir+"colossus_hall_m.osgjs", { layer: "ColossusHall" });
+                    ATON.addGraph(pastDir+"augustus_m.osgjs", { layer: "ColossusHall" });
+
+                    ATON.addGraph(pastDir+"main_floor_m.osgjs", { layer: "Forum" });
+                    
+                    ATON.addGraph(pastDir+"postguard_m.osgjs", { layer: "PostGuard" });
+
+                    ATON.addGraph(pastDir+"temple_columns_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_entrance_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_exterior_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_frieze_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_podium_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_roof_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"temple_altar_m.osgjs", { layer: "MarsTemple" });
+                    ATON.addGraph(pastDir+"interior_m.osgjs", { layer: "MarsTemple" });
+
+                    ATON.addGraph(pastDir+"porticos_colonnade_R_m.osgjs", { layer: "Portico_R" });
+                    ATON.addGraph(pastDir+"porticos_floor_R_m.osgjs", { layer: "Portico_R" });
+
+                    ATON.addGraph(pastDir+"porticos_colonnade_L_m.osgjs", { layer: "Portico_L" });
+                    ATON.addGraph(pastDir+"porticos_floor_L_m.osgjs", { layer: "Portico_L" });
+                    
+                    //ATON.addGraph(pastDir+"temple_podium/root.osgjs", { layer: "Hypothesis_2" });
+                    //ATON.addGraph(pastDir+"temple_exterior/root.osgjs", { layer: "Hypothesis_2" });
+                    //ATON.addGraph(pastDir+"temple_entrance/root.osgjs", { layer: "Hypothesis_2" });
+                    //ATON.addGraph(pastDir+"temple_columns/root.osgjs", { layer: "Hypothesis_2" });
+                    //ATON.addGraph(pastDir+"temple_roof/root.osgjs", { layer: "Hypothesis_2" });
+
+                    ATON.switchLayer("Forum", false);
+                    ATON.switchLayer("PostGuard", false);
+                    ATON.switchLayer("ColossusHall", false);
+                    ATON.switchLayer("MarsTemple", false);
+                    ATON.switchLayer("Portico_R", false);
+                    ATON.switchLayer("Portico_L", false);
+
+
+
+                    dSS.setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+/*
+                    dSS.setAttributeAndModes( 
+                        new osg.Depth( osg.Depth.ALWAYS ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+*/
+/*   
+                    dSS.setAttributeAndModes( 
+                        //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
+                        new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
+*/
 
 /*
                     ATON.QVhandler.setPositionAndExtents([-70,-50,0], [150,70,50]);
@@ -743,6 +811,7 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "Ground" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "Ground", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"column/column.gltf", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "Hebe" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"tree1/root.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"tl-trees.txt" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", { layer: "Cubes", transformRules: ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt" });
@@ -774,7 +843,6 @@ window.addEventListener( 'load', function () {
 
                 case "hebe":
                     scenename = "hebe";
-                    //QAurl = "http://"+vrcIP+":8080/services/record/hebe/qfv.png"; //REQ CORS!
                     QAurl = "../services/record/hebe/qfv.png";
 
                     ATON._polarizeLocomotionQV = PolNav;
@@ -1124,7 +1192,7 @@ window.addEventListener( 'load', function () {
 */
 
 
-                    //ATON._polarizeLocomotionQV = PolNav;
+                    ATON._polarizeLocomotionQV = PolNav;
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });
@@ -1170,16 +1238,34 @@ window.addEventListener( 'load', function () {
 
                     case "nora":
                         scenename = "nora";
+                        ATON.addLightProbe("../LP/default");
+                        let pgSS = ATON._groupDescriptors.getOrCreateStateSet();
 
                         let proxiesdir = ATON.FE.MODELS_ROOT+"_prv/nora/proxies/";
-                        let colUSVs = [0.031, 0.191, 0.026, 1];
-                        let colUSVn = [0.018, 0.275, 0.799, 1];
+                        let colUSVs = [0,1,0, 1]; //[0.031, 0.191, 0.026, 1];
+                        let colUSVn = [0,0,1, 1]; //[0.018, 0.275, 0.799, 1];
+                        let colSF = [1,1,0, 1];
 
                         ATON.addDescriptor(proxiesdir+"USV03_m.osgjs", "USV03", { color: colUSVs });
                         ATON.addDescriptor(proxiesdir+"USV06_m.osgjs", "USV06", { color: colUSVs });
-                        ATON.addDescriptor(proxiesdir+"USV07_m.osgjs", "USV07", { color: [1,0,1, 1] });
-
+                        ATON.addDescriptor(proxiesdir+"USV07_m.osgjs", "USV07", { color: colSF });
+/*
+                        pgSS.setAttributeAndModes(
+                            new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                            osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                            );
+*/
+/*
+                        pgSS.setAttributeAndModes( 
+                            new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
+                            //new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
+                            osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                            );
+*/
                         //ATON.addGraph(proxiesdir+"USV03_m.osgjs", { layer: "REC", });
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/period4/recinto_test_m.osgjs", { layer: "Period_4" });
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/today/Tempio_foro_3003_decim0.3__m.osgjs", { layer: "Today" });
 
 
                         ATON.setHome([4.26,51.41,16.12],[9.16,68.64,6.35]);

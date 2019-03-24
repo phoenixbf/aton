@@ -99,6 +99,8 @@ QV = function(qvaPath){
     //this.PA      = new Jimp(512,512); // 4096
     this.PA = new Jimp(QV_SIZE,QV_SLICE_RES, 0x00000000); // ...or init with opaque black (0x000000ff)
     this.PA.quality(100);
+    this.PA.filterType(Jimp.PNG_FILTER_NONE);
+    //this.PA.deflateLevel(0);
 
     this._PAbin  = undefined;
     this._PAcol  = undefined;
@@ -177,7 +179,7 @@ QV.prototype = {
 
     // voxel ignition
     igniteLocation: function(loc, col8, rank){
-        if (rank <= 2) return false; // low rank
+        if (rank <= 8) return false; // low rank
         if (rank > 255) rank = 255; // max rank
 
         // Normalized location inside volume
@@ -226,6 +228,7 @@ QV.prototype = {
         if (A > rank){
             sPOLnumCellsNEG++;
             return false;
+            //return undefined;
             }
 
         if (A > 0) sPOLnumCellsRW++ // someone already written the cell
@@ -238,11 +241,19 @@ QV.prototype = {
         this._lastPolCol = this._PAcol;
 
         this.PA.setPixelColor(this._PAcol, i,j);
+
         return true;
+/*
+        return {
+            _col: this._PAcol,
+            _i: i,
+            _j: j
+            };
+*/
         },
 
-    writePA: function(){
-        this.PA.write( this.imgpath );
+    writePA: function( cb ){
+        this.PA.write( this.imgpath, cb );
         },
     
     // FIXME
@@ -998,13 +1009,41 @@ io.on('connection', function(socket){
         socket.broadcast.to(sceneName).emit("USTATE", binData );
         });
 
-    // Receive Focus distance update
-    socket.on('UFOCUSD', function(data){
+    // Absolute Focus
+    socket.on('UFOCUS', function(data){
         if (clientInfo === undefined) return;
 
         //console.log(data.bin);
 
         var dFocus = decodeDFocus(data.bin);
+        clientInfo.focus[0] = dFocus[0];
+        clientInfo.focus[1] = dFocus[1];
+        clientInfo.focus[2] = dFocus[2];
+
+        // Record on file
+        if (assignedID>=0 && bRecord){
+            clientInfo.bRecordWrite = true;
+            scene.bRecordWrite      = true;
+            }
+        
+        // FIXME: needed?
+        //socket.broadcast.to(sceneName).emit("UFOCUS", data );
+
+        clientInfo.encodedDFocus = data;
+        });
+
+    // Receive Focus delta
+    socket.on('UFOCUSD', function(data){
+        if (clientInfo === undefined) return;
+
+        //console.log(data.bin);
+
+        //var dFocus = [0.0,0.0,0.0];
+        var dFocus = decodeDFocus(data.bin);
+        //dFocus[0] = parseFloat(data.dx);
+        //dFocus[1] = parseFloat(data.dy);
+        //dFocus[2] = parseFloat(data.dz);
+        
         clientInfo.focus[0] = clientInfo.position[0] + dFocus[0];
         clientInfo.focus[1] = clientInfo.position[1] + dFocus[1];
         clientInfo.focus[2] = clientInfo.position[2] + dFocus[2];
@@ -1015,8 +1054,8 @@ io.on('connection', function(socket){
             scene.bRecordWrite      = true;
             }
 
-        //clientInfo.targDist = data.readFloatLE(0);
-        socket.broadcast.to(sceneName).emit("UFOCUSD", data );
+        // FIXME: needed?
+        //socket.broadcast.to(sceneName).emit("UFOCUSD", data );
 
         clientInfo.encodedDFocus = data;
         });
@@ -1093,21 +1132,36 @@ io.on('connection', function(socket){
 
             if (fv[3] === 0 || pv[3] === 0) return; // outside
 
-            fv[3] = 4; // rank
-            pv[3] = 4; // rank
+            // rank
+            //fv[3] = 16;
+            //pv[3] = 16;
+            //df[3] = 16;
 
             //qfv.igniteLocation( clientInfo.position, fv);
             //qfv.igniteLocation( clientInfo.focus, fv);
-            bQPAdirty = qfv.igniteLocation( clientInfo.focus, pv /*df*/, clientInfo.rank);
+
+            bQPAdirty = qfv.igniteLocation( clientInfo.focus, pv, clientInfo.rank);
+            //bQPAdirty = qfv.igniteLocation( clientInfo.focus, df, clientInfo.rank);
 
             if (bQPAdirty){
-                socket.emit("POLCELL",{ i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
+                socket.emit("POLCELL", { i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
                 sPOLnumCellsSENT++;
                 }
 
-            // Timed atlas write on disk
+            // Timed QPA writing on disk
             if (QFsync == 0 && bQPAdirty){
-                qfv.writePA();
+                qfv.writePA(()=>{ 
+                    bQPAdirty = false;
+
+                    // Check
+/*
+                    qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
+                        if (err) console.log("ERROR POLREQ: "+err);
+                        if (b64data) socket.emit("POLFOC",b64data);
+                        sPOLnumQPAsent++;
+                        });
+*/
+                    });
 
                 /*console.log("WRITE");*/
                 //socket.broadcast.to(sceneName).emit("POLFOC");
@@ -1118,7 +1172,7 @@ io.on('connection', function(socket){
                     //console.log(err,data);
                     });
 */              
-                bQPAdirty = false;
+                //bQPAdirty = false;
                 }
             QFsync = (QFsync + 1) % QFsyncFreq;
             }
@@ -1128,12 +1182,14 @@ io.on('connection', function(socket){
         if (scene && scene.qfv){
             var qfv = scene.qfv;
 
-            qfv.writePA();
+            //qfv.writePA(()=>{
 
-            qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
-                if (b64data) socket.emit("POLFOC",b64data);
-                sPOLnumQPAsent++;
-                });
+                qfv.PA.getBase64(Jimp.MIME_PNG, function(err, b64data){
+                    if (err) console.log("ERROR POLREQ: "+err);
+                    if (b64data) socket.emit("POLFOC",b64data);
+                    sPOLnumQPAsent++;
+                    });
+            //    });
             }
         });
 

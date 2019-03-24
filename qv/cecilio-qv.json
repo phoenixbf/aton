@@ -2,6 +2,11 @@
     "list": [
         {
             "name": "global",
+            "position": [-17.0,-41,-1.0],
+            "extents": [40,40,40]
+        },
+        {
+            "name": "global_official",
             "position": [-17.0,-41,0],
             "extents": [30,40,20]
         },

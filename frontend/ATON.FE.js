@@ -28,6 +28,7 @@ auPOL.loop = true;
 //ATON.vroadcast.onPolDataReceived = function(){
 ATON.on("VRC_PolDataReceived", function(){
     if (QPV === undefined) return;
+
     QPV.setQVAimgBase64(ATON.vroadcast._polDATA);
 });
 
@@ -35,14 +36,23 @@ ATON.on("VRC_PolDataReceived", function(){
 ATON.on("VRC_PolCellReceived", function(){
     if (QPV === undefined) return;
     if (ATON.vroadcast._polCELL === undefined) return;
+    
+    let v = ATON.vroadcast._polCELL.v;
+    if (v === undefined) return;
+
+    //console.log(v);
 
     var col8 = new Uint8Array(4);
     view = new DataView(col8.buffer);
-    view.setUint32(0, ATON.vroadcast._polCELL.v, false);
+    view.setUint32(0, v, false);
 
-    //console.log(col8);
+    // DEBUG_PCELLS
+    //console.log("Received Cell: "+col8);
 
+    //
     QPV.setPixel(ATON.vroadcast._polCELL.i, ATON.vroadcast._polCELL.j, col8);
+
+    //ATON.vroadcast.requestPol();
 });
 
 
@@ -348,12 +358,17 @@ ATON.FE.attachListeners = function(){
                 else $("#idPOL").css("background-color","black");
                 }
 */
-            if (e.key == 'x'){ // x
+            if (e.key == 'x'){
                 ATON.vroadcast._bQFpol = true;
                 //$("#idPOL").css("background-color","green");
                 ATON.setDim(0.2);
                 auPOL.play();
-                }      
+                }
+
+            if (e.key == 'r'){
+                console.log("Req QPA...");
+                if (QPV) ATON.vroadcast.requestPol();
+                }   
 
             });
 
@@ -379,11 +394,8 @@ var PolNav = function(){
 
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
+    if (qfv._qvaLoading) return;
 
-    //console.log("P");
-
-    /*  Focus 2 Position
-    ------------------*/
     if (ATON._hoveredVisData === undefined) return;
     if (ATON.vroadcast._bQFpol) return;
 
@@ -397,15 +409,24 @@ var PolNav = function(){
         */
         }
     else {
+        // DEBUG_PCELLS
+        //console.log("Sensed Cell: "+v);
         ATON._qpVal = v.slice(0);
         if (ATON._polForce < 0.01) ATON._polForce += 0.00005;
         }
 
-    var newPolPos = qfv.getWorldLocationFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2] ); // absolute loc
-    //var newPolPos = osg.vec3.sub([], ATON._hoveredVisData.p,qfv.getDeltaFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2])); // delta
+    //=== absolute loc
+    var newPolPos = qfv.getWorldLocationFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2] );
 
-    if (ATON._polPos === undefined) ATON._polPos = newPolPos;
-    else ATON._polPos = osg.vec3.lerp([], newPolPos, ATON._polPos, 0.5);
+    //=== delta
+    //var voxPos = qfv.getQuantizedWorldLocation(ATON._hoveredVisData.p);
+    //var newPolPos = osg.vec3.sub([], voxPos/*ATON._hoveredVisData.p*/, qfv.getDeltaFromRGB( ATON._qpVal[0],ATON._qpVal[1],ATON._qpVal[2]));
+
+
+
+    ATON._polPos = newPolPos;
+    //if (ATON._polPos === undefined) ATON._polPos = newPolPos;
+    //else ATON._polPos = osg.vec3.lerp([], newPolPos, ATON._polPos, 0.5);
 
 /*
     if (ATON._polPos === undefined) ATON._polPos = newPolPos;
@@ -804,6 +825,27 @@ window.addEventListener( 'load', function () {
 
                     break;
 
+                case "test_pol":
+                    scenename = "test_pol";
+
+                    ATON.addLightProbe("../LP/default");
+
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "Ground" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "Ground", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"column/column.gltf", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "Hebe" });
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 60.0 );
+                    //$('body').css('background-color', 'black');
+
+                    ATON.setHome([-0.28,-19.14,2.87],[-0.30,-0.39,4.58]);
+                    ATON.requestHome(0.01);
+
+                    ATON._polarizeLocomotionQV = PolNav;
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){ QPV = ATON.QVhandler.getActiveQV(); });
+                    break;
+
                 case "test1":
                     scenename = "test1";
                     ATON.addLightProbe("../LP/default");
@@ -879,6 +921,7 @@ window.addEventListener( 'load', function () {
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
 
                     ATON.addNewLayer("PRESENT");
+/*
                     ATON.addNewLayer("PAST").getOrCreateStateSet().setAttributeAndModes(
                         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
                         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
@@ -896,7 +939,7 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_l/root.osgjs", { layer: "PAST" });
 
                     ATON.switchLayer("PAST", false);
-
+*/
                     //ATON.addNewLayer("CEIL","PRESENT");
 
                     // CUSTOM KEYBOARD

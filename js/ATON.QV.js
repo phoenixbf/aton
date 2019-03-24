@@ -27,7 +27,7 @@ ATON.QVhandler.QV = function(){
 
     this.qvaIMGurl     = undefined;
     this.qvaIMGfilter  = osg.Texture.NEAREST;
-    this._qvaIMGloaded = true;
+    this._qvaLoading   = false;
 
     this._qvaTex = new osg.Texture();
     this._qvaTex.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
@@ -41,7 +41,7 @@ ATON.QVhandler.QV = function(){
     this._qvaCanvas.width  = QV_SIZE;
     this._qvaCanvas.height = QV_SLICE_RES;
     this._qvaContext = this._qvaCanvas.getContext('2d');
-    //this._qvaContext.globalAlpha = 0.0;
+    //this._qvaContext.globalAlpha = 1.0;
     //this._qvaContext.globalCompositeOperation = "source-over";
 
     //this._texelWriter = this._qvaContext.createImageData(1,1);
@@ -60,7 +60,7 @@ ATON.QVhandler.QV.prototype = {
 
     // (re)loads associated qva img (signature, etc...)
     loadQVAimg: function(url){
-        this._qvaIMGloaded = false;
+        this._qvaLoading = true;
         if (url !== undefined) this.qvaIMGurl = url;
 
         if (this.qvaIMGurl === undefined) return;
@@ -74,7 +74,7 @@ ATON.QVhandler.QV.prototype = {
             qTex.setImage( data );
 
             ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, qTex );
-            this._qvaIMGloaded = true;
+            this._qvaLoading = false;
             console.log("QVA image "+url+" loaded.");
             });
 
@@ -92,7 +92,9 @@ ATON.QVhandler.QV.prototype = {
         if (b64img === undefined) return;
         if (this._qvaContext === undefined) return;
 
-        this._qvaIMGloaded = false;
+        this._qvaLoading = true;
+
+        this._qvaContext.clearRect(0, 0, this._qvaCanvas.width, this._qvaCanvas.height);
 
         this._qvaIMG = new window.Image();
         this._qvaIMG.src = b64img;
@@ -105,12 +107,14 @@ ATON.QVhandler.QV.prototype = {
         qTex.setImage( this._qvaIMG );
         ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, qTex );
 
+        //this._qvaContext.drawImage(this._qvaIMG, 0,0, this._qvaCanvas.width, this._qvaCanvas.height);
+
         var that = this;
         this._qvaIMG.onload = function(){
             that._qvaContext.drawImage(that._qvaIMG, 0,0, that._qvaCanvas.width,that._qvaCanvas.height);
-            that._qvaIMGloaded = true;
+            that._qvaLoading = false;
+            //console.log("setQVAimgBase64");
             };
-
         
         //console.log("QVA base64 loaded.");
         },
@@ -138,7 +142,26 @@ ATON.QVhandler.QV.prototype = {
 
     setPixel: function(i,j, v){
         if (this._qvaContext === undefined) return;
-        if (!this._qvaIMGloaded) return;
+        if (this._qvaLoading) return;
+
+        let currPixData = this._qvaContext.getImageData(i, j, 1, 1);
+        let prevVal = currPixData.data;
+        if (prevVal[3] > v[3]) return;
+
+        var vpx = this._qvaContext.createImageData(1,1);
+        vpx.data[0] = v[0];
+        vpx.data[1] = v[1];
+        vpx.data[2] = v[2];
+        vpx.data[3] = v[3];
+
+
+        this._qvaContext.putImageData(vpx, i,j);
+
+        var b64im = this._qvaCanvas.toDataURL('image/png',1.0);
+        //console.log(b64im);
+        this.setQVAimgBase64(b64im);
+
+        return;
 
         //console.log(i,j,v[0]);
 /*
@@ -154,19 +177,27 @@ ATON.QVhandler.QV.prototype = {
 
         this._qvaContext.putImageData(imageData, 0, 0);
 */
-        var a = (parseFloat(v[3]) / 255.0).toFixed(2);
+        var a = (parseFloat(v[3]) / 255.0); //.toFixed(4);
         //console.log(a);
 
-        var fstr = "rgba("+v[0]+","+v[1]+","+v[2]+","+a+")";
+        var fstr = "rgba("+parseInt(v[0])+","+parseInt(v[1])+","+parseInt(v[2])+","+parseFloat(a)+")";
         //console.log(fstr);
 
-        this._qvaContext.strokeStyle = fstr;
+        //this._qvaContext.strokeStyle = fstr;
         this._qvaContext.fillStyle   = fstr;
+        
+        //this._qvaContext.globalAlpha = a;
+        //this._qvaContext.fillStyle   = "rgb("+parseInt(v[0])+","+parseInt(v[1])+","+parseInt(v[2])+")";
+        //this._qvaContext.fillStyle = "cyan";
+
         this._qvaContext.fillRect( i, j, 1, 1 );
 
         var b64im = this._qvaCanvas.toDataURL('image/png',1.0);
         //console.log(b64im);
         this.setQVAimgBase64(b64im);
+        //console.log("setPixel");
+
+        //this._qvaContext.globalAlpha = 1.0;
 
 
 /*
@@ -251,6 +282,33 @@ ATON.QVhandler.QV.prototype = {
 
         return [dx,dy,dz];
         },
+
+    getQuantizedWorldLocation: function(loc){
+        let P = this.getNormLocationInVolume(loc);
+
+        // Check outside volume
+        if (P[0] > 1.0 || P[0] < 0.0) return undefined;
+        if (P[1] > 1.0 || P[1] < 0.0) return undefined;
+        if (P[2] > 1.0 || P[2] < 0.0) return undefined;
+
+        P[0] = parseInt( P[0] * 255.0 );
+        P[1] = parseInt( P[1] * 255.0 );
+        P[2] = parseInt( P[2] * 255.0 );
+
+        P[0] = parseFloat(P[0]) / 255.0;
+        P[1] = parseFloat(P[1]) / 255.0;
+        P[2] = parseFloat(P[2]) / 255.0;
+
+        P[0] *= this.vExt[0];
+        P[1] *= this.vExt[1];
+        P[2] *= this.vExt[2];
+
+        P[0] += this.vMin[0] + this._xC[0];
+        P[1] += this.vMin[1] + this._xC[1];
+        P[2] += this.vMin[2] + this._xC[2];
+
+        return P;
+        },
 };
 
 
@@ -264,6 +322,7 @@ ATON.QVhandler.addQV = function(pos, ext){
 
     ATON.QVhandler.QVList.push(QV);
 
+    // First one
     if (ATON.QVhandler.QVList.length === 1) ATON.QVhandler.setActiveQVbyIndex(0);
 
     return QV;

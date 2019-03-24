@@ -177,7 +177,7 @@ ATON.vroadcast.requestPol = function(){
     if (ATON.vroadcast.socket === undefined) return;
 
     ATON.vroadcast.socket.emit("POLREQ");
-    //console.log("Requested polarization data");
+    //console.log("Requested QV as b64 img");
 };
 
 
@@ -228,7 +228,7 @@ ATON.vroadcast._update = function(){
     var dOri = osg.vec4.squaredDistance(ori, myUser.lastOri);
     
     //if (dPos < 0.002 && dOri < 0.001) return;
-    if (dPos > 0.002 || dOri > 0.001){
+    if (dPos > 0.0001 || dOri > 0.001){
         myUser.lastPos[0] = pos[0];
         myUser.lastPos[1] = pos[1];
         myUser.lastPos[2] = pos[2];
@@ -256,7 +256,12 @@ ATON.vroadcast._update = function(){
     DTarg[2] = ATON._hoveredVisData.p[2] - pos[2];
 
     var binTargD = ATON.vroadcast.encodeDFocus(DTarg);
+    //var binFoc   = ATON.vroadcast.encodeDFocus(ATON._hoveredVisData.p);
+
+    //ATON.vroadcast.socket.emit("UFOCUSD", {id: myUser.id, dx: DTarg[0], dy: DTarg[1], dz: DTarg[2]});
     ATON.vroadcast.socket.emit("UFOCUSD", {id: myUser.id, bin: binTargD});
+    //ATON.vroadcast.socket.emit("UFOCUS", {id: myUser.id, bin: binFoc});
+    
     //console.log(binTargD);
 
     // Interactive Polarization

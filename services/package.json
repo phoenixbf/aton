@@ -12,7 +12,7 @@
     "aabb-3d": "^0.1.0",
     "clamp": "^1.0.1",
     "command-line-args": "^4.0.7",
-    "compression": "^1.7.3",
+    "compression": "^1.7.4",
     "euclidean-distance": "^1.0.0",
     "express": "^4.16.4",
     "fs": "0.0.1-security",

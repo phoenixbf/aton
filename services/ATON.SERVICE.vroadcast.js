@@ -1144,7 +1144,8 @@ io.on('connection', function(socket){
             //bQPAdirty = qfv.igniteLocation( clientInfo.focus, df, clientInfo.rank);
 
             if (bQPAdirty){
-                socket.emit("POLCELL", { i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
+                //socket.emit("POLCELL", { i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
+                io.in(sceneName).emit("POLCELL", { i: qfv._lastPolIndexes[0], j: qfv._lastPolIndexes[1], v: qfv._lastPolCol });
                 sPOLnumCellsSENT++;
                 }
 

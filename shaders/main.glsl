@@ -12,13 +12,14 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-#define USE_QV 1
+//#define USE_QV 1
 
 //#define USE_QUSV_SENC 1
 //#define USE_ILSIGN 1
 
 
 #define PI     3.1415926535897932
+#define PI2    (PI * 0.5)
 #define PI_DBL 6.2831853071795865
 
 #define ATON_LP_MAX_H   480
@@ -94,9 +95,9 @@ vec3 QVDecodeLocation(vec4 frag){
     loc.y = (frag.g * uQVext.y) + uQVmin.y;
     loc.z = (frag.b * uQVext.z) + uQVmin.z;
 
-    loc.x += (uQVext.x/510.0);
-    loc.y += (uQVext.y/510.0);
-    loc.z += (uQVext.z/510.0);
+    loc.x += (uQVext.x/512.0); // was 510
+    loc.y += (uQVext.y/512.0);
+    loc.z += (uQVext.z/512.0);
 
     return loc;
 }
@@ -678,7 +679,7 @@ void main(){
 
     vec4 QVAcol = texture2D(QUSVSampler, vec2(qvaCoords.x,qvaCoords.y));
 
-    float DDD = 1.0;
+    float DDD = 1.0; //1.0;
     float waveAlpha = 1.0;
     
 #ifndef MOBILE_DEVICE
@@ -689,7 +690,7 @@ void main(){
     DDD = 2.0 - DDD;
 
     DDD *= clamp(dot(normWorld,vQnrm), 0.0,1.0);
-    //DDD *= 0.5;
+
     //float qn = abs( dot(normWorld,vQnrm) );
 
     //vec3 qNP = QVgetNormalized(vWorldVertex) * PI * float(QV_SLICE_RES);
@@ -704,15 +705,18 @@ void main(){
     qn = (qn * 0.3) + 0.7;
 
     waveAlpha = QVAcol.a * qn; // * 0.5
+
+    DDD *= 0.2;
 #endif
 
 
 #if 0   // Debug Voxels
     ////FinalFragment = mix(FinalFragment,QVAcol, QVAcol.a * 0.5);
-    FinalFragment = mix(FinalFragment, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
+    FinalFragment = mix(FinalFragment*uDim, FinalFragment*QVAcol*5.0, QVAcol.a * 0.5 * qn);
+#else
+    FinalFragment = mix(FinalFragment*uDim, FinalFragment*vec4(0,1,1,QVAcol.a)*5.0, QVAcol.a * DDD * waveAlpha);
 #endif
 
-    FinalFragment = mix(FinalFragment, FinalFragment*vec4(0,1,1,QVAcol.a)*5.0, QVAcol.a * DDD * waveAlpha);
 
 #endif
 
@@ -738,9 +742,10 @@ void main(){
     UCOLORS[4] = vec4(0.0,0.0,1.0, 0.0);
     UCOLORS[5] = vec4(1.0,0.0,1.0, 0.0);
 */
-    vec4 qusvCol = QVEncodeLocation(vWorldVertex);
 
 #if 0   // Color-codes VE with QUSV voxel values
+    vec4 qusvCol = QVEncodeLocation(vWorldVertex);
+
     if (qusvCol.r >= 0.0 && qusvCol.r <= 1.0 && qusvCol.g >= 0.0 && qusvCol.g <= 1.0 && qusvCol.b >= 0.0 && qusvCol.b <= 1.0)
         //FinalFragment = mix(qusvCol, FinalFragment, 0.1);
         FinalFragment = qusvCol * mix(aoContrib, 1.0, 0.5);
@@ -750,9 +755,10 @@ void main(){
     vec3 loc;
     float ql;
     float QF = 0.0;
+    vec3 nrmLoc;
 
     vec4 fCol = vec4(1,0,0,1);
-    float uMul = 1.0;
+    float uNorm = 0.0;
     float qRad;
     //qRad = max(max(uQVext.x,uQVext.y),uQVext.z) / 255.0;
     
@@ -760,7 +766,10 @@ void main(){
 #ifdef USE_ILSIGN
     const int QUSV_MAX_RANGE  = 128; //64; //32;
     qRad = uQVradius; //1.5;
+
+    int evalCap = int(uQVslider*float(QUSV_MAX_RANGE));
 #else 
+    const float harden = 3.5; //3.5;
     const int QUSV_MAX_RANGE  = 128;
     qRad = uQVradius; //3.0; // 3.0; //(uQVslider*500.0);
 #endif
@@ -770,42 +779,45 @@ void main(){
 
     float igW;
 
-    int evalCap = int(uQVslider*float(QUSV_MAX_RANGE));
+
     for (int u=0; u<QUSV_MAX_RANGE; u++){
 #ifdef USE_ILSIGN
         if (u < evalCap){
 #endif
 
-        uMul = float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE);
+        uNorm = float(QUSV_MAX_RANGE-u)/float(QUSV_MAX_RANGE);
 
 #ifdef USE_ILSIGN
         mIL = texture2D(QUSVSampler, vec2(float(u)/QUSV_ILS_SIZE, 0.0));
 #else 
-        mIL = texture2D(QUSVSampler, vec2(uQVslider, 1.0-(float(u)/QUSV_PATCH_SIZE) ));
+        mIL = texture2D(QUSVSampler, vec2(uQVslider, uNorm));
 #endif
 
         if (mIL.a > 0.0){
             loc = QVDecodeLocation(mIL);
 
+            nrmLoc = normalize(loc - vWorldVertex);
             ql = distance(loc, vWorldVertex) / qRad;
             ql = 1.0 - clamp(ql, 0.0,1.0);
 
             //fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), ql);
 
-            //FinalFragment = mix(FinalFragment,fCol, ql*0.5*uMul);
-            //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uMul);
+            //FinalFragment = mix(FinalFragment,fCol, ql*0.5*uNorm);
+            //FinalFragment += mix(vec4(0,0,0,0),fCol, ql*0.7*uNorm);
 
             igW = mix(1.0,mIL.a, 0.7);
+            //igW *= clamp(dot(normWorld,nrmLoc), 0.0,1.0); // normal w
 
 #ifdef USE_ILSIGN
             QF += (ql * igW);
             //QF += (ql * mIL.a * 2.0);
-            QF = clamp(QF, 0.0,1.0);
+            //QF = clamp(QF, 0.0,1.0);
 #else
-            QF += (ql * 0.03 * igW); // 0.03
+            QF += (ql * harden * igW); // 0.03
             //int uc = u - (6 * int(float(u)/6.0));
             //FinalFragment += mix(vec4(0,0,0,0), UCOLORS[uc], ql);
 #endif
+            QF = clamp(QF, 0.0,1.0);
             }
 #ifdef USE_ILSIGN
         }
@@ -813,14 +825,21 @@ void main(){
         }
 
 //#ifdef USE_ILSIGN
-    fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
-    //fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), QF);
+    //fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
+    fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), QF); // locomotion
 //#endif
 
-    //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
-    FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
+    //float qqq = (QF * PI);
+	//fCol.r = (sin(qqq) + 1.0) * 0.5;
+	//fCol.g = (sin(qqq + PI2) + 1.0) * 0.5;
+	//fCol.b = (sin(qqq + PI) + 1.0) * 0.5;
 
-    FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
+    //FinalFragment = mix(FinalFragment, fCol, QF*0.5); // aoContrib*vec4(1,0,0,1)
+    
+    //FinalFragment += mix(vec4(0,0,0,0),fCol, QF);
+    //FinalFragment = mix( FinalFragment*uDim, FinalFragment, QF);
+    
+    FinalFragment = mix( FinalFragment*uDim, baseAlbedo+fCol, QF);
 
 #endif
 

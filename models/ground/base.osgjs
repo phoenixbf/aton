@@ -1,0 +1,129 @@
+{
+  "Generator": "OpenSceneGraph 3.3.8", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "plane", 
+        "StateSet": {
+          "osg.StateSet": {
+            "UniqueID": 1, 
+            "TextureAttributeList": [ [ {
+              "osg.Texture": {
+                "UniqueID": 2, 
+                "File": "base.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [  ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 3, 
+                "File": "ground-nrm.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ],
+            [ {
+              "osg.Texture": {
+                "UniqueID": 4, 
+                "File": "ground-RME.jpg", 
+                "MagFilter": "LINEAR", 
+                "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                "WrapS": "REPEAT", 
+                "WrapT": "REPEAT"
+              }
+            } ] ]
+          }
+        }, 
+        "Children": [ {
+          "osg.Geometry": {
+            "UniqueID": 5, 
+            "PrimitiveSetList": [ {
+              "DrawElementsUByte": {
+                "UniqueID": 10, 
+                "Indices": {
+                  "Array": { 
+                    "Uint8Array": { 
+                      "File": "ground_11.bin.gz",
+                      "Size": 4,
+                      "Offset": 0
+                    }
+                  }, 
+                  "ItemSize": 1, 
+                  "Type": "ELEMENT_ARRAY_BUFFER"
+                }, 
+                "Mode": "TRIANGLE_STRIP"
+              }
+            } ], 
+            "VertexAttributeList": {
+              "Color": {
+                "UniqueID": 8, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "ground_12.bin.gz",
+                    "Size": 4,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 4, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "Normal": {
+                "UniqueID": 7, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "ground_13.bin.gz",
+                    "Size": 4,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord0": {
+                "UniqueID": 9, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "ground_14.bin.gz",
+                    "Size": 4,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 2, 
+                "Type": "ARRAY_BUFFER"
+              }, 
+              "TexCoord1": {
+                "UniqueID": 9
+              }, 
+              "TexCoord2": {
+                "UniqueID": 9
+              }, 
+              "TexCoord3": {
+                "UniqueID": 9
+              }, 
+              "Vertex": {
+                "UniqueID": 6, 
+                "Array": { 
+                  "Float32Array": { 
+                    "File": "ground_15.bin.gz",
+                    "Size": 4,
+                    "Offset": 0
+                  }
+                }, 
+                "ItemSize": 3, 
+                "Type": "ARRAY_BUFFER"
+              }
+            }
+          }
+        } ]
+      }
+    } ]
+  }
+}

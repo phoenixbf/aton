@@ -68,11 +68,14 @@ ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
 
     ATON.toggleSessionEncoderPass(true, bSIG);
     if (bSIG) qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"-sig.png");
-    else qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"_qsa0.png");
+    else {
+        qv.qvaIMGfilter = osg.Texture.LINEAR;
+        qv.loadQVAimg("../services/record/"+scenename+"/"+attrib+"_qsa0.png");
+        }
 
     $("#idSession").show();
 
-    ATON.setDim(0.1);
+    ATON.setDim(0.3);
     $('body').css('background-color', 'black');
     ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0));
 
@@ -360,8 +363,7 @@ ATON.FE.attachListeners = function(){
 */
             if (e.key == 'x'){
                 ATON.vroadcast._bQFpol = true;
-                //$("#idPOL").css("background-color","green");
-                ATON.setDim(0.2);
+                //ATON.setDim(0.2);
                 auPOL.play();
                 }
 
@@ -568,6 +570,7 @@ window.addEventListener( 'load', function () {
             switch (asset){
                 case "faug":
                     scenename = "faug";
+                    ATON.toggleAOPass(true);
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
@@ -578,11 +581,7 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
-                    //ATON.QVhandler.setPositionAndExtents([-29, -40.0, 0.0], [57.0, 120.0, 60.0]);
-                    //ATON.QVhandler.loadILSign("../models/_prv/_QUSV/faug/P-qils.png");
-                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
-                        QPV = ATON.QVhandler.getActiveQV();
-                        });
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", ()=>{ QPV = ATON.QVhandler.getActiveQV(); });
                     break;
 
                 case "faug2":
@@ -846,6 +845,66 @@ window.addEventListener( 'load', function () {
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){ QPV = ATON.QVhandler.getActiveQV(); });
                     break;
 
+                case "test_cap":
+                    scenename = "test_cap";
+
+                    //ATON.addLightProbe("../LP/default");
+
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/base.osgjs", { layer: "Ground" });
+                    ATON.addNewLayer("Ground");
+
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/capitoline/centauro658/root.osgjs", { layer: "Item" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/capitoline/altare/root.osgjs", { layer: "Item" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/capitoline/baseciccio/root.osgjs", { layer: "Item" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/capitoline/ermavat/root.osgjs", { layer: "Item" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/capitoline/galata/root.osgjs", { layer: "Item" });
+
+                    ATON.on("NodeRequestCompleted",()=>{
+                        var itemL = ATON.getLayer("Item");
+                        var iC = itemL.getBoundingSphere()._center;
+                        var iR = itemL.getBoundingSphere()._radius;
+
+                        var xMin = iC[0] - iR;
+                        var xMax = iC[0] + iR;
+                        var yMin = iC[1] - iR;
+                        var yMax = iC[1] + iR;
+                        var zMin = iC[2] - iR;
+
+                        var G = osg.createTexturedQuadGeometry(
+                            xMin, yMin, zMin,   // corner
+                            xMax-xMin, 0, 0.0,       // width
+                            0, yMax-yMin, 0.0 );     // height
+
+                        osgDB.readImageURL(ATON.FE.MODELS_ROOT+"ground/base.jpg").then( function ( data ){
+                            var bgTex = new osg.Texture();
+                            bgTex.setImage( data );
+                    
+                            bgTex.setMinFilter( osg.Texture.LINEAR_MIPMAP_LINEAR );
+                            bgTex.setMagFilter( osg.Texture.LINEAR );
+                            
+                            bgTex.setWrapS( osg.Texture.CLAMP_TO_EDGE );
+                            bgTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+                    
+                            G.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+                            });
+
+                        ATON.getLayer("Ground").addChild(G);
+                        
+                        //ATON.translateLayer("Item", [-iC[0],-iC[1],-zMin]);
+                        ATON._buildKDTree(ATON._groupVisible);
+                        });
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
+                    $('body').css('background-color', 'rgb(65,70,79)');
+                    ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
+
+                    ATON.setHome([-0.05,-1.63,1.16],[0.0,0.0,0.3]);
+                    ATON.requestHome(0.01);
+
+                    ATON._polarizeLocomotionQV = PolNav;
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){ QPV = ATON.QVhandler.getActiveQV(); });
+                    break;
+
                 case "test1":
                     scenename = "test1";
                     ATON.addLightProbe("../LP/default");
@@ -917,6 +976,10 @@ window.addEventListener( 'load', function () {
                     QAurl = "../services/record/cecilio/qfv.png";
 
                     ATON._polarizeLocomotionQV = PolNav;
+                    
+                    //ATON.setDim(0.3);
+                    //$('body').css('background-color', 'black');
+                    //ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0));
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
 

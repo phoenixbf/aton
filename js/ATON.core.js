@@ -3511,22 +3511,35 @@ ATON._handleGamepads = function(){
             // Axes
             gpXaxis = gamepad.axes[0]; // -1 left
             gpYaxis = gamepad.axes[1]; // -1 fwd
+            /*
             if (g === 0){
                 if (gpXaxis){
                     ATON._hoverRadius += (gpXaxis*0.01);
                     ATON.updateHoverRadius(ATON._hoverRadius);
                     }
                 }
-            if (g === 1){
-                if (gpXaxis && ATON.tracer){
-                    ATON.tracer._tNorm += (0.0002 * gpXaxis);
-                    if (ATON.tracer._tNorm > 1.0) ATON.tracer._tNorm = 1.0;
-                    if (ATON.tracer._tNorm < 0.0) ATON.tracer._tNorm = 0.0;
+            */
 
-                    ATON._mainSS.getUniform('uQVslider').setFloat( ATON.tracer._tNorm );
-                    ATON._mainSS.getUniform('uQVradius').setFloat( ATON.tracer._tRad );
-                    }
+            // left
+            if (g === 0 && gpXaxis && ATON.tracer){
+                const fm = 0.0001;
+                ATON.tracer._tNorm += (fm * gpXaxis);
+
+                if (ATON.tracer._tNorm > 1.0) ATON.tracer._tNorm = 1.0;
+                if (ATON.tracer._tNorm < 0.0) ATON.tracer._tNorm = 0.0;
+
+                ATON._mainSS.getUniform('uQVslider').setFloat( ATON.tracer._tNorm );
                 }
+            // right
+            if (g === 1 && gpXaxis && ATON.tracer){
+                ATON.tracer._tRad += (0.01 * gpXaxis);
+
+                if (ATON.tracer._tRad > 10.0) ATON.tracer._tRad = 10.0;
+                if (ATON.tracer._tRad < 0.1) ATON.tracer._tRad  = 0.1;
+
+                ATON._mainSS.getUniform('uQVradius').setFloat( ATON.tracer._tRad );
+                }
+
 			}
         }
 };

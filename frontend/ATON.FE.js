@@ -919,6 +919,12 @@ window.addEventListener( 'load', function () {
 
                     ATON.setLayerMask("Vegetation", ATON._maskLP);
 
+                    // test QV
+                    /*
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "hebe-box", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-qv.txt" 
+                        });
+*/
                     var trSS = ATON.layers["Vegetation"].getOrCreateStateSet();
                     trSS.setAttributeAndModes( 
                         new osg.Depth( osg.Depth.LESS ),
@@ -1099,7 +1105,7 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
 
-                    var s = 1.0; //0.003;
+                    var s = 0.003;
                     ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s]));
                     ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [s,s,s]));
 

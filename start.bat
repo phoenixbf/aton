@@ -1,4 +1,5 @@
 @echo off
 
-TITLE ATON Web Service
-node services/ATON.SERVICE.vroadcast.js --www .
+TITLE ATON Web Services
+start node services/ATON.SERVICE.content.js
+start node services/ATON.SERVICE.vroadcast.js

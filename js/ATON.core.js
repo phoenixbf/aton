@@ -1968,7 +1968,7 @@ ATON._updateCallback.prototype = {
 
         // VR Controllers FIXME:
         //if (ATON._vrState && !ATON._isMobile) ATON._handleVRcontrollers();
-        if (!ATON._isMobile) ATON._handleGamepads();
+        /*if (!ATON._isMobile)*/ ATON._handleGamepads();
 
         // Updates direction
         osg.vec3.sub( ATON._direction, ATON._currPOV.target, ATON._currPOV.pos);

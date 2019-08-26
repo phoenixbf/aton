@@ -1,0 +1,108 @@
+{
+  "Generator": "OpenSceneGraph 3.6.3",
+  "Version": 9,
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0,
+        "Name": "C:\\Users\\phoen\\3D Objects\\royalty-free\\head-zs.osg.gles",
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 2,
+            "Name": "C:\\Users\\phoen\\3D Objects\\royalty-free\\head-z.osg",
+            "Children": [ {
+              "osg.Node": {
+                "UniqueID": 3,
+                "Name": "C:\\Users\\phoen\\3D Objects\\royalty-free\\head3.osg",
+                "Children": [ {
+                  "osg.Node": {
+                    "UniqueID": 4,
+                    "Name": "C:\\Users\\phoen\\3D Objects\\royalty-free\\head2.osg",
+                    "Children": [ {
+                      "osg.Node": {
+                        "UniqueID": 5,
+                        "Name": "C:\\Users\\phoen\\3D Objects\\royalty-free\\head.obj",
+                        "Children": [ {
+                          "osg.Node": {
+                            "UniqueID": 6,
+                            "Name": "Group_C:\\Users\\phoen\\3D Objects\\royalty-free\\INGAME_BASE.OBJ_0:Group_C:\\Users\\phoen\\3D Objects\\royalty-free\\INGAME_BASE.OBJ_Group1_Geometry_0",
+                            "Children": [ {
+                              "osg.Geometry": {
+                                "UniqueID": 7,
+                                "PrimitiveSetList": [ {
+                                  "DrawElementsUShort": {
+                                    "UniqueID": 11,
+                                    "Indices": {
+                                      "UniqueID": 12,
+                                      "Array": { 
+                                        "Uint16Array": { 
+                                          "File": "head-zs.bin",
+                                          "Size": 4200,
+                                          "Offset": 0
+                                        }
+                                      },
+                                      "ItemSize": 1,
+                                      "Type": "ELEMENT_ARRAY_BUFFER"
+                                    },
+                                    "Mode": "TRIANGLES"
+                                  }
+                                } ],
+                                "VertexAttributeList": {
+                                  "Normal": {
+                                    "UniqueID": 9,
+                                    "Array": { 
+                                      "Float32Array": { 
+                                        "File": "head-zs.bin",
+                                        "Size": 752,
+                                        "Offset": 8400
+                                      }
+                                    },
+                                    "ItemSize": 3,
+                                    "Type": "ARRAY_BUFFER"
+                                  },
+                                  "TexCoord0": {
+                                    "UniqueID": 10,
+                                    "Array": { 
+                                      "Float32Array": { 
+                                        "File": "head-zs.bin",
+                                        "Size": 752,
+                                        "Offset": 17424
+                                      }
+                                    },
+                                    "ItemSize": 2,
+                                    "Type": "ARRAY_BUFFER"
+                                  },
+                                  "Vertex": {
+                                    "UniqueID": 8,
+                                    "Array": { 
+                                      "Float32Array": { 
+                                        "File": "head-zs.bin",
+                                        "Size": 752,
+                                        "Offset": 23440
+                                      }
+                                    },
+                                    "ItemSize": 3,
+                                    "Type": "ARRAY_BUFFER"
+                                  }
+                                }
+                              }
+                            } ]
+                          }
+                        } ]
+                      }
+                    } ]
+                  }
+                } ]
+              }
+            } ]
+          }
+        } ],
+        "StateSet": {
+          "osg.StateSet": {
+            "UniqueID": 1
+          }
+        }
+      }
+    } ]
+  }
+}

@@ -2589,8 +2589,9 @@ ATON._initGraph = function(){
     ATON._uiSS.setRenderingHint('TRANSPARENT_BIN');
     ATON._uiSS.setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
     ATON._uiSS.setAttributeAndModes(
-        new osg.BlendFunc(), // osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA 
-        osg.StateAttribute.ON //| osg.StateAttribute.OVERRIDE
+        //new osg.BlendFunc(), // osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA 
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
     // TODO, move to VR onswitch?

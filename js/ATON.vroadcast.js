@@ -55,12 +55,12 @@ ATON.vroadcast.onUserMSG = function(){
 
 // Def users colors
 ATON.vroadcast.UCOLORS = [
-    [1,0.5,0.5, 1.0],
-    [1,1,0.5, 1.0],
-    [0.5,1,0.5, 1.0],
-    [0.5,1,1, 1.0],
-    [0.5,0.5,1, 1.0],
-    [1,0.5,1, 1.0],
+    [1,0.5,0.5, 0.5],
+    [1,1,0.5, 0.5],
+    [0.5,1,0.5, 0.5],
+    [0.5,1,1, 0.5],
+    [0.5,0.5,1, 0.5],
+    [1,0.5,1, 0.5],
 ];
 
 
@@ -485,8 +485,9 @@ ATON.vroadcast.realizeUserModel = function(id){
     u._mt.addChild(u._at);
 
     // BG
+    var bgHoffset = 0.1;
     var bg = osg.createTexturedQuadGeometry(
-        -0.5, 0, -0.02,      // corner
+        -0.5, bgHoffset, -0.02,      // corner
         1, 0, -0.02,       // width
         0, 0.5, -0.02 );     // height
 
@@ -507,6 +508,17 @@ ATON.vroadcast.realizeUserModel = function(id){
         bg.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
         console.log("Label BG loaded");
         });
+
+    
+    var ucoltex = ATON.utils.createFillTexture( ATON.vroadcast.UCOLORS[ulabID] );
+    u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, ucoltex);
+/*
+    u._mt.getOrCreateStateSet().setAttributeAndModes(
+        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+        osg.StateAttribute.PROTECTED
+        );
+*/
+
 
     // User Focus
     var focSize = 5.0;
@@ -554,7 +566,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         }
     
     u.nameNode.setCharacterSize( 0.3 );
-    u.nameNode.setPosition( [ 0.0, 0.37, 0.001 ] );
+    u.nameNode.setPosition( [ 0.0, 0.37+bgHoffset, 0.001 ] );
     u._at.addChild(u.nameNode);
 
     // Status node
@@ -569,7 +581,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         }
 
     u.statusNode.setCharacterSize( 0.1 );
-    u.statusNode.setPosition( [ 0.0, 0.2, 0.001 ] );
+    u.statusNode.setPosition( [ 0.0, 0.2+bgHoffset, 0.001 ] );
     u._at.addChild(u.statusNode);
 
     //ATON.vroadcast.userModel.setCullingActive( false );   

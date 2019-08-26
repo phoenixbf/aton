@@ -759,7 +759,7 @@ window.addEventListener( 'load', function () {
 
                     ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.25,0.25,0.25]));
                     
-                    ATON.setHome([-2.27,-10.81,7.50],[-0.87,0.13,5.41]);
+                    ATON.setHome([1.53,-1.57,1.54],[0.17,0.08,1.63]);
                     break;
 
                 case "picgallery":
@@ -1555,7 +1555,8 @@ if (asset === "sf"){
 
     // VRoadcast =====================
     ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
-    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
+    //ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
+    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/user/head-zs.osgjs");
 
     $("#idVRoadcast").hide();
     $('#idUserColor').hide();

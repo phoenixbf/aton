@@ -51,7 +51,7 @@
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <button id="idUserColor" type="button" class="atonBTN"></button>
+                <button id="idUserColor" type="button" class="atonBTN" onclick="$('#idVRCpanel').toggle();"></button>
                 <button id="idFS" type="button" class="atonBTN" onclick="ATON.FE.toggleFullscreen()"><img src="../res/ii-inv-fs.png"></button>
                 <button type="button" class="atonBTN" onclick="ATON.requestHome(1.0)"><img src="../res/ii-inv-home.png"></button>
             </li>
@@ -141,11 +141,13 @@
                     MagRadius: <span id="idMagRadius"></span></div>
 -->
                 </div>
-
+<!--
                 <div class="form-group">
-                    <input id="uname" type="text" size="10" onchange="ATON.FE.setUserName()" placeholder="Username">
-                    <input id="ustatus" type="text" size="30" onchange="ATON.FE.setStatus()" placeholder="Message">
+                        
+                        <input id="uname" type="text" size="10" onchange="ATON.FE.setUserName()" placeholder="Username">
+                        <input id="ustatus" type="text" size="30" onchange="ATON.FE.setStatus()" placeholder="Message">
                 </div>
+            -->
             </form>
 
           </div>
@@ -165,6 +167,14 @@
         <span id="idHoverPos"></span>&nbsp;|&nbsp;
         ShapeDescriptor: <span id="idShapeDescr"></span>
         </div>
+    </div>
+
+    <!-- VRC panel -->
+    <div class="atonVRCsidePanel" id="idVRCpanel" style="display:none;">
+        <input id="uname" type="text" size="10" onchange="ATON.FE.setUserName()" placeholder="Username">
+        <input id="ustatus" type="text" size="30" onchange="ATON.FE.setStatus()" placeholder="Message">
+
+        <div class="atonVRCchat" id="idVRCchat"></div>
     </div>
 
     <!-- Loader -->

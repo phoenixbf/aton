@@ -16,6 +16,8 @@ varying vec2 osg_TexCoord0;
 //varying vec3 osg_FragNormalWorld;
 //varying vec4 pColor;
 
+varying vec3 vViewNormal;
+
 
 //=========================================================
 // VERTEX SHADER
@@ -28,12 +30,16 @@ attribute vec3 Vertex;
 
 attribute vec2 TexCoord0;
 
+uniform mat3 uModelViewNormalMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uModelViewMatrix;
 
 
 void main(){
 	osg_TexCoord0 = TexCoord0;
+
+    vViewNormal = uModelViewNormalMatrix * Normal;
+    vViewNormal = normalize(vViewNormal);
 
     gl_Position = uProjectionMatrix * (uModelViewMatrix * vec4(Vertex, 1.0));
 }
@@ -55,6 +61,14 @@ uniform float time;
 //==============
 void main(){
     vec4 baseAlbedo = texture2D(BaseSampler, osg_TexCoord0);
+
+#ifndef MOBILE_DEVICE
+    float f = dot(vViewNormal, vec3(0,0,1));
+    f = (1.0-f);
+
+    baseAlbedo.a += f;
+#endif
+
 	gl_FragColor = baseAlbedo;
 }
 #endif

@@ -29,6 +29,8 @@ ATON.on("VRC_IDassigned", undefined);
 ATON.on("VRC_Disconnect", undefined);
 ATON.on("VRC_PolDataReceived", undefined);
 ATON.on("VRC_PolCellReceived", undefined);
+ATON.on("VRC_UserName");
+ATON.on("VRC_UserMessage");
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -55,12 +57,12 @@ ATON.vroadcast.onUserMSG = function(){
 
 // Def users colors
 ATON.vroadcast.UCOLORS = [
-    [1,0.5,0.5, 0.5],
-    [1,1,0.5, 0.5],
-    [0.5,1,0.5, 0.5],
-    [0.5,1,1, 0.5],
-    [0.5,0.5,1, 0.5],
-    [1,0.5,1, 0.5],
+    [1,0.5,0.5, 0.25],
+    [1,1,0.5, 0.25],
+    [0.5,1,0.5, 0.25],
+    [0.5,1,1, 0.25],
+    [0.5,0.5,1, 0.25],
+    [1,0.5,1, 0.25],
 ];
 
 
@@ -140,13 +142,21 @@ ATON.vroadcast.setUserName = function(name){
     if (name.length < 3) return;
 
     ATON.vroadcast._myUser.username = name;
-    ATON.vroadcast.socket.emit("UNAME", {id: ATON.vroadcast._myUser.id, name: name } );
+
+    var data = {id: ATON.vroadcast._myUser.id, name: name }
+    ATON.vroadcast.socket.emit("UNAME", data);
+
     ATON.vroadcast.onUserMSG();
+    ATON.fireEvent("VRC_UserName", data);
 };
 ATON.vroadcast.setStatus = function(status){
     ATON.vroadcast._myUser.status = status;
-    ATON.vroadcast.socket.emit("UMSG", {id: ATON.vroadcast._myUser.id, status: status } );
+
+    var data = {id: ATON.vroadcast._myUser.id, status: status };
+    ATON.vroadcast.socket.emit("UMSG", data);
+    
     ATON.vroadcast.onUserMSG();
+    ATON.fireEvent("VRC_UserMessage", data);
 };
 // Weight or rank
 ATON.vroadcast.setWeight = function(w){
@@ -759,6 +769,8 @@ ATON.vroadcast._registerEventHandlers = function(){
 
             console.log("User #"+data.id+" changed username to: "+data.name);
             ATON.vroadcast.onUserMSG();
+
+            ATON.fireEvent("VRC_UserName", data);
             }
         });
 
@@ -775,6 +787,7 @@ ATON.vroadcast._registerEventHandlers = function(){
 
             console.log("User #"+data.id+" changed status to: "+data.status);
             ATON.vroadcast.onUserMSG();
+            ATON.fireEvent("VRC_UserMessage", data);
             }
         });
 

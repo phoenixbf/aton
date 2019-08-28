@@ -223,6 +223,37 @@ canvas {
     outline: none;
 }
 
+.atonVRCsidePanel {
+    position: absolute;
+    /*width: 40%;*/
+    max-width: 530px;
+    left: 0px;
+    top: 70px;
+    bottom: 16px;
+    padding: 8px;
+
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.atonVRCchat {
+    margin: 4px;
+    font-size: smaller;
+    outline: none;
+    text-align: left;
+
+    overflow-y: auto;
+    height: 100%;
+}
+
+/*
+@media only screen and (max-width: 800px){
+    .atonVRCsidePanel {
+        width: 40%;
+    }
+
+}
+*/
+
 /*
     Input Types
 ==========================*/

@@ -114,7 +114,9 @@ ATON.FE.setupPage = function(){
     $("#idSession").hide();
 
     var iContainer = document.getElementById( "iContainer" );
+    var iVRCcontainer = document.getElementById( "idVRCpanel" );
     iContainer.addEventListener( 'keydown', function ( e ) { e.stopPropagation(); }, false );
+    iVRCcontainer.addEventListener( 'keydown', function ( e ) { e.stopPropagation(); }, false );
     
     ATON.FE.setUserName = function(){
         var el = document.getElementById('uname');
@@ -393,6 +395,7 @@ TODO: move
 ===============================================*/
 var PolNav = function(){
     //ATON._polPos = undefined;
+    if (ATON._isMobile) return; // FIXME: mobile canvas
 
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
@@ -490,6 +493,7 @@ ATON.FE.QVArequestNew = function(qv, url){
 };
 
 ATON.polarizedAffordance = function(){
+
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
     
@@ -534,7 +538,7 @@ window.addEventListener( 'load', function () {
     // Mobile/Desktop Config
     if (ATON._isMobile){
         $('#idDevOri').show();
-        ATON._bQueryAxisAligned = true;
+        //ATON._bQueryAxisAligned = true;
         }
     else {
         $('#idDevOri').hide();
@@ -1568,6 +1572,8 @@ if (asset === "sf"){
         //IP = "192.167.233.180";
         //IP = "seth.itabc.cnr.it";
 
+        if (vrcIP.length < 3) vrcIP = window.location.hostname;
+
         ATON.vroadcast.uStateFreq = 0.05;
         ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
 
@@ -1615,6 +1621,17 @@ if (asset === "sf"){
             $('#idUserColor').css("background-color", "black");
             $('#idUserColor').html("");
             $('#idUserColor').hide();
+            });
+
+        ATON.on("VRC_UserName", (d)=>{
+            //$('#idVRCchat').append("<b>"+d.name+"</b>");
+            });
+        ATON.on("VRC_UserMessage", (d)=>{
+            var uname;
+            if (d.id === ATON.vroadcast._myUser.id) uname = "YOU";
+            else uname = ATON.vroadcast.users[d.id].name;
+            
+            $('#idVRCchat').append("<div style='color: rgb("+uColors[d.id % 6]+")'><b>"+uname+":</b> "+d.status+"<br>");
             });
         }
 

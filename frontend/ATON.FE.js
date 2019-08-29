@@ -1582,10 +1582,11 @@ if (asset === "sf"){
 
         // We have ID
         //ATON.vroadcast.onIDassigned = function(){
-        ATON.on("VRC_IDassigned", function(){
+        ATON.on("VRC_IDassigned", (id)=>{
             var uid = ATON.vroadcast._myUser.id;
             var strColor = uColors[uid % 6];
 
+            $('#idUserColor').show();
             $('#idUserColor').css("cssText", "background-color: rgba("+strColor+", 0.7); box-shadow: 0 0px 30px rgba("+strColor+",1.0);" );
             //$('#iContainer').css("cssText", "background-color: "+uColors[uid % 6]+" !important; opacity: 0.7;");
             $('#idUserColor').html("<b>U"+uid+"</b>");
@@ -1610,6 +1611,8 @@ if (asset === "sf"){
                 if (v[1]) ATON.vroadcast.setMagRadius( parseFloat(v[1]) );
                 }
 */
+
+            $('#idVRCchat').append("<div><i>You (ID:"+uid+") entered scene "+scenename+"</i><br></div>");
             });
 
         // Disconnection
@@ -1621,6 +1624,8 @@ if (asset === "sf"){
             $('#idUserColor').css("background-color", "black");
             $('#idUserColor').html("");
             $('#idUserColor').hide();
+
+            $('#idVRCpanel').hide();
             });
 
         ATON.on("VRC_UserName", (d)=>{
@@ -1631,7 +1636,16 @@ if (asset === "sf"){
             if (d.id === ATON.vroadcast._myUser.id) uname = "YOU";
             else uname = ATON.vroadcast.users[d.id].name;
             
-            $('#idVRCchat').append("<div style='color: rgb("+uColors[d.id % 6]+")'><b>"+uname+":</b> "+d.status+"<br>");
+            $('#idVRCchat').append("<div style='color: rgb("+uColors[d.id % 6]+")'><b>"+uname+":</b> "+d.status+"</div><br>");
+            });
+        
+        ATON.on("VRC_UserLeft", (d)=>{
+            var u = ATON.vroadcast.users[d.id];
+            $('#idVRCchat').append("<div><i>User "+u.name+" left scene "+scenename+"</i><br></div>");
+            });
+        ATON.on("VRC_UserEntered", (d)=>{
+            var u = ATON.vroadcast.users[d.id];
+            $('#idVRCchat').append("<div><i>User "+u.name+" entered scene "+scenename+"</i><br></div>");
             });
         }
 

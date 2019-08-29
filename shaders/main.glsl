@@ -847,7 +847,7 @@ void main(){
     // Hover Pass (IF)
     //=====================================================
 #ifndef USE_QUSV_SENC
-#ifndef MOBILE_DEVICE
+//#ifndef MOBILE_DEVICE
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= uHoverRadius; //0.5; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
@@ -882,7 +882,7 @@ void main(){
 */
 
     FinalFragment = mix(FinalFragment, uHoverColor, /*hpd * mix(0.3,0.5, uHoverAffordance)*/hpd*0.3*uHoverColor.a);
-#endif
+//#endif
 #endif
 
 #if 0 // OLD

@@ -29,8 +29,10 @@ ATON.on("VRC_IDassigned", undefined);
 ATON.on("VRC_Disconnect", undefined);
 ATON.on("VRC_PolDataReceived", undefined);
 ATON.on("VRC_PolCellReceived", undefined);
-ATON.on("VRC_UserName");
-ATON.on("VRC_UserMessage");
+ATON.on("VRC_UserName", undefined);
+ATON.on("VRC_UserMessage", undefined);
+ATON.on("VRC_UserLeft", undefined);
+ATON.on("VRC_UserEntered", undefined);
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -742,6 +744,8 @@ ATON.vroadcast._registerEventHandlers = function(){
 
         console.log("User #" + data.id + " entered");
         ATON.vroadcast.onUserEnter();
+
+        ATON.fireEvent("VRC_UserEntered", data);
         });
 
     // A user left
@@ -752,6 +756,8 @@ ATON.vroadcast._registerEventHandlers = function(){
 
         var u = ATON.vroadcast.users[data.id];
         if (u.name !== undefined) console.log("User #"+u.name+" left");
+
+        ATON.fireEvent("VRC_UserLeft", data);
         });
 
     // A user updates own username

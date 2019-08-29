@@ -2578,15 +2578,16 @@ ATON._initGraph = function(){
 
     ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.fallbackWhiteTex); // def color
     ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
-    /*
+    //ATON._descrSS.setBinNumber(11);
+
     ATON._descrSS.setAttributeAndModes(
-        new osg.CullFace( 'DISABLE' ),
+        new osg.CullFace( 'BACK' ),
         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
         );
-    */
 
     // UI ss
     ATON._uiSS.setRenderingHint('TRANSPARENT_BIN');
+    //ATON._uiSS.setBinNumber(12);
     ATON._uiSS.setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
     ATON._uiSS.setAttributeAndModes(
         //new osg.BlendFunc(), // osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA 
@@ -2594,6 +2595,10 @@ ATON._initGraph = function(){
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
+    // Check
+    //ATON._groupUI.setCullingActive( false );
+    //ATON._groupDescriptors.setCullingActive( false );
+        
     // TODO, move to VR onswitch?
     //ATON.createVRcontrollers();
 };

@@ -33,7 +33,7 @@ ATON.on("VRC_UserName", undefined);
 ATON.on("VRC_UserMessage", undefined);
 ATON.on("VRC_UserLeft", undefined);
 ATON.on("VRC_UserEntered", undefined);
-//ATON.on("VRC_LayerSwitch", undefined);
+ATON.on("VRC_LayerSwitch", undefined);
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -314,8 +314,12 @@ ATON.vroadcast.toggleFocusPolarization = function(){
     console.log("Focus Polarization: "+ATON.vroadcast._bQFpol);
 }
 
-ATON.vroadcast.replicateLayerSwitch = function(layername, value){
-    ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:value });
+// Distributed switch layer
+ATON.vroadcast.switchLayer = function(layername, val){
+    ATON.switchLayer(layername, val);
+    ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:val });
+
+    ATON.fireEvent("VRC_LayerSwitch", { name:layername, value:val });
 }
 
 // Update (send state)

@@ -33,6 +33,7 @@ ATON.on("VRC_UserName", undefined);
 ATON.on("VRC_UserMessage", undefined);
 ATON.on("VRC_UserLeft", undefined);
 ATON.on("VRC_UserEntered", undefined);
+//ATON.on("VRC_LayerSwitch", undefined);
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -311,6 +312,10 @@ ATON.vroadcast._update = function(){
 ATON.vroadcast.toggleFocusPolarization = function(){
     ATON.vroadcast._bQFpol = !ATON.vroadcast._bQFpol;
     console.log("Focus Polarization: "+ATON.vroadcast._bQFpol);
+}
+
+ATON.vroadcast.replicateLayerSwitch = function(layername, value){
+    ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:value });
 }
 
 // Update (send state)
@@ -846,6 +851,11 @@ ATON.vroadcast._registerEventHandlers = function(){
 
             console.log("User #"+data.id+" has now weight: "+data.weight);
             }
+        });
+
+    // Layers
+    ATON.vroadcast.socket.on('LAYERSWITCH', function(data){
+        ATON.switchLayer(data.name, data.v);
         });
 
     // TODO: Object Spawning

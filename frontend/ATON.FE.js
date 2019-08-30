@@ -84,6 +84,11 @@ ATON.FE.loadSencData = function(qv, scenename, attrib, bSIG){
     ATON.FE.filterRecords();
 };
 
+ATON.FE.distributedLayerSwitch = function(layername, val){
+    ATON.switchLayer(layername, val);
+    ATON.vroadcast.replicateLayerSwitch(layername, val);
+};
+
 
 ATON.FE._growVolume = new osg.BoundingBox();
 ATON.FE._growVolume.init();
@@ -227,7 +232,7 @@ ATON.FE.setupPage = function(){
             console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
-            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.switchLayer("'+layername+'", this.checked)\' '+checked+' >'+layername+'<br>');
+            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.FE.distributedLayerSwitch("'+layername+'", this.checked)\' '+checked+' >'+layername+'<br>');
             }
 
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
@@ -1316,8 +1321,8 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([262.01,802.84,803.52],[295.16,842.49,778.58]);
                     //ATON.setHome([-34.01,-27.26,30.95],[-4.41,5.53,10.13]);
 
-                    ATON.on("LayerON", function(L){
-                        if (L === "Diff"){
+                    ATON.on("LayerSwitch", function(L){
+                        if (L.name === "Diff" && L.value){
                             ATON._mainSS.getUniform('uFogDistance').setFloat( 1000000.0 );
                             $('body').css('background-color', 'rgb(0,0,0)');
                             ATON.setFogColor(osg.vec4.fromValues(0,0,0, 0.0));

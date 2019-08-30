@@ -165,7 +165,7 @@ ATON.on("NodeRequestFired", undefined);
 ATON.on("NodeRequestCompleted", undefined);
 ATON.on("AllNodeRequestsCompleted", undefined);
 ATON.on("VRmode", undefined);
-ATON.on("LayerON", undefined);
+ATON.on("LayerSwitch", undefined);
 //console.log(ATON.eventHandlers);
 
 
@@ -2678,10 +2678,14 @@ ATON.switchLayer = function(layerName, value){
 
     if (value){
         layer.setNodeMask(layer._layerMask);
-        ATON.fireEvent("LayerON", layerName);
+        ATON.fireEvent("LayerSwitch", { name:layerName, value:true } );
         ATON._buildKDTree(ATON._groupVisible);
         }
-    else layer.setNodeMask(0x0);
+    else {
+        layer.setNodeMask(0x0);
+        ATON.fireEvent("LayerSwitch", { name:layerName, value:false } );
+        //ATON._buildKDTree(ATON._groupVisible);
+        }
 };
 
 ATON.isolateLayer = function(layerName){
@@ -2697,9 +2701,12 @@ ATON.switchAllLayers = function(value){
 
         if (value){
             layer.setNodeMask(layer._layerMask);
-            ATON.fireEvent("LayerON", key);
+            ATON.fireEvent("LayerSwitch", { name:key, value:true } );
             }
-        else layer.setNodeMask(0x0);
+        else {
+            layer.setNodeMask(0x0);
+            ATON.fireEvent("LayerSwitch", { name:key, value:false } );
+            }
         }
 };
 

@@ -224,7 +224,7 @@ ATON.FE.setupPage = function(){
         for (var layername in ATON.layers){
             let checked = "checked";
             if (ATON.layers[layername].getNodeMask() === 0) checked = "";
-            console.log(layername+" : "+checked);
+            //console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
             $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchLayer("'+layername+'", this.checked)\' '+checked+' >'+layername+'<br>');
@@ -265,6 +265,35 @@ ATON.FE.setupPage = function(){
             $('#idTR').html(ATON.tracer._tRad.toFixed(1) + "\'\'");
             }
         };
+
+    ATON.FE.search = function(){
+        var string = $('#idSearch').val();
+
+        if (string.length < 2) return;
+
+        //console.log("Searching "+string);
+
+        var i = undefined;
+        for (var key in ATON.descriptors){
+            const D = ATON.descriptors[key];
+
+            var keywords = key.split(" ");
+            //console.log(keywords);
+
+            for (k = 0; k < keywords.length; k++){
+                var kw = keywords[k];
+                if (kw.startsWith(string)) i = key;
+                }
+            }
+
+        if (i){
+            console.log(i);
+            if (ATON.descriptors[i]._onSelect) ATON.descriptors[i]._onSelect();  
+            else ATON.requestPOVbyDescriptor(i, 0.5);
+            }
+        };
+
+    $('#idSearch').on('keyup', ATON.FE.search );
 };
 
 ATON.FE.selectLayerMenu = function(layername){
@@ -293,6 +322,49 @@ ATON.FE.logPOV = function(){
     );
 };
 
+ATON.FE.showNoteModal = function(){
+Swal.fire({
+  title: 'New ShapeDescriptor ID',
+  text: "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius,
+  background: '#000',
+  //type: 'info',
+  input: 'text',
+  inputPlaceholder: 'annotation',
+  confirmButtonText: 'ADD'
+}).then((result)=>{
+    let did = result.value;
+    if (!did || did.length <3) return;
+
+    let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
+
+    let P = ATON.getCurrentPOVcopy();
+
+    D._onSelect = function(){ ATON.requestPOV(P); };
+
+    console.log("Added SphereDescriptor: "+did);
+});
+
+/*
+    Swal.fire({
+        title: 'Enter ShapeDescriptor name',
+        input: 'text',
+        inputValue: inputValue,
+        showCancelButton: true,
+        inputValidator: (value) => {
+            if (!value || value.length <3) return;
+
+            let D = ATON.addSphereDescriptor(value,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
+
+            let P = ATON.getCurrentPOVcopy();
+
+            D._onSelect = function(){ ATON.requestPOV(P); };
+
+            console.log("Added SphereDescriptor"+did);
+            }
+        });
+*/
+};
+
 ATON.FE.attachListeners = function(){
 	$(function() {
 		$(document).keydown(function(e){
@@ -300,13 +372,27 @@ ATON.FE.attachListeners = function(){
 				ATON.FE.logPOV();
                 }
 
-	    	if (e.key == 'p'){
-                var P = new ATON.pov;
-                P.pos    = ATON._currPOV.pos.slice(0);
-                P.target = ATON._currPOV.target.slice(0);
-                P.fov    = ATON._currPOV.fov;
+            if (e.key == 'i'){
+                if (ATON._hoveredVisData){
+                    ATON.FE.showNoteModal();
 
-                ATON.addPOV(P);
+/*
+                    var did = prompt("ShapeDescriptor name", "sphere");
+                    if (did && did.length > 2){
+                        let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
+
+                        let P = ATON.getCurrentPOVcopy();
+
+                        D._onSelect = function(){ ATON.requestPOV(P); };
+
+                        console.log("Added SphereDescriptor"+did);
+                        }
+*/
+                    }
+                }
+
+	    	if (e.key == 'p'){
+                ATON.addPOV( ATON.getCurrentPOVcopy() );
 
                 let povid = ATON.POVlist.length - 1;
                 $('#idPOVlist').append("<div class='atonMenuEntry' onclick='ATON.requestPOVbyIndex( "+povid+" );' ><img src='../res/ii-inv-pov.png' style='width:16px; height:auto'>POV #"+povid+"</div>");
@@ -592,6 +678,7 @@ window.addEventListener( 'load', function () {
                     scenename = "faug2";
                     //ATON.addLightProbe("../LP/default");
                     
+                    let pastDirOld = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/";
                     let pastDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
                     let dSS = ATON._groupDescriptors.getOrCreateStateSet();
 /*
@@ -636,12 +723,13 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(pastDir+"porticos_colonnade_L_m.osgjs", { layer: "Portico_L" });
                     ATON.addGraph(pastDir+"porticos_floor_L_m.osgjs", { layer: "Portico_L" });
                     
-                    //ATON.addGraph(pastDir+"temple_podium/root.osgjs", { layer: "Hypothesis_2" });
-                    //ATON.addGraph(pastDir+"temple_exterior/root.osgjs", { layer: "Hypothesis_2" });
-                    //ATON.addGraph(pastDir+"temple_entrance/root.osgjs", { layer: "Hypothesis_2" });
-                    //ATON.addGraph(pastDir+"temple_columns/root.osgjs", { layer: "Hypothesis_2" });
-                    //ATON.addGraph(pastDir+"temple_roof/root.osgjs", { layer: "Hypothesis_2" });
-
+/*
+                    ATON.addGraph(pastDirOld+"temple_podium/root.osgjs", { layer: "Hypothesis_2" });
+                    ATON.addGraph(pastDirOld+"temple_exterior/root.osgjs", { layer: "Hypothesis_2" });
+                    ATON.addGraph(pastDirOld+"temple_entrance/root.osgjs", { layer: "Hypothesis_2" });
+                    ATON.addGraph(pastDirOld+"temple_columns/root.osgjs", { layer: "Hypothesis_2" });
+                    ATON.addGraph(pastDirOld+"temple_roof/root.osgjs", { layer: "Hypothesis_2" });
+*/
                     ATON.switchLayer("Forum", false);
                     ATON.switchLayer("PostGuard", false);
                     ATON.switchLayer("ColossusHall", false);
@@ -962,18 +1050,29 @@ window.addEventListener( 'load', function () {
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { 
+                        layer: "COLUMNS", 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
+                        });
 
                     // TEST descriptors
-                    //ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_prv/proxies/T36.osgjs", "T36");
-                    //.onHover(function(){ console.log("T36"); });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/column/root.osgjs", "column", { 
-                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt",
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "colonne", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt",
                         color: [1,0,0, 1] 
                         });
-                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "hebe-box", { 
-                        transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-boxes.txt" 
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "capitelli", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-caps-semshapes.txt",
+                        color: [0,1,0, 1] 
                         });
-                
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "basi", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-square-bases-semshapes.txt",
+                        color: [0,0,1, 1] 
+                        });
+                    /*
+                    ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "statua", { 
+                        transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-semshapes.txt" 
+                        });
+                */
                     //QPV = ATON.QVhandler.addQV([-8.0,-8.0,-0.1], [16,16,6]);
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
@@ -1529,6 +1628,7 @@ if (asset === "sf"){
     ATON.on("ShapeDescriptorHovered", function(d){
         $("#idShapeDescr").html(d.getUniqueID());
         auDHover.play();
+        ATON.playTextToSpeech(d.getUniqueID());
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
         $("#idShapeDescr").html("none");

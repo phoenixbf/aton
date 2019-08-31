@@ -60,8 +60,8 @@ void main(){
 #ifdef FRAGMENT_SH
 
 uniform float time;
-
 uniform sampler2D BaseSampler;
+
 
 // MAIN
 //==============
@@ -69,7 +69,7 @@ void main(){
 	vec4 FinalFragment;
 
     FinalFragment = texture2D(BaseSampler, vec2(0,0));
-	float alpha = 0.2;
+	float alpha = 0.05; //0.2;
 
 /*
 	FinalFragment.r = (cos(time) + 1.0) * 0.5;
@@ -78,6 +78,13 @@ void main(){
 */
 	
 #ifndef MOBILE_DEVICE	// bHighlight
+	float f = dot(vViewNormal, vec3(0,0,1));
+	f *= 0.9;
+	f = 1.0 - f;
+	//f *= f;
+
+	alpha *= f;
+/*
 	alpha = 1.0;
 
 	float t = (sin(time*3.0) + 1.0);
@@ -90,12 +97,9 @@ void main(){
 	
 	hpd = (hpd*0.8) + 0.2;
 
-	float f = dot(vViewNormal, vec3(0,0,1));
-	f *= 0.8;
-	f = 1.0 - f;
-
 	alpha *= hpd * f;
 	//if (hpd > 0.95) alpha += 0.2;
+*/
 #endif
 
     FinalFragment.a = alpha;

@@ -169,6 +169,10 @@ ATON.on("LayerSwitch", undefined);
 //console.log(ATON.eventHandlers);
 
 
+// Audio
+ATON._bPlayingT2S = false;  // is playing text2speech audio
+
+
 // ATON Utils
 //==========================================================================
 ATON.utils = {};
@@ -660,6 +664,8 @@ ATON.descriptor = function(uname){
     this._onSelect = undefined;
     //this.onLeave  = undefined;
 
+    this._bSurface = false;
+
     this._triggers = {}; // TODO:
 };
 
@@ -726,6 +732,10 @@ ATON.addDescriptor = function(url, unid, options){
         if (options && options.color){
             var texcol = ATON.utils.createFillTexture(options.color);
             D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+
+            //var material = new osg.Material();
+	        //material.setDiffuse( options.color );
+	        //D.node.getOrCreateStateSet().setAttributeAndModes( material, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
             }
 
         D.node.setName(unid); // FIXME: maybe set from outside?
@@ -740,6 +750,33 @@ ATON.addDescriptor = function(url, unid, options){
 
     return ATON.descriptors[unid];
 
+};
+
+ATON.addSphereDescriptor = function(unid, title, location, r){
+    if (unid === undefined){
+        console.log("Cannot add sphere descriptor: No ID provided.");
+        return;
+        }
+
+    ATON.descriptors[unid] = new ATON.descriptor(unid);
+    let D = ATON.descriptors[unid];
+    D._bSurface = true;
+    
+    if (ATON._unitSphereDescr === undefined) ATON._unitSphereDescr = osg.createTexturedSphere(1.0, 10,10);
+    
+    D.node = new osg.MatrixTransform();
+    D.node.addChild(ATON._unitSphereDescr);
+    osg.mat4.setTranslation(D.node.getMatrix(), location );
+    //osg.mat4.multiply(D.node.getMatrix(), D.node.getMatrix(), osg.mat4.fromScaling( [], radius));
+    osg.mat4.scale(D.node.getMatrix(), D.node.getMatrix(), [r,r,r] );
+
+    D.node.setName(unid); // FIXME: maybe set from outside?
+    D.loading = false;
+
+    ATON._groupDescriptors.addChild( D.node ); // data
+
+    ATON._numDescriptors++;
+    return ATON.descriptors[unid];
 };
 
 ATON.addParentToDescriptor = function(unid, parent_unid){
@@ -775,12 +812,13 @@ ATON.addParentToDescriptor = function(unid, parent_unid){
 
 };
 
-
+/*
 // Annotations
 //==========================================================================
 ATON.annotation = function(){
     this.classList = []; // Keywords
 };
+*/
 
 /* ES6 CHECK
 class Shape {
@@ -844,6 +882,15 @@ ATON.getTarget = function(){
 // Add a POV to centralized DB
 ATON.addPOV = function(pov){
     ATON.POVlist.push(pov);
+};
+
+ATON.getCurrentPOVcopy = function(){
+    var P = new ATON.pov;
+    P.pos    = ATON._currPOV.pos.slice(0);
+    P.target = ATON._currPOV.target.slice(0);
+    P.fov    = ATON._currPOV.fov;
+
+    return P;
 };
 
 // Request transition to POV
@@ -2033,7 +2080,23 @@ ATON._updateCallback.prototype = {
         if (ATON._hoveredVisData === undefined){
             if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
             }
+        
+        // Descriptors
+/*
+        if (ATON._hoveredDescriptor){            
+            ATON._mainSS.getUniform('uHoverColor').setFloat4([0,1,1, 0.5]);
 
+            let D = ATON.descriptors[ATON._hoveredDescriptor];
+            let dBS = D.node.getBoundingSphere();
+            var C = dBS._center.slice(0);
+            
+            //console.log(dBS._center,dBS._radius);
+            
+            ATON._mainSS.getUniform('uHoverPos').setFloat3(C);
+            ATON._mainSS.getUniform('uHoverRadius').setFloat3(dBS._radius * 0.25);
+
+            }
+*/
         ATON.trackVR();
 
 /*
@@ -2105,25 +2168,117 @@ ATON._handleDescriptorsHover = function(){
         if (ATON._pickedDescriptorData){
             ATON._descrSS.getUniform('uHoverPos').setFloat3(ATON._pickedDescriptorData.p);
 
-            // last (closest) descriptorID on the path
+            // last (deeper) descriptorID on the path
             var hovD = undefined;
             if (ATON._pickedDescriptorsPath.length>0) hovD = ATON._pickedDescriptorsPath[ATON._pickedDescriptorsPath.length-1];
 
-            // On Hover
+            // squared distances to curr eye position
+            let distE2D = osg.vec3.squaredDistance(ATON._currPOV.pos, ATON._pickedDescriptorData.p);
+            let distE2V = undefined;
+            if (ATON._hoveredVisData) distE2V = osg.vec3.squaredDistance(ATON._currPOV.pos, ATON._hoveredVisData.p);
+
+            var bOccluded = false;
+            if (distE2V){
+                if (distE2V < distE2D) bOccluded = true;
+                }
+
+            // On Hover:
+            // Volumetric
+            var bPickedVolumetric = false;
             if (hovD !== ATON._hoveredDescriptor){
                 
-                ATON._hoveredDescriptor = hovD;
-                if (ATON.descriptors[ATON._hoveredDescriptor]){
-                    if (ATON.descriptors[ATON._hoveredDescriptor]._onHover) ATON.descriptors[ATON._hoveredDescriptor]._onHover();
-                    ATON.fireEvent("ShapeDescriptorHovered", ATON.descriptors[ATON._hoveredDescriptor]);
+                //ATON._hoveredDescriptor = hovD;
+                //let hD = ATON.descriptors[ATON._hoveredDescriptor];
+                let hD = ATON.descriptors[hovD];
+
+                if (hD && !bOccluded){
+                    if (!hD._bSurface){
+                        if (hD._onHover) hD._onHover();
+                        ATON.fireEvent("ShapeDescriptorHovered", hD);
+                        bPickedVolumetric = true;
+                        ATON._hoveredDescriptor = hovD;
+                        }
+                    else if (ATON._hoveredVisData){ // FIXME: kinda ok, but we have occlusion
+                        let dC = hD.node.getBoundingSphere()._center;
+                        let distS = osg.vec3.squaredDistance(dC, ATON._pickedDescriptorData.p); // semantic distance
+                        let distV = osg.vec3.squaredDistance(dC, ATON._hoveredVisData.p); // visible distance
+                        if (distV <= distS){
+                            if (hD._onHover) hD._onHover();
+                            ATON.fireEvent("ShapeDescriptorHovered", hD);
+                            ATON._hoveredDescriptor = hovD;
+                            }
+                        }
                     }
                 }
+
+/*
+            if (ATON._hoveredVisData){
+                for (let pd = 0; pd < ATON._pickedDescriptorsPath.length; pd++){
+                    const PDkey = ATON._pickedDescriptorsPath[pd];
+                    
+                    let hhD = ATON.descriptors[PDkey];
+                    if (hhD && hhD._bSurface){ // && PDkey !== ATON._hoveredDescriptor
+                        let dC = hhD.node.getBoundingSphere()._center;
+                        let distS = osg.vec3.squaredDistance(dC, ATON._pickedDescriptorData.p); // semantic distance
+                        let distV = osg.vec3.squaredDistance(dC, ATON._hoveredVisData.p); // visible distance
+
+                        //console.log(distS,distV);
+
+                        if (distV <= distS){
+                            ATON._hoveredDescriptor = PDkey;
+                            if (hhD._onHover) hhD._onHover();
+                            ATON.fireEvent("ShapeDescriptorHovered", hhD);
+                            }
+                        }
+                    }
+                }
+*/
             }
+
         // On Leave
         else {
             if (ATON._hoveredDescriptor) ATON.fireEvent("ShapeDescriptorLeft");
             ATON._hoveredDescriptor = undefined;
-            } 
+            }
+
+        // Surface FIXME:
+/*
+        //if (bPickedVolumetric) return;
+
+        if (ATON._hoveredVisData){
+            var dCandidate = undefined;
+            var rmin = undefined;
+
+            for (var d in ATON.descriptors){
+                const DD = ATON.descriptors[d];
+                if (DD._bSurface){
+                    const dbs = DD.node.getBoundingSphere();
+                    const DC = dbs._center;
+                    const DR = dbs._radius * dbs._radius;
+
+                    let distV = osg.vec3.squaredDistance(DC, ATON._hoveredVisData.p); // visible distance
+                    if (distV < DR){
+                        if (rmin === undefined || (DR<rmin) ){ 
+                            dCandidate = d;
+                            rmin = DR;
+                            }
+                        }
+                    }
+                }
+
+            if (dCandidate !== ATON._hoveredDescriptor){
+                //ATON._hoveredDescriptor = dCandidate;
+
+                let DFinal = ATON.descriptors[dCandidate];
+                if (DFinal){
+                    ATON._hoveredDescriptor = dCandidate;
+
+                    if (DFinal._onHover) DFinal._onHover();
+                    ATON.fireEvent("ShapeDescriptorHovered", DFinal);
+                    }
+                }
+            }
+*/
 };
 
 // Hover on Visible-Graph: Called each update
@@ -2281,6 +2436,9 @@ ATON.realize = function( canvas ){
     // Load Core Shaders
     ATON.utils.detectGLSLcapab();
     ATON.loadCoreShaders( ATON.shadersFolder );
+
+    // Text2Speech
+    ATON.initTextToSpeech();
 
 /*
     if ( window.screenfull ) {
@@ -2450,7 +2608,9 @@ ATON._attachListeners = function(){
 	    		}
 	    	if (e.key == 'f'){
                 if (ATON._hoveredDescriptor){
-				    ATON.requestPOVbyDescriptor(ATON._hoveredDescriptor, 0.3);
+                    let D = ATON.descriptors[ATON._hoveredDescriptor];
+				    if (D._onSelect) D._onSelect();  
+                    else ATON.requestPOVbyDescriptor(ATON._hoveredDescriptor, 0.3);
                     }
                 else ATON.requestPOVbyActiveLayers(0.3);
 	    		}
@@ -2527,6 +2687,7 @@ ATON._initGraph = function(){
     ATON._mainWorldTrans = new osg.MatrixTransform();
     ATON._mainWorldTrans.addChild(ATON._groupVisible);
     ATON._mainWorldTrans.addChild(ATON._groupDescriptors);
+    //ATON._groupDescriptors.setNodeMask(0x0);
 
     ATON._mainGroup.addChild(ATON._mainWorldTrans);
 
@@ -2585,6 +2746,18 @@ ATON._initGraph = function(){
         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
         );
 
+    ATON._descrSS.setAttributeAndModes( 
+        new osg.Depth( osg.Depth.LEQUAL ), // osg.Depth.LESS
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+        );
+
+    // without shader
+/*
+	var material = new osg.Material();
+	material.setAmbient( [1,0,0, 0.2] );
+	ATON._descrSS.setAttributeAndModes( material,osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
+*/
+
     // UI ss
     ATON._uiSS.setRenderingHint('TRANSPARENT_BIN');
     //ATON._uiSS.setBinNumber(12);
@@ -2592,6 +2765,11 @@ ATON._initGraph = function(){
     ATON._uiSS.setAttributeAndModes(
         //new osg.BlendFunc(), // osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA 
         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+        );
+
+    ATON._uiSS.setAttributeAndModes( 
+        new osg.Depth( osg.Depth.LEQUAL ), // osg.Depth.LESS
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
@@ -3748,4 +3926,45 @@ ATON.trackVR = function(){
     // should be -0.5 to 0.5
     ATON._VR.hmdNormPos[0] = hmdpos[0] / ATON._VR.Ax;
     ATON._VR.hmdNormPos[1] = hmdpos[2] / ATON._VR.Az;
+};
+
+
+/*
+    AUDIO
+===========================================*/
+ATON.initTextToSpeech = function(){
+    ATON._bPlayingT2S = false;
+
+    // get all voices that browser offers
+	var available_voices = window.speechSynthesis.getVoices();
+
+	ATON._t2sVoice = '';
+	// find voice by language locale "en-US"
+	// if not then select the first voice
+	for(var i=0; i<available_voices.length; i++) {
+		if(available_voices[i].lang === 'en-US') {
+			ATON._t2sVoice = available_voices[i];
+			break;
+		    }
+	    }
+	if (ATON._t2sVoice === '') ATON._t2sVoice = available_voices[0];
+
+    ATON._t2sUtter = new SpeechSynthesisUtterance();
+    ATON._t2sUtter.rate  = 1.2;
+    ATON._t2sUtter.pitch = 1.0;
+    ATON._t2sUtter.voice = ATON._t2sVoice;
+
+    // event after text has been spoken
+    ATON._t2sUtter.onend = function(){
+        //console.log('Speech has finished');
+        ATON._bPlayingT2S = false;
+        }
+};
+
+ATON.playTextToSpeech = function(text){
+    if (ATON._bPlayingT2S) return; // window.speechSynthesis.cancel();
+
+    ATON._bPlayingT2S = true;
+    ATON._t2sUtter.text = text;
+    window.speechSynthesis.speak(ATON._t2sUtter);
 };

@@ -167,6 +167,8 @@ ATON.on("AllNodeRequestsCompleted", undefined);
 ATON.on("VRmode", undefined);
 ATON.on("LayerSwitch", undefined);
 //console.log(ATON.eventHandlers);
+ATON.on("SpeechRecognition", undefined);
+ATON.on("SpeechRecognitionText", undefined);
 
 
 // Audio
@@ -2437,8 +2439,9 @@ ATON.realize = function( canvas ){
     ATON.utils.detectGLSLcapab();
     ATON.loadCoreShaders( ATON.shadersFolder );
 
-    // Text2Speech
+    // Speech
     ATON.initTextToSpeech();
+    ATON.initSpeechRecognition();
 
 /*
     if ( window.screenfull ) {
@@ -3967,4 +3970,67 @@ ATON.playTextToSpeech = function(text){
     ATON._bPlayingT2S = true;
     ATON._t2sUtter.text = text;
     window.speechSynthesis.speak(ATON._t2sUtter);
+};
+
+
+ATON.initSpeechRecognition = function(){
+    ATON._bSpeechListening = false;
+
+    try {
+        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        ATON._recognition = new SpeechRecognition();
+        //ATON._recognition.continuous = true;
+        }
+    catch(e) {
+        console.error(e);
+        }
+
+    ATON._recognition.onstart = function(){
+        ATON._bSpeechListening = true;
+        ATON.fireEvent("SpeechRecognition", true);
+        console.log('Voice recognition activated. Try speaking into the microphone.');
+        };
+
+    ATON._recognition.onspeechend = function(){
+        ATON._bSpeechListening = false;
+        ATON.fireEvent("SpeechRecognition", false);
+        console.log('You were quiet for a while so voice recognition turned itself off.');
+        };
+
+    ATON._recognition.onerror = function(event){
+        //ATON._bSpeechListening = false;
+        if(event.error == 'no-speech') console.log('No speech was detected. Try again.');
+        };
+
+    ATON._recognition.onresult = function(event) {
+        // event is a SpeechRecognitionEvent object.
+        // It holds all the lines we have captured so far. 
+        // We only need the current one.
+        var current = event.resultIndex;
+
+        // Get a transcript of what was said.
+        ATON._speechRecogText = event.results[current][0].transcript;
+
+        ATON._speechRecogText = ATON._speechRecogText.toLowerCase().trim();
+
+        console.log(ATON._speechRecogText);
+        ATON.fireEvent("SpeechRecognitionText", ATON._speechRecogText);
+        };
+};
+
+ATON.speechRecognitionStart = function(){
+    if (ATON._recognition === undefined) return;
+    if (ATON._bSpeechListening) return;
+
+    ATON._bSpeechListening = true;
+    ATON._recognition.start(); 
+    ATON.fireEvent("SpeechRecognition", true);
+};
+
+ATON.speechRecognitionStop = function(){
+    if (ATON._recognition === undefined) return;
+
+    ATON._bSpeechListening = false;
+    ATON._recognition.stop();
+    ATON.fireEvent("SpeechRecognition", false);
 };

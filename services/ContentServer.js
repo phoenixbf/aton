@@ -15,6 +15,9 @@ var ContentServer = {};
 
 ContentServer.PORT        = 8080;
 ContentServer.SECURE_PORT = 443;
+ContentServer.pathCert    = __dirname+'/_prv/server.cert';
+ContentServer.pathKey     = __dirname+'/_prv/server.key';
+
 ContentServer.WWW_FOLDER  = __dirname + "/../";
 
 // Debug on req received (client)
@@ -53,14 +56,20 @@ ContentServer.start = function(){
 
     http.createServer(this.app).listen(ContentServer.PORT, ()=>{ console.log('Content Server running on *.' + ContentServer.PORT); });
     
-    // Create an HTTPS service identical to the HTTP service
-/*
-    ContentServer.httpsOptions = {
-        key: fs.readFileSync(__dirname+'/keys/_prv/server.key', 'utf8'),
-        cert: fs.readFileSync(__dirname+'/keys/_prv/server.cert', 'utf8')
-        };
-    https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{ console.log('Secure Content Server running on *.' + ContentServer.SECURE_PORT); });
-*/
+    // HTTPS service
+    if (fs.existsSync(ContentServer.pathCert) && fs.existsSync(ContentServer.pathKey)){
+        ContentServer.httpsOptions = {
+            key: fs.readFileSync(ContentServer.pathKey, 'utf8'),
+            cert: fs.readFileSync(ContentServer.pathCert, 'utf8')
+            };
+
+        https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{ 
+            console.log('HTTPS Content Server running on *.' + ContentServer.SECURE_PORT);
+            });
+        }
+    else {
+        console.log("SSL certs not found: "+ContentServer.pathKey+", "+ContentServer.pathCert);
+        }
 }
 
 

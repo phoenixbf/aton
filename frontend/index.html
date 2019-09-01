@@ -54,6 +54,7 @@
                 <button id="idUserColor" type="button" class="atonBTN" onclick="$('#idVRCpanel').toggle();"></button>
                 <button id="idFS" type="button" class="atonBTN" onclick="ATON.FE.toggleFullscreen()"><img src="../res/ii-inv-fs.png"></button>
                 <button type="button" class="atonBTN" onclick="ATON.requestHome(1.0)"><img src="../res/ii-inv-home.png"></button>
+                <!-- <button id="idSpeechRecBTN" class="atonBTN" onclick="ATON.speechRecognitionStart()"><img src="../res/ii-inv-speech.png"></button> -->
             </li>
             </ul>
             &nbsp;
@@ -126,7 +127,7 @@
                 </li>
                 -->
                 <li class="nav-item">
-                    <input id="idSearch" type="text" size="30" placeholder="Search...">
+                    <!-- <input id="idSearch" type="text" size="30" placeholder="Search..."> -->
                 </li>
             </ul>
 
@@ -168,7 +169,11 @@
     
         <div style="width: 100%; background-color: rgba(0,0,0, 0.5)">
         <span id="idHoverPos"></span>&nbsp;|&nbsp;
-        ShapeDescriptor: <span id="idShapeDescr"></span>
+        ShapeDescriptor: <span id="idShapeDescr"></span>&nbsp;|&nbsp;
+        <div id="idSpeechRecBTN" onclick="ATON.speechRecognitionStart()" style="display:inline">
+            <img src="../res/ii-inv-speech.png" style="width:16px; height:auto;">
+            <span id="idSpeechText"></span>
+        </div>
         </div>
     </div>
 

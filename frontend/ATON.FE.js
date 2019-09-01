@@ -266,12 +266,10 @@ ATON.FE.setupPage = function(){
             }
         };
 
-    ATON.FE.search = function(){
-        var string = $('#idSearch').val();
-
+    ATON.FE.search = function(string){
         if (string.length < 2) return;
 
-        //console.log("Searching "+string);
+        console.log("Searching "+string);
 
         var i = undefined;
         for (var key in ATON.descriptors){
@@ -293,7 +291,12 @@ ATON.FE.setupPage = function(){
             }
         };
 
-    $('#idSearch').on('keyup', ATON.FE.search );
+    ATON.FE.searchField = function(){
+        var string = $('#idSearch').val();
+        ATON.FE.search(string);
+        };
+
+    $('#idSearch').on('keyup', ATON.FE.searchField );
 };
 
 ATON.FE.selectLayerMenu = function(layername){
@@ -322,47 +325,31 @@ ATON.FE.logPOV = function(){
     );
 };
 
-ATON.FE.showNoteModal = function(){
-Swal.fire({
-  title: 'New ShapeDescriptor ID',
-  text: "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius,
-  background: '#000',
-  //type: 'info',
-  input: 'text',
-  inputPlaceholder: 'annotation',
-  confirmButtonText: 'ADD'
-}).then((result)=>{
-    let did = result.value;
-    if (!did || did.length <3) return;
+ATON.FE.showModalNote = function(){
+    if (ATON._hoveredVisData === undefined) return;
+    if (ATON._vrState) return;
 
-    let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
-
-    let P = ATON.getCurrentPOVcopy();
-
-    D._onSelect = function(){ ATON.requestPOV(P); };
-
-    console.log("Added SphereDescriptor: "+did);
-});
-
-/*
     Swal.fire({
-        title: 'Enter ShapeDescriptor name',
+        title: 'New ShapeDescriptor ID',
+        text: "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius,
+        background: '#000',
+        //type: 'info',
         input: 'text',
-        inputValue: inputValue,
-        showCancelButton: true,
-        inputValidator: (value) => {
-            if (!value || value.length <3) return;
+        inputPlaceholder: 'annotation',
+        confirmButtonText: 'ADD'
+    }).then((result)=>{
+        let did = result.value;
+        if (!did || did.length <3) return;
 
-            let D = ATON.addSphereDescriptor(value,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
+        let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
 
-            let P = ATON.getCurrentPOVcopy();
+        let P = ATON.getCurrentPOVcopy();
 
-            D._onSelect = function(){ ATON.requestPOV(P); };
+        D._onSelect = function(){ ATON.requestPOV(P); };
 
-            console.log("Added SphereDescriptor"+did);
-            }
-        });
-*/
+        console.log("Added SphereDescriptor: "+did);
+    });
+
 };
 
 ATON.FE.attachListeners = function(){
@@ -374,20 +361,7 @@ ATON.FE.attachListeners = function(){
 
             if (e.key == 'i'){
                 if (ATON._hoveredVisData){
-                    ATON.FE.showNoteModal();
-
-/*
-                    var did = prompt("ShapeDescriptor name", "sphere");
-                    if (did && did.length > 2){
-                        let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
-
-                        let P = ATON.getCurrentPOVcopy();
-
-                        D._onSelect = function(){ ATON.requestPOV(P); };
-
-                        console.log("Added SphereDescriptor"+did);
-                        }
-*/
+                    ATON.FE.showModalNote();
                     }
                 }
 
@@ -458,7 +432,10 @@ ATON.FE.attachListeners = function(){
             if (e.key == 'r'){
                 console.log("Req QPA...");
                 if (QPV) ATON.vroadcast.requestPol();
-                }   
+                }
+
+            // Speech recognition
+            if (e.key == 'h') ATON.speechRecognitionStart(); 
 
             });
 
@@ -471,7 +448,10 @@ ATON.FE.attachListeners = function(){
                 auPOL.pause();
 
                 if (QPV) ATON.vroadcast.requestPol();
-                }   
+                }
+
+            // Speech recognition
+            if (e.key == 'h') ATON.speechRecognitionStop();   
             });
         });
 };
@@ -1055,6 +1035,8 @@ window.addEventListener( 'load', function () {
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
                         });
 
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gltf/microphone.gz", { layer: "mic" });
+
                     // TEST descriptors
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "colonne", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt",
@@ -1632,6 +1614,24 @@ if (asset === "sf"){
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
         $("#idShapeDescr").html("none");
+        });
+
+    ATON.on("SpeechRecognitionText", function(text){
+        if (text === "nota"){
+            ATON.FE.showModalNote();
+            return;
+            }
+        if (text === "home"){
+            ATON.requestHome();
+            return;
+            }
+
+        $("#idSpeechText").html(text);
+        ATON.FE.search(text);
+        });
+    ATON.on("SpeechRecognition", function(b){
+        if (b) $("#idSpeechRecBTN").css("background-color","rgba(255,0,0, 0.5)");
+        else $("#idSpeechRecBTN").css("background-color","rgba(0,255,0, 0.5)");
         });
 
     // Tracer =====================

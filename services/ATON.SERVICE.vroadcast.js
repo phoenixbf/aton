@@ -46,7 +46,7 @@ const optDefs = [
 ];
 // Parse options
 const serviceOptions = commandLineArgs(optDefs);
-console.log(serviceOptions);
+//console.log(serviceOptions);
 
 // Production
 if (serviceOptions.production){
@@ -1219,5 +1219,5 @@ io.on('connection', function(socket){
 
 
 http.listen(PORT, function(){
-    console.log('Listening on *:'+PORT);
+    console.log('VRoadcast service running on *:'+PORT);
 });

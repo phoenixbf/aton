@@ -450,6 +450,10 @@ ATON.vroadcast.touchUser = function(id){
     u._mt = new osg.MatrixTransform();
     u._mt.setCullingActive( false ); // sometimes user repr. disappears, why?
 
+    //var DFoc = new osg.Depth( osg.Depth.GREATER );
+    //DFoc.setRange(0.9, 1.0);
+    //u._mt.getOrCreateStateSet().setAttributeAndModes( DFoc );
+
 /*
     u._focAT = new osg.AutoTransform();
     u._focAT.setPosition([0,0,0]);
@@ -475,6 +479,12 @@ ATON.vroadcast.touchUser = function(id){
 
     u._at.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
     u._at.getOrCreateStateSet().setAttributeAndModes(
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+        );
+
+    u._mt.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
+    u._mt.getOrCreateStateSet().setAttributeAndModes(
         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
@@ -527,6 +537,8 @@ ATON.vroadcast.realizeUserModel = function(id){
         bgTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
 
         bg.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+        //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+
         console.log("Label BG loaded");
         });
 
@@ -603,9 +615,7 @@ ATON.vroadcast.realizeUserModel = function(id){
 
     u.statusNode.setCharacterSize( 0.1 );
     u.statusNode.setPosition( [ 0.0, 0.2+bgHoffset, 0.001 ] );
-    u._at.addChild(u.statusNode);
-
-    //ATON.vroadcast.userModel.setCullingActive( false );   
+    u._at.addChild(u.statusNode);   
 };
 
 // Set custom Model
@@ -613,6 +623,14 @@ ATON.vroadcast.setUserModel = function(url){
     var request = osgDB.readNodeURL( url );
     request.then( function ( node ){
         ATON.vroadcast.userModel = node;
+
+        ATON.vroadcast.userModel.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
+        ATON.vroadcast.userModel.getOrCreateStateSet().setAttributeAndModes(
+            new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
+            osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+            );
+
+        //ATON.vroadcast.userModel.setCullingActive( false );
 
         for (var u=0, len=ATON.vroadcast.users.length; u<len; u++){
             if (ATON.vroadcast.users[u]) ATON.vroadcast.realizeUserModel(u);

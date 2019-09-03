@@ -32,8 +32,8 @@ const now = require("performance-now");
 
 //const Png = require("png").Png;
 //const PNG = require('pngjs').PNG;
-const Jimp = require('jimp');
-
+//const Jimp = require('jimp');
+const QVH = require("QVhandler")
 
 // Command line
 const commandLineArgs = require('command-line-args');
@@ -46,7 +46,7 @@ const optDefs = [
 ];
 // Parse options
 const serviceOptions = commandLineArgs(optDefs);
-//console.log(serviceOptions);
+console.log(serviceOptions);
 
 // Production
 if (serviceOptions.production){
@@ -419,41 +419,28 @@ var touchSceneNode = function(sname){
     scene.numClients   = 0; // Note: scene.clients[] may not be contiguous
     scene.bRecordWrite = false;
 
-    var QFVpath = getGlobalQFVimgpath(sname);
 
-    scene.qfv = new QV(QFVpath);
-
-    // FIXME: add support to qv list per scene
-    //var QVdata = JSON.parse(fs.readFileSync(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8'));
-    fs.readFile(QV_ROOT_FOLDER+sname+'-qv.json', 'utf-8', (err, data) => {
-        if (err) console.log("QV json not found!");
-        else {
-            var QVdata = JSON.parse(data);
-            if (QVdata.list){
-                scene.qfv.setPositionAndExtents(QVdata.list[0].position, QVdata.list[0].extents);
-                }
-            }
+    QVH.outFolder = outRecordFolder;
+    QVH.addFromJSON(QV_ROOT_FOLDER+sname+'-qv.json', sname, ()=>{
+        console.log("Volumes loaded");
         });
-    
-/*
-    //scene.qfv.setPositionAndExtents([-70,-50,0], [150,70,50]); // faug2
-    if (sname === "cecilio") scene.qfv.setPositionAndExtents([-17.0,-41,0], [30,40,20]); // cecilio
-    if (sname === "hebe")    scene.qfv.setPositionAndExtents([-8.0,-8.0,-0.1], [16,16,6]); // hebe
-*/
-    var broadCastQFV = function(){
-        scene.qfv.PA.getBase64(Jimp.MIME_PNG, function(err, data){
+
+
+    var broadCastQVs = function(){
+        let VL = QVhandler.getVolumesList(sname);
+        for (let v = 0; v < VL.length; v++) VL[v].atlas.getBase64(Jimp.MIME_PNG, function(err, data){
             if (data){
-                io.in(sname).emit("POLFOC",data);
+                io.in(sname).emit("POLFOC",data); // FIXME: add volume ID
                 //console.log("TouchScene, QPA: "+data);
                 }
             });
         };
 
-    // Init QVA
-    if (!fs.existsSync(QFVpath)) scene.qfv.writePA();
-    else scene.qfv.readPAfromURL(QFVpath, broadCastQFV);
+    // Init QVA (FIXME: new QVH handler)
+    //if (!fs.existsSync(QFVpath)) scene.qfv.writePA();
+    //else scene.qfv.readPAfromURL(QFVpath, broadCastQVs);
 
-    broadCastQFV();
+    broadCastQVs();
 
     console.log("Created scene "+sname);
     //console.log(scene);
@@ -1206,23 +1193,11 @@ io.on('connection', function(socket){
             }
         });
 
-    socket.on('LAYERSWITCH', function(data){
-        if (scene){
-            socket.broadcast.to(sceneName).emit("LAYERSWITCH", data );
-            console.log("Layer switch "+data);
-            }
-        });
-
-    // Remote Log 
-    socket.on('LOG', function(data){
-        console.log(data);
-        });
-
 });
 
 
 
 
 http.listen(PORT, function(){
-    console.log('VRoadcast service running on *:'+PORT);
+    console.log('Listening on *:'+PORT);
 });

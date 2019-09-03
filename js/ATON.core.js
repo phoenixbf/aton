@@ -3139,6 +3139,7 @@ ATON.addLightProbe = function(folderurl /*, position*/){
         ATON._LPT.getOrCreateStateSet().setAttributeAndModes( 
             D, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE 
             );
+
 /*
         var LPm = new osg.Material();
         LPm.setEmission(osg.vec4.fromValues(1,1,1,1));
@@ -3689,14 +3690,16 @@ ATON._handleGamepads = function(){
             
             // buttons
 			for (var b = 0; b < gamepad.buttons.length; ++b){
+                
                 // QV polarization
-                if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
+                //if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
 
 				if (gamepad.buttons[b].pressed){
 					//console.log("GM: Pressed button "+b);
 
                     // 3 = A, 4 = B
                     if (b === 1) ATON._requestFirstPersonTrans(ATON._hoveredVisData);
+                    if (b === 2) ATON.speechRecognitionStart();
 					if (b === 3) ATON.requestHome();
 					//else ATON._requestFirstPersonTrans(ATON._hoveredVisData);       
 					}
@@ -3951,7 +3954,7 @@ ATON.initTextToSpeech = function(){
 		    }
 	    }
 	if (ATON._t2sVoice === '') ATON._t2sVoice = available_voices[0];
-
+/*
     ATON._t2sUtter = new SpeechSynthesisUtterance();
     ATON._t2sUtter.rate  = 1.2;
     ATON._t2sUtter.pitch = 1.0;
@@ -3962,29 +3965,48 @@ ATON.initTextToSpeech = function(){
         //console.log('Speech has finished');
         ATON._bPlayingT2S = false;
         }
+*/
 };
 
 ATON.playTextToSpeech = function(text){
     if (ATON._bPlayingT2S) return; // window.speechSynthesis.cancel();
 
     ATON._bPlayingT2S = true;
+
+    ATON._t2sUtter = new SpeechSynthesisUtterance();
+    ATON._t2sUtter.rate  = 1.2;
+    ATON._t2sUtter.pitch = 1.0;
+    ATON._t2sUtter.voice = ATON._t2sVoice;
     ATON._t2sUtter.text = text;
+
     window.speechSynthesis.speak(ATON._t2sUtter);
+
+    // event after text has been spoken
+    ATON._t2sUtter.onend = function(){
+        //console.log('Speech has finished');
+        ATON._bPlayingT2S = false;
+        }
 };
 
 
 ATON.initSpeechRecognition = function(){
     ATON._bSpeechListening = false;
 
+    const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
+    if (SpeechRecognition === undefined) return;
+
+    ATON._recognition = new SpeechRecognition();
+
+    /*
     try {
-        var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
         ATON._recognition = new SpeechRecognition();
         //ATON._recognition.continuous = true;
         }
     catch(e) {
         console.error(e);
         }
-
+*/
     ATON._recognition.onstart = function(){
         ATON._bSpeechListening = true;
         ATON.fireEvent("SpeechRecognition", true);

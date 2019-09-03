@@ -435,7 +435,7 @@ ATON.FE.attachListeners = function(){
                 }
 
             // Speech recognition
-            if (e.key == 'h') ATON.speechRecognitionStart(); 
+            if (e.key == 'h') ATON.speechRecognitionStart();
 
             });
 
@@ -461,7 +461,9 @@ TODO: move
 ===============================================*/
 var PolNav = function(){
     //ATON._polPos = undefined;
-    if (ATON._isMobile) return; // FIXME: mobile canvas
+    
+    // FIXME: mobile canvas (Brave browser) hangs on tap when ATON._hoveredVisData.p is inside volume 
+    if (ATON._isMobile) return;
 
     var qfv = ATON.QVhandler.getActiveQV();
     if (qfv === undefined) return;
@@ -472,6 +474,7 @@ var PolNav = function(){
 
     // TODO: use ATON.FE.QVhoverValue
     var v = qfv.getRGBAfromLocation(ATON._hoveredVisData.p);
+
     if (v[3] <= 0){
         if (ATON._polForce > 0.0) ATON._polForce -= 0.0001;
         /*
@@ -593,6 +596,10 @@ ATON.polarizedAffordance = function(){
 window.addEventListener( 'load', function () {
 
     ATON.FE.setupPage();
+
+    // TEST LOG
+    //console.log   = function(txt){ $('#idVRCchat').append(txt+"<br>"); };
+    //console.error = function(txt){ $('#idVRCchat').append(txt+"<br>"); };
 
     // First we grab canvas element
     var canvas = document.getElementById( 'View' );
@@ -1747,6 +1754,18 @@ if (asset === "sf"){
             var u = ATON.vroadcast.users[d.id];
             $('#idVRCchat').append("<div><i>User "+u.name+" entered scene "+scenename+"</i><br></div>");
             });
+
+        // REMOTE LOG
+/*
+        console.log = function(txt){
+            var s = "[LOG] "+ATON.vroadcast._myUser.id + " :: "+txt;
+            ATON.vroadcast.socket.emit("LOG", s);
+            };
+        console.error = function(txt){
+            var s = "[ERR] "+ATON.vroadcast._myUser.id + " :: "+txt;
+            ATON.vroadcast.socket.emit("LOG", s);
+            };
+*/
         }
 
     // On completion

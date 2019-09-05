@@ -143,6 +143,13 @@ ATON.onTickRoutines = [];
 
 // Centralized custom event handling
 ATON.eventHandlers = {};
+
+ATON.registerEvents = function(evtList){
+    for (let e = 0; e < evtList.length; e++) {
+        var evname = evtList[e];
+        ATON.on(evname, undefined);
+        }
+};
 ATON.on = function(evtname, f){
     ATON.eventHandlers[evtname] = f;
     //console.log("Custom event handler for '"+evtname+ "' registered.");
@@ -158,17 +165,26 @@ ATON.fireEvent = function(evtname, param){
 
 //ATON.on("myEvent", function(txt){ console.log(txt); });
 //ATON._fireEvtHandler("onSample", 'ciao');
-ATON.on("ShapeDescriptorHovered", undefined);
-ATON.on("ShapeDescriptorSelected", undefined);
-ATON.on("ShapeDescriptorLeft", undefined);
-ATON.on("NodeRequestFired", undefined);
-ATON.on("NodeRequestCompleted", undefined);
-ATON.on("AllNodeRequestsCompleted", undefined);
-ATON.on("VRmode", undefined);
-ATON.on("LayerSwitch", undefined);
+ATON.registerEvents([
+    "MouseRightButton",
+    "MouseMidButton",
+
+    "ShapeDescriptorHovered",
+    "ShapeDescriptorSelected",
+    "ShapeDescriptorLeft",
+    
+    "NodeRequestFired",
+    "NodeRequestCompleted",
+    "AllNodeRequestsCompleted",
+    
+    "VRmode",
+    
+    "LayerSwitch",
+    
+    "SpeechRecognition",
+    "SpeechRecognitionText"
+]);
 //console.log(ATON.eventHandlers);
-ATON.on("SpeechRecognition", undefined);
-ATON.on("SpeechRecognitionText", undefined);
 
 
 // Speech
@@ -2385,7 +2401,7 @@ ATON.realize = function( canvas ){
     ATON._viewer = new osgViewer.Viewer( canvas, {
         'antialias': ATON._isMobile? false : true, // FIXME: some artifacts on mobile, fixes VR issues 
         //'stats': true,
-        //'overrideDevicePixelRatio': 1, // if specified override the device pixel ratio
+        'overrideDevicePixelRatio': 2, // if specified override the device pixel ratio
         'enableFrustumCulling': true,
         //'alpha': true,
         //'scrollwheel': false,
@@ -2395,10 +2411,15 @@ ATON.realize = function( canvas ){
     ATON._viewer.init();
     ATON._viewer.setLightingMode( osgViewer.View.LightingMode.NO_LIGHT );
 
-    // Navigation 
+    // Orbit (default) 
     ATON._viewer.setupManipulator();
+    
     ATON._orbitMan = ATON._viewer.getManipulator();
+    //ATON._orbitMan = new osgGA.OrbitManipulator({ inputManager: this._viewer.getInputManager() });
+    //ATON._viewer.setManipulator( ATON._orbitMan );
+    
     ATON._orbitMan.setNode(ATON._groupVisible);
+    console.log(ATON._orbitMan);
 
     // First person
     ATON._firstPerMan = new osgGA.FirstPersonManipulator({ inputManager: this._viewer.getInputManager() });
@@ -2571,7 +2592,13 @@ ATON._attachListeners = function(){
 
 
         //console.log( ATON._screenQueryNormalized );
-	  	}, false);
+        }, false);
+          
+    // Mouse buttons
+    ATON._canvas.addEventListener('mousedown', function(e){
+        if (e.button === 1) ATON.fireEvent("MouseMidButton");      // middle-click
+        if (e.button === 2) ATON.fireEvent("MouseRightButton");    // right-click
+        });
 
     // KEYBOARD
 	$(function() {

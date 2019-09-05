@@ -69,7 +69,7 @@ void main(){
 	vec4 FinalFragment;
 
     FinalFragment = texture2D(BaseSampler, vec2(0,0));
-	float alpha = 0.05; //0.2;
+	float alpha = 0.1; //0.2;
 
 /*
 	FinalFragment.r = (cos(time) + 1.0) * 0.5;
@@ -95,11 +95,13 @@ void main(){
     hpd /= 5.0; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
 	
-	hpd = (hpd*0.8) + 0.2;
+	//hpd = (hpd*0.8) + 0.2;
 
-	alpha *= hpd * f;
-	//if (hpd > 0.95) alpha += 0.2;
+	alpha += (hpd * f);
+	//alpha *= hpd * f;
+	////if (hpd > 0.95) alpha += 0.2;
 */
+
 #endif
 
     FinalFragment.a = alpha;

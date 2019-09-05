@@ -25,15 +25,17 @@ ATON.vroadcast._bPOLdirty = true;
 //ATON.vroadcast.onDisconnect = undefined;
 //ATON.vroadcast.onPolDataReceived = undefined;
 
-ATON.on("VRC_IDassigned", undefined);
-ATON.on("VRC_Disconnect", undefined);
-ATON.on("VRC_PolDataReceived", undefined);
-ATON.on("VRC_PolCellReceived", undefined);
-ATON.on("VRC_UserName", undefined);
-ATON.on("VRC_UserMessage", undefined);
-ATON.on("VRC_UserLeft", undefined);
-ATON.on("VRC_UserEntered", undefined);
-ATON.on("VRC_LayerSwitch", undefined);
+ATON.registerEvents([
+    "VRC_IDassigned",
+    "VRC_Disconnect",
+    "VRC_PolDataReceived",
+    "VRC_PolCellReceived",
+    "VRC_UserName",
+    "VRC_UserMessage",
+    "VRC_UserLeft",
+    "VRC_UserEntered",
+    "VRC_LayerSwitch"
+]);
 
 ATON.vroadcast.users      = [];
 ATON.vroadcast.manip      = undefined;
@@ -317,7 +319,7 @@ ATON.vroadcast.toggleFocusPolarization = function(){
 // Distributed switch layer
 ATON.vroadcast.switchLayer = function(layername, val){
     ATON.switchLayer(layername, val);
-    ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:val });
+    if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:val });
 
     ATON.fireEvent("VRC_LayerSwitch", { name:layername, value:val });
 }

@@ -360,9 +360,7 @@ ATON.FE.attachListeners = function(){
                 }
 
             if (e.key == 'i'){
-                if (ATON._hoveredVisData){
-                    ATON.FE.showModalNote();
-                    }
+
                 }
 
 	    	if (e.key == 'p'){
@@ -1617,7 +1615,7 @@ if (asset === "sf"){
     ATON.on("ShapeDescriptorHovered", function(d){
         $("#idShapeDescr").html(d.getUniqueID());
         auDHover.play();
-        ATON.speechSynthesis(d.getUniqueID());
+        //ATON.speechSynthesis(d.getUniqueID());
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
         $("#idShapeDescr").html("none");
@@ -1673,12 +1671,7 @@ if (asset === "sf"){
     $('#idUserColor').hide();
 
     //vrcIP = ATON.utils.getURLparams().vrc;
-    if (vrcIP !== undefined){
-        //IP = "127.0.0.1";
-        //IP = "192.168.0.193";
-        //IP = "192.167.233.180";
-        //IP = "seth.itabc.cnr.it";
-
+    if (vrcIP !== undefined){ 
         if (vrcIP.length < 3) vrcIP = window.location.hostname;
 
         ATON.vroadcast.uStateFreq = 0.05;
@@ -1795,6 +1788,12 @@ if (asset === "sf"){
                     if (layout === "sig") ATON.FE.loadSencData(QPV, scenename, stateattrib, true);
                     }
                 }
+            }
+        });
+
+    ATON.on("MouseMidButton",()=>{
+        if (ATON._hoveredVisData){
+            ATON.FE.showModalNote();
             }
         });
 

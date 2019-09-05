@@ -171,7 +171,7 @@ ATON.on("SpeechRecognition", undefined);
 ATON.on("SpeechRecognitionText", undefined);
 
 
-// Audio
+// Speech
 ATON._bPlayingT2S = false;  // is playing text2speech audio
 
 
@@ -2440,7 +2440,7 @@ ATON.realize = function( canvas ){
     ATON.loadCoreShaders( ATON.shadersFolder );
 
     // Speech
-    ATON.initTextToSpeech();
+    ATON.initSpeechSynthesis();
     ATON.initSpeechRecognition();
 
 /*
@@ -3938,7 +3938,7 @@ ATON.trackVR = function(){
 /*
     AUDIO
 ===========================================*/
-ATON.initTextToSpeech = function(){
+ATON.initSpeechSynthesis = function(){
     ATON._bPlayingT2S = false;
 
     // get all voices that browser offers
@@ -3968,7 +3968,7 @@ ATON.initTextToSpeech = function(){
 */
 };
 
-ATON.playTextToSpeech = function(text){
+ATON.speechSynthesis = function(text){
     if (ATON._bPlayingT2S) return; // window.speechSynthesis.cancel();
 
     ATON._bPlayingT2S = true;
@@ -4020,7 +4020,7 @@ ATON.initSpeechRecognition = function(){
         };
 
     ATON._recognition.onerror = function(event){
-        //ATON._bSpeechListening = false;
+        ATON._bSpeechListening = false;
         if(event.error == 'no-speech') console.log('No speech was detected. Try again.');
         };
 

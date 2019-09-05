@@ -1617,7 +1617,7 @@ if (asset === "sf"){
     ATON.on("ShapeDescriptorHovered", function(d){
         $("#idShapeDescr").html(d.getUniqueID());
         auDHover.play();
-        ATON.playTextToSpeech(d.getUniqueID());
+        ATON.speechSynthesis(d.getUniqueID());
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
         $("#idShapeDescr").html("none");

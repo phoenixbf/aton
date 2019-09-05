@@ -751,8 +751,12 @@ ATON.addDescriptor = function(url, unid, options){
             var texcol = ATON.utils.createFillTexture(options.color);
             D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 
+            //console.log(options.color);
+
             //var material = new osg.Material();
-	        //material.setDiffuse( options.color );
+	        //material.setDiffuse( [options.color[0],options.color[1],options.color[2],0.2] );
+            //material.setAmbient( options.color );
+            //material.setEmission( options.color );
 	        //D.node.getOrCreateStateSet().setAttributeAndModes( material, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
             }
 
@@ -2099,22 +2103,6 @@ ATON._updateCallback.prototype = {
             if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
             }
         
-        // Descriptors
-/*
-        if (ATON._hoveredDescriptor){            
-            ATON._mainSS.getUniform('uHoverColor').setFloat4([0,1,1, 0.5]);
-
-            let D = ATON.descriptors[ATON._hoveredDescriptor];
-            let dBS = D.node.getBoundingSphere();
-            var C = dBS._center.slice(0);
-            
-            //console.log(dBS._center,dBS._radius);
-            
-            ATON._mainSS.getUniform('uHoverPos').setFloat3(C);
-            ATON._mainSS.getUniform('uHoverRadius').setFloat3(dBS._radius * 0.25);
-
-            }
-*/
         ATON.trackVR();
 
 /*
@@ -2132,6 +2120,25 @@ ATON._updateCallback.prototype = {
         manip.setTarget(ATON._currPOV.target);
         manip.setEyePosition(ATON._currPOV.pos);
         //================ End of Navigation
+
+        // Descriptors
+/*
+        if (ATON._hoveredDescriptor){            
+            //ATON._mainSS.getUniform('uHoverColor').setFloat4([0,1,1, 0.5]);
+
+            let D = ATON.descriptors[ATON._hoveredDescriptor];
+            let dBS = D.node.getBoundingSphere();
+            var C = dBS._center.slice(0);
+            
+            //console.log(dBS._center,dBS._radius);
+            
+            //ATON._descrSS.getUniform('uHoverPos').setFloat3(C);
+            ATON._descrSS.getUniform('uHoverRadius').setFloat(dBS._radius * 0.95);
+            }
+        else {
+            ATON._descrSS.getUniform('uHoverRadius').setFloat(0.1);
+            }
+*/
 
 /*
         if (ATON._HMD)
@@ -2419,7 +2426,7 @@ ATON.realize = function( canvas ){
     //ATON._viewer.setManipulator( ATON._orbitMan );
     
     ATON._orbitMan.setNode(ATON._groupVisible);
-    console.log(ATON._orbitMan);
+    //console.log(ATON._orbitMan);
 
     // First person
     ATON._firstPerMan = new osgGA.FirstPersonManipulator({ inputManager: this._viewer.getInputManager() });
@@ -2771,22 +2778,22 @@ ATON._initGraph = function(){
     ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
     //ATON._descrSS.setBinNumber(11);
 
+    //ATON._descrSS.setAttributeAndModes( osg.LIGHTING, osg.StateAttribute.OFF);
+
     ATON._descrSS.setAttributeAndModes(
         new osg.CullFace( 'BACK' ),
-        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
-        );
-
-    ATON._descrSS.setAttributeAndModes( 
-        new osg.Depth( osg.Depth.LEQUAL ), // osg.Depth.LESS
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
+    var df = new osg.Depth( osg.Depth.LESS );
+    df.setRange(0.0,1.0);
+    df.setWriteMask(false); // important
+    ATON._descrSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+
     // without shader
-/*
-	var material = new osg.Material();
-	material.setAmbient( [1,0,0, 0.2] );
-	ATON._descrSS.setAttributeAndModes( material,osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
-*/
+	//var material = new osg.Material();
+	//material.setDiffuse( [1,0,0, 0.2] );
+	//ATON._descrSS.setAttributeAndModes( material,osg.StateAttribute.ON);
 
     // UI ss
     ATON._uiSS.setRenderingHint('TRANSPARENT_BIN');
@@ -2798,10 +2805,7 @@ ATON._initGraph = function(){
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
-    ATON._uiSS.setAttributeAndModes( 
-        new osg.Depth( osg.Depth.LEQUAL ), // osg.Depth.LESS
-        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
-        );
+    ATON._uiSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 
     // Check
     //ATON._groupUI.setCullingActive( false );
@@ -3255,6 +3259,7 @@ ATON._initCoreUniforms = function(){
 
     // Descriptors
     ATON._descrSS.addUniform( osg.Uniform.createFloat3( osg.vec3.create(), 'uHoverPos' ) );
+    ATON._descrSS.addUniform( osg.Uniform.createFloat1( 5.0, 'uHoverRadius' ) );
 
     // QUSV
     ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );

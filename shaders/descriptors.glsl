@@ -22,6 +22,7 @@ varying vec3 vWorldVertex;
 varying vec3 vViewNormal;
 
 uniform vec3 uHoverPos;
+uniform float uHoverRadius;
 
 //=========================================================
 // VERTEX SHADER
@@ -31,7 +32,6 @@ uniform vec3 uHoverPos;
 attribute vec3 Normal;
 attribute vec3 Vertex;
 attribute vec4 Color;
-//attribute Material;
 
 uniform mat3 uModelViewNormalMatrix;
 uniform mat3 uModelNormalMatrix;
@@ -62,12 +62,15 @@ void main(){
 uniform float time;
 uniform sampler2D BaseSampler;
 
+//uniform vec4 uMaterialDiffuse;
+
 
 // MAIN
 //==============
 void main(){
 	vec4 FinalFragment;
 
+	//FinalFragment = uMaterialDiffuse;
     FinalFragment = texture2D(BaseSampler, vec2(0,0));
 	float alpha = 0.1; //0.2;
 
@@ -90,9 +93,11 @@ void main(){
 	float t = (sin(time*3.0) + 1.0);
 	t *= 0.5;
 	alpha = mix(alpha, alpha*0.5, t);
+*/
 
+#if 0
 	float hpd = distance(uHoverPos, vWorldVertex);
-    hpd /= 5.0; // radius
+    hpd /= uHoverRadius; // radius
     hpd = 1.0- clamp(hpd, 0.0,1.0);
 	
 	//hpd = (hpd*0.8) + 0.2;
@@ -100,7 +105,7 @@ void main(){
 	alpha += (hpd * f);
 	//alpha *= hpd * f;
 	////if (hpd > 0.95) alpha += 0.2;
-*/
+#endif
 
 #endif
 

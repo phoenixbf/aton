@@ -1,7 +1,7 @@
 /*!
     @preserve
 
-    ATON Emviq
+    ATON EMviq
     depends on ATON.core
 
  	@author Bruno Fanini
@@ -35,11 +35,51 @@ const EMVIQ_STR_COMBINER          = "COMBINER";
 const EMVIQ_STR_EXTRACTOR         = "EXTRACTOR";
 
 
+ATON.emviq.x2js = new X2JS({attributePrefix:"@"});
+
 // EM List
 ATON.emviq.EMlist = [];
 
 
+/*
+ATON.emviq.xmlToJson = function(xml) {
+	
+	// Create the return object
+	var obj = {};
 
+	if (xml.nodeType == 1) { // element
+		// do attributes
+		if (xml.attributes.length > 0) {
+		obj["@attributes"] = {};
+			for (var j = 0; j < xml.attributes.length; j++) {
+				var attribute = xml.attributes.item(j);
+				obj["@attributes"][attribute.nodeName] = attribute.nodeValue;
+			}
+		}
+	} else if (xml.nodeType == 3) { // text
+		obj = xml.nodeValue;
+	}
+
+	// do children
+	if (xml.hasChildNodes()) {
+		for(var i = 0; i < xml.childNodes.length; i++) {
+			var item = xml.childNodes.item(i);
+			var nodeName = item.nodeName;
+			if (typeof(obj[nodeName]) == "undefined") {
+				obj[nodeName] = ATON.emviq.xmlToJson(item);
+			} else {
+				if (typeof(obj[nodeName].push) == "undefined") {
+					var old = obj[nodeName];
+					obj[nodeName] = [];
+					obj[nodeName].push(old);
+				}
+				obj[nodeName].push(ATON.emviq.xmlToJson(item));
+			}
+		}
+	}
+	return obj;
+};
+*/
 
 
 // Single EM
@@ -62,6 +102,14 @@ parseGraphML: function(graphmlurl){
 
     $.get( graphmlurl, function(xml){
 
+        //var x = ATON.emviq.xmlToJson(xml);
+
+        var jx = ATON.emviq.x2js.xml_str2json( xml );
+        var jxRoot = jx.graphml.graph.node.graph;
+        if (!jxRoot) return;
+
+        console.log(jxRoot);
+/*
         var gml = $(xml).find('graphml').first();
         //console.log(gml);
         if (gml === undefined) return;
@@ -69,10 +117,11 @@ parseGraphML: function(graphmlurl){
         var gmlRoot = $(gml).find('graph').first();
         if (gmlRoot === undefined) return;
         
-        //console.log(  );
+        //console.log( gmlRoot.text() );
 
         self.realizeProxyGraphFromXMLnode(gmlRoot);
-    },"xml").fail( function(){ // XML failed to load
+*/
+    },"text").fail( function(){ // was "xml" type // XML failed to load
 		console.log("ERROR Loading EM GraphML");
     });
 
@@ -116,19 +165,22 @@ realizeProxyGraphFromXMLnode: function(xmlRoot){
 
     var G = new osg.Node();
 
-    $(xmlRoot).find('node').each( function (n) {
+    $(xmlRoot).find('node').each( function(){
+
+        console.log("Traversing node: " + $(this).text().trim());
 
         // Recursive subgraph on this child
+/*
         var subG = $(this).find('graph').first();
         if (subG){
             var S = new osg.Node();
             S = self.realizeProxyGraphFromXMLnode(subG);
             G.addChild( S );
             }
-
+*/
         var nodeType; // TODO
 
-        self._retrieveXMLnodeInfo(n);
+        //self._retrieveXMLnodeInfo($(this)/*n*/);
 
         //console.log("XXX");
         //console.log( $(this).text() );

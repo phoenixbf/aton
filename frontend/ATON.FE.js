@@ -1586,6 +1586,11 @@ if (asset === "sf"){
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
 
+    // TEST
+    var em = new ATON.emviq.EM();
+    em.parseGraphML(ATON.FE.MODELS_ROOT+"sample-em.graphml");
+
+
     // POVs
     var povstr = ATON.utils.getURLparams().pov;
     if (povstr){

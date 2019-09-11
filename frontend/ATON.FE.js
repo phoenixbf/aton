@@ -922,6 +922,71 @@ window.addEventListener( 'load', function () {
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){ QPV = ATON.QVhandler.getActiveQV(); });
                     break;
 
+                    case "gt":
+                        scenename = "greattemple";
+    
+                        //ATON.addLightProbe("../LP/default");
+    
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Walls_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Travi_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto1_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto_6_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto_5_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto_4_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto_3_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tetto_2_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Terreno_interno_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tempio_6_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tempio_5_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tempio_4_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tempio_3_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Tempio_2_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/tempio_1_BAKE_m.osgjs", {layer: "IIAD"});
+                        
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Podio_2_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Podio1_BAKE_m.osgjs", {layer: "IIAD"});
+                        
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Sottotetto_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Scale_2_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Scale_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Porta2_BAKE_m.osgjs", {layer: "IIAD"});
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Porta2_BAKE_001_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Porta1_BAKE_m.osgjs", {layer: "IIAD"});
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Porta1_BAKE_001_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Pavimento_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Ingresso_3_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Ingresso_2_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Ingresso_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Cassettonato_BAKE_m.osgjs", {layer: "IIAD"});
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Architrave_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gt/Column_tempio_m.osgjs", {
+                            layer: "IIAD", 
+                            transformRules: ATON.FE.MODELS_ROOT+"_prv/gt/Column_tempio-inst.txt" 
+                            });
+
+                        //ATON.setHome([-0.28,-19.14,2.87],[-0.30,-0.39,4.58]);
+                        //ATON.requestHome(0.01);
+                        break;
+
+                case "scs":
+                    scenename = "scs";
+
+                    var em = new ATON.emviq.EM();
+                    em.parseGraphML(ATON.FE.MODELS_ROOT+"scs.graphml");
+
+                    
+
+                    break;
+
                 case "test_cap":
                     scenename = "test_cap";
 
@@ -1585,10 +1650,6 @@ if (asset === "sf"){
 
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-left.osgjs", ATON_VR_CONTROLLER_L);
     //ATON.setVRcontrollerModel(ATON.FE.RES_ROOT+"assets/controllers/controller-ot-right.osgjs", ATON_VR_CONTROLLER_R);
-
-    // TEST
-    var em = new ATON.emviq.EM();
-    em.parseGraphML(ATON.FE.MODELS_ROOT+"sample-em.graphml");
 
 
     // POVs

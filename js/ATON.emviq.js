@@ -19,9 +19,9 @@ ATON.emviq.YED_dAttrURL      = "d4";
 
 ATON.emviq.YED_sSeriation = "ellipse";          // USV Series
 ATON.emviq.YED_sUS        = "rectangle";        // SU (or US)
-ATON.emviq.YED_sSeriation = "parallelogram";    // Structural Virtual SU
-ATON.emviq.YED_sSeriation = "hexagon";          // Non-structural Virtual SU
-ATON.emviq.YED_sSeriation = "octagon";          // (virtual) special find
+ATON.emviq.YED_sUSVS      = "parallelogram";    // Structural Virtual SU
+ATON.emviq.YED_sUSVN      = "hexagon";          // Non-structural Virtual SU
+ATON.emviq.YED_sSF        = "octagon";          // (virtual) special find
 
 const EMVIQ_YED_ATTR_NODEGRAPHICS = "nodegraphics";
 const EMVIQ_YED_ATTR_EDGEGRAPHICS = "edgegraphics";
@@ -34,6 +34,19 @@ const EMVIQ_YED_BPMN_PROPERTY     = "ARTIFACT_TYPE_ANNOTATION";
 const EMVIQ_STR_COMBINER          = "COMBINER";
 const EMVIQ_STR_EXTRACTOR         = "EXTRACTOR";
 
+
+ATON.emviq.NODETYPES = {
+    SERIATION:0,
+    US:1,
+    USVS:2,
+    USVN:3,
+    SPECIALFIND:4,
+
+    COMBINER:5,
+    EXTRACTOR:6,
+    DOCUMENT:7,
+    PROPERTY:8
+};
 
 ATON.emviq.x2js = new X2JS({attributePrefix:"@"});
 
@@ -86,6 +99,7 @@ ATON.emviq.xmlToJson = function(xml) {
 ATON.emviq.EM = function(){
     this._id        = -1;
     this.graphDBurl = undefined;
+    this._jxRoot    = undefined;
 
     this._pgTrans   = new osg.MatrixTransform();
     this.proxyGraph = new osg.Node();
@@ -102,14 +116,29 @@ parseGraphML: function(graphmlurl){
 
     $.get( graphmlurl, function(xml){
 
-        //var x = ATON.emviq.xmlToJson(xml);
+        //console.log(xml);
+        //xml = xml.replace("y:", "YED_");
 
+        ////var x = ATON.emviq.xmlToJson(xml);
         var jx = ATON.emviq.x2js.xml_str2json( xml );
-        var jxRoot = jx.graphml.graph.node.graph;
-        if (!jxRoot) return;
+        self._jxRoot = jx.graphml.graph.node.graph;
 
-        console.log(jxRoot);
+        //console.log(self._jxRoot);
+
+        //console.log( self.getAttribute(self._jxRoot.node[0], "id"));
+
+        for (let n = 0; n < self._jxRoot.node.length; n++) {
+            const N = self._jxRoot.node[n];
+            
+            console.log(n+") Type: "+self.getNodeType(N)+", time: "+self.getNodeTime(N));
+            }
+
+        //console.log(self._jxRoot.node[7]);
+        //console.log( self.getNodeTime(self._jxRoot.node[7]));
+
 /*
+
+
         var gml = $(xml).find('graphml').first();
         //console.log(gml);
         if (gml === undefined) return;
@@ -127,6 +156,102 @@ parseGraphML: function(graphmlurl){
 
 },
 
+getAttribute: function(node, attrname){
+    if (!node) return undefined;
+    return node["@"+attrname];
+},
+
+findDataWithKey(node, keyvalue){
+    var data = node.data;
+    if (!data) return undefined;
+
+    if (Array.isArray(data)){
+        if (data[0] && this.getAttribute(data[0],"key") === keyvalue ) return data[0];
+        if (data[1] && this.getAttribute(data[1],"key") === keyvalue ) return data[1];
+        if (data[2] && this.getAttribute(data[2],"key") === keyvalue ) return data[2];
+        //if (this.getAttribute(data[3],"key") === keyvalue ) return data[3];
+        }
+    else if (this.getAttribute(data,"key") === keyvalue ) return data;
+},
+
+getNodeTime: function(node){
+    if (!node.data) return undefined;
+
+    var d = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+    //if (!d) return undefined;
+
+    var G = d.GenericNode || d.ShapeNode || d.SVGNode;
+    if (!G) return undefined;
+
+    G = G.Geometry;
+    if (!G) return undefined;
+
+    var t = parseFloat(this.getAttribute(G, "y"));
+    return t;
+},
+
+getNodeShape: function(node){
+    if (!node.data) return undefined;
+
+    var d = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+
+    if (!d.ShapeNode) return undefined;
+    var s = d.ShapeNode.Shape;
+
+    if (!s) return undefined;
+
+    return this.getAttribute(s, "type");
+
+    //console.log(d);
+},
+
+getNodeType: function(node){
+    if (!node.data) return undefined;
+
+    var d = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+    if (!d) return undefined;
+
+    // Determine first on shape
+    if (d.ShapeNode){
+        var s = d.ShapeNode.Shape;
+
+        if (!s) return undefined;
+
+        var a = this.getAttribute(s, "type");
+        if (a === ATON.emviq.YED_sSeriation) return ATON.emviq.NODETYPES.SERIATION;
+        if (a === ATON.emviq.YED_sSF) return ATON.emviq.NODETYPES.SPECIALFIND;
+        if (a === ATON.emviq.YED_sUS) return ATON.emviq.NODETYPES.US;
+        if (a === ATON.emviq.YED_sUSVN) return ATON.emviq.NODETYPES.USVN;
+        if (a === ATON.emviq.YED_sUSVS) return ATON.emviq.NODETYPES.USVS;
+        }
+
+    // BPMN (Property or Document)
+    if (d.GenericNode){
+        var sp = d.GenericNode.StyleProperties;
+        if (!sp) return;
+
+        sp = this.getAttribute(sp.Property[3], "value");
+        if (!sp) return;
+
+        if (sp === "ARTIFACT_TYPE_DATA_OBJECT") return ATON.emviq.NODETYPES.DOCUMENT;
+        if (sp === "ARTIFACT_TYPE_ANNOTATION") return ATON.emviq.NODETYPES.PROPERTY;
+        }
+
+    // SVG type
+    if (d.SVGNode){
+        var M = d.SVGNode.SVGModel;
+        if (!M) return undefined;
+        if (!M.SVGContent) return undefined;
+        
+        M = this.getAttribute(M.SVGContent, "refid");
+        if (M === "1") return ATON.emviq.NODETYPES.EXTRACTOR;
+        if (M === "2") return ATON.emviq.NODETYPES.COMBINER;
+        }
+
+    return undefined;   // not recognized
+},
+
+/*
 _getShapeString: function(xmlNode){
     var k = $(xmlNode).find("y:ShapeNode").first();
     if (k === undefined) return "";
@@ -158,7 +283,7 @@ _retrieveXMLnodeInfo: function(xmlNode){
 
     //console.log(dNodeGR);
 },
-
+*/
 realizeProxyGraphFromXMLnode: function(xmlRoot){
     //console.log("---- Realizing ProxyGraph");
     self = this;

@@ -4025,7 +4025,10 @@ ATON.initSpeechRecognition = function(){
     ATON._bSpeechListening = false;
 
     const SpeechRecognition = window.speechRecognition || window.webkitSpeechRecognition;
-    if (SpeechRecognition === undefined) return;
+    if (SpeechRecognition === undefined){
+        console.log("Could not initialize SpeechRecognition");
+        return;
+        }
 
     ATON._recognition = new SpeechRecognition();
 

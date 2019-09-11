@@ -23,6 +23,7 @@ ATON.emviq.YED_sUSVS      = "parallelogram";    // Structural Virtual SU
 ATON.emviq.YED_sUSVN      = "hexagon";          // Non-structural Virtual SU
 ATON.emviq.YED_sSF        = "octagon";          // (virtual) special find
 
+/*
 const EMVIQ_YED_ATTR_NODEGRAPHICS = "nodegraphics";
 const EMVIQ_YED_ATTR_EDGEGRAPHICS = "edgegraphics";
 const EMVIQ_YED_ATTR_DESCRIPTION  = "description"
@@ -33,7 +34,7 @@ const EMVIQ_YED_BPMN_PROPERTY     = "ARTIFACT_TYPE_ANNOTATION";
 
 const EMVIQ_STR_COMBINER          = "COMBINER";
 const EMVIQ_STR_EXTRACTOR         = "EXTRACTOR";
-
+*/
 
 ATON.emviq.NODETYPES = {
     SERIATION:0,
@@ -101,6 +102,8 @@ ATON.emviq.EM = function(){
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
+    this.timeline = {};
+
     this._pgTrans   = new osg.MatrixTransform();
     this.proxyGraph = new osg.Node();
     this._srcGraphs = [];
@@ -121,18 +124,23 @@ parseGraphML: function(graphmlurl){
 
         ////var x = ATON.emviq.xmlToJson(xml);
         var jx = ATON.emviq.x2js.xml_str2json( xml );
-        self._jxRoot = jx.graphml.graph.node.graph;
+        var headnode = jx.graphml.graph.node; //.graph;
 
-        //console.log(self._jxRoot);
+        var tnode = self.findDataWithKey(headnode, ATON.emviq.YED_dNodeGraphics);
+        if (tnode) self.getTimeline(tnode.TableNode);
+
+        //console.log(headnode);
+
+        self._jxRoot = headnode.graph;
 
         //console.log( self.getAttribute(self._jxRoot.node[0], "id"));
-
+/*
         for (let n = 0; n < self._jxRoot.node.length; n++) {
             const N = self._jxRoot.node[n];
             
             console.log(n+") Type: "+self.getNodeType(N)+", time: "+self.getNodeTime(N));
             }
-
+*/
         //console.log(self._jxRoot.node[7]);
         //console.log( self.getNodeTime(self._jxRoot.node[7]));
 
@@ -249,6 +257,48 @@ getNodeType: function(node){
         }
 
     return undefined;   // not recognized
+},
+
+// Extract Timeline from yED mess
+getTimeline: function(tablenode){
+    var g = tablenode.Geometry;
+    if (!g) return;
+
+    console.log(tablenode);
+
+    var yStart = parseFloat(this.getAttribute(g, "y"));
+    //console.log(yStart);
+
+    var nodelabels = tablenode.NodeLabel;
+    if (!nodelabels) return;
+
+    for (let i = 0; i < nodelabels.length; i++){
+        const L = nodelabels[i];
+        
+        var pstr = L.toString().trim(); // period string
+        //console.log(pstr);
+
+        var strID = undefined;
+        if (i>0) strID = "row_"+(i-1);
+        //if (L.ModelParameter && L.ModelParameter.RowNodeLabelModelParameter) strID = ;
+
+        var tMid = parseFloat(this.getAttribute(L, "y"));
+        tMid += (0.5 * parseFloat(this.getAttribute(L, "width")) ); // "width" instead of "height" because label is rotated 90.deg
+
+        if (strID){
+            this.timeline[strID] = {};
+            this.timeline[strID].name = pstr;
+            this.timeline[strID].min  = tMid + yStart;
+            this.timeline[strID].max  = tMid + yStart;
+            }
+        }
+
+    //console.log(this.timeline);
+
+    // Retrieve spans in a dirty dirty way...
+    if (!tablenode.Table || !tablenode.Table.Rows) return;
+    var spantable = tablenode.Table.Rows;
+
 },
 
 /*

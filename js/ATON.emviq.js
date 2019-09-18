@@ -46,7 +46,8 @@ ATON.emviq.NODETYPES = {
     COMBINER:5,
     EXTRACTOR:6,
     DOCUMENT:7,
-    PROPERTY:8
+    PROPERTY:8,
+    CONTINUITY:9
 };
 
 ATON.emviq.x2js = new X2JS({attributePrefix:"@"});
@@ -251,9 +252,10 @@ getNodeType: function(node){
         if (!M) return undefined;
         if (!M.SVGContent) return undefined;
         
-        M = this.getAttribute(M.SVGContent, "refid");
-        if (M === "1") return ATON.emviq.NODETYPES.EXTRACTOR;
-        if (M === "2") return ATON.emviq.NODETYPES.COMBINER;
+        M = parseInt(this.getAttribute(M.SVGContent, "refid"));
+        if (M === 1) return ATON.emviq.NODETYPES.EXTRACTOR;
+        if (M === 2) return ATON.emviq.NODETYPES.COMBINER;
+        if (M === 3) return ATON.emviq.NODETYPES.CONTINUITY;
         }
 
     return undefined;   // not recognized
@@ -279,7 +281,7 @@ getTimeline: function(tablenode){
         //console.log(pstr);
 
         var strID = undefined;
-        if (i>0) strID = "row_"+(i-1);
+        if (i>0) strID = "row_"+(i-1); // First nodelabel is header row
         //if (L.ModelParameter && L.ModelParameter.RowNodeLabelModelParameter) strID = ;
 
         var tMid = parseFloat(this.getAttribute(L, "y"));
@@ -293,7 +295,7 @@ getTimeline: function(tablenode){
             }
         }
 
-    //console.log(this.timeline);
+    console.log(this.timeline);
 
     // Retrieve spans in a dirty dirty way...
     if (!tablenode.Table || !tablenode.Table.Rows) return;

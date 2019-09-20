@@ -825,8 +825,11 @@ void main(){
         }
 
 //#ifdef USE_ILSIGN
-    //fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
-    fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), QF); // locomotion
+    ////fCol = mix(vec4(0,1,0,1),vec4(1,0,0,1), QF);
+    //fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), QF); // locomotion
+
+    fCol = mix(vec4(0,0,1,1),vec4(0,1,0,1), smoothstep(0.0, 0.5, QF));
+    fCol = mix(fCol,vec4(1,0,0,1), smoothstep(0.5, 1.0, QF));
 //#endif
 
     //float qqq = (QF * PI);

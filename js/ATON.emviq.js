@@ -55,6 +55,13 @@ ATON.emviq.x2js = new X2JS({attributePrefix:"@"});
 // EM List
 ATON.emviq.EMlist = [];
 
+// Utility function
+ATON.emviq._comparePeriod = function( a, b ){
+    if ( a.min < b.min ) return -1;
+    if ( a.min > b.min ) return 1;
+    return 0;
+};
+
 
 /*
 ATON.emviq.xmlToJson = function(xml) {
@@ -103,7 +110,7 @@ ATON.emviq.EM = function(){
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
-    this.timeline = {};
+    this.timeline = []; //{};
 
     this._pgTrans   = new osg.MatrixTransform();
     this.proxyGraph = new osg.Node();
@@ -196,7 +203,7 @@ getNodeTime: function(node){
     if (!G) return undefined;
 
     var t = parseFloat(this.getAttribute(G, "y"));
-    return t;
+    return -t; // note: we reverse time
 },
 
 getNodeShape: function(node){
@@ -266,7 +273,7 @@ getTimeline: function(tablenode){
     var g = tablenode.Geometry;
     if (!g) return;
 
-    console.log(tablenode);
+    //console.log(tablenode);
 
     var yStart = parseFloat(this.getAttribute(g, "y"));
     //console.log(yStart);
@@ -274,8 +281,11 @@ getTimeline: function(tablenode){
     var nodelabels = tablenode.NodeLabel;
     if (!nodelabels) return;
 
+    var TL = {}; // timeline
+    this.timeline = []; // clear main timeline
+
     for (let i = 0; i < nodelabels.length; i++){
-        const L = nodelabels[i];
+        var L = nodelabels[i];
         
         var pstr = L.toString().trim(); // period string
         //console.log(pstr);
@@ -287,20 +297,61 @@ getTimeline: function(tablenode){
         var tMid = parseFloat(this.getAttribute(L, "y"));
         tMid += (0.5 * parseFloat(this.getAttribute(L, "width")) ); // "width" instead of "height" because label is rotated 90.deg
 
+        var tColor = this.getAttribute(L,"backgroundColor");
+
         if (strID){
-            this.timeline[strID] = {};
-            this.timeline[strID].name = pstr;
-            this.timeline[strID].min  = tMid + yStart;
-            this.timeline[strID].max  = tMid + yStart;
+            TL[strID] = {};
+            TL[strID].name  = pstr;
+            TL[strID].min   = tMid + yStart;
+            TL[strID].max   = tMid + yStart;
+            TL[strID].color = tColor;
             }
         }
 
-    console.log(this.timeline);
+    //console.log(this.timeline);
 
     // Retrieve spans in a dirty dirty way...
-    if (!tablenode.Table || !tablenode.Table.Rows) return;
-    var spantable = tablenode.Table.Rows;
+    if (!tablenode.Table || !tablenode.Table.Rows || !tablenode.Table.Rows.Row) return;
+    var spantable = tablenode.Table.Rows.Row;
 
+    // For each row
+    for (let r = 0; r < spantable.length; r++){
+        var row = spantable[r];
+
+        var rID = this.getAttribute(row, "id");
+        var h   = 0.5 * parseFloat(this.getAttribute(row,"height"));
+
+        if (TL[rID]){
+            //console.log(rID);
+
+            TL[rID].min += h;
+            TL[rID].max -= h;
+
+            // note: we reverse time
+            TL[rID].min = -TL[rID].min;
+            TL[rID].max = -TL[rID].max;
+
+            // Add to main timeline
+            this.timeline.push(TL[rID]);
+            }
+        }
+
+    // Sort timeline
+    this.timeline.sort( ATON.emviq._comparePeriod );
+
+    console.log(this.timeline);
+
+},
+
+getPeriodIndexFromTime: function(t){
+    if (!this.timeline) return;
+    var numPeriods = this.timeline.length;
+
+    for (let p = 0; p < numPeriods; p++){
+        if (this.timeline[p].min < t && t < this.timeline[p].max) return p;
+        }
+
+    return (numPeriods-1);
 },
 
 /*

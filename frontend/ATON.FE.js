@@ -981,9 +981,10 @@ window.addEventListener( 'load', function () {
                     scenename = "scs";
 
                     var em = new ATON.emviq.EM();
-                    em.parseGraphML(ATON.FE.MODELS_ROOT+"scs.graphml");
-
-                    
+                    em.parseGraphML(ATON.FE.MODELS_ROOT+"scs.graphml", ()=>{    // "gt-em.graphml"
+                        console.log(em._jxRoot);
+                        em.realizeProxyGraphFromJSONnode();
+                        });     
 
                     break;
 
@@ -1825,6 +1826,9 @@ if (asset === "sf"){
             ATON.vroadcast.socket.emit("LOG", s);
             };
 */
+
+//        console.log = function(txt){ $('#idVRCchat').append(txt+"<br>"); };
+//        console.error = function(txt){ $('#idVRCchat').append(txt+"<br>"); };
         }
 
     // On completion

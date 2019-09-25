@@ -120,7 +120,7 @@ ATON.emviq.EM = function(){
 ATON.emviq.EM.prototype = {
 
 // Parse GraphML (yED)
-parseGraphML: function(graphmlurl){
+parseGraphML: function(graphmlurl, onSuccess){
     this.graphDBurl = graphmlurl;
 
     self = this;
@@ -135,11 +135,13 @@ parseGraphML: function(graphmlurl){
         var headnode = jx.graphml.graph.node; //.graph;
 
         var tnode = self.findDataWithKey(headnode, ATON.emviq.YED_dNodeGraphics);
-        if (tnode) self.getTimeline(tnode.TableNode);
+        if (tnode) self.buildTimeline(tnode.TableNode);
 
         //console.log(headnode);
 
         self._jxRoot = headnode.graph;
+
+        if (onSuccess) onSuccess();
 
         //console.log( self.getAttribute(self._jxRoot.node[0], "id"));
 /*
@@ -221,6 +223,30 @@ getNodeShape: function(node){
     //console.log(d);
 },
 
+getNodeFields: function(node){
+    var R = {
+        description: undefined,
+        url: undefined,    
+        label: undefined
+        };
+
+    // URL
+    var du = this.findDataWithKey(node, ATON.emviq.YED_dAttrURL);
+    if (du) R.url = du.__cdata;
+    
+    // Description
+    var dd = this.findDataWithKey(node, ATON.emviq.YED_dAttrDesc);
+    if (dd) R.description = dd.__cdata;
+
+    // Label (TODO:)
+    //var dl = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+//    if (dl){
+
+//        }
+    
+    return R;
+},
+
 getNodeType: function(node){
     if (!node.data) return undefined;
 
@@ -269,7 +295,7 @@ getNodeType: function(node){
 },
 
 // Extract Timeline from yED mess
-getTimeline: function(tablenode){
+buildTimeline: function(tablenode){
     var g = tablenode.Geometry;
     if (!g) return;
 
@@ -344,14 +370,15 @@ getTimeline: function(tablenode){
 },
 
 getPeriodIndexFromTime: function(t){
-    if (!this.timeline) return;
+    if (!this.timeline) return undefined;
     var numPeriods = this.timeline.length;
 
     for (let p = 0; p < numPeriods; p++){
         if (this.timeline[p].min < t && t < this.timeline[p].max) return p;
         }
 
-    return (numPeriods-1);
+    //return (numPeriods-1);
+    return undefined;
 },
 
 /*
@@ -387,6 +414,29 @@ _retrieveXMLnodeInfo: function(xmlNode){
     //console.log(dNodeGR);
 },
 */
+
+realizeProxyGraphFromJSONnode: function(graphnode){
+    self = this;
+
+    var G = new osg.Node();
+
+    var nodes;
+    if (!graphnode) nodes = this._jxRoot.node;
+    else nodes = graphnode.node;
+    // TODO: check array
+
+    for (let i = 0; i < nodes.length; i++) {
+        var n = nodes[i];
+
+        var type   = this.getNodeType(n);
+        var t      = this.getNodeTime(n);
+        var fields = this.getNodeFields(n);
+
+        //console.log(type,fields,t);
+        }
+},
+
+
 realizeProxyGraphFromXMLnode: function(xmlRoot){
     //console.log("---- Realizing ProxyGraph");
     self = this;

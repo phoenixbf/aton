@@ -25,7 +25,6 @@ var osgText     = OSG.osgText;
 var InputGroups = OSG.osgViewer.InputGroups;
 
 
-
 var ATON = ATON || {};
 
 const ATON_STD_FOV          = 60.0;

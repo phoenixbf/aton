@@ -416,8 +416,6 @@ _retrieveXMLnodeInfo: function(xmlNode){
 */
 
 realizeProxyGraphFromJSONnode: function(graphnode){
-    self = this;
-
     var G = new osg.Node();
 
     var nodes;
@@ -427,6 +425,13 @@ realizeProxyGraphFromJSONnode: function(graphnode){
 
     for (let i = 0; i < nodes.length; i++) {
         var n = nodes[i];
+
+        // recursive step for sub-graphs (yED sub-groups)
+        if (n.graph){
+            var subG = realizeProxyGraphFromJSONnode(n.graph);
+            if (subG) G.addChild(subG);
+            }
+
 
         var type   = this.getNodeType(n);
         var t      = this.getNodeTime(n);

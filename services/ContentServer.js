@@ -14,7 +14,7 @@ const request     = require('request');
 var ContentServer = {};
 
 ContentServer.PORT        = 8080;
-ContentServer.SECURE_PORT = 8082; //443;
+ContentServer.SECURE_PORT = 8083; //443;
 ContentServer.pathCert    = __dirname+'/_prv/server.crt';
 ContentServer.pathKey     = __dirname+'/_prv/server.key';
 

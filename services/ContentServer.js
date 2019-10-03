@@ -15,7 +15,7 @@ var ContentServer = {};
 
 ContentServer.PORT        = 8080;
 ContentServer.SECURE_PORT = 443;
-ContentServer.pathCert    = __dirname+'/_prv/server.cert';
+ContentServer.pathCert    = __dirname+'/_prv/server.crt';
 ContentServer.pathKey     = __dirname+'/_prv/server.key';
 
 ContentServer.WWW_FOLDER  = __dirname + "/../";

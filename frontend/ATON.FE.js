@@ -1525,7 +1525,7 @@ window.addEventListener( 'load', function () {
 
                     ATON.transformLayerByMatrix("PRESENT", osg.mat4.fromScaling( [], [3.0,3.0,3.0]));
 
-                    ATON.setHome([-0.28,-1.00,1.89],[-0.35,3.29,1.89]);
+                    ATON.setHome([-0.28,-1.00,1.5],[-0.35,3.29,1.5]);
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
                     break;
 

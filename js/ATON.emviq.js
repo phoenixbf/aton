@@ -439,6 +439,8 @@ realizeProxyGraphFromJSONnode: function(graphnode){
 
         //console.log(type,fields,t);
         }
+
+    return G;
 },
 
 

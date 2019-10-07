@@ -1504,6 +1504,15 @@ window.addEventListener( 'load', function () {
 
                     break;
 
+                case "tomba":
+                    scenename = "tomba";
+
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba-rilievi_m.osgjs");
+
+                    ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
+                    //ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
+                    break;
+
                     case "nora":
                         scenename = "nora";
                         ATON.addLightProbe("../LP/default");
@@ -1682,7 +1691,7 @@ if (asset === "sf"){
     ATON.on("ShapeDescriptorHovered", function(d){
         $("#idShapeDescr").html(d.getUniqueID());
         auDHover.play();
-        //ATON.speechSynthesis(d.getUniqueID());
+        ATON.speechSynthesis(d.getUniqueID());
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
         $("#idShapeDescr").html("none");

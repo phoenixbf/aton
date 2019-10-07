@@ -1153,8 +1153,8 @@ ATON._requestFirstPersonTrans = function(pickedData){
     // Adjust VR eye offset 
     if (ATON._HMD && ATON._vrState){
         let posep = ATON._HMD.getPose().position;
-        E[0] += posep[0];
-        E[1] += posep[2];
+        E[0] += posep[2];
+        E[1] += posep[0];
         E[2] += posep[1];
         }
 

@@ -1501,7 +1501,6 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([-10.52,156.28,1.37],[5.33,168.50,-1.63]);
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
-
                     break;
 
                 case "tomba":
@@ -1513,46 +1512,63 @@ window.addEventListener( 'load', function () {
                     //ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
                     break;
 
-                    case "nora":
-                        scenename = "nora";
-                        ATON.addLightProbe("../LP/default");
-                        let pgSS = ATON._groupDescriptors.getOrCreateStateSet();
+                case "saott":
+                    scenename = "saott";
 
-                        let proxiesdir = ATON.FE.MODELS_ROOT+"_prv/nora/proxies/";
-                        let colUSVs = [0,1,0, 1]; //[0.031, 0.191, 0.026, 1];
-                        let colUSVn = [0,0,1, 1]; //[0.018, 0.275, 0.799, 1];
-                        let colSF = [1,1,0, 1];
+                    for (let b = 1; b <= 21; b++) {
+                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/saott/_lo-SalaOttagonaAverage200k_g"+b+".osgjs", { 
+                            layer: "PRESENT", 
+                            hiresurl: ATON.FE.MODELS_ROOT+"_prv/saott/SalaOttagonaAverage200k_g"+b+".osgjs",
+                            hirespxsize: 200000
+                            });
+                        }
 
-                        ATON.addDescriptor(proxiesdir+"USV03_m.osgjs", "USV03", { color: colUSVs });
-                        ATON.addDescriptor(proxiesdir+"USV06_m.osgjs", "USV06", { color: colUSVs });
-                        ATON.addDescriptor(proxiesdir+"USV07_m.osgjs", "USV07", { color: colSF });
+                    ATON.transformLayerByMatrix("PRESENT", osg.mat4.fromScaling( [], [3.0,3.0,3.0]));
+
+                    ATON.setHome([-0.28,-1.00,1.89],[-0.35,3.29,1.89]);
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
+                    break;
+
+                case "nora":
+                    scenename = "nora";
+                    ATON.addLightProbe("../LP/default");
+                    let pgSS = ATON._groupDescriptors.getOrCreateStateSet();
+
+                    let proxiesdir = ATON.FE.MODELS_ROOT+"_prv/nora/proxies/";
+                    let colUSVs = [0,1,0, 1]; //[0.031, 0.191, 0.026, 1];
+                    let colUSVn = [0,0,1, 1]; //[0.018, 0.275, 0.799, 1];
+                    let colSF = [1,1,0, 1];
+
+                    ATON.addDescriptor(proxiesdir+"USV03_m.osgjs", "USV03", { color: colUSVs });
+                    ATON.addDescriptor(proxiesdir+"USV06_m.osgjs", "USV06", { color: colUSVs });
+                    ATON.addDescriptor(proxiesdir+"USV07_m.osgjs", "USV07", { color: colSF });
 /*
-                        pgSS.setAttributeAndModes(
-                            new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
-                            osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
-                            );
+                    pgSS.setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
 */
 /*
-                        pgSS.setAttributeAndModes( 
-                            new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
-                            //new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
-                            osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
-                            );
+                    pgSS.setAttributeAndModes( 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
+                        //new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
 */
-                        //ATON.addGraph(proxiesdir+"USV03_m.osgjs", { layer: "REC", });
-                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/period4/recinto_test_m.osgjs", { layer: "Period_4" });
+                    //ATON.addGraph(proxiesdir+"USV03_m.osgjs", { layer: "REC", });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/period4/recinto_test_m.osgjs", { layer: "Period_4" });
 
-                        ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/today/Tempio_foro_3003_decim0.3__m.osgjs", { layer: "Today" });
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/nora/today/Tempio_foro_3003_decim0.3__m.osgjs", { layer: "Today" });
 
 
-                        ATON.setHome([4.26,51.41,16.12],[9.16,68.64,6.35]);
-                        ATON.requestHome(0.01);
+                    ATON.setHome([4.26,51.41,16.12],[9.16,68.64,6.35]);
+                    ATON.requestHome(0.01);
 
-                        //ATON._mainSS.getUniform('uFogDistance').setFloat( 900.0 );
-                        //$('body').css('background-color', 'rgb(0,0,0)');
-                        //ATON.setFogColor(osg.vec4.fromValues(0,0,0, 0.0));
+                    //ATON._mainSS.getUniform('uFogDistance').setFloat( 900.0 );
+                    //$('body').css('background-color', 'rgb(0,0,0)');
+                    //ATON.setFogColor(osg.vec4.fromValues(0,0,0, 0.0));
 
-                        break;
+                    break;
 
 /*
                 case "skf":

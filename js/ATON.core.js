@@ -590,6 +590,30 @@ ATON.utils.createWorker = function(fn){
     return new Worker(url);
 }
 
+// https://css-tricks.com/converting-color-spaces-in-javascript/
+ATON.utils.hexToRGBlin = function(h){
+    let r = 0, g = 0, b = 0;
+
+    // 3 digits
+    if (h.length == 4) {
+        r = "0x" + h[1] + h[1];
+        g = "0x" + h[2] + h[2];
+        b = "0x" + h[3] + h[3];
+        }
+  // 6 digits
+    else if (h.length == 7) {
+        r = "0x" + h[1] + h[2];
+        g = "0x" + h[3] + h[4];
+        b = "0x" + h[5] + h[6];
+        }
+
+    r = +(r / 255).toFixed(3);
+    g = +(g / 255).toFixed(3);
+    b = +(b / 255).toFixed(3);
+
+    return [r,g,b];
+}
+
 
 // HDR
 /*
@@ -676,6 +700,9 @@ ATON.descriptor = function(uname){
     this.loading         = false;
     this._onLoadComplete = undefined;
 
+    this._color = [1,1,1, 0.1];
+    this._texc  = undefined;
+
     // Init event handlers
     this._onHover  = undefined;
     this._onSelect = undefined;
@@ -747,8 +774,9 @@ ATON.addDescriptor = function(url, unid, options){
         let D = ATON.descriptors[unid];
 
         if (options && options.color){
-            var texcol = ATON.utils.createFillTexture(options.color);
-            D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, texcol, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+            D._color = options.color;
+            D._texc  = ATON.utils.createFillTexture(options.color);
+            D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, D._texc, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 
             //console.log(options.color);
 
@@ -767,6 +795,9 @@ ATON.addDescriptor = function(url, unid, options){
         if (D._onLoadComplete !== undefined) D._onLoadComplete();
 
         console.log("Descriptor node "+url+" loaded and registered as: "+unid);
+
+        }).catch(function(e) {
+            console.log("Cannot load descriptor "+url); //+": "+e);
         });
 
     return ATON.descriptors[unid];
@@ -801,7 +832,7 @@ ATON.addSphereDescriptor = function(unid, title, location, r){
 };
 
 ATON.addParentToDescriptor = function(unid, parent_unid){
-    if (ATON.descriptors[unid] === undefined) return;
+    if (ATON.descriptors[unid] === undefined) return undefined;
 
     //console.log(ATON.descriptors);
 
@@ -831,6 +862,7 @@ ATON.addParentToDescriptor = function(unid, parent_unid){
         console.log("Descriptor node: "+unid+" will be child of: "+parent_unid);
         }
 
+    return ATON.descriptors[parent_unid];
 };
 
 /*
@@ -2784,7 +2816,7 @@ ATON._initGraph = function(){
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
-    var df = new osg.Depth( osg.Depth.LESS );
+    var df = new osg.Depth( osg.Depth.LESS ); // osg.Depth.ALWAYS
     df.setRange(0.0,1.0);
     df.setWriteMask(false); // important
     ATON._descrSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
@@ -3067,9 +3099,8 @@ ATON.addGraph = function( url, options, onComplete ){
         //console.log( ATON._homePOV.pos = ATON._groupVisible.getBoundingSphere() );
 
         if (onComplete !== undefined) onComplete();
-        })
-    .catch( function(e) {
-        console.error("Unable to load "+url+" - "+e);
+        }).catch( function(e) {
+            console.error("Unable to load "+url+" - "+e);
         });
 };
 
@@ -3261,13 +3292,15 @@ ATON._initCoreUniforms = function(){
     ATON._descrSS.addUniform( osg.Uniform.createFloat1( 5.0, 'uHoverRadius' ) );
 
     // QUSV
-    ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );
-    ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVslider') );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVradius') );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
-    ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
-    ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, ATON.utils.fallbackAlphaTex );
+    if (ATON.QVhandler){
+        ATON.GLSLuniforms.QUSVSampler = osg.Uniform.createInt1( ATON_SM_UNIT_QV, 'QUSVSampler' );
+        ATON._mainSS.addUniform( ATON.GLSLuniforms.QUSVSampler );
+        ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVslider') );
+        ATON._mainSS.addUniform( osg.Uniform.createFloat1( 0.0, 'uQVradius') );
+        ATON._mainSS.addUniform( osg.Uniform.createFloat3( [0.0,0.0,0.0], 'uQVmin' ) );
+        ATON._mainSS.addUniform( osg.Uniform.createFloat3( [10.0,10.0,10.0], 'uQVext' ) );
+        ATON._mainSS.setTextureAttributeAndModes( ATON_SM_UNIT_QV, ATON.utils.fallbackAlphaTex );
+        }
 
     // LP
     ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
@@ -4000,7 +4033,8 @@ ATON.initSpeechSynthesis = function(){
 };
 
 ATON.speechSynthesis = function(text){
-    if (ATON._bPlayingT2S) return; // window.speechSynthesis.cancel();
+    if (ATON._bPlayingT2S) return;
+    //window.speechSynthesis.cancel();
 
     ATON._bPlayingT2S = true;
 

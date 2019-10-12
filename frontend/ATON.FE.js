@@ -983,8 +983,10 @@ window.addEventListener( 'load', function () {
                     var em = new ATON.emviq.EM();
                     em.parseGraphML(ATON.FE.MODELS_ROOT+"scs.graphml", ()=>{    // "gt-em.graphml"
                         console.log(em._jxRoot);
-                        em.realizeProxyGraphFromJSONnode();
-                        });     
+                        em.realizeFromJSONnode();
+
+                        console.log(em.proxyNodes);
+                        });
 
                     break;
 
@@ -1111,15 +1113,15 @@ window.addEventListener( 'load', function () {
                     // TEST descriptors
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "colonne", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt",
-                        color: [1,0,0, 1] 
+                        color: [1,0,0, 0.1] 
                         });
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "capitelli", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-caps-semshapes.txt",
-                        color: [0,1,0, 1] 
+                        color: [0,1,0, 0.1] 
                         });
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "basi", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-bases-semshapes.txt",
-                        color: [0,0,1, 1] 
+                        color: [0,0,1, 0.1] 
                         });
                     /*
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "statua", { 

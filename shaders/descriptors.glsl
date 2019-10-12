@@ -72,7 +72,7 @@ void main(){
 
 	//FinalFragment = uMaterialDiffuse;
     FinalFragment = texture2D(BaseSampler, vec2(0,0));
-	float alpha = 0.1; //0.2;
+	float alpha = FinalFragment.a; //0.1;
 
 /*
 	FinalFragment.r = (cos(time) + 1.0) * 0.5;
@@ -82,7 +82,7 @@ void main(){
 	
 #ifndef MOBILE_DEVICE	// bHighlight
 	float f = dot(vViewNormal, vec3(0,0,1));
-	f *= 0.9;
+	f *= 0.7; //0.9;
 	f = 1.0 - f;
 	//f *= f;
 
@@ -102,8 +102,9 @@ void main(){
 	
 	//hpd = (hpd*0.8) + 0.2;
 
-	alpha += (hpd * f);
-	//alpha *= hpd * f;
+	alpha *= hpd;
+	//alpha += (hpd * f);
+	///alpha *= hpd * f;
 	////if (hpd > 0.95) alpha += 0.2;
 #endif
 

@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<title>EMviq DEMO based on ATON</title>
+<link rel="stylesheet" type="text/css" href="../../vendors/bootstrap/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../css/aton.css">
+
+<script type="text/javascript" src="../../vendors/gunzip.min.js"></script>
+<script type="text/javascript" src="../../vendors/jquery.min.js"></script>
+<script type="text/javascript" src="../../vendors/bluebird.min.js"></script>
+<script type="text/javascript" src="../../vendors/hammer.min.js"></script>
+<script type="text/javascript" src="../../vendors/screenfull.min.js"></script>
+
+<script type="text/javascript" src="../../vendors/OSG.min.js"></script>
+
+<script type="text/javascript" src="../../js/ATON.core.js"></script>
+
+<!--  Collaborative services
+<script type="text/javascript" src="../services/node_modules/socket.io-client/dist/socket.io.js"></script>
+<script type="text/javascript" src="../js/ATON.vroadcast.js"></script>
+    -->
+
+<!-- Record/Tracer visualization
+<script type="text/javascript" src="../js/ATON.tracer.js"></script>
+<script type="text/javascript" src="../js/ATON.QV.js"></script>
+    -->
+
+<!-- EMviq -->
+<script type="text/javascript" src="../../vendors/xml2json.min.js"></script>
+<script type="text/javascript" src="../../js/ATON.emviq.js"></script>
+
+<script type="text/javascript" src="../../vendors/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../vendors/sweetalert2.all.min.js"></script>
+
+<!--  ATON FrontEnd -->
+<script type="text/javascript">
+ATON.FE = {};
+
+ATON.FE.MODELS_ROOT = "../../models/";
+
+ATON.FE.toggleFullscreen = function(b){
+    if (screenfull.enabled){
+        if (b === undefined) screenfull.toggle();
+        else {
+            if (b) screenfull.request();
+            //else
+            }
+        }
+};
+
+ATON.FE.buildLayerMenu = function(){
+    if (ATON.layers.length == 0) return;
+
+    for (var layername in ATON.layers){
+        let checked = "checked";
+        if (ATON.layers[layername].getNodeMask() === 0) checked = "";
+        //console.log(layername+" : "+checked);
+
+        //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
+        $('#idLayers').append('<div class="atonBTN" onclick=\'ATON.isolateLayer("'+layername+'")\' >'+layername+'</div><br>');
+        }
+
+    //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
+    //$('#idLayers').append('<input type="checkbox" name="idIsolateLayer">Isolate');
+};
+
+ATON.FE.highlightProxy = function(id){
+    for (var d in ATON.descriptors){
+            let D = ATON.descriptors[d];
+            if (D.node){
+                if (d === id) D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, D._texc, osg.StateAttribute.ON | osg.StateAttribute.PROTECTED);
+                else D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, ATON.utils.fallbackAlphaTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+                }
+            }
+};
+
+
+window.addEventListener( 'load', function () {
+    //console.log("OK");
+
+    // First we grab canvas element
+    var canvas = document.getElementById('View');
+    $('#idLoader').show();
+
+    // Realize
+    ATON.shadersFolder = "../../shaders";
+    ATON.realize(canvas);
+
+    //ATON.addLightProbe("../LP/default");
+
+    ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
+    $('body').css('background-color', 'rgb(65,70,79)');
+    ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
+        
+    // IIAD
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Walls_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Travi_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto1_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_6_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_5_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_4_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_3_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_2_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Terreno_interno_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_6_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_5_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_4_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_3_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_2_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/tempio_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio_2_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Sottotetto_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_2_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_m.osgjs", {layer: "IIAD"});
+    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_001_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_m.osgjs", {layer: "IIAD"});
+    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_001_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Pavimento_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_3_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_2_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Cassettonato_BAKE_m.osgjs", {layer: "IIAD"});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Architrave_1_BAKE_m.osgjs", {layer: "IIAD"});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio_m.osgjs", {
+        layer: "IIAD", 
+        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio-inst.txt" 
+        });
+
+    //ATON.addDescriptor(ATON.FE.MODELS_ROOT+"greattemple/proxies/T42_m.osgjs", "T42");
+
+    // EM
+    var df = new osg.Depth( osg.Depth.ALWAYS );
+    df.setRange(0.0,1.0);
+    df.setWriteMask(false); // important
+    ATON._descrSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+    ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.fallbackAlphaTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+
+    var em = new ATON.emviq.EM();
+    em.folderProxies = ATON.FE.MODELS_ROOT+"greattemple/proxies/";
+
+    em.parseGraphML(ATON.FE.MODELS_ROOT+"greattemple/gt-em.graphml", ()=>{
+        //console.log(em._jxRoot);
+        em.realizeFromJSONnode();
+        });
+
+    // Proxies
+    ATON.on("ShapeDescriptorHovered", function(d){
+        let hovD = d.getUniqueID();
+        //$("#idProxyID").html(hovD);
+        //auDHover.play();
+        //ATON.speechSynthesis(hovD);
+
+        ATON.FE.highlightProxy(hovD);
+        if (em.proxyNodes[hovD]){
+            let proxy = em.proxyNodes[hovD];
+            let content = "<b>"+hovD+"</b>";
+            if (proxy.description) content += ": "+proxy.description;
+            
+            $("#idProxyID").html(content);
+            }
+        });
+    ATON.on("ShapeDescriptorLeft", ()=>{
+        $("#idProxyID").html("");
+        });
+
+    // All complete 
+    ATON.on("AllNodeRequestsCompleted", ()=>{
+        ATON.requestHome();
+
+        // HTML stuff
+        //ATON.FE.buildLayerMenu();
+        $('#idLoader').hide();
+
+        console.log(em.proxyNodes);
+        });
+
+});
+
+</script>
+</head>
+
+
+<body oncontextmenu="return false;" style="background-color: rgba(255,255,255, 0);">
+
+	<!-- Our 3D View -->
+	<div id="ViewContainer" class="view3D">
+	<canvas id="View" oncontextmenu="return false;"></canvas>
+	</div>
+
+    <header>
+        <!-- TOP navbar -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
+            <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <button id="idFS" type="button" class="atonBTN" onclick="ATON.FE.toggleFullscreen()"><img src="../../res/ii-inv-fs.png"></button>
+                <button type="button" class="atonBTN" onclick="ATON.requestHome(1.0)"><img src="../../res/ii-inv-home.png"></button>
+                <!-- <button id="idSpeechRecBTN" class="atonBTN" onclick="ATON.speechRecognitionStart()"><img src="../../res/ii-inv-speech.png"></button> -->
+            </li>
+            </ul>
+            &nbsp;
+          
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+            </button>
+
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+
+<!--
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">NAV</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown01">
+                      <a class="dropdown-item" href="#" onclick="ATON.setFirstPersonMode(true)">FirstPerson Mode</a>
+                      <a class="dropdown-item" href="#" onclick="ATON.setFirstPersonMode(false)">Orbit Mode</a>
+                    </div>
+                </li>
+-->
+                <li class="nav-item" id="idCustomBTNs">
+<!--                    <button id="idFP" type="button" class="atonBTN" onclick="ATON.FE.toggleFirstPerson()"><img src="../../res/ii-inv-fp.png"></button>
+                    <button id="idDevOri" type="button" class="atonBTN" onclick="ATON.FE.toggleDevOri()"><img src="../../res/ii-inv-devori.png"></button>
+-->
+                    <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../../res/ii-inv-vr.png"></button>
+                </li>
+<!--
+                <select id="idLayers" name="layers-list" class="atonBTN" style="width:auto;" onchange="ATON.FE.selectLayerMenu(this.value)">
+                    <option value="__ALL__">&#9724;&nbsp;SHOW ALL</option>
+                    <option value="__NONE__">&#9724;&nbsp;HIDE ALL</option>
+                </select>
+-->
+           
+<!--
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle atonBTN" style="width:auto;" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../../res/ii-inv-layers.png"></a>
+                    <div class="dropdown-menu atonMenu" id="idLayers"></div>
+                </li>
+            -->
+
+<!--
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle atonBTN" style="width:auto;" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../../res/ii-inv-hover.png"></a>
+                        <div class="dropdown-menu atonMenu" id="idHoverSize">
+                            <div class="form-group">
+                            <input type="radio" name="HoverRadius" value="0.1" onchange="ATON.updateHoverRadius(this.value)">Radius: 10 cm<br>
+                            <input type="radio" name="HoverRadius" value="0.5" onchange="ATON.updateHoverRadius(this.value)">Radius: 50 cm<br>
+                            <input type="radio" name="HoverRadius" value="1.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 1 m<br>
+                            <input type="radio" name="HoverRadius" value="2.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 2 m<br>
+                            <input type="radio" name="HoverRadius" value="5.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 5 m<br>
+                            <input type="radio" name="HoverRadius" value="10.0" onchange="ATON.updateHoverRadius(this.value)">Radius: 10 m<br>
+                            </div>
+
+                            <input id="idDIM" type="range" orient="vertical" min="0.1" max="50.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)">
+
+                        </div>
+                </li>
+-->
+
+<!--
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle atonBTN" style="width:auto;" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../res/ii-inv-pov.png"></a>
+                    <div class="dropdown-menu atonMenu" id="idPOVlist"></div>
+                </li>
+-->
+                <!--
+                <div style="display:inline-block; width:40px;"><input class="form-control-range" type="range" min="0.1" max="20.0" step="0.1" onchange="ATON.updateHoverRadius(this.value)"></div>
+                -->
+<!--
+                <button id="idPOL" type="button" class="btn btn-secondary btn-sm" data-toggle="button" aria-pressed="false" autocomplete="off" style="background-color: black;">POL</button>&nbsp;
+-->
+                
+<!--
+                <li class="nav-item">
+                    <input id="idSearch" type="text" size="30" placeholder="Search...">
+                </li>
+-->
+            </ul>
+
+          </div>
+        </nav>
+      </header>
+
+    <!-- BOTTOM navbar -->
+    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
+
+        <div style="display:inline-block; width:90%;"><input id="idTimeline" type="range" min="0" max="1" oninput="ATON.setDim(this.value)"></div>
+    
+        <div style="width: 100%; background-color: rgba(0,0,0, 0.5)">
+        <span id="idProxyID"></span>
+<!--
+        <div id="idSpeechRecBTN" onclick="ATON.speechRecognitionStart()" style="display:inline">
+            <img src="../../res/ii-inv-speech.png" style="width:16px; height:auto;">
+            <span id="idSpeechText"></span>
+        </div>
+-->
+        </div>
+    </div>
+
+    <!-- Loader -->
+	<div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../../res/loader.png"></div>
+
+</body>
+</html>

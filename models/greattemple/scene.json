@@ -1,0 +1,9 @@
+{
+    "scenegraph":{
+        "serialized":[
+            {"type": "ADD", "child":"xxx", "parent": "xxx", "prules": "xxx.txt"},
+            {"type": "ADD", "child":"xxx", "parent": "xxx", "prules": "xxx.txt"}
+            ]
+        }
+
+}

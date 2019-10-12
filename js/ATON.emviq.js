@@ -105,16 +105,21 @@ ATON.emviq.xmlToJson = function(xml) {
 
 
 // Single EM
+//=========================================================
 ATON.emviq.EM = function(){
     this._id        = -1;
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
-    this.timeline = []; //{};
+    this.timeline = []; // sorted array
+    //this.EMnodes  = {};
+    this.proxyNodes = {};
 
-    this._pgTrans   = new osg.MatrixTransform();
-    this.proxyGraph = new osg.Node();
-    this._srcGraphs = [];
+    //this._pgTrans   = new osg.MatrixTransform();
+    //this.proxyGraph = new osg.Node();
+    //this._srcGraphs = [];
+
+    this.folderProxies = undefined;
 };
 
 ATON.emviq.EM.prototype = {
@@ -224,26 +229,45 @@ getNodeShape: function(node){
 },
 
 getNodeFields: function(node){
-    var R = {
+    console.log(node);
+
+    let R = {
         description: undefined,
         url: undefined,    
         label: undefined
         };
 
     // URL
-    var du = this.findDataWithKey(node, ATON.emviq.YED_dAttrURL);
-    if (du) R.url = du.__cdata;
+    let du = this.findDataWithKey(node, ATON.emviq.YED_dAttrURL);
+    if (du && du.__cdata){
+        //console.log(du.__cdata);
+        //console.log("URL>>>>"+du);
+        R.url = du.__cdata; //String(du.__cdata);
+        }
     
     // Description
-    var dd = this.findDataWithKey(node, ATON.emviq.YED_dAttrDesc);
-    if (dd) R.description = dd.__cdata;
+    let dd = this.findDataWithKey(node, ATON.emviq.YED_dAttrDesc);
+    if (dd) R.description = String(dd.__cdata);
 
-    // Label (TODO:)
-    //var dl = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
-//    if (dl){
+    // Label
+    let dl = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+    if (dl){
+        let bSwimlane = false;
+        let m = dl.GenericNode || dl.SVGNode || dl.ShapeNode;
+        if (!m && dl.TableNode){
+            m = dl.TableNode;
+            bSwimlane = true;
+            }
 
-//        }
+        if (!bSwimlane && m){
+            m = m.NodeLabel;
+            //console.log(m.toString());
+            if (m) R.label = m.toString();
+            }
+        }
     
+    //console.log(R);
+
     return R;
 },
 
@@ -323,18 +347,21 @@ buildTimeline: function(tablenode){
         var tMid = parseFloat(this.getAttribute(L, "y"));
         tMid += (0.5 * parseFloat(this.getAttribute(L, "width")) ); // "width" instead of "height" because label is rotated 90.deg
 
-        var tColor = this.getAttribute(L,"backgroundColor");
+        var tColor =  this.getAttribute(L,"backgroundColor");
+        if (tColor) tColor = ATON.utils.hexToRGBlin(tColor);
+        //console.log(tColor);
 
         if (strID){
             TL[strID] = {};
             TL[strID].name  = pstr;
             TL[strID].min   = tMid + yStart;
             TL[strID].max   = tMid + yStart;
-            TL[strID].color = tColor;
+            if (tColor){
+                TL[strID].color = [tColor[0], tColor[1], tColor[2], 0.5];
+                TL[strID].tex   = ATON.utils.createFillTexture( TL[strID].color );
+                }
             }
         }
-
-    //console.log(this.timeline);
 
     // Retrieve spans in a dirty dirty way...
     if (!tablenode.Table || !tablenode.Table.Rows || !tablenode.Table.Rows.Row) return;
@@ -415,35 +442,106 @@ _retrieveXMLnodeInfo: function(xmlNode){
 },
 */
 
-realizeProxyGraphFromJSONnode: function(graphnode){
-    var G = new osg.Node();
+realizeFromJSONnode: function(graphnode){
+    let G = new osg.Node();
 
-    var nodes;
+    let nodes;
     if (!graphnode) nodes = this._jxRoot.node;
     else nodes = graphnode.node;
     // TODO: check array
 
     for (let i = 0; i < nodes.length; i++) {
-        var n = nodes[i];
+        let n = nodes[i];
+        let bProxyNode = false;
 
         // recursive step for sub-graphs (yED sub-groups)
         if (n.graph){
-            var subG = realizeProxyGraphFromJSONnode(n.graph);
+            var subG = this.realizeFromJSONnode(n.graph);
             if (subG) G.addChild(subG);
             }
 
+        let type   = this.getNodeType(n);
+        let t      = this.getNodeTime(n);
+        let fields = this.getNodeFields(n);
 
-        var type   = this.getNodeType(n);
-        var t      = this.getNodeTime(n);
-        var fields = this.getNodeFields(n);
+        let pid = this.getPeriodIndexFromTime(t);
 
-        //console.log(type,fields,t);
+        if (this.folderProxies && fields.label){
+            let periodName = undefined;
+            let periodColor = undefined;
+            let periodTexture = undefined;
+
+            if (this.timeline[pid]){
+                periodName = this.timeline[pid].name;
+                if (this.timeline[pid].tex) periodTexture = this.timeline[pid].tex;
+                if (this.timeline[pid].color) periodColor = this.timeline[pid].color;
+                //console.log(periodName,periodColor);
+                }
+
+            // Single proxy
+            if (type === ATON.emviq.NODETYPES.SPECIALFIND || type === ATON.emviq.NODETYPES.US || type === ATON.emviq.NODETYPES.USVN || type === ATON.emviq.NODETYPES.USVS ){
+                bProxyNode = true;
+                
+                ATON.addDescriptor(
+                    this.folderProxies + fields.label + "_m.osgjs", 
+                    fields.label, 
+                    {color: periodColor}
+                    );
+
+                if (periodName){
+                    let P = ATON.addParentToDescriptor(fields.label, periodName);
+                    //if (periodTexture) P.node.getOrCreateStateSet().setTextureAttributeAndModes(0, periodTexture, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+                    }
+                }
+
+            // Procedural proxy
+            if (type === ATON.emviq.NODETYPES.SERIATION){
+                bProxyNode = true;
+
+                ATON.addDescriptor(
+                    this.folderProxies + fields.label + "_m.osgjs", 
+                    fields.label, 
+                    {transformRules: this.folderProxies + fields.label + "-inst.txt", color: periodColor }
+                    );
+
+                if (periodName){
+                    let P = ATON.addParentToDescriptor(fields.label, periodName );
+                    //if (periodTexture) P.node.getOrCreateStateSet().setTextureAttributeAndModes(0, periodTexture, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+                    }
+                }
+
+            if (bProxyNode){
+                let pkey = fields.label;
+                this.proxyNodes[pkey] = {};
+                this.proxyNodes[pkey].type = type;
+                this.proxyNodes[pkey].time = t;
+                this.proxyNodes[pkey].periodName = periodName;
+
+                if (fields.description) this.proxyNodes[pkey].description = fields.description;
+                if (fields.url) this.proxyNodes[pkey].url = fields.url;
+                }
+
+            // If accepted, push into main table
+/*
+            if (type && periodName){
+                this.EMnodes[fields.label] = {};
+                this.EMnodes[fields.label].type = type;
+                this.EMnodes[fields.label].time = t;
+                this.EMnodes[fields.label].periodName = periodName;
+                }
+*/
+            }
+
+        //console.log(this.EMnodes);
         }
 
     return G;
 },
 
 
+
+
+// DEPRECATED
 realizeProxyGraphFromXMLnode: function(xmlRoot){
     //console.log("---- Realizing ProxyGraph");
     self = this;

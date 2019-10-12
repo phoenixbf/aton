@@ -44,6 +44,11 @@ ATON.FE = {};
 
 ATON.FE.MODELS_ROOT = "../../models/";
 
+let EM = new ATON.emviq.EM();
+
+
+
+
 ATON.FE.toggleFullscreen = function(b){
     if (screenfull.enabled){
         if (b === undefined) screenfull.toggle();
@@ -80,7 +85,138 @@ ATON.FE.highlightProxy = function(id){
             }
 };
 
+ATON.FE.logPOV = function(){
+    console.log(
+        "&pov="+
+        ATON._currPOV.pos[0].toFixed(2)+","+
+        ATON._currPOV.pos[1].toFixed(2)+","+
+        ATON._currPOV.pos[2].toFixed(2)+","+
+        ATON._currPOV.target[0].toFixed(2)+","+
+        ATON._currPOV.target[1].toFixed(2)+","+
+        ATON._currPOV.target[2].toFixed(2)
+    );
+};
 
+ATON.FE.attachListeners = function(){
+	$(function() {
+		$(document).keydown(function(e){
+	    	if (e.key == 'c'){
+				ATON.FE.logPOV();
+                }
+
+            });
+
+        // UP
+        $(document).keyup(function(e){
+            //if (e.key == 'x'){}  
+            });
+        });
+};
+
+ATON.FE.buildSG = function(){
+
+    // XXsec
+    let periodName = "XX sec";
+
+    for (let b = 1; b <= 10; b++)
+        ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/XXsec/_lo-LOD2_TM"+b+".osgjs", { 
+            layer: periodName,
+            hiresurl: ATON.FE.MODELS_ROOT+"greattemple/XXsec/LOD2_TM"+b+".osgjs",
+            hirespxsize: 600000,
+            });
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/XXsec/GreatTemple_surroundings.osgjs",{layer: periodName});
+
+    // [43.795,-8.741,-3.043] [-5.142,2.907,-2.637]
+    // 38,653 -5,834‬ -5,68‬
+    //let T = ATON.utils.generateTransformFromString("-57.8719596862793 -303.2223815917969 4.660361289978027 0 0 -0.163");
+    let T = ATON.utils.generateTransformFromString("0 0 0 0 0 -0.163");
+    ATON.transformLayerByMatrix(periodName, T.getMatrix());
+    ATON.translateLayer(periodName, [-106.5, -290, 4.660]);
+
+
+
+    // IIAD
+    periodName = "IIAD";
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Walls_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Travi_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto1_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_6_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_5_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_4_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_3_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_2_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Terreno_interno_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_6_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_5_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_4_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_3_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_2_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/tempio_1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio_2_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Sottotetto_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_2_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_m.osgjs", {layer: periodName});
+    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_001_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_m.osgjs", {layer: periodName});
+    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_001_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Pavimento_1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_3_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_2_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Cassettonato_BAKE_m.osgjs", {layer: periodName});
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Architrave_1_BAKE_m.osgjs", {layer: periodName});
+
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_light_m.osgjs", {
+        layer: periodName, 
+        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_light-inst.txt" 
+        });
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_shadow_m.osgjs", {
+        layer: periodName, 
+        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_shadow-inst.txt" 
+        });
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_entrance_m.osgjs", {
+        layer: periodName, 
+        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_entrance-inst.txt" 
+        });
+    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio_m.osgjs", {
+        layer: periodName, 
+        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio-inst.txt" 
+        });
+
+    //ATON.addNewLayer("IIAD Rec");
+    //ATON.layers["IIAD Rec"].node = ATON.layers["IIAD"].node;
+
+    ATON.setHome([-0.09,-27.80,-0.3],[0.07,-20.27,-0.3]);
+
+    ATON.isolateLayer("XX sec");
+};
+
+ATON.FE.timeSlider = function(tid){
+    let period = EM.timeline[tid];
+    if (!period) return;
+
+    //console.log(period.name);
+
+    $('#idPeriodName').html(period.name);
+    if (ATON.layers[period.name]) ATON.isolateLayer(period.name);
+};
+
+
+// MAIN
+//===================================================
 window.addEventListener( 'load', function () {
     //console.log("OK");
 
@@ -98,54 +234,7 @@ window.addEventListener( 'load', function () {
     $('body').css('background-color', 'rgb(65,70,79)');
     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
         
-    // IIAD
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Walls_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Travi_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto1_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_6_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_5_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_4_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_3_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tetto_2_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Terreno_interno_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_6_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_5_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_4_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_3_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Tempio_2_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/tempio_1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio_2_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Podio1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Sottotetto_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_2_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Scale_1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_m.osgjs", {layer: "IIAD"});
-    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta2_BAKE_001_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_m.osgjs", {layer: "IIAD"});
-    //ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Porta1_BAKE_001_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Pavimento_1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_3_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_2_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Ingresso_1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Cassettonato_BAKE_m.osgjs", {layer: "IIAD"});
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Architrave_1_BAKE_m.osgjs", {layer: "IIAD"});
-
-    ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio_m.osgjs", {
-        layer: "IIAD", 
-        transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio-inst.txt" 
-        });
-
-    //ATON.addDescriptor(ATON.FE.MODELS_ROOT+"greattemple/proxies/T42_m.osgjs", "T42");
+    ATON.FE.buildSG();
 
     // EM
     var df = new osg.Depth( osg.Depth.ALWAYS );
@@ -154,12 +243,13 @@ window.addEventListener( 'load', function () {
     ATON._descrSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
     ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.fallbackAlphaTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 
-    var em = new ATON.emviq.EM();
-    em.folderProxies = ATON.FE.MODELS_ROOT+"greattemple/proxies/";
+    EM.folderProxies = ATON.FE.MODELS_ROOT+"greattemple/proxies/";
 
-    em.parseGraphML(ATON.FE.MODELS_ROOT+"greattemple/gt-em.graphml", ()=>{
+    EM.parseGraphML(ATON.FE.MODELS_ROOT+"greattemple/gt-em.graphml", ()=>{
         //console.log(em._jxRoot);
-        em.realizeFromJSONnode();
+        EM.realizeFromJSONnode();
+
+        document.getElementById("idTimeline").setAttribute("max", EM.timeline.length);
         });
 
     // Proxies
@@ -170,11 +260,11 @@ window.addEventListener( 'load', function () {
         //ATON.speechSynthesis(hovD);
 
         ATON.FE.highlightProxy(hovD);
-        if (em.proxyNodes[hovD]){
-            let proxy = em.proxyNodes[hovD];
+        if (EM.proxyNodes[hovD]){
+            let proxy = EM.proxyNodes[hovD];
             let content = "<b>"+hovD+"</b>";
             if (proxy.description) content += ": "+proxy.description;
-            
+
             $("#idProxyID").html(content);
             }
         });
@@ -189,8 +279,9 @@ window.addEventListener( 'load', function () {
         // HTML stuff
         //ATON.FE.buildLayerMenu();
         $('#idLoader').hide();
+        ATON.FE.attachListeners();
 
-        console.log(em.proxyNodes);
+        console.log(EM.proxyNodes);
         });
 
 });
@@ -299,15 +390,18 @@ window.addEventListener( 'load', function () {
     <!-- BOTTOM navbar -->
     <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
 
-        <div style="display:inline-block; width:90%;"><input id="idTimeline" type="range" min="0" max="1" oninput="ATON.setDim(this.value)"></div>
-    
-        <div style="width: 100%; background-color: rgba(0,0,0, 0.5)">
-        <span id="idProxyID"></span>
-<!--
-        <div id="idSpeechRecBTN" onclick="ATON.speechRecognitionStart()" style="display:inline">
-            <img src="../../res/ii-inv-speech.png" style="width:16px; height:auto;">
-            <span id="idSpeechText"></span>
+        <div style="display:inline-block; width:50%;">
+            <span id="idPeriodName">Period</span><br>
+            <input id="idTimeline" type="range" min="0" max="1" oninput="ATON.FE.timeSlider(this.value)">
         </div>
+    
+        <div style="width: 100%">
+            <span id="idProxyID"></span>
+<!--
+            <div id="idSpeechRecBTN" onclick="ATON.speechRecognitionStart()" style="display:inline">
+                <img src="../../res/ii-inv-speech.png" style="width:16px; height:auto;">
+                <span id="idSpeechText"></span>
+            </div>
 -->
         </div>
     </div>

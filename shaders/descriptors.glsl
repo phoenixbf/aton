@@ -98,11 +98,11 @@ void main(){
 #if 0
 	float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= uHoverRadius; // radius
-    hpd = 1.0- clamp(hpd, 0.0,1.0);
+    hpd = 1.0 - clamp(hpd, 0.0,1.0);
 	
 	//hpd = (hpd*0.8) + 0.2;
 
-	alpha *= hpd;
+	alpha *= mix(0.7, 1.0, hpd);
 	//alpha += (hpd * f);
 	///alpha *= hpd * f;
 	////if (hpd > 0.95) alpha += 0.2;

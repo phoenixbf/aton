@@ -2933,8 +2933,8 @@ ATON.switchLayer = function(layerName, value){
 
 ATON.isolateLayer = function(layerName){
     for (var key in ATON.layers){
-        if (key === layerName) ATON.switchLayer(layerName, true);
-        else ATON.switchLayer(layerName, false);
+        if (key === layerName) ATON.switchLayer(key, true);
+        else ATON.switchLayer(key, false);
         }
 };
 
@@ -2943,12 +2943,14 @@ ATON.switchAllLayers = function(value){
         let layer = ATON.layers[key];
 
         if (value){
-            layer.setNodeMask(layer._layerMask);
-            ATON.fireEvent("LayerSwitch", { name:key, value:true } );
+            ATON.switchLayer(key, true);
+            //layer.setNodeMask(layer._layerMask);
+            //ATON.fireEvent("LayerSwitch", { name:key, value:true } );
             }
         else {
-            layer.setNodeMask(0x0);
-            ATON.fireEvent("LayerSwitch", { name:key, value:false } );
+            ATON.switchLayer(key, false);
+            //layer.setNodeMask(0x0);
+            //ATON.fireEvent("LayerSwitch", { name:key, value:false } );
             }
         }
 };

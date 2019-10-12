@@ -1,0 +1,206 @@
+{
+  "Generator": "OpenSceneGraph 3.4.0", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "E:\\Owncloud1\\Sarmizegetusa2015\\PROCESSING\\TempluMare2015\\Models\\LOD2\\LOD2_TM05.obj", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 2, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 3, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 4, 
+                        "File": "data:image/jpg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCACAAIADASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAwQFAgEABv/EACcQAAIDAAMAAQMFAQEBAAAAAAECAAMRBBIhMRMiIwUUMjNBUUJh/8QAFwEAAwEAAAAAAAAAAAAAAAAAAAECA//EABwRAQEBAQEBAQEBAAAAAAAAAAABEQIxIUEDUf/aAAwDAQACEQMRAD8AaRevxBcmgv8AdDrpnLSShEkWId4xyJ2i4ochLqG+oSYEDHme3UbdU0s7V5PKCpmeN6QI59MGaLwq9jARR7G32O8krWvsS0ODI6tiL8ZbkHrkxx2IfYOxCDC1DBJ66K1ZoFbVdmPsW5FpGgfEFxmJbN8jTU/WsCia8/YueJb2ljk1RxmLdjKl36UKcYzqhFXIACoisxkPXZ4SIFgrA5JthtrtJBORmsg5OtkFfZ0PkGOQPgxG9agIPkQ/bsX3PJTVg00VGfEWaVmkaz0YCPBz9PYA1/fuQzeVwOI3NuZrc2Fr8qgr0/LsITlciVmw47Geb7VnkbTPP6ZPXpdCcVyG0ynxnZrQUkjeolP9KuCuO0vm/gl/Dv6k9v0RslJYT4Za/V7kbjjrkh04TK69XTFWnZx6ex+IakAbOu6iODAnf/sQ5DkNojbsSIpePIzE4l5LYTKanZF4gP1PJZqGgSYIMEBHxB3KehjQAVZiwqwIhVY+d5LZZNFgao3fwe7kxXk1GmoyZMZ5gVXvxPWMVM1wR3Hs3y0CybLupsAa3tgEe4inrsnJncStxv4iXz/px7kF3Xrsxx6mUQzsoMPxcaUp6tcT2Jco4x9lKzFUyRym7MQIzHHogindsMxVYQ2GHq+6yTzdiZdapoWto2hyZKYQYRMyNcbDFhM+iFQCaK+QkFpV2iXNH1EwRzkeA5J/Ys8AxxKink3yuMzjYevAdgOTzQCVEV8ImlX5AJVqQqgk7jt2tBltV/GIcphGyos2xninr5OWD/JupcXZRiXnEMg2WH65lqzWGSbfxwtmxUWBke6IelurgmDP2t7PE/8AJH8/EcKZcOoycDZAcdtXIcCW2jov6N7Gu4ZNEm8kEEEQ1Nv2AbGl7knAYmielofkP2OTDYEAi0PKOymS+WvV5VI61eSTdr2xUr4Lwf5gmfQBlNYyRePWRhj9ZOZHBBD/ADheyhcgj8zmFjGBH8GxV/vaMsPti3/uKKvg1vEURC5Qr4JUdiwJMlWqz3QkwsNULigwwaCqU9QIYIciUDe3kVFx/wAhuVoBiVO9vZSTdesdaE692/8Aggz2GACFa1aa9PzFQX5l4rTqPmZ4HDa/7yIpYTyrxnxs+l4FX0uOBkXon2gftgg+ILxWyULfgyU7/lMoGXYddgV5Khus5Yfx7Eax2vk2/hW/VZnBSIXWdG2HvPRBhiXIPZZn16XVVC0Caj37ZDN5PCzJo0crQ78RsKoX2Lo+mddj8bCCwvyU7tggq+LjaRG66izaYx9HI9GFba+tXg9ki2q698w5PowgPhnVoQHwCIYlcDgdCCwlpcRMmQoWdYaIQYHcftMjW/2mVbTgMlWHbZRUR9+lE6v7Y839UTqX8sz69R16Y5PqCK4XGCN8hSK4Hi/yis2iz6dZjMAEmMsg+Zggf5NVhg9ROhiZ4ieAgBUt6zv7gkwYGzoQCBCC87Ci/wAgAomwogBPq6dnWtwQeZMvAPO+qYmK+1mn4hLnxYn+8KaIA7f0CYIrSPyTyW9/YWgDvsi+lW+T/XF+IPujvJANcX4KF7MEc9Ff/9k=", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 8, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM5_19.bin.gz",
+                          "Size": 42921,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 9, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM5_20.bin.gz",
+                          "Size": 3108,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 6, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_21.bin.gz",
+                        "Size": 16070,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 7, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_22.bin.gz",
+                        "Size": 16070,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 5, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_23.bin.gz",
+                        "Size": 16070,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        },
+        {
+          "osg.Node": {
+            "UniqueID": 10, 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 11, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 12, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 13, 
+                        "File": "data:image/jpg;base64,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", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 17, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM5_24.bin.gz",
+                          "Size": 44746,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 18, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM5_25.bin.gz",
+                          "Size": 5079,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 15, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_26.bin.gz",
+                        "Size": 21536,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 16, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_27.bin.gz",
+                        "Size": 21536,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 14, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM5_28.bin.gz",
+                        "Size": 21536,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

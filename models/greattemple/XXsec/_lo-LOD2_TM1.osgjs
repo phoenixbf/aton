@@ -1,0 +1,206 @@
+{
+  "Generator": "OpenSceneGraph 3.4.0", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "E:\\Owncloud1\\Sarmizegetusa2015\\PROCESSING\\TempluMare2015\\Models\\LOD2\\LOD2_TM01.obj", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 2, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 3, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 4, 
+                        "File": "data:image/jpg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCACAAIADASIAAhEBAxEB/8QAGgAAAwEBAQEAAAAAAAAAAAAAAgMEBQEABv/EACUQAAIDAAMAAwACAwEBAAAAAAECAAMRBBIhEyIxIzIUQVEFYf/EABcBAQEBAQAAAAAAAAAAAAAAAAECAAP/xAAbEQEBAQADAQEAAAAAAAAAAAAAARECEjEhQf/aAAwDAQACEQMRAD8A7Rf8hM6zYciOMnx/soC9m2SRrw63HfPYrlfxV/WV/J0ryR3fyjJX4KlosJPso8Jilq6Gc+Tq4ksp6dRuTyvGdu6RLDB5GMN7mzAY/i8UP92HsmQdiNmmMr43h9yMYq/qvgMjvY55FG0mw6Ydh2vZNunPicFnPscrADJypQRKE4pf2aAh1P8AYQSSaiSZVfV8dcyeTcyqQJi0APYwHJNbcK/9zqW912UFH9zkCzKhpneMdb2B/wCmAU8k0uU2La2R9XA+Vif+TM4AYW7Pp+KQKSYcfol+Mx6/j+sVhMp5B2wxfir7KBStjR1rk1fsR2Gzj2A+bNpxJaxB8nheTXhnrcOxNf8AbDJ/RfV3CtG4010KivQZhdSnojK+W4+pMqcso1ZyH76Jm31BpSCXM41JBguIrUdhsbxwQMMezhV/INDhiZqNEbhUNEmflG18MsagWCTf4wWyOHVNFYUAiXLeVTJJX9Rk7a/UQzAcCGbTEchvcEn/AMkq+Rhfv7NrS6E/12TnsT5Kf0QAuQUXTUWsAaP5HFCEEQAxV9Ec9hcDYjD6q62o9/cmbYAtpyWBvrkmsqbt2kc0cop4vv7HuVmcLbE8EJHdjpjOWmfU72asLiHW9kjN5kdRoGxvrNVG04J1qiW2K4P3Y7KbHVDhMrSU69ZPa2kSi1wy/WLCaumHrJPiLPsrSr6xLHD5HJYchmGTHCvXZPY53BKGJJgLX9/RMS6UctplvxeQWAUDIQfVh+taAJpjWA65FoftKHT6bKwaiYDfyMSvyKfQ0opPnsMLBYeyqkauCIf2P4g/7FK7in4xEc127+Sqrr+QbqlY6YsCgEoNh2MVGQDaK2VRPcmzsRkWBmmNHgilHojyPrJqoEN7HJhiP9w6+xP/AMgx5TTOMmKYxTn7Dsz44prNHICPhlC8xWXJm8kfyHIVHg9ky7U8bVp+x0Tv4ItLBk6zylskmXcFA4kE0OAuL+zeA8oUs8Meid/2RlmF2E+S+nwbH1ibuJ9gwgNUQfZrVdWQ7IuUQNyYo+vvkME7hg1N2aNYZJpjnUfsbWygZkUPRDrEIq+HAaYVg/jMFD7Ds9Qy3Ni3DbDPL5HW145MHrI4zBxjgae7+zxXIljhlKI6y7isAMkyoXYAS6jikemYGGoMQY3+onlGHIx8CxjVyq0lsnOQu+CKWwV2ex5cFgZqYRTV1PsayeQuwLQrAAu7J9PifAIdfpgAEmPRcEx10L7GMv1nkww2GLKQzOQp2KT2U3YSZOT1Hkxhd4IGiREkmWsS3kAU+/kCHiMFs1pY/MQHBIQumcar2c+7j2rSW1WG7C+VT+mZYVh5s83cD9j3bs0D0dx7KVVc/ZhK7hv2XKbfi0GVOWqnJeVX/s4WUD0zKe29D6TOpeT/AGM3aN2bNHRh5CfqPwzJPJKL9DAr5Nj2DTN3g7NhBGN4hiqSSojX/pKWzbWPcxNjgD2N5B6kzK5FjGzIGLq3DHAJUqaPRJuEoOEzQtwIMmZ//9k=", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 8, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM1_19.bin.gz",
+                          "Size": 43096,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 9, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM1_20.bin.gz",
+                          "Size": 3516,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 6, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_21.bin.gz",
+                        "Size": 16617,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 7, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_22.bin.gz",
+                        "Size": 16617,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 5, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_23.bin.gz",
+                        "Size": 16617,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        },
+        {
+          "osg.Node": {
+            "UniqueID": 10, 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 11, 
+                "StateSet": {
+                  "osg.StateSet": {
+                    "UniqueID": 12, 
+                    "TextureAttributeList": [ [ {
+                      "osg.Texture": {
+                        "UniqueID": 13, 
+                        "File": "data:image/jpg;base64,/9j/4AAQSkZJRgABAQEASABIAAD/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wAARCACAAIADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAQIDBAAF/8QAJhAAAgMAAgICAgIDAQAAAAAAAQIAAxESIQQxEyJBUSMyBWFxFP/EABYBAQEBAAAAAAAAAAAAAAAAAAABAv/EABsRAQEBAAMBAQAAAAAAAAAAAAABEQIhMUFx/9oADAMBAAIRAxEAPwAL9R1CLWT3AAeUDjfcyA78jv5jYWWJx/Ijq+LkKUVjYWQMMgG+468c2RETXgiEMpGSxIPowaJVOGAA2St7OiM4GbBWQT3AFIPLuWLHcE4gexDXnKQByc7nYeMW3ef+pxs+uCVGhE/j0zO6jdlUsIr7iZz7kqgHA6k31jmx3qzuBBylRyArCw2FjxGRdHswo8vwYQmwAb2I2kQIlOLRuOiKzdyikcZBJQWJEcLwjVsqHTBZcjOAJUUKnhygqUg7KNYPiAEUP9cEAPhMT4wO4y6T2Ij8i+D1Cm99COOlnJWxHUVkf8wKq6vV37kQcPUkqsDh9QK4Rz+YRZ/t1OFYzuMOLJy/MNYDfmAgbj0Itrtx9R3AB6nKwY5AyryP9ppWvoRr6wAMkwWAgUsqxdmX49bRNDOWXucjKPcWK5PXYjDFbfxO5qTkSz9CEhy++orMFzqBehAwZu89SC628V6iuSy9SYORq30yhX0jqRrTWwyw1fcRl70SFMRhyBNDdmFfemK/bdSijjBo7kamPyHqaEAC9yZXi25Acazdyg4j+3qZ+XHuJc5Kyi/k2VkYkgi8/UPj1Bh9o5X4z9ZKBWVV8M59a3r1E4EvyMdWHLIIYsAclgw+OZnYKZSrXgMAOPcNaAgkR3AFR/cy12EaJQ1pPPIu5KKhdeZkLv0JA4JI2FxoDCRFh6WaF/p3AUXD1Kb1pkRVp2V3rDAm3Z6ELV7my9SrvcWxgCQBBRBUJggLKJnUsCdlAqnve49IqSpWQFePscjP+RPkDHAZFMyqZehhWvcw2FlcCa1UunUsQl92kgepFASeo71sD3LVJ1/uRUqLiKuJnKmkmaD4orP26EVQrMQsUZxWPk3JZvqITiv3FtsFnQlQKu7B+pqvqVU0e5mqTCDs3ECxQJYPMFhV8M0YCN2S8+jgdEjVY3GZ+mruvcmUIO7K0t8zBZfyfH4L3C+sDXEnjHrpw8pEL/LNwYBQJcRGyvkYfm/86iCxhzHcN1YsQH9R+I5ryy7knXexf1FH0/5KJm7kK9LzbktBCTzq1akkmEP3OLlj3JuriHkMxOiNT2v+4XAImjwq1fYPEUfie5dPJCGZPLYV3ZOQixepdTWu5hcNMmEQIQJjfyCDwEv4qM/uSqr4x+K3Zu8hxesxMvGzI1z/ABKCDLESNJrblOcMy8hJv5PIATRRcrALkYM61luzHdyi5NJ4jR+ZlsG7Aeuv5E0DuO1RVexH8YmuvSJSy5bUjBOrw3YbFvqNS9iexxFQmPzONkt4mvHJOS/iW/GYLk4+pldmU6Ji9VLe1vKT5X2P4qcQZmTyCWybalOb+4ndSMxo20sJs8YhPc5UOyVz/Ew0S2t+HsRrL9X1LWeN/F94PGuXomN5XkclIE1Erx7Twuwepop3QwmO4/yz0vHTagZj6cRb7HdiWjACJZqyK9EylmzuatwvTdzVvFwe55/8nIhdjVsT9RPb/wAb4QIDMInY/9k=", 
+                        "MagFilter": "LINEAR", 
+                        "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                        "WrapS": "REPEAT", 
+                        "WrapT": "REPEAT"
+                      }
+                    } ] ]
+                  }
+                }, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 17, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM1_24.bin.gz",
+                          "Size": 44493,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                },
+                {
+                  "DrawElementsUShort": {
+                    "UniqueID": 18, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "LOD2_TM1_25.bin.gz",
+                          "Size": 12027,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLES"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Normal": {
+                    "UniqueID": 15, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_26.bin.gz",
+                        "Size": 31144,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 16, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_27.bin.gz",
+                        "Size": 31144,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 14, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "LOD2_TM1_28.bin.gz",
+                        "Size": 31144,
+                        "Offset": 0
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

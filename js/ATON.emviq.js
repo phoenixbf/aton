@@ -366,7 +366,7 @@ buildTimeline: function(tablenode){
             TL[strID].min   = tMid + yStart;
             TL[strID].max   = tMid + yStart;
             if (tColor){
-                TL[strID].color = [tColor[0], tColor[1], tColor[2], 0.5];
+                TL[strID].color = [tColor[0], tColor[1], tColor[2], 0.3];
                 TL[strID].tex   = ATON.utils.createFillTexture( TL[strID].color );
                 }
             }

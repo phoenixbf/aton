@@ -694,6 +694,8 @@ ATON.actor.prototype = {
 
 // Shape Descriptors
 //==========================================================================
+// FIXME:
+
 ATON.descriptor = function(uname){
     this.uname = uname;
     this.node  = undefined; // a geometry shape for leaves, a group for upper hierarchy
@@ -846,7 +848,7 @@ ATON.addParentToDescriptor = function(unid, parent_unid){
         ATON.descriptors[parent_unid].node.setName(parent_unid);
 
         // This becomes the new root
-        ATON._groupDescriptors.removeChildren();
+        ATON._groupDescriptors.removeChild( ATON.descriptors[unid].node ); //.removeChildren();
         ATON._groupDescriptors.addChild( ATON.descriptors[parent_unid].node );
 
         //console.log("FIRST TIME parent: "+parent_unid);
@@ -859,7 +861,10 @@ ATON.addParentToDescriptor = function(unid, parent_unid){
         }
     // Still loading... delay relationship to descriptor routine.
     else {
-        ATON.descriptors[unid]._onLoadComplete = function(){ ATON.descriptors[parent_unid].node.addChild( ATON.descriptors[unid].node ) };
+        ATON.descriptors[unid]._onLoadComplete = function(){ 
+            ATON.descriptors[parent_unid].node.addChild( ATON.descriptors[unid].node )
+            console.log("Descriptor node: "+unid+" is child of: "+parent_unid);
+            };
         console.log("Descriptor node: "+unid+" will be child of: "+parent_unid);
         }
 

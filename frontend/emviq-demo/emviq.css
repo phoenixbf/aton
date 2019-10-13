@@ -1,0 +1,28 @@
+.emviqLabel {
+    border: 0px;
+    display: inline-block;
+    cursor: pointer;
+
+    color: #FFF;
+    text-shadow: 0 0 5px black;
+
+    /*line-height: 18px;*/
+    text-align: center;
+    vertical-align: middle;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+
+    padding: 8px;
+    margin: 3px;
+
+    outline: none;
+}
+
+.emviqPeriod {
+    color: #FFF;
+    text-shadow: 0 0 5px black;
+    
+    text-align: center;
+    vertical-align: middle;   
+}

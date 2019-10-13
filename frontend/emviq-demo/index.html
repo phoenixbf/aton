@@ -10,6 +10,7 @@
 <title>EMviq DEMO based on ATON</title>
 <link rel="stylesheet" type="text/css" href="../../vendors/bootstrap/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="../../css/aton.css">
+<link rel="stylesheet" type="text/css" href="emviq.css">
 
 <script type="text/javascript" src="../../vendors/gunzip.min.js"></script>
 <script type="text/javascript" src="../../vendors/jquery.min.js"></script>
@@ -135,12 +136,12 @@ ATON.FE.buildSG = function(){
     //let T = ATON.utils.generateTransformFromString("-57.8719596862793 -303.2223815917969 4.660361289978027 0 0 -0.163");
     let T = ATON.utils.generateTransformFromString("0 0 0 0 0 -0.163");
     ATON.transformLayerByMatrix(periodName, T.getMatrix());
-    ATON.translateLayer(periodName, [-106.5, -290, 4.660]);
+    ATON.translateLayer(periodName, [-106.5, -290, 5.0]);
 
 
 
-    // IIAD
-    periodName = "IIAD";
+    // IIAD Rec
+    periodName = "IIAD Rec";
     ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Walls_BAKE_m.osgjs", {layer: periodName});
 
     ATON.addGraph(ATON.FE.MODELS_ROOT+"greattemple/IIAD/Travi_BAKE_m.osgjs", {layer: periodName});
@@ -198,17 +199,12 @@ ATON.FE.buildSG = function(){
         layer: periodName, 
         transformRules: ATON.FE.MODELS_ROOT+"greattemple/IIAD/Column_tempio-inst.txt" 
         });
-
-    //ATON.addNewLayer("IIAD Rec");
-    //ATON.layers["IIAD Rec"].node = ATON.layers["IIAD"].node;
-
-    ATON.setHome([-0.09,-27.80,-0.3],[0.07,-20.27,-0.3]);
 };
 
 ATON.FE.timeSlideByPeriodName = function(periodname){
     $('#idPeriodName').html(periodname);
     ATON.FE.currPeriodName = periodname;
-    if (ATON.layers[periodname]) ATON.isolateLayer(periodname);
+    /*if (ATON.layers[periodname])*/ ATON.isolateLayer(periodname);
 /*
     if (ATON.descriptors[periodname]){
         for (let p=0; p<EM.timeline.length; p++){
@@ -253,6 +249,7 @@ window.addEventListener( 'load', function () {
     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
 
     ATON._bQueryUseOcclusion = false;
+    ATON.setHome([-0.09,-27.80,-0.3],[0.07,-20.27,-0.3]);
         
     ATON.FE.buildSG();
 
@@ -272,6 +269,9 @@ window.addEventListener( 'load', function () {
         //EM.buildEMgraph();
 
         document.getElementById("idTimeline").setAttribute("max", EM.timeline.length);
+        console.log("----");
+        //console.log(ATON.descriptors["IIAD Rec"].node);
+        console.log(ATON._groupDescriptors);
         });
 
     // Proxies
@@ -304,7 +304,7 @@ window.addEventListener( 'load', function () {
         ATON.FE.attachListeners();
 
         //ATON.isolateLayer("IIAD");
-        ATON.FE.timeSlideByPeriodName("XX sec");
+        ATON.FE.timeSlideByPeriodName("IIAD Rec");
 
         //console.log(ATON._groupDescriptors);
 
@@ -409,14 +409,14 @@ window.addEventListener( 'load', function () {
       </header>
 
     <!-- BOTTOM navbar -->
-    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.2)">
+    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.0)">
 
         <div style="display:inline-block; width:50%;">
-            <h3 id="idPeriodName">Timeline</h3>
+            <h3 id="idPeriodName" class="emviqPeriod">Timeline</h3>
             <input id="idTimeline" type="range" min="0" max="1" oninput="ATON.FE.timeSlideByPeriodID(this.value)">
-        </div>
+        </div><br>
     
-        <div style="width: 100%">
+        <div class="emviqLabel">
             <span id="idProxyID"></span>
 <!--
             <div id="idSpeechRecBTN" onclick="ATON.speechRecognitionStart()" style="display:inline">
@@ -424,9 +424,9 @@ window.addEventListener( 'load', function () {
                 <span id="idSpeechText"></span>
             </div>
 -->
-        </div>
+        </div><br>
 
-        <div style="float:right">Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/">ATON 2.0</a> - CNR ISPC</div>
+        <div style="float:right">Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/">ATON 2.0</a> - CNR ISPC&nbsp;</div>
 
     </div>
 

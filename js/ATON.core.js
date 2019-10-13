@@ -101,6 +101,7 @@ ATON._screenQuery           = osg.vec2.create();
 ATON._screenQueryNormalized = osg.vec2.create();    // in 0--1
 ATON._hoveredVisData        = undefined; // hovered 3D point & norm in visible graph
 ATON._bQueryAxisAligned     = false;
+ATON._bQueryUseOcclusion    = true;
 
 ATON._bZflat = false;
 
@@ -2234,7 +2235,7 @@ ATON._handleDescriptorsHover = function(){
             if (ATON._hoveredVisData) distE2V = osg.vec3.squaredDistance(ATON._currPOV.pos, ATON._hoveredVisData.p);
 
             var bOccluded = false;
-            if (distE2V){
+            if (distE2V && ATON._bQueryUseOcclusion){
                 if (distE2V < distE2D) bOccluded = true;
                 }
 

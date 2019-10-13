@@ -45,7 +45,7 @@ ATON.FE = {};
 ATON.FE.MODELS_ROOT = "../../models/";
 
 let EM = new ATON.emviq.EM();
-
+ATON.FE.currPeriodName = undefined;
 
 
 
@@ -76,13 +76,16 @@ ATON.FE.buildLayerMenu = function(){
 };
 
 ATON.FE.highlightProxy = function(id){
+    //let proxy = EM.proxyNodes[id];
+    //if (proxy.periodName !== ATON.FE.currPeriodName) return;
+
     for (var d in ATON.descriptors){
-            let D = ATON.descriptors[d];
-            if (D.node){
-                if (d === id) D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, D._texc, osg.StateAttribute.ON | osg.StateAttribute.PROTECTED);
-                else D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, ATON.utils.fallbackAlphaTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
-                }
+        let D = ATON.descriptors[d];
+        if (D.node){
+            if (d === id) D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, D._texc, osg.StateAttribute.ON | osg.StateAttribute.PROTECTED);
+            else D.node.getOrCreateStateSet().setTextureAttributeAndModes( 0, ATON.utils.fallbackAlphaTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
             }
+        }
 };
 
 ATON.FE.logPOV = function(){
@@ -200,18 +203,33 @@ ATON.FE.buildSG = function(){
     //ATON.layers["IIAD Rec"].node = ATON.layers["IIAD"].node;
 
     ATON.setHome([-0.09,-27.80,-0.3],[0.07,-20.27,-0.3]);
-
-    ATON.isolateLayer("XX sec");
 };
 
-ATON.FE.timeSlider = function(tid){
+ATON.FE.timeSlideByPeriodName = function(periodname){
+    $('#idPeriodName').html(periodname);
+    ATON.FE.currPeriodName = periodname;
+    if (ATON.layers[periodname]) ATON.isolateLayer(periodname);
+/*
+    if (ATON.descriptors[periodname]){
+        for (let p=0; p<EM.timeline.length; p++){
+            let P = EM.timeline[p];
+            //console.log(ATON.descriptors[P.name]);
+            
+            let N = ATON.descriptors[P.name].node;
+            //console.log(N);
+            if (N) N.setNodeMask( 0x0 );
+            }
+
+        ATON.descriptors[periodname].node.setNodeMask(ATON._maskDescriptors);
+        }
+*/
+};
+
+ATON.FE.timeSlideByPeriodID = function(tid){
     let period = EM.timeline[tid];
     if (!period) return;
 
-    //console.log(period.name);
-
-    $('#idPeriodName').html(period.name);
-    if (ATON.layers[period.name]) ATON.isolateLayer(period.name);
+    ATON.FE.timeSlideByPeriodName(period.name);
 };
 
 
@@ -230,9 +248,11 @@ window.addEventListener( 'load', function () {
 
     //ATON.addLightProbe("../LP/default");
 
-    ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
+    ATON._mainSS.getUniform('uFogDistance').setFloat( 150.0 );
     $('body').css('background-color', 'rgb(65,70,79)');
     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
+
+    ATON._bQueryUseOcclusion = false;
         
     ATON.FE.buildSG();
 
@@ -283,7 +303,12 @@ window.addEventListener( 'load', function () {
         $('#idLoader').hide();
         ATON.FE.attachListeners();
 
-        console.log(EM.proxyNodes);
+        //ATON.isolateLayer("IIAD");
+        ATON.FE.timeSlideByPeriodName("XX sec");
+
+        //console.log(ATON._groupDescriptors);
+
+        //console.log(EM.proxyNodes);
         });
 
 });
@@ -301,15 +326,15 @@ window.addEventListener( 'load', function () {
 
     <header>
         <!-- TOP navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="background-color: rgba(0,0,0, 0.2) !important;">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <button id="idFS" type="button" class="atonBTN" onclick="ATON.FE.toggleFullscreen()"><img src="../../res/ii-inv-fs.png"></button>
                 <button type="button" class="atonBTN" onclick="ATON.requestHome(1.0)"><img src="../../res/ii-inv-home.png"></button>
+                <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../../res/ii-inv-vr.png"></button>
                 <!-- <button id="idSpeechRecBTN" class="atonBTN" onclick="ATON.speechRecognitionStart()"><img src="../../res/ii-inv-speech.png"></button> -->
             </li>
             </ul>
-            &nbsp;
           
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
             </button>
@@ -326,12 +351,6 @@ window.addEventListener( 'load', function () {
                     </div>
                 </li>
 -->
-                <li class="nav-item" id="idCustomBTNs">
-<!--                    <button id="idFP" type="button" class="atonBTN" onclick="ATON.FE.toggleFirstPerson()"><img src="../../res/ii-inv-fp.png"></button>
-                    <button id="idDevOri" type="button" class="atonBTN" onclick="ATON.FE.toggleDevOri()"><img src="../../res/ii-inv-devori.png"></button>
--->
-                    <button id="idVR" type="button" class="atonBTN" onclick="ATON.toggleVR()"><img src="../../res/ii-inv-vr.png"></button>
-                </li>
 <!--
                 <select id="idLayers" name="layers-list" class="atonBTN" style="width:auto;" onchange="ATON.FE.selectLayerMenu(this.value)">
                     <option value="__ALL__">&#9724;&nbsp;SHOW ALL</option>
@@ -390,11 +409,11 @@ window.addEventListener( 'load', function () {
       </header>
 
     <!-- BOTTOM navbar -->
-    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
+    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.2)">
 
         <div style="display:inline-block; width:50%;">
             <h3 id="idPeriodName">Timeline</h3>
-            <input id="idTimeline" type="range" min="0" max="1" oninput="ATON.FE.timeSlider(this.value)">
+            <input id="idTimeline" type="range" min="0" max="1" oninput="ATON.FE.timeSlideByPeriodID(this.value)">
         </div>
     
         <div style="width: 100%">

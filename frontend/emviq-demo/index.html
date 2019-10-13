@@ -230,7 +230,7 @@ window.addEventListener( 'load', function () {
 
     //ATON.addLightProbe("../LP/default");
 
-    ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
+    ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
     $('body').css('background-color', 'rgb(65,70,79)');
     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
         
@@ -248,6 +248,8 @@ window.addEventListener( 'load', function () {
     EM.parseGraphML(ATON.FE.MODELS_ROOT+"greattemple/gt-em.graphml", ()=>{
         //console.log(em._jxRoot);
         EM.realizeFromJSONnode();
+        
+        //EM.buildEMgraph();
 
         document.getElementById("idTimeline").setAttribute("max", EM.timeline.length);
         });
@@ -391,7 +393,7 @@ window.addEventListener( 'load', function () {
     <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
 
         <div style="display:inline-block; width:50%;">
-            <h3 id="idPeriodName">Period</h3>
+            <h3 id="idPeriodName">Timeline</h3>
             <input id="idTimeline" type="range" min="0" max="1" oninput="ATON.FE.timeSlider(this.value)">
         </div>
     

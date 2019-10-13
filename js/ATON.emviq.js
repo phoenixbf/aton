@@ -111,9 +111,9 @@ ATON.emviq.EM = function(){
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
-    this.timeline = []; // sorted array
-    //this.EMnodes  = {};
-    this.proxyNodes = {};
+    this.timeline = [];     // sorted array of periods
+    this.proxyNodes = {};   // Fast access to proxies by ID (e.g. "US100")
+    this.EMnodes    = {};   // EM nodes
 
     //this._pgTrans   = new osg.MatrixTransform();
     //this.proxyGraph = new osg.Node();
@@ -145,6 +145,7 @@ parseGraphML: function(graphmlurl, onSuccess){
         //console.log(headnode);
 
         self._jxRoot = headnode.graph;
+        self._mainRoot = jx.graphml.graph;
 
         if (onSuccess) onSuccess();
 
@@ -229,13 +230,21 @@ getNodeShape: function(node){
 },
 
 getNodeFields: function(node){
-    console.log(node);
+    //console.log(node);
 
     let R = {
+        xmlID: undefined,
         description: undefined,
         url: undefined,    
         label: undefined
         };
+
+    // ID
+    let attrID = this.getAttribute(node, "id");
+    if (attrID){
+        //console.log(attrID);
+        R.xmlID = String(attrID);
+        }
 
     // URL
     let du = this.findDataWithKey(node, ATON.emviq.YED_dAttrURL);
@@ -450,7 +459,7 @@ realizeFromJSONnode: function(graphnode){
     else nodes = graphnode.node;
     // TODO: check array
 
-    for (let i = 0; i < nodes.length; i++) {
+    for (let i = 0; i < nodes.length; i++){
         let n = nodes[i];
         let bProxyNode = false;
 
@@ -512,6 +521,7 @@ realizeFromJSONnode: function(graphnode){
 
             if (bProxyNode){
                 let pkey = fields.label;
+
                 this.proxyNodes[pkey] = {};
                 this.proxyNodes[pkey].type = type;
                 this.proxyNodes[pkey].time = t;
@@ -521,21 +531,54 @@ realizeFromJSONnode: function(graphnode){
                 if (fields.url) this.proxyNodes[pkey].url = fields.url;
                 }
 
-            // If accepted, push into main table
-/*
-            if (type && periodName){
-                this.EMnodes[fields.label] = {};
-                this.EMnodes[fields.label].type = type;
-                this.EMnodes[fields.label].time = t;
-                this.EMnodes[fields.label].periodName = periodName;
+            // If accepted, push into EM nodes
+            if (type && periodName && fields.xmlID){
+                let EMkey = fields.xmlID;
+
+                this.EMnodes[EMkey] = new osg.Node();
+                this.EMnodes[EMkey]._EMdata = {};
+                let EMdata = this.EMnodes[EMkey]._EMdata;
+
+                EMdata.type = type;
+                EMdata.time = t;
+                EMdata.periodName = periodName;
+                EMdata.label = fields.label;
+                EMdata.description = fields.description;
+                EMdata.url = fields.url;
+
+                //console.log(EMdata);
                 }
-*/
             }
 
         //console.log(this.EMnodes);
         }
 
     return G;
+},
+
+// Build EM nodes relationships
+buildEMgraph: function(graphnode){
+    if (!graphnode) graphnode = this._mainRoot; //.node;
+
+    //console.log(graphnode);
+    if (!graphnode.edge) return; // no edges found in GraphML
+
+    let numEdges = graphnode.edge.length;
+    for (let i = 0; i < numEdges; i++){
+        let E = graphnode.edge[i];
+        if (E){
+            let sourceID = String(this.getAttribute(E,"source"));
+            let targetID = String(this.getAttribute(E,"target"));
+
+            let sourceNode = this.EMnodes[sourceID];
+            let targetNode = this.EMnodes[targetID];
+
+            if (sourceNode && targetNode) sourceNode.addChild(targetNode);
+
+            //console.log(sourceID+" > "+targetID);
+            }
+
+        }
 },
 
 

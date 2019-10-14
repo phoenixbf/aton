@@ -205,6 +205,7 @@ ATON.FE.timeSlideByPeriodName = function(periodname){
     $('#idPeriodName').html(periodname);
     ATON.FE.currPeriodName = periodname;
     /*if (ATON.layers[periodname])*/ ATON.isolateLayer(periodname);
+
 /*
     if (ATON.descriptors[periodname]){
         for (let p=0; p<EM.timeline.length; p++){
@@ -217,6 +218,7 @@ ATON.FE.timeSlideByPeriodName = function(periodname){
             }
 
         ATON.descriptors[periodname].node.setNodeMask(ATON._maskDescriptors);
+        for (c in ATON.descriptors[periodname].node.children) ATON.descriptors[periodname].node.children[c].setNodeMask(ATON._maskDescriptors);
         }
 */
 };
@@ -269,9 +271,9 @@ window.addEventListener( 'load', function () {
         //EM.buildEMgraph();
 
         document.getElementById("idTimeline").setAttribute("max", EM.timeline.length);
-        console.log("----");
+        //console.log("----");
+        //console.log(ATON._groupDescriptors);
         //console.log(ATON.descriptors["IIAD Rec"].node);
-        console.log(ATON._groupDescriptors);
         });
 
     // Proxies
@@ -303,8 +305,11 @@ window.addEventListener( 'load', function () {
         $('#idLoader').hide();
         ATON.FE.attachListeners();
 
+        // Tweak
+        //for (d in ATON.descriptors){ if (ATON.descriptors[d].node) ATON.descriptors[d].node.setNodeMask(0x0);  }
+
         //ATON.isolateLayer("IIAD");
-        //ATON.FE.timeSlideByPeriodName("IIAD Rec");
+        ATON.FE.timeSlideByPeriodName("IIAD Rec");
 
         //console.log(ATON._groupDescriptors);
 

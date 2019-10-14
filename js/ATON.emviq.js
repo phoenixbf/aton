@@ -550,7 +550,7 @@ realizeFromJSONnode: function(graphnode){
 
 // Build EM nodes relationships
 buildEMgraph: function(graphnode){
-    if (!graphnode) graphnode = this._mainRoot; //.node;
+    if (!graphnode) graphnode = this._mainRoot;
 
     //console.log(graphnode);
     if (!graphnode.edge) return; // no edges found in GraphML

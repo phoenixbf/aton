@@ -496,11 +496,6 @@ realizeFromJSONnode: function(graphnode){
                     fields.label, 
                     {color: periodColor}
                     );
-
-                if (periodName){
-                    let P = ATON.addParentToDescriptor(fields.label, periodName);
-                    //if (periodTexture) P.node.getOrCreateStateSet().setTextureAttributeAndModes(0, periodTexture, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
-                    }
                 }
 
             // Procedural proxy
@@ -512,11 +507,6 @@ realizeFromJSONnode: function(graphnode){
                     fields.label, 
                     {transformRules: this.folderProxies + fields.label + "-inst.txt", color: periodColor }
                     );
-
-                if (periodName){
-                    let P = ATON.addParentToDescriptor(fields.label, periodName );
-                    //if (periodTexture) P.node.getOrCreateStateSet().setTextureAttributeAndModes(0, periodTexture, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
-                    }
                 }
 
             if (bProxyNode){
@@ -529,6 +519,8 @@ realizeFromJSONnode: function(graphnode){
 
                 if (fields.description) this.proxyNodes[pkey].description = fields.description;
                 if (fields.url) this.proxyNodes[pkey].url = fields.url;
+
+                let P = ATON.addParentToDescriptor(pkey, periodName );
                 }
 
             // If accepted, push into EM nodes

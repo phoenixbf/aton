@@ -227,7 +227,9 @@ ATON.utils.detectMobileDevice = function(){
 };
 
 // Detect HW capabilities
-ATON.utils.detectGLSLcapab = function(){
+ATON.utils.detectDeviceCapab = function(){
+
+    ATON._isMobile = ATON.utils.detectMobileDevice();
 
     let gl = ATON._canvas.getContext('experimental-webgl');
     if (gl == null){ 
@@ -240,6 +242,8 @@ ATON.utils.detectGLSLcapab = function(){
         ATON._bHighP     = (highp.precision != 0);
         ATON._maxTexSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
 
+        if (ATON._maxTexSize <= 4096) ATON._isMobile = true;
+
         console.log("HighP support: "+ATON._bHighP);
         console.log("Max Texture size: "+ATON._maxTexSize);
         }
@@ -247,6 +251,8 @@ ATON.utils.detectGLSLcapab = function(){
     else{ // WebGL is not supported
         console.log("WebGL not supported. Time to upgrade ur phone m8");
         }
+
+    console.log("Mobile device: "+ATON._isMobile);
 };
 
 
@@ -2420,8 +2426,9 @@ ATON.realize = function( canvas ){
 
     ATON._canvas = canvas;
 
-    // Mobile detection
-    ATON._isMobile = ATON.utils.detectMobileDevice();
+    // Device detection
+    //ATON._isMobile = ATON.utils.detectMobileDevice();
+    ATON.utils.detectDeviceCapab();
     ATON._bDevOri  = false;
 
     ATON._initGraph();
@@ -2501,7 +2508,6 @@ ATON.realize = function( canvas ){
 
 
     // Load Core Shaders
-    ATON.utils.detectGLSLcapab();
     ATON.loadCoreShaders( ATON.shadersFolder );
 
     // Speech

@@ -52,6 +52,11 @@ ATON.tracer._touchVRCgroup = function(){
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
+    var df = new osg.Depth( osg.Depth.LESS ); // osg.Depth.ALWAYS
+    df.setRange(0.0,1.0);
+    df.setWriteMask(false); // important
+    ATON.tracer._groupVRC.getOrCreateStateSet().setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+
     //var D = new osg.Depth( osg.Depth.LESS );
     //D.setRange(0.0, 1.0);
     //ATON.tracer._groupVRC.getOrCreateStateSet().setAttributeAndModes( D );

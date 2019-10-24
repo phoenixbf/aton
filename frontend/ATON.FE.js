@@ -1508,7 +1508,7 @@ window.addEventListener( 'load', function () {
                 case "tomba":
                     scenename = "tomba";
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba-rilievi_m.osgjs");
+                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs");
 
                     ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
 

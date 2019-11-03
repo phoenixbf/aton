@@ -3357,6 +3357,7 @@ ATON._addGLSLprecision = function(glsldata){
     return glsldata;
 };
 
+
 ATON.loadCoreShaders = function(path){
     //var self = this;
 
@@ -3380,6 +3381,7 @@ ATON.loadCoreShaders = function(path){
 
 		ATON._glslCoreProgram = program;
         ATON._onCoreShadersLoaded();
+
 		}, "text");
 
 	$.get( path + "/descriptors.glsl", function(glsldata){
@@ -3397,6 +3399,7 @@ ATON.loadCoreShaders = function(path){
 
 		ATON._glslDescriptorsProgram = program;
         ATON._onDescriptorsShadersLoaded();
+
 		}, "text");
 
 	$.get( path + "/ui.glsl", function(glsldata){
@@ -3434,9 +3437,35 @@ ATON.loadCoreShaders = function(path){
 */
 };
 
+ATON.loadCustomShadersForLayer = function(glslpath, layername, onComplete){
+    let G = ATON.getLayer(layername);
+    if (!G){
+        if (onComplete) onComplete();
+        return;
+        }
+
+	$.get( glslpath, function(glsldata){
+        glsldata = ATON._addGLSLprecision(glsldata);
+
+		// Pre-directives
+		if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
+
+		glsldata += '\n';
+
+		var program = new osg.Program(
+			new osg.Shader( 'VERTEX_SHADER', "#define VERTEX_SH 1\n" + glsldata ),
+			new osg.Shader( 'FRAGMENT_SHADER', "#define FRAGMENT_SH 1\n" + glsldata )
+			);
+
+        G.getOrCreateStateSet().setAttributeAndModes( program );
+
+        if (onComplete) onComplete();
+        
+		}, "text");
+};
+
 ATON._onCoreShadersLoaded = function(){
     console.log("Core Shaders loaded.");
-
     ATON._groupVisible.getOrCreateStateSet().setAttributeAndModes( ATON._glslCoreProgram );
 };
 
@@ -3448,7 +3477,7 @@ ATON._onDescriptorsShadersLoaded = function(){
 ATON._onUIShadersLoaded = function(){
     console.log("UI Shaders loaded.");
     ATON._groupUI.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram );  
-    ATON._LPT.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram ); 
+    ATON._LPT.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram );
 };
 
 ATON._onFrontShaderLoaded = function(){

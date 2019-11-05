@@ -773,10 +773,20 @@ ATON.addDescriptor = function(url, unid, options){
         var CLV = new ATON.utils.clearNamesVisitor();
         data.accept( CLV );
 
-        if (options && options.transformRules){
+        if (options && (options.transformRules || options.transform) ){
             var N = new osg.Node();
-            ATON.utils.generateProduction(data, options.transformRules, N);
-            ATON.descriptors[unid].node  = N;
+
+            if (options.transformRules){
+                ATON.utils.generateProduction(data, options.transformRules, N);
+                }
+            if (options.transform){
+                let T = new osg.MatrixTransform();
+                T.setMatrix(options.transform);
+                T.addChild(data);
+                N = T;
+                }
+
+            ATON.descriptors[unid].node = N;
             }
         else ATON.descriptors[unid].node = data;
 

@@ -2953,6 +2953,14 @@ ATON.switchLayer = function(layerName, value){
         }
 };
 
+ATON.toggleLayer = function(layerName){
+    let layer = ATON.layers[layerName];
+    if (layer === undefined) return;
+    
+    if (layer.getNodeMask() === 0x0) ATON.switchLayer(layerName,true);
+    else ATON.switchLayer(layerName,false);
+};
+
 ATON.isolateLayer = function(layerName){
     for (var key in ATON.layers){
         if (key === layerName) ATON.switchLayer(key, true);

@@ -979,7 +979,7 @@ ATON.requestPOV = function(pov, duration){
 
     ATON._toPOV.pos      = pov.pos.slice(0);
     ATON._toPOV.target   = pov.target.slice(0);
-    ATON._toPOV.fov      = pov.fov;
+    ATON._toPOV.fov      = pov.fov? pov.fov : ATON._currPOV.fov;
 
     if (duration !== undefined) ATON._tPOVduration = duration;
     else ATON._tPOVduration = ATON_STD_POV_DURATION;
@@ -987,18 +987,18 @@ ATON.requestPOV = function(pov, duration){
     ATON._tPOVcall = ATON._time;
 };
 
-ATON.requestPOVbyName = function(povname){
+ATON.requestPOVbyName = function(povname, duration){
     var n = ATON.POVlist.length;
     for (var i = 0; i < n; i++){
         if (ATON.POVlist[i].name === povname){
-            ATON.requestPOVbyIndex(i);
+            ATON.requestPOVbyIndex(i, duration);
             return;
             }
         }
 };
 
-ATON.requestPOVbyIndex = function(i){
-    ATON.requestPOV(ATON.POVlist[i]);
+ATON.requestPOVbyIndex = function(i, duration){
+    ATON.requestPOV(ATON.POVlist[i], duration);
     ATON._reqPOVi = i;
 };
 
@@ -2770,7 +2770,7 @@ ATON._initGraph = function(){
     ATON._mainGroup = new osg.Node();   // main group
 
     ATON._groupVisible     = new osg.Node();
-    ATON._groupDescriptors = new osg.Node();
+    ATON._groupDescriptors = new osg.MatrixTransform(); //new osg.Node();
     ATON._groupUI          = new osg.Node();
 
     // Main world transform

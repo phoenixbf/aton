@@ -1312,7 +1312,7 @@ function _loaderWorker(){
 // MagNet Nodes
 //==========================================================================
 ATON.magNode = function(){
-    this.nameID    = "";
+    //this.nameID    = id? id : String(ATON.MagNet.length);
     this.enabled   = true;
     this.position  = osg.vec3.create();
     this.target    = osg.vec3.create();
@@ -3036,6 +3036,10 @@ ATON.gotoLayer = function(layerName, duration){
 };
 */
 
+// TODO:
+ATON.createNode = function(id, url, onComplete){
+
+};
 
 // TODO: rename?
 ATON.addGraph = function( url, options, onComplete ){

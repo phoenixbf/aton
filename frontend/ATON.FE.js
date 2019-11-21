@@ -1889,6 +1889,14 @@ if (asset === "sf"){
                     }
                 }
             }
+
+        // TEST
+
+        let A = new ATON.node("pippo");
+        console.log(A);
+        let N = new osg.Node();
+        console.log(N);
+
         });
 
     ATON.on("MouseMidButton",()=>{

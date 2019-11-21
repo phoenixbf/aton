@@ -682,6 +682,24 @@ ATON.utils._decodeHDRHeader = function( buf ){
     return info;
 };
 */
+// ATON node
+//==========================================================================
+ATON.node = function(id){
+    osg.Node.call(this);
+
+    if (id){
+        this.setName(id);
+        ATON.nodes[id] = this;
+        }
+};
+
+ATON.node.prototype = Object.create(osg.Node.prototype);
+
+ATON.node.prototype.toggle = function(b){
+    if (b) this.setNodeMask(0xf);
+    else this.setNodeMask(0x0);
+};
+
 
 // TODO: Actor
 //==========================================================================
@@ -2806,6 +2824,8 @@ ATON._initGraph = function(){
 
     // Layers (visible SG)
     ATON.layers = {}; //new Array();
+
+    ATON.nodes = {};
 
     // StateSets
     ATON._mainSS  = ATON._mainGroup.getOrCreateStateSet();

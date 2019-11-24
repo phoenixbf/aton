@@ -434,7 +434,6 @@ ATON.utils.reflect = function(v, n){
 	return r;
 };
 
-
 // VISITORS
 // Search a node by name in a subgraph
 ATON.utils.findByNameVisitor = function ( name ) {
@@ -490,32 +489,25 @@ ATON.utils.dbPathVisitor.prototype = osg.objectInherit( osg.NodeVisitor.prototyp
         }
 });
 
-
-// Procedural routines
-ATON.utils.generateTransformFromString = function( transtring ){
-    if (transtring == '') return undefined;
-
-    var T = new osg.MatrixTransform();
-    var M = osg.mat4.create();
-
-    T.setMatrix( M );
+// Procedural utils
+//================================================================
+ATON.utils.generateMatrixFromString = function( transtring ){
+    let M = osg.mat4.create();
 
     // split by (multiple) whitespaces
-    var values = transtring.trim().split(/\s+/).map(parseFloat);
+    let values = transtring.trim().split(/\s+/).map(parseFloat);
     if (values.length < 3) return undefined;
 
-    var vTrans = osg.vec3.fromValues(values[0],values[1],values[2]);
+    let vTrans = osg.vec3.fromValues(values[0],values[1],values[2]);
 
     // Translate
-    //$osg.Matrix.makeTranslate( values[0],values[1],values[2], M );
     osg.mat4.translate(M, M, vTrans );
-
     //console.log('Trans: '+values[0]+' '+values[1]+' '+values[2]);
 
     if (values.length >= 6){
-        var rmx = osg.mat4.create();
-        var rmy = osg.mat4.create();
-        var rmz = osg.mat4.create();
+        let rmx = osg.mat4.create();
+        let rmy = osg.mat4.create();
+        let rmz = osg.mat4.create();
 
         osg.mat4.rotate(rmx, rmx, values[3], ATON_X_AXIS);
         osg.mat4.rotate(rmy, rmy, values[4], ATON_Y_AXIS);
@@ -530,23 +522,53 @@ ATON.utils.generateTransformFromString = function( transtring ){
         //console.log('Rot: '+values[3]+' '+values[4]+' '+values[5]);
 
         if (values.length >= 9){
-            var vScale = osg.vec3.fromValues(values[6],values[7],values[8]);
+            let vScale = osg.vec3.fromValues(values[6],values[7],values[8]);
 
             // Scale
-            var sm = osg.mat4.create();
-            //$ osg.Matrix.makeScale( values[6],values[7],values[8], sm );
+            let sm = osg.mat4.create();
             osg.mat4.fromScaling( sm, vScale);
 
-            //$ osg.Matrix.preMult( M, sm );
             osg.mat4.multiply(M, M,sm);
             //console.log('Scale: '+values[6]+' '+values[7]+' '+values[8]);
             }
         }
+    
+    return M;
+};
 
-    //console.log( T );
+ATON.utils.generateTransformFromString = function( transtring ){
+    var T = new osg.MatrixTransform();
+    if (!transtring || transtring.length < 3) return undefined;
+
+    T.setMatrix( ATON.utils.generateMatrixFromString(transtring) );
     return T;
 };
 
+// async
+ATON.utils.generateTransformListFromASCII = function(instfileURL, onSuccess){
+	$.get( instfileURL, function(data){
+        let tlist = [];
+        
+        let lines = data.split("\n");
+        let len = lines.length;
+
+        //console.log(lines);
+
+        for (let t = 0; t < len; t++){
+            var T = ATON.utils.generateTransformFromString( lines[t].trim() );
+            if (T) tlist.push(T); // filter only valid transforms
+            }
+
+        console.log("Generated TransformList ("+tlist.length+" elements)");
+        if (onSuccess) onSuccess(tlist);
+
+    }, "text")
+    .fail( function(){ // Failed to load
+        console.log("ERROR Loading "+instfileURL);
+        });
+};
+
+// DEPRECATE?
 ATON.utils.generateProduction = function(template, instfileURL, prodGroup){
     if (template === undefined) return;
     if (prodGroup === undefined) return;
@@ -682,22 +704,227 @@ ATON.utils._decodeHDRHeader = function( buf ){
     return info;
 };
 */
-// ATON node
-//==========================================================================
-ATON.node = function(id){
-    osg.Node.call(this);
 
-    if (id){
-        this.setName(id);
-        ATON.nodes[id] = this;
-        }
+ATON.getWorldTransform = function(){
+    return ATON._worldTransform;
 };
 
-ATON.node.prototype = Object.create(osg.Node.prototype);
+ATON.getRootScene = function(){
+    return ATON._rootScene;
+};
+ATON.getRootDescriptors = function(){
+    return ATON._rootDescriptors;
+};
+ATON.getRootUI = function(){
+    return ATON._rootUI;
+};
 
-ATON.node.prototype.toggle = function(b){
-    if (b) this.setNodeMask(0xf);
-    else this.setNodeMask(0x0);
+ATON.getNode = function(id){
+    return ATON.nodes[id];
+};
+
+/* 
+    Scene-graphs
+==========================================================================*/
+
+// Directly add to visible root
+ATON.addNodeToRoot = function(N){
+    ATON._rootScene.addChild(N);
+};
+
+// Internal use
+// Factory to craft API-enriched nodes from base node N
+ATON.createNode = function(N, mask){
+    N.bLoading = false;
+    N.assetURL = undefined;
+
+    N._intMask = mask;
+    N._bShow   = true;
+
+    // Base routines
+    N.show = function(){
+        this._bShow = true;
+        this.setNodeMask(this._intMask);
+        if (this._intMask === ATON._maskVisible) ATON._buildKDTree(ATON._rootScene);
+        return this;
+        };
+    N.hide = function(){
+        this._bShow = false;
+        this.setNodeMask(0x0);
+        return this;
+        };
+
+    N.switch = function(b){
+        if (b) return this.show();
+        else return this.hide();
+        };
+    N.toggle = function(){
+        if (this._bShow) return this.hide();
+        else return this.show();
+        };
+
+    N.addChildByID = function(id){
+        if (ATON.nodes[id]) return this.addChild(ATON.nodes[id]); // returns child-node
+        };
+
+    // Transform routines
+    N.transformByMatrix = function(m){
+        let M = this.matrix;
+        if (!M) return this;
+        
+        this.setMatrix(m);
+        return this;
+        };
+
+    N.transformByString = function(line){
+        let M = this.matrix;
+        if (!M) return this;
+        
+        this.setMatrix( ATON.utils.generateMatrixFromString(line) );
+        return this;
+        };
+
+    N.translate = function(v){
+        let M = this.matrix;
+        if (!M) return this;
+
+        osg.mat4.setTranslation(M, v );
+        return this;
+        };
+    N.rotateAround = function(radians, axis){
+        let M = this.matrix;
+        if (!M) return this;
+
+        osg.mat4.rotate(M, M, radians, axis); // ATON_Z_AXIS
+        return this;
+        };
+    N.scale = function(s){
+        let M = this.matrix;
+        if (!M) return this;
+
+        osg.mat4.scale(M,M, [s,s,s] );
+        return this;
+        };
+
+    //N.setNodeMask(mask);
+    return N;
+};
+
+ATON.createGroupNode = function(id){
+    let N = ATON.createNode( new osg.Node(), ATON._maskVisible );
+
+    if (id){ // register
+        N.setName(id);
+        ATON.nodes[id] = N;
+        }
+
+    return N;
+}
+
+ATON.createTransformNode = function(id){
+    let N = ATON.createNode( new osg.MatrixTransform(), ATON._maskVisible );
+    //console.log(N);
+
+    if (id){ // register
+        N.setName(id);
+        ATON.nodes[id] = N;
+        }
+
+    return N;
+}
+
+ATON.createDynamicGroupNode = ATON.createTransformNode;
+
+// Aux loading routine
+ATON.loadAssetToNode = function(url, N, onComplete){
+    if (!N) return;
+
+    N.bLoading = true;
+    ATON._nodeReqs++;
+
+    console.log("...Loading "+ url);
+    ATON.fireEvent("NodeRequestFired");    //ATON.onNodeRequestFired();
+
+    var request = osgDB.readNodeURL( url /*, { databasePath: basepath }*/ /*, opt*/ );
+    request.then( function ( node ){
+        if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+
+        // remove all names inside loaded asset
+        let CLV = new ATON.utils.clearNamesVisitor();
+        node.accept( CLV );
+
+        console.log(url + " loaded.");
+        N.addChild(node);
+        N.bLoading = false;
+        
+        ATON._onNodeRequestComplete();
+
+        if (onComplete !== undefined) onComplete();
+        }).catch( function(e) {
+            N.bLoading = false;
+            console.error("Unable to load "+url+" - "+e);
+        });
+};
+
+ATON.createAssetNode = function(id, url, bTransformable, onComplete){
+    let N;
+    if (bTransformable) N = ATON.createTransformNode(id);
+    else N = ATON.createGroupNode(id);
+
+    N.assetURL = url;
+
+    ATON.loadAssetToNode(url, N, onComplete);
+
+    return N;
+};
+
+// Procedural instancing
+//=======================
+ATON.createProduction = function(id, templatenode, transformlist, bTransformable){
+    let N;
+    if (bTransformable) N = ATON.createTransformNode(id);
+    else N = ATON.createGroupNode(id);
+/*
+    if (typeof transformlist === 'string' || transformlist instanceof String){
+
+        }
+*/
+    for (let t = 0; t < transformlist.length; t++) {
+        let T = transformlist[t];
+
+        T.addChild(templatenode);
+        N.addChild(T);
+        }
+
+    return N;
+};
+
+//
+ATON.createProductionFromASCII = function(id, templatenode, asciiURL, bTransformable){
+    let N;
+    if (bTransformable) N = ATON.createTransformNode(id);
+    else N = ATON.createGroupNode(id);
+
+    //ATON.utils.generateProduction(templatenode, asciiURL, N);
+/*
+    ATON.utils.generateTransformListFromASCII(asciiURL, (tlist)=>{
+        N = ATON.createProduction(id, templatenode, tlist);
+        });
+*/
+
+    ATON.utils.generateTransformListFromASCII(asciiURL, (tlist)=>{
+
+        for (let t = 0; t < tlist.length; t++) {
+            let T = tlist[t];
+            if (T){
+                T.addChild(templatenode);
+                N.addChild(T);
+                //console.log(T);
+                }
+            }
+        });
+
+    return N;
 };
 
 
@@ -827,7 +1054,7 @@ ATON.addDescriptor = function(url, unid, options){
         D.node.setName(unid); // FIXME: maybe set from outside?
         D.loading = false;
 
-        ATON._groupDescriptors.addChild( D.node ); // data
+        ATON._rootDescriptors.addChild( D.node ); // data
 
         if (D._onLoadComplete !== undefined) D._onLoadComplete();
 
@@ -862,7 +1089,7 @@ ATON.addSphereDescriptor = function(unid, title, location, r){
     D.node.setName(unid); // FIXME: maybe set from outside?
     D.loading = false;
 
-    ATON._groupDescriptors.addChild( D.node ); // data
+    ATON._rootDescriptors.addChild( D.node ); // data
 
     ATON._numDescriptors++;
     return ATON.descriptors[unid];
@@ -882,8 +1109,8 @@ ATON.addParentToDescriptor = function(unid, parent_unid){
         ATON.descriptors[parent_unid].node.setName(parent_unid);
 
         // This becomes the new root
-        ATON._groupDescriptors.removeChild( ATON.descriptors[unid].node ); //.removeChildren();
-        ATON._groupDescriptors.addChild( ATON.descriptors[parent_unid].node );
+        ATON._rootDescriptors.removeChild( ATON.descriptors[unid].node ); //.removeChildren();
+        ATON._rootDescriptors.addChild( ATON.descriptors[parent_unid].node );
 
         //console.log("FIRST TIME parent: "+parent_unid);
         }
@@ -1064,9 +1291,9 @@ ATON.requestPOVbyDescriptor = function(id, duration){
 };
 
 ATON.recomputeHome = function(){
-    var r = ATON._groupVisible.getBoundingSphere()._radius;
+    var r = ATON._rootScene.getBoundingSphere()._radius;
     ATON._homePOV.fov    = ATON_STD_FOV;
-    ATON._homePOV.target = ATON._groupVisible.getBoundingSphere()._center.slice(0);
+    ATON._homePOV.target = ATON._rootScene.getBoundingSphere()._center.slice(0);
     ATON._homePOV.pos[0] = ATON._homePOV.target[0] + r;
     ATON._homePOV.pos[1] = ATON._homePOV.target[1] + r;
     ATON._homePOV.pos[2] = ATON._homePOV.target[2] + (r*0.5);
@@ -1515,7 +1742,7 @@ ATON._initRTTs = function(){
     ATON._rttZsensor = new osg.Camera();
 
     ATON._frontGroup = new osg.Node();
-    ATON._frontGroup.addChild(ATON._groupVisible);
+    ATON._frontGroup.addChild(ATON._rootScene);
     ATON._frontGroup.getOrCreateStateSet().setAttributeAndModes( ATON._glslFrontProgram, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
     ATON._frontGroup.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( ATON._sensorLookAhead, 'lookAhead' ) );
     ATON._frontGroup.setNodeMask( ATON._maskUI );
@@ -2242,7 +2469,7 @@ ATON._lowUpdateCallback = setInterval(function(){
         _targetNumTrianglesPerLeaf: 50,
         _maxNumLevels: 20
         });
-    treeBuilder.apply( ATON._groupVisible );
+    treeBuilder.apply( ATON._rootScene );
     console.timeEnd( 'kdtree build' );
 }, 4000);
 */
@@ -2258,7 +2485,7 @@ ATON._handleDescriptorsHover = function(){
             ATON._pickedDescriptorData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskDescriptors);
             }
         else {
-            ATON._pickedDescriptorData = ATON._handle3DPick(ATON._groupDescriptors, ATON._maskDescriptors);
+            ATON._pickedDescriptorData = ATON._handle3DPick(/*ATON._rootDescriptors*/ ATON._worldTransform, ATON._maskDescriptors);
             }
         
         if (ATON._pickedDescriptorData){
@@ -2396,7 +2623,7 @@ ATON._handleVisHover = function(){
                 pEnd[2] = pStart[2] + (ATON._vrControllersDir[ATON_VR_CONTROLLER_R][2] * LA);
 
                 ATON._hoveredVisData = ATON._handle3DPick(
-                    ATON._groupVisible, 
+                    ATON._worldTransform, //ATON._rootScene, 
                     ATON._maskVisible,
                     LA, // unused
                     pStart,
@@ -2404,7 +2631,7 @@ ATON._handleVisHover = function(){
                     );
                 }
             // Use egocentric ray
-            else ATON._hoveredVisData = ATON._handle3DPick(ATON._groupVisible, ATON._maskVisible);
+            else ATON._hoveredVisData = ATON._handle3DPick(/*ATON._rootScene*/ATON._worldTransform, ATON._maskVisible);
             }
 
         if (ATON._hoveredVisData){
@@ -2497,12 +2724,12 @@ ATON.realize = function( canvas ){
     //ATON._orbitMan = new osgGA.OrbitManipulator({ inputManager: this._viewer.getInputManager() });
     //ATON._viewer.setManipulator( ATON._orbitMan );
     
-    ATON._orbitMan.setNode(ATON._groupVisible);
+    ATON._orbitMan.setNode(ATON._rootScene);
     //console.log(ATON._orbitMan);
 
     // First person
     ATON._firstPerMan = new osgGA.FirstPersonManipulator({ inputManager: this._viewer.getInputManager() });
-    ATON._firstPerMan.setNode( ATON._groupVisible );
+    ATON._firstPerMan.setNode( ATON._rootScene );
     ATON.setFirstPersonStep(2.0);
 
     // Voids space-key calls
@@ -2787,33 +3014,36 @@ ATON._initGraph = function(){
     ATON._root = new osg.Node();        // the very root
     ATON._mainGroup = new osg.Node();   // main group
 
-    ATON._groupVisible     = new osg.Node();
-    ATON._groupDescriptors = new osg.MatrixTransform(); //new osg.Node();
-    ATON._groupUI          = new osg.Node();
+    ATON._rootScene     = new osg.Node();
+    ATON._rootDescriptors = new osg.Node();
+    ATON._rootUI          = new osg.Node();
+    //ATON._rootUIspace    // TODO: separate group for unscaled UI
 
     // Main world transform
-    ATON._mainWorldTrans = new osg.MatrixTransform();
-    ATON._mainWorldTrans.addChild(ATON._groupVisible);
-    ATON._mainWorldTrans.addChild(ATON._groupDescriptors);
-    //ATON._groupDescriptors.setNodeMask(0x0);
+    ATON._worldTransform = ATON.createTransformNode();
+    ATON._worldTransform.addChild(ATON._rootScene);
+    ATON._worldTransform.addChild(ATON._rootDescriptors);
+    ATON._worldTransform.addChild(ATON._rootUI);
 
-    ATON._mainGroup.addChild(ATON._mainWorldTrans);
+    ATON._mainGroup.addChild(ATON._worldTransform);
+
+    //ATON._mainGroup.addChild(ATON._rootScene);
+    //ATON._mainGroup.addChild(ATON._rootDescriptors);
 
     // LP
     ATON._LPT = new osg.MatrixTransform();
     ATON._mainGroup.addChild(ATON._LPT);
 
-    //ATON._mainGroup.addChild(ATON._groupVisible);
-    //ATON._mainGroup.addChild(ATON._groupDescriptors);
-
-    ATON._mainGroup.addChild(ATON._groupUI);
+    //ATON._mainGroup.addChild(ATON._rootScene);
+    //ATON._mainGroup.addChild(ATON._rootDescriptors);
+    //ATON._mainGroup.addChild(ATON._rootUI);
 
     ATON._root.addChild(ATON._mainGroup);
 
     // Masks
-    ATON._groupVisible.setNodeMask( ATON._maskVisible );
-    ATON._groupDescriptors.setNodeMask( ATON._maskDescriptors );
-    ATON._groupUI.setNodeMask( ATON._maskUI );
+    ATON._rootScene.setNodeMask( ATON._maskVisible );
+    ATON._rootDescriptors.setNodeMask( ATON._maskDescriptors );
+    ATON._rootUI.setNodeMask( ATON._maskUI );
     ATON._LPT.setNodeMask( ATON._maskLP );
 
     // IVs
@@ -2829,9 +3059,10 @@ ATON._initGraph = function(){
 
     // StateSets
     ATON._mainSS  = ATON._mainGroup.getOrCreateStateSet();
-    ATON._visSS   = ATON._groupVisible.getOrCreateStateSet();
-    ATON._descrSS = ATON._groupDescriptors.getOrCreateStateSet();
-    ATON._uiSS    = ATON._groupUI.getOrCreateStateSet();
+
+    ATON._visSS   = ATON._rootScene.getOrCreateStateSet();
+    ATON._descrSS = ATON._rootDescriptors.getOrCreateStateSet();
+    ATON._uiSS    = ATON._rootUI.getOrCreateStateSet();
 
     // Best blending
 /*
@@ -2881,8 +3112,8 @@ ATON._initGraph = function(){
     ATON._uiSS.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 
     // Check
-    //ATON._groupUI.setCullingActive( false );
-    //ATON._groupDescriptors.setCullingActive( false );
+    //ATON._rootUI.setCullingActive( false );
+    //ATON._rootDescriptors.setCullingActive( false );
         
     // TODO, move to VR onswitch?
     //ATON.createVRcontrollers();
@@ -2914,7 +3145,7 @@ ATON.createNewLayer = function(uniqueName){
     L.setName(uniqueName);
     L._layermask = 0xf;
 
-    ATON._groupVisible.addChild( L );
+    ATON._rootScene.addChild( L );
     ATON.layers[uniqueName] = L;
 
     console.log("Created new layer "+uniqueName);
@@ -2939,7 +3170,7 @@ ATON.addNewLayer = function(uniqueName, parentName){
         parentLayer = ATON.layers[parentName];
         parentLayer.addChild(ATON.layers[uniqueName]);
         }
-    else ATON._groupVisible.addChild( ATON.layers[uniqueName] );
+    else ATON._rootScene.addChild( ATON.layers[uniqueName] );
 
     console.log("Created new layer "+uniqueName);
     return ATON.layers[uniqueName];
@@ -2964,12 +3195,12 @@ ATON.switchLayer = function(layerName, value){
     if (value){
         layer.setNodeMask(layer._layerMask);
         ATON.fireEvent("LayerSwitch", { name:layerName, value:true } );
-        ATON._buildKDTree(ATON._groupVisible);
+        ATON._buildKDTree(ATON._rootScene);
         }
     else {
         layer.setNodeMask(0x0);
         ATON.fireEvent("LayerSwitch", { name:layerName, value:false } );
-        //ATON._buildKDTree(ATON._groupVisible);
+        //ATON._buildKDTree(ATON._rootScene);
         }
 };
 
@@ -3056,11 +3287,6 @@ ATON.gotoLayer = function(layerName, duration){
 };
 */
 
-// TODO:
-ATON.createNode = function(id, url, onComplete){
-
-};
-
 // TODO: rename?
 ATON.addGraph = function( url, options, onComplete ){
     //var self = this;
@@ -3131,7 +3357,7 @@ ATON.addGraph = function( url, options, onComplete ){
                 r.then( function ( hrnode ){
                     //g.addChild( hrnode );
                     g.children[0] = hrnode;
-                    ATON._buildKDTree(ATON._groupVisible);
+                    ATON._buildKDTree(ATON._rootScene);
                     
                     //if (ATON._nodeReqs > 0) ATON._nodeReqs--;
                     });
@@ -3145,14 +3371,14 @@ ATON.addGraph = function( url, options, onComplete ){
 
         // Layer
         if (layerName) ATON.layers[layerName].addChild( N );
-        else ATON._groupVisible.addChild( N );
+        else ATON._rootScene.addChild( N );
 
         console.log(url + " loaded.");
         
         ATON._onNodeRequestComplete();
 
-        //ATON._groupVisible.getBoundingSphere()._radius
-        //console.log( ATON._homePOV.pos = ATON._groupVisible.getBoundingSphere() );
+        //ATON._rootScene.getBoundingSphere()._radius
+        //console.log( ATON._homePOV.pos = ATON._rootScene.getBoundingSphere() );
 
         if (onComplete !== undefined) onComplete();
         }).catch( function(e) {
@@ -3183,15 +3409,15 @@ ATON._onNodeRequestComplete = function(){
 
     console.log("ALL COMPLETE");
     //ATON.requestHome();
-    //console.log(ATON._groupVisible);
+    //console.log(ATON._rootScene);
 
     // KD-tree
-    ATON._buildKDTree(ATON._groupVisible);
+    ATON._buildKDTree(ATON._rootScene);
 
     // LP/Sky - near plane issues
 /*
-    var rVis = ATON._groupVisible.getBoundingSphere()._radius;
-    var cVis = ATON._groupVisible.getBoundingSphere()._center.slice(0);
+    var rVis = ATON._rootScene.getBoundingSphere()._radius;
+    var cVis = ATON._rootScene.getBoundingSphere()._center.slice(0);
     osg.mat4.setTranslation(ATON._LProtM, cVis);
     osg.mat4.scale(ATON._LProtM, ATON._LProtM, [rVis,rVis,rVis]);
 */
@@ -3508,17 +3734,17 @@ ATON.loadCustomShadersForLayer = function(glslpath, layername, onComplete){
 
 ATON._onCoreShadersLoaded = function(){
     console.log("Core Shaders loaded.");
-    ATON._groupVisible.getOrCreateStateSet().setAttributeAndModes( ATON._glslCoreProgram );
+    ATON._rootScene.getOrCreateStateSet().setAttributeAndModes( ATON._glslCoreProgram );
 };
 
 ATON._onDescriptorsShadersLoaded = function(){
     console.log("Descriptors Shaders loaded.");
-    ATON._groupDescriptors.getOrCreateStateSet().setAttributeAndModes( ATON._glslDescriptorsProgram );
+    ATON._rootDescriptors.getOrCreateStateSet().setAttributeAndModes( ATON._glslDescriptorsProgram );
 };
 
 ATON._onUIShadersLoaded = function(){
     console.log("UI Shaders loaded.");
-    ATON._groupUI.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram );  
+    ATON._rootUI.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram );  
     ATON._LPT.getOrCreateStateSet().setAttributeAndModes( ATON._glslUIProgram );
 };
 
@@ -3574,7 +3800,7 @@ ATON._switchVR = function(){
         viewer.setManipulator( ATON._firstPerMan );
         ATON._firstPerMan.setEyePosition(ATON._currPOV.pos);
         ATON._firstPerMan.setTarget(ATON._currPOV.target);
-        //ATON._firstPerMan.setNode( ATON._groupVisible );
+        //ATON._firstPerMan.setNode( ATON._rootScene );
     
         // FP intertials
 /*
@@ -3791,8 +4017,8 @@ ATON.createVRcontrollers = function(){
     ATON._controllerTransLeft.addChild( model );
     ATON._controllerTransRight.addChild( model );
 
-    ATON._groupUI.addChild( ATON._controllerTransLeft );
-    ATON._groupUI.addChild( ATON._controllerTransRight );
+    ATON._rootUI.addChild( ATON._controllerTransLeft );
+    ATON._rootUI.addChild( ATON._controllerTransRight );
 };
 
 ATON.setVRcontrollerModel = function(url, hand){

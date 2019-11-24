@@ -665,7 +665,7 @@ window.addEventListener( 'load', function () {
                     
                     let pastDirOld = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/";
                     let pastDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
-                    let dSS = ATON._groupDescriptors.getOrCreateStateSet();
+                    let dSS = ATON.getRootDescriptors().getOrCreateStateSet();
 /*
                     ATON.addDescriptor(pastDir+"temple_podium/root.osgjs", "podium", { color: [1,0,0, 1] });
                     ATON.addDescriptor(pastDir+"temple_exterior/root.osgjs", "temple", { color: [1,0,0, 1] });
@@ -1036,7 +1036,7 @@ window.addEventListener( 'load', function () {
                         ATON.getLayer("Ground").addChild(G);
                         
                         //ATON.translateLayer("Item", [-iC[0],-iC[1],-zMin]);
-                        ATON._buildKDTree(ATON._groupVisible);
+                        //ATON._buildKDTree(ATON._groupVisible);
                         });
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
@@ -1132,6 +1132,36 @@ window.addEventListener( 'load', function () {
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
                         QPV = ATON.QVhandler.getActiveQV();
                         });
+
+                    break;
+
+                case "new":
+                    scenename = "new";
+
+                    let aHebe = ATON.createAssetNode("hebe", ATON.FE.MODELS_ROOT+"hebe/root.osgjs");
+                    //ATON.addNodeToRoot( aHebe );
+                    ATON.addNodeToRoot( ATON.createAssetNode("ground", ATON.FE.MODELS_ROOT+"ground/root.osgjs") );
+
+                    ATON.addNodeToRoot( ATON.createAssetNode("hebe2", ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true) );
+
+                    //ATON.nodes["hebe2"].translate([4,0,0]).scale(0.1).rotateAround(0.5, ATON_Z_AXIS);
+                    //ATON.nodes["hebe2"].transformByString("4 0 0 0 0 1.4 2 2 2");
+/*
+                    let TList = [];
+                    TList.push(ATON.utils.generateTransformFromString("4 0 0"));
+                    TList.push(ATON.utils.generateTransformFromString("-4 0 0"));
+                    TList.push(ATON.utils.generateTransformFromString("4 4 0"));
+                    ATON.addNode( ATON.createProduction("procHebes", aHebe, TList) );
+*/
+                    ATON.addNodeToRoot( ATON.createDynamicGroupNode("ciao") );
+                    ATON.getNode("ciao").addChild(aHebe);
+
+                    ATON.addNodeToRoot( ATON.createProductionFromASCII("procHebes", aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt") );
+
+                    //ATON.getWorldTransform().scale(0.5);
+
+                    //ATON.getNode("hebe").switch(false);
+                    //ATON.getNode("hebe").toggle();
 
                     break;
 
@@ -1537,7 +1567,7 @@ window.addEventListener( 'load', function () {
                 case "nora":
                     scenename = "nora";
                     ATON.addLightProbe("../LP/default");
-                    let pgSS = ATON._groupDescriptors.getOrCreateStateSet();
+                    let pgSS = ATON.getRootDescriptors().getOrCreateStateSet(); //ATON._groupDescriptors.getOrCreateStateSet();
 
                     let proxiesdir = ATON.FE.MODELS_ROOT+"_prv/nora/proxies/";
                     let colUSVs = [0,1,0, 1]; //[0.031, 0.191, 0.026, 1];
@@ -1891,12 +1921,12 @@ if (asset === "sf"){
             }
 
         // TEST
-
+/*
         let A = new ATON.node("pippo");
         console.log(A);
         let N = new osg.Node();
         console.log(N);
-
+*/
         });
 
     ATON.on("MouseMidButton",()=>{

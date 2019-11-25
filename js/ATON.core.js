@@ -738,7 +738,7 @@ ATON.createNode = function(N, mask){
     N._bHasID  = false;
 
     // Base routines
-    // Assign unique ID to this node
+    // Assign unique ID to this node and store it
     N.as = function(id){
         if (this._bHasID){
             console.log("This node already has ID");
@@ -787,6 +787,32 @@ ATON.createNode = function(N, mask){
     N.addChildByID = function(id){
         if (this._intMask === ATON._maskVisible)     return this.addChild(ATON.nodes[id]); // returns child-node
         if (this._intMask === ATON._maskDescriptors) return this.addChild(ATON.descriptors[id]);
+        };
+
+    // Attach to root
+    N.attachToRoot = function(){
+        if (this._intMask === ATON._maskVisible){
+            ATON._rootScene.addChild(this);
+            return ATON._rootScene;
+            }
+        if (this._intMask === ATON._maskDescriptors){
+            ATON._rootDescriptors.addChild(this);
+            return ATON._rootDescriptors;
+            }
+        };
+
+    // Attach to parent node by ID
+    N.attachTo = function(parentID){
+        if (this._intMask === ATON._maskVisible && ATON.nodes[parentID]){
+            let P = ATON.nodes[parentID];
+            P.addChild(this);
+            return P;
+            }
+        if (this._intMask === ATON._maskDescriptors && ATON.descriptors[parentID]){
+            let P = ATON.descriptors[parentID];
+            P.addChild(this);
+            return P;
+            }
         };
 
     // Load a custom GLSL shader for this node

@@ -1154,24 +1154,22 @@ window.addEventListener( 'load', function () {
                     TList.push(ATON.utils.generateTransformFromString("4 4 0"));
                     ATON.addNodeToRoot( ATON.createProduction(aHebe, TList) );
 */
-                    ATON.addNodeToRoot( ATON.createDynamicGroupNode().as("ciao") );
+                    ATON.createDynamicGroupNode().as("ciao").attachToRoot();
                     ATON.getNode("ciao").addChild(aHebe);
 
                     ATON.addNodeToRoot( ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes") );
                     //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);
 
                     // test descriptors
-                    ATON.addDescriptorToRoot( ATON.createDescriptorGroup().as("group") );
+                    ATON.createDescriptorGroup().as("group").attachToRoot();
                     ATON.getDescriptor("group").addChild( ATON.createDescriptorShape(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").as("cube") );
 
-                    ATON.getDescriptor("group").addChild( 
-                        ATON.createDescriptorProductionFromASCII(
-                            ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
-                            ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt"
-                            ).as("colonne")
-                        );
+                    ATON.createDescriptorProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt"
+                        ).as("colonne").attachTo("group");
 
-                    ATON.getDescriptor("group").setBaseColor([0,1,0,0.2]);
+                    ATON.getDescriptor("group").setBaseColor([0,1,0,0.2]); //.switch(false);
 
                     //ATON.getDescriptor("cube")._onHover = function(){ console.log("CUBE!"); };
 

@@ -341,13 +341,14 @@ ATON.FE.showModalNote = function(){
         let did = result.value;
         if (!did || did.length <3) return;
 
-        let D = ATON.addSphereDescriptor(did,"TITLE", ATON._hoveredVisData.p, ATON._hoverRadius);
+        let D = ATON.createDescriptorSphere(did, ATON._hoveredVisData.p, ATON._hoverRadius);
+        ATON.getRootDescriptors().addChild(D);
 
         let P = ATON.getCurrentPOVcopy();
 
-        D._onSelect = function(){ ATON.requestPOV(P); };
+        D.onSelect = function(){ ATON.requestPOV(P); };
 
-        console.log("Added SphereDescriptor: "+did);
+        console.log("Added DescriptorSphere: "+did);
     });
 
 };
@@ -1138,11 +1139,11 @@ window.addEventListener( 'load', function () {
                 case "new":
                     scenename = "new";
 
-                    let aHebe = ATON.createAssetNode("hebe", ATON.FE.MODELS_ROOT+"hebe/root.osgjs");
+                    let aHebe = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("hebe");
                     //ATON.addNodeToRoot( aHebe );
-                    ATON.addNodeToRoot( ATON.createAssetNode("ground", ATON.FE.MODELS_ROOT+"ground/root.osgjs") );
+                    ATON.addNodeToRoot( ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("ground") );
 
-                    ATON.addNodeToRoot( ATON.createAssetNode("hebe2", ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true) );
+                    ATON.addNodeToRoot( ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true).as("hebe2") );
 
                     //ATON.nodes["hebe2"].translate([4,0,0]).scale(0.1).rotateAround(0.5, ATON_Z_AXIS);
                     //ATON.nodes["hebe2"].transformByString("4 0 0 0 0 1.4 2 2 2");
@@ -1151,19 +1152,30 @@ window.addEventListener( 'load', function () {
                     TList.push(ATON.utils.generateTransformFromString("4 0 0"));
                     TList.push(ATON.utils.generateTransformFromString("-4 0 0"));
                     TList.push(ATON.utils.generateTransformFromString("4 4 0"));
-                    ATON.addNodeToRoot( ATON.createProduction("procHebes", aHebe, TList) );
+                    ATON.addNodeToRoot( ATON.createProduction(aHebe, TList) );
 */
-                    ATON.addNodeToRoot( ATON.createDynamicGroupNode("ciao") );
+                    ATON.addNodeToRoot( ATON.createDynamicGroupNode().as("ciao") );
                     ATON.getNode("ciao").addChild(aHebe);
 
-                    ATON.addNodeToRoot( ATON.createProductionFromASCII("procHebes", aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt") );
+                    ATON.addNodeToRoot( ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes") );
                     //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);
 
                     // test descriptors
-                    ATON.addDescriptorToRoot( ATON.createDescriptorShape("cube", ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").setBaseColor([0,1,0,0.5]) );
+                    ATON.addDescriptorToRoot( ATON.createDescriptorGroup().as("group") );
+                    ATON.getDescriptor("group").addChild( ATON.createDescriptorShape(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").as("cube") );
+
+                    ATON.getDescriptor("group").addChild( 
+                        ATON.createDescriptorProductionFromASCII(
+                            ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
+                            ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt"
+                            ).as("colonne")
+                        );
+
+                    ATON.getDescriptor("group").setBaseColor([0,1,0,0.2]);
+
                     //ATON.getDescriptor("cube")._onHover = function(){ console.log("CUBE!"); };
 
-                    //ATON.getWorldTransform().translate([10.0,0,0]);
+                    //ATON.getWorldTransform().scale(0.3);
 
                     //ATON.getNode("hebe").switch(false);
                     //ATON.getNode("hebe").toggle();
@@ -1746,11 +1758,13 @@ if (asset === "sf"){
 
     ATON.on("ShapeDescriptorHovered", function(d){
         $("#idShapeDescr").html(d.getUniqueID());
+        //console.log(d);
+
         auDHover.play();
         ATON.speechSynthesis(d.getUniqueID());
         });
     ATON.on("ShapeDescriptorLeft", ()=>{
-        $("#idShapeDescr").html("none");
+        $("#idShapeDescr").html("-");
         });
 
     ATON.on("SpeechRecognitionText", function(text){

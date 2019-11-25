@@ -727,11 +727,6 @@ ATON.getNode = function(id){
     Scene-graphs
 ==========================================================================*/
 
-// Directly add to visible root
-ATON.addNodeToRoot = function(N){
-    ATON._rootScene.addChild(N);
-};
-
 // Internal use
 // Factory to craft API-enriched nodes from base node N
 ATON.createNode = function(N, mask){
@@ -767,6 +762,30 @@ ATON.createNode = function(N, mask){
         if (ATON.nodes[id]) return this.addChild(ATON.nodes[id]); // returns child-node
         };
 
+    N.loadCustomShaders = function(glslpath, onComplete){
+        let node = this;
+    
+        $.get( glslpath, function(glsldata){
+            glsldata = ATON._addGLSLprecision(glsldata);
+    
+            // Pre-directives
+            if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
+    
+            glsldata += '\n';
+    
+            var program = new osg.Program(
+                new osg.Shader( 'VERTEX_SHADER', "#define VERTEX_SH 1\n" + glsldata ),
+                new osg.Shader( 'FRAGMENT_SHADER', "#define FRAGMENT_SH 1\n" + glsldata )
+                );
+    
+            node.getOrCreateStateSet().setAttributeAndModes( program );
+    
+            if (onComplete) onComplete();
+            }, "text");
+
+        return this;
+        };
+
     // Transform routines
     N.transformByMatrix = function(m){
         let M = this.matrix;
@@ -795,7 +814,7 @@ ATON.createNode = function(N, mask){
         let M = this.matrix;
         if (!M) return this;
 
-        osg.mat4.rotate(M, M, radians, axis); // ATON_Z_AXIS
+        osg.mat4.rotate(M,M, radians, axis); // ATON_Z_AXIS
         return this;
         };
     N.scale = function(s){
@@ -806,8 +825,23 @@ ATON.createNode = function(N, mask){
         return this;
         };
 
+    // Misc
+    N.setBaseColor = function(color){
+        let cTex = ATON.utils.createFillTexture(color);
+        this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+        return this;
+        };
+
+    N._onHover  = undefined;
+    N._onSelect = undefined;
+
     //N.setNodeMask(mask);
     return N;
+};
+
+// Directly add to visible root
+ATON.addNodeToRoot = function(N){
+    ATON._rootScene.addChild(N);
 };
 
 ATON.createGroupNode = function(id){
@@ -927,23 +961,43 @@ ATON.createProductionFromASCII = function(id, templatenode, asciiURL, bTransform
     return N;
 };
 
-
-// TODO: Actor
-//==========================================================================
-ATON.actor = function(){
-    this.id = -1;
-    this.transform = new osg.MatrixTransform();
-    this.representation = new osg.Node();
+/* 
+    Shape Descriptors (semantics)
+==========================================================================*/
+// Directly add to descriptors root
+ATON.addDescriptorToRoot = function(N){
+    ATON._rootDescriptors.addChild(N);
 };
 
-ATON.actor.prototype = {
-    // todo
+ATON.createDescriptorShape = function(id, url, onComplete){
+    let D = ATON.createNode( new osg.Node(), ATON._maskDescriptors );
+
+    if (id){ // register
+        D.setName(id);
+        ATON.descriptors[id] = D;
+        }
+
+    ATON.loadAssetToNode(url, D, onComplete);
+
+    return D;
+};
+
+ATON.createDescriptorGroup = function(id, bTransformable){
+    let G;
+    if (bTransformable) G = ATON.createNode( new osg.MatrixTransform(), ATON._maskDescriptors );
+    else G = ATON.createNode( new osg.Node(), ATON._maskDescriptors );
+
+    if (id){ // register
+        G.setName(id);
+        ATON.descriptors[id] = G;
+        }
+
+    return G;
 };
 
 
 
-
-// Shape Descriptors
+// Shape Descriptors (TO BE DEPRECATED)
 //==========================================================================
 // FIXME:
 

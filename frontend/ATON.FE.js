@@ -1151,14 +1151,19 @@ window.addEventListener( 'load', function () {
                     TList.push(ATON.utils.generateTransformFromString("4 0 0"));
                     TList.push(ATON.utils.generateTransformFromString("-4 0 0"));
                     TList.push(ATON.utils.generateTransformFromString("4 4 0"));
-                    ATON.addNode( ATON.createProduction("procHebes", aHebe, TList) );
+                    ATON.addNodeToRoot( ATON.createProduction("procHebes", aHebe, TList) );
 */
                     ATON.addNodeToRoot( ATON.createDynamicGroupNode("ciao") );
                     ATON.getNode("ciao").addChild(aHebe);
 
                     ATON.addNodeToRoot( ATON.createProductionFromASCII("procHebes", aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt") );
+                    //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);
 
-                    //ATON.getWorldTransform().scale(0.5);
+                    // test descriptors
+                    ATON.addDescriptorToRoot( ATON.createDescriptorShape("cube", ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").setBaseColor([0,1,0,0.5]) );
+                    //ATON.getDescriptor("cube")._onHover = function(){ console.log("CUBE!"); };
+
+                    //ATON.getWorldTransform().translate([10.0,0,0]);
 
                     //ATON.getNode("hebe").switch(false);
                     //ATON.getNode("hebe").toggle();

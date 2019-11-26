@@ -4,17 +4,12 @@
  	ATON js Library
 
  	@author Bruno Fanini
-	VHLab, CNR ITABC
+	VHLab, CNR ISPC
 
 ==================================================================================*/
 
 'use strict';
 
-/* DEPRECATED
-var OSG = window.OSG;
-var osg = OSG.osg;
-OSG.globalify();    // All (osgDB, osgGA, etc...)
-*/
 var OSG         = window.OSG;
 var osg         = OSG.osg;
 var osgDB       = OSG.osgDB;
@@ -23,7 +18,6 @@ var osgUtil     = OSG.osgUtil;
 var osgGA       = OSG.osgGA;
 var osgText     = OSG.osgText;
 var InputGroups = OSG.osgViewer.InputGroups;
-
 
 var ATON = ATON || {};
 
@@ -53,6 +47,11 @@ const ATON_SM_UNIT_NORM  = 2;
 const ATON_SM_UNIT_COMBO = 3;
 const ATON_SM_UNIT_LP    = 4;
 
+// NodeMasks
+const ATON_MASK_VISIBLE     = (1 << 2);
+const ATON_MASK_DESCRIPTORS = (1 << 3);
+const ATON_MASK_UI          = (1 << 4);
+const ATON_MASK_LP          = (1 << 5);
 
 
 // ATON Initialization
@@ -73,12 +72,6 @@ ATON._VR.hmdNormPos = [0.0,0.0];
 ATON._activeVRcontrollers = [false, false];
 ATON._vrControllersPos    = [osg.vec3.create(), osg.vec3.create()];
 ATON._vrControllersDir    = [osg.vec3.create(), osg.vec3.create()];
-
-// MASKS
-ATON._maskVisible     = 1 << 2; // 11
-ATON._maskDescriptors = 1 << 3;
-ATON._maskUI          = 1 << 4;
-ATON._maskLP          = 1 << 5;
 
 // Assets/Node Loading
 ATON._nodeReqs = 0;
@@ -156,10 +149,11 @@ ATON.on = function(evtname, f){
 };
 ATON.fireEvent = function(evtname, param){
     var f = ATON.eventHandlers[evtname];
-    if (f === undefined){
+    if (!f){
         //console.log("Warning: event "+evtname+" not registered.");
         return undefined;
         }
+
     return f(param);
 };
 
@@ -176,10 +170,9 @@ ATON.registerEvents([
     "NodeRequestFired",
     "NodeRequestCompleted",
     "AllNodeRequestsCompleted",
+    "NodeSwitch",
     
     "VRmode",
-    
-    "LayerSwitch",
     
     "SpeechRecognition",
     "SpeechRecognitionText"
@@ -733,12 +726,14 @@ ATON.createNode = function(N, mask){
     N.bLoading = false;
     N.assetURL = undefined;
 
-    N._intMask = mask;
+    N._graph   = mask; // type of graph this node belongs
+    N._intMask = mask; // internal mask
+    
     N._bShow   = true;
     N._bHasID  = false;
 
     // Base routines
-    // Assign unique ID to this node and store it
+    // Assign unique ID to this node and store it for fast retrieval
     N.as = function(id){
         if (this._bHasID){
             console.log("This node already has ID");
@@ -746,8 +741,8 @@ ATON.createNode = function(N, mask){
             }
 
         this.setName(id);
-        if (this._intMask === ATON._maskVisible) ATON.nodes[id] = this;
-        if (this._intMask === ATON._maskDescriptors) ATON.descriptors[id] = this;
+        if (this._graph === ATON_MASK_VISIBLE) ATON.nodes[id] = this;
+        if (this._graph === ATON_MASK_DESCRIPTORS) ATON.descriptors[id] = this;
 
         this._bHasID  = true;
         return this;
@@ -766,12 +761,14 @@ ATON.createNode = function(N, mask){
     N.show = function(){
         this._bShow = true;
         this.setNodeMask(this._intMask);
-        if (this._intMask === ATON._maskVisible) ATON._buildKDTree(ATON._rootScene);
+        if (this._graph === ATON_MASK_VISIBLE) ATON._buildKDTree(ATON._rootScene);
+        ATON.fireEvent("NodeSwitch", { name: this._name, value: true });
         return this;
         };
     N.hide = function(){
         this._bShow = false;
         this.setNodeMask(0x0);
+        ATON.fireEvent("NodeSwitch", { name: this._name, value: false });
         return this;
         };
     N.switch = function(b){
@@ -782,37 +779,41 @@ ATON.createNode = function(N, mask){
         if (this._bShow) return this.hide();
         else return this.show();
         };
+    N.isActive = function(){
+        return this._bShow;
+        };
 
-    // Add a child node by ID
-    N.addChildByID = function(id){
-        if (this._intMask === ATON._maskVisible)     return this.addChild(ATON.nodes[id]); // returns child-node
-        if (this._intMask === ATON._maskDescriptors) return this.addChild(ATON.descriptors[id]);
+    // Add a child node (also by ID)
+    N.add = function(node){
+        let N = undefined;
+
+        if (this._graph === ATON_MASK_VISIBLE)     N = (typeof node === 'string')? ATON.nodes[node] : node;
+        if (this._graph === ATON_MASK_DESCRIPTORS) N = (typeof node === 'string')? ATON.descriptors[node] : node;
+
+        return this.addChild(N);
         };
 
     // Attach to root
     N.attachToRoot = function(){
-        if (this._intMask === ATON._maskVisible){
+        if (this._graph === ATON_MASK_VISIBLE){
             ATON._rootScene.addChild(this);
             return ATON._rootScene;
             }
-        if (this._intMask === ATON._maskDescriptors){
+        if (this._graph === ATON_MASK_DESCRIPTORS){
             ATON._rootDescriptors.addChild(this);
             return ATON._rootDescriptors;
             }
         };
 
-    // Attach to parent node by ID
-    N.attachTo = function(parentID){
-        if (this._intMask === ATON._maskVisible && ATON.nodes[parentID]){
-            let P = ATON.nodes[parentID];
-            P.addChild(this);
-            return P;
-            }
-        if (this._intMask === ATON._maskDescriptors && ATON.descriptors[parentID]){
-            let P = ATON.descriptors[parentID];
-            P.addChild(this);
-            return P;
-            }
+    // Attach to parent node by ID or node object
+    N.attachTo = function(parent){
+        let P = undefined;
+        if (this._graph === ATON_MASK_VISIBLE)     P = (typeof parent === 'string')? ATON.nodes[parent] : parent;
+        if (this._graph === ATON_MASK_DESCRIPTORS) P = (typeof parent === 'string')? ATON.descriptors[parent] : parent;
+
+        if (P) P.addChild(this);
+        
+        return P;
         };
 
     // Load a custom GLSL shader for this node
@@ -902,7 +903,7 @@ ATON.addNodeToRoot = function(N){
 };
 
 ATON.createGroupNode = function(){
-    let N = ATON.createNode( new osg.Node(), ATON._maskVisible );
+    let N = ATON.createNode( new osg.Node(), ATON_MASK_VISIBLE );
 /*
     if (id){ // register
         N.setName(id);
@@ -913,7 +914,7 @@ ATON.createGroupNode = function(){
 }
 
 ATON.createTransformNode = function(){
-    let N = ATON.createNode( new osg.MatrixTransform(), ATON._maskVisible );
+    let N = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_VISIBLE );
     return N;
 }
 
@@ -1016,6 +1017,18 @@ ATON.createProductionFromASCII = function(templatenode, asciiURL, bTransformable
     return N;
 };
 
+ATON.getActiveGraphBoundingSphere = function(){
+    let bs = new osg.BoundingSphere();
+
+    for (var key in ATON.nodes){
+        let N = ATON.nodes[key];
+
+        if (N && N.isActive()) bs.expandByBoundingSphere( N.getBoundingSphere() );
+        }
+
+    return bs;
+};
+
 /* 
     Shape Descriptors (semantics)
 ==========================================================================*/
@@ -1029,7 +1042,7 @@ ATON.getDescriptor = function(unid){
 };
 
 ATON.createDescriptorShape = function(url, onComplete){
-    let D = ATON.createNode( new osg.Node(), ATON._maskDescriptors );
+    let D = ATON.createNode( new osg.Node(), ATON_MASK_DESCRIPTORS );
 
     ATON.loadAssetToNode(url, D, ()=>{
         ATON._numDescriptors++;
@@ -1042,8 +1055,8 @@ ATON.createDescriptorShape = function(url, onComplete){
 // Procedural Descriptors
 ATON.createDescriptorProductionFromASCII = function(templatedescr, asciiURL, bTransformable){
     let D;
-    if (bTransformable) D = ATON.createNode( new osg.MatrixTransform(), ATON._maskDescriptors );
-    else D = ATON.createNode( new osg.Node(), ATON._maskDescriptors );
+    if (bTransformable) D = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
+    else D = ATON.createNode( new osg.Node(), ATON_MASK_DESCRIPTORS );
 
     let tn;
     if (typeof templatedescr === 'string'){ // URL, try loading
@@ -1066,7 +1079,7 @@ ATON.createDescriptorProductionFromASCII = function(templatedescr, asciiURL, bTr
 };
 
 ATON.createDescriptorSphere = function(location, r){
-    let D = ATON.createNode( new osg.MatrixTransform(), ATON._maskDescriptors );
+    let D = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
 
     if (ATON._unitSphere === undefined) ATON._unitSphere = osg.createTexturedSphere(1.0, 10,10);
     D.addChild(ATON._unitSphere);
@@ -1078,8 +1091,8 @@ ATON.createDescriptorSphere = function(location, r){
 
 ATON.createDescriptorGroup = function(bTransformable){
     let G;
-    if (bTransformable) G = ATON.createNode( new osg.MatrixTransform(), ATON._maskDescriptors );
-    else G = ATON.createNode( new osg.Node(), ATON._maskDescriptors );
+    if (bTransformable) G = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
+    else G = ATON.createNode( new osg.Node(), ATON_MASK_DESCRIPTORS );
 
     return G;
 };
@@ -1394,9 +1407,16 @@ ATON.requestPOVbyNode = function(node, d, duration){
 
     ATON.requestPOVbyBound(node.getBoundingSphere(), d, duration);
 };
-
+/*
 ATON.requestPOVbyActiveLayers = function(duration){
     let bs = ATON.getActiveLayersBoundingSphere();
+    if (!bs.valid()) return;
+
+    ATON.requestPOVbyBound(bs, 2.0, duration);
+};
+*/
+ATON.requestPOVbyActiveGraph = function(duration){
+    let bs = ATON.getActiveGraphBoundingSphere();
     if (!bs.valid()) return;
 
     ATON.requestPOVbyBound(bs, 2.0, duration);
@@ -1404,11 +1424,9 @@ ATON.requestPOVbyActiveLayers = function(duration){
 
 ATON.requestPOVbyDescriptor = function(id, duration){
     let d = ATON.descriptors[id];
-    if (d === undefined || d.node === undefined) return;
+    if (!d) return;
 
-    let n = d.node;
-
-    ATON.requestPOVbyNode(n, 2.0, duration);
+    ATON.requestPOVbyNode(d, 2.0, duration);
 };
 
 ATON.recomputeHome = function(){
@@ -1631,14 +1649,14 @@ ATON._hitsOperator = function(hits, mask, descrFunction, visFunction){
         //osg.vec3.transformMat4(pickN, pickN, M);
 
         // Descriptors
-        if (mask === ATON._maskDescriptors){
+        if (mask === ATON_MASK_DESCRIPTORS){
             ATON._pickedDescriptorsPath.length = 0; //= [];
             ATON._pickedDescriptorsPath = ATON.utils._getPickedNodeNames(closestNP);
             //console.log(ATON._pickedDescriptorsPath);
 
             if (descrFunction !== undefined) descrFunction();
             }
-        if (mask === ATON._maskVisible){
+        if (mask === ATON_MASK_VISIBLE){
             if (visFunction !== undefined) visFunction();
             }
         //console.log(ATON.utils._getPickedNodeNames(closestNP));
@@ -1867,7 +1885,7 @@ ATON._initRTTs = function(){
     ATON._frontGroup.addChild(ATON._rootScene);
     ATON._frontGroup.getOrCreateStateSet().setAttributeAndModes( ATON._glslFrontProgram, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE );
     ATON._frontGroup.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( ATON._sensorLookAhead, 'lookAhead' ) );
-    ATON._frontGroup.setNodeMask( ATON._maskUI );
+    ATON._frontGroup.setNodeMask( ATON_MASK_UI );
 /*
     ATON._frontGroup.getOrCreateStateSet().setAttributeAndModes( 
         new osg.Depth( osg.Depth.LESS ),
@@ -1990,7 +2008,7 @@ ATON._initHUD = function(){
     ATON._rttZsensorQuad.getOrCreateStateSet().setTextureAttributeAndModes( 0, ATON._rttZsensorTex );
 
 
-    ATON._HUD.setNodeMask( ATON._maskUI );
+    ATON._HUD.setNodeMask( ATON_MASK_UI );
 
 	osg.mat4.ortho(ATON._HUD.getProjectionMatrix(), 0, ATON._canvas.width, 0, ATON._canvas.height, -5, 5);
 
@@ -2604,10 +2622,10 @@ ATON.addOnTickRoutine = function( uf ){
 ATON._handleDescriptorsHover = function(){
         //var dp;
         if (!ATON._vrState){
-            ATON._pickedDescriptorData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskDescriptors);
+            ATON._pickedDescriptorData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON_MASK_DESCRIPTORS);
             }
         else {
-            ATON._pickedDescriptorData = ATON._handle3DPick(/*ATON._rootDescriptors*/ ATON._worldTransform, ATON._maskDescriptors);
+            ATON._pickedDescriptorData = ATON._handle3DPick(/*ATON._rootDescriptors*/ ATON._worldTransform, ATON_MASK_DESCRIPTORS);
             }
         
         if (ATON._pickedDescriptorData){
@@ -2730,7 +2748,7 @@ ATON._handleDescriptorsHover = function(){
 ATON._handleVisHover = function(){
         // STD
         if (!ATON._vrState && !ATON._bDevOri){
-            ATON._hoveredVisData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskVisible);
+            ATON._hoveredVisData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON_MASK_VISIBLE);
             }
         // VR
         else {
@@ -2746,14 +2764,14 @@ ATON._handleVisHover = function(){
 
                 ATON._hoveredVisData = ATON._handle3DPick(
                     ATON._worldTransform, //ATON._rootScene, 
-                    ATON._maskVisible,
+                    ATON_MASK_VISIBLE,
                     LA, // unused
                     pStart,
                     pEnd
                     );
                 }
             // Use egocentric ray
-            else ATON._hoveredVisData = ATON._handle3DPick(/*ATON._rootScene*/ATON._worldTransform, ATON._maskVisible);
+            else ATON._hoveredVisData = ATON._handle3DPick(/*ATON._rootScene*/ATON._worldTransform, ATON_MASK_VISIBLE);
             }
 
         if (ATON._hoveredVisData){
@@ -2945,7 +2963,7 @@ ATON._attachListeners = function(){
 
         //if (!ATON._bZflat) return; // TEST
 
-        var pData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON._maskVisible);
+        var pData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON_MASK_VISIBLE);
         if (pData){
             var pp = pData.p;
             console.log("Point: ["+pp[0].toFixed(3)+","+pp[1].toFixed(3)+","+pp[2].toFixed(3)+"]");
@@ -3069,7 +3087,7 @@ ATON._attachListeners = function(){
 				    if (D.onSelect) D.onSelect();  
                     else ATON.requestPOVbyDescriptor(ATON._hoveredDescriptor, 0.3);
                     }
-                else ATON.requestPOVbyActiveLayers(0.3);
+                else ATON.requestPOVbyActiveGraph(0.3);
 	    		}
 /*
 	    	if (e.key == 'i'){ // i
@@ -3163,16 +3181,16 @@ ATON._initGraph = function(){
     ATON._root.addChild(ATON._mainGroup);
 
     // Masks
-    ATON._rootScene.setNodeMask( ATON._maskVisible );
-    ATON._rootDescriptors.setNodeMask( ATON._maskDescriptors );
-    ATON._rootUI.setNodeMask( ATON._maskUI );
-    ATON._LPT.setNodeMask( ATON._maskLP );
+    ATON._rootScene.setNodeMask( ATON_MASK_VISIBLE );
+    ATON._rootDescriptors.setNodeMask( ATON_MASK_DESCRIPTORS );
+    ATON._rootUI.setNodeMask( ATON_MASK_UI );
+    ATON._LPT.setNodeMask( ATON_MASK_LP );
 
     // IVs
     ATON._IVvis.setIntersector(ATON._LSIvis);
-    ATON._IVvis.setTraversalMask( ATON._maskVisible );
+    ATON._IVvis.setTraversalMask( ATON_MASK_VISIBLE );
     ATON._IVdesc.setIntersector(ATON._LSIdesc);
-    ATON._IVdesc.setTraversalMask( ATON._maskDescriptors );
+    ATON._IVdesc.setTraversalMask( ATON_MASK_DESCRIPTORS );
 
     // Layers (visible SG)
     ATON.layers = {}; //new Array();
@@ -3255,7 +3273,7 @@ ATON.updateHoverRadius = function(r){
 };
 
 /*
-    LAYERS
+    LAYERS - TO BE DEPRECATED
 ==================================*/
 /*
 ATON.createNewLayer = function(uniqueName){
@@ -3274,7 +3292,7 @@ ATON.createNewLayer = function(uniqueName){
     return L;
 };
 */
-
+/*
 // Create new layer (visible sg)
 ATON.addNewLayer = function(uniqueName, parentName){
     if (uniqueName.length <= 1) return; // too short
@@ -3283,7 +3301,7 @@ ATON.addNewLayer = function(uniqueName, parentName){
     // First time, create the layer
     ATON.layers[uniqueName] = new osg.MatrixTransform(); //new osg.Node();
     ATON.layers[uniqueName].setName(uniqueName);
-    //ATON.layers[uniqueName].setNodeMask(ATON._maskVisible);
+    //ATON.layers[uniqueName].setNodeMask(ATON_MASK_VISIBLE);
 
     ATON.layers[uniqueName]._layerMask = 0xf;
 
@@ -3358,18 +3376,6 @@ ATON.switchAllLayers = function(value){
         }
 };
 
-ATON.getActiveLayersBoundingSphere = function(){
-    let bs = new osg.BoundingSphere();
-
-    for (var key in ATON.layers){
-        let layer = ATON.layers[key];
-
-        if (layer && (layer.getNodeMask()!==0)) bs.expandByBoundingSphere( layer.getBoundingSphere() );
-        }
-
-    return bs;
-};
-
 ATON.transformLayerByMatrix = function(layerName, M){
     let layer = ATON.layers[layerName];
     if (layer === undefined) return;
@@ -3384,7 +3390,7 @@ ATON.translateLayer = function(layerName, v){
     var M = layer.getMatrix();
     osg.mat4.setTranslation(M, v );
 };
-
+*/
 /*
 ATON.gotoLayer = function(layerName, duration){
     let layer = ATON.layers[layerName];
@@ -3409,7 +3415,8 @@ ATON.gotoLayer = function(layerName, duration){
 };
 */
 
-// TODO: rename?
+// FIXME: to be DEPRECATED
+//--------------------------
 ATON.addGraph = function( url, options, onComplete ){
     //var self = this;
 
@@ -4020,7 +4027,7 @@ ATON._switchVR = function(){
 
     // Disable VR
     else {
-        if (ATON._HUD !== undefined) ATON._HUD.setNodeMask(ATON._maskUI);
+        if (ATON._HUD !== undefined) ATON._HUD.setNodeMask(ATON_MASK_UI);
 
         //viewer.setPresentVR( false );
         //if (ATON._vrHMD) ATON._vrHMD.exitPresent();
@@ -4074,7 +4081,7 @@ ATON._handle3DPick = function(gnode, mask, lookAhead, pStart, pEnd){
 
     var hits;
 
-    if (mask === ATON._maskDescriptors){
+    if (mask === ATON_MASK_DESCRIPTORS){
         ATON._LSIdesc.reset();
         ATON._LSIdesc.set( pStart, pEnd );
 
@@ -4084,7 +4091,7 @@ ATON._handle3DPick = function(gnode, mask, lookAhead, pStart, pEnd){
         hits = ATON._LSIdesc.getIntersections();
         }
     
-    if (mask === ATON._maskVisible){
+    if (mask === ATON_MASK_VISIBLE){
         ATON._LSIvis.reset();
         ATON._LSIvis.set( pStart, pEnd );
 

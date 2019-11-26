@@ -1206,10 +1206,10 @@ io.on('connection', function(socket){
             }
         });
 
-    socket.on('LAYERSWITCH', function(data){
+    socket.on('NODESWITCH', function(data){
         if (scene){
-            socket.broadcast.to(sceneName).emit("LAYERSWITCH", data );
-            console.log("Layer switch "+data);
+            socket.broadcast.to(sceneName).emit("NODESWITCH", data );
+            console.log("Node switch "+data);
             }
         });
 

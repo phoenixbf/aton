@@ -219,15 +219,16 @@ ATON.FE.setupPage = function(){
         };
 
     ATON.FE.buildLayerMenu = function(){
-        if (ATON.layers.length == 0) return;
+        //if (ATON.layers.length == 0) return;
+        if (ATON.nodes.length == 0) return;
 
-        for (var layername in ATON.layers){
+        for (var id in ATON.nodes){
             let checked = "checked";
-            if (ATON.layers[layername].getNodeMask() === 0) checked = "";
+            if (!ATON.nodes[id].isActive()) checked = "";
             //console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
-            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchLayer("'+layername+'", this.checked)\' '+checked+' >'+layername+'<br>');
+            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
             }
 
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
@@ -341,8 +342,8 @@ ATON.FE.showModalNote = function(){
         let did = result.value;
         if (!did || did.length <3) return;
 
-        let D = ATON.createDescriptorSphere(did, ATON._hoveredVisData.p, ATON._hoverRadius);
-        ATON.getRootDescriptors().addChild(D);
+        let D = ATON.createDescriptorSphere(ATON._hoveredVisData.p, ATON._hoverRadius).as(did);
+        D.attachToRoot();
 
         let P = ATON.getCurrentPOVcopy();
 
@@ -1141,9 +1142,9 @@ window.addEventListener( 'load', function () {
 
                     let aHebe = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("hebe");
                     //ATON.addNodeToRoot( aHebe );
-                    ATON.addNodeToRoot( ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("ground") );
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("ground").attachToRoot();
 
-                    ATON.addNodeToRoot( ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true).as("hebe2") );
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true).as("hebe2").translate([5,0,0]).attachToRoot();
 
                     //ATON.nodes["hebe2"].translate([4,0,0]).scale(0.1).rotateAround(0.5, ATON_Z_AXIS);
                     //ATON.nodes["hebe2"].transformByString("4 0 0 0 0 1.4 2 2 2");
@@ -1157,12 +1158,12 @@ window.addEventListener( 'load', function () {
                     ATON.createDynamicGroupNode().as("ciao").attachToRoot();
                     ATON.getNode("ciao").addChild(aHebe);
 
-                    ATON.addNodeToRoot( ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes") );
+                    ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes").attachToRoot();
                     //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);
 
                     // test descriptors
                     ATON.createDescriptorGroup().as("group").attachToRoot();
-                    ATON.getDescriptor("group").addChild( ATON.createDescriptorShape(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").as("cube") );
+                    ATON.createDescriptorShape(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs").as("cube").attachTo("group");
 
                     ATON.createDescriptorProductionFromASCII(
                         ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
@@ -1515,7 +1516,7 @@ window.addEventListener( 'load', function () {
                     ATON.setHome([262.01,802.84,803.52],[295.16,842.49,778.58]);
                     //ATON.setHome([-34.01,-27.26,30.95],[-4.41,5.53,10.13]);
 
-                    ATON.on("LayerSwitch", function(L){
+                    ATON.on("NodeSwitch", function(L){
                         if (L.name === "Diff" && L.value){
                             ATON._mainSS.getUniform('uFogDistance').setFloat( 1000000.0 );
                             $('body').css('background-color', 'rgb(0,0,0)');
@@ -1953,4 +1954,7 @@ if (asset === "sf"){
         });
 
     ATON.FE.attachListeners();
+
+    // TEST
+    //console.log(ATON.eventHandlers);
 });

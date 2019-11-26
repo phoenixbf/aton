@@ -34,7 +34,7 @@ ATON.registerEvents([
     "VRC_UserMessage",
     "VRC_UserLeft",
     "VRC_UserEntered",
-    "VRC_LayerSwitch"
+    "VRC_NodeSwitch"
 ]);
 
 ATON.vroadcast.users      = [];
@@ -316,12 +316,12 @@ ATON.vroadcast.toggleFocusPolarization = function(){
     console.log("Focus Polarization: "+ATON.vroadcast._bQFpol);
 }
 
-// Distributed switch layer
-ATON.vroadcast.switchLayer = function(layername, val){
-    ATON.switchLayer(layername, val);
-    if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("LAYERSWITCH", { name:layername, v:val });
+// Distributed switch node
+ATON.vroadcast.switchNode = function(id, val){
+    ATON.getNode(id).switch(val);
+    if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("NODESWITCH", { name:id, v:val });
 
-    ATON.fireEvent("VRC_LayerSwitch", { name:layername, value:val });
+    ATON.fireEvent("VRC_NodeSwitch", { name:id, value:val });
 }
 
 // Update (send state)
@@ -493,8 +493,8 @@ ATON.vroadcast.touchUser = function(id){
 
     ATON.vroadcast.realizeUserModel(id);
 
-    ATON._groupUI.addChild(u._mt);
-    //ATON._groupUI.addChild(u._focAT);
+    ATON._rootUI.addChild(u._mt);
+    //ATON._rootUI.addChild(u._focAT);
 
     // Test (MagUsers)
     ATON.vroadcast.setUserInfluence(u, 30.0, [0.0, 0.0]); // 0.0005
@@ -877,9 +877,13 @@ ATON.vroadcast._registerEventHandlers = function(){
             }
         });
 
-    // Layers
-    ATON.vroadcast.socket.on('LAYERSWITCH', function(data){
-        ATON.switchLayer(data.name, data.v);
+    // Nodes
+    ATON.vroadcast.socket.on('NODESWITCH', function(data){
+        //ATON.switchNode(data.name, data.v);
+        let N = ATON.nodes[data.name];
+        if (!N) return;
+
+        N.switch(data.v);
         });
 
     // TODO: Object Spawning

@@ -342,7 +342,7 @@ ATON.FE.showModalNote = function(){
         let did = result.value;
         if (!did || did.length <3) return;
 
-        let D = ATON.createDescriptorSphere(ATON._hoveredVisData.p, ATON._hoverRadius).as(did);
+        let D = ATON.createDescriptorSphere(ATON._hoveredVisData.p, ATON._hoverRadius, ATON.getWorldTransform().getMatrix()).as(did);
         D.attachToRoot();
 
         let P = ATON.getCurrentPOVcopy();
@@ -1140,7 +1140,7 @@ window.addEventListener( 'load', function () {
                 case "new":
                     scenename = "new";
 
-                    let aHebe = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("hebe");
+                    let aHebe = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs"); //.as("hebe");
                     //ATON.addNodeToRoot( aHebe );
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("ground").attachToRoot();
 
@@ -1155,8 +1155,8 @@ window.addEventListener( 'load', function () {
                     TList.push(ATON.utils.generateTransformFromString("4 4 0"));
                     ATON.addNodeToRoot( ATON.createProduction(aHebe, TList) );
 */
-                    ATON.createDynamicGroupNode().as("ciao").attachToRoot();
-                    ATON.getNode("ciao").addChild(aHebe);
+                    ATON.createDynamicGroupNode().as("centralGroupT").attachToRoot();
+                    ATON.getNode("centralGroupT").addChild(aHebe);
 
                     ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes").attachToRoot();
                     //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);

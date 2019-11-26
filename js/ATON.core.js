@@ -139,15 +139,32 @@ ATON.eventHandlers = {};
 
 ATON.registerEvents = function(evtList){
     for (let e = 0; e < evtList.length; e++) {
-        var evname = evtList[e];
-        ATON.on(evname, undefined);
+        let evtname = evtList[e];
+        //ATON.on(evtname, undefined);
+        ATON.eventHandlers[evtname] = [];
         }
 };
-ATON.on = function(evtname, f){
-    ATON.eventHandlers[evtname] = f;
+
+// Add handler for this event
+ATON.on = function(evtname, handler){
+    //ATON.eventHandlers[evtname] = handler;
+    ATON.eventHandlers[evtname].push(handler);
     //console.log("Custom event handler for '"+evtname+ "' registered.");
 };
+
+ATON.clearEventHandlers = function(evtname){
+    ATON.eventHandlers[evtname] = [];
+};
+
+// Fire all handlers for this event
 ATON.fireEvent = function(evtname, param){
+    let ehList = ATON.eventHandlers[evtname];
+    for (let h = 0; h < ehList.length; h++) {
+        let handler = ehList[h];
+        if (handler) handler(param);
+        }
+
+/*
     var f = ATON.eventHandlers[evtname];
     if (!f){
         //console.log("Warning: event "+evtname+" not registered.");
@@ -155,6 +172,7 @@ ATON.fireEvent = function(evtname, param){
         }
 
     return f(param);
+*/
 };
 
 //ATON.on("myEvent", function(txt){ console.log(txt); });
@@ -740,7 +758,7 @@ ATON.createNode = function(N, mask){
             return this;
             }
 
-        this.setName(id);
+        this._name = id;
         if (this._graph === ATON_MASK_VISIBLE) ATON.nodes[id] = this;
         if (this._graph === ATON_MASK_DESCRIPTORS) ATON.descriptors[id] = this;
 
@@ -760,14 +778,14 @@ ATON.createNode = function(N, mask){
     // Show/Hide the node
     N.show = function(){
         this._bShow = true;
-        this.setNodeMask(this._intMask);
+        this.nodeMask = this._intMask;
         if (this._graph === ATON_MASK_VISIBLE) ATON._buildKDTree(ATON._rootScene);
         ATON.fireEvent("NodeSwitch", { name: this._name, value: true });
         return this;
         };
     N.hide = function(){
         this._bShow = false;
-        this.setNodeMask(0x0);
+        this.nodeMask = 0x0;
         ATON.fireEvent("NodeSwitch", { name: this._name, value: false });
         return this;
         };
@@ -781,6 +799,15 @@ ATON.createNode = function(N, mask){
         };
     N.isActive = function(){
         return this._bShow;
+        };
+
+    N.disablePicking = function(){
+        this.nodeMask = ATON_MASK_LP;
+        return this;
+        };
+    N.enablePicking = function(){
+        this.nodeMask = this._graph;
+        return this;
         };
 
     // Add a child node (also by ID)
@@ -1078,13 +1105,16 @@ ATON.createDescriptorProductionFromASCII = function(templatedescr, asciiURL, bTr
     return D;
 };
 
-ATON.createDescriptorSphere = function(location, r){
+ATON.createDescriptorSphere = function(location, r, M){
     let D = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
 
     if (ATON._unitSphere === undefined) ATON._unitSphere = osg.createTexturedSphere(1.0, 10,10);
     D.addChild(ATON._unitSphere);
 
     D.translate(location).scale(r);
+
+    // Apply reference frame (as matrix) if provided
+    if (M) osg.mat4.multiply(D.getMatrix(), osg.mat4.invert([], M), D.getMatrix());
 
     return D;
 };

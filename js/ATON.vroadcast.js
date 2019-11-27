@@ -70,6 +70,21 @@ ATON.vroadcast.UCOLORS = [
     [1,0.5,1, 0.25],
 ];
 
+// TODO: call after connection
+ATON.vroadcast.replicate = function(evtname, onReceive){
+    let eList = ATON.eventHandlers[evtname];
+    if (!eList) return;
+
+    ATON.on(evtname, (data)=>{
+        if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("EREP", {e: evtname, d: data});
+        });
+
+    if (!onReceive) return;
+    ATON.vroadcast.socket.on(evtname, function(data){ 
+        onReceive(data);
+        });
+};
+
 
 // User
 ATON.user = function(){

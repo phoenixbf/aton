@@ -217,7 +217,13 @@ ATON.FE.setupPage = function(){
         var el = document.getElementById('idDevOri');
         ATON.toggleDeviceOrientation(el.checked);
         };
-
+/*
+    ATON.FE.switchNode = function(id, v){
+        let N = ATON.getNode(id);
+        if (!N) return;
+        N.switch(v);
+        };
+*/
     ATON.FE.buildLayerMenu = function(){
         //if (ATON.layers.length == 0) return;
         if (ATON.nodes.length == 0) return;
@@ -1824,6 +1830,7 @@ if (asset === "sf"){
     //ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/hmd/hmd-z-nt.osgjs");
     ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/user/head-zs.osgjs");
 
+
     $("#idVRoadcast").hide();
     $('#idUserColor').hide();
 
@@ -1834,6 +1841,13 @@ if (asset === "sf"){
         ATON.vroadcast.uStateFreq = 0.05;
         ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
 
+        // Test
+/*
+        ATON.vroadcast.replicate("NodeSwitch", function(d){
+            console.log(d);
+            ATON.FE.switchNode(d.name, d.value);
+            });
+*/
         $("#idVRoadcast").show();
         $('#idUserColor').show();
 

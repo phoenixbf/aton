@@ -147,6 +147,9 @@ ATON.registerEvents = function(evtList){
 
 // Add handler for this event
 ATON.on = function(evtname, handler){
+    // First time (event not registered)
+    if (!ATON.eventHandlers[evtname]) ATON.eventHandlers[evtname] = [];
+
     //ATON.eventHandlers[evtname] = handler;
     ATON.eventHandlers[evtname].push(handler);
     //console.log("Custom event handler for '"+evtname+ "' registered.");
@@ -157,11 +160,11 @@ ATON.clearEventHandlers = function(evtname){
 };
 
 // Fire all handlers for this event
-ATON.fireEvent = function(evtname, param){
+ATON.fireEvent = function(evtname, data){
     let ehList = ATON.eventHandlers[evtname];
     for (let h = 0; h < ehList.length; h++) {
         let handler = ehList[h];
-        if (handler) handler(param);
+        if (handler) handler(data);
         }
 
 /*

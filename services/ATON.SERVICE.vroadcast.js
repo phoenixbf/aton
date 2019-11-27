@@ -1213,6 +1213,14 @@ io.on('connection', function(socket){
             }
         });
 
+    // Replication
+    socket.on('EREP', function(msg){
+        if (scene){
+            socket.broadcast.to(sceneName).emit( msg.e, msg.d );
+            console.log("Event replicate: "+msg.e+ " data: "+msg.d);
+            }
+        });
+
     // Remote Log 
     socket.on('LOG', function(data){
         console.log(data);

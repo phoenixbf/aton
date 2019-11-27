@@ -51,7 +51,7 @@ const ATON_SM_UNIT_LP    = 4;
 const ATON_MASK_VISIBLE     = (1 << 2);
 const ATON_MASK_DESCRIPTORS = (1 << 3);
 const ATON_MASK_UI          = (1 << 4);
-const ATON_MASK_LP          = (1 << 5);
+const ATON_MASK_NO_PICK     = (1 << 5);
 
 
 // ATON Initialization
@@ -802,11 +802,13 @@ ATON.createNode = function(N, mask){
         };
 
     N.disablePicking = function(){
-        this.nodeMask = ATON_MASK_LP;
+        this.nodeMask = ATON_MASK_NO_PICK;
+        this._intMask = ATON_MASK_NO_PICK;
         return this;
         };
     N.enablePicking = function(){
         this.nodeMask = this._graph;
+        this._intMask = this._graph;
         return this;
         };
 
@@ -3214,7 +3216,7 @@ ATON._initGraph = function(){
     ATON._rootScene.setNodeMask( ATON_MASK_VISIBLE );
     ATON._rootDescriptors.setNodeMask( ATON_MASK_DESCRIPTORS );
     ATON._rootUI.setNodeMask( ATON_MASK_UI );
-    ATON._LPT.setNodeMask( ATON_MASK_LP );
+    ATON._LPT.setNodeMask( ATON_MASK_NO_PICK );
 
     // IVs
     ATON._IVvis.setIntersector(ATON._LSIvis);

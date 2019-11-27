@@ -1137,6 +1137,18 @@ window.addEventListener( 'load', function () {
 
                     break;
 
+                case "opus":
+                    scenename = "opus";
+                    ATON.createDynamicGroupNode().scale(0.01).as("opus").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/marmo_m.osgjs").attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/sala_m.osgjs").as("sala").setBaseColor([0.5,0.4,0.3,1]).attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/people_m.osgjs").as("people").setBaseColor([0.3,0.0,0.0,1]).attachTo("opus");
+
+                    //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( 40.0 );
+                    break;
+
                 case "new":
                     scenename = "new";
 
@@ -1156,7 +1168,7 @@ window.addEventListener( 'load', function () {
                     ATON.addNodeToRoot( ATON.createProduction(aHebe, TList) );
 */
                     ATON.createDynamicGroupNode().as("centralGroupT").attachToRoot();
-                    ATON.getNode("centralGroupT").addChild(aHebe);
+                    ATON.getNode("centralGroupT").addChild(aHebe); //.disablePicking();
 
                     ATON.createProductionFromASCII(aHebe, ATON.FE.MODELS_ROOT+"tl-square-cols.txt").as("procHebes").attachToRoot();
                     //ATON.getNode("procHebes").setBaseColor([1,0,0,1]);

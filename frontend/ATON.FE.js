@@ -655,13 +655,19 @@ window.addEventListener( 'load', function () {
                     scenename = "faug";
                     ATON.toggleAOPass(true);
 
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/floor.osgjs").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/walls.osgjs").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/exedrae.osgjs").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/rooves.osgjs").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs").attachToRoot();
+/*
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
 
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/exedrae.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/rooves.osgjs", { layer: "FAUG" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
-
+*/
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", ()=>{ QPV = ATON.QVhandler.getActiveQV(); });
@@ -681,7 +687,9 @@ window.addEventListener( 'load', function () {
                     ATON.addDescriptor(pastDir+"temple_columns/root.osgjs", "columns", { color: [1,0,0, 1] });
                     ATON.addDescriptor(pastDir+"temple_roof/root.osgjs", "roof", { color: [1,0,0, 1] });
 */
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
+                    ATON.createGroupNode("modern");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("modern");
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 /*
@@ -690,14 +698,16 @@ window.addEventListener( 'load', function () {
                     
                     console.log(qv.getResolution());
 */
-
+                    ATON.createGroupNode().as("Reconstruction").attachToRoot();
                     //ATON.addNewLayer("Reconstruction");
                     //let opts = { layer: "Reconstruction" };
 
-                    ATON.addGraph(pastDir+"colossus_hall_m.osgjs", { layer: "ColossusHall" });
-                    ATON.addGraph(pastDir+"augustus_m.osgjs", { layer: "ColossusHall" });
+                    // FIXME:
 
-                    ATON.addGraph(pastDir+"main_floor_m.osgjs", { layer: "Forum" });
+                    ATON.createAssetNode(pastDir+"colossus_hall_m.osgjs").attachTo("ColossusHall");
+                    ATON.createAssetNode(pastDir+"augustus_m.osgjs").attachTo("ColossusHall");
+
+                    ATON.createAssetNode(pastDir+"main_floor_m.osgjs").attachTo("Forum");
                     
                     ATON.addGraph(pastDir+"postguard_m.osgjs", { layer: "PostGuard" });
 

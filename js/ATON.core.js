@@ -391,6 +391,24 @@ ATON.utils.fallbackAlphaTex.setWrapT( osg.Texture.REPEAT );
 
 // Create and fill texture with uniform color 
 ATON.utils.createFillTexture = function(col){
+    var data = new osg.Uint8Array(4);
+
+    data[0] = col[0] * 255.0;
+    data[1] = col[1] * 255.0;
+    data[2] = col[2] * 255.0;
+    data[3] = col[3] * 255.0;
+
+    var tex = new osg.Texture();
+    tex.setTextureSize(1,1);
+    tex.setImage(data);
+    tex.setMinFilter( osg.Texture.LINEAR );
+    tex.setMagFilter( osg.Texture.LINEAR );
+    tex.setWrapS( osg.Texture.REPEAT );
+    tex.setWrapT( osg.Texture.REPEAT );
+
+    return tex;
+
+/*
     let canvas1 = document.createElement('canvas');
     let ctx = canvas1.getContext('2d');
     canvas1.width  = 1;
@@ -399,7 +417,8 @@ ATON.utils.createFillTexture = function(col){
     ctx.fillStyle = 'rgba(' + [col[0]*255.0, col[1]*255.0, col[2]*255.0, col[3]].join() + ')';
     ctx.fillRect(0,0,1,1);
     // 'data:image/png;base64,'.length => 22
-    var b64 = /*"data:image/png;base64," + */canvas1.toDataURL('image/png',''); //.substring(22);
+    //var b64 = "data:image/png;base64," + // canvas1.toDataURL('image/png','');
+    var b64 = canvas1.toDataURL('image/png',''); //.substring(22);
     //console.log(b64);
     
     var img = new window.Image();
@@ -414,6 +433,7 @@ ATON.utils.createFillTexture = function(col){
     tex.setWrapT( osg.Texture.REPEAT );
 
     return tex;
+*/
 };
 
 // Auxiliary
@@ -936,12 +956,6 @@ ATON.addNodeToRoot = function(N){
 
 ATON.createGroupNode = function(){
     let N = ATON.createNode( new osg.Node(), ATON_MASK_VISIBLE );
-/*
-    if (id){ // register
-        N.setName(id);
-        ATON.nodes[id] = N;
-        }
-*/
     return N;
 }
 

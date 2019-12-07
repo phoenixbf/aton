@@ -184,6 +184,10 @@ ATON.registerEvents([
     "MouseRightButton",
     "MouseMidButton",
 
+    "KeyPress",
+
+    "GamepadButtonPress",
+
     "ShapeDescriptorHovered",
     "ShapeDescriptorSelected",
     "ShapeDescriptorLeft",
@@ -389,14 +393,15 @@ ATON.utils.fallbackAlphaTex.setMagFilter( osg.Texture.LINEAR );
 ATON.utils.fallbackAlphaTex.setWrapS( osg.Texture.REPEAT );
 ATON.utils.fallbackAlphaTex.setWrapT( osg.Texture.REPEAT );
 
-// Create and fill texture with uniform color 
+// Create and fill texture with uniform color (vec3 or vec4) 
 ATON.utils.createFillTexture = function(col){
     var data = new osg.Uint8Array(4);
 
     data[0] = col[0] * 255.0;
     data[1] = col[1] * 255.0;
     data[2] = col[2] * 255.0;
-    data[3] = col[3] * 255.0;
+    if (col.length === 4) data[3] = col[3] * 255.0;
+    else data[3] = 255;
 
     var tex = new osg.Texture();
     tex.setTextureSize(1,1);
@@ -929,7 +934,9 @@ ATON.createNode = function(N, mask){
         let M = this.matrix;
         if (!M) return this;
 
-        osg.mat4.scale(M,M, [s,s,s] );
+        if (Array.isArray(s)) osg.mat4.scale(M,M, s );
+        else osg.mat4.scale(M,M, [s,s,s] );
+
         return this;
         };
 
@@ -1087,8 +1094,10 @@ ATON.getDescriptor = function(unid){
     return ATON.descriptors[unid];
 };
 
-ATON.createDescriptorShape = function(url, onComplete){
-    let D = ATON.createNode( new osg.Node(), ATON_MASK_DESCRIPTORS );
+ATON.createDescriptorShape = function(url, bTransformable, onComplete){
+    let D;
+    if (bTransformable) D = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
+    else D = ATON.createNode( new osg.Node(), ATON_MASK_DESCRIPTORS );
 
     ATON.loadAssetToNode(url, D, ()=>{
         ATON._numDescriptors++;
@@ -3095,8 +3104,10 @@ ATON._attachListeners = function(){
         });
 
     // KEYBOARD
-	$(function() {
-		$(document).keydown(function(e) {
+	$(function(){
+		$(document).keydown(function(e){
+            ATON.fireEvent("KeyPress", e.key);
+
 	    	if (e.keyCode == 32) { // space
                 e.preventDefault();
 				//console.log('space');
@@ -3117,6 +3128,7 @@ ATON._attachListeners = function(){
 
                 ATON.setFOV(currFOV);
 	    		}
+/*
 	    	if (e.key == 'v'){ // v
 				ATON.toggleVR();
 	    		}
@@ -3138,20 +3150,6 @@ ATON._attachListeners = function(){
                     }
                 else ATON.requestPOVbyActiveGraph(0.3);
 	    		}
-/*
-	    	if (e.key == 'i'){ // i
-
-	    		}
-	    	if (e.key == 'k'){ // k
-
-	    		}
-
-	    	if (e.key == 'q'){ // q
-
-                }
-            if (e.key == 'x'){ // x
-                //
-                }
 */
 /*
 	    	if (e.keyCode == 102){ // numpad right
@@ -3162,6 +3160,18 @@ ATON._attachListeners = function(){
 */				
 	  		});
 		});
+
+    ATON.on("KeyPress", (k)=>{
+        if (k === 'v') ATON.toggleVR();
+        if (k === 'f'){
+            if (ATON._hoveredDescriptor){
+                let D = ATON.descriptors[ATON._hoveredDescriptor];
+				if (D.onSelect) D.onSelect();  
+                else ATON.requestPOVbyDescriptor(ATON._hoveredDescriptor, 0.3);
+                }
+            else ATON.requestPOVbyActiveGraph(0.3);
+            }
+        });
 
     // On resize
     $(window).on('load resize', ATON._onResize );
@@ -3267,7 +3277,7 @@ ATON._initGraph = function(){
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
-    ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.fallbackWhiteTex); // def color
+    ATON._descrSS.setTextureAttributeAndModes( 0, ATON.utils.createFillTexture([1,1,1, 0.2]) ); // def color
     ATON._descrSS.setRenderingHint('TRANSPARENT_BIN');
     //ATON._descrSS.setBinNumber(11);
 
@@ -4248,6 +4258,8 @@ ATON._handleGamepads = function(){
                 //if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
 
 				if (gamepad.buttons[b].pressed){
+                    ATON.fireEvent("GamepadButtonPress", {button: b, gpad: g});
+
 					//console.log("GM: Pressed button "+b);
 
                     // 3 = A, 4 = B

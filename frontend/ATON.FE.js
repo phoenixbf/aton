@@ -676,10 +676,11 @@ window.addEventListener( 'load', function () {
                 case "faug2":
                     scenename = "faug2";
                     //ATON.addLightProbe("../LP/default");
+
+                    ATON.updateHoverRadius(5.0);
                     
                     let pastDirOld = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST/";
                     let pastDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
-                    let dSS = ATON.getRootDescriptors().getOrCreateStateSet();
 /*
                     ATON.addDescriptor(pastDir+"temple_podium/root.osgjs", "podium", { color: [1,0,0, 1] });
                     ATON.addDescriptor(pastDir+"temple_exterior/root.osgjs", "temple", { color: [1,0,0, 1] });
@@ -687,9 +688,8 @@ window.addEventListener( 'load', function () {
                     ATON.addDescriptor(pastDir+"temple_columns/root.osgjs", "columns", { color: [1,0,0, 1] });
                     ATON.addDescriptor(pastDir+"temple_roof/root.osgjs", "roof", { color: [1,0,0, 1] });
 */
-                    ATON.createGroupNode("modern");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("modern");
-                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs", { layer: "MODERN" });
+                    ATON.createGroupNode().as("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 /*
@@ -698,33 +698,77 @@ window.addEventListener( 'load', function () {
                     
                     console.log(qv.getResolution());
 */
-                    ATON.createGroupNode().as("Reconstruction").attachToRoot();
-                    //ATON.addNewLayer("Reconstruction");
-                    //let opts = { layer: "Reconstruction" };
+                    ATON.createDynamicGroupNode().as("Reconstruction").attachToRoot();
+                    ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                    
+                    let ssRec = ATON.getNode("Reconstruction").getSS();
+                    /*
+                    ssRec.setAttributeAndModes( 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
+                        osg.StateAttribute.ON|osg.StateAttribute.OVERRIDE
+                        );
+                    ssRec.setRenderingHint('TRANSPARENT_BIN');
+*/
 
-                    // FIXME:
-
+                    ATON.createGroupNode().as("ColossusHall").attachTo("Reconstruction");
                     ATON.createAssetNode(pastDir+"colossus_hall_m.osgjs").attachTo("ColossusHall");
                     ATON.createAssetNode(pastDir+"augustus_m.osgjs").attachTo("ColossusHall");
 
+                    ATON.createGroupNode().as("Forum").attachTo("Reconstruction");
                     ATON.createAssetNode(pastDir+"main_floor_m.osgjs").attachTo("Forum");
-                    
-                    ATON.addGraph(pastDir+"postguard_m.osgjs", { layer: "PostGuard" });
 
-                    ATON.addGraph(pastDir+"temple_columns_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_entrance_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_exterior_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_frieze_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_podium_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_roof_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"temple_altar_m.osgjs", { layer: "MarsTemple" });
-                    ATON.addGraph(pastDir+"interior_m.osgjs", { layer: "MarsTemple" });
+                    ATON.createGroupNode().as("Walls").attachTo("Reconstruction");
+                    ATON.createAssetNode(pastDir+"wall_m.osgjs").attachTo("Forum");
 
-                    ATON.addGraph(pastDir+"porticos_colonnade_R_m.osgjs", { layer: "Portico_R" });
-                    ATON.addGraph(pastDir+"porticos_floor_R_m.osgjs", { layer: "Portico_R" });
+                    ATON.createGroupNode().as("GuardPost").attachTo("Reconstruction");
+                    ATON.createAssetNode(pastDir+"postguard_m.osgjs").attachTo("GuardPost");
 
-                    ATON.addGraph(pastDir+"porticos_colonnade_L_m.osgjs", { layer: "Portico_L" });
-                    ATON.addGraph(pastDir+"porticos_floor_L_m.osgjs", { layer: "Portico_L" });
+                    ATON.createGroupNode().as("MarsTemple").attachTo("Reconstruction");
+                    ATON.createAssetNode(pastDir+"temple_columns_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_entrance_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_exterior_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_frieze_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_podium_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_roof_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"temple_altar_m.osgjs").attachTo("MarsTemple");
+                    ATON.createAssetNode(pastDir+"interior_m.osgjs").attachTo("MarsTemple");
+
+                    ATON.createGroupNode().as("PorticoLeft").attachTo("Reconstruction");
+                    ATON.createAssetNode(pastDir+"porticos_colonnade_L_m.osgjs").attachTo("PorticoLeft");
+                    ATON.createAssetNode(pastDir+"porticos_floor_L_m.osgjs").attachTo("PorticoLeft");
+
+                    ATON.createGroupNode().as("PorticoRight").attachTo("Reconstruction");
+                    ATON.createAssetNode(pastDir+"porticos_colonnade_R_m.osgjs").attachTo("PorticoRight");
+                    ATON.createAssetNode(pastDir+"porticos_floor_R_m.osgjs").attachTo("PorticoRight");
+
+                    ATON.getNode("Modern").getSS().addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
+                    ATON.getNode("Reconstruction").getSS().addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
+
+                    let bLensing = true;
+
+                    ATON.on("KeyPress", (k)=>{
+                        if (k === ')'){
+                            ATON._hoverRadius += 1.0;
+                            ATON.updateHoverRadius();
+                            }
+                        if (k === '('){
+                            if (ATON._hoverRadius > 2.0) ATON._hoverRadius -= 1.0;
+                            ATON.updateHoverRadius();
+                            }
+
+                        if (k === 'l'){
+                            if (bLensing){
+                                ATON.getNode("Reconstruction").loadCustomShaders("../shaders/basic.glsl");
+                                ATON.getNode("Modern").loadCustomShaders("../shaders/basic.glsl");
+                                bLensing = false;
+                                }
+                            else {
+                                ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                                ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                                bLensing = true;
+                                }
+                            }
+                        });
                     
 /*
                     ATON.addGraph(pastDirOld+"temple_podium/root.osgjs", { layer: "Hypothesis_2" });
@@ -733,20 +777,12 @@ window.addEventListener( 'load', function () {
                     ATON.addGraph(pastDirOld+"temple_columns/root.osgjs", { layer: "Hypothesis_2" });
                     ATON.addGraph(pastDirOld+"temple_roof/root.osgjs", { layer: "Hypothesis_2" });
 */
-                    ATON.switchLayer("Forum", false);
-                    ATON.switchLayer("PostGuard", false);
-                    ATON.switchLayer("ColossusHall", false);
-                    ATON.switchLayer("MarsTemple", false);
-                    ATON.switchLayer("Portico_R", false);
-                    ATON.switchLayer("Portico_L", false);
 
-
-
+/*
                     dSS.setAttributeAndModes(
                         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
                         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
                         );
-/*
                     dSS.setAttributeAndModes( 
                         new osg.Depth( osg.Depth.ALWAYS ),
                         osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
@@ -767,8 +803,9 @@ window.addEventListener( 'load', function () {
 */
                     //console.log(JSON.stringify(ATON.QVhandler));
 
-                    var thit = 0;
+                    //var thit = 0;
                     // CUSTOM KEYBOARD
+/*
                     $(function() {
                         $(document).keydown(function(e) {
                             if (e.keyCode == 84){ // t
@@ -794,6 +831,7 @@ window.addEventListener( 'load', function () {
                                 }
                             });
                         });
+*/
                     break;
 
                 case "fpacis":
@@ -850,9 +888,11 @@ window.addEventListener( 'load', function () {
 
                 case "armoury":
                     scenename = "armoury";
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN" });
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/armoury/root.osgjs",true).scale(0.25).attachToRoot();
 
-                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.25,0.25,0.25]));
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/armoury/root.osgjs", { layer: "MAIN" });
+
+                    //ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.25,0.25,0.25]));
                     
                     ATON.setHome([1.53,-1.57,1.54],[0.17,0.08,1.63]);
                     break;
@@ -861,7 +901,8 @@ window.addEventListener( 'load', function () {
                     scenename = "picgallery";
                     //ATON.addLightProbe("../LP/w");
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs").attachToRoot();
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/picgallery/root.osgjs", { layer: "MAIN" });
                     ATON.setHome([-2.67,-10.09,2.46],[0.28,-1.69,1.62]);
 
                     ATON._polarizeLocomotionQV = PolNav;
@@ -873,8 +914,8 @@ window.addEventListener( 'load', function () {
                 case "dining":
                     scenename = "dining";
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/dining-room/root.osgjs", { layer: "MAIN" });
-                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.5,0.5,0.5]));
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/dining-room/root.osgjs",true).scale(0.5).attachToRoot();
+
                     ATON.setHome([-4.00,-3.50,2.55],[0.21,2.01,2.61]);
 
 
@@ -888,8 +929,9 @@ window.addEventListener( 'load', function () {
                 case "vestibule":
                     scenename = "vestibule";
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
-                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs",true).scale(0.35).attachToRoot();
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/upper-vestibule/root.osgjs", { layer: "MAIN" });
+                    //ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.35,0.35,0.35]));
                     ATON.setHome([-1.64,3.12,1.15],[0.16,2.20,0.96]);
 
                     //QPV = ATON.QVhandler.addQV([-5, -5.5, 0.0], [13.0, 10, 11.8]);
@@ -924,11 +966,24 @@ window.addEventListener( 'load', function () {
 
                     ATON.addLightProbe("../LP/default");
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "Ground" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "Ground", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
-                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"column/column.gltf", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "Hebe" });
+                    ATON.createGroupNode().as("Ground").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").attachTo("Ground");
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"ground/border.osgjs",
+                        ATON.FE.MODELS_ROOT+"ground/tl-border.txt"
+                        ).attachTo("Ground");
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs",
+                        ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
+                        ).as("Columns").attachTo("Ground");
+
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("Hebe").attachToRoot();
+
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "Ground" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/border.osgjs", { layer: "Ground", transformRules: ATON.FE.MODELS_ROOT+"ground/tl-border.txt" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    ///ATON.addGraph(ATON.FE.MODELS_ROOT+"column/column.gltf", { layer: "Columns", transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "Hebe" });
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 60.0 );
                     //$('body').css('background-color', 'black');
@@ -1119,16 +1174,54 @@ window.addEventListener( 'load', function () {
 
                     ATON.addLightProbe("../LP/default");
 
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("Ground").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("Hebe").attachToRoot();
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
+                        ).as("Columns").attachToRoot();
+
+/*
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"ground/root.osgjs", { layer: "GROUND" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", { layer: "MAIN" });
                     ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", { 
                         layer: "COLUMNS", 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
                         });
-
+*/
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/gltf/microphone.gz", { layer: "mic" });
 
                     // TEST descriptors
+                    ATON.createDescriptorProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt"
+                        )
+                        .as("colonne")
+                        .setBaseColor([1,0,0, 0.1])
+                        .attachToRoot();
+
+                    ATON.createDescriptorProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-caps-semshapes.txt"
+                        )
+                        .as("capitelli")
+                        .setBaseColor([0,1,0, 0.1])
+                        .attachToRoot();
+
+                    ATON.createDescriptorProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-bases-semshapes.txt"
+                        )
+                        .as("basi")
+                        .setBaseColor([0,0,1, 0.1])
+                        .attachToRoot();
+
+                    ATON.createDescriptorShape(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", true)
+                        .as("hebe")
+                        .translate([0,0,2.8]).scale([1.7,1.7,6.0])
+                        .setBaseColor([1,1,0, 0.1])
+                        //.attachToRoot();
+/*
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "colonne", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-cols-semshapes.txt",
                         color: [1,0,0, 0.1] 
@@ -1141,6 +1234,7 @@ window.addEventListener( 'load', function () {
                         transformRules: ATON.FE.MODELS_ROOT+"tl-square-bases-semshapes.txt",
                         color: [0,0,1, 0.1] 
                         });
+*/
                     /*
                     ATON.addDescriptor(ATON.FE.MODELS_ROOT+"_shapes/cube/root.osgjs", "statua", { 
                         transformRules: ATON.FE.MODELS_ROOT+"tl-hebe-semshapes.txt" 
@@ -1169,7 +1263,7 @@ window.addEventListener( 'load', function () {
                     scenename = "new";
 
                     let aHebe = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs"); //.as("hebe");
-                    //ATON.addNodeToRoot( aHebe );
+
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("ground").attachToRoot();
 
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs", true).as("hebe2").translate([5,0,0]).attachToRoot();

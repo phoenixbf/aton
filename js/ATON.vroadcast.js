@@ -37,8 +37,8 @@ ATON.registerEvents([
     "VRC_NodeSwitch"
 ]);
 
-ATON.vroadcast.users      = [];
-ATON.vroadcast.manip      = undefined;
+ATON.vroadcast.users = [];
+ATON.vroadcast.manip = undefined;
 
 /*
 ATON.vroadcast = {

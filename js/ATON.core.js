@@ -1496,11 +1496,12 @@ ATON.recomputeHome = function(){
     ATON._homePOV.pos[2] = ATON._homePOV.target[2] + (r*0.5);
 };
 
-ATON.setHome = function(position, target){
+ATON.setHome = function(position, target, fov){
     ATON._homeAuto = false;
     
     ATON._homePOV.pos    = position;
     ATON._homePOV.target = target;
+    if (fov) ATON._homePOV.fov = fov;
 };
 
 ATON.requestHome = function(duration){

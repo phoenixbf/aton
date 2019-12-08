@@ -26,8 +26,11 @@ ATON.vroadcast._bPOLdirty = true;
 //ATON.vroadcast.onPolDataReceived = undefined;
 
 ATON.registerEvents([
-    "VRC_IDassigned",
+    "VRC_Connect",
     "VRC_Disconnect",
+
+    "VRC_IDassigned",
+
     "VRC_PolDataReceived",
     "VRC_PolCellReceived",
     "VRC_UserName",
@@ -70,7 +73,16 @@ ATON.vroadcast.UCOLORS = [
     [1,0.5,1, 0.25],
 ];
 
-// TODO: call after connection
+/*
+ATON.vroadcast.replicateEvent = function(evtname, data){
+    if (!ATON.vroadcast.socket) return; // not connected
+
+    ATON.vroadcast.socket.emit("EREP", {e: evtname, d: data});
+};
+*/
+
+// FIXME:
+/*
 ATON.vroadcast.replicate = function(evtname, onReceive){
     let eList = ATON.eventHandlers[evtname];
     if (!eList) return;
@@ -80,9 +92,29 @@ ATON.vroadcast.replicate = function(evtname, onReceive){
         });
 
     if (!onReceive) return;
-    ATON.vroadcast.socket.on(evtname, function(data){ 
-        onReceive(data);
+
+    let R = function(data){ onReceive(data); }
+
+    if (ATON.vroadcast.socket) ATON.vroadcast.socket.on(evtname, R);
+    else {
+        ATON.on("VRC_Connect", ()=>{ ATON.vroadcast.socket.on(evtname, R); });
+        }
+};
+*/
+
+// Add a replicated event with local onBroadcast handler and onReceive handler
+ATON.vroadcast.on = function(evtname, onBroadcast, onReceive){
+    ATON.on(evtname, onBroadcast);
+    ATON.on(evtname, (data)=>{
+        if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("EREP", {e: evtname, d: data});
         });
+
+    if (!onReceive) return;
+
+    if (ATON.vroadcast.socket) ATON.vroadcast.socket.on(evtname, onReceive);
+    else {
+        ATON.on("VRC_Connect", ()=>{ ATON.vroadcast.socket.on(evtname, onReceive); });
+        }
 };
 
 
@@ -153,7 +185,9 @@ ATON.vroadcast.connect = function(address, scene){
 
     ATON.vroadcast._myUser = new ATON.user();
 
-    ATON.vroadcast._registerEventHandlers();
+    ATON.vroadcast._registerSocketHandlers();
+
+    ATON.fireEvent("VRC_Connect");
 
     //ATON.vroadcast.socket.emit("ENTER", { scene: ATON.vroadcast._scene });
 };
@@ -700,7 +734,7 @@ ATON.vroadcast._handleUsersTransitions = function(){
 
 
 // Handling msgs from server
-ATON.vroadcast._registerEventHandlers = function(){
+ATON.vroadcast._registerSocketHandlers = function(){
 
     // We connected to server
     ATON.vroadcast.socket.on('connect', function(){

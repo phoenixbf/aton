@@ -217,13 +217,16 @@ ATON.FE.setupPage = function(){
         var el = document.getElementById('idDevOri');
         ATON.toggleDeviceOrientation(el.checked);
         };
-/*
+
     ATON.FE.switchNode = function(id, v){
+        ATON.fireEvent("VRC_nswitch", {name: id, value:v});
+/*
         let N = ATON.getNode(id);
         if (!N) return;
         N.switch(v);
-        };
 */
+        };
+
     ATON.FE.buildLayerMenu = function(){
         //if (ATON.layers.length == 0) return;
         if (ATON.nodes.length == 0) return;
@@ -234,7 +237,8 @@ ATON.FE.setupPage = function(){
             //console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
-            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
+            //$('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
+            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.FE.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
             }
 
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
@@ -337,12 +341,12 @@ ATON.FE.showModalNote = function(){
     if (ATON._vrState) return;
 
     Swal.fire({
-        title: 'New ShapeDescriptor ID',
+        title: 'New Annotation',
         text: "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius,
         background: '#000',
         //type: 'info',
         input: 'text',
-        inputPlaceholder: 'annotation',
+        inputPlaceholder: 'id',
         confirmButtonText: 'ADD'
     }).then((result)=>{
         let did = result.value;
@@ -611,7 +615,7 @@ window.addEventListener( 'load', function () {
     var canvas = document.getElementById( 'View' );
 
     // Realize
-    ATON.shadersFolder = "../shaders";
+    ATON.shadersFolder = "../res/shaders";
     ATON.realize(canvas);
 
     // Mobile/Desktop Config
@@ -1164,6 +1168,85 @@ window.addEventListener( 'load', function () {
 
                     ATON.setHome([-0.28,-19.14,2.87],[-0.30,-0.39,4.58]);
                     ATON.requestHome(0.01);
+                    break;
+
+                case "collab":
+                    scenename = "collab";
+
+                    ATON.addLightProbe("../LP/default");
+
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"ground/root.osgjs").as("Ground").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"hebe/root.osgjs").as("Hebe").attachToRoot();
+
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"ground/border.osgjs", 
+                        ATON.FE.MODELS_ROOT+"ground/tl-border.txt" 
+                        ).attachTo("Ground");
+
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"_prv/corcol/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-cols.txt"
+                        ).as("Columns").attachToRoot();
+
+                    ATON.createProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"atoncube/root.osgjs", 
+                        ATON.FE.MODELS_ROOT+"tl-square-groundcubes.txt"
+                        ).as("Cubes").attachToRoot();
+
+                    
+                    ATON.createGroupNode().as("Vegetation").attachToRoot();
+                    let aVeg = ATON.createAssetNode(ATON.FE.MODELS_ROOT+"tree1/root.osgjs");
+
+                    ATON.getNode("Vegetation").disablePicking();
+                    for (let u = 0; u < 6; u++) {
+                        let col = ATON.vroadcast.UCOLORS[u];
+                        let C = [];
+                        C[0] = col[0]*0.5;
+                        C[1] = col[1]*0.5;
+                        C[2] = col[2]*0.5;
+                        C[3] = 1.0;
+
+                        ATON.createGroupNode().as("u"+u).setBaseColor(C).attachTo("Vegetation");
+                        }
+
+                    let spawnVeg = function(d){
+                        let T = ATON.createTransformNode();
+                        T.addChild(aVeg);
+                        T.translate(d.pos);
+                        T.scale(d.scale);
+
+                        if (d.u < 0) T.attachTo("Vegetation");
+                        else T.attachTo("u"+(d.u % 6));
+                        };
+
+                    // VRC events
+                    ATON.vroadcast.on("VRC_spawn", 
+                        (d)=>{
+                            spawnVeg(d);
+                            },
+                        (d)=>{
+                            //console.log("received");
+                            //console.log(d);
+                            spawnVeg(d);
+                            });
+
+
+                    ATON.on("MouseRightButton", ()=>{
+                        if (!ATON._hoveredVisData) return;
+
+                        ATON.fireEvent("VRC_spawn", {
+                            pos: ATON._hoveredVisData.p, 
+                            scale: ATON._hoverRadius*0.5, 
+                            u: ATON.vroadcast._myUser.id
+                            });
+                        });
+/*
+                    ATON.on("KeyPress", (k)=>{
+                        if (k === '')
+                        });
+*/
+
+                    ATON.setHome([0.62, -12.188, 3.61],[0, 0, 0]);
                     break;
 
                 case "hebe":
@@ -1942,16 +2025,30 @@ if (asset === "sf"){
     if (vrcIP !== undefined){ 
         if (vrcIP.length < 3) vrcIP = window.location.hostname;
 
+        ATON.vroadcast.on("VRC_nswitch", 
+            (d)=>{
+                ATON.getNode(d.name).switch(d.value);
+                //ATON.FE.switchNode(d.name, d.value);
+                },
+            (d)=>{
+                //console.log("received");
+                //console.log(d);
+                ATON.getNode(d.name).switch(d.value);
+                });
+
+
+/*
+        // Test
+        ATON.vroadcast.replicate("NodeSwitch", function(d){
+            console.log("RCV");
+            console.log(d);
+            //ATON.FE.switchNode(d.name, d.value);
+            });
+*/
+
         ATON.vroadcast.uStateFreq = 0.05;
         ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
 
-        // Test
-/*
-        ATON.vroadcast.replicate("NodeSwitch", function(d){
-            console.log(d);
-            ATON.FE.switchNode(d.name, d.value);
-            });
-*/
         $("#idVRoadcast").show();
         $('#idUserColor').show();
 

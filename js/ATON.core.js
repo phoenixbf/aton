@@ -134,6 +134,9 @@ ATON._mLProtation = osg.mat4.create();
 // User custom functions/event control
 ATON.onTickRoutines = [];
 
+// Transform anim.
+ATON._reqTransAnim = [];
+
 // Centralized custom event handling
 ATON.eventHandlers = {};
 
@@ -936,6 +939,20 @@ ATON.createNode = function(N, mask){
 
         if (Array.isArray(s)) osg.mat4.scale(M,M, s );
         else osg.mat4.scale(M,M, [s,s,s] );
+
+        return this;
+        };
+
+    N.requestTransformAnimation = function(tgtMatrix, duration){
+        let M = this.matrix;
+        if (!M) return this;
+
+        ATON._reqTransAnim.push({
+            from: M.slice(0),
+            to: tgtMatrix,
+            dur: (duration)? duration : 1.0,
+            tcall: ATON._time
+            });
 
         return this;
         };
@@ -2648,6 +2665,9 @@ ATON._updateCallback.prototype = {
             osg.mat4.setTranslation(ATON._LProtM, ATON._currPOV.pos);
             }
 
+        // Handle transform animations
+        ATON._handleTransformAnims();
+
         // Execute custom onTick routines
         for (let uf = 0; uf < ATON.onTickRoutines.length; uf++) {
             const UF = ATON.onTickRoutines[uf];
@@ -2655,6 +2675,17 @@ ATON._updateCallback.prototype = {
             }
 
         return true;
+        }
+};
+
+ATON._handleTransformAnims = function(){
+    let numAnim = ATON._reqTransAnim.length;
+    if (numAnim <= 0) return; 
+
+    for (let a = 0; a < numAnim; a++){
+        let anim = ATON._reqTransAnim[a];
+
+        // TODO:
         }
 };
 

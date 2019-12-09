@@ -762,8 +762,8 @@ window.addEventListener( 'load', function () {
 
                         if (k === 'l'){
                             if (bLensing){
-                                ATON.getNode("Reconstruction").loadCustomShaders("../shaders/basic.glsl");
-                                ATON.getNode("Modern").loadCustomShaders("../shaders/basic.glsl");
+                                ATON.getNode("Reconstruction").loadCustomShaders("../res/shaders/basic.glsl");
+                                ATON.getNode("Modern").loadCustomShaders("../res/shaders/basic.glsl");
                                 bLensing = false;
                                 }
                             else {

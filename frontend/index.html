@@ -52,8 +52,8 @@
 	</div>
 
     <header>
-        <!-- TOP navbar -->
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.7; background-color: black !important;">
+        <!-- TOP navbar  style="background-color: rgba(0,0,0, 0.2) !important; -->
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark" id="iContainer" style="opacity:0.6; background-color: black !important;">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <button id="idUserColor" type="button" class="atonBTN" onclick="$('#idVRCpanel').toggle();"></button>
@@ -165,7 +165,7 @@
       </header>
 
     <!-- BOTTOM navbar -->
-    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.5)">
+    <div class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0.1)">
 
         <div id="idSession" style="width: 100%">
             <div style="display:inline-block; width:10%;"><input id="idDIM" type="range" min="0.0" max="1.0" step="0.01" oninput="ATON.setDim(this.value)"></div>
@@ -192,7 +192,12 @@
     </div>
 
     <!-- Loader -->
-	<div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../res/loader.png"></div>
+    <div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../res/loader.png"></div>
+    
+    <!-- Powered by -->
+    <div class="atonToolbar atonToolbar-bottom poweredBy" >
+        powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
 
 </body>
 </html>

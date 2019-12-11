@@ -1349,14 +1349,41 @@ window.addEventListener( 'load', function () {
 
                 case "intarsi-opus":
                     scenename = "opus";
+                    /*
                     ATON.createDynamicGroupNode().scale(0.01).as("opus").attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/marmo_m.osgjs").attachTo("opus");
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/sala_m.osgjs").as("sala").setBaseColor([0.5,0.4,0.3,1]).attachTo("opus");
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/people_m.osgjs").as("people").setBaseColor([0.3,0.0,0.0,1]).attachTo("opus");
-
+*/
+                    ATON.createDynamicGroupNode().as("opus").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/1_m.osgjs").attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/2_m.osgjs").attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/3_m.osgjs").attachTo("opus");
                     //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));
 
-                    ATON._mainSS.getUniform('uFogDistance').setFloat( 40.0 );
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/people_m.osgjs",true)
+                        .as("people")
+                        .scale(0.01)
+                        .translate([2.885,-12.020,-0.718])
+                        .setBaseColor([0,1,0, 0.1])
+                        .disablePicking()
+                        .loadCustomShaders(ATON.shadersFolder+"/ui.glsl")
+                        .attachTo("opus");
+
+                    let ssPeople = ATON.getNode("people").getSS();
+                    ssPeople.setRenderingHint('TRANSPARENT_BIN');
+                    ssPeople.setAttributeAndModes(
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
+                    let df = new osg.Depth( osg.Depth.LESS ); // osg.Depth.ALWAYS
+                    df.setRange(0.0,1.0);
+                    df.setWriteMask(false);
+                    ssPeople.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+
+                    ATON._mainSS.getUniform('uFogDistance').setFloat( /*40.0*/ 80.0 );
+
+                    ATON.setHome([2.97, -12.53, 0.56],[2.9, -6.38, 0.71]);
                     break;
 
                 case "intarsi-room":

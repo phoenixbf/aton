@@ -61,7 +61,7 @@ ATON.tracer._touchVRCgroup = function(){
     //D.setRange(0.0, 1.0);
     //ATON.tracer._groupVRC.getOrCreateStateSet().setAttributeAndModes( D );
 
-    ATON._groupUI.addChild( ATON.tracer._groupVRC );
+    ATON._rootUI.addChild( ATON.tracer._groupVRC );
 };
 
 ATON.tracer.filter = function(){

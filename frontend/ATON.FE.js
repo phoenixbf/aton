@@ -237,8 +237,8 @@ ATON.FE.setupPage = function(){
             //console.log(layername+" : "+checked);
 
             //$('#idLayers').append('<option value="' + key + '">' + key + '</option>');
-            //$('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
-            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.FE.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
+            $('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.vroadcast.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
+            //$('#idLayers').append('<input type="checkbox" name="Layers" onchange=\'ATON.FE.switchNode("'+id+'", this.checked)\' '+checked+' >'+id+'<br>');
             }
 
         //$('#idLayers').append('<button type="button" class="atonBTN" style="width:100%" onclick="ATON.requestPOVbyActiveLayers()">Focus</button>');
@@ -685,7 +685,7 @@ window.addEventListener( 'load', function () {
                     ATON.addDescriptor(pastDir+"temple_columns/root.osgjs", "columns", { color: [1,0,0, 1] });
                     ATON.addDescriptor(pastDir+"temple_roof/root.osgjs", "roof", { color: [1,0,0, 1] });
 */
-                    ATON.createGroupNode().as("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl").attachToRoot();
+                    ATON.createGroupNode().as("Modern").attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
 
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
@@ -695,10 +695,11 @@ window.addEventListener( 'load', function () {
                     
                     console.log(qv.getResolution());
 */
-                    ATON.createDynamicGroupNode().as("Reconstruction").attachToRoot();
-                    ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                    ATON.createDynamicGroupNode().as("Reconstruction").switch(false).attachToRoot();
+                    //ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
                     
-                    let ssRec = ATON.getNode("Reconstruction").getSS();
+                    let ssRec    = ATON.getNode("Reconstruction").getSS();
+                    let ssModern = ATON.getNode("Modern").getSS();
                     /*
                     ssRec.setAttributeAndModes( 
                         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
@@ -738,10 +739,10 @@ window.addEventListener( 'load', function () {
                     ATON.createAssetNode(pastDir+"porticos_colonnade_R_m.osgjs").attachTo("PorticoRight");
                     ATON.createAssetNode(pastDir+"porticos_floor_R_m.osgjs").attachTo("PorticoRight");
 
-                    ATON.getNode("Modern").getSS().addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
-                    ATON.getNode("Reconstruction").getSS().addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
+                    ssModern.addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
+                    ssRec.addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
 
-                    let bLensing = true;
+                    let bLensing = false;
 
                     ATON.on("KeyPress", (k)=>{
                         if (k === ')'){
@@ -1518,13 +1519,19 @@ window.addEventListener( 'load', function () {
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 20000.0 );
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs", { layer: "XIX" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
-                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs").as("XIX").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs").as("2016").attachToRoot();
+
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/dordogne_XIXe_SE20160530/Inrap_test__dordogne_XIXe_SE20160530_L0_X0_Y0_subtile.osgjs", { layer: "XIX" });
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/test_dordogne_MC_2016/Inrap_test__test_dordogne_MC_2016_L0_X0_Y0_subtile.osgjs", { layer: "2016" });
+                    ////ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/t/Test_Dordogne_WebGL_HillShade/inrap__Test_Dordogne_WebGL_HillShade_L0_X0_Y0_subtile.osgjs", { layer: "HS" });
 
                     var s = 0.003;
-                    ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s]));
-                    ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [s,s,s]));
+                    ATON.getNode("XIX").scale(s);
+                    ATON.getNode("2016").scale(s);
+
+                    //ATON.transformLayerByMatrix("2016", osg.mat4.fromScaling( [], [s,s,s]));
+                    //ATON.transformLayerByMatrix("XIX", osg.mat4.fromScaling( [], [s,s,s]));
 
                     ATON.switchLayer("2016", false);
                     ATON.switchLayer("XIX", true);
@@ -1616,9 +1623,34 @@ window.addEventListener( 'load', function () {
                     //ATON.setFirstPersonMode(true);
                     //ATON.addLightProbe("../LP/default");
 
-                    for (let b = 1; b <= 37; b++) ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/diff1/PT"+b+"__LOD2_m.osgjs", { layer: "Diff" });
-                    ATON.switchLayer("Diff", false);
+                    // DIFF
+/*
+                    ATON.createGroupNode().as("Diff").switch(false).attachToRoot();
+                    for (let b = 1; b <= 37; b++) 
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/rsm/diff1/PT"+b+"__LOD2_m.osgjs").attachTo("Diff");
 
+                    let diffSS = ATON.getNode("Diff").getSS(); //ATON.layers["Diff"].getOrCreateStateSet();
+                    diffSS.setRenderingHint('TRANSPARENT_BIN');
+                    diffSS.setAttributeAndModes(
+                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                        );
+                    diffSS.setAttributeAndModes( 
+                        new osg.Depth( osg.Depth.LESS ),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
+                        );
+                    diffSS.setAttributeAndModes( 
+                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO),
+                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
+                        );
+*/
+
+                    ATON.createGroupNode().as("Castle").attachToRoot();
+                    for (let b = 1; b <= 37; b++){
+                        if (ATON._isMobile) ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD2/PT"+b+"__LOD2_m.osgjs").attachTo("Castle");
+                        else ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD1/PT"+b+"__LOD1_m.osgjs").attachTo("Castle");
+                        }
+/*
                     if (ATON._isMobile)
                         for (let b = 1; b <= 37; b++) 
                             ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD2/PT"+b+"__LOD2_m.osgjs", {layer: "Castle"});
@@ -1629,7 +1661,7 @@ window.addEventListener( 'load', function () {
                             hiresurl: ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD1/PT"+b+"__LOD1_m.osgjs",
                             hirespxsize: 600000
                             });
-
+*/
 /*
                     for (let b = 1; b <= 37; b++) {
                         //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/rsm/PT"+b+"__LOD1/root.osgjs", { layer: "PRESENT" });
@@ -1651,9 +1683,18 @@ window.addEventListener( 'load', function () {
 */
 
                     // veg
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });
-                    let vegLayer = ATON.layers["Vegetation"];
-                    let vegSS = vegLayer.getOrCreateStateSet();
+                    let nVeg = ATON.createGroupNode().as("Vegetation").disablePicking();
+                    nVeg.attachToRoot();
+
+                    ATON.createDescriptorProductionFromASCII(
+                        ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs",
+                        ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt"
+                        ).attachTo(nVeg);
+
+
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs", { layer: "Vegetation", transformRules: ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt" });
+                    //let vegLayer = ATON.layers["Vegetation"];
+                    let vegSS = nVeg.getOrCreateStateSet();
 
                     vegSS.setAttributeAndModes(
                         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
@@ -1670,23 +1711,6 @@ window.addEventListener( 'load', function () {
                         //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO), // additive
                         //new osg.BlendFunc(osg.BlendFunc.SRC_COLOR, osg.BlendFunc.DST_COLOR), 
                         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
-                        );
-
-                    ATON.setLayerMask("Vegetation", ATON._maskLP);
-
-                    let diffSS = ATON.layers["Diff"].getOrCreateStateSet();
-                    diffSS.setRenderingHint('TRANSPARENT_BIN');
-                    diffSS.setAttributeAndModes(
-                        new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
-                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
-                        );
-                    diffSS.setAttributeAndModes( 
-                        new osg.Depth( osg.Depth.LESS ),
-                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
-                        );
-                    diffSS.setAttributeAndModes( 
-                        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ZERO),
-                        osg.StateAttribute.OVERRIDE | osg.StateAttribute.OVERRIDE
                         );
 
                     // Custom Keyboard
@@ -1728,7 +1752,7 @@ window.addEventListener( 'load', function () {
                     
                     ATON.setHome([262.01,802.84,803.52],[295.16,842.49,778.58]);
                     //ATON.setHome([-34.01,-27.26,30.95],[-4.41,5.53,10.13]);
-
+/*
                     ATON.on("NodeSwitch", function(L){
                         if (L.name === "Diff" && L.value){
                             ATON._mainSS.getUniform('uFogDistance').setFloat( 1000000.0 );
@@ -1741,7 +1765,7 @@ window.addEventListener( 'load', function () {
                             ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
                             }
                         });
-
+*/
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 90.0 );
                     $('body').css('background-color', 'rgb(65,70,79)');
                     ATON.setFogColor(osg.vec4.fromValues(0.25,0.27,0.3, 0.0));
@@ -1752,14 +1776,18 @@ window.addEventListener( 'load', function () {
                 case "domus":
                     scenename = "domus";
 
-                    for (let b = 1; b <= 7; b++) {
+                    for (let b = 1; b <= 7; b++){
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"domus/LOD1_DP_Hor_"+b+".osgjs").attachToRoot();
+/*
                         ATON.addGraph(ATON.FE.MODELS_ROOT+"domus/_lo-LOD1_DP_Hor_"+b+".osgjs", { 
                             layer: "PRESENT", 
                             hiresurl: ATON.FE.MODELS_ROOT+"domus/LOD1_DP_Hor_"+b+".osgjs",
                             hirespxsize: 200000
                             });
+*/
                         }
 
+                    
                     ATON.setHome([-10.52,156.28,1.37],[5.33,168.50,-1.63]);
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
                     break;
@@ -1767,7 +1795,8 @@ window.addEventListener( 'load', function () {
                 case "tomba":
                     scenename = "tomba";
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachToRoot();
+                    //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs");
 
                     ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
                     ATON.updateHoverRadius(0.1);
@@ -1779,15 +1808,18 @@ window.addEventListener( 'load', function () {
                 case "saott":
                     scenename = "saott";
 
-                    for (let b = 1; b <= 21; b++) {
+                    ATON.createDynamicGroupNode().as("Present").scale(3.0).attachToRoot();
+
+                    for (let b = 1; b <= 21; b++){
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/saott/SalaOttagonaAverage200k_g"+b+".osgjs").attachTo("Present");
+/*
                         ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/saott/_lo-SalaOttagonaAverage200k_g"+b+".osgjs", { 
                             layer: "PRESENT", 
                             hiresurl: ATON.FE.MODELS_ROOT+"_prv/saott/SalaOttagonaAverage200k_g"+b+".osgjs",
                             hirespxsize: 200000
                             });
+*/
                         }
-
-                    ATON.transformLayerByMatrix("PRESENT", osg.mat4.fromScaling( [], [3.0,3.0,3.0]));
 
                     ATON.setHome([-0.28,-1.00,1.5],[-0.35,3.29,1.5]);
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 120.0 );
@@ -2033,6 +2065,7 @@ if (asset === "sf"){
     if (vrcIP !== undefined){ 
         if (vrcIP.length < 3) vrcIP = window.location.hostname;
 
+/*
         ATON.vroadcast.on("VRC_nswitch", 
             (d)=>{
                 ATON.getNode(d.name).switch(d.value);
@@ -2043,7 +2076,7 @@ if (asset === "sf"){
                 //console.log(d);
                 ATON.getNode(d.name).switch(d.value);
                 });
-
+*/
 
 /*
         // Test

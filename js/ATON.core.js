@@ -170,6 +170,8 @@ ATON.clearEventHandlers = function(evtname){
 // Fire all handlers for this event
 ATON.fireEvent = function(evtname, data){
     let ehList = ATON.eventHandlers[evtname];
+    if (!ehList) return;
+    
     for (let h = 0; h < ehList.length; h++) {
         let handler = ehList[h];
         if (handler) handler(data);

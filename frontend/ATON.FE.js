@@ -256,6 +256,23 @@ ATON.FE.setupPage = function(){
             }
         };
 
+    ATON.FE.qrcode = function(){
+        let url = window.location.href;
+        console.log(url);
+
+        Swal.fire({
+            //type: 'info',
+            html: "<div style='text-align:center; width:260px; height:260px; display:inline-block; padding:10px;'><div id='idQR'></div></div>",
+            background: '#FFF',
+            //type: 'info',
+            //input: 'text',
+            //inputPlaceholder: 'id',
+            //confirmButtonText: 'OK'
+            });
+
+        new QRCode(document.getElementById("idQR"), url);
+        };
+
     ATON.FE.filterRecords = function(){
         if (ATON.tracer === undefined) return;
 

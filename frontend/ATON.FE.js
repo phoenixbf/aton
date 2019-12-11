@@ -664,14 +664,7 @@ window.addEventListener( 'load', function () {
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/exedrae.osgjs").attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/rooves.osgjs").attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs").attachToRoot();
-/*
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/floor.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/walls.osgjs", { layer: "FAUG" });
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/exedrae.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/rooves.osgjs", { layer: "FAUG" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/faug/temple_exterior.osgjs", { layer: "FAUG" });
-*/
                     ATON.setHome([0.0,100,130],[0.0,18.53,7.94]);
 
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", ()=>{ QPV = ATON.QVhandler.getActiveQV(); });
@@ -865,10 +858,16 @@ window.addEventListener( 'load', function () {
                 case "sarmi":
                     scenename = "sarmi";
                     
-                    for (let i = 1; i <= 7; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/part-0"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 7; i++) 
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/sarmi/part-0"+i+".osgjs").attachToRoot(); 
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/part-0"+i+".osgjs", { layer: "LANDSCAPE" });
 
-                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs", { layer: "LANDSCAPE" });
-                    for (let i = 1; i <= 6; i++) ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 6; i++) 
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs").attachToRoot(); 
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/LOD1_DP_Hor_"+i+".osgjs", { layer: "LANDSCAPE" });
+                    for (let i = 1; i <= 6; i++)
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs").attachToRoot(); 
+                        //ATON.addGraph(ATON.FE.MODELS_ROOT+"../models/_prv/sarmi/r-LOD3_DP_Ter_"+i+".osgjs", { layer: "LANDSCAPE" });
 
                     ATON.setHome([111.72,160.66,15.20],[34.22,146.66,-11.13]);
 
@@ -947,8 +946,8 @@ window.addEventListener( 'load', function () {
                 case "smoking":
                     scenename = "smoking";
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/smoking-room/root.osgjs", { layer: "MAIN" });
-                    ATON.transformLayerByMatrix("MAIN", osg.mat4.fromScaling( [], [0.3,0.3,0.3]));
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/smoking-room/root.osgjs",true).scale(0.3).attachToRoot();
+
                     ATON.setHome([0.33,1.02,1.93],[-0.41,-0.46,1.58]);
 
                     //ATON.QVhandler.setPositionAndExtents([-5, -5.5, 0.0], [13.0, 10, 11.8]);
@@ -1330,16 +1329,26 @@ window.addEventListener( 'load', function () {
 
                     break;
 
-                case "opus":
+                case "intarsi-opus":
                     scenename = "opus";
                     ATON.createDynamicGroupNode().scale(0.01).as("opus").attachToRoot();
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/marmo_m.osgjs").attachTo("opus");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/sala_m.osgjs").as("sala").setBaseColor([0.5,0.4,0.3,1]).attachTo("opus");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/opus/people_m.osgjs").as("people").setBaseColor([0.3,0.0,0.0,1]).attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/marmo_m.osgjs").attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/sala_m.osgjs").as("sala").setBaseColor([0.5,0.4,0.3,1]).attachTo("opus");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/people_m.osgjs").as("people").setBaseColor([0.3,0.0,0.0,1]).attachTo("opus");
 
                     //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 40.0 );
+                    break;
+
+                case "intarsi-room":
+                    scenename = "intarsi";
+                    ATON.createDynamicGroupNode().as("room").setBaseColor([0.1,0.1,0.1], true).attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/room/room_touch_m.osgjs").attachTo("room");
+
+                    //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));
+
+                    //ATON._mainSS.getUniform('uFogDistance').setFloat( 40.0 );
                     break;
 
                 case "new":
@@ -1397,8 +1406,6 @@ window.addEventListener( 'load', function () {
                     //ATON.setFogColor(osg.vec4.fromValues(0.0,0.0,0.0, 0.0));
 
                     ATON._mainSS.getUniform('uFogDistance').setFloat( 100.0 );
-
-                    ATON.addNewLayer("PRESENT");
 /*
                     ATON.addNewLayer("PAST").getOrCreateStateSet().setAttributeAndModes(
                         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
@@ -1444,34 +1451,37 @@ window.addEventListener( 'load', function () {
                         });
 */
                     // PRESENT
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_E/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_floor/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_c/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_d/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_e/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_f/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_g/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_h/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/root.osgjs", { layer: "PRESENT" });
+                    ATON.createGroupNode().as("Present").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_a/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_S/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_N/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_E/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_floor/root.osgjs").attachTo("Present");
+
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_c/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_d/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_e/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_f/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_g/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_h/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/root.osgjs").attachTo("Present");
                     
                     //ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_ceiling/root.osgjs", { layer: "CEIL" });
-                    
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs", { layer: "PRESENT" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs", { layer: "PRESENT" });
+
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/root.osgjs").attachTo("Present");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/root.osgjs").attachTo("Present");
+
                     
 
                     //ATON.translateLayer("CEIL", [0,0,10]);
@@ -1481,9 +1491,7 @@ window.addEventListener( 'load', function () {
                     //QPV = ATON.QVhandler.addQV([-12.5,-17,0], [9,12,20]); // ingresso
                     //QPV = ATON.QVhandler.addQV([0.0,-34,0.0], [8,7,20]); // stanza x
                     //QPV = ATON.QVhandler.addQV([-5,-7,0], [1.7,1.5,8]); // altarino
-                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){
-                        QPV = ATON.QVhandler.getActiveQV();
-                        });
+                    ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", ()=>{ QPV = ATON.QVhandler.getActiveQV(); });
 
                     //qv.loadQVAimg(QAurl+"?"+new Date().getTime());
 

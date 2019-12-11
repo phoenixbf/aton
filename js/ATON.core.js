@@ -131,6 +131,11 @@ ATON._bSensorZready = false;
 // LPs
 ATON._mLProtation = osg.mat4.create();
 
+// Measurements
+ATON.measurements = [];
+ATON._bMeasuring = false;
+ATON._measurePoint = undefined;
+
 // User custom functions/event control
 ATON.onTickRoutines = [];
 
@@ -959,9 +964,10 @@ ATON.createNode = function(N, mask){
 
     // Misc
     // Set a base tint (base texture, unit 0)
-    N.setBaseColor = function(color){
+    N.setBaseColor = function(color, onlymissing){
         let cTex = ATON.utils.createFillTexture(color);
-        this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+        if (onlymissing) this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON);
+        else this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
         return this;
         };
 
@@ -4529,6 +4535,26 @@ ATON.trackVR = function(){
     // should be -0.5 to 0.5
     ATON._VR.hmdNormPos[0] = hmdpos[0] / ATON._VR.Ax;
     ATON._VR.hmdNormPos[1] = hmdpos[2] / ATON._VR.Az;
+};
+
+/*
+    MEASUREMENTS
+===========================================*/
+// TODO:
+ATON.measureSegment = function(){
+    if (!ATON._hoveredVisData) return;
+
+    // first point
+    if (!ATON._bMeasuring){
+        ATON._measurePoint = ATON._hoveredVisData.p.slice(0);
+
+        ATON._bMeasuring = true;
+        }
+    // second point
+    else {
+
+        ATON._bMeasuring = false;
+        }
 };
 
 

@@ -314,7 +314,7 @@ ATON.FE.setupPage = function(){
 
         if (i){
             console.log(i);
-            if (ATON.descriptors[i]._onSelect) ATON.descriptors[i]._onSelect();  
+            if (ATON.descriptors[i].onSelect) ATON.descriptors[i].onSelect();  
             else ATON.requestPOVbyDescriptor(i, 0.5);
             }
         };
@@ -1361,6 +1361,8 @@ window.addEventListener( 'load', function () {
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/3_m.osgjs").attachTo("opus");
                     //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));
 
+                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/sala_m.osgjs",true).scale(0.01).setBaseColor([0.5,0.4,0.3,1]).attachTo("opus");
+
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/opus/people_m.osgjs",true)
                         .as("people")
                         .scale(0.01)
@@ -1377,7 +1379,7 @@ window.addEventListener( 'load', function () {
                         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
                         );
                     let df = new osg.Depth( osg.Depth.LESS ); // osg.Depth.ALWAYS
-                    df.setRange(0.0,1.0);
+                    //df.setRange(0.0,1.0);
                     df.setWriteMask(false);
                     ssPeople.setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
 

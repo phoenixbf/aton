@@ -353,7 +353,13 @@ ATON.utils.getURLparams = function(url){
   }
 
   return obj;
-}
+};
+
+ATON.utils.clamp = function(v, a,b){
+    if (v < a) return a;
+    if (v > b) return b;
+    return v;
+};
 
 
 // Fallbacks

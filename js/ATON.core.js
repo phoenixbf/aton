@@ -818,6 +818,10 @@ ATON.createNode = function(N, mask){
     N.getSS = function(){
         return this.getOrCreateStateSet();
         };
+    N.setSS = function(ss){
+        this.setStateSet(ss);
+        return this;
+        };
 
     // Show/Hide the node
     N.show = function(){

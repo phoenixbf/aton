@@ -976,10 +976,11 @@ ATON.createNode = function(N, mask){
 
     // Misc
     // Set a base tint (base texture, unit 0)
-    N.setBaseColor = function(color, onlymissing){
+    N.setBaseColor = function(color, unit, onlymissing){
+        let u = (unit)? unit : 0;
         let cTex = ATON.utils.createFillTexture(color);
-        if (onlymissing) this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON);
-        else this.getOrCreateStateSet().setTextureAttributeAndModes( 0, cTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+        if (onlymissing) this.getOrCreateStateSet().setTextureAttributeAndModes( u, cTex, osg.StateAttribute.ON);
+        else this.getOrCreateStateSet().setTextureAttributeAndModes( u, cTex, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
         return this;
         };
 

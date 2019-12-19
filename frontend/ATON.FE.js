@@ -1144,6 +1144,39 @@ window.addEventListener( 'load', function () {
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", function(){ QPV = ATON.QVhandler.getActiveQV(); });
                     break;
 
+                case "pbr":
+                    scenename = "pbr";
+                    let bSwitch = false;
+                    ATON.addLightProbe("../LP/default");
+
+                    ATON.updateHoverRadius(0.1);
+
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"atoncube/root.osgjs").attachToRoot();
+
+                    let S = osg.createTexturedSphere(1.0, 40,40);
+                    ATON.createTransformNode().as("ball-red").addChild(S);
+                    ATON.getNode("ball-red").translate([4,0,0]).setBaseColor([1,0,0]).setBaseColor([0,1,0],ATON_SM_UNIT_COMBO).attachToRoot();
+
+                    ATON.createTransformNode().as("ball-blue").addChild(S);
+                    ATON.getNode("ball-blue").translate([-4,0,0]).setBaseColor([0,0,0.5]).setBaseColor([0.5,0,0],ATON_SM_UNIT_COMBO).attachToRoot();
+
+                    ATON.createTransformNode().as("ball-white").addChild(S);
+                    ATON.getNode("ball-white").translate([0,4,0]).setBaseColor([1,1,1]).setBaseColor([0,1,0],ATON_SM_UNIT_COMBO).attachToRoot();
+
+                    ATON.createTransformNode().as("ball-white2").addChild(S);
+                    ATON.getNode("ball-white2").translate([0,-4,0]).setBaseColor([1,1,1]).setBaseColor([1,0,0],ATON_SM_UNIT_COMBO).attachToRoot();
+
+                    ATON.on("KeyPress", (k)=>{
+                        if (k === 'k'){
+                            bSwitch = !bSwitch;
+
+                            if (bSwitch) ATON.addLightProbe("../LP/desert");
+                            else ATON.addLightProbe("../LP/default");
+                            }
+                        });
+
+                    break;
+
                 case "test1":
                     scenename = "test1";
                     ATON.addLightProbe("../LP/default");
@@ -1247,21 +1280,18 @@ window.addEventListener( 'load', function () {
                             spawnVeg(d);
                             });
 
-
-                    ATON.on("MouseRightButton", ()=>{
-                        if (!ATON._hoveredVisData) return;
-
-                        ATON.fireEvent("VRC_spawn", {
-                            pos: ATON._hoveredVisData.p, 
-                            scale: ATON._hoverRadius*0.5, 
-                            u: ATON.vroadcast._myUser.id
-                            });
-                        });
-/*
                     ATON.on("KeyPress", (k)=>{
-                        if (k === '')
+                        if (k === 't'){
+                            if (!ATON._hoveredVisData) return;
+
+                            ATON.fireEvent("VRC_spawn", {
+                                pos: ATON._hoveredVisData.p, 
+                                scale: ATON._hoverRadius*0.5, 
+                                u: ATON.vroadcast._myUser.id
+                                });
+                            }
                         });
-*/
+
 
                     ATON.setHome([0.62, -12.188, 3.61],[0, 0, 0]);
                     break;
@@ -1390,7 +1420,7 @@ window.addEventListener( 'load', function () {
 
                 case "intarsi-room":
                     scenename = "intarsi";
-                    ATON.createDynamicGroupNode().as("room").setBaseColor([0.1,0.1,0.1], true).attachToRoot();
+                    ATON.createDynamicGroupNode().as("room").setBaseColor([0.1,0.1,0.1], 0, true).attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/intarsi/room/room_touch_m.osgjs").attachTo("room");
 
                     //ATON.getNode("sala").loadCustomShaders((ATON.FE.MODELS_ROOT+"_prv/opus/opus.glsl"));

@@ -1017,7 +1017,7 @@ ATON.loadAssetToNode = function(url, N, onComplete){
     ATON._nodeReqs++;
 
     console.log("...Loading "+ url);
-    ATON.fireEvent("NodeRequestFired");    //ATON.onNodeRequestFired();
+    ATON.fireEvent("NodeRequestFired");
 
     var request = osgDB.readNodeURL( url /*, { databasePath: basepath }*/ /*, opt*/ );
     request.then( function ( node ){
@@ -1048,6 +1048,64 @@ ATON.createAssetNode = function(url, bTransformable, onComplete){
     N.assetURL = url;
 
     ATON.loadAssetToNode(url, N, onComplete);
+
+    return N;
+};
+
+ATON.createMultiResAssetNode = function(urlList, range, onComplete){
+    let N = ATON.createGroupNode();
+
+    N.bLoading = true;
+    ATON._nodeReqs++;
+
+    let pxlonscr = (range*range);
+
+    console.log("...Loading MultiRes node");
+    ATON.fireEvent("NodeRequestFired");
+
+    osgDB.readNodeURL( urlList[0] /*, { databasePath: basepath }*/ /*, opt*/ ).then( function (node){
+        if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+
+        // remove all names inside loaded asset
+        let CLV = new ATON.utils.clearNamesVisitor();
+        node.accept( CLV );
+
+        let plod = new osg.PagedLOD();
+        plod.setRangeMode(osg.PagedLOD.PIXEL_SIZE_ON_SCREEN);
+        //plod.addChild(node, options.hirespxsize, Number.MAX_VALUE);
+        plod.addChild(node, 0.0, pxlonscr);
+
+        plod.setRange(1, pxlonscr, Number.MAX_VALUE);
+
+        plod.setFunction(1, function(parent){
+            //console.log("fire!");
+            
+            var g = new osg.Node();
+            g.addChild(node);
+            var r = osgDB.readNodeURL( urlList[1] );
+            //ATON._nodeReqs++;
+            r.then( function ( hrnode ){
+                //g.addChild( hrnode );
+                g.children[0] = hrnode;
+                
+                ATON._buildKDTree(ATON._rootScene);
+                
+                //if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+                });
+    
+            return g;
+            });
+
+        N.addChild(plod);
+        N.bLoading = false;
+        
+        ATON._onNodeRequestComplete();
+
+        if (onComplete !== undefined) onComplete();
+        }).catch( function(e) {
+            N.bLoading = false;
+            console.error("Unable to load "+url+" - "+e);
+        });
 
     return N;
 };
@@ -3665,7 +3723,7 @@ ATON._onNodeRequestComplete = function(){
 };
 
 
-ATON.addLightProbe = function(folderurl /*, position*/){
+ATON.addIBL = function(folderurl /*, position*/){
 
     var LPtexture = new osg.Texture();
 

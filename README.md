@@ -15,6 +15,13 @@ The ATON 2.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to
 
 The framework also provides *built-in* services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and remote/immersive visual analytics.
 
+## Getting started
+First install/update ATON services:
+```
+cd services/
+npm update
+```
+
 # Publications
 Here is a list of publications where ATON was employed:
 

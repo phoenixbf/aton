@@ -687,6 +687,115 @@ window.addEventListener( 'load', function () {
                     ATON.QVhandler.addFromJSON(ATON.FE.QV_ROOT+scenename+"-qv.json", ()=>{ QPV = ATON.QVhandler.getActiveQV(); });
                     break;
 
+                case "tlensing":
+                    let recDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
+                    let lensingRad = 5.0;
+                    ATON.updateHoverRadius(lensingRad);
+
+                    navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+                    if (navigator.getUserMedia){
+                        navigator.getUserMedia({ audio: true }, function(stream){
+                        audioContext = new AudioContext();
+                        analyser = audioContext.createAnalyser();
+                        microphone = audioContext.createMediaStreamSource(stream);
+                        javascriptNode = audioContext.createScriptProcessor(2048, 1, 1);
+                  
+                        analyser.smoothingTimeConstant = 0.8;
+                        analyser.fftSize = 1024;
+                  
+                        microphone.connect(analyser);
+                        analyser.connect(javascriptNode);
+                        javascriptNode.connect(audioContext.destination);
+                  
+                        //canvasContext = $("#canvas")[0].getContext("2d");
+                  
+                        javascriptNode.onaudioprocess = ()=>{
+                            var array = new Uint8Array(analyser.frequencyBinCount);
+                            analyser.getByteFrequencyData(array);
+                            var values = 0;
+                  
+                            var length = array.length;
+                            for (var i = 0; i < length; i++) values += (array[i]);
+                  
+                            var average = (values / length);
+
+                            lensingRad += (average * 0.05);
+                            if (lensingRad>0.5) lensingRad -= 0.5;
+
+                            //console.log(average);
+                            ATON.updateHoverRadius(lensingRad);
+
+                            } // end fn stream
+                        },
+                        function(err) {
+                            console.log("The following error occured: " + err.name)
+                        });
+                        }
+                    else {
+                        console.log("getUserMedia not supported");
+                        }
+
+                    ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
+
+                    ATON.createDynamicGroupNode().as("Reconstruction").attachToRoot();
+                    ATON.createGroupNode().as("Modern").attachToRoot();
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
+
+                    ATON.createAssetNode(recDir+"colossus_hall_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"augustus_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"wall_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"postguard_m.osgjs").attachTo("Reconstruction");
+
+                    ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_frieze_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_podium_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Reconstruction");
+
+                    ATON.createAssetNode(recDir+"porticos_colonnade_L_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
+
+                    ATON.createAssetNode(recDir+"porticos_colonnade_R_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
+
+                    let bLensing = true;
+                    ATON.getNode("Reconstruction").getSS().addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
+                    ATON.getNode("Modern").getSS().addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
+                    ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                    ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+
+                    let toggleLensing = function(){
+                        if (bLensing){
+                            ATON.getNode("Reconstruction").loadCustomShaders("../res/shaders/basic.glsl");
+                            ATON.getNode("Modern").loadCustomShaders("../res/shaders/basic.glsl");
+                            bLensing = false;
+                            }
+                        else {
+                            ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                            ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                            bLensing = true;
+                            }
+                        };
+
+                    ATON.on("KeyPress", (k)=>{
+                        if (k === ')'){
+                            ATON._hoverRadius += 1.0;
+                            ATON.updateHoverRadius();
+                            }
+                        if (k === '('){
+                            if (ATON._hoverRadius > 2.0) ATON._hoverRadius -= 1.0;
+                            ATON.updateHoverRadius();
+                            }
+
+                        if (k === 'l') toggleLensing();
+                        });
+                    
+                    break;
+
                 case "faug2":
                     scenename = "faug2";
                     //ATON.addIBL("../res/ibl/default");
@@ -755,39 +864,6 @@ window.addEventListener( 'load', function () {
                     ATON.createGroupNode().as("PorticoRight").attachTo("Reconstruction");
                     ATON.createAssetNode(pastDir+"porticos_colonnade_R_m.osgjs").attachTo("PorticoRight");
                     ATON.createAssetNode(pastDir+"porticos_floor_R_m.osgjs").attachTo("PorticoRight");
-
-                    ssModern.addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
-                    ssRec.addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
-
-                    let bLensing = false;
-
-                    let toggleLensing = function(){
-                        if (bLensing){
-                            ATON.getNode("Reconstruction").loadCustomShaders("../res/shaders/basic.glsl");
-                            ATON.getNode("Modern").loadCustomShaders("../res/shaders/basic.glsl");
-                            bLensing = false;
-                            }
-                        else {
-                            ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
-                            ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
-                            bLensing = true;
-                            }
-                        };
-
-                    //toggleLensing();
-
-                    ATON.on("KeyPress", (k)=>{
-                        if (k === ')'){
-                            ATON._hoverRadius += 1.0;
-                            ATON.updateHoverRadius();
-                            }
-                        if (k === '('){
-                            if (ATON._hoverRadius > 2.0) ATON._hoverRadius -= 1.0;
-                            ATON.updateHoverRadius();
-                            }
-
-                        if (k === 'l') toggleLensing();
-                        });
                     
 /*
                     ATON.addGraph(pastDirOld+"temple_podium/root.osgjs", { layer: "Hypothesis_2" });

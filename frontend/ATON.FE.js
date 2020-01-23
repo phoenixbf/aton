@@ -741,12 +741,17 @@ window.addEventListener( 'load', function () {
                     ATON.createGroupNode().as("Modern").attachToRoot();
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
 
+                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
+
+/*
                     ATON.createAssetNode(recDir+"colossus_hall_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"augustus_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"wall_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"postguard_m.osgjs").attachTo("Reconstruction");
-
+*/
                     ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Reconstruction");
@@ -755,12 +760,14 @@ window.addEventListener( 'load', function () {
                     ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Reconstruction");
-
+/*
                     ATON.createAssetNode(recDir+"porticos_colonnade_L_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
 
                     ATON.createAssetNode(recDir+"porticos_colonnade_R_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
+*/
+                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Reconstruction");
 
                     let bLensing = true;
                     ATON.getNode("Reconstruction").getSS().addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));

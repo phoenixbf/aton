@@ -719,8 +719,8 @@ window.addEventListener( 'load', function () {
                   
                             var average = (values / length);
 
-                            lensingRad += (average * 0.05);
-                            if (lensingRad>0.5) lensingRad -= 0.5;
+                            lensingRad += (average * 0.04);
+                            if (lensingRad>0.5) lensingRad *= 0.95;
 
                             //console.log(average);
                             ATON.updateHoverRadius(lensingRad);

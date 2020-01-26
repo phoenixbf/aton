@@ -894,7 +894,7 @@ ATON.createNode = function(N, mask){
         };
 
     // Load a custom GLSL shader for this node
-    N.loadCustomShaders = function(glslpath, onComplete){
+    N.loadCustomShaders = function(glslpath, predirectives, onComplete){
         this._glslPath = glslpath;
         let node = this;
     
@@ -903,6 +903,7 @@ ATON.createNode = function(N, mask){
     
             // Pre-directives
             if (ATON._isMobile) glsldata = "#define MOBILE_DEVICE 1\n" + glsldata;
+            if (predirectives)  glsldata = predirectives + glsldata;
     
             glsldata += '\n';
     
@@ -4001,7 +4002,7 @@ ATON.loadCoreShaders = function(path){
 		}, "text");
 */
 };
-
+/*
 ATON.loadCustomShadersForLayer = function(glslpath, layername, onComplete){
     let G = ATON.getLayer(layername);
     if (!G){
@@ -4028,7 +4029,7 @@ ATON.loadCustomShadersForLayer = function(glslpath, layername, onComplete){
         
 		}, "text");
 };
-
+*/
 ATON._onCoreShadersLoaded = function(){
     console.log("Core Shaders loaded.");
     ATON._rootScene.getOrCreateStateSet().setAttributeAndModes( ATON._glslCoreProgram );

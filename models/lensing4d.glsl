@@ -145,7 +145,7 @@ void main(){
 #endif
 
     //=====================================================
-    // Shperical Peeling
+    // Spherical Lensing
     //=====================================================
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= uHoverRadius; //0.5; // radius
@@ -156,6 +156,17 @@ void main(){
 
     vec4 cutCol = vec4(1,1,1,1);
 
+#if (TL_PASS == 0)
+    FinalFragment = mix(FinalFragment,cutCol, hpd);
+    if (hpd > 0.5) discard;
+#endif
+
+#if (TL_PASS == 1)
+    FinalFragment = mix(cutCol,FinalFragment, hpd);
+    if (hpd <= 0.0) discard;
+#endif
+
+/*
     if (uFlip == 1){
         FinalFragment = mix(cutCol,FinalFragment, hpd);
         if (hpd <= 0.0) discard;
@@ -164,6 +175,7 @@ void main(){
         FinalFragment = mix(FinalFragment,cutCol, hpd);
         if (hpd > 0.5) discard;
         }
+*/
     //alphaContrib = mix(0.0, 1.0, hpd);
 
 

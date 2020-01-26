@@ -690,8 +690,16 @@ window.addEventListener( 'load', function () {
                 case "tlensing":
                     let recDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
                     let lensingRad = 5.0;
+                    let minimalRad = 0.5;
                     ATON.updateHoverRadius(lensingRad);
-
+/*
+                    ATON._visSS.setRenderingHint('TRANSPARENT_BIN');
+                    ATON._visSS.setAttributeAndModes(
+                        new osg.BlendFunc(),
+                        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+                        );
+*/
+                    // Mic
                     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
                     if (navigator.getUserMedia){
                         navigator.getUserMedia({ audio: true }, function(stream){
@@ -720,7 +728,9 @@ window.addEventListener( 'load', function () {
                             var average = (values / length);
 
                             lensingRad += (average * 0.04);
-                            if (lensingRad>0.5) lensingRad *= 0.95;
+                            if (lensingRad > minimalRad) lensingRad *= 0.95;
+
+                            if (lensingRad < minimalRad) lensingRad = minimalRad;
 
                             //console.log(average);
                             ATON.updateHoverRadius(lensingRad);
@@ -735,15 +745,20 @@ window.addEventListener( 'load', function () {
                         console.log("getUserMedia not supported");
                         }
 
+                    ATON.createGroupNode().as("Faug_Reconstruction").attachToRoot();
+                    ATON.createGroupNode().as("Faug_Modern").attachToRoot();
+
+                    ATON.createGroupNode().as("Tomb_Reconstruction").attachToRoot();
+                    ATON.createGroupNode().as("Tomb_Modern").attachToRoot();
+
+                    // Faug
                     ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
-                    ATON.createDynamicGroupNode().as("Reconstruction").attachToRoot();
-                    ATON.createGroupNode().as("Modern").attachToRoot();
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Faug_Modern");
 
-                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Faug_Reconstruction");
 
 /*
                     ATON.createAssetNode(recDir+"colossus_hall_m.osgjs").attachTo("Reconstruction");
@@ -752,14 +767,14 @@ window.addEventListener( 'load', function () {
                     ATON.createAssetNode(recDir+"wall_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"postguard_m.osgjs").attachTo("Reconstruction");
 */
-                    ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_frieze_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_podium_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_frieze_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_podium_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Faug_Reconstruction");
+                    ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Faug_Reconstruction");
 /*
                     ATON.createAssetNode(recDir+"porticos_colonnade_L_m.osgjs").attachTo("Reconstruction");
                     ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
@@ -769,36 +784,43 @@ window.addEventListener( 'load', function () {
 */
                     //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Reconstruction");
 
-                    let bLensing = true;
-                    ATON.getNode("Reconstruction").getSS().addUniform(osg.Uniform.createInt1( 1, 'uFlip' ));
-                    ATON.getNode("Modern").getSS().addUniform(osg.Uniform.createInt1( 0, 'uFlip' ));
-                    ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
-                    ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
+                    // Tomb
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Tomb_Modern");
+                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Tomb_Modern");
 
-                    let toggleLensing = function(){
-                        if (bLensing){
-                            ATON.getNode("Reconstruction").loadCustomShaders("../res/shaders/basic.glsl");
-                            ATON.getNode("Modern").loadCustomShaders("../res/shaders/basic.glsl");
-                            bLensing = false;
-                            }
-                        else {
-                            ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
-                            ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl");
-                            bLensing = true;
-                            }
-                        };
+
+                    ATON.getNode("Tomb_Modern").hide();
+                    ATON.getNode("Tomb_Reconstruction").hide();
+
+
+
+                    let bLensing = true;
+                    ATON.getNode("Faug_Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
+                    ATON.getNode("Faug_Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
+
+                    ATON.getNode("Tomb_Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
+                    ATON.getNode("Tomb_Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
 
                     ATON.on("KeyPress", (k)=>{
                         if (k === ')'){
-                            ATON._hoverRadius += 1.0;
+                            minimalRad += 1.0;
+                            ATON._hoverRadius = minimalRad;
                             ATON.updateHoverRadius();
                             }
                         if (k === '('){
-                            if (ATON._hoverRadius > 2.0) ATON._hoverRadius -= 1.0;
-                            ATON.updateHoverRadius();
+                            if (ATON._hoverRadius > 2.0){
+                                minimalRad -= 1.0;
+                                ATON._hoverRadius = minimalRad;
+                                ATON.updateHoverRadius();
+                                }
                             }
-
-                        if (k === 'l') toggleLensing();
+                        if (k === 't'){
+                            ATON.getNode("Tomb_Modern").toggle();
+                            ATON.getNode("Tomb_Reconstruction").toggle();
+                            ATON.getNode("Faug_Modern").toggle();
+                            ATON.getNode("Faug_Reconstruction").toggle();
+                            }
+                        //if (k === 'l') toggleLensing();
                         });
                     
                     break;

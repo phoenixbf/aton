@@ -690,8 +690,9 @@ window.addEventListener( 'load', function () {
                 case "tlensing":
                     let recDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
                     let lensingRad = 0.5;
-                    let minimalRad = 0.5;
-                    let auGrowth   = 0.04;
+                    let rangesRad = [0.5, 50.0];
+                    let auGrowth     = 0.04;
+                    let auAbsorption = 0.98;
                     ATON.updateHoverRadius(lensingRad);
 
                     ATON.STD_D_ORI_MOBILE = ATON.STD_D_ORI_DESKTOP;
@@ -734,9 +735,10 @@ window.addEventListener( 'load', function () {
                             var average = (values / length);
 
                             lensingRad += (average * auGrowth);
-                            if (lensingRad > minimalRad) lensingRad *= 0.95;
+                            if (lensingRad > rangesRad[0]) lensingRad *= auAbsorption;
 
-                            if (lensingRad < minimalRad) lensingRad = minimalRad;
+                            if (lensingRad < rangesRad[0]) lensingRad = rangesRad[0];
+                            if (lensingRad > rangesRad[1]) lensingRad = rangesRad[1];
 
                             //console.log(average);
                             ATON.updateHoverRadius(lensingRad);
@@ -756,6 +758,7 @@ window.addEventListener( 'load', function () {
 
                     // Faug
                     if (ATON.utils.getURLparams().faug){
+                        rangesRad = [0.5, 50.0];
                         ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
                         ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
@@ -791,6 +794,7 @@ window.addEventListener( 'load', function () {
                     
                     // Tomb
                     if (ATON.utils.getURLparams().tomb){
+                        rangesRad = [0.1, 3.0];
                         ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
 
                         ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Modern");
@@ -808,14 +812,14 @@ window.addEventListener( 'load', function () {
 
                     ATON.on("KeyPress", (k)=>{
                         if (k === ')'){
-                            minimalRad += 1.0;
-                            ATON._hoverRadius = minimalRad;
+                            rangesRad[0] += 0.5;
+                            ATON._hoverRadius = rangesRad[0];
                             ATON.updateHoverRadius();
                             }
                         if (k === '('){
-                            if (ATON._hoverRadius > 2.0){
-                                minimalRad -= 1.0;
-                                ATON._hoverRadius = minimalRad;
+                            if (ATON._hoverRadius > 1.0){
+                                rangesRad[0] -= 0.5;
+                                ATON._hoverRadius = rangesRad[0];
                                 ATON.updateHoverRadius();
                                 }
                             }

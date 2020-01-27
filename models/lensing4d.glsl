@@ -158,12 +158,12 @@ void main(){
 
 #if (TL_PASS == 0)
     FinalFragment = mix(FinalFragment,cutCol, hpd);
-    if (hpd > 0.5) discard;
+    if (hpd > 0.0) discard; // > 0.5
 #endif
 
 #if (TL_PASS == 1)
     FinalFragment = mix(cutCol,FinalFragment, hpd);
-    if (hpd <= 0.0) discard;
+    if (hpd <= 0.0) discard; // 0.0
 #endif
 
 /*

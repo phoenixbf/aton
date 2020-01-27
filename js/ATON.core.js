@@ -77,6 +77,12 @@ ATON._vrControllersDir    = [osg.vec3.create(), osg.vec3.create()];
 ATON._nodeReqs = 0;
 
 // QUERIES
+ATON.STD_D_ORI_DESKTOP = 0.999;
+ATON.STD_D_POS_DESKTOP = 0.02;
+ATON.STD_D_ORI_MOBILE  = 0.999999;
+ATON.STD_D_POS_MOBILE  = 0.000005;
+
+
 ATON._LSIdesc = new osgUtil.LineSegmentIntersector();
 ATON._IVdesc  = new osgUtil.IntersectionVisitor();
 ATON._LSIvis  = new osgUtil.LineSegmentIntersector();
@@ -2655,14 +2661,16 @@ ATON._updateCallback.prototype = {
         ATON._vVelocity[2] = (ATON._currPOV.pos[2] - ATON._prevPOV.pos[2]);
         //console.log(ATON._vVelocity);
 */
+
         if (ATON._vrState || ATON._isMobile){
-            ATON._dOriTol = 0.999999;
-            ATON._dPosTol = 0.000005;
+            ATON._dOriTol = ATON.STD_D_ORI_MOBILE;
+            ATON._dPosTol = ATON.STD_D_POS_MOBILE;
             }
         else {
-            ATON._dOriTol = 0.999;
-            ATON._dPosTol = 0.02;
+            ATON._dOriTol = ATON.STD_D_ORI_DESKTOP;
+            ATON._dPosTol = ATON.STD_D_POS_DESKTOP;
             }
+
         
         // Deltas
         ATON._dOri = osg.vec3.dot(ATON._prevDirection, ATON._direction);

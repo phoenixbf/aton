@@ -692,6 +692,10 @@ window.addEventListener( 'load', function () {
                     let lensingRad = 0.5;
                     let minimalRad = 0.5;
                     ATON.updateHoverRadius(lensingRad);
+
+                    ATON.STD_D_ORI_MOBILE = ATON.STD_D_ORI_DESKTOP;
+                    ATON.STD_D_POS_MOBILE = ATON.STD_D_POS_DESKTOP;
+
 /*
                     ATON._visSS.setRenderingHint('TRANSPARENT_BIN');
                     ATON._visSS.setAttributeAndModes(
@@ -787,10 +791,10 @@ window.addEventListener( 'load', function () {
 
                     // Tomb
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Tomb_Modern");
-                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-colors.osgjs").attachTo("Tomb_Reconstruction");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-materials.osgjs").attachTo("Tomb_Reconstruction");
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-colors.osgjs").attachTo("Tomb_Reconstruction");
+                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-materials.osgjs").attachTo("Tomb_Reconstruction");
 
-                    ATON.createGroupNode("faces").setBaseColor([1,0,0]).attachTo("Tomb_Reconstruction");
+                    ATON.createGroupNode().as("faces").setBaseColor([1,0.9,0.8], ATON_SM_UNIT_BASE, true).attachTo("Tomb_Reconstruction");
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_dx_SB_decimato_m.osgjs").attachTo("faces");
                     ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_sx_SB_decimato_m.osgjs").attachTo("faces");
 

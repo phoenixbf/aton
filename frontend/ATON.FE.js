@@ -691,6 +691,7 @@ window.addEventListener( 'load', function () {
                     let recDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
                     let lensingRad = 0.5;
                     let minimalRad = 0.5;
+                    let auGrowth   = 0.04;
                     ATON.updateHoverRadius(lensingRad);
 
                     ATON.STD_D_ORI_MOBILE = ATON.STD_D_ORI_DESKTOP;
@@ -732,7 +733,7 @@ window.addEventListener( 'load', function () {
                   
                             var average = (values / length);
 
-                            lensingRad += (average * 0.04);
+                            lensingRad += (average * auGrowth);
                             if (lensingRad > minimalRad) lensingRad *= 0.95;
 
                             if (lensingRad < minimalRad) lensingRad = minimalRad;
@@ -750,78 +751,60 @@ window.addEventListener( 'load', function () {
                         console.log("getUserMedia not supported");
                         }
 
-                    ATON.createGroupNode().as("Faug_Reconstruction").attachToRoot();
-                    ATON.createGroupNode().as("Faug_Modern").attachToRoot();
-
-                    ATON.createGroupNode().as("Tomb_Reconstruction").attachToRoot();
-                    ATON.createGroupNode().as("Tomb_Modern").attachToRoot();
+                    ATON.createGroupNode().as("Reconstruction").attachToRoot();
+                    ATON.createGroupNode().as("Modern").attachToRoot();
 
                     // Faug
-                    ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
+                    if (ATON.utils.getURLparams().faug){
+                        ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Faug_Modern");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
 
-                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Faug_Reconstruction");
+                        ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
 
+    /*
+                        ATON.createAssetNode(recDir+"colossus_hall_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"augustus_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"wall_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"postguard_m.osgjs").attachTo("Reconstruction");
+    */
+                        ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_frieze_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_podium_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Reconstruction");
 /*
-                    ATON.createAssetNode(recDir+"colossus_hall_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"augustus_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"main_floor_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"wall_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"postguard_m.osgjs").attachTo("Reconstruction");
-*/
-                    ATON.createAssetNode(recDir+"temple_columns_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_entrance_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_exterior_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_frieze_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_podium_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_roof_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"temple_altar_m.osgjs").attachTo("Faug_Reconstruction");
-                    ATON.createAssetNode(recDir+"interior_m.osgjs").attachTo("Faug_Reconstruction");
-/*
-                    ATON.createAssetNode(recDir+"porticos_colonnade_L_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_colonnade_L_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_floor_L_m.osgjs").attachTo("Reconstruction");
 
-                    ATON.createAssetNode(recDir+"porticos_colonnade_R_m.osgjs").attachTo("Reconstruction");
-                    ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_colonnade_R_m.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(recDir+"porticos_floor_R_m.osgjs").attachTo("Reconstruction");
 */
-                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Reconstruction");
-
+                        //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Reconstruction");
+                        }
+                    
                     // Tomb
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Tomb_Modern");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-colors.osgjs").attachTo("Tomb_Reconstruction");
-                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-materials.osgjs").attachTo("Tomb_Reconstruction");
+                    if (ATON.utils.getURLparams().tomb){
+                        ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
 
-                    ATON.createGroupNode().as("faces").setBaseColor([1,0.9,0.8], ATON_SM_UNIT_BASE, true).attachTo("Tomb_Reconstruction");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_dx_SB_decimato_m.osgjs").attachTo("faces");
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_sx_SB_decimato_m.osgjs").attachTo("faces");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Modern");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-colors.osgjs").attachTo("Reconstruction");
+                        //ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/root-materials.osgjs").attachTo("Reconstruction");
 
-
-                    ATON.getNode("Tomb_Modern").hide();
-                    ATON.getNode("Tomb_Reconstruction").hide();
-
-
+                        ATON.createGroupNode().as("faces").setBaseColor([1,0.9,0.8], ATON_SM_UNIT_BASE, true).attachTo("Reconstruction");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_dx_SB_decimato_m.osgjs").attachTo("faces");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_sx_SB_decimato_m.osgjs").attachTo("faces");
+                        }
 
                     let bLensing = true;
-                    ATON.getNode("Faug_Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
-                    ATON.getNode("Faug_Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
-
-                    ATON.getNode("Tomb_Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
-                    ATON.getNode("Tomb_Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
-
-                    let toggleCase = ()=>{
-                        ATON.getNode("Tomb_Modern").toggle();
-                        ATON.getNode("Tomb_Reconstruction").toggle();
-                        ATON.getNode("Faug_Modern").toggle();
-                        ATON.getNode("Faug_Reconstruction").toggle();
-
-                        if (ATON.getNode("Tomb_Modern").isActive()) ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
-                        else ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
-
-                        ATON.requestHome();
-                        };
+                    ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
+                    ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
 
                     ATON.on("KeyPress", (k)=>{
                         if (k === ')'){
@@ -842,10 +825,7 @@ window.addEventListener( 'load', function () {
                         //if (k === 'l') toggleLensing();
                         });
 
-                    if (ATON.utils.getURLparams().tomb){
-                        toggleCase();
-                        }
-                    
+                    ATON.requestHome();
                     break;
 
                 case "faug2":

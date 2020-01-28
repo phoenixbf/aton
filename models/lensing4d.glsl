@@ -14,11 +14,6 @@
 //#define USE_LP 1
 //#define USE_PASS_AO 1
 
-//#define USE_QV 1
-
-//#define USE_QUSV_SENC 1
-//#define USE_ILSIGN 1
-
 
 #define PI     3.1415926535897932
 #define PI2    (PI * 0.5)

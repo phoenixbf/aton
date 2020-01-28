@@ -693,6 +693,7 @@ window.addEventListener( 'load', function () {
                     let rangesRad = [0.5, 50.0];
                     let auGrowth     = 0.04;
                     let auAbsorption = 0.98;
+                    let radStep = 1.0;
                     ATON.updateHoverRadius(lensingRad);
 
                     ATON.STD_D_ORI_MOBILE = ATON.STD_D_ORI_DESKTOP;
@@ -759,6 +760,8 @@ window.addEventListener( 'load', function () {
                     // Faug
                     if (ATON.utils.getURLparams().faug){
                         rangesRad = [0.5, 50.0];
+                        radStep = (rangesRad[1]-rangesRad[0])*0.02;
+
                         ATON.setHome([-7.76,15.78,7.19],[9.90,-13.38,5.83]);
 
                         ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/faug2/MODERN/ruins/root.osgjs").attachTo("Modern");
@@ -795,6 +798,8 @@ window.addEventListener( 'load', function () {
                     // Tomb
                     if (ATON.utils.getURLparams().tomb){
                         rangesRad = [0.1, 3.0];
+                        radStep = (rangesRad[1]-rangesRad[0])*0.02;
+
                         ATON.setHome([-0.19,-1.93,63.74],[-0.09,1.18,63.84]);
 
                         ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/tomba_m.osgjs").attachTo("Modern");
@@ -806,22 +811,76 @@ window.addEventListener( 'load', function () {
                         ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/tomba/rec/01_sculpting_faccia_sx_SB_decimato_m.osgjs").attachTo("faces");
                         }
 
+                    // Cecilio
+                    if (ATON.utils.getURLparams().cecilio){
+                        rangesRad = [0.5, 20.0];
+                        radStep = (rangesRad[1]-rangesRad[0])*0.02;
+
+                        ATON.setHome([-7.88,-2.49,2.19],[-7.87,-3.48,2.07]);
+
+                        let roomURLs = [
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_a/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_S/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_N/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_E/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_floor/",
+    
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_c/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_d/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_e/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_f/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_g/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_h/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/",
+    
+                            //ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_ceiling",
+    
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/",
+                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/"
+                            ];
+    
+                        for (let r = 0; r < roomURLs.length; r++){
+                            ATON.createAssetNode(roomURLs[r] + "root.osgjs").attachTo("Modern");
+                            }
+
+                        ATON.getNode("Reconstruction").getSS().setAttributeAndModes(
+                            new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
+                            osg.StateAttribute.OVERRIDE | osg.StateAttribute.PROTECTED
+                            );
+
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_a/root.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_b/root.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_c/root.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_d/root.osgjs").attachTo("Reconstruction");
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/cecilio/_rec/room_i/root.osgjs").attachTo("Reconstruction");
+                        }
+
                     let bLensing = true;
                     ATON.getNode("Modern").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl","#define TL_PASS 0\n");
                     ATON.getNode("Reconstruction").loadCustomShaders(ATON.FE.MODELS_ROOT+"lensing4d.glsl", "#define TL_PASS 1\n");
 
                     ATON.on("KeyPress", (k)=>{
                         if (k === ')'){
-                            rangesRad[0] += 0.5;
+                            rangesRad[0] += radStep;
                             ATON._hoverRadius = rangesRad[0];
                             ATON.updateHoverRadius();
                             }
                         if (k === '('){
-                            if (ATON._hoverRadius > 1.0){
-                                rangesRad[0] -= 0.5;
-                                ATON._hoverRadius = rangesRad[0];
-                                ATON.updateHoverRadius();
-                                }
+                            rangesRad[0] -= radStep;
+                            if (rangesRad[0]<radStep) rangesRad[0] = radStep;
+                            ATON._hoverRadius = rangesRad[0];
+                            ATON.updateHoverRadius();
                             }
                         if (k === 't'){
                             toggleCase();

@@ -891,6 +891,11 @@ window.addEventListener( 'load', function () {
                         //if (k === 'l') toggleLensing();
                         });
 
+                    ATON.on("RightGamepadAxes", (data)=>{
+                        ATON._hoverRadius -= (data.y * 0.01);
+                        ATON.updateHoverRadius();
+                        });
+
                     ATON.requestHome();
                     break;
 

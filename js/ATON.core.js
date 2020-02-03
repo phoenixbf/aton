@@ -203,8 +203,6 @@ ATON.registerEvents([
 
     "KeyPress",
 
-    "GamepadButtonPress",
-
     "ShapeDescriptorHovered",
     "ShapeDescriptorSelected",
     "ShapeDescriptorLeft",
@@ -215,6 +213,10 @@ ATON.registerEvents([
     "NodeSwitch",
     
     "VRmode",
+    "LeftGamepadButtonPress",
+    "RightGamepadButtonPress",
+    "LeftGamepadAxes",
+    "RightGamepadAxes",
     
     "SpeechRecognition",
     "SpeechRecognitionText"
@@ -4379,6 +4381,7 @@ ATON._handleGamepads = function(){
         // The array may contain undefined gamepads, so check for that as
         // well as a non-null pose.
         if (gamepad){
+            let bLeft = (gamepad.hand && gamepad.hand == "left");
             
             // buttons
 			for (var b = 0; b < gamepad.buttons.length; ++b){
@@ -4387,7 +4390,8 @@ ATON._handleGamepads = function(){
                 //if (ATON.vroadcast) ATON.vroadcast._bQFpol = gamepad.buttons[2].pressed;
 
 				if (gamepad.buttons[b].pressed){
-                    ATON.fireEvent("GamepadButtonPress", {button: b, gpad: g});
+                    if (bLeft) ATON.fireEvent("LeftGamepadButtonPress", {button: b});
+                    else ATON.fireEvent("RightGamepadButtonPress", {button: b});
 
 					//console.log("GM: Pressed button "+b);
 
@@ -4400,8 +4404,12 @@ ATON._handleGamepads = function(){
 				}
             
             // Axes
-            gpXaxis = gamepad.axes[0]; // -1 left
-            gpYaxis = gamepad.axes[1]; // -1 fwd
+            if (bLeft) ATON.fireEvent("LeftGamepadAxes", {x: gamepad.axes[0], y: gamepad.axes[1]});
+            else ATON.fireEvent("RightGamepadAxes", {x: gamepad.axes[0], y: gamepad.axes[1]});
+
+            //gpXaxis = gamepad.axes[0]; // -1 left
+            //gpYaxis = gamepad.axes[1]; // -1 fwd
+
             /*
             if (g === 0){
                 if (gpXaxis){
@@ -4412,6 +4420,7 @@ ATON._handleGamepads = function(){
             */
 
             // left
+/*
             if (g === 0 && gpXaxis && ATON.tracer){
                 const fm = 0.0001;
                 ATON.tracer._tNorm += (fm * gpXaxis);
@@ -4430,6 +4439,7 @@ ATON._handleGamepads = function(){
 
                 ATON._mainSS.getUniform('uQVradius').setFloat( ATON.tracer._tRad );
                 }
+*/
 
 			}
         }

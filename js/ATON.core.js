@@ -59,7 +59,7 @@ const ATON_MASK_NO_PICK     = (1 << 5);
 ATON._canvas   = undefined;
 ATON._isMobile = false;
 ATON._useLP    = false;
-ATON._overrideDevicePixelRatio = 1; // For HMD set to 2;
+//ATON._overrideDevicePixelRatio = 1; // For HMD set to 2;
 
 // STD resource folders
 ATON.shadersFolder = "shaders";
@@ -3024,7 +3024,7 @@ ATON.realize = function( canvas ){
     ATON._viewer = new osgViewer.Viewer( canvas, {
         'antialias': ATON._isMobile? false : true, // FIXME: some artifacts on mobile, fixes VR issues 
         //'stats': true,
-        'overrideDevicePixelRatio': this._overrideDevicePixelRatio, // if specified override the device pixel ratio
+        'overrideDevicePixelRatio': 1, // if specified override the device pixel ratio
         'enableFrustumCulling': true,
         //'alpha': true,
         //'scrollwheel': false,
@@ -3119,6 +3119,13 @@ ATON.realize = function( canvas ){
     this.loadWorker = new Worker(URL.createObjectURL(LWblob));
 */
 };
+
+ATON.setDevicePixelRatio = function(r){
+    if (!ATON._viewer) return;
+    ATON._viewer._devicePixelRatio = r;
+    //console.log("PixelRatio: "+r);
+};
+
 
 // Listeners
 //==========================================================================

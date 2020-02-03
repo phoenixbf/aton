@@ -632,6 +632,7 @@ window.addEventListener( 'load', function () {
     var canvas = document.getElementById( 'View' );
 
     // Realize
+    if (ATON.utils.getURLparams().pratio) ATON._overrideDevicePixelRatio = ATON.utils.getURLparams().pratio;
     ATON.shadersFolder = "../res/shaders";
     ATON.realize(canvas);
 

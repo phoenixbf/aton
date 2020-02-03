@@ -59,7 +59,7 @@ const ATON_MASK_NO_PICK     = (1 << 5);
 ATON._canvas   = undefined;
 ATON._isMobile = false;
 ATON._useLP    = false;
-//ATON._overrideDevicePixelRatio = 1; // For HMD set to 2;
+ATON._baseDevicePixelRatio = 1; // For HMD set to 2;
 
 // STD resource folders
 ATON.shadersFolder = "shaders";
@@ -3122,7 +3122,10 @@ ATON.realize = function( canvas ){
 
 ATON.setDevicePixelRatio = function(r){
     if (!ATON._viewer) return;
+    if (!r || r <= 0.0) return;
+
     ATON._viewer._devicePixelRatio = r;
+    ATON._baseDevicePixelRatio = r;
     //console.log("PixelRatio: "+r);
 };
 

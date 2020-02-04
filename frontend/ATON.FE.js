@@ -892,7 +892,11 @@ window.addEventListener( 'load', function () {
                         });
 
                     ATON.on("RightGamepadAxes", (data)=>{
-                        ATON._hoverRadius -= (data.y * 0.01);
+                        let dr = (-data.y * 0.05);
+                        ATON._hoverRadius += dr;
+                        ATON._hoverRadius = ATON.utils.clamp(ATON._hoverRadius, rangesRad[0],rangesRad[1]);
+                        //let tr = (data.y + 1.0) * 0.5;
+                        //ATON._hoverRadius = ATON.utils.lerp(rangesRad[1],rangesRad[0], tr);
                         ATON.updateHoverRadius();
                         });
 

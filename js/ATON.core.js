@@ -59,7 +59,8 @@ const ATON_MASK_NO_PICK     = (1 << 5);
 ATON._canvas   = undefined;
 ATON._isMobile = false;
 ATON._useLP    = false;
-ATON._baseDevicePixelRatio = 1; // For HMD set to 2;
+ATON._baseDevicePixelRatio = 1;
+ATON._bDoubleResForVR = true; // Doubles res for HMDs
 
 // STD resource folders
 ATON.shadersFolder = "shaders";
@@ -290,6 +291,10 @@ ATON.utils.detectDeviceCapab = function(){
         }
 
     console.log("Mobile device: "+ATON._isMobile);
+};
+
+ATON.utils.lerp = function(a,b, t){
+    return (a + (t * (b - a)));
 };
 
 
@@ -4213,6 +4218,8 @@ ATON._switchVR = function(){
         //viewer.setPresentVR( true );
         //if (ATON._vrHMD) ATON._vrHMD.requestPresent( [{ source: ATON._canvas }] );
         ATON.fireEvent("VRmode", true);
+
+        if (ATON._bDoubleResForVR) ATON.setDevicePixelRatio(ATON._baseDevicePixelRatio*2.0);
     	}
 
     // Disable VR
@@ -4242,6 +4249,7 @@ ATON._switchVR = function(){
 
         ATON._HMD = undefined;
         ATON.fireEvent("VRmode", false);
+        if (ATON._bDoubleResForVR) ATON.setDevicePixelRatio(ATON._baseDevicePixelRatio);
     	}
 
     ATON._vrState = !ATON._vrState;

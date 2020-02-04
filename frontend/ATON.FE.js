@@ -892,7 +892,7 @@ window.addEventListener( 'load', function () {
                         });
 
                     ATON.on("RightGamepadAxes", (data)=>{
-                        let dr = (-data.y * 0.05);
+                        let dr = (-data.y * 0.02);
                         ATON._hoverRadius += dr;
                         ATON._hoverRadius = ATON.utils.clamp(ATON._hoverRadius, rangesRad[0],rangesRad[1]);
                         //let tr = (data.y + 1.0) * 0.5;

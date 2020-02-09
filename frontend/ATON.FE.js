@@ -699,6 +699,8 @@ window.addEventListener( 'load', function () {
                     let radStep = 1.0;
                     ATON.updateHoverRadius(lensingRad);
 
+                    ATON.setMainPanoramaAsUniformColor([1,1,1]);
+
                     ATON.STD_D_ORI_MOBILE = ATON.STD_D_ORI_DESKTOP;
                     ATON.STD_D_POS_MOBILE = ATON.STD_D_POS_DESKTOP;
 
@@ -906,6 +908,7 @@ window.addEventListener( 'load', function () {
                 case "faug2":
                     scenename = "faug2";
                     //ATON.addIBL("../res/ibl/default");
+                    //ATON.setMainPanorama("../res/ibl/default/color.jpg");
 
                     ATON.updateHoverRadius(5.0);
                     
@@ -1668,6 +1671,8 @@ window.addEventListener( 'load', function () {
                 case "cecilio":
                     scenename = "cecilio";
                     QAurl = "../services/record/cecilio/qfv.png";
+
+                    ATON.setMainPanoramaAsUniformColor([1,1,1]);
 
                     ATON._polarizeLocomotionQV = PolNav;
                     

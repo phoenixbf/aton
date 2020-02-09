@@ -3749,6 +3749,66 @@ ATON._onNodeRequestComplete = function(){
     //if (ATON.onAllNodeRequestsCompleted) ATON.onAllNodeRequestsCompleted();
 };
 
+// Build panorama geometry
+ATON._buildPanoramaGeom = function(){
+    let panoNode = osg.createTexturedSphere(40.0, 32,32);
+
+    panoNode.setCullingActive( false );
+    panoNode.getOrCreateStateSet().setAttributeAndModes( new osg.CullFace( 'DISABLE' ) );
+
+    // Local Z-up rotation (fix) and add our child uv-sphere
+    var Mrz = osg.mat4.create();
+    osg.mat4.rotate(Mrz, Mrz, -Math.PI/2.0, ATON_X_AXIS);
+
+    var ZT = new osg.MatrixTransform();
+    ZT.setMatrix(Mrz);
+    ZT.addChild(panoNode);
+
+    // Env Transform
+    ATON._LProtM = osg.mat4.create();
+    osg.mat4.rotate(ATON._LProtM, ATON._LProtM, Math.PI/2.0, ATON_Z_AXIS);
+    ATON._LPT.addChild(ZT);
+
+    ATON._LPT.setMatrix(ATON._LProtM);
+    ATON._LPT.setCullingActive( false );
+
+    var D = new osg.Depth( osg.Depth.LEQUAL );
+    D.setRange(1.0, 1.0);
+    ATON._LPT.getOrCreateStateSet().setAttributeAndModes(D, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE);
+};
+
+// Panorama as uniform RGB(A) color
+ATON.setMainPanoramaAsUniformColor = function(color){
+    let CTexture = ATON.utils.createFillTexture(color);
+
+    ATON._buildPanoramaGeom();
+
+    ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, CTexture );
+};
+
+// Panorama as image
+ATON.setMainPanorama = function(urlpano){
+    let CTexture = new osg.Texture();
+    
+    osgDB.readImageURL( urlpano ).then( function ( data ){      
+        CTexture.setImage( data );
+
+        CTexture.setMinFilter( osg.Texture.LINEAR ); // important!
+        CTexture.setMagFilter( osg.Texture.LINEAR );
+        CTexture.setWrapS( osg.Texture.CLAMP_TO_EDGE ); // CLAMP_TO_EDGE / REPEAT
+        CTexture.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+
+        // Fix pano flip
+        CTexture.setFlipY( false );
+
+        ATON._buildPanoramaGeom();
+
+        ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, CTexture );
+
+        console.log("Panorama "+urlpano+" loaded.");
+        });
+};
+
 
 ATON.addIBL = function(folderurl /*, position*/){
 
@@ -3769,6 +3829,9 @@ ATON.addIBL = function(folderurl /*, position*/){
         console.log("LightProbe "+folderurl+" loaded.");
         });
     
+    ATON.setMainPanorama(folderurl + "/color.jpg");
+
+/*
     var CTexture = new osg.Texture();
     osgDB.readImageURL( folderurl + "/color.jpg" ).then( function ( data ){      
         CTexture.setImage( data );
@@ -3807,20 +3870,6 @@ ATON.addIBL = function(folderurl /*, position*/){
             D, osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE 
             );
 
-/*
-        var LPm = new osg.Material();
-        LPm.setEmission(osg.vec4.fromValues(1,1,1,1));
-        LPm.setAmbient(osg.vec4.fromValues(1,1,1,1));
-        LPm.setDiffuse(osg.vec4.fromValues(1,1,1,1));
-        LPm.setSpecular(osg.vec4.fromValues(1,1,1,1));
-        LPm.setShininess(osg.vec4.fromValues(1,1,1,1));
-        ATON._LPT.getOrCreateStateSet().setAttributeAndModes( LPm );
-   
-        ATON._LPT.getOrCreateStateSet().setAttributeAndModes(
-            new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
-            osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
-            );
-*/
         ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, CTexture );
         //ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( osg.LIGHTING, osg.StateAttribute.OFF);
 
@@ -3828,6 +3877,9 @@ ATON.addIBL = function(folderurl /*, position*/){
 
         ATON.toggleLightProbePass(true);
         });
+*/
+
+    ATON.toggleLightProbePass(true);
 };
 
 // GLSL flags

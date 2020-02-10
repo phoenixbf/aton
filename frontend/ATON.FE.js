@@ -694,7 +694,7 @@ window.addEventListener( 'load', function () {
                     let recDir = ATON.FE.MODELS_ROOT+"_prv/faug2/PAST2/";
                     let lensingRad = 0.5;
                     let rangesRad = [0.5, 50.0];
-                    let auGrowth     = 0.04;
+                    let auGrowth     = 0.02;
                     let auAbsorption = 0.98;
                     let radStep = 1.0;
                     ATON.updateHoverRadius(lensingRad);
@@ -759,7 +759,7 @@ window.addEventListener( 'load', function () {
                         console.log("getUserMedia not supported");
                         }
 
-                    ATON.createGroupNode().as("Reconstruction").attachToRoot();
+                    ATON.createDynamicGroupNode().as("Reconstruction").translate([0,0,0.1]).attachToRoot();
                     ATON.createGroupNode().as("Modern").attachToRoot();
 
                     // Faug
@@ -829,20 +829,22 @@ window.addEventListener( 'load', function () {
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_N/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_E/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_b_floor/",
-    
+ 
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_c/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_d/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_e/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_f/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_g/",
+
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_h/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/",
+/*
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/",
     
                             //ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_ceiling",
-    
+ 
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/",
@@ -853,6 +855,7 @@ window.addEventListener( 'load', function () {
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/"
+*/
                             ];
     
                         for (let r = 0; r < roomURLs.length; r++){

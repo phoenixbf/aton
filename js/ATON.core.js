@@ -62,7 +62,7 @@ ATON._useLP    = false;
 ATON._baseDevicePixelRatio = 1;
 ATON._vrResMult = 2.0; // Res-multiplier for mobile HMDs
 ATON._currFPS = 60.0;
-ATON._dynamicFPSrange = [30.0,50.0];
+ATON._dynamicFPSrange = [30.0,60.0];
 
 // STD resource folders
 ATON.shadersFolder = "shaders";
@@ -2606,7 +2606,14 @@ ATON._updateCallback.prototype = {
         //if ( ATON._dtFrame < 0 ) return true;
 
         ATON._currFPS = 1.0/nv.getFrameStamp()._deltaTime;
+/*
+        if (ATON._time > 1.0){
+            if (ATON._currFPS < ATON._dynamicFPSrange[0] && ATON._viewer._devicePixelRatio>0.25) ATON._viewer._devicePixelRatio -= 0.05;
+            //if (ATON._currFPS >= ATON._dynamicFPSrange[1] && ATON._viewer._devicePixelRatio<2.0)  ATON._viewer._devicePixelRatio += 0.05;
 
+            console.log(ATON._currFPS, ATON._viewer._devicePixelRatio);
+            }
+*/
         ATON._time = nv.getFrameStamp().getSimulationTime();
         ATON._mainSS.getUniform('time').setFloat( ATON._time );
 

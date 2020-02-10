@@ -144,21 +144,21 @@ void main(){
     //=====================================================
     float hpd = distance(uHoverPos, vWorldVertex);
     hpd /= uHoverRadius; //0.5; // radius
-    hpd = 1.0- clamp(hpd, 0.0,1.0);
+    hpd = 1.0 - clamp(hpd, 0.0,1.0);
 
-    hpd *= 5.0; // 20 hardening
+    hpd *= 10.0; // 20 hardening
     hpd = clamp(hpd, 0.0,1.0);
 
     vec4 cutCol = vec4(1,1,1,1);
 
 #if (TL_PASS == 0)
-    FinalFragment = mix(FinalFragment,cutCol, hpd);
     if (hpd > 0.0) discard; // > 0.5
+    //FinalFragment = mix(FinalFragment,cutCol, hpd+0.5);
 #endif
 
 #if (TL_PASS == 1)
-    FinalFragment = mix(cutCol,FinalFragment, hpd);
     if (hpd <= 0.0) discard; // 0.0
+    FinalFragment = mix(cutCol,FinalFragment, hpd);
 #endif
 
 /*
@@ -173,15 +173,6 @@ void main(){
 */
     //alphaContrib = mix(0.0, 1.0, hpd);
 
-
-#if 0 // Sections (TEST)
-    float cutH = 790.0 + (sin(time*0.3)*15.0);
-
-    if(vWorldVertex.z > (cutH-0.3)) FinalFragment = mix(FinalFragment, vec4(1,0,0, 0.0), 0.5);
-    if(vWorldVertex.z > cutH) discard;
-
-    //if(vWorldVertex.z > (cutH-0.2)) FinalFragment = vec4(1,0,0, 0.0);
-#endif
 
     //=====================================================
     // FINALIZE

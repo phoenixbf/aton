@@ -840,23 +840,25 @@ window.addEventListener( 'load', function () {
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_i/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_N/",
                             ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_W/",
-/*
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/",
     
                             //ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_ceiling",
- 
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/",
-                            ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/"
-*/
                             ];
+
+                        if (!ATON._isMobile){
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_l_garden/");
+
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_m_k/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_n/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_o/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_p_q/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_r/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_s/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_t/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_u/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_v/");
+                            roomURLs.push(ATON.FE.MODELS_ROOT+"_prv/cecilio/room_w/");
+                            }
+
     
                         for (let r = 0; r < roomURLs.length; r++){
                             ATON.createAssetNode(roomURLs[r] + "root.osgjs").attachTo("Modern");

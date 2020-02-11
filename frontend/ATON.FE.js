@@ -2453,6 +2453,15 @@ if (asset === "sf"){
         let N = new osg.Node();
         console.log(N);
 */
+        window.addEventListener('deviceorientation', function(event) {
+            console.log("DevOri: "event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
+            });
+        window.addEventListener('deviceorientationabsolute', function(e){
+            console.log("DevOri ABS: "event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
+            });
+        
+
+
         });
 
     ATON.on("MouseMidButton",()=>{

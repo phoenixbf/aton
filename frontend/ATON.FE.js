@@ -2454,10 +2454,10 @@ if (asset === "sf"){
         console.log(N);
 */
         window.addEventListener('deviceorientation', function(event) {
-            console.log("DevOri: "event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
+            console.log("DevOri: "+event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
             });
         window.addEventListener('deviceorientationabsolute', function(e){
-            console.log("DevOri ABS: "event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
+            console.log("DevOri ABS: "+event.alpha + ' : ' + event.beta + ' : ' + event.gamma);
             });
         
 

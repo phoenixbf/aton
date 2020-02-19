@@ -7,3 +7,4 @@ record
 _prv
 *.psd
 /build
+/wapps

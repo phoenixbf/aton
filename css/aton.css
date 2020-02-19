@@ -127,6 +127,7 @@ canvas {
     width:100%;
 }
 
+
 @keyframes loader {
   from {
     -ms-transform: rotate(0deg);

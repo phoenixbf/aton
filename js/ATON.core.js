@@ -2601,11 +2601,8 @@ ATON._updateCallback = function(){
 /** @lends ATON._updateCallback.prototype */
 ATON._updateCallback.prototype = {
     update: function ( node, nv ){
-        // CHECK if this value is reliable
-        //ATON._dtFrame = (nv.getFrameStamp().getSimulationTime() - ATON._time);
-        //if ( ATON._dtFrame < 0 ) return true;
 
-        ATON._currFPS = 1.0/nv.getFrameStamp()._deltaTime;
+        ATON._currFPS = (1.0 / nv.getFrameStamp()._deltaTime);
 /*
         if (ATON._time > 1.0){
             if (ATON._currFPS < ATON._dynamicFPSrange[0] && ATON._viewer._devicePixelRatio>0.25) ATON._viewer._devicePixelRatio -= 0.05;
@@ -2710,10 +2707,16 @@ ATON._updateCallback.prototype = {
             
             //if (ATON._hoverColor[3]<1.0) ATON._hoverColor[3] += 0.1;
             //console.log(dOri);
+
+            // Dynamic density
+            //ATON._viewer._devicePixelRatio = ATON._baseDevicePixelRatio;
             }
         else {
             ATON._hoveredVisData = undefined;
             //if (ATON._hoverColor[3]>0.0) ATON._hoverColor[3] -= 0.1;
+
+            // Dynamic density
+            //ATON._viewer._devicePixelRatio = ATON._baseDevicePixelRatio * 0.5;
             }
 
         ATON._mainSS.getUniform('uHoverColor').setFloat4(ATON._hoverColor);

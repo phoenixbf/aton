@@ -759,7 +759,7 @@ window.addEventListener( 'load', function () {
                         console.log("getUserMedia not supported");
                         }
 
-                    ATON.createDynamicGroupNode().as("Reconstruction").translate([0,0,0.1]).attachToRoot();
+                    ATON.createGroupNode().as("Reconstruction").attachToRoot(); // .translate([0,0,0.1])
                     ATON.createGroupNode().as("Modern").attachToRoot();
 
                     // Faug

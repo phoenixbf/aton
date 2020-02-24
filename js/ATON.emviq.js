@@ -62,6 +62,8 @@ ATON.emviq._comparePeriod = function( a, b ){
     return 0;
 };
 
+//ATON.emviq.fulltransp = ATON.utils.createFillTexture([0,0,0,0]);
+
 
 /*
 ATON.emviq.xmlToJson = function(xml) {
@@ -401,6 +403,11 @@ buildTimeline: function(tablenode){
     // Sort timeline
     this.timeline.sort( ATON.emviq._comparePeriod );
 
+    this.timeline.forEach(p => {
+        ATON.createDynamicGroupNode().as(p.name).attachToRoot();
+        ATON.createDescriptorGroup(true).as(p.name).attachToRoot();
+        });
+
     console.log(this.timeline);
 
 },
@@ -477,36 +484,34 @@ realizeFromJSONnode: function(graphnode){
 
         if (this.folderProxies && fields.label){
             let periodName = undefined;
-            let periodColor = undefined;
-            let periodTexture = undefined;
+
+            //let periodColor = undefined;
+            //let periodTexture = undefined;
 
             if (this.timeline[pid]){
                 periodName = this.timeline[pid].name;
-                if (this.timeline[pid].tex) periodTexture = this.timeline[pid].tex;
-                if (this.timeline[pid].color) periodColor = this.timeline[pid].color;
-                //console.log(periodName,periodColor);
+                //if (this.timeline[pid].tex) periodTexture = this.timeline[pid].tex;
+                //if (this.timeline[pid].color) periodColor = this.timeline[pid].color;
+                ////console.log(periodName,periodColor);
                 }
+
 
             // Single proxy
             if (type === ATON.emviq.NODETYPES.SPECIALFIND || type === ATON.emviq.NODETYPES.US || type === ATON.emviq.NODETYPES.USVN || type === ATON.emviq.NODETYPES.USVS ){
                 bProxyNode = true;
                 
-                ATON.addDescriptor(
-                    this.folderProxies + fields.label + "_m.osgjs", 
-                    fields.label, 
-                    {color: periodColor}
-                    );
+                if (periodName) ATON.createDescriptorShape(this.folderProxies + fields.label + "_m.osgjs").as(fields.label).attachTo(periodName);
                 }
 
             // Procedural proxy
             if (type === ATON.emviq.NODETYPES.SERIATION){
                 bProxyNode = true;
 
-                ATON.addDescriptor(
-                    this.folderProxies + fields.label + "_m.osgjs", 
-                    fields.label, 
-                    {transformRules: this.folderProxies + fields.label + "-inst.txt", color: periodColor }
-                    );
+                if (periodName) 
+                    ATON.createDescriptorProductionFromASCII(
+                        this.folderProxies + fields.label + "_m.osgjs",
+                        this.folderProxies + fields.label + "-inst.txt"
+                        ).as(fields.label).attachTo(periodName);
                 }
 
             if (bProxyNode){
@@ -520,7 +525,7 @@ realizeFromJSONnode: function(graphnode){
                 if (fields.description) this.proxyNodes[pkey].description = fields.description;
                 if (fields.url) this.proxyNodes[pkey].url = fields.url;
 
-                let P = ATON.addParentToDescriptor(pkey, periodName );
+                //let P = ATON.addParentToDescriptor(pkey, periodName );
                 }
 
             // If accepted, push into EM nodes

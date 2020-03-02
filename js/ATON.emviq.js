@@ -113,7 +113,7 @@ ATON.emviq.EM = function(){
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
-    this.timeline = [];     // sorted array of periods
+    this.timeline   = [];     // sorted array of periods
     this.proxyNodes = {};   // Fast access to proxies by ID (e.g. "US100")
     this.EMnodes    = {};   // EM nodes
 
@@ -360,7 +360,7 @@ buildTimeline: function(tablenode){
 
         var tColor =  this.getAttribute(L,"backgroundColor");
         if (tColor) tColor = ATON.utils.hexToRGBlin(tColor);
-        //console.log(tColor);
+        console.log(tColor);
 
         if (strID){
             TL[strID] = {};
@@ -406,15 +406,27 @@ buildTimeline: function(tablenode){
     this.timeline.forEach(p => {
         ATON.createDynamicGroupNode().as(p.name).attachToRoot();
         ATON.createDescriptorGroup(true).as(p.name).attachToRoot();
+        if (p.color) ATON.getDescriptor(p.name).setBaseColor(p.color);
         });
 
     console.log(this.timeline);
 
 },
 
+getPeriodFromName: function(nameid){
+    if (!this.timeline) return undefined;
+    let numPeriods = this.timeline.length;
+
+    for (let p = 0; p < numPeriods; p++){
+        if (this.timeline[p].name === nameid) return this.timeline[p];
+        }
+        
+    return undefined;
+},
+
 getPeriodIndexFromTime: function(t){
     if (!this.timeline) return undefined;
-    var numPeriods = this.timeline.length;
+    let numPeriods = this.timeline.length;
 
     for (let p = 0; p < numPeriods; p++){
         if (this.timeline[p].min < t && t < this.timeline[p].max) return p;

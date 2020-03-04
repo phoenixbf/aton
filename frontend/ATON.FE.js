@@ -1279,6 +1279,12 @@ window.addEventListener( 'load', function () {
 
                     break;
 
+                case "testjson":
+                    scenename = "testjson";
+
+                    ATON.loadScene(ATON.FE.MODELS_ROOT+"sample-scene.json");
+                    break;
+
                 case "test_cap":
                     scenename = "test_cap";
 

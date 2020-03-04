@@ -5,7 +5,7 @@
     depends on ATON.core
 
  	@author Bruno Fanini
-	VHLab, CNR ITABC
+	VHLab, CNR ISPC
 
 ==================================================================================*/
 

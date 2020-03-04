@@ -1266,6 +1266,62 @@ ATON.createDescriptorGroup = function(bTransformable){
     return G;
 };
 
+// Load scene json
+ATON.loadScene = function(scenejson, onComplete){
+    let scenefolder = ATON.utils.getBaseFolder(scenejson);
+
+    $.getJSON(scenejson, function( data ){
+        let sg = data.scenegraph;
+
+        // SceneGraph
+        if (sg){
+            let nodes = sg.nodes;
+            let relat = sg.relationships;
+
+            // nodes
+            for (let n = 0; n < nodes.length; n++){
+                let N = nodes[n];
+
+                let urls = N.urls;
+                let nid  = N.id;
+
+                let bAsset = false;
+                let bTransformable = false;
+                if (urls) bAsset = true;
+                if (N.transformstring || N.trasformfile) bTransformable = true;
+
+                if (nid){
+                    if (bAsset){
+                        if (Array.isArray(urls)){
+                            let G;
+                            if (bTransformable) G = ATON.createDynamicGroupNode().as(nid);
+                            else G = ATON.createGroupNode().as(nid);
+
+                            urls.forEach(u => { ATON.createAssetNode(scenefolder+u).attachTo(G); });
+                            }
+                        else {
+                            ATON.createAssetNode(scenefolder+urls).as(nid);
+                            }
+                        }
+                    else {
+                        let G;
+                        if (bTransformable) G = ATON.createDynamicGroupNode().as(nid);
+                        else G = ATON.createGroupNode().as(nid);
+                        }
+                    }
+                }
+
+            // relationships
+            for (let r = 0; r < relat.length; r++){
+
+                }
+            }
+
+
+        if (onComplete) onComplete();
+        });
+
+};
 
 
 // Shape Descriptors (TO BE DEPRECATED)

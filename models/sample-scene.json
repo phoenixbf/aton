@@ -1,0 +1,18 @@
+{
+    "scenegraph":{
+        "nodes":[
+            {
+                "id":"hebe",
+                "urls": "hebe/root.osgjs"
+            },
+            {
+                "id":"ground",
+                "urls": "ground/root.osgjs"
+            }
+        ],
+
+        "relationships":[
+
+        ]
+    }
+}

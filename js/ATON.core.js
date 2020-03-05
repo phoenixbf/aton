@@ -105,6 +105,7 @@ ATON._screenQueryNormalized = osg.vec2.create();    // in 0--1
 ATON._hoveredVisData        = undefined; // hovered 3D point & norm in visible graph
 ATON._bQueryAxisAligned     = false;
 ATON._bQueryUseOcclusion    = true;
+ATON._bPauseDescriptorQuery = false;
 
 ATON._bZflat = false;
 
@@ -2766,7 +2767,7 @@ ATON._updateCallback.prototype = {
             ATON._handleVisHover();
             
             // Handle Descriptors HOVER
-            if (ATON._numDescriptors > 0) ATON._handleDescriptorsHover();
+            if (ATON._numDescriptors > 0 && !ATON._bPauseDescriptorQuery) ATON._handleDescriptorsHover();
 
             // Polarization (QVs)
             if (ATON._polarizeLocomotionQV){

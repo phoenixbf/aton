@@ -79,7 +79,8 @@ void main(){
 	FinalFragment.g = (cos(time + PI2) + 1.0) * 0.5;
 	FinalFragment.b = (cos(time + PI) + 1.0) * 0.5;
 */
-	
+
+
 #ifndef MOBILE_DEVICE	// bHighlight
 	float f = dot(vViewNormal, vec3(0,0,1));
 	f *= 0.7; //0.9;

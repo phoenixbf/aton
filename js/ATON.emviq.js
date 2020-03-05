@@ -50,6 +50,8 @@ ATON.emviq.NODETYPES = {
     CONTINUITY:9
 };
 
+ATON.emviq.nodeTexColors = [];
+
 ATON.emviq.x2js = new X2JS({attributePrefix:"@"});
 
 // EM List
@@ -106,6 +108,21 @@ ATON.emviq.xmlToJson = function(xml) {
 */
 
 
+// Build standard color palette
+ATON.emviq.buildNodeColorPalette = function(opacity){
+    ATON.emviq.nodeTexColors = [
+        ATON.utils.createFillTexture([0.031, 0.191, 0.026, opacity]),   // SERIATION
+        ATON.utils.createFillTexture([0.328, 0.033, 0.033, opacity]),   // US
+        ATON.utils.createFillTexture([0.031, 0.191, 0.026, opacity]),   // USVN
+        ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity]),   // USVS
+        ATON.utils.createFillTexture([0.799, 0.753, 0.347, opacity])    // SF
+        //
+        ];
+};
+
+ATON.emviq.buildNodeColorPalette(0.5);
+
+
 // Single EM
 //=========================================================
 ATON.emviq.EM = function(){
@@ -113,7 +130,7 @@ ATON.emviq.EM = function(){
     this.graphDBurl = undefined;
     this._jxRoot    = undefined;
 
-    this.timeline   = [];     // sorted array of periods
+    this.timeline   = [];   // sorted array of periods
     this.proxyNodes = {};   // Fast access to proxies by ID (e.g. "US100")
     this.EMnodes    = {};   // EM nodes
 
@@ -368,7 +385,7 @@ buildTimeline: function(tablenode){
             TL[strID].min   = tMid + yStart;
             TL[strID].max   = tMid + yStart;
             if (tColor){
-                TL[strID].color = [tColor[0], tColor[1], tColor[2], 0.3];
+                TL[strID].color = [tColor[0], tColor[1], tColor[2], 0.5];
                 TL[strID].tex   = ATON.utils.createFillTexture( TL[strID].color );
                 }
             }

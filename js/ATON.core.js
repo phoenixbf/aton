@@ -1271,49 +1271,60 @@ ATON.loadScene = function(scenejson, onComplete){
     let scenefolder = ATON.utils.getBaseFolder(scenejson);
 
     $.getJSON(scenejson, function( data ){
-        let sg = data.scenegraph;
-
+        
+        
         // SceneGraph
+        let sg = data.scenegraph;
         if (sg){
             let nodes = sg.nodes;
-            let relat = sg.relationships;
+            let edges = sg.edges;
 
             // nodes
-            for (let n = 0; n < nodes.length; n++){
-                let N = nodes[n];
+            for (let nid in nodes){
+                let N = nodes[nid];
 
                 let urls = N.urls;
-                let nid  = N.id;
 
                 let bAsset = false;
                 let bTransformable = false;
                 if (urls) bAsset = true;
-                if (N.transformstring || N.trasformfile) bTransformable = true;
+                if (N.transformstring || N.transformable) bTransformable = true;
+
+                let G;
 
                 if (nid){
                     if (bAsset){
                         if (Array.isArray(urls)){
-                            let G;
                             if (bTransformable) G = ATON.createDynamicGroupNode().as(nid);
                             else G = ATON.createGroupNode().as(nid);
 
                             urls.forEach(u => { ATON.createAssetNode(scenefolder+u).attachTo(G); });
                             }
                         else {
-                            ATON.createAssetNode(scenefolder+urls).as(nid);
+                            if (N.transformfile) G = ATON.createProductionFromASCII(scenefolder+urls, scenefolder+N.transformfile, bTransformable).as(nid); 
+                            else G = ATON.createAssetNode(scenefolder+urls, bTransformable).as(nid);
                             }
                         }
                     else {
-                        let G;
                         if (bTransformable) G = ATON.createDynamicGroupNode().as(nid);
                         else G = ATON.createGroupNode().as(nid);
                         }
+
+                    if (N.transformstring) G.transformByString(N.transformstring);
                     }
                 }
 
             // relationships
-            for (let r = 0; r < relat.length; r++){
+            for (let e = 0; e < edges.length; e++){
+                let E = edges[e];
 
+                let from = E[0];
+                let to   = E[1];
+
+                if (from && to){             
+                    if (from === ".") ATON.getNode(to).attachToRoot();
+                    else ATON.getNode(to).attachTo(from);
+                    }
                 }
             }
 

@@ -1,18 +1,24 @@
 {
     "scenegraph":{
-        "nodes":[
-            {
-                "id":"hebe",
-                "urls": "hebe/root.osgjs"
+        "nodes":{
+            "hebe":{
+                "urls": "hebe/root.osgjs",
+                "transformstring": "5 0 0"
             },
-            {
-                "id":"ground",
+            "ground":{
                 "urls": "ground/root.osgjs"
+            },
+            "hebes":{
+                "urls": "hebe/root.osgjs",
+                "transformfile": "tl-square-4x.txt"
             }
-        ],
+        },
 
-        "relationships":[
-
+        "edges":[
+            [".","hebe"],
+            [".","ground"],
+            [".","hebes"]
         ]
+
     }
 }

@@ -1281,7 +1281,7 @@ ATON.loadScene = function(scenejson, onComplete){
 
             // nodes
             for (let nid in nodes){
-                let N = nodes[nid];
+                let N = nodes[nid]; // JSON node
 
                 let urls = N.urls;
 
@@ -1311,6 +1311,7 @@ ATON.loadScene = function(scenejson, onComplete){
                         }
 
                     if (N.transformstring) G.transformByString(N.transformstring);
+                    if (N.shader) G.loadCustomShaders(scenefolder+N.shader, N.shaderpredirectives);
                     }
                 }
 

@@ -8,16 +8,17 @@
             "ground":{
                 "urls": "ground/root.osgjs"
             },
-            "hebes":{
+            "proceduralhebes":{
                 "urls": "hebe/root.osgjs",
-                "transformfile": "tl-square-4x.txt"
+                "transformfile": "tl-square-4x.txt",
+                "shader": "wave.glsl"
             }
         },
 
         "edges":[
             [".","hebe"],
             [".","ground"],
-            [".","hebes"]
+            [".","proceduralhebes"]
         ]
 
     }

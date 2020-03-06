@@ -205,6 +205,8 @@ ATON.registerEvents([
     "MouseRightButton",
     "MouseMidButton",
 
+    "DoubleTap",
+
     "KeyPress",
 
     "ShapeDescriptorHovered",
@@ -3219,55 +3221,50 @@ ATON.setDevicePixelRatio = function(r){
     //console.log("PixelRatio: "+r);
 };
 
+// Default retarget transition
+ATON._requestRetarget = function(){
+    if (ATON._vrState) return;
+
+    var pData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON_MASK_VISIBLE);
+    if (pData){
+        var pp = pData.p;
+        console.log("Point: ["+pp[0].toFixed(3)+","+pp[1].toFixed(3)+","+pp[2].toFixed(3)+"]");
+        console.log("Eye:   ["+ATON._currPOV.pos[0].toFixed(3)+","+ATON._currPOV.pos[1].toFixed(3)+","+ATON._currPOV.pos[2].toFixed(3)+"]");
+
+        if (ATON._bFirstPersonMode){
+            ATON._requestFirstPersonTrans(pData);
+            }
+        else {
+            var nPOV = new ATON.pov;
+            var E = osg.vec3.create();
+
+            if (ATON._polPos && ATON._polForce>0.0){
+                E[0] = ATON._polPos[0];
+                E[1] = ATON._polPos[1];
+                E[2] = ATON._polPos[2];
+                }
+            else osg.vec3.lerp(E, ATON._currPOV.pos, pp, 0.5);
+
+            nPOV.pos    = E;
+            nPOV.target = pp;
+            nPOV.fov    = ATON._currPOV.fov;
+
+            ATON.requestPOV(nPOV, 1.0);
+            }
+        }
+};
 
 // Listeners
 //==========================================================================
 ATON._attachListeners = function(){
 
-    // MULTI-TOUCH
-	Hammer(ATON._canvas).on("doubletap", function(e){
-        if (ATON._vrState) return;
-/*
-    if (e.center !== undefined){
-        // remap to current canvas sizes
+    Hammer(ATON._canvas).on("doubletap", (e)=>{ 
+        ATON.fireEvent("DoubleTap", e);
+        });
 
-        var x = e.center.x * ( ATON._canvas.width / ATON._canvas.clientWidth );
-        var y = ( ATON._canvas.clientHeight - e.center.y ) * ( ATON._canvas.height / ATON._canvas.clientHeight );
-
-        //var x = e.center.x * ( CanvasInfo.W / CanvasInfo.clientW );
-        //var y = ( CanvasInfo.clientH - e.center.y ) * ( CanvasInfo.H / CanvasInfo.clientH );
-*/
-
-        //if (!ATON._bZflat) return; // TEST
-
-        var pData = ATON._handleScreenPick(ATON._screenQuery[0],ATON._screenQuery[1], ATON_MASK_VISIBLE);
-        if (pData){
-            var pp = pData.p;
-            console.log("Point: ["+pp[0].toFixed(3)+","+pp[1].toFixed(3)+","+pp[2].toFixed(3)+"]");
-            console.log("Eye:   ["+ATON._currPOV.pos[0].toFixed(3)+","+ATON._currPOV.pos[1].toFixed(3)+","+ATON._currPOV.pos[2].toFixed(3)+"]");
-
-            if (ATON._bFirstPersonMode){
-                ATON._requestFirstPersonTrans(pData);
-                }
-            else {
-                var nPOV = new ATON.pov;
-                var E = osg.vec3.create();
-
-                if (ATON._polPos && ATON._polForce>0.0){
-                    E[0] = ATON._polPos[0];
-                    E[1] = ATON._polPos[1];
-                    E[2] = ATON._polPos[2];
-                    }
-                else osg.vec3.lerp(E, ATON._currPOV.pos, pp, 0.5);
-
-                nPOV.pos    = E;
-                nPOV.target = pp;
-                nPOV.fov    = ATON._currPOV.fov;
-
-                ATON.requestPOV(nPOV, 1.0);
-                }
-
-            }
+    // Register default doubletap event
+	ATON.on("DoubleTap", (e)=>{
+        ATON._requestRetarget();
 		});
 
     var midX = ( 0.5 * ATON._canvas.width); /// (ATON._canvas.clientWidth * 0.5) );

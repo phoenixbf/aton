@@ -110,10 +110,18 @@ ATON.emviq.xmlToJson = function(xml) {
 
 // Build standard color palette
 ATON.emviq.buildNodeColorPalette = function(opacity){
+    let gm = 4.0; // multiplier corrections
+    let rm = 2.0;
+
+    let gcol = ATON.utils.createFillTexture([0.031*gm, 0.191*gm, 0.026*gm, opacity]);
+    //let gcol = ATON.utils.createFillTexture([0.231, 0.791, 0.226, opacity]);
+    let rcol = ATON.utils.createFillTexture([0.328*rm, 0.033*rm, 0.033*rm, opacity]);
+    //let rcol = ATON.utils.createFillTexture([0.728, 0.233, 0.233, opacity]);
+
     ATON.emviq.nodeTexColors = [
-        ATON.utils.createFillTexture([0.031, 0.191, 0.026, opacity]),   // SERIATION
-        ATON.utils.createFillTexture([0.328, 0.033, 0.033, opacity]),   // US
-        ATON.utils.createFillTexture([0.031, 0.191, 0.026, opacity]),   // USVN
+        gcol,   // SERIATION
+        rcol,   // US
+        gcol,   // USVN
         ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity]),   // USVS
         ATON.utils.createFillTexture([0.799, 0.753, 0.347, opacity])    // SF
         //

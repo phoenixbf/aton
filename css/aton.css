@@ -197,7 +197,7 @@ canvas {
     text-align: center;
     vertical-align: middle;
 
-    background-color: rgba(127, 127, 127, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 
     padding: 4px;
@@ -205,9 +205,27 @@ canvas {
 
     outline: none;
 }
-
 .atonBTN:hover {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+}
+
+.atonBTN-red {
+    background-color: rgba(127, 0, 0, 0.5);
+}
+.atonBTN-red:hover {
+    box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0);
+}
+.atonBTN-green {
+    background-color: rgba(0, 127, 0, 0.5);
+}
+.atonBTN-green:hover {
+    box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0);
+}
+.atonBTN-blue {
+    background-color: rgba(0, 0, 127, 0.5);
+}
+.atonBTN-blue:hover {
+    box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
 }
 
 .switchedON {
@@ -308,6 +326,9 @@ canvas {
 
     background-color: rgba(0,0,0,0.5);
     /*transform: translate(50%,50%);*/
+
+    overflow-y: auto;
+    overflow-x: hidden;
 
     animation: 0.5s ease-out 0s 1 popupAnimation;
 }

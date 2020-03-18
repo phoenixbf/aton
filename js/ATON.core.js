@@ -1274,6 +1274,17 @@ ATON.loadScene = function(scenejson, onComplete){
     let scenefolder = ATON.utils.getBaseFolder(scenejson);
 
     $.getJSON(scenejson, function( data ){
+
+        // POVs
+        let povs = data.viewpoints;
+        if (povs){
+            for (let p in povs){
+                let pov = povs[p];
+                
+                if (p === "home") ATON.setHome(pov.pos, pov.target, pov.fov);
+                else ATON.addPOV(pov);
+                }
+            }
         
         
         // SceneGraph

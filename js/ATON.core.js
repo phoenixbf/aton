@@ -879,6 +879,10 @@ ATON.createNode = function(N, mask){
         return this;
         };
 
+    N.hasValidBounds = function(){
+        return (this.getBoundingSphere()._radius > 0.0);
+        };
+
     // Add a child node (also by ID)
     N.add = function(node){
         let N = undefined;

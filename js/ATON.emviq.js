@@ -324,16 +324,23 @@ getNodeFields: function(node){
 getNodeType: function(node){
     if (!node.data) return undefined;
 
-    var d = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+    let d  = this.findDataWithKey(node, ATON.emviq.YED_dNodeGraphics);
+    let dd = this.findDataWithKey(node, ATON.emviq.YED_dAttrDesc);
+    
     if (!d) return undefined;
+
+    // Determine if continuity node
+    if (dd && dd.__cdata){
+        if (dd.__cdata === "_continuity") return ATON.emviq.NODETYPES.CONTINUITY;
+        }
 
     // Determine first on shape
     if (d.ShapeNode){
-        var s = d.ShapeNode.Shape;
+        let s = d.ShapeNode.Shape;
 
         if (!s) return undefined;
 
-        var a = this.getAttribute(s, "type");
+        let a = this.getAttribute(s, "type");
         if (a === ATON.emviq.YED_sSeriation) return ATON.emviq.NODETYPES.SERIATION;
         if (a === ATON.emviq.YED_sSF) return ATON.emviq.NODETYPES.SPECIALFIND;
         if (a === ATON.emviq.YED_sUS) return ATON.emviq.NODETYPES.US;
@@ -343,7 +350,7 @@ getNodeType: function(node){
 
     // BPMN (Property or Document)
     if (d.GenericNode){
-        var sp = d.GenericNode.StyleProperties;
+        let sp = d.GenericNode.StyleProperties;
         if (!sp) return;
 
         sp = this.getAttribute(sp.Property[3], "value");
@@ -355,14 +362,13 @@ getNodeType: function(node){
 
     // SVG type
     if (d.SVGNode){
-        var M = d.SVGNode.SVGModel;
+        let M = d.SVGNode.SVGModel;
         if (!M) return undefined;
         if (!M.SVGContent) return undefined;
         
         M = parseInt(this.getAttribute(M.SVGContent, "refid"));
         if (M === 1) return ATON.emviq.NODETYPES.EXTRACTOR;
         if (M === 2) return ATON.emviq.NODETYPES.COMBINER;
-        if (M === 3) return ATON.emviq.NODETYPES.CONTINUITY;
         }
 
     return undefined;   // not recognized
@@ -590,9 +596,9 @@ realizeFromJSONnode: function(graphnode){
                 EMdata.type = type;
                 EMdata.time = t;
                 EMdata.periodName = periodName;
-                EMdata.label = fields.label;
-                EMdata.description = fields.description;
-                EMdata.url = fields.url;
+                if (fields.label)       EMdata.label = fields.label;
+                if (fields.description) EMdata.description = fields.description;
+                if (fields.url)         EMdata.url = fields.url;
 
                 //console.log(EMdata);
                 }
@@ -621,46 +627,17 @@ buildEMgraph: function(graphnode){
             let sourceNode = this.EMnodes[sourceID];
             let targetNode = this.EMnodes[targetID];
 
-            if (sourceNode && targetNode) sourceNode.addChild(targetNode);
+            if (sourceNode && targetNode){
+                sourceNode.addChild(targetNode);
+                if (sourceNode._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY || targetNode._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY){
+                    console.log(targetNode._EMdata);
+                    }
+                }
 
             //console.log(sourceID+" > "+targetID);
             }
 
         }
-},
-
-
-
-
-// DEPRECATED
-realizeProxyGraphFromXMLnode: function(xmlRoot){
-    //console.log("---- Realizing ProxyGraph");
-    self = this;
-
-    var G = new osg.Node();
-
-    $(xmlRoot).find('node').each( function(){
-
-        console.log("Traversing node: " + $(this).text().trim());
-
-        // Recursive subgraph on this child
-/*
-        var subG = $(this).find('graph').first();
-        if (subG){
-            var S = new osg.Node();
-            S = self.realizeProxyGraphFromXMLnode(subG);
-            G.addChild( S );
-            }
-*/
-        var nodeType; // TODO
-
-        //self._retrieveXMLnodeInfo($(this)/*n*/);
-
-        //console.log("XXX");
-        //console.log( $(this).text() );
-    });
-
-    return G;
 },
 
 };

@@ -54,7 +54,7 @@ ContentServer.configure = function(){
 ContentServer.start = function(){
     this.configure();
 
-    http.createServer(this.app).listen(ContentServer.PORT, ()=>{ console.log('Content Server running on *.' + ContentServer.PORT); });
+    http.createServer(this.app).listen(ContentServer.PORT, ()=>{ console.log('Content Server running on :' + ContentServer.PORT); });
     
     // HTTPS service
     if (fs.existsSync(ContentServer.pathCert) && fs.existsSync(ContentServer.pathKey)){
@@ -64,7 +64,7 @@ ContentServer.start = function(){
             };
 
         https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{ 
-            console.log('HTTPS Content Server running on *.' + ContentServer.SECURE_PORT);
+            console.log('HTTPS Content Server running on :' + ContentServer.SECURE_PORT);
             });
         }
     else {

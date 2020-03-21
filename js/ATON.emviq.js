@@ -405,7 +405,7 @@ buildTimeline: function(tablenode){
 
         var tColor =  this.getAttribute(L,"backgroundColor");
         if (tColor) tColor = ATON.utils.hexToRGBlin(tColor);
-        console.log(tColor);
+        //console.log(tColor);
 
         if (strID){
             TL[strID] = {};
@@ -464,6 +464,17 @@ getPeriodFromName: function(nameid){
 
     for (let p = 0; p < numPeriods; p++){
         if (this.timeline[p].name === nameid) return this.timeline[p];
+        }
+        
+    return undefined;
+},
+
+getPeriodIndexFromName: function(nameid){
+    if (!this.timeline) return undefined;
+    let numPeriods = this.timeline.length;
+
+    for (let p = 0; p < numPeriods; p++){
+        if (this.timeline[p].name === nameid) return p;
         }
         
     return undefined;
@@ -629,14 +640,35 @@ buildEMgraph: function(graphnode){
 
             if (sourceNode && targetNode){
                 sourceNode.addChild(targetNode);
-                if (sourceNode._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY || targetNode._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY){
-                    console.log(targetNode._EMdata);
-                    }
+                //if (sourceNode._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY) console.log(sourceNode._EMdata);
                 }
-
             //console.log(sourceID+" > "+targetID);
             }
+        }
+},
 
+buildContinuity: function(){
+    for (let n in this.EMnodes){
+        let N = this.EMnodes[n];
+
+        if (N._EMdata.type === ATON.emviq.NODETYPES.CONTINUITY){
+            let T = N.children[0];
+            let iend = this.getPeriodIndexFromName(N._EMdata.periodName);
+
+            if (T){
+                let istart = this.getPeriodIndexFromName(T._EMdata.periodName);
+                //console.log(T._EMdata);
+                //console.log(istart,iend);
+
+                let proxyid = T._EMdata.label;
+
+                for (let p = (istart+1); p <= iend; p++) {
+                    let period = this.timeline[p].name;
+                    
+                    ATON.getDescriptor(period).add(proxyid);
+                    }
+                }
+            }
         }
 },
 

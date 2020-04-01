@@ -1056,11 +1056,15 @@ ATON.loadAssetToNode = function(url, N, onComplete){
         N.bLoading = false;
         
         ATON._onNodeRequestComplete();
-
         if (onComplete !== undefined) onComplete();
-        }).catch( function(e) {
-            N.bLoading = false;
-            console.error("Unable to load "+url+" - "+e);
+        })
+        .catch((e)=>{
+        N.bLoading = false;
+        if (ATON._nodeReqs > 0) ATON._nodeReqs--;
+        console.error("Unable to load "+url+" - "+e);
+
+        ATON._onNodeRequestComplete();
+        if (onComplete !== undefined) onComplete();
         });
 };
 

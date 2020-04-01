@@ -1,7 +1,0 @@
-{
-  "apps" : [{
-    "script"    : "ATON.SERVICE.vroadcast.js",
-    "instances" : 0,
-    "exec_mode" : "cluster"
-  }]
-}

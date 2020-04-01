@@ -6,5 +6,7 @@ node_modules
 record
 _prv
 *.psd
+.env
+
 /build
 /wapps

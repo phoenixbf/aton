@@ -26,11 +26,12 @@ cd services/
 npm update
 ```
 
-3) Deploy ATON content service on local machine through:
+3) From services folder, deploy ATON *content service* on local machine simply using:
 ```
-node services/ATON.SERVICE.content.js
+node ATON.SERVICE.content.js
 ```
-Open http://localhost:8080/s/hebe on your browser.
+
+4) Open http://localhost:8080/s/hebe on your browser.
 
 # Publications
 Here is a list of publications where ATON was employed:

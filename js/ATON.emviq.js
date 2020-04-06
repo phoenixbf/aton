@@ -661,7 +661,7 @@ buildContinuity: function(){
             let T = N.children[0];
             let iend = this.getPeriodIndexFromName(N._EMdata.periodName);
 
-            if (T){
+            if (T && iend){
                 let istart = this.getPeriodIndexFromName(T._EMdata.periodName);
                 //console.log(T._EMdata);
                 //console.log(istart,iend);

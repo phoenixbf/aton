@@ -568,18 +568,24 @@ realizeFromJSONnode: function(graphnode){
             if (type === ATON.emviq.NODETYPES.SPECIALFIND || type === ATON.emviq.NODETYPES.US || type === ATON.emviq.NODETYPES.USVN || type === ATON.emviq.NODETYPES.USVS ){
                 bProxyNode = true;
                 
-                if (periodName) ATON.createDescriptorShape(this.folderProxies + fields.label + "_m.osgjs").as(fields.label).attachTo(periodName);
+                if (periodName){
+                    let pshape = ATON.createDescriptorShape(this.folderProxies + fields.label + "_m.osgjs").as(fields.label);
+                    pshape.attachTo(periodName);
+                    }
                 }
 
             // Procedural proxy
             if (type === ATON.emviq.NODETYPES.SERIATION){
                 bProxyNode = true;
 
-                if (periodName) 
-                    ATON.createDescriptorProductionFromASCII(
+                if (periodName){
+                    let procp = ATON.createDescriptorProductionFromASCII(
                         this.folderProxies + fields.label + "_m.osgjs",
                         this.folderProxies + fields.label + "-inst.txt"
-                        ).as(fields.label).attachTo(periodName);
+                        ).as(fields.label);
+                    
+                    procp.attachTo(periodName);
+                    }
                 }
 
             if (bProxyNode){
@@ -668,6 +674,19 @@ buildContinuity: function(){
                     ATON.getDescriptor(period).add(proxyid);
                     }
                 }
+            }
+        }
+},
+
+buildRec: function(){
+    for (let p in this.timeline){
+        let pname = this.timeline[p].name;
+        //console.log(pname);
+        let currGroup = ATON.getDescriptor(pname);
+        let recGroup = ATON.getDescriptor(pname + " Rec");
+
+        if (currGroup && recGroup){
+            for (let c in currGroup.children) recGroup.add(currGroup.children[c]); 
             }
         }
 },

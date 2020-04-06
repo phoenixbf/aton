@@ -8,17 +8,20 @@ const http        = require('http');
 const https       = require('https');
 const url         = require('url');
 const compression = require('compression');
-const request     = require('request');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
 var ContentServer = {};
 
-ContentServer.PORT        = 8080;
-ContentServer.SECURE_PORT = 8083; //443;
+ContentServer.PORT          = process.env.PORT || 8080;
+ContentServer.PORT_SECURE   = process.env.PORT_SECURE || 8083; //443;
+ContentServer.PORT_ATONIZER = process.env.PORT_ATONIZER || 8085;
+
 ContentServer.pathCert    = __dirname+'/_prv/server.crt';
 ContentServer.pathKey     = __dirname+'/_prv/server.key';
 
 ContentServer.WWW_FOLDER  = __dirname + "/../";
+
 
 // Debug on req received (client)
 ContentServer.logger = function(req, res, next){
@@ -48,6 +51,9 @@ ContentServer.configure = function(){
             query: { "m": scene }
             }));
         });
+
+    // Proxies
+    this.app.use('/atonizer', createProxyMiddleware({ target: "http://localhost:"+ContentServer.PORT_ATONIZER+"/services/", changeOrigin: true }));
 };
 
 
@@ -63,8 +69,8 @@ ContentServer.start = function(){
             cert: fs.readFileSync(ContentServer.pathCert, 'utf8')
             };
 
-        https.createServer(this.httpsOptions, this.app).listen(ContentServer.SECURE_PORT, ()=>{ 
-            console.log('HTTPS Content Server running on :' + ContentServer.SECURE_PORT);
+        https.createServer(this.httpsOptions, this.app).listen(ContentServer.PORT_SECURE, ()=>{ 
+            console.log('HTTPS Content Server running on :' + ContentServer.PORT_SECURE);
             });
         }
     else {

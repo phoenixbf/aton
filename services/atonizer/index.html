@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+
+<title>ATONIZER</title>
+<link rel="stylesheet" type="text/css" href="../../css/aton.css">
+
+<script type="text/javascript" src="../../vendors/jquery.min.js"></script>
+
+<script>
+//============================================================================
+let configdata = undefined;
+
+let requestProcess = function(){
+    let udata = JSON.stringify({ pippo: 15 });
+    
+    $.ajax({
+        url: "./api/process",
+        type:"POST",
+        data: udata,
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+        success: function(){
+            console.log("success");
+            }
+    });
+};
+
+window.addEventListener( 'load', ()=>{
+
+// Request config
+$.getJSON("./config", function( data ){
+    configdata = data;
+
+    if (!data.infolders) return;
+
+    console.log(data);
+
+    for (let p in data.infolders){
+        let path = data.infolders[p];
+        $("#inFolders").append("<option value='"+path+"'>"+path+"</option>");
+        }
+
+    if (!data.outfolders) return;
+
+    for (let p in data.outfolders){
+        let path = data.outfolders[p];
+        $("#outFolders").append("<option value='"+path+"'>"+path+"</option>");
+        }
+});
+
+
+});
+</script>
+</head>
+
+
+<body class="atonizerBody">
+	<div style="text-align: center;">
+		<h1>ATONIZER</h1>
+    </div>
+    
+    <div class="atonizerBlockGroup">
+        <div class="atonizerBlock">
+            <h3>Input/Output folders</h3>
+            <label for="inFolders">Choose input folder</label>
+            <select id="inFolders"></select><br><br>
+
+            <label for="outFolders">Choose output folder</label>
+            <select id="outFolders"></select>
+        </div>
+
+        <div class="atonizerBlock">
+            <h3>Options</h3>
+        </div>
+
+        <div class="atonBTN atonBTN-green atonizerProcessBTN" onclick="requestProcess();"><h3>PROCESS</h3></div>
+
+    </div>
+
+
+</body>
+</html>

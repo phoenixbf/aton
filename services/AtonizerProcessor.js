@@ -3,9 +3,6 @@
     author: bruno.fanini_AT_gmail.com
 
 ========================================================*/
-//const compressor = require('node-minify');
-//const util = require('util');
-
 const fs = require('fs');
 const execSync = require('child_process').execSync;
 const path = require('path');
@@ -13,6 +10,7 @@ const replace = require("replace");
 const commandLineArgs = require('command-line-args');
 const { spawn } = require('child_process');
 const glob = require("glob");
+const deleteKey = require('key-del')
 
 const ATONIZER_LOCK_F = "_ALOCK_.txt";
 const ATONIZER_COMPL_F = "_ATONIZED_.txt";
@@ -113,6 +111,7 @@ class AtonizerFolderProcessor {
 
                 // Minify osgjs
                 let jsonf = JSON.parse( fs.readFileSync(outfilepath) );
+                //TODO: deleteKey(...)
                 fs.writeFileSync(outfilepath, JSON.stringify(jsonf));
                 
                 if (self.bCompressGeom){
@@ -154,6 +153,8 @@ process.on("message", (m) => {
 
         P = new AtonizerFolderProcessor(m.inputFolder,m.outputFolder,m.pattern,m.options);
         P.run();
+        
+        process.exit(0);
         }
     if (m.task === "status"){
         process.send( P.isRunning() );

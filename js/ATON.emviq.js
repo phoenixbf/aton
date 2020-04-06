@@ -127,8 +127,8 @@ ATON.emviq.buildNodeColorPalette = function(opacity){
     ATON.emviq.nodeTexColors = [
         gcol,   // SERIATION
         rcol,   // US
-        gcol,   // USVN
-        ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity]),   // USVS
+        ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity]),   // USVN
+        gcol,   // USVS
         ATON.utils.createFillTexture([0.799, 0.753, 0.347, opacity])    // SF
         //
         ];
@@ -136,8 +136,8 @@ ATON.emviq.buildNodeColorPalette = function(opacity){
     ATON.emviq.nodeTexColorsOff = [
         gcoloff,    // SERIATION
         rcoloff,    // US
-        gcoloff,    // USVN
-        ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity*offmult]),   // USVS
+        ATON.utils.createFillTexture([0.018, 0.275, 0.799, opacity*offmult]),   // USVN
+        gcoloff,    // USVS
         ATON.utils.createFillTexture([0.799, 0.753, 0.347, opacity*offmult])    // SF
         ];
 };

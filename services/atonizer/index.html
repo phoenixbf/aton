@@ -17,7 +17,12 @@
 let configdata = undefined;
 
 let requestProcess = function(){
-    let udata = JSON.stringify({ pippo: 15 });
+    let args = {};
+    args.infolder  = $("#inFolder").val();
+    args.outfolder = $("#outFolder").val();
+    args.pattern   = $("#pattern").val();
+
+    let udata = JSON.stringify(args);
     
     $.ajax({
         url: "./api/process",
@@ -43,14 +48,14 @@ $.getJSON("./config", function( data ){
 
     for (let p in data.infolders){
         let path = data.infolders[p];
-        $("#inFolders").append("<option value='"+path+"'>"+path+"</option>");
+        $("#inFolder").append("<option value='"+path+"'>"+path+"</option>");
         }
 
     if (!data.outfolders) return;
 
     for (let p in data.outfolders){
         let path = data.outfolders[p];
-        $("#outFolders").append("<option value='"+path+"'>"+path+"</option>");
+        $("#outFolder").append("<option value='"+path+"'>"+path+"</option>");
         }
 });
 
@@ -68,11 +73,18 @@ $.getJSON("./config", function( data ){
     <div class="atonizerBlockGroup">
         <div class="atonizerBlock">
             <h3>Input/Output folders</h3>
-            <label for="inFolders">Choose input folder</label>
-            <select id="inFolders"></select><br><br>
+            <label for="inFolder">Input folder</label>
+            <select id="inFolder"></select>
 
-            <label for="outFolders">Choose output folder</label>
-            <select id="outFolders"></select>
+            <label for="pattern">Pattern</label>
+            <select id="pattern">
+                <option value="*.obj">*.obj</option>
+            </select>
+            
+            <br><br>
+
+            <label for="outFolder">Output folder</label>
+            <select id="outFolder"></select>
         </div>
 
         <div class="atonizerBlock">

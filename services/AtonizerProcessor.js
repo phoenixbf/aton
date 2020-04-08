@@ -45,20 +45,25 @@ class AtonizerFolderProcessor {
         return this._bRunning;
         }
 
-    run(){
+    run(onComplete){
         let inFolder  = this.inputFolder;
         let outFolder = this.outputFolder;
 
-        if (!inFolder || !outFolder || inFolder.length <= 0 || outFolder.length <= 0) return;
+        if (!inFolder || !outFolder || inFolder.length <= 0 || outFolder.length <= 0){
+            if (onComplete) onComplete();
+            return;
+            }
         
         let lockfile  = outFolder+ATONIZER_LOCK_F;
         let complfile = outFolder+ATONIZER_COMPL_F;
         if (fs.existsSync(lockfile)){ // already processing
             console.log("Folder is already processing.");
+            if (onComplete) onComplete();
             return;
             }
         if (fs.existsSync(complfile)){ // already processed
             console.log("Folder already processed.");
+            if (onComplete) onComplete();
             return;
             }
 
@@ -138,6 +143,7 @@ class AtonizerFolderProcessor {
             self._bRunning = false;
             
             console.log("COMPLETED");
+            if (onComplete) onComplete();
             });
         }
 };
@@ -152,9 +158,9 @@ process.on("message", (m) => {
         console.log('Requested run with : '+m);
 
         P = new AtonizerFolderProcessor(m.inputFolder,m.outputFolder,m.pattern,m.options);
-        P.run();
-        
-        process.exit(0);
+        P.run(()=>{
+            process.exit(0);
+            });
         }
     if (m.task === "status"){
         process.send( P.isRunning() );

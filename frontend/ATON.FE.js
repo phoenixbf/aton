@@ -2120,7 +2120,8 @@ window.addEventListener( 'load', function () {
                     break;
 */          
                 default:
-                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+asset+"/root.osgjs").attachToRoot();
+                    //ATON.createAssetNode(ATON.FE.MODELS_ROOT+asset+"/root.osgjs").attachToRoot();
+                    ATON.loadScene(ATON.FE.MODELS_ROOT+asset+"/scene.json");
                     break;
                 }
             });

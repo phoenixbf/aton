@@ -88,8 +88,8 @@ class AtonizerFolderProcessor {
         sjson.scenegraph.nodes = {};
         sjson.scenegraph.nodes.main = {};
         sjson.scenegraph.nodes.main.urls = [];
-        sjson.edges = [];
-        sjson.edges.push([".","main"]);
+        sjson.scenegraph.edges = [];
+        sjson.scenegraph.edges.push([".","main"]);
 
 
         let self = this;

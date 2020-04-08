@@ -2120,7 +2120,7 @@ window.addEventListener( 'load', function () {
                     break;
 */          
                 default:
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+asset+"/root.osgjs", { layer: asset });
+                    ATON.createAssetNode(ATON.FE.MODELS_ROOT+asset+"/root.osgjs").attachToRoot();
                     break;
                 }
             });

@@ -8,6 +8,8 @@ const PORT_ATONIZER = process.env.PORT_ATONIZER || 8085;
 const express = require('express')
 const app  = express();
 const fork = require('child_process').fork;
+const fs   = require('fs');
+const path = require('path');
 //const { spawn } = require('child_process').spawn;
 
 const { readdirSync, statSync } = require('fs');
@@ -25,9 +27,21 @@ if (!aConfig){
     exit(0);
 }
 
+const walkSync = (dir, filelist = []) => {
+    fs.readdirSync(dir).forEach(file => {
+        filelist = fs.statSync(path.join(dir, file)).isDirectory()
+            ? walkSync(path.join(dir, file), filelist)
+            : filelist.concat(path.join(dir, file));
+
+        });
+
+return filelist;
+}
+
 let populateInputFolders = function(){
     //TODO:
-
+    flist = walkSync(aConfig.inputRootFolders.main.path);
+    //console.log(flist);
 };
 
 
@@ -55,20 +69,26 @@ app.use(express.json());
 app.use('/', express.static(__dirname+"/../"));
 
 app.get("/services/atonizer/config", function(req,res){
-/*
-    let d = {};
-    d.outfolders = [];
-    d.infolders  = [];
 
-    for (let k in aConfig.outputRootFolders) d.outfolders.push(k);
-    for (let k in aConfig.inputRootFolders)  d.infolders.push(k);
+    let d = {};
+    d.infolders  = [];
+    d.outfolders = [];
+
+    for (let k in aConfig.inputRootFolders){
+        d.infolders.push(k);
+        }
+    for (let k in aConfig.outputRootFolders){
+        d.outfolders.push(k);
+        }
 
     res.json(d);
-*/
+
+/*
     let D = Object.assign({}, aConfig);
     console.log(D);
 
     res.json(D);
+*/
 });
 
 app.post('/services/atonizer/api/process', (req, res) => {

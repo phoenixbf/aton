@@ -39,29 +39,50 @@ const walkSync = (dir, filelist = []) => {
 return filelist;
 };
 
+/*
 const listSubDirs = function(dir, subdir="", filelist=[]){
     fs.readdirSync(dir).forEach(file => {
-        let p = dir+"/"+file; //path.join(dir, file);
-        if (fs.statSync(p).isDirectory()){
+        let absp = dir+"/"+file; //path.join(dir, file);
+
+        if (fs.statSync(absp).isDirectory()){
             subdir += file+"/";
             filelist.push(subdir);
-            listSubDirs(p, filelist);
-            }
-/*
-        else {
 
+            listSubDirs(dir+subdir, subdir, filelist);
             }
-*/
+
         });
 
     return filelist;
 };
+*/
+let listSubDirs = function(absdir, subdir=""){
+    let results = [];
+    let list    = fs.readdirSync(absdir);
+    
+    list.forEach(function(file){
+        
+        let absub = absdir+"/"+file;
+        let stat = fs.statSync(absub);
+
+        if (stat && stat.isDirectory()){ // Dir
+            let S = subdir+"/"+file;
+            results.push(S);
+
+            results = results.concat( listSubDirs(absub, S) );
+            }
+        else { // File
+            }
+        });
+
+    return results;
+}
+
 
 let populateInputFolders = function(){
 
     for (let k in aConfig.inputRootFolders){
         let entry = aConfig.inputRootFolders[k];
-        entry.subdirs = [];
         entry.subdirs = listSubDirs(entry.path);
         //console.log(entry);
         }
@@ -135,7 +156,7 @@ app.post('/services/atonizer/api/process', (req, res) => {
     let infolder  = aConfig.inputRootFolders[inD[0]].path + "/"+ inD[1];
     let outfolder = aConfig.outputRootFolders[outD[0]].path + "/"+ outD[1];
 
-    //console.log(infolder);
+    if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
 
     let patt      = req.body.pattern;
     let optstring = req.body.optstr;

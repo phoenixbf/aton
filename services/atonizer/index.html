@@ -16,6 +16,7 @@
 //============================================================================
 let configdata = undefined;
 let bProcessing = false;
+let bCanProcess = false;
 
 let onTaskCompleted = function(){
     $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
@@ -26,20 +27,30 @@ let onTaskCompleted = function(){
 
 let requestProcess = function(){
     if (bProcessing) return;
+    if (!bCanProcess) return;
 
     bProcessing = true;
-    $("#idProcessBTN").attr("class","atonBTN atonBTN-yellow atonizerProcessBTN");
+    $("#idProcessBTN").attr("class","atonBTN atonBTN-red atonizerProcessBTN");
 
     // Build args
     let args = {};
     args.infolder  = $("#inFolder").val();
     
     if (document.getElementById('inPlaceConv').checked) args.outfolder = $("#inFolder").val();
-    else args.outfolder = $("#outFolder").val();
-    
+    else {
+        let idproj = $("#outProject").val();
+        idproj = idproj.replace(/[^\w\s]/gi, '');
+        idproj = idproj.replace(/ /g,'');
+        idproj += "/";
+
+        args.outfolder = $("#outFolder").val() + idproj;
+        }
     args.pattern = $("#pattern").val();
 
+    console.log(args);
+    return;
 
+    // Fire request
     let udata = JSON.stringify(args);    
     $.ajax({
         url: "./api/process",
@@ -55,7 +66,25 @@ let onSwitchInplace = function(){
     //TODO:
 }
 
+let isDataValid = function(){
+    let b = true;
+    let pstring = $('#outProject').val();
+    if (pstring.length < 2) b = false;
+
+    if (b) $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
+    else $("#idProcessBTN").attr("class","atonBTN atonBTN-red atonizerProcessBTN");
+    
+    return b;
+}
+
 window.addEventListener( 'load', ()=>{
+
+bCanProcess = isDataValid();
+
+
+$('#outProject').on('keyup', ()=>{
+    bCanProcess = isDataValid();
+});
 
 // Request config
 $.getJSON("./config", function( data ){
@@ -114,10 +143,13 @@ $.getJSON("./config", function( data ){
             <input id="inPlaceConv" type="checkbox" onchange="onSwitchInplace">
 
             <label for="outFolder">Output</label>
-            <div class="select" style="width: 100px;">
+            <div class="select" style="width: 30%;">
                 <select id="outFolder"></select>
                 <div class="selectArrow"></div>
             </div>
+
+            <label for="outProject">Project ID</label>
+            <input id="outProject" type="text" size="20" placeholder="project">
         </div>
 
         <!-- OPTIONS -->

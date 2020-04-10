@@ -44,7 +44,7 @@ class AtonizerFolderProcessor {
         this.options      = (args.options)? args.options : "noRotation";
 
         this.bGenerateSJSON     = true;
-        this.bCompressGeom      = (args.bCompressGeom !== undefined)? args.bCompressGeom : false;
+        this.bCompressGeom      = (args.bCompressGeom !== undefined)? args.bCompressGeom : true;
         this.bUseInlineTextures = (args.bUseInlineTextures !== undefined)? args.bUseInlineTextures : false;
         this.resizeTextures     = 4096;
 

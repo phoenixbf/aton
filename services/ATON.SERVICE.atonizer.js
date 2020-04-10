@@ -61,6 +61,7 @@ let populateInputFolders = function(){
 
     for (let k in aConfig.inputRootFolders){
         let entry = aConfig.inputRootFolders[k];
+        entry.subdirs = [];
         entry.subdirs = listSubDirs(entry.path);
         //console.log(entry);
         }
@@ -98,6 +99,8 @@ app.get("/services/atonizer/config", function(req,res){
     let d = {};
     d.infolders  = [];
     d.outfolders = [];
+
+    populateInputFolders();
 
     for (let k in aConfig.inputRootFolders){
         let entry = aConfig.inputRootFolders[k];

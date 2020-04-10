@@ -28,6 +28,7 @@ if (!aConfig){
     exit(0);
 }
 
+/*
 const walkSync = (dir, filelist = []) => {
     fs.readdirSync(dir).forEach(file => {
         filelist = fs.statSync(path.join(dir, file)).isDirectory()
@@ -39,7 +40,7 @@ const walkSync = (dir, filelist = []) => {
 return filelist;
 };
 
-/*
+
 const listSubDirs = function(dir, subdir="", filelist=[]){
     fs.readdirSync(dir).forEach(file => {
         let absp = dir+"/"+file; //path.join(dir, file);
@@ -66,7 +67,7 @@ let listSubDirs = function(absdir, subdir=""){
         let stat = fs.statSync(absub);
 
         if (stat && stat.isDirectory()){ // Dir
-            let S = subdir+"/"+file;
+            let S = subdir+file+"/";
             results.push(S);
 
             results = results.concat( listSubDirs(absub, S) );
@@ -166,6 +167,8 @@ app.post('/services/atonizer/api/process', (req, res) => {
     args.outfolder = outfolder;
     args.pattern   = patt;
     args.options   = optstring;
+
+    console.log(args);
 
     let aproc = fireAtonizerProcessor(args, ()=>{
         res.json({ success: true });

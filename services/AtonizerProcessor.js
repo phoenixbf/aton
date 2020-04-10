@@ -75,12 +75,13 @@ class AtonizerFolderProcessor {
             if (onComplete) onComplete();
             return;
             }
+/*
         if (fs.existsSync(complfile)){ // already processed
             console.log("Folder already processed.");
             if (onComplete) onComplete();
             return;
             }
-
+*/
         console.log("Processing folder "+inFolder);
         this._bRunning = true;
 

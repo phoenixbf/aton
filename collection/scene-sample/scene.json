@@ -1,0 +1,25 @@
+{
+    "scenegraph":{
+        "nodes":{
+            "hebe":{
+                "urls": "../hebe/root.osgjs",
+                "transformstring": "5 0 0"
+            },
+            "ground":{
+                "urls": "../ground/root.osgjs"
+            },
+            "proceduralhebes":{
+                "urls": "../hebe/root.osgjs",
+                "transformfile": "../tl-square-4x.txt",
+                "shader": "../wave.glsl"
+            }
+        },
+
+        "edges":[
+            [".","hebe"],
+            [".","ground"],
+            [".","proceduralhebes"]
+        ]
+
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "scenegraph":{
+        "nodes":{
+            "hebe":{
+                "urls": "root.osgjs"
+            }
+        },
+
+        "edges":[
+            [".","hebe"]
+        ]
+
+    }
+}

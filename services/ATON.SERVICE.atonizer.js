@@ -16,9 +16,7 @@ const path = require('path');
 //const { spawn } = require('child_process').spawn;
 
 const { readdirSync, statSync } = require('fs');
-//const listDirectories = require('list-directories');
 //const { join } = require('path');
-//const walk = require('walk');
 
 
 //let processList = [];
@@ -69,7 +67,7 @@ let populateInputFolders = function(){
 };
 
 
-let fireAtonizerProcessor = function(args){
+let fireAtonizerProcessor = function(args, onComplete){
     let atonizerProcessor = fork('./AtonizerProcessor.js'); //, [], { env: { PATH: process.env.PATH } });
 
     args.task = "run";
@@ -77,9 +75,11 @@ let fireAtonizerProcessor = function(args){
     console.log(args);
 
     atonizerProcessor.on('exit', (code, signal)=>{
+        //console.log(code, signal);
+        
         numRunning--;
         console.log("Atonizer process terminated. Processes still running: "+numRunning);
-        //console.log(code, signal);
+        if (onComplete) onComplete();
         });
     
     //processList.push(atonizerProcessor);
@@ -138,29 +138,19 @@ app.post('/services/atonizer/api/process', (req, res) => {
     let optstring = req.body.optstr;
 
     let args = {};
-    args.inputFolder  = infolder;
-    args.outputFolder = outfolder;
-    args.pattern      = patt;
-    args.options      = optstring;
+    args.infolder  = infolder;
+    args.outfolder = outfolder;
+    args.pattern   = patt;
+    args.options   = optstring;
 
-    let aproc = fireAtonizerProcessor(args);
+    let aproc = fireAtonizerProcessor(args, ()=>{
+        res.json({ success: true });
+        });
 
-    res.json({ success: true });
 });
 
 app.listen(PORT_ATONIZER, ()=>{
     console.log("Atonizer service running on: "+PORT_ATONIZER);
 
     populateInputFolders();
-
-/*
-    let P = fireAtonizerProcessor({
-        inputFolder: "D:/bruno/3Dassets/intarsi/modello_opus/", 
-        outputFolder:"D:/bruno/Desktop/out-test/"
-        });
-
-    setInterval(()=>{
-        console.log(P);
-        }, 1000);
-*/
 });

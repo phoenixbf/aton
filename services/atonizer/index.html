@@ -15,26 +15,45 @@
 <script>
 //============================================================================
 let configdata = undefined;
+let bProcessing = false;
+
+let onTaskCompleted = function(){
+    $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
+    
+    console.log("Completed.");
+    bProcessing = false;
+};
 
 let requestProcess = function(){
+    if (bProcessing) return;
+
+    bProcessing = true;
+    $("#idProcessBTN").attr("class","atonBTN atonBTN-yellow atonizerProcessBTN");
+
+    // Build args
     let args = {};
     args.infolder  = $("#inFolder").val();
-    args.outfolder = $("#outFolder").val();
-    args.pattern   = $("#pattern").val();
-
-    let udata = JSON.stringify(args);
     
+    if (document.getElementById('inPlaceConv').checked) args.outfolder = $("#inFolder").val();
+    else args.outfolder = $("#outFolder").val();
+    
+    args.pattern = $("#pattern").val();
+
+
+    let udata = JSON.stringify(args);    
     $.ajax({
         url: "./api/process",
         type:"POST",
         data: udata,
         contentType:"application/json; charset=utf-8",
         dataType:"json",
-        success: function(){
-            console.log("success");
-            }
+        success: onTaskCompleted
     });
 };
+
+let onSwitchInplace = function(){
+    //TODO:
+}
 
 window.addEventListener( 'load', ()=>{
 
@@ -71,27 +90,46 @@ $.getJSON("./config", function( data ){
     </div>
     
     <div class="atonizerBlockGroup">
-        <div class="atonizerBlock">
-            <h3>Input/Output folders</h3>
+        <!-- INPUT -->
+        <div class="atonizerBlock"><div class="atonizerBlockTitle">Input</div>
             <label for="inFolder">Input folder</label>
-            <select id="inFolder"></select>
+            <div class="select">
+                <select id="inFolder"></select>
+                <div class="selectArrow"></div>
+            </div>
 
             <label for="pattern">Pattern</label>
-            <select id="pattern">
-                <option value="*.obj">*.obj</option>
-            </select>
+            <div class="select" style="width: 100px;">
+                <select id="pattern">
+                    <option value="*.obj">*.obj</option>
+                    <option value="*.osg">*.osg</option>
+                </select>
+                <div class="selectArrow"></div>
+            </div>
+        </div>
             
-            <br><br>
+        <!-- OUTPUT -->
+        <div class="atonizerBlock"><div class="atonizerBlockTitle">Output</div>
+            <label for="inPlaceConv">Convert in-place</label>
+            <input id="inPlaceConv" type="checkbox" onchange="onSwitchInplace">
 
-            <label for="outFolder">Output folder</label>
-            <select id="outFolder"></select>
+            <label for="outFolder">Output</label>
+            <div class="select" style="width: 100px;">
+                <select id="outFolder"></select>
+                <div class="selectArrow"></div>
+            </div>
         </div>
 
-        <div class="atonizerBlock">
-            <h3>Options</h3>
+        <!-- OPTIONS -->
+        <div class="atonizerBlock"><div class="atonizerBlockTitle">Options</div>
+        <!-- 
+            <label for="compressGeometry">Compress Geometry</label>
+            <input id="compressGeometry" type="checkbox">
+        -->
         </div>
 
-        <div class="atonBTN atonBTN-green atonizerProcessBTN" onclick="requestProcess();"><h3>PROCESS</h3></div>
+        <!-- PROCESS -->
+        <div id="idProcessBTN" class="atonBTN atonBTN-green atonizerProcessBTN" onclick="requestProcess();"><h3>PROCESS</h3></div>
 
     </div>
 

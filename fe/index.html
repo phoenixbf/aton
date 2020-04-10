@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="../res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON FrontEnd">
+    <link rel="apple-touch-icon" href="../res/aton-logo.png">
+    <meta name="description" content="ATON FrontEnd">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON FrontEnd</title>
+    <link rel="stylesheet" type="text/css" href="../css/aton.css">
+
+    <!-- Vendors -->
+    <script type="text/javascript" src="../vendors/gunzip.min.js"></script>
+    <script type="text/javascript" src="../vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="../vendors/bluebird.min.js"></script>
+    <script type="text/javascript" src="../vendors/hammer.min.js"></script>
+    <script type="text/javascript" src="../vendors/screenfull.min.js"></script>
+    <script type="text/javascript" src="../vendors/qrcode.min.js"></script>
+    <script type="text/javascript" src="../vendors/OSG.min.js"></script>
+
+    <script type="text/javascript" src="../js/ATON.core.js"></script>
+    <script type="text/javascript" src="../js/ATON.FE.js"></script>
+
+    <!-- Collaborative services -->
+    <script type="text/javascript" src="../services/node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script type="text/javascript" src="../js/ATON.vroadcast.js"></script>
+
+<script type="text/javascript">
+/*===========================================================================
+    ATON FrontEnd
+    Author: B. Fanini
+===========================================================================*/
+
+window.addEventListener( 'load', ()=>{
+    ATON.FE.setup();
+
+    ATON.FE.uiAddHomeButton("idBottomToolbar");
+    
+    if (ATON.FE.vrc) ATON.FE.uiAddVRoadcastButton("idTopToolbar");
+    ATON.FE.uiAddFullscreenButton("idTopToolbar");
+    ATON.FE.uiAddVRButton("idTopToolbar");
+    ATON.FE.uiAddQRButton("idTopToolbar");
+
+    // First we grab canvas element
+    let canvas = document.getElementById('idView');
+
+    // Realize
+    ATON.shadersFolder = "../res/shaders";
+    ATON.realize(canvas);
+
+    ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7]);
+
+    if (!ATON.FE.scene) return;
+
+    ATON.loadScene(ATON.FE.MODELS_ROOT+ATON.FE.scene+"/scene.json");
+});
+</script>
+</head>
+
+<body oncontextmenu="return false;" style="background-color: rgba(127,127,127, 0);">
+	<!-- Our 3D View -->
+    <div id="ViewContainer" class="view3D"><canvas id="idView" oncontextmenu="return false;"></canvas></div>
+    
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-left" style="background-color: rgba(0,0,0, 0); white-space:nowrap;"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom" style="background-color: rgba(0,0,0, 0); white-space:nowrap;"></div>
+
+    <!-- VRC panel -->
+    <div class="atonVRCsidePanel" id="idVRCpanel" style="display:none;">
+        <input id="vrcName" type="text" size="10" onchange="ATON.FE.setUserName()" placeholder="Username">
+        <input id="vrcMessage" type="text" size="30" onchange="ATON.FE.setUserMessage()" placeholder="Message">
+
+        <div class="atonVRCchat" id="idVRCchat"></div>
+    </div>
+
+    <!-- Main Popup -->
+    <div class="atonPopupContainer" style="display:none;" id="idPopup" onclick="ATON.FE.popupClose()"></div>
+
+    <!-- Loader -->
+    <div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../res/loader.png"></div>
+
+    <!-- Powered by -->
+    <div class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>
+

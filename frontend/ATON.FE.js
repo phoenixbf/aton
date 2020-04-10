@@ -2343,7 +2343,6 @@ if (asset === "sf"){
         $('#idUserColor').show();
 
         // We have ID
-        //ATON.vroadcast.onIDassigned = function(){
         ATON.on("VRC_IDassigned", (id)=>{
             var uid = ATON.vroadcast._myUser.id;
             var strColor = uColors[uid % 6];
@@ -2378,7 +2377,6 @@ if (asset === "sf"){
             });
 
         // Disconnection
-        //ATON.vroadcast.onDisconnect = function(){
         ATON.on("VRC_Disconnect", function(){
             ATON.vroadcast.users = [];
 

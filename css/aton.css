@@ -222,6 +222,14 @@ canvas {
 .atonBTN-red:hover {
     box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0);
 }
+
+.atonBTN-yellow {
+    background-color: rgba(127, 127, 0, 0.5);
+}
+.atonBTN-yellow:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0);
+}
+
 .atonBTN-green {
     background-color: rgba(0, 127, 0, 0.5);
 }
@@ -272,7 +280,8 @@ canvas {
     bottom: 16px;
     padding: 8px;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
 }
 
 .atonVRCchat {
@@ -338,6 +347,16 @@ canvas {
     overflow-x: hidden;
 
     animation: 0.5s ease-out 0s 1 popupAnimation;
+}
+
+.atonQRcontainer {
+    display: inline-block;
+
+    text-align: center;
+    background-color: white;
+
+    padding: 25px;
+    border-radius: 10px;
 }
 
 
@@ -511,6 +530,65 @@ input[type="text"] {
     border-radius: 5px;
 }
 
+/* SELECT */
+.select {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 15px;
+    width: 50%;
+    height: 25px;
+}    
+.select select {
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 12px 12px;
+    outline: 0;
+    border: 0px solid #000000;
+    border-radius: 5px;
+    background: #414141;
+    color: #ffffff;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+.select select::-ms-expand {
+    display: none;
+}
+.select select:hover,
+.select select:focus {
+    color: #000000;
+    background: #cccccc;
+}
+.select select:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.selectArrow {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 6px;
+    height: 6px;
+    border: solid white;
+    border-width: 0 4px 4px 0;
+    display: inline-block;
+    padding: 0px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    pointer-events: none;
+}
+.select select:hover ~ .selectArrow,
+.select select:focus ~ .selectArrow {
+    border-color: #000000;
+}
+.select select:disabled ~ .selectArrow {
+    border-top-color: #cccccc;
+}
+
+
+
+/* Powered by */
 .poweredBy {
     width: 100%;
 
@@ -530,7 +608,7 @@ input[type="text"] {
 
 /*
     ATONIZER
-*/
+==========================*/
 
 .atonizerBody {
     background-color: #333333;
@@ -543,6 +621,27 @@ input[type="text"] {
     display:inline-block;
     width: 100%;
     height: 100%;
+}
+
+.atonizerBlockTitle {
+    display: block;
+    position: relative;
+
+    cursor: pointer;
+
+    top: 0px;
+    margin: auto;
+
+    background-color: rgba(0,0,0, 0.2);
+    border-radius: 20px;
+
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: larger;
+    font-weight: bold;
+
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
+    border: 2px solid black;
 }
 
 .atonizerBlock {
@@ -561,7 +660,7 @@ input[type="text"] {
 
 .atonizerProcessBTN {
     display: block;
-    width: 90%;
+    width: 70%;
     position: relative;
     margin: auto;
 

@@ -10,10 +10,17 @@ const replace = require("replace");
 const commandLineArgs = require('command-line-args');
 const { spawn } = require('child_process');
 const glob = require("glob");
-const deleteKey = require('key-del')
+const deleteKey = require('key-del');
+const copy = require('recursive-copy');
 
 const ATONIZER_LOCK_F = "_ALOCK_.txt";
 const ATONIZER_COMPL_F = "_ATONIZED_.txt";
+
+const ATONIZER_COPY_OPTS = {
+    expand: true,
+    overwrite: true,
+    filter: ["**/*.jpg","**/*.png","*.jpg","*.png"]
+};
 
 
 // Command-line
@@ -25,20 +32,26 @@ const optDefs = [
 ];
 var atonizerOPTS = commandLineArgs(optDefs);
 
+
+
+
+
 class AtonizerFolderProcessor {
-    constructor(infolder,outfolder, patt, opts){
-        this.inputFolder  = (infolder)? infolder : "";
-        this.outputFolder = (outfolder)? outfolder : "";
-        this.pattern      = (patt)? patt : "*.obj";
-        this.options      = (opts)? opts : "noRotation";
+    constructor(args){
+        this.inputFolder  = (args.infolder)? args.infolder : "";
+        this.outputFolder = (args.outfolder)? args.outfolder : "";
+        this.pattern      = (args.pattern)? args.pattern : "*.obj";
+        this.options      = (args.options)? args.options : "noRotation";
 
         this.bGenerateSJSON     = true;
-        this.bCompressGeom      = false;
-        this.bUseInlineTextures = false;
+        this.bCompressGeom      = (args.bCompressGeom !== undefined)? args.bCompressGeom : false;
+        this.bUseInlineTextures = (args.bUseInlineTextures !== undefined)? args.bUseInlineTextures : false;
         this.resizeTextures     = 4096;
 
         this._OSGJS_OPTS = "JPEG_QUALITY 60 useExternalBinaryArray mergeAllBinaryFiles";
         this._bRunning = false;
+
+        //console.log(args);
         }
 
     isRunning(){
@@ -50,6 +63,7 @@ class AtonizerFolderProcessor {
         let outFolder = this.outputFolder;
 
         if (!inFolder || !outFolder || inFolder.length <= 0 || outFolder.length <= 0){
+            console.log("Invalid input/output folders.");
             if (onComplete) onComplete();
             return;
             }
@@ -143,7 +157,25 @@ class AtonizerFolderProcessor {
             self._bRunning = false;
             
             console.log("COMPLETED");
-            if (onComplete) onComplete();
+
+            // Copy required resources when I/O folders differ
+            if (inFolder != outFolder){
+                console.log("I/O folders are different. Copying required resources...");
+
+                copy(inFolder, outFolder, ATONIZER_COPY_OPTS, function(error, results) {
+                    if (error) console.error('Copy failed: ' + error);
+                    else {
+                        // results[i].src, results[i].dest
+                        console.info('Copied ' + results.length + ' files');
+                        if (onComplete) onComplete();
+                        }
+                    });
+                }
+            // In-place conversion
+            else {
+                console.log("Assets converted in-place.");
+                if (onComplete) onComplete();
+                }
             });
         }
 };
@@ -155,10 +187,9 @@ process.on("message", (m) => {
     if (!m) return;
 
     if (m.task === "run"){
-        console.log('Requested run with : '+m);
-
-        P = new AtonizerFolderProcessor(m.inputFolder,m.outputFolder,m.pattern,m.options);
+        P = new AtonizerFolderProcessor(m);
         P.run(()=>{
+            process.send({completed: true});
             process.exit(0);
             });
         }

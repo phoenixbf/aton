@@ -12,3 +12,7 @@ atonizer-config.json
 
 /build
 /wapps
+/shu
+
+# reserved cloud project folder
+/collection/cloud/

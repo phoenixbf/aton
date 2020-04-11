@@ -63,49 +63,64 @@ let requestProcess = function(){
 };
 
 let onSwitchInplace = function(){
-    //TODO:
+    if (document.getElementById('inPlaceConv').checked) $("#idOutBlock").hide();
+    else $("#idOutBlock").show();
+
+    bCanProcess = validateFields();
 }
 
-let isDataValid = function(){
+let validateFields = function(){
     let b = true;
-    let pstring = $('#outProject').val();
-    if (pstring.length < 2) b = false;
+    let bmsg = "PROCESS";
 
-    if (b) $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
-    else $("#idProcessBTN").attr("class","atonBTN atonBTN-red atonizerProcessBTN");
+    let bInPlace = document.getElementById('inPlaceConv').checked;
+
+    let pstring = $('#outProject').val();
+    if (pstring.length < 2 && !bInPlace){
+        b = false;
+        bmsg = "Missing Project ID";
+        }
+
+    if (b){
+        $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
+        }
+    else {
+        $("#idProcessBTN").attr("class","atonBTN atonBTN-red atonizerProcessBTN");
+        }
+
+    $("#idProcessBTN").html("<h3>"+bmsg+"</h3>");
     
     return b;
 }
 
 window.addEventListener( 'load', ()=>{
 
-bCanProcess = isDataValid();
+    bCanProcess = validateFields();
 
+    $('#outProject').on('keyup', ()=>{
+        bCanProcess = validateFields();
+        });
 
-$('#outProject').on('keyup', ()=>{
-    bCanProcess = isDataValid();
-});
+    // Request config
+    $.getJSON("./config", function( data ){
+        configdata = data;
 
-// Request config
-$.getJSON("./config", function( data ){
-    configdata = data;
+        if (!data.infolders) return;
 
-    if (!data.infolders) return;
+        console.log(data);
 
-    console.log(data);
+        for (let p in data.infolders){
+            let path = data.infolders[p];
+            $("#inFolder").append("<option value='"+path+"'>"+path+"</option>");
+            }
 
-    for (let p in data.infolders){
-        let path = data.infolders[p];
-        $("#inFolder").append("<option value='"+path+"'>"+path+"</option>");
-        }
+        if (!data.outfolders) return;
 
-    if (!data.outfolders) return;
-
-    for (let p in data.outfolders){
-        let path = data.outfolders[p];
-        $("#outFolder").append("<option value='"+path+"'>"+path+"</option>");
-        }
-});
+        for (let p in data.outfolders){
+            let path = data.outfolders[p];
+            $("#outFolder").append("<option value='"+path+"'>"+path+"</option>");
+            }
+        });
 
 
 });
@@ -120,48 +135,103 @@ $.getJSON("./config", function( data ){
     
     <div class="atonizerBlockGroup">
         <!-- INPUT -->
-        <div class="atonizerBlock"><div class="atonizerBlockTitle">Input</div>
-            <label for="inFolder">Input folder</label>
-            <div class="select">
-                <select id="inFolder"></select>
-                <div class="selectArrow"></div>
+        <div class="atonizerBlockTitle">INPUT</div>
+        <div class="atonizerBlock">
+
+            <div class="atonizerOptionBlock" style="width: 70%;">
+                <label for="inFolder">Input folder</label><br>
+                <div class="select">
+                    <select id="inFolder"></select>
+                    <div class="selectArrow"></div>
+                </div>
             </div>
 
-            <label for="pattern">Pattern</label>
-            <div class="select" style="width: 100px;">
-                <select id="pattern">
-                    <option value="*.obj">*.obj</option>
-                    <option value="*.osg">*.osg</option>
-                </select>
-                <div class="selectArrow"></div>
+            <div class="atonizerOptionBlock">
+                <label for="pattern">Pattern</label><br>
+                <div class="select" style="width: 100px;">
+                    <select id="pattern">
+                        <option value="*.obj">*.obj</option>
+                        <option value="*.osg">*.osg</option>
+                    </select>
+                    <div class="selectArrow"></div>
+                </div>
             </div>
         </div>
             
         <!-- OUTPUT -->
-        <div class="atonizerBlock"><div class="atonizerBlockTitle">Output</div>
-            <label for="inPlaceConv">Convert in-place</label>
-            <input id="inPlaceConv" type="checkbox" onchange="onSwitchInplace">
+        <div class="atonizerBlockTitle">OUTPUT</div>
+        <div class="atonizerBlock">
 
-            <label for="outFolder">Output</label>
-            <div class="select" style="width: 30%;">
-                <select id="outFolder"></select>
-                <div class="selectArrow"></div>
+            <div class="atonizerOptionBlock">
+                <label for="inPlaceConv">Convert in-place</label><br>
+                <input id="inPlaceConv" type="checkbox" onchange="onSwitchInplace()">
             </div>
 
-            <label for="outProject">Project ID</label>
-            <input id="outProject" type="text" size="20" placeholder="project">
+            <span id="idOutBlock">
+            <div class="atonizerOptionBlock" style="width: 50%;">
+                <label for="outFolder">Output Folder</label><br>
+                <div class="select">
+                    <select id="outFolder"></select>
+                    <div class="selectArrow"></div>
+                </div>
+            </div>
+
+            <div class="atonizerOptionBlock">
+                <label for="outProject">Project ID</label><br>
+                <input id="outProject" type="text" size="20" placeholder="project">
+            </div>
+            </span>
         </div>
 
         <!-- OPTIONS -->
-        <div class="atonizerBlock"><div class="atonizerBlockTitle">Options</div>
-        <!-- 
-            <label for="compressGeometry">Compress Geometry</label>
-            <input id="compressGeometry" type="checkbox">
-        -->
+        <div class="atonizerBlockTitle"  onclick="$('#idOptionsBlock').toggle()">OPTIONS</div>
+        <div class="atonizerBlock" id="idOptionsBlock">
+
+            <!-- Trans -->
+            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+                <div class="atonizerSubtitle">TRANSFORM</div>
+                <div style="text-align: right;">
+                    <label for="yup">From Y-up to Z-up</label>
+                    <input id="yup" type="checkbox"><br>
+
+                    <label for="translate">Translate (x,y,z)</label>
+                    <input id="translate" type="text"><br>
+
+                    <label for="scale">Scale (x,y,z)</label>
+                    <input id="scale" type="text"><br>
+                </div>
+            </div>
+
+            <!-- Geom -->
+            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+                <div class="atonizerSubtitle">GEOMETRY</div>
+                <div style="text-align: right;">
+                    <!--
+                    <label for="compressGeometry">Compress Geometry</label>
+                    <input id="compressGeometry" type="checkbox"  checked><br>
+                    -->
+
+                    <label for="smoothNorm">Smooth Normals</label>
+                    <input id="smoothNorm" type="checkbox"><br>
+
+                    <label for="simplifyGeometry">Simplification (0: none, 10: max)</label>
+                    <input id="simplifyGeometry" type="number" min="0" max="10" value="0">
+                </div>
+            </div>
+
+            <!-- Tex -->
+            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+                <div class="atonizerSubtitle">TEXTURES</div>
+                <div style="text-align: right;">
+                    <label for="inlineTex">Inline Textures</label>
+                    <input id="inlineTex" type="checkbox"><br>
+                </div>
+            </div>
+
         </div>
 
         <!-- PROCESS -->
-        <div id="idProcessBTN" class="atonBTN atonBTN-green atonizerProcessBTN" onclick="requestProcess();"><h3>PROCESS</h3></div>
+        <div id="idProcessBTN" class="atonBTN atonBTN-green atonizerProcessBTN" onclick="requestProcess();"></div>
 
     </div>
 

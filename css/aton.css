@@ -642,6 +642,7 @@ input[type="number"]:hover {
 .atonizerBody {
     background-color: #666666;
     color: #FFF;
+
     overflow-y: scroll;
 
     -moz-user-select: none;
@@ -649,6 +650,9 @@ input[type="number"]:hover {
     -webkit-user-select: none;
     -o-user-select: none;
     user-select: none;
+
+    touch-action: auto;
+    -webkit-user-drag: auto;
 }
 
 .atonizerBlockGroup {

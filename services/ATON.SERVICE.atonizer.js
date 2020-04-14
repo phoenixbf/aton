@@ -22,7 +22,7 @@ const deleteKey = require('key-del');
 
 //let processList = [];
 let numRunning = 0;
-let aConfig = require("./config.json");
+let aConfig = require("./ATON.config.json");
 
 if (!aConfig){
     console.log("No 'atonizer-config.json' config file found.");

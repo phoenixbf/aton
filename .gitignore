@@ -8,7 +8,7 @@ _prv
 *.psd
 
 .env
-atonizer-config.json
+ATON.config.json
 
 /build
 /wapps

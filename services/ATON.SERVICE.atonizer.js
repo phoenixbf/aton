@@ -17,11 +17,12 @@ const path = require('path');
 
 const { readdirSync, statSync } = require('fs');
 //const { join } = require('path');
+const deleteKey = require('key-del');
 
 
 //let processList = [];
 let numRunning = 0;
-let aConfig = require("./atonizer-config.json");
+let aConfig = require("./config.json");
 
 if (!aConfig){
     console.log("No 'atonizer-config.json' config file found.");
@@ -100,7 +101,7 @@ let fireAtonizerProcessor = function(args, onComplete){
     atonizerProcessor.on('exit', (code, signal)=>{
         //console.log(code, signal);
         
-        numRunning--;
+        if (numRunning>0) numRunning--;
         console.log("Atonizer process terminated. Processes still running: "+numRunning);
         if (onComplete) onComplete();
         });
@@ -114,10 +115,10 @@ let fireAtonizerProcessor = function(args, onComplete){
 
 app.use(express.json());
 
-app.use('/', express.static(__dirname+"/../"));
+app.use('/', express.static(__dirname+"/"));
 
-app.get("/services/atonizer/config", function(req,res){
-
+app.get("/atonizer/config", function(req,res){
+/*
     let d = {};
     d.infolders  = [];
     d.outfolders = [];
@@ -136,39 +137,46 @@ app.get("/services/atonizer/config", function(req,res){
         }
 
     res.json(d);
-
-/*
-    let D = Object.assign({}, aConfig);
-    console.log(D);
-
-    res.json(D);
 */
+    populateInputFolders();
+
+    let D = Object.assign({}, aConfig);
+    D = deleteKey(D, "path");
+    res.json(D);
 });
 
-app.post('/services/atonizer/api/process', (req, res) => {
+app.post('/atonizer/api/process', (req, res) => {
     console.log("Requested process");
-
-    //console.log(req);
     //console.log(req.body);
 
     let inD  = req.body.infolder.split(ATONIZER_SUBDIR_SEP);
     let outD = req.body.outfolder.split(ATONIZER_SUBDIR_SEP);
-
     let infolder  = aConfig.inputRootFolders[inD[0]].path + "/"+ inD[1];
     let outfolder = aConfig.outputRootFolders[outD[0]].path + "/"+ outD[1];
+
+    //let infolder  = req.body.infolder + "/" + req.body.insubdir;
+    //let outfolder = req.body.outfolder + "/" + req.body.outsubdir;
 
     if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
 
     let patt      = req.body.pattern;
-    let optstring = req.body.optstr;
+    //let optstring = req.body.optstr;
 
     let args = {};
     args.infolder  = infolder;
     args.outfolder = outfolder;
     args.pattern   = patt;
-    args.options   = optstring;
+    //args.options   = optstring;
+    
+    args.bCompressGeom      = req.body.bCompressGeom;
+    args.bYup               = req.body.bYup;
+    args.bSmoothNormals     = req.body.bSmoothNormals;
+    args.bUseInlineTextures = req.body.bUseInlineTextures;
+    args.maxTextureRes      = req.body.maxTextureRes;
+
 
     console.log(args);
+    //return;
 
     let aproc = fireAtonizerProcessor(args, ()=>{
         res.json({ success: true });

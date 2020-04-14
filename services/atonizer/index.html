@@ -14,41 +14,68 @@
 
 <script>
 //============================================================================
+const ATONIZER_SUBDIR_SEP = ":";
+
 let configdata = undefined;
 let bProcessing = false;
 let bCanProcess = false;
+let feURL = undefined;
 
-let onTaskCompleted = function(){
-    $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
-    
-    console.log("Completed.");
-    bProcessing = false;
-};
 
 let requestProcess = function(){
-    if (bProcessing) return;
     if (!bCanProcess) return;
+    
+    if (bProcessing){
+        if (feURL) window.open(feURL, '_blank');
+        return;
+        }
 
     bProcessing = true;
     $("#idProcessBTN").attr("class","atonBTN atonBTN-red atonizerProcessBTN");
+    $("#idProcessBTN").html("<h3>WAIT...</h3>");
 
     // Build args
     let args = {};
-    args.infolder  = $("#inFolder").val();
+    args.infolder = $("#inFolder").val();
+
+    let bInPlace = $("#inPlaceConv").prop("checked");
     
-    if (document.getElementById('inPlaceConv').checked) args.outfolder = $("#inFolder").val();
+    let idproj = "";
+    if (bInPlace){ // In-place
+        args.outfolder = $("#inFolder").val();
+        //idproj = $("#inFolder").val().split(ATONIZER_SUBDIR_SEP)[1];
+        }
     else {
-        let idproj = $("#outProject").val();
+        // Sanitize
+        idproj = $("#outProject").val();
         idproj = idproj.replace(/[^\w\s]/gi, '');
         idproj = idproj.replace(/ /g,'');
         idproj += "/";
 
-        args.outfolder = $("#outFolder").val() + idproj;
+        args.outfolder = $("#outFolder").val() + ATONIZER_SUBDIR_SEP + idproj;
         }
     args.pattern = $("#pattern").val();
 
-    //console.log(args);
+    // Options
+    args.bYup = $("#yup").prop("checked");
+    args.bCompressGeom = $("#compressGeometry").prop("checked");
+    args.bUseInlineTextures = $("#inlineTex").prop("checked");
+    args.maxTextureRes = parseInt($("#maxTextureRes").val());
+
+    // Create FE link
+    let outentry = configdata.outputRootFolders[$("#outFolder").val()];
+    if (outentry && !bInPlace){
+        feURL = outentry.puburl;
+        feURL = feURL.replace("$ID$", idproj);
+        feURL = location.protocol+'//'+location.hostname+(location.port? ':'+location.port: '') + "/" + feURL;
+
+        console.log(feURL);
+        }
+
+    console.log(args);
     //return;
+
+    if (feURL) window.open(feURL, '_blank');
 
     // Fire request
     let udata = JSON.stringify(args);    
@@ -62,12 +89,14 @@ let requestProcess = function(){
     });
 };
 
-let onSwitchInplace = function(){
-    if (document.getElementById('inPlaceConv').checked) $("#idOutBlock").hide();
-    else $("#idOutBlock").show();
+let onTaskCompleted = function(){
+    $("#idProcessBTN").attr("class","atonBTN atonBTN-green atonizerProcessBTN");
+    $("#idProcessBTN").html("<h3>PROCESS</h3>");
+    
+    console.log("Completed.");
+    bProcessing = false;
+};
 
-    bCanProcess = validateFields();
-}
 
 let validateFields = function(){
     let b = true;
@@ -91,33 +120,47 @@ let validateFields = function(){
     $("#idProcessBTN").html("<h3>"+bmsg+"</h3>");
     
     return b;
-}
+};
+
+let setupPage = function(){
+    $("#inPlaceConv").change(()=>{
+        if (document.getElementById('inPlaceConv').checked) $("#idOutBlock").hide();
+        else $("#idOutBlock").show();
+
+        bCanProcess = validateFields();
+        });
+
+    $('#outProject').on('keyup', ()=>{
+        bCanProcess = validateFields();
+        });
+};
 
 window.addEventListener( 'load', ()=>{
 
     bCanProcess = validateFields();
 
-    $('#outProject').on('keyup', ()=>{
-        bCanProcess = validateFields();
-        });
+    setupPage();
 
     // Request config
     $.getJSON("./config", function( data ){
         configdata = data;
-
-        if (!data.infolders) return;
-
         console.log(data);
 
-        for (let p in data.infolders){
-            let path = data.infolders[p];
-            $("#inFolder").append("<option value='"+path+"'>"+path+"</option>");
+        //if (!data.infolders) return;
+
+        for (let e in data.inputRootFolders){
+            let entry = data.inputRootFolders[e];
+
+            for (let p in entry.subdirs){
+                let path = e + ATONIZER_SUBDIR_SEP + entry.subdirs[p];
+                $("#inFolder").append("<option value='"+path+"'>"+path+"</option>");
+                }
             }
 
-        if (!data.outfolders) return;
+        for (let e in data.outputRootFolders){
+            let entry = data.outputRootFolders[e];
 
-        for (let p in data.outfolders){
-            let path = data.outfolders[p];
+            let path = e;
             $("#outFolder").append("<option value='"+path+"'>"+path+"</option>");
             }
         });
@@ -134,10 +177,12 @@ window.addEventListener( 'load', ()=>{
     </div>
     
     <div class="atonizerBlockGroup">
-        <!-- INPUT -->
-        <div class="atonizerBlockTitle">INPUT</div>
+        
+        <div class="atonizerBlockTitle">TASK</div>
         <div class="atonizerBlock">
 
+            <!-- INPUT -->
+            <div class="atonizerSubtitle">INPUT</div>
             <div class="atonizerOptionBlock" style="width: 70%;">
                 <label for="inFolder">Input folder</label><br>
                 <div class="select">
@@ -156,15 +201,12 @@ window.addEventListener( 'load', ()=>{
                     <div class="selectArrow"></div>
                 </div>
             </div>
-        </div>
             
-        <!-- OUTPUT -->
-        <div class="atonizerBlockTitle">OUTPUT</div>
-        <div class="atonizerBlock">
-
+            <!-- OUTPUT -->
+            <div class="atonizerSubtitle">OUTPUT</div>
             <div class="atonizerOptionBlock">
                 <label for="inPlaceConv">Convert in-place</label><br>
-                <input id="inPlaceConv" type="checkbox" onchange="onSwitchInplace()">
+                <input id="inPlaceConv" type="checkbox">
             </div>
 
             <span id="idOutBlock">
@@ -188,43 +230,54 @@ window.addEventListener( 'load', ()=>{
         <div class="atonizerBlock" id="idOptionsBlock">
 
             <!-- Trans -->
-            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+            <div class="atonizerOptionBlock" style="max-width:400px; width:100%;">
                 <div class="atonizerSubtitle">TRANSFORM</div>
                 <div style="text-align: right;">
                     <label for="yup">From Y-up to Z-up</label>
                     <input id="yup" type="checkbox"><br>
 
                     <label for="translate">Translate (x,y,z)</label>
-                    <input id="translate" type="text"><br>
+                    <input id="translate" type="text" style="width: 100px;"><br>
 
                     <label for="scale">Scale (x,y,z)</label>
-                    <input id="scale" type="text"><br>
+                    <input id="scale" type="text" style="width: 100px;"><br>
                 </div>
             </div>
 
             <!-- Geom -->
-            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+            <div class="atonizerOptionBlock" style="max-width:400px; width:100%;">
                 <div class="atonizerSubtitle">GEOMETRY</div>
                 <div style="text-align: right;">
-                    <!--
+
                     <label for="compressGeometry">Compress Geometry</label>
                     <input id="compressGeometry" type="checkbox"  checked><br>
-                    -->
 
                     <label for="smoothNorm">Smooth Normals</label>
                     <input id="smoothNorm" type="checkbox"><br>
 
                     <label for="simplifyGeometry">Simplification (0: none, 10: max)</label>
-                    <input id="simplifyGeometry" type="number" min="0" max="10" value="0">
+                    <input id="simplifyGeometry" type="number" min="0" max="10" value="0" style="width: 50px;">
                 </div>
             </div>
 
             <!-- Tex -->
-            <div class="atonizerOptionBlock" style="max-width:300px; width:50%;">
+            <div class="atonizerOptionBlock" style="max-width:400px; width:100%;">
                 <div class="atonizerSubtitle">TEXTURES</div>
                 <div style="text-align: right;">
                     <label for="inlineTex">Inline Textures</label>
                     <input id="inlineTex" type="checkbox"><br>
+
+                    <label for="inlineTex">Max Resolution</label>
+                    <div class="select" style="width: 100px;">
+                        <select id="maxTextureRes">
+                            <option value="4096">4096</option>
+                            <option value="2048">2048</option>
+                            <option value="1024">1024</option>
+                            <option value="512">512</option>
+                            <option value="256">256</option>
+                        </select>
+                        <div class="selectArrow"></div>
+                    </div>
                 </div>
             </div>
 

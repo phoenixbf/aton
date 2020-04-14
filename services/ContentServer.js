@@ -53,7 +53,7 @@ ContentServer.configure = function(){
         });
 
     // Proxies
-    this.app.use('/atonizer', createProxyMiddleware({ target: "http://localhost:"+ContentServer.PORT_ATONIZER+"/services/", changeOrigin: true }));
+    this.app.use('/atonizer', createProxyMiddleware({ target: "http://localhost:"+ContentServer.PORT_ATONIZER, changeOrigin: true }));
 };
 
 

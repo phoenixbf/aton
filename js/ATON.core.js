@@ -1281,7 +1281,7 @@ ATON.createDescriptorGroup = function(bTransformable){
 ATON.loadScene = function(scenejson, onComplete){
     let scenefolder = ATON.utils.getBaseFolder(scenejson);
 
-    $.getJSON(scenejson, function( data ){
+    return $.getJSON(scenejson, function( data ){
 
         // POVs
         let povs = data.viewpoints;

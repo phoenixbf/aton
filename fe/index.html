@@ -41,6 +41,26 @@
     ATON FrontEnd
     Author: B. Fanini
 ===========================================================================*/
+const JSONSCENE_PING = 5000;
+
+let jsonSceneURL = undefined;
+
+let tryLoadScene = function(){
+    ATON.loadScene(jsonSceneURL, onSceneJSONSuccess).fail(()=>{
+        console.log("Scene JSON not found.");
+
+        $('#idLoader').show();
+        $("#idLoader").html("<img src='../res/processing.png'>");
+        
+        setTimeout( tryLoadScene, JSONSCENE_PING);
+        });
+};
+
+let onSceneJSONSuccess = function(){
+    console.log("Scene JSON found and loaded.");
+
+    $("#idLoader").html("<img src='../res/loader.png'>");
+};
 
 window.addEventListener( 'load', ()=>{
     ATON.FE.setup();
@@ -63,7 +83,8 @@ window.addEventListener( 'load', ()=>{
 
     if (!ATON.FE.scene) return;
 
-    ATON.loadScene(ATON.FE.MODELS_ROOT+ATON.FE.scene+"/scene.json");
+    jsonSceneURL = ATON.FE.MODELS_ROOT+ATON.FE.scene+"/scene.json";
+    tryLoadScene();
 });
 </script>
 </head>
@@ -90,7 +111,7 @@ window.addEventListener( 'load', ()=>{
     <div class="atonPopupContainer" style="display:none;" id="idPopup" onclick="ATON.FE.popupClose()"></div>
 
     <!-- Loader -->
-    <div class="atonCenterLoader" style="display:none;" id="idLoader"><img src="../res/loader.png"></div>
+    <div class="atonCenterLoader" style="display:none;" id="idLoader"></div>
 
     <!-- Powered by -->
     <div class="atonToolbar atonToolbar-bottom poweredBy" >

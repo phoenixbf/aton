@@ -643,7 +643,7 @@ input[type="number"]:hover {
     background-color: #666666;
     color: #FFF;
 
-    overflow-y: scroll;
+    overflow-y: auto;
 
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -653,6 +653,12 @@ input[type="number"]:hover {
 
     touch-action: auto;
     -webkit-user-drag: auto;
+
+    text-align: center;
+}
+
+label {
+    font-size: smaller;
 }
 
 .atonizerBlockGroup {
@@ -677,7 +683,7 @@ input[type="number"]:hover {
     border-radius: 20px;
 
     padding: 15px;
-    margin: 2px;
+    margin: 0px;
 
     font-size: larger;
     font-weight: bold;
@@ -689,6 +695,8 @@ input[type="number"]:hover {
 .atonizerOptionBlock {
     display: inline-block;
     vertical-align: top;
+
+    white-space: nowrap;
 }
 
 .atonizerSubtitle {
@@ -707,7 +715,10 @@ input[type="number"]:hover {
     width: 90%;
 
     background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 20px;
+    /*border-radius: 20px;*/
+
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
 
     margin-bottom: 10px;
 }

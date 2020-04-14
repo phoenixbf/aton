@@ -18,7 +18,7 @@ const ATONIZER_COMPL_F = "_ATONIZED_.txt";
 
 const ATONIZER_COPY_OPTS = {
     expand: true,
-    overwrite: true,
+    overwrite: false, //true,
     filter: ["**/*.jpg","**/*.png","*.jpg","*.png"]
 };
 
@@ -41,14 +41,17 @@ class AtonizerFolderProcessor {
         this.inputFolder  = (args.infolder)? args.infolder : "";
         this.outputFolder = (args.outfolder)? args.outfolder : "";
         this.pattern      = (args.pattern)? args.pattern : "*.obj";
-        this.options      = (args.options)? args.options : "noRotation";
+        //this.options      = (args.options)? args.options : "noRotation";
 
-        this.bGenerateSJSON     = true;
+        this.bYup               = (args.bYup !== undefined)? args.bYup : false;
+        this.bGenerateSJSON     = (args.bGenerateSJSON !== undefined)? args.bGenerateSJSON : true;
         this.bCompressGeom      = (args.bCompressGeom !== undefined)? args.bCompressGeom : true;
         this.bUseInlineTextures = (args.bUseInlineTextures !== undefined)? args.bUseInlineTextures : false;
-        this.resizeTextures     = 4096;
+        this.maxTextureRes      = (args.maxTextureRes !== undefined)? args.maxTextureRes : 4096;
+        this.bSmoothNormals     = (args.bSmoothNormals !== undefined)? args.bSmoothNormals : false; 
 
         this._OSGJS_OPTS = "JPEG_QUALITY 60 useExternalBinaryArray mergeAllBinaryFiles";
+        
         this._bRunning = false;
 
         //console.log(args);
@@ -90,10 +93,12 @@ class AtonizerFolderProcessor {
 
         // Option string
         let addOpts = '';
+        if (!this.bYup) addOpts += 'noRotation ';
         if (this.bUseInlineTextures) addOpts += 'inlineImages ';
-        if (this.resizeTextures>0) addOpts += 'resizeTextureUpToPowerOf2='+this.resizeTextures+' ';
+        if (this.maxTextureRes && this.maxTextureRes>0) addOpts += 'resizeTextureUpToPowerOf2='+this.maxTextureRes+' ';
 
-        let ostr = '-O "'+this.options+' '+this._OSGJS_OPTS+' '+addOpts+'"';
+        //let ostr = '-O "'+this.options+' '+this._OSGJS_OPTS+' '+addOpts+'"';
+        let ostr = '-O "'+this._OSGJS_OPTS+' '+addOpts+'"';
 
         fs.closeSync(fs.openSync(lockfile, 'w'));
 
@@ -160,7 +165,7 @@ class AtonizerFolderProcessor {
             console.log("COMPLETED");
 
             // Copy required resources when I/O folders differ
-            if (inFolder != outFolder){
+            if (inFolder != outFolder && !self.bUseInlineTextures){
                 console.log("I/O folders are different. Copying required resources...");
 
                 copy(inFolder, outFolder, ATONIZER_COPY_OPTS, function(error, results) {
@@ -168,8 +173,10 @@ class AtonizerFolderProcessor {
                     else {
                         // results[i].src, results[i].dest
                         console.info('Copied ' + results.length + ' files');
-                        if (onComplete) onComplete();
+                        //if (onComplete) onComplete();
                         }
+
+                    if (onComplete) onComplete();
                     });
                 }
             // In-place conversion

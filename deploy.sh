@@ -1,2 +1,2 @@
 pm2 start ecosystem.config.js
-forever start services/ATON.SERVICE.atonizer.js
+pm2 start -x services/ATON.SERVICE.atonizer.js

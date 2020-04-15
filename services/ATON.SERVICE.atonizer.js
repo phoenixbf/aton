@@ -169,6 +169,7 @@ app.post('/atonizer/api/process', (req, res) => {
     args.bSmoothNormals     = R.bSmoothNormals;
     args.bUseInlineTextures = R.bUseInlineTextures;
     args.maxTextureRes      = R.maxTextureRes;
+    args.simplifyGeom       = R.simplifyGeom;
 
 
     console.log(args);

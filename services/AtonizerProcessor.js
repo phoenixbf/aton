@@ -48,7 +48,8 @@ class AtonizerFolderProcessor {
         this.bCompressGeom      = (args.bCompressGeom !== undefined)? args.bCompressGeom : true;
         this.bUseInlineTextures = (args.bUseInlineTextures !== undefined)? args.bUseInlineTextures : false;
         this.maxTextureRes      = (args.maxTextureRes !== undefined)? args.maxTextureRes : 4096;
-        this.bSmoothNormals     = (args.bSmoothNormals !== undefined)? args.bSmoothNormals : false; 
+        this.bSmoothNormals     = (args.bSmoothNormals !== undefined)? args.bSmoothNormals : false;
+        this.simplifyGeom       = (args.simplifyGeom !== undefined)? args.simplifyGeom : 1.0;
 
         this._OSGJS_OPTS = "JPEG_QUALITY 60 useExternalBinaryArray mergeAllBinaryFiles";
         
@@ -93,12 +94,23 @@ class AtonizerFolderProcessor {
 
         // Option string
         let addOpts = '';
-        if (!this.bYup) addOpts += 'noRotation ';
-        if (this.bUseInlineTextures) addOpts += 'inlineImages ';
-        if (this.maxTextureRes && this.maxTextureRes>0) addOpts += 'resizeTextureUpToPowerOf2='+this.maxTextureRes+' ';
+        let addOptsJS = this._OSGJS_OPTS+' ';
 
-        //let ostr = '-O "'+this.options+' '+this._OSGJS_OPTS+' '+addOpts+'"';
-        let ostr = '-O "'+this._OSGJS_OPTS+' '+addOpts+'"';
+        if (!this.bYup) addOpts += 'noRotation ';
+
+        if (this.bUseInlineTextures) addOptsJS += 'inlineImages ';
+        if (this.maxTextureRes && this.maxTextureRes>0) addOptsJS += 'resizeTextureUpToPowerOf2='+this.maxTextureRes+' ';
+
+        // single pass
+        //let ostr = '-O "'+addOptsJS+' '+addOpts+'"';
+        
+        let ostr   = '-O "'+addOpts+'"';
+        let ostrjs = '-O "'+addOptsJS+'"';
+
+        if (this.simplifyGeom && this.simplifyGeom < 1.0) ostr += ' --simplify '+this.simplifyGeom+' ';
+
+        console.log(ostr);
+        console.log(ostrjs);
 
         fs.closeSync(fs.openSync(lockfile, 'w'));
 
@@ -123,11 +135,36 @@ class AtonizerFolderProcessor {
                 let fExt      = IFile.ext;     // eg: .obj
                 let fName     = IFile.name + IFile.ext; // model.obj
 
+                let tmpout      = outFolder+fBasename+"_m_.osg";
                 let outfilepath = outFolder+fBasename+".osgjs";
 
+                // single pass
+/*
                 let argstr = ostr+' '+fName+'.gles '+outfilepath;
-                console.log(argstr);
-                
+                execSync('osgconv '+argstr, {stdio: 'inherit'});
+*/
+                // tmp
+                let argstr = ostr+' '+fName+' '+tmpout;
+                execSync('osgconv '+argstr, {stdio: 'inherit'});
+
+                // Dirty, FIXME:
+                replace({
+                    regex: "Material {",
+                    replacement: "xxxMaterial {",
+                    paths: [ tmpout ],
+                    recursive: true,
+                    silent: true,
+                });
+                replace({
+                    regex: "name ",
+                    replacement: "xxxname",
+                    paths: [ tmpout ],
+                    recursive: true,
+                    silent: true,
+                });
+
+                // final
+                argstr = ostrjs+' '+tmpout+'.gles '+outfilepath;
                 execSync('osgconv '+argstr, {stdio: 'inherit'});
 
                 // Push into scene json
@@ -136,7 +173,10 @@ class AtonizerFolderProcessor {
 
                 // Minify osgjs
                 let jsonf = JSON.parse( fs.readFileSync(outfilepath) );
-                //TODO: deleteKey(...)
+                // Clean...
+                //jsonf = deleteKey(jsonf, {key: "Name"});
+                //jsonf = deleteKey(jsonf, {key: "osg.Material"});
+
                 fs.writeFileSync(outfilepath, JSON.stringify(jsonf));
                 
                 if (self.bCompressGeom){
@@ -146,14 +186,14 @@ class AtonizerFolderProcessor {
                         paths: [ outfilepath ],
                         recursive: true,
                         silent: true,
-                        });
-                    }
+                    });
                 }
+            }
 
             if (self.bCompressGeom && files.length>0){
                 console.log("Compressing geometries...");
                 execSync('gzip -q -f --best '+outFolder+'/*.bin', {stdio: 'inherit'});
-                }
+            }
 
             // Completed
             if (self.bGenerateSJSON) fs.writeFileSync(outFolder+"scene.json", JSON.stringify(sjson));
@@ -174,18 +214,18 @@ class AtonizerFolderProcessor {
                         // results[i].src, results[i].dest
                         console.info('Copied ' + results.length + ' files');
                         //if (onComplete) onComplete();
-                        }
+                    }
 
                     if (onComplete) onComplete();
-                    });
-                }
+                });
+            }
             // In-place conversion
             else {
                 console.log("Assets converted in-place.");
                 if (onComplete) onComplete();
-                }
-            });
-        }
+            }
+        });
+    }
 };
 
 

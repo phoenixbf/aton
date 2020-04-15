@@ -11,6 +11,9 @@
 <link rel="stylesheet" type="text/css" href="../../css/aton.css">
 
 <script type="text/javascript" src="../../vendors/jquery.min.js"></script>
+<!--
+<script type="text/javascript" src="../services/node_modules/js-owncloud-client/browser/bundle.js"></script>
+-->
 
 <script>
 //============================================================================
@@ -21,6 +24,7 @@ let bProcessing = false;
 let bCanProcess = false;
 let feURL = undefined;
 
+let baseHostURL = location.protocol+'//'+location.hostname+(location.port? ':'+location.port: '') + "/";
 
 let requestProcess = function(){
     if (!bCanProcess) return;
@@ -62,13 +66,14 @@ let requestProcess = function(){
     args.bCompressGeom = $("#compressGeometry").prop("checked");
     args.bUseInlineTextures = $("#inlineTex").prop("checked");
     args.maxTextureRes = parseInt($("#maxTextureRes").val());
+    args.simplifyGeom  = parseFloat(1.0 - parseFloat($("#simplifyGeometry").val())).toFixed(1);
 
     // Create FE link
     let outentry = configdata.outputRootFolders[$("#outFolder").val()];
     if (outentry && !bInPlace){
         feURL = outentry.puburl;
         feURL = feURL.replace("$ID$", idproj);
-        feURL = location.protocol+'//'+location.hostname+(location.port? ':'+location.port: '') + "/" + feURL;
+        feURL = baseHostURL + feURL;
 
         console.log(feURL);
         }
@@ -124,16 +129,23 @@ let validateFields = function(){
 };
 
 let setupPage = function(){
-    $("#inPlaceConv").change(()=>{
+    $("#inPlaceConv").on('input', ()=>{
         if (document.getElementById('inPlaceConv').checked) $("#idOutBlock").hide();
         else $("#idOutBlock").show();
 
         bCanProcess = validateFields();
-        });
+    });
+
+    $("#simplifyGeometry").on('input', ()=>{
+        let v = parseFloat($("#simplifyGeometry").val()) * 100.0;
+
+        if (v <= 0.0) $("#simplificationVal").html("none");
+        else $("#simplificationVal").html(v + "%");
+    });
 
     $('#outProject').on('keyup', ()=>{
         bCanProcess = validateFields();
-        });
+    });
 };
 
 window.addEventListener( 'load', ()=>{
@@ -198,6 +210,8 @@ window.addEventListener( 'load', ()=>{
                     <select id="pattern">
                         <option value="*.obj">*.obj</option>
                         <option value="*.osg">*.osg</option>
+                        <option value="*.fbx">*.fbx</option>
+                        <option value="*.dae">*.dae</option>
                     </select>
                     <div class="selectArrow"></div>
                 </div>
@@ -256,8 +270,8 @@ window.addEventListener( 'load', ()=>{
                     <label for="smoothNorm">Smooth Normals</label>
                     <input id="smoothNorm" type="checkbox"><br>
 
-                    <label for="simplifyGeometry">Simplification (0: none, 10: max)</label>
-                    <input id="simplifyGeometry" type="number" min="0" max="10" value="0" style="width: 50px;">
+                    <label for="simplifyGeometry">Simplification (<span id="simplificationVal">none</span>)</label>
+                    <input id="simplifyGeometry" type="range" min="0.0" max="0.8" value="0.0" step="0.1" style="width: 150px;">
                 </div>
             </div>
 

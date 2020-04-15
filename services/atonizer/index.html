@@ -42,18 +42,19 @@ let requestProcess = function(){
     
     let idproj = "";
     if (bInPlace){ // In-place
-        args.outfolder = $("#inFolder").val();
+        args.outfolder = args.infolder;
         //idproj = $("#inFolder").val().split(ATONIZER_SUBDIR_SEP)[1];
         }
     else {
         // Sanitize
-        idproj = $("#outProject").val();
+        idproj = $("#outProject").val().toLowerCase();
         idproj = idproj.replace(/[^\w\s]/gi, '');
         idproj = idproj.replace(/ /g,'');
         idproj += "/";
 
         args.outfolder = $("#outFolder").val() + ATONIZER_SUBDIR_SEP + idproj;
         }
+
     args.pattern = $("#pattern").val();
 
     // Options

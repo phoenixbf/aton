@@ -11,6 +11,7 @@ const ATONIZER_SUBDIR_SEP = ":";
 const express = require('express')
 const app  = express();
 const fork = require('child_process').fork;
+const exec = require('child_process');
 const fs   = require('fs');
 const path = require('path');
 //const { spawn } = require('child_process').spawn;
@@ -29,35 +30,7 @@ if (!aConfig){
     exit(0);
 }
 
-/*
-const walkSync = (dir, filelist = []) => {
-    fs.readdirSync(dir).forEach(file => {
-        filelist = fs.statSync(path.join(dir, file)).isDirectory()
-            ? walkSync(path.join(dir, file), filelist)
-            : filelist.concat(path.join(dir, file));
 
-        });
-
-return filelist;
-};
-
-
-const listSubDirs = function(dir, subdir="", filelist=[]){
-    fs.readdirSync(dir).forEach(file => {
-        let absp = dir+"/"+file; //path.join(dir, file);
-
-        if (fs.statSync(absp).isDirectory()){
-            subdir += file+"/";
-            filelist.push(subdir);
-
-            listSubDirs(dir+subdir, subdir, filelist);
-            }
-
-        });
-
-    return filelist;
-};
-*/
 let listSubDirs = function(absdir, subdir=""){
     let results = [];
     let list    = fs.readdirSync(absdir);
@@ -147,19 +120,42 @@ app.get("/atonizer/config", function(req,res){
 
 app.post('/atonizer/api/process', (req, res) => {
     console.log("Requested process");
+
+    let R = req.body;
     //console.log(req.body);
 
-    let inD  = req.body.infolder.split(ATONIZER_SUBDIR_SEP);
-    let outD = req.body.outfolder.split(ATONIZER_SUBDIR_SEP);
-    let infolder  = aConfig.inputRootFolders[inD[0]].path + "/"+ inD[1];
-    let outfolder = aConfig.outputRootFolders[outD[0]].path + "/"+ outD[1];
+    let inD  = R.infolder.split(ATONIZER_SUBDIR_SEP);
+    let outD = R.outfolder.split(ATONIZER_SUBDIR_SEP);
 
-    //let infolder  = req.body.infolder + "/" + req.body.insubdir;
-    //let outfolder = req.body.outfolder + "/" + req.body.outsubdir;
+    if (inD.length < 2 || outD.length < 2){
+        res.json({ success: false });
+        console.log("ERROR: missing splitter");
+        return;
+        }
+
+    let inEntry  = aConfig.inputRootFolders[inD[0]];
+    let outEntry = aConfig.outputRootFolders[outD[0]];
+    if (!inEntry || !outEntry){
+        res.json({ success: false });
+        console.log("ERROR: invalid input/output config entries");
+        return;
+        }
+
+    let infolder  = inEntry.path + "/"+ inD[1];
+    let outfolder = outEntry.path + "/"+ outD[1];
+
+    if (!infolder || !outfolder){
+        res.json({ success: false });
+        console.log("ERROR: invalid input/output folders");
+        return;
+        }
+
+    //infolder  = infolder.toLowerCase();
+    //outfolder = outfolder.toLowerCase();
 
     if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
 
-    let patt      = req.body.pattern;
+    let patt = R.pattern;
     //let optstring = req.body.optstr;
 
     let args = {};
@@ -168,11 +164,11 @@ app.post('/atonizer/api/process', (req, res) => {
     args.pattern   = patt;
     //args.options   = optstring;
     
-    args.bCompressGeom      = req.body.bCompressGeom;
-    args.bYup               = req.body.bYup;
-    args.bSmoothNormals     = req.body.bSmoothNormals;
-    args.bUseInlineTextures = req.body.bUseInlineTextures;
-    args.maxTextureRes      = req.body.maxTextureRes;
+    args.bCompressGeom      = R.bCompressGeom;
+    args.bYup               = R.bYup;
+    args.bSmoothNormals     = R.bSmoothNormals;
+    args.bUseInlineTextures = R.bUseInlineTextures;
+    args.maxTextureRes      = R.maxTextureRes;
 
 
     console.log(args);
@@ -181,7 +177,6 @@ app.post('/atonizer/api/process', (req, res) => {
     let aproc = fireAtonizerProcessor(args, ()=>{
         res.json({ success: true });
         });
-
 });
 
 app.listen(PORT_ATONIZER, ()=>{

@@ -41,26 +41,7 @@
     ATON FrontEnd
     Author: B. Fanini
 ===========================================================================*/
-const JSONSCENE_PING = 5000;
-
 let jsonSceneURL = undefined;
-
-let tryLoadScene = function(){
-    ATON.loadScene(jsonSceneURL, onSceneJSONSuccess).fail(()=>{
-        console.log("Scene JSON not found.");
-
-        $('#idLoader').show();
-        $("#idLoader").html("<img src='../res/processing.png'>");
-        
-        setTimeout( tryLoadScene, JSONSCENE_PING);
-        });
-};
-
-let onSceneJSONSuccess = function(){
-    console.log("Scene JSON found and loaded.");
-
-    $("#idLoader").html("<img src='../res/loader.png'>");
-};
 
 window.addEventListener( 'load', ()=>{
     ATON.FE.setup();
@@ -76,7 +57,7 @@ window.addEventListener( 'load', ()=>{
     let canvas = document.getElementById('idView');
 
     // Realize
-    ATON.shadersFolder = "../res/shaders";
+    ATON.shadersFolder = ATON.FE.RES_ROOT+"shaders";
     ATON.realize(canvas);
 
     ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7]);
@@ -84,8 +65,13 @@ window.addEventListener( 'load', ()=>{
     if (!ATON.FE.scene) return;
 
     jsonSceneURL = ATON.FE.MODELS_ROOT+ATON.FE.scene+"/scene.json";
-    tryLoadScene();
+    ATON.FE.tryLoadSceneJSON(jsonSceneURL);
 });
+
+ATON.on("FE_SceneJSONloaded", ()=>{
+    //
+});
+
 </script>
 </head>
 

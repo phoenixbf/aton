@@ -1294,6 +1294,8 @@ ATON.loadScene = function(scenejson, onComplete){
                 }
             }
         
+        if (data.ibl)
+            ATON.addIBL(scenefolder+data.ibl);
         
         // SceneGraph
         let sg = data.scenegraph;

@@ -6,7 +6,7 @@
                 "transformstring": "5 0 0"
             },
             "ground":{
-                "urls": "../ground/root.osgjs"
+                "urls": "../grounds/plane10x10-10x.osgjs"
             },
             "proceduralhebes":{
                 "urls": "../hebe/root.osgjs",

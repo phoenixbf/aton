@@ -1,0 +1,135 @@
+{
+  "Generator": "OpenSceneGraph 3.4.2", 
+  "Version": 7, 
+  "osg.Node": {
+    "Children": [ {
+      "osg.Node": {
+        "UniqueID": 0, 
+        "Name": "Pinus", 
+        "Children": [ {
+          "osg.Node": {
+            "UniqueID": 1, 
+            "Name": "f001", 
+            "StateSet": {
+              "osg.StateSet": {
+                "UniqueID": 2, 
+                "AttributeList": [ {
+                  "osg.Material": {
+                    "UniqueID": 4, 
+                    "Name": "vegvilla_mat", 
+                    "Ambient": [ 1, 1, 1, 0], 
+                    "Diffuse": [ 1, 1, 1, 1], 
+                    "Emission": [ 0.6, 0.6, 0.6, 0], 
+                    "Shininess": 1, 
+                    "Specular": [ 0.6, 0.6, 0.6, 0]
+                  }
+                },
+                {
+                  "osg.BlendFunc": {
+                    "UniqueID": 5, 
+                    "DestinationAlpha": "ONE_MINUS_SRC_ALPHA", 
+                    "DestinationRGB": "ONE_MINUS_SRC_ALPHA", 
+                    "SourceAlpha": "SRC_ALPHA", 
+                    "SourceRGB": "SRC_ALPHA"
+                  }
+                },
+                {
+                  "osg.CullFace": {
+                    "UniqueID": 6, 
+                    "Mode": "DISABLE"
+                  }
+                },
+                {
+
+                } ], 
+                "RenderingHint": "TRANSPARENT_BIN", 
+                "TextureAttributeList": [ [ {
+                  "osg.Texture": {
+                    "UniqueID": 3, 
+                    "File": "pinuspinea.png", 
+                    "MagFilter": "LINEAR", 
+                    "MinFilter": "LINEAR_MIPMAP_LINEAR", 
+                    "WrapS": "CLAMP_TO_EDGE", 
+                    "WrapT": "CLAMP_TO_EDGE"
+                  }
+                } ] ]
+              }
+            }, 
+            "Children": [ {
+              "osg.Geometry": {
+                "UniqueID": 7, 
+                "PrimitiveSetList": [ {
+                  "DrawElementsUShort": {
+                    "UniqueID": 12, 
+                    "Indices": {
+                      "Array": { 
+                        "Uint16Array": { 
+                          "File": "my_pinuspinea.bin",
+                          "Size": 22,
+                          "Offset": 0
+                        }
+                      }, 
+                      "ItemSize": 1, 
+                      "Type": "ELEMENT_ARRAY_BUFFER"
+                    }, 
+                    "Mode": "TRIANGLE_STRIP"
+                  }
+                } ], 
+                "VertexAttributeList": {
+                  "Color": {
+                    "UniqueID": 10, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "my_pinuspinea.bin",
+                        "Size": 16,
+                        "Offset": 44
+                      }
+                    }, 
+                    "ItemSize": 4, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Normal": {
+                    "UniqueID": 9, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "my_pinuspinea.bin",
+                        "Size": 16,
+                        "Offset": 300
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "TexCoord0": {
+                    "UniqueID": 11, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "my_pinuspinea.bin",
+                        "Size": 16,
+                        "Offset": 492
+                      }
+                    }, 
+                    "ItemSize": 2, 
+                    "Type": "ARRAY_BUFFER"
+                  }, 
+                  "Vertex": {
+                    "UniqueID": 8, 
+                    "Array": { 
+                      "Float32Array": { 
+                        "File": "my_pinuspinea.bin",
+                        "Size": 16,
+                        "Offset": 620
+                      }
+                    }, 
+                    "ItemSize": 3, 
+                    "Type": "ARRAY_BUFFER"
+                  }
+                }
+              }
+            } ]
+          }
+        } ]
+      }
+    } ]
+  }
+}

@@ -13,13 +13,23 @@ ATON.FE = {};
 // root paths
 ATON.FE.RES_ROOT    = "../res/";
 ATON.FE.MODELS_ROOT = "../collection/";
-ATON.FE.AUDIO_ROOT  = ATON.FE.RES_ROOT+"audio/";
-ATON.FE.QV_ROOT     = ATON.FE.RES_ROOT+"qv/";
+//ATON.FE.AUDIO_ROOT  = ATON.FE.RES_ROOT+"audio/";
+//ATON.FE.QV_ROOT     = ATON.FE.RES_ROOT+"qv/";
+
+ATON.FE.SCENEJSON_INT = 5000;
 
 ATON.FE.scene = ATON.utils.getURLparams().s;
 ATON.FE.vrc   = ATON.utils.getURLparams().vrc;
 
+ATON.FE._bSceneProcessing = false;
 ATON.FE._bPopup = false;
+
+// Events
+ATON.registerEvents([
+    "FE_SceneJSONloaded"
+]);
+
+
 
 // multi-user colors
 ATON.FE.uColors = [
@@ -49,6 +59,8 @@ ATON.FE.setup = function(){
         });
 
     $('#idSearch').on('keyup', ATON.FE.searchField );
+
+    document.getElementById( "idVRCpanel" ).addEventListener( 'keydown', (e)=>{ e.stopPropagation(); }, false);
 
     if (ATON.FE.vrc) ATON.FE.setupVRoadcast();
 };
@@ -134,26 +146,25 @@ ATON.FE.setupVRoadcast = function(){
 };
 
 // UI Buttons
+ATON.FE.uiToggleVRoadcastPanel = function(){
+    $('#idVRCpanel').toggle();
+};
+
 ATON.FE.uiAddHomeButton = function(idToolbar){
-    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.requestHome(1.0)'><img src='../res/ii-inv-home.png'></button>");
+    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.requestHome(1.0)'><img src='"+ATON.FE.RES_ROOT+"ii-inv-home.png'></button>");
 };
 ATON.FE.uiAddFullscreenButton = function(idToolbar){
-    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.FE.toggleFullscreen()'><img src='../res/ii-inv-fs.png'></button>");
+    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.FE.toggleFullscreen()'><img src='"+ATON.FE.RES_ROOT+"ii-inv-fs.png'></button>");
 };
 
 ATON.FE.uiAddVRButton = function(idToolbar){
-    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.toggleVR()'><img src='../res/ii-inv-vr.png'></button>");
+    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.toggleVR()'><img src='"+ATON.FE.RES_ROOT+"ii-inv-vr.png'></button>");
 };
 ATON.FE.uiAddQRButton = function(idToolbar){
-    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.FE.popupQR()'><img src='../res/ii-qr.png'></button>");
+    $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.FE.popupQR()'><img src='"+ATON.FE.RES_ROOT+"ii-qr.png'></button>");
 };
 ATON.FE.uiAddVRoadcastButton = function(idToolbar){
     $("#"+idToolbar).append("<button id='idUserColor' type='button' class='atonBTN' onclick='ATON.FE.uiToggleVRoadcastPanel()'></button>");
-};
-
-
-ATON.FE.uiToggleVRoadcastPanel = function(){
-    $('#idVRCpanel').toggle();
 };
 
 
@@ -187,6 +198,31 @@ ATON.FE.toggleFullscreen = function(b){
             //else
             }
         }
+};
+
+// Scene management
+ATON.FE.tryLoadSceneJSON = function(sceneJSONurl){
+    ATON.loadScene(sceneJSONurl, ATON.FE.onSceneJSONSuccess).fail(()=>{
+        console.log("Scene JSON not found.");
+
+        $('#idLoader').show();
+        if (!ATON.FE._bSceneProcessing){
+            ATON.FE._bSceneProcessing = true;
+            $("#idLoader").html("<img src='"+ATON.FE.RES_ROOT+"processing.png'>");
+        }
+        setTimeout(()=>{
+            ATON.FE.tryLoadSceneJSON(sceneJSONurl)
+            }, ATON.FE.SCENEJSON_INT);
+        });
+};
+
+ATON.FE.onSceneJSONSuccess = function(){
+    console.log("Scene JSON found and loaded.");
+    ATON.FE._bSceneProcessing = false;
+
+    $("#idLoader").html("<img src='"+ATON.FE.RES_ROOT+"loader.png'>");
+
+    ATON.fireEvent("FE_SceneJSONloaded");
 };
 
 // Search in descriptors

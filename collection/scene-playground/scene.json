@@ -1,0 +1,24 @@
+{
+    "ibl": "../../res/ibl/default",
+
+    "scenegraph":{
+        "nodes":{
+            "hebe":{
+                "urls": "../hebe/root.osgjs",
+                "transformstring": "-4 4 0"
+            },
+            "ground":{
+                "urls": "plane10x10.osgjs"
+            },
+            "item":{
+                "urls": "../../wapps/collab/assets/tree1/root.osgjs"
+            }
+        },
+
+        "edges":[
+            [".","hebe"],
+            [".","ground"]
+        ]
+
+    }
+}

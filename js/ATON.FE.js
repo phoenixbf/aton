@@ -26,7 +26,8 @@ ATON.FE._bPopup = false;
 
 // Events
 ATON.registerEvents([
-    "FE_SceneJSONloaded"
+    "FE_SceneJSONloaded",
+    "FE_SphericalAnnotation"
 ]);
 
 
@@ -60,9 +61,13 @@ ATON.FE.setup = function(){
 
     $('#idSearch').on('keyup', ATON.FE.searchField );
 
-    document.getElementById( "idVRCpanel" ).addEventListener( 'keydown', (e)=>{ e.stopPropagation(); }, false);
+    //document.getElementById( "idVRCpanel" ).addEventListener( 'keydown', (e)=>{ e.stopPropagation(); }, false);
+    $('input').keydown((e)=>{e.stopPropagation(); });
+    $('#idPopup').keydown((e)=>{e.stopPropagation(); });
 
     if (ATON.FE.vrc) ATON.FE.setupVRoadcast();
+
+    //ATON._bQueryUseOcclusion = false;
 };
 
 // VRoadcast
@@ -257,23 +262,36 @@ ATON.FE.searchField = function(){
 };
 
 // Annotations
-ATON.FE.addSphericalAnnotation = function(did){
+ATON.FE.addSphericalAnnotation = function(p, r, did, content, parentdid){
     if (!did || did.length <3) return;
 
-    let D = ATON.createDescriptorSphere(ATON._hoveredVisData.p, ATON._hoverRadius, ATON.getWorldTransform().getMatrix()).as(did);
-    D.attachToRoot();
+    let D = ATON.createDescriptorSphere(p, r, ATON.getWorldTransform().getMatrix()).as(did);
+    
+    if (parentdid) D.attachTo(parentdid);
+    else D.attachToRoot();
 
     let P = ATON.getCurrentPOVcopy();
-    D.onSelect = ()=>{ ATON.requestPOV(P); };
+    D._eye     = P.pos;
+    D._content = content;
 
     console.log("Added DescriptorSphere: "+did);
+
+    ATON.fireEvent("FE_SphericalAnnotation",{
+        did: did,
+        con: content,
+        pos: p,
+        rad: r,
+        eye: P.pos
+        })
 }
 
 // Popups
 ATON.FE.popupShow = function(htmlcontent){
     if (ATON.FE._bPopup) return false;
 
-    $('#idPopup').html("<div class='atonPopup'>"+htmlcontent+"</div>");
+    $('#idPopup').html("<div class='atonPopup' id='idPopupContent'>"+htmlcontent+"</div>");
+
+    $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
 
     $('#idPopup').fadeIn();
     ATON.FE._bPopup = true;
@@ -286,21 +304,50 @@ ATON.FE.popupClose = function(){
 }
 
 
-ATON.FE.popupAnnotation = function(){
+ATON.FE.popupAddAnnotation = function(parentdid){
     if (ATON._hoveredVisData === undefined) return;
     if (ATON._vrState) return;
 
     let htmlcontent = "<h1>New Annotation</h1>";
-    htmlcontent += "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius;
-    htmlcontent += "<div class='atonBTN'></div>";
+    htmlcontent += "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius+"<br><br>";
 
-    ATON.FE.popupShow(htmlcontent);
+    htmlcontent += "<label for='did'>ID:</label><input id='did' type='text' maxlength='11' size='11' autofocus><br>";
+    htmlcontent += "<textarea id='acontent' style='width:80%; height:50px'></textarea><br>";
+
+    htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    //$("#did").focus();
+    //$("#did").val("");
+
+    $("#idAnnOK").click(()=>{
+        ATON.FE.popupClose();
+        ATON.FE.addSphericalAnnotation(
+            ATON._hoveredVisData.p, 
+            ATON._hoverRadius, 
+            String($("#did").val()),
+            String($("#acontent").val()),
+            parentdid
+            );
+    });
+};
+
+ATON.FE.popupAnnotationContent = function(D){
+    if (!D) return;
+    if (!D._content) return;
+
+    let htmlcontent = "<h1>"+D.getUniqueID()+"</h1>";
+    htmlcontent += "<div>";
+    htmlcontent += D._content;
+    htmlcontent += "</div><br><br>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
 };
 
 ATON.FE.popupQR = function(){
     let htmlcontent = "<h1>Share</h1>";
-    htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div>";
-    //htmlcontent += "<br><div class='wappButton wappGreen' style='display:block' onclick='REDRASK.popupClose()'>OK</div></div>";
+    htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
@@ -310,50 +357,74 @@ ATON.FE.popupQR = function(){
 };
 
 
+// Spatial UI
+ATON.FE.buildSpatialUI = function(){
+    ATON.FE._infotrans = new osg.MatrixTransform();
+    ATON.FE._infotrans.setCullingActive( false );
 
-// 3D Annotations
-ATON.FE.showModalNote = function(){
-    if (ATON._hoveredVisData === undefined) return;
-    if (ATON._vrState) return;
+    let infoat = new osg.AutoTransform();
+    //infoat.setPosition([0,-0.5,0]);
+    infoat.setAutoRotateToScreen(true);
+    infoat.setAutoScaleToScreen(true);
 
-    Swal.fire({
-        title: 'New Annotation',
-        text: "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius,
-        background: '#000',
-        //type: 'info',
-        input: 'text',
-        inputPlaceholder: 'id',
-        confirmButtonText: 'ADD'
-    }).then((result)=>{
-        let did = result.value;
-        if (!did || did.length <3) return;
+/*
+    infoat.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
+    infoat.getOrCreateStateSet().setAttributeAndModes(
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+        );
 
-        let D = ATON.createDescriptorSphere(ATON._hoveredVisData.p, ATON._hoverRadius, ATON.getWorldTransform().getMatrix()).as(did);
-        D.attachToRoot();
+    ATON.FE._infotrans.getOrCreateStateSet().setRenderingHint('TRANSPARENT_BIN');
+    ATON.FE._infotrans.getOrCreateStateSet().setAttributeAndModes(
+        new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA), 
+        osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
+        );
+*/
 
-        let P = ATON.getCurrentPOVcopy();
+    let df = new osg.Depth( osg.Depth.ALWAYS );
+    df.setRange(0.0,1.0);
+    df.setWriteMask(false); // important
+    ATON.FE._infotrans.getOrCreateStateSet().setAttributeAndModes( df, osg.StateAttribute.ON | osg.StateAttribute.PROTECTED);
+    //ATON.FE._infotrans.getOrCreateStateSet().setRenderBinDetails(33, 'RenderBin');
 
-        D.onSelect = function(){ ATON.requestPOV(P); };
+    // BG
+    let bgHoffset = 1.0;
+    let bg = osg.createTexturedQuadGeometry(
+        -75.0, -25.0, bgHoffset,      // corner
+        150, 0, 0,       // width
+        0, 50, 0 );     // height
 
-        console.log("Added DescriptorSphere: "+did);
-    });
+    bg.getOrCreateStateSet().setTextureAttributeAndModes(0, ATON.utils.createFillTexture([0,0,0,0.5]));
+    infoat.addChild( bg );
+    //infoat.getOrCreateStateSet().setRenderBinDetails(33, 'RenderBin');
 
+    // text
+    ATON.FE._infotext = new osgText.Text("label");
+    ATON.FE._infotext.setForcePowerOfTwo(true);
+    ATON.FE._infotext.setFontResolution(32);
+    ATON.FE._infotext.setCharacterSize( 40.0 );
+    ATON.FE._infotext.setPosition( [0.0,0.0,2.0] );
+    ATON.FE._infotext.setColor([1,1,1,1]);
+    
+    infoat.addChild( ATON.FE._infotext );
+    ATON.FE._infotrans.addChild(infoat);
+    
+    ATON._rootUI.addChild(ATON.FE._infotrans);
+
+    ATON.FE.switchInfoNode(false);
 };
 
+ATON.FE.switchInfoNode = function(b){
+    if (b) ATON.FE._infotrans.setNodeMask(ATON_MASK_UI);
+    else ATON.FE._infotrans.setNodeMask(0x0);
+};
 
-ATON.FE.qrcode = function(){
-    let url = window.location.href;
-    console.log(url);
+ATON.FE.updateInfoNodeLocation = function(p){
+    let M = ATON.FE._infotrans.getMatrix();
+    osg.mat4.setTranslation(M, p);
+};
 
-    Swal.fire({
-        //type: 'info',
-        html: "<div style='text-align:center; width:260px; height:260px; display:inline-block; padding:10px;'><div id='idQR'></div></div>",
-        background: '#FFF',
-        //type: 'info',
-        //input: 'text',
-        //inputPlaceholder: 'id',
-        //confirmButtonText: 'OK'
-        });
-
-    new QRCode(document.getElementById("idQR"), url);
+ATON.FE.setMainLabelText = function(text, color){
+    ATON.FE._infotext.setText(text);
+    if (color) ATON.FE._infotext.setColor(color);
 };

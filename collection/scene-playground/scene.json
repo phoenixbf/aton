@@ -1,5 +1,5 @@
 {
-    "ibl": "../../res/ibl/default",
+    "ibl": "../../res/ibl/default2",
 
     "scenegraph":{
         "nodes":{
@@ -10,14 +10,16 @@
             "ground":{
                 "urls": "plane10x10.osgjs"
             },
-            "item":{
-                "urls": "../../wapps/collab/assets/tree1/root.osgjs"
+            "columns":{
+                "urls": "../column/root.osgjs",
+                "transformfile": "tl-columns.txt"
             }
         },
 
         "edges":[
             [".","hebe"],
-            [".","ground"]
+            [".","ground"],
+            [".","columns"]
         ]
 
     }

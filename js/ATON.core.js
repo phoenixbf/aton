@@ -883,6 +883,10 @@ ATON.createNode = function(N, mask){
         return (this.getBoundingSphere()._radius > 0.0);
         };
 
+    N.getBoundCenter = function(){
+        return (this.getBoundingSphere()._center);
+        };
+
     // Add a child node (also by ID)
     N.add = function(node){
         let N = undefined;
@@ -1258,13 +1262,15 @@ ATON.createDescriptorProductionFromASCII = function(templatedescr, asciiURL, bTr
 ATON.createDescriptorSphere = function(location, r, M){
     let D = ATON.createNode( new osg.MatrixTransform(), ATON_MASK_DESCRIPTORS );
 
-    if (ATON._unitSphere === undefined) ATON._unitSphere = osg.createTexturedSphere(1.0, 10,10);
+    if (ATON._unitSphere === undefined) ATON._unitSphere = osg.createTexturedSphere(1.0, 13,13);
     D.addChild(ATON._unitSphere);
 
     D.translate(location).scale(r);
 
     // Apply reference frame (as matrix) if provided
     if (M) osg.mat4.multiply(D.getMatrix(), osg.mat4.invert([], M), D.getMatrix());
+
+    ATON._numDescriptors++;
 
     return D;
 };

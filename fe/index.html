@@ -43,6 +43,44 @@
 ===========================================================================*/
 let jsonSceneURL = undefined;
 
+let setupEventListeners = function(){
+    ATON.on("FE_SceneJSONloaded", ()=>{
+        //
+    });
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        //console.log("All resources loaded");
+
+        ATON.FE.buildSpatialUI();
+    });
+
+    // Descriptors
+    ATON.on("ShapeDescriptorHovered", (D)=>{
+        let did = D.getUniqueID();
+
+        ATON.FE.updateInfoNodeLocation(D.getBoundCenter());
+        ATON.FE.setMainLabelText(did);
+        ATON.FE.switchInfoNode(true);
+    });
+    ATON.on("ShapeDescriptorLeft", ()=>{
+        ATON.FE.switchInfoNode(false);
+    });
+
+    // Keyboard
+    ATON.on("KeyPress", (k)=>{
+        if (k === 'n'){
+            ATON.FE.popupAddAnnotation();
+        }
+    });
+
+    ATON.on("MouseRightButton", ()=>{
+        if (!ATON._hoveredDescriptor) return;
+
+        let D = ATON.getDescriptor(ATON._hoveredDescriptor);
+        ATON.FE.popupAnnotationContent(D);
+    });
+};
+
 window.addEventListener( 'load', ()=>{
     ATON.FE.setup();
 
@@ -66,11 +104,10 @@ window.addEventListener( 'load', ()=>{
 
     jsonSceneURL = ATON.FE.MODELS_ROOT+ATON.FE.scene+"/scene.json";
     ATON.FE.tryLoadSceneJSON(jsonSceneURL);
+
+    setupEventListeners();
 });
 
-ATON.on("FE_SceneJSONloaded", ()=>{
-    //
-});
 
 </script>
 </head>

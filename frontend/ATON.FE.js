@@ -1348,7 +1348,7 @@ window.addEventListener( 'load', function () {
                 case "pbr":
                     scenename = "pbr";
                     let bSwitch = false;
-                    ATON.addIBL("../res/ibl/default");
+                    ATON.addIBL("../res/ibl/default2");
 
                     ATON.updateHoverRadius(0.1);
 
@@ -1372,7 +1372,7 @@ window.addEventListener( 'load', function () {
                             bSwitch = !bSwitch;
 
                             if (bSwitch) ATON.addIBL("../res/ibl/desert");
-                            else ATON.addIBL("../res/ibl/default");
+                            else ATON.addIBL("../res/ibl/default2");
                             }
                         });
 

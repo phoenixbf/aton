@@ -14,15 +14,23 @@
 <script>
 //============================================================================
 
-let openSceneID = function(){
-    let sid = $('#idScene').val();
-    if (sid.length < 1) return;
-
-    let feURL = window.location.href + "/fe/?s="+sid;
-    window.location.href = feURL;
-};
 
 window.addEventListener( 'load', ()=>{
+
+    $('#idScene').on('keypress', (e)=>{
+        if(e.which === 13){
+            let sid = $('#idScene').val();
+            if (sid.length < 1) return;
+
+            // Build FE params
+            let feURL = window.location.href + "/fe/?s="+sid;
+            if ($('#idVRC').prop("checked")) feURL += "&vrc=1";
+
+            window.location.href = feURL;
+        }
+    });
+
+
     //TODO: shows scene gallery
 });
 </script>
@@ -34,9 +42,9 @@ window.addEventListener( 'load', ()=>{
     <img src="res/aton-logo.png" style="width:200px; height: auto;">
     <h1>ATON Framework</h1>
 
-    <label for="idScene">Scene ID</label><br>
-    <input id="idScene" type="text" size="20" placeholder="scene ID...">
-    <button id="idFP" type="button" class="atonBTN atonBTN-green" onclick="openSceneID()">OK</button>
+    <label for="idScene">Scene</label><br>
+    <input id="idScene" type="text" size="30" placeholder="Insert scene ID...">
+    <br><input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label>
 </div>
 
 </body>

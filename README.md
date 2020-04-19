@@ -1,6 +1,8 @@
 # ATON 2.0 framework (alpha)
 
-The ATON 2.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* Web-Apps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
+![Header](./res/aton2-header.jpg)
+
+The ATON 2.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D WebApps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop/kiosks, immersive VR)
 * Complex scene-graph manipulation and support for hierarchical culling, instancing, node composition and cascading transformations
 * Immersive VR (WebVR/XR) and (multi)-touch devices interfaces
@@ -26,7 +28,7 @@ cd services/
 npm update
 ```
 
-3) From services folder, deploy ATON *content service* on local machine simply using:
+3) From "services" folder, deploy ATON *content service* on local machine simply using:
 ```
 node ATON.SERVICE.content.js
 ```

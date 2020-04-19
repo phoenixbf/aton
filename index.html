@@ -14,8 +14,16 @@
 <script>
 //============================================================================
 
+let openSceneID = function(){
+    let sid = $('#idScene').val();
+    if (sid.length < 1) return;
+
+    let feURL = window.location.href + "/fe/?s="+sid;
+    window.location.href = feURL;
+};
+
 window.addEventListener( 'load', ()=>{
-    //TODO:
+    //TODO: shows scene gallery
 });
 </script>
 </head>
@@ -25,6 +33,10 @@ window.addEventListener( 'load', ()=>{
 <div style="text-align: center;">
     <img src="res/aton-logo.png" style="width:200px; height: auto;">
     <h1>ATON Framework</h1>
+
+    <label for="idScene">Scene ID</label><br>
+    <input id="idScene" type="text" size="20" placeholder="scene ID...">
+    <button id="idFP" type="button" class="atonBTN atonBTN-green" onclick="openSceneID()">OK</button>
 </div>
 
 </body>

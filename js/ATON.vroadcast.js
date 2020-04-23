@@ -13,7 +13,7 @@ ATON.vroadcast = {};
 
 ATON.vroadcast.resPath = "res/";
 ATON.vroadcast.PORT        = 8081;
-ATON.vroadcast.PORT_SECURE = 8084;
+ATON.vroadcast.PORT_SECURE = 8082;
 
 ATON.vroadcast.socket     = undefined;
 ATON.vroadcast.connected  = false;

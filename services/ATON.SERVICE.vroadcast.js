@@ -74,9 +74,9 @@ if (serviceOptions.secure){
     if (fs.existsSync(VRCpathCert) && fs.existsSync(VRCpathKey)){
         let seccredentials = {
             key: fs.readFileSync(VRCpathKey, 'utf8'),
-            cert: fs.readFileSync(VRCpathCert, 'utf8'),
-            requestCert: false,
-            rejectUnauthorized: false
+            cert: fs.readFileSync(VRCpathCert, 'utf8')
+            //requestCert: false,
+            //rejectUnauthorized: false
         };
         server = https.createServer(app);
         server.listen(PORT_SECURE, ()=>{

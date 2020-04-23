@@ -12,7 +12,8 @@
 ATON.vroadcast = {};
 
 ATON.vroadcast.resPath = "res/";
-ATON.vroadcast.PORT    = 8081;
+ATON.vroadcast.PORT        = 8081;
+ATON.vroadcast.PORT_SECURE = 8084;
 
 ATON.vroadcast.socket     = undefined;
 ATON.vroadcast.connected  = false;
@@ -244,7 +245,7 @@ ATON.vroadcast.startMediaStreaming = function(){
 };
 ATON.vroadcast.stopMediaStreaming = function(){
     if (!ATON.vroadcast.recorder) return;
-    
+
     console.log("Stop MediaStreaming");
     ATON.vroadcast._stopRecAndSend();
     clearInterval(ATON.vroadcast._dMediaRecorder);
@@ -258,13 +259,15 @@ ATON.vroadcast.startOrStopMediaStreaming = function(){
 
 
 
-ATON.vroadcast.connect = function(address, scene){
+ATON.vroadcast.connect = function(address, scene, bSecure){
 
     if (scene !== undefined) ATON.vroadcast._scene = scene;
     else ATON.vroadcast._scene = "_SHARED_";
 
     if (address === undefined) return; //ATON.vroadcast.socket = io();
-    else ATON.vroadcast.socket = io.connect(address);
+    
+    if (bSecure) ATON.vroadcast.socket = io.connect("https://"+address+":"+ATON.vroadcast.PORT_SECURE+"/", {secure: true});
+    else ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
 
     ATON.vroadcast.connected = ATON.vroadcast.socket.connected;
 

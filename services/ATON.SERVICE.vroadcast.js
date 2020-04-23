@@ -8,30 +8,41 @@
 
 ==================================================================================*/
 
-const PORT = 8081;
+const PORT        = process.env.VRC_PORT || 8081;
+const PORT_SECURE = process.env.VRC_PORT_SECURE || 8084;
+
 const MAXCLIENTSPERSCENE = 100;
 const MAXTARGDIST = 40.0;
 const RECORD_SEPARATOR = ",";
 
+const fs = require('fs');
+const https = require('https');
+const http  = require('http');
+const cors = require('cors');
+const path = require('path');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-//const express = require('express');
-//const app     = express();
-//const http    = require('http').Server(app);
-const ContentServ = require("./ContentServer.js");
-const http = require('http').Server(ContentServ.app);
+/*
+//const ContentServ = require("./ContentServer.js");
+//const http = require('http').Server(ContentServ.app);
+//const https = require('https').Server(ContentServ.app);
 
-// creates a new socket.io instance attached to the http server
-const io = require('socket.io')(http);
+// creates a new socket.io instance attached to the http(s) server
+let io = require('socket.io')(https);
+*/
+
+const app = require('express')();
+app.use(cors({credentials: true, origin: true}));
+
+let VRCpathCert = path.join(__dirname,'/_prv/server.crt');
+let VRCpathKey  = path.join(__dirname,'/_prv/server.key');
+
 
 // For record trace
-const fs = require('fs');
 const distance = require('euclidean-distance');
 const aabb  = require('aabb-3d');
 const clamp = require('clamp');
 const now = require("performance-now");
-
-//const Png = require("png").Png;
-//const PNG = require('pngjs').PNG;
 const Jimp = require('jimp');
 
 
@@ -41,7 +52,8 @@ const commandLineArgs = require('command-line-args');
 const optDefs = [
     { name: 'trace', alias: 't', type: Number}, // in milliseconds
     { name: 'www', type: String, defaultOption: __dirname+"/" },
-    { name: 'production', type: Boolean}
+    { name: 'production', type: Boolean},
+    { name: 'secure', type: Boolean},
 //    { name: 'timeout', alias: 't', type: Number }
 ];
 // Parse options
@@ -52,6 +64,43 @@ const serviceOptions = commandLineArgs(optDefs);
 if (serviceOptions.production){
     console.log = function() {};
 }
+
+// Socket.io config
+let server;
+
+// Over SSL
+if (serviceOptions.secure){
+
+    if (fs.existsSync(VRCpathCert) && fs.existsSync(VRCpathKey)){
+        let seccredentials = {
+            key: fs.readFileSync(VRCpathKey, 'utf8'),
+            cert: fs.readFileSync(VRCpathCert, 'utf8'),
+            requestCert: false,
+            rejectUnauthorized: false
+        };
+        server = https.createServer(app);
+        server.listen(PORT_SECURE, ()=>{
+            console.log('VRoadcast service (SSL) on *: '+PORT_SECURE);
+        });
+
+    }
+    else {
+        console.log("VRoadcast Service ERROR: SSL certs not found!");
+        exit(0);    
+    }
+}
+
+// Standard HTTP
+else {
+    server = http.createServer(app);
+    server.listen(PORT, ()=>{
+        console.log('VRoadcast service on *: '+PORT);
+    });
+}
+
+let io = require('socket.io')(server);
+
+
 
 // Scene Nodes (rooms)
 var sceneNodes = {};
@@ -394,6 +443,7 @@ setInterval(function(){
 //====================================================================================
 // WebServer
 //====================================================================================
+/*
 if (serviceOptions.www){
     ContentServ.WWW_FOLDER = serviceOptions.www;
     ContentServ.PORT = PORT;   
@@ -401,9 +451,7 @@ if (serviceOptions.www){
 //else ContentServ.WWW_FOLDER = __dirname + '/';
 
 ContentServ.configure();
-
-//if (serviceOptions.www) app.use('/', express.static( serviceOptions.www ));
-//else app.use('/', express.static( __dirname + '/' ));
+*/
 
 // Common
 //=======================================================
@@ -1236,8 +1284,15 @@ io.on('connection', function(socket){
 });
 
 
-
-
-http.listen(PORT, function(){
-    console.log('VRoadcast service running on *:'+PORT);
-});
+/*
+if (https){
+    http.listen(PORT, function(){
+        console.log('VRoadcast service (SSL) running on *: '+PORT);
+    });
+}
+else {
+    http.listen(PORT, function(){
+        console.log('VRoadcast service running on *:'+PORT);
+    });
+}
+*/

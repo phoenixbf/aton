@@ -15,6 +15,13 @@ module.exports = {
       script    : 'ATON.SERVICE.vroadcast.js',
       instances : 1,
       exec_mode : 'cluster'
+    },
+    {
+      name      : 'VRoadcast Service SSL',
+      script    : 'ATON.SERVICE.vroadcast.js',
+      args      : '--secure',
+      instances : 1,
+      exec_mode : 'cluster'
     }
   ]
 };

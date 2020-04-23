@@ -2337,7 +2337,7 @@ if (asset === "sf"){
 */
 
         ATON.vroadcast.uStateFreq = 0.05;
-        ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
+        ATON.vroadcast.connect(vrcIP, scenename);
 
         $("#idVRoadcast").show();
         $('#idUserColor').show();

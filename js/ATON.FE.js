@@ -92,7 +92,13 @@ ATON.FE.setupVRoadcast = function(){
 
     ATON.vroadcast.uStateFreq = 0.05;
     let scenename = ATON.FE.scene;
-    ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename);
+    
+/*
+    if (document.location.protocol == 'https:') ATON.vroadcast.connect("https://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, true);
+    else ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, false);
+*/
+    if (document.location.protocol == 'https:') ATON.vroadcast.connect(vrcIP, scenename, true);
+    else ATON.vroadcast.connect(vrcIP, scenename, false);
 
     // VRC Events
     // We have ID

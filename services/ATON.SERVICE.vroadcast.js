@@ -1213,7 +1213,14 @@ io.on('connection', function(socket){
             }
         });
 
-    // Replication
+    socket.on('UAUDIO', function(data){
+        if (scene){
+            socket.broadcast.to(sceneName).emit('UAUDIO', data);
+            console.log("Audio msg");
+            }
+        });
+
+    // Event Replication
     socket.on('EREP', function(msg){
         if (scene){
             socket.broadcast.to(sceneName).emit( msg.e, msg.d );

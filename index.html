@@ -19,7 +19,7 @@ window.addEventListener( 'load', ()=>{
 
     $('#idScene').on('keypress', (e)=>{
         if(e.which === 13){
-            let sid = $('#idScene').val();
+            let sid = $('#idScene').val().toLowerCase();;
             if (sid.length < 1) return;
 
             // Build FE params

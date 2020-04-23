@@ -19,6 +19,8 @@ ATON.vroadcast.connected  = false;
 ATON.vroadcast.uStateFreq = 0.1;
 
 ATON.vroadcast._bPOLdirty = true;
+ATON.vroadcast._bMediaRecording = false;
+ATON.vroadcast._bMediaStreaming = false;
 
 // custom events
 //ATON.vroadcast.onIDassigned = undefined;
@@ -161,6 +163,99 @@ ATON.vroadcast.setupResPath = function(path){
     ATON.vroadcast._audioLibPol.play();
 */
 };
+
+// MEDIA Recorder
+ATON.vroadcast.initMediaRecorder = function(){
+    if (!navigator.mediaDevices) return;
+
+    navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(async function(stream){
+        ATON.vroadcast.recorder = RecordRTC(stream, { 
+            type: 'audio',
+            audioBitsPerSecond: 16000,
+            disableLogs: true,
+            //recorderType: StereoAudioRecorder,
+            //timeSlice: 1000 
+        });
+    
+        ATON.vroadcast._bMediaRecording = false;
+        ATON.vroadcast._bMediaStreaming = false;
+    });
+};
+
+ATON.vroadcast.startRecording = function(){
+    if (!ATON.vroadcast.recorder) return;
+    
+    ATON.vroadcast.recorder.startRecording();
+    ATON.vroadcast._bMediaRecording = true;
+};
+ATON.vroadcast.stopRecording = function(){
+    if (!ATON.vroadcast.recorder) return;
+
+    ATON.vroadcast.recorder.stopRecording(function(){
+        ATON.vroadcast._recBlob = ATON.vroadcast.recorder.getBlob();
+        ATON.vroadcast._bMediaRecording = false;
+        
+        if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
+            blob: ATON.vroadcast._recBlob,
+            id: ATON.vroadcast._myUser.id
+        });
+    });
+};
+ATON.vroadcast.startOrStopMediaRecording = function(){
+    if (ATON.vroadcast._bMediaRecording) ATON.vroadcast.stopRecording();
+    else ATON.vroadcast.startRecording();
+};
+
+// helper function
+ATON.vroadcast._stopRecAndSend = function(){
+    if (!ATON.vroadcast.recorder) return;
+
+    ATON.vroadcast.recorder.stopRecording(()=>{
+        let rblob = ATON.vroadcast.recorder.getBlob();
+        if (rblob && ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
+            blob: rblob,
+            id: ATON.vroadcast._myUser.id
+        });
+    });
+};
+
+ATON.vroadcast.startMediaStreaming = function(){
+    if (!ATON.vroadcast.recorder) return;
+    if (ATON.vroadcast._bMediaStreaming) return;
+
+    console.log("Start MediaStreaming");
+
+    ATON.vroadcast.recorder.startRecording();
+    ATON.vroadcast._bMediaStreaming = true;
+/*
+    ATON.vroadcast.recorder.ondataavailable = function(rblob){
+        console.log("New chunk avail");
+        if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
+            blob: rblob,
+            id: ATON.vroadcast._myUser.id
+        });       
+    };
+*/
+    ATON.vroadcast._dMediaRecorder = setInterval(()=>{
+        ATON.vroadcast._stopRecAndSend();
+        ATON.vroadcast.recorder.startRecording();
+    }, 1000);
+
+};
+ATON.vroadcast.stopMediaStreaming = function(){
+    if (!ATON.vroadcast.recorder) return;
+    
+    console.log("Stop MediaStreaming");
+    ATON.vroadcast._stopRecAndSend();
+    clearInterval(ATON.vroadcast._dMediaRecorder);
+    ATON.vroadcast._bMediaStreaming = false;
+};
+
+ATON.vroadcast.startOrStopMediaStreaming = function(){
+    if (ATON.vroadcast._bMediaStreaming) ATON.vroadcast.stopMediaStreaming();
+    else ATON.vroadcast.startMediaStreaming();
+};
+
 
 
 ATON.vroadcast.connect = function(address, scene){
@@ -933,13 +1028,23 @@ ATON.vroadcast._registerSocketHandlers = function(){
         if (!N) return;
 
         N.switch(data.v);
-        });
+    });
 
-    // TODO: Object Spawning
+    ATON.vroadcast.socket.on('UAUDIO', (data)=>{
+        let newblob = new File([data.blob], "audio");
+        let audioURL = window.URL.createObjectURL(newblob);
+        
+        window.audio = new Audio();
+        window.audio.src = audioURL;
+        window.audio.play();
+    });
+
+    // Object Spawning (can be done through custom events)
+/*
     ATON.vroadcast.socket.on('SPAWN', function(data){
         var path = data.path;
         var pos  = [data.x, data.y, data.z];
 
         });
-
+*/
 };

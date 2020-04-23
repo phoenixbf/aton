@@ -7,10 +7,10 @@
 /* Animations */
 @keyframes popupAnimation {
     0% {
-        transform: scale(0.1);
+        transform: translate(0%,-50%) scale(0.1);
         }
     100% {
-        transform: scale(1.0);
+        transform: translate(0%,-50%) scale(1.0);
         }
 }
 

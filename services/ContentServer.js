@@ -34,23 +34,24 @@ ContentServer.app = express();
 ContentServer.configure = function(){
     this.app.use(compression());
 
-    this.app.use(function(req, res, next) {
+    this.app.use((req, res, next)=>{
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
         next();
-        });
+    });
 
     this.app.use('/', express.static(this.WWW_FOLDER));
 
     // All routing here
-    this.app.get("/s/:scene", function(req,res){
+    this.app.get("/s/:scene", function(req,res,next){
         var scene = req.params.scene;
 
         res.redirect(url.format({
             pathname:"/frontend",
             query: { "m": scene }
-            }));
-        });
+        }));
+    next();
+    });
 
     // Proxies
     this.app.use('/atonizer', createProxyMiddleware({ target: "http://localhost:"+ContentServer.PORT_ATONIZER, changeOrigin: true }));

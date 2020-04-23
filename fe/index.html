@@ -34,6 +34,7 @@
 
     <!-- Collaborative services -->
     <script type="text/javascript" src="../services/node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script type="text/javascript" src="../vendors/RecordRTC.min.js"></script>
     <script type="text/javascript" src="../js/ATON.vroadcast.js"></script>
 
 <script type="text/javascript">
@@ -70,6 +71,10 @@ let setupEventListeners = function(){
     ATON.on("KeyPress", (k)=>{
         if (k === 'n'){
             ATON.FE.popupAddAnnotation();
+        }
+
+        if (k === 't'){
+            if (ATON.vroadcast) ATON.vroadcast.startMediaStreaming(); //ATON.vroadcast.startOrStopMediaRecording();
         }
     });
 

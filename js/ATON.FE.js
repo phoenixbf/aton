@@ -86,6 +86,8 @@ ATON.FE.setupVRoadcast = function(){
     ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
     ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/user/head-zs.osgjs");
 
+    ATON.vroadcast.initMediaRecorder();
+
     if (vrcIP.length < 3) vrcIP = window.location.hostname;
 
     ATON.vroadcast.uStateFreq = 0.05;

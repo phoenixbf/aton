@@ -16,8 +16,8 @@ const MAXTARGDIST = 40.0;
 const RECORD_SEPARATOR = ",";
 
 const fs = require('fs');
-const https = require('https');
 const http  = require('http');
+const https = require('https');
 const cors = require('cors');
 const path = require('path');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -32,7 +32,7 @@ let io = require('socket.io')(https);
 */
 
 const app = require('express')();
-app.use(cors({credentials: true, origin: true}));
+//app.use(cors({credentials: true, origin: true}));
 
 let VRCpathCert = path.join(__dirname,'/_prv/server.crt');
 let VRCpathKey  = path.join(__dirname,'/_prv/server.key');
@@ -74,10 +74,11 @@ if (serviceOptions.secure){
     if (fs.existsSync(VRCpathCert) && fs.existsSync(VRCpathKey)){
         let seccredentials = {
             key: fs.readFileSync(VRCpathKey, 'utf8'),
-            cert: fs.readFileSync(VRCpathCert, 'utf8')
-            //requestCert: false,
-            //rejectUnauthorized: false
+            cert: fs.readFileSync(VRCpathCert, 'utf8'),
+            requestCert: true,
+            rejectUnauthorized: false
         };
+
         server = https.createServer(app);
         server.listen(PORT_SECURE, ()=>{
             console.log('VRoadcast service (SSL) on *: '+PORT_SECURE);
@@ -99,7 +100,7 @@ else {
 }
 
 let io = require('socket.io')(server);
-
+app.use( cors({credentials: true, origin: true}) );
 
 
 // Scene Nodes (rooms)

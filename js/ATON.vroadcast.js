@@ -266,8 +266,14 @@ ATON.vroadcast.connect = function(address, scene, bSecure){
 
     if (address === undefined) return; //ATON.vroadcast.socket = io();
     
-    if (bSecure) ATON.vroadcast.socket = io.connect("https://"+address+":"+ATON.vroadcast.PORT_SECURE+"/", {secure: true, rejectUnauthorized: false});
-    else ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
+    if (bSecure) 
+        ATON.vroadcast.socket = io.connect("https://"+address+":"+ATON.vroadcast.PORT_SECURE+"/", {
+            //transports: ['websocket'], 
+            secure: true, 
+            rejectUnauthorized: false
+        });
+    else 
+        ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
 
     ATON.vroadcast.connected = ATON.vroadcast.socket.connected;
 

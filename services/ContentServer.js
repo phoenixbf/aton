@@ -60,7 +60,7 @@ ContentServer.configure = function(){
     });
 
     // Proxies
-    
+
     // Atonizer
     this.app.use('/atonizer', createProxyMiddleware({ 
         target: "http://localhost:"+ContentServer.PORT_ATONIZER, 
@@ -74,7 +74,7 @@ ContentServer.configure = function(){
         pathRewrite: { '^/vrc': '', }
     }));
     this.app.use('/svrc', createProxyMiddleware({ 
-        target: "http://localhost:"+ContentServer.PORT_VRC_SECURE, 
+        target: "https://localhost:"+ContentServer.PORT_VRC_SECURE, 
         ws: true, 
         pathRewrite: { '^/svrc': '', }
     }));

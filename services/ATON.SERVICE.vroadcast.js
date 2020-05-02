@@ -75,7 +75,7 @@ if (serviceOptions.secure){
         let seccredentials = {
             key: fs.readFileSync(VRCpathKey, 'utf8'),
             cert: fs.readFileSync(VRCpathCert, 'utf8'),
-            requestCert: true,
+            requestCert: false, //true,
             rejectUnauthorized: false
         };
 

@@ -13,7 +13,7 @@ ATON.vroadcast = {};
 
 ATON.vroadcast.resPath = "res/";
 ATON.vroadcast.PORT        = 8081;
-ATON.vroadcast.PORT_SECURE = 8082;
+ATON.vroadcast.PORT_SECURE = 8088;
 
 ATON.vroadcast.socket     = undefined;
 ATON.vroadcast.connected  = false;
@@ -265,15 +265,20 @@ ATON.vroadcast.connect = function(address, scene, bSecure){
     else ATON.vroadcast._scene = "_SHARED_";
 
     if (address === undefined) return; //ATON.vroadcast.socket = io();
-    /*
+
     if (bSecure) 
-        ATON.vroadcast.socket = io.connect("https://"+address+":"+ATON.vroadcast.PORT_SECURE+"/", {
+        //ATON.vroadcast.socket = io.connect("https://"+address+":"+ATON.vroadcast.PORT_SECURE+"/", {
+        ATON.vroadcast.socket = io.connect("https://"+address+":8083/", {
             //transports: ['websocket'], 
+            path: '/svrc/socket.io',
             secure: true, 
             rejectUnauthorized: false
         });
-    else */
-        ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
+    else 
+        //ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
+        ATON.vroadcast.socket = io.connect("http://"+address+":8080/", {
+            path: '/vrc/socket.io'
+            });
 
     ATON.vroadcast.connected = ATON.vroadcast.socket.connected;
 

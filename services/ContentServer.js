@@ -15,9 +15,11 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 var ContentServer = {};
 
-ContentServer.PORT          = process.env.PORT || 8080;
-ContentServer.PORT_SECURE   = process.env.PORT_SECURE || 8083; //443;
-ContentServer.PORT_ATONIZER = process.env.PORT_ATONIZER || 8085;
+ContentServer.PORT            = process.env.PORT || 8080;
+ContentServer.PORT_SECURE     = process.env.PORT_SECURE || 8083;
+ContentServer.PORT_ATONIZER   = process.env.PORT_ATONIZER || 8085;
+ContentServer.PORT_VRC        = process.env.PORT_VRC || 8890;
+ContentServer.PORT_VRC_SECURE = process.env.PORT_VRC || 8891;
 
 ContentServer.pathCert    = path.join(__dirname,'/_prv/server.crt');
 ContentServer.pathKey     = path.join(__dirname,'/_prv/server.key');
@@ -58,9 +60,24 @@ ContentServer.configure = function(){
     });
 
     // Proxies
-    this.app.use('/atonizer', createProxyMiddleware({ target: "http://localhost:"+ContentServer.PORT_ATONIZER, changeOrigin: true }));
+    
+    // Atonizer
+    this.app.use('/atonizer', createProxyMiddleware({ 
+        target: "http://localhost:"+ContentServer.PORT_ATONIZER, 
+        changeOrigin: true 
+    }));
 
-    //this.app.use('/svrc', createProxyMiddleware({ target: "http://localhost:8084", changeOrigin: true }));
+    // VRC
+    this.app.use('/vrc', createProxyMiddleware({ 
+        target: "http://localhost:"+ContentServer.PORT_VRC, 
+        ws: true, 
+        pathRewrite: { '^/vrc': '', }
+    }));
+    this.app.use('/svrc', createProxyMiddleware({ 
+        target: "http://localhost:"+ContentServer.PORT_VRC_SECURE, 
+        ws: true, 
+        pathRewrite: { '^/svrc': '', }
+    }));
 };
 
 

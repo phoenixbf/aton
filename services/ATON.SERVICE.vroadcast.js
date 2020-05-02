@@ -8,8 +8,8 @@
 
 ==================================================================================*/
 
-const PORT        = process.env.VRC_PORT || 8081;
-const PORT_SECURE = process.env.VRC_PORT_SECURE || 8082;
+const PORT        = process.env.PORT_VRC || 8890;
+const PORT_SECURE = process.env.PORT_VRC_SECURE || 8891;
 
 const MAXCLIENTSPERSCENE = 100;
 const MAXTARGDIST = 40.0;

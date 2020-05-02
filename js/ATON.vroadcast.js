@@ -272,13 +272,23 @@ ATON.vroadcast.connect = function(address, scene, bSecure){
             //transports: ['websocket'], 
             path: '/svrc/socket.io',
             secure: true, 
-            rejectUnauthorized: false
+            rejectUnauthorized: false,
+            transports: ['websocket'], 
+            upgrade: false 
+        }, 
+        { 
+            'force new connection': true 
         });
     else 
         //ATON.vroadcast.socket = io.connect("http://"+address+":"+ATON.vroadcast.PORT+"/");
         ATON.vroadcast.socket = io.connect("http://"+address+":8080/", {
-            path: '/vrc/socket.io'
-            });
+            path: '/vrc/socket.io',
+            transports: ['websocket'], 
+            upgrade: false 
+        }, 
+        { 
+            'force new connection': true 
+        });
 
     ATON.vroadcast.connected = ATON.vroadcast.socket.connected;
 

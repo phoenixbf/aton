@@ -64,19 +64,22 @@ ContentServer.configure = function(){
     // Atonizer
     this.app.use('/atonizer', createProxyMiddleware({ 
         target: "http://localhost:"+ContentServer.PORT_ATONIZER, 
-        changeOrigin: true 
+        //changeOrigin: true 
     }));
 
     // VRC
     this.app.use('/vrc', createProxyMiddleware({ 
         target: "http://localhost:"+ContentServer.PORT_VRC, 
         ws: true, 
-        pathRewrite: { '^/vrc': '', }
+        pathRewrite: { '^/vrc': ''},
+        changeOrigin: true
     }));
     this.app.use('/svrc', createProxyMiddleware({ 
-        target: "https://localhost:"+ContentServer.PORT_VRC_SECURE, 
+        target: "http://localhost:"+ContentServer.PORT_VRC, 
         ws: true, 
-        pathRewrite: { '^/svrc': '', }
+        pathRewrite: { '^/svrc': ''},
+        secure: true,
+        changeOrigin: true 
     }));
 };
 

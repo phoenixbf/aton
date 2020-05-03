@@ -69,13 +69,13 @@ ContentServer.configure = function(){
 
     // VRC
     this.app.use('/vrc', createProxyMiddleware({ 
-        target: "http://localhost:"+ContentServer.PORT_VRC, 
+        target: "ws://localhost:"+ContentServer.PORT_VRC, 
         ws: true, 
         pathRewrite: { '^/vrc': ''},
         changeOrigin: true
     }));
     this.app.use('/svrc', createProxyMiddleware({ 
-        target: "http://localhost:"+ContentServer.PORT_VRC, 
+        target: "ws://localhost:"+ContentServer.PORT_VRC, 
         ws: true, 
         pathRewrite: { '^/svrc': ''},
         secure: true,

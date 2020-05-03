@@ -172,7 +172,7 @@ ATON.vroadcast.initMediaRecorder = function(){
     navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(async function(stream){
         ATON.vroadcast.recorder = RecordRTC(stream, { 
             type: 'audio',
-            audioBitsPerSecond: 16000,
+            audioBitsPerSecond: 10000,
             disableLogs: true,
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
@@ -213,6 +213,7 @@ ATON.vroadcast._stopRecAndSend = function(){
 
     ATON.vroadcast.recorder.stopRecording(()=>{
         let rblob = ATON.vroadcast.recorder.getBlob();
+        //console.log(rblob);
         if (rblob && ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: rblob,
             id: ATON.vroadcast._myUser.id
@@ -240,7 +241,7 @@ ATON.vroadcast.startMediaStreaming = function(){
     ATON.vroadcast._dMediaRecorder = setInterval(()=>{
         ATON.vroadcast._stopRecAndSend();
         ATON.vroadcast.recorder.startRecording();
-    }, 1000);
+    }, 250);
 
 };
 ATON.vroadcast.stopMediaStreaming = function(){

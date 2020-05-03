@@ -68,7 +68,6 @@ void main(){
 
     // Tint
     FinalFragment.rgb = mix(FinalFragment.rgb, uTint.rgb*FinalFragment.rgb, uTint.a);
-    alpha *= uTint.a;
 
 #ifndef MOBILE_DEVICE
     float f = dot(vViewNormal, vec3(0,0,1));

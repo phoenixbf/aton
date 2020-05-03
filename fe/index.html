@@ -72,10 +72,6 @@ let setupEventListeners = function(){
         if (k === 'n'){
             ATON.FE.popupAddAnnotation();
         }
-
-        if (k === 't'){
-            if (ATON.vroadcast) ATON.vroadcast.startMediaStreaming(); //ATON.vroadcast.startOrStopMediaRecording();
-        }
     });
 
     ATON.on("MouseRightButton", ()=>{
@@ -91,7 +87,10 @@ window.addEventListener( 'load', ()=>{
 
     ATON.FE.uiAddHomeButton("idBottomToolbar");
     
-    if (ATON.FE.vrc) ATON.FE.uiAddVRoadcastButton("idTopToolbar");
+    if (ATON.FE.vrc){
+        ATON.FE.uiAddVRoadcastButton("idTopToolbar");
+        if (ATON.FE._bSecureConn) ATON.FE.uiAddVRoadcastAudioButton("idBottomToolbar");
+        }
     ATON.FE.uiAddFullscreenButton("idTopToolbar");
     ATON.FE.uiAddVRButton("idTopToolbar");
     ATON.FE.uiAddQRButton("idTopToolbar");
@@ -103,7 +102,7 @@ window.addEventListener( 'load', ()=>{
     ATON.shadersFolder = ATON.FE.RES_ROOT+"shaders";
     ATON.realize(canvas);
 
-    ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7, 0.0]);
+    ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7, 1.0]);
     $('body').css('background-color', 'rgb(127,127,127)');
 
     if (!ATON.FE.scene) return;

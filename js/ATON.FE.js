@@ -44,6 +44,10 @@ ATON.FE.uColors = [
 
 ATON.FE.setup = function(){
 
+    if (document.location.protocol == 'https:') ATON.FE._bSecureConn = true;
+    else ATON.FE._bSecureConn = false;
+    console.log("Connection is secure: "+ATON.FE._bSecureConn);
+
     // custom events
     ATON.on("NodeRequestFired", ()=>{
         $('#idLoader').show();
@@ -97,8 +101,7 @@ ATON.FE.setupVRoadcast = function(){
     if (document.location.protocol == 'https:') ATON.vroadcast.connect("https://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, true);
     else ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, false);
 */
-    if (document.location.protocol == 'https:') ATON.vroadcast.connect(vrcIP, scenename, true);
-    else ATON.vroadcast.connect(vrcIP, scenename, false);
+    ATON.vroadcast.connect(vrcIP, scenename, ATON.FE._bSecureConn);
 
     // VRC Events
     // We have ID
@@ -163,6 +166,17 @@ ATON.FE.uiToggleVRoadcastPanel = function(){
     $('#idVRCpanel').toggle();
 };
 
+ATON.FE.uiToggleVRoadcastStreaming = function(){
+    if (!ATON.FE._bSecureConn) return;
+
+    if (ATON.vroadcast){
+        ATON.vroadcast.startOrStopMediaStreaming();
+
+        if (ATON.vroadcast._bMediaStreaming) $('#idVRCau').addClass("switchedON");
+        else $('#idVRCau').removeClass("switchedON");
+    }
+};
+
 ATON.FE.uiAddHomeButton = function(idToolbar){
     $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.requestHome(1.0)'><img src='"+ATON.FE.RES_ROOT+"ii-inv-home.png'></button>");
 };
@@ -178,6 +192,10 @@ ATON.FE.uiAddQRButton = function(idToolbar){
 };
 ATON.FE.uiAddVRoadcastButton = function(idToolbar){
     $("#"+idToolbar).append("<button id='idUserColor' type='button' class='atonBTN' onclick='ATON.FE.uiToggleVRoadcastPanel()'></button>");
+};
+
+ATON.FE.uiAddVRoadcastAudioButton = function(idToolbar){
+    $("#"+idToolbar).append("<button id='idVRCau' type='button' class='atonBTN' onclick='ATON.FE.uiToggleVRoadcastStreaming()'><img src='"+ATON.FE.RES_ROOT+"ii-inv-speech.png'></button>");
 };
 
 

@@ -103,7 +103,8 @@ window.addEventListener( 'load', ()=>{
     ATON.shadersFolder = ATON.FE.RES_ROOT+"shaders";
     ATON.realize(canvas);
 
-    ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7]);
+    ATON.setMainPanoramaAsUniformColor([0.7,0.7,0.7, 0.0]);
+    $('body').css('background-color', 'rgb(127,127,127)');
 
     if (!ATON.FE.scene) return;
 

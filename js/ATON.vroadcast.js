@@ -605,7 +605,7 @@ ATON.vroadcast.touchUser = function(id){
     u.id = id;
 
     // Username
-    u.name   = "User #" + id;
+    u.name   = "User#" + id;
     u.status = "just in!";
 
     //u._pos = osg.vec3.create();
@@ -679,36 +679,17 @@ ATON.vroadcast.realizeUserModel = function(id){
     u._mt.addChild(ATON.vroadcast.userModel);
     u._mt.addChild(u._at);
 
-    // BG
-    var bgHoffset = 0.1;
-    var bg = osg.createTexturedQuadGeometry(
-        -0.5, bgHoffset, -0.02,      // corner
-        1, 0, -0.02,       // width
-        0, 0.5, -0.02 );     // height
+    u._at.addChild(ATON.vroadcast.userBG);
 
-    u._at.addChild( bg );
 
     var ulabID = id % 6; // no. colors
+    var col = ATON.vroadcast.UCOLORS[ulabID];
 
-    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel"+ulabID+".png").then( function ( data ){
-        var bgTex = new osg.Texture();
-        bgTex.setImage( data );
+    u._mt.getOrCreateStateSet().addUniform( osg.Uniform.createFloat4( [col[0],col[1],col[2], 1.0], 'uTint' ) );
+    u._mt.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.25, 'uOpacity') );
 
-        bgTex.setMinFilter( osg.Texture.LINEAR_MIPMAP_LINEAR ); // LINEAR_MIPMAP_LINEAR // osg.Texture.LINEAR
-        bgTex.setMagFilter( osg.Texture.LINEAR ); // osg.Texture.LINEAR
-        
-        bgTex.setWrapS( osg.Texture.CLAMP_TO_EDGE );
-        bgTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+    u._at.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 1.0, 'uOpacity') );
 
-        bg.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
-        //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
-
-        console.log("Label BG loaded");
-        });
-
-    
-    var ucoltex = ATON.utils.createFillTexture( ATON.vroadcast.UCOLORS[ulabID] );
-    u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, ucoltex);
 /*
     u._mt.getOrCreateStateSet().setAttributeAndModes(
         new osg.CullFace( 'DISABLE' ), //new osg.CullFace( 'BACK' ),
@@ -763,7 +744,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         }
     
     u.nameNode.setCharacterSize( 0.3 );
-    u.nameNode.setPosition( [ 0.0, 0.37+bgHoffset, 0.001 ] );
+    u.nameNode.setPosition( [ 0.0, 0.37+ATON.vroadcast._bgHoffset, 0.001 ] );
     u._at.addChild(u.nameNode);
 
     // Status node
@@ -778,7 +759,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         }
 
     u.statusNode.setCharacterSize( 0.1 );
-    u.statusNode.setPosition( [ 0.0, 0.2+bgHoffset, 0.001 ] );
+    u.statusNode.setPosition( [ 0.0, 0.2+ATON.vroadcast._bgHoffset, 0.001 ] );
     u._at.addChild(u.statusNode);   
 };
 
@@ -799,6 +780,30 @@ ATON.vroadcast.setUserModel = function(url){
         for (var u=0, len=ATON.vroadcast.users.length; u<len; u++){
             if (ATON.vroadcast.users[u]) ATON.vroadcast.realizeUserModel(u);
             }
+        });
+
+    // User bg plate
+    ATON.vroadcast._bgHoffset = 0.1;
+    ATON.vroadcast.userBG = osg.createTexturedQuadGeometry(
+        -0.5, ATON.vroadcast._bgHoffset, -0.02,      // corner
+        1, 0, -0.02,       // width
+        0, 0.5, -0.02 );     // height
+
+    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel.png").then( function ( data ){
+        var bgTex = new osg.Texture();
+        bgTex.setImage( data );
+
+        bgTex.setMinFilter( osg.Texture.LINEAR_MIPMAP_LINEAR ); // LINEAR_MIPMAP_LINEAR // osg.Texture.LINEAR
+        bgTex.setMagFilter( osg.Texture.LINEAR ); // osg.Texture.LINEAR
+        
+        bgTex.setWrapS( osg.Texture.CLAMP_TO_EDGE );
+        bgTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+
+        ATON.vroadcast.userBG.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+        //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+        ATON.vroadcast.userBG.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.5, 'uOpacity') );
+
+        console.log("Label BG loaded");
         });
 };
 

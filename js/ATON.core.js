@@ -3546,8 +3546,8 @@ ATON._initGraph = function(){
     //ATON._uiSS.setBinNumber(12);
     ATON._uiSS.setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
     ATON._uiSS.setAttributeAndModes(
-        //new osg.BlendFunc(), // osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA 
         new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.ONE_MINUS_SRC_ALPHA),
+        //new osg.BlendFunc(osg.BlendFunc.SRC_ALPHA, osg.BlendFunc.DST_ALPHA),
         osg.StateAttribute.ON | osg.StateAttribute.OVERRIDE
         );
 
@@ -3888,9 +3888,15 @@ ATON._buildPanoramaGeom = function(){
 ATON.setMainPanoramaAsUniformColor = function(color){
     let CTexture = ATON.utils.createFillTexture(color);
 
+    // FIXME: move on page loaded
+    //let strbody = "rgb("+color[0]*255.0+","+color[1]*255.0+","+color[2]*255.0+")";
+    //$('body').css('background-color', strbody);
+
     ATON._buildPanoramaGeom();
 
     ATON._LPT.getOrCreateStateSet().setTextureAttributeAndModes( ATON_SM_UNIT_BASE, CTexture );
+    //ATON._LPT.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 1.0, 'uOpacity') );
+    //ATON._LPT.getOrCreateStateSet().addUniform( osg.Uniform.createFloat4( [0.0,0.0,0.0, 0.0], 'uTint' ) );
 };
 
 // Panorama as image
@@ -4050,6 +4056,9 @@ ATON._initCoreUniforms = function(){
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( ATON._hoverRadius, 'uHoverRadius' ) );
     ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uDim' ) );
 
+    ATON._mainSS.addUniform( osg.Uniform.createFloat4( [1.0,1.0,1.0, 0.0], 'uTint' ) );
+    ATON._mainSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uOpacity') );
+
     ATON._mainSS.addUniform( ATON.GLSLuniforms.BaseSampler );
 
     // Descriptors
@@ -4086,6 +4095,8 @@ ATON._initCoreUniforms = function(){
     // UI SG
     //ATON._uiSS.addUniform( ATON.GLSLuniforms.BaseSampler );
     ATON._uiSS.setTextureAttributeAndModes( ATON_SM_UNIT_BASE, ATON.utils.fallbackWhiteTex );
+    //ATON._uiSS.addUniform( osg.Uniform.createFloat4( [1.0,1.0,1.0, 0.0], 'uTint' ) );
+    //ATON._uiSS.addUniform( osg.Uniform.createFloat1( 1.0, 'uOpacity') );
 };
 
 ATON.setDim = function(v){

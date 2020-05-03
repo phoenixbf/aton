@@ -56,19 +56,30 @@ void main(){
 
 uniform sampler2D BaseSampler; // 0
 uniform float time;
+uniform vec4 uTint;
+uniform float uOpacity;
 
 // MAIN
 //==============
 void main(){
     vec4 baseAlbedo = texture2D(BaseSampler, osg_TexCoord0);
+    vec4 FinalFragment = baseAlbedo;
+    float alpha = baseAlbedo.a * uOpacity;
+
+    // Tint
+    FinalFragment.rgb = mix(FinalFragment.rgb, uTint.rgb*FinalFragment.rgb, uTint.a);
+    alpha *= uTint.a;
 
 #ifndef MOBILE_DEVICE
     float f = dot(vViewNormal, vec3(0,0,1));
     f = (1.0-f);
 
-    baseAlbedo.a += f;
-#endif
+    alpha += f;
+#endif   
+    
+    FinalFragment.a = alpha;
+    //FinalFragment.rgb *= alpha;
 
-	gl_FragColor = baseAlbedo;
+	gl_FragColor = FinalFragment;
 }
 #endif

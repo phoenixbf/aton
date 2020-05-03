@@ -100,7 +100,7 @@ else {
 }
 
 let io = require('socket.io')(server);
-io.set('transports', ['websocket']);
+//io.set('transports', ['websocket']);
 app.use( cors({credentials: true, origin: true}) );
 
 

@@ -3,7 +3,7 @@ module.exports = {
   apps: [
     // Content service
     {
-      name      : 'Content Service',
+      name      : 'ATON Content Service',
       script    : 'ATON.SERVICE.content.js',
       instances : 'max',
       exec_mode : 'cluster',
@@ -12,18 +12,19 @@ module.exports = {
 
     // VRoadcast service
     {
-      name      : 'VRoadcast Service',
+      name      : 'ATON VRoadcast Service',
       script    : 'ATON.SERVICE.vroadcast.js',
       instances : 1,
       exec_mode : 'cluster',
       watch     : true
     },
+
+    // Atonizer
     {
-      name      : 'VRoadcast Service SSL',
-      script    : 'ATON.SERVICE.vroadcast.js',
-      args      : '--secure',
+      name      : 'ATONIZER Service',
+      script    : 'ATON.SERVICE.atonizer.js',
       instances : 1,
-      exec_mode : 'cluster',
+      exec_mode : 'fork',
       watch     : true
     }
   ]

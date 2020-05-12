@@ -1048,12 +1048,8 @@ window.addEventListener( 'load', function () {
                     scenename = "fpacis";
                     ATON.toggleAOPass(true);
 
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/01.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/02.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/03.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/04.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/05.osgjs", { layer: "FPACIS" });
-                    ATON.addGraph(ATON.FE.MODELS_ROOT+"_prv/fpacis/06.osgjs", { layer: "FPACIS" });
+                    //for (let i=1; i<=6; i++) ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/fpacis/0"+i+".osgjs").attachToRoot();
+                    ATON.loadScene(ATON.FE.MODELS_ROOT+"_prv/fp/scene.json");
 
                     ATON.setHome([107.32,-23.23,-2.47],[109.05,-53.63,1.15]);
 
@@ -1935,7 +1931,7 @@ window.addEventListener( 'load', function () {
                     nVeg.attachToRoot();
 
                     ATON.createDescriptorProductionFromASCII(
-                        ATON.FE.MODELS_ROOT+"pine/Branches_m.osgjs",
+                        ATON.FE.MODELS_ROOT+"_prv/pine/pine.osgjs",
                         ATON.FE.MODELS_ROOT+"_prv/rsm/tl-pines.txt"
                         ).attachTo(nVeg);
 
@@ -2025,7 +2021,7 @@ window.addEventListener( 'load', function () {
                     scenename = "domus";
 
                     for (let b = 1; b <= 7; b++){
-                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"domus/LOD1_DP_Hor_"+b+".osgjs").attachToRoot();
+                        ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/domus/LOD1_DP_Hor_"+b+".osgjs").attachToRoot();
 /*
                         ATON.addGraph(ATON.FE.MODELS_ROOT+"domus/_lo-LOD1_DP_Hor_"+b+".osgjs", { 
                             layer: "PRESENT", 

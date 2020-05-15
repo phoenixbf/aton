@@ -215,7 +215,7 @@ ATON.vroadcast._stopRecAndSend = function(){
 
     ATON.vroadcast.recorder.stopRecording(()=>{
         let rblob = ATON.vroadcast.recorder.getBlob();
-        console.log(rblob);
+        //console.log(rblob);
         
         if (rblob && ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: rblob,

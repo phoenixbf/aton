@@ -1265,8 +1265,9 @@ io.on('connection', function(socket){
 
     socket.on('UAUDIO', function(data){
         if (scene){
-            socket.broadcast.to(sceneName).emit('UAUDIO', data);
-            console.log("Audio msg");
+            //socket.broadcast.to(sceneName).emit('UAUDIO', data);
+            socket.to(sceneName).emit('UAUDIO', data);
+            //console.log("Audio msg");
             }
         });
 

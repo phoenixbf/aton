@@ -22,6 +22,7 @@ ATON.vroadcast.uStateFreq = 0.1;
 ATON.vroadcast._bPOLdirty = true;
 ATON.vroadcast._bMediaRecording = false;
 ATON.vroadcast._bMediaStreaming = false;
+ATON.vroadcast._auStreamInterval = 250;
 
 // custom events
 //ATON.vroadcast.onIDassigned = undefined;
@@ -68,12 +69,12 @@ ATON.vroadcast.onUserMSG = function(){
 
 // Def users colors
 ATON.vroadcast.UCOLORS = [
-    [1,0.5,0.5, 0.25],
-    [1,1,0.5, 0.25],
-    [0.5,1,0.5, 0.25],
-    [0.5,1,1, 0.25],
-    [0.5,0.5,1, 0.25],
-    [1,0.5,1, 0.25],
+    [1,0.0,0.0, 0.25],
+    [1,1,0.0, 0.25],
+    [0.0,1,0.0, 0.25],
+    [0.0,1,1, 0.25],
+    [0.0,0.0,1, 0.25],
+    [1,0.0,1, 0.25],
 ];
 
 /*
@@ -172,8 +173,9 @@ ATON.vroadcast.initMediaRecorder = function(){
     navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(async function(stream){
         ATON.vroadcast.recorder = RecordRTC(stream, { 
             type: 'audio',
-            audioBitsPerSecond: 10000,
+            audioBitsPerSecond: 9000,
             disableLogs: true,
+            echoCancellation:true
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
         });
@@ -213,7 +215,8 @@ ATON.vroadcast._stopRecAndSend = function(){
 
     ATON.vroadcast.recorder.stopRecording(()=>{
         let rblob = ATON.vroadcast.recorder.getBlob();
-        //console.log(rblob);
+        console.log(rblob);
+        
         if (rblob && ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: rblob,
             id: ATON.vroadcast._myUser.id
@@ -241,7 +244,7 @@ ATON.vroadcast.startMediaStreaming = function(){
     ATON.vroadcast._dMediaRecorder = setInterval(()=>{
         ATON.vroadcast._stopRecAndSend();
         ATON.vroadcast.recorder.startRecording();
-    }, 250);
+    }, ATON.vroadcast._auStreamInterval);
 
 };
 ATON.vroadcast.stopMediaStreaming = function(){
@@ -355,6 +358,21 @@ ATON.vroadcast.requestPol = function(){
 
     ATON.vroadcast.socket.emit("POLREQ");
     //console.log("Requested QV as b64 img");
+};
+
+ATON.vroadcast.snapToUser = function(uid){
+    let u = ATON.vroadcast.users[uid];
+    if (!u) return;
+
+    let bs = u._mt.getBound();
+    let C = bs._center;
+
+    let pov = new ATON.pov();
+    pov.target = C;
+    pov.pos    = ATON._currPOV.pos;
+    pov.fov    = ATON._currPOV.fov;
+
+    ATON.requestPOV(pov, 0.5);
 };
 
 

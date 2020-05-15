@@ -31,17 +31,6 @@ ATON.registerEvents([
 ]);
 
 
-
-// multi-user colors
-ATON.FE.uColors = [
-    '255, 0, 0',
-    '255, 255, 0',
-    '0, 255, 0',
-    '0, 255, 255',
-    '0, 0, 255',
-    '255, 0, 255'
-];
-
 ATON.FE.setup = function(){
 
     if (document.location.protocol == 'https:') ATON.FE._bSecureConn = true;
@@ -85,6 +74,17 @@ ATON.FE.setUserMessage = function(){
     $('#vrcMessage').val("");
 };
 
+ATON.FE.getUserColorString = function(uid, plight){
+    let ucolor = ATON.vroadcast.UCOLORS[uid%6].slice(0);
+    if (plight){
+        ucolor[0] = ATON.utils.lerp(ucolor[0],1.0, plight);
+        ucolor[1] = ATON.utils.lerp(ucolor[1],1.0, plight);
+        ucolor[2] = ATON.utils.lerp(ucolor[2],1.0, plight);
+    }
+
+    return (ucolor[0]*255.0+","+ucolor[1]*255.0+","+ucolor[2]*255.0);
+};
+
 ATON.FE.setupVRoadcast = function(){
     let vrcIP = ATON.FE.vrc;
     ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
@@ -106,8 +106,8 @@ ATON.FE.setupVRoadcast = function(){
     // VRC Events
     // We have ID
     ATON.on("VRC_IDassigned", (id)=>{
-        var uid = ATON.vroadcast._myUser.id;
-        var strColor = ATON.FE.uColors[uid % 6];
+        let uid = ATON.vroadcast._myUser.id;
+        let strColor = ATON.FE.getUserColorString(uid);
 
         $('#idUserColor').show();
         $('#idUserColor').css("cssText", "background-color: rgba("+strColor+", 0.7); box-shadow: 0 0px 30px rgba("+strColor+",1.0);" );
@@ -146,17 +146,23 @@ ATON.FE.setupVRoadcast = function(){
         var uname;
         if (d.id === ATON.vroadcast._myUser.id) uname = "YOU";
         else uname = ATON.vroadcast.users[d.id].name;
+
+        let strColor = ATON.FE.getUserColorString(d.id, 0.5);
         
-        $('#idVRCchat').append("<div style='color: rgb("+ATON.FE.uColors[d.id % 6]+")'><b>"+uname+":</b> "+d.status+"</div><br>");
+        let strchat = "<div class='atonVRCchatBlock' style='color: rgb("+strColor+")'>";
+        strchat += "<span class='atonVRCchatUser' style='background-color: rgb("+strColor+")' onclick='ATON.vroadcast.snapToUser("+d.id+")'>"+uname+":</span> ";
+        strchat += d.status+"</div>";
+
+        $('#idVRCchat').append(strchat);
         });
     
     ATON.on("VRC_UserLeft", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div><i>User "+u.name+" left scene "+scenename+"</i><br></div>");
+        $('#idVRCchat').append("<div><i>"+u.name+" left.</i><br></div>");
         });
     ATON.on("VRC_UserEntered", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div><i>User "+u.name+" entered scene "+scenename+"</i><br></div>");
+        $('#idVRCchat').append("<div><i>"+u.name+" entered.</i><br></div>");
         });
 
 };

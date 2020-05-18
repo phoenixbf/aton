@@ -23,6 +23,7 @@ ATON.vroadcast._bPOLdirty = true;
 ATON.vroadcast._bMediaRecording = false;
 ATON.vroadcast._bMediaStreaming = false;
 ATON.vroadcast._auStreamInterval = 250;
+ATON.vroadcast.minAuVol = 8;
 
 // custom events
 //ATON.vroadcast.onIDassigned = undefined;
@@ -175,7 +176,7 @@ ATON.vroadcast.initMediaRecorder = function(){
     navigator.mediaDevices.getUserMedia({ video:false, audio:true, echoCancellation:true }).then(async function(stream){
         ATON.vroadcast.recorder = RecordRTC(stream, { 
             type: 'audio',
-            audioBitsPerSecond: 9000,
+            audioBitsPerSecond: 11000, //9000,
             disableLogs: true,
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
@@ -236,11 +237,17 @@ ATON.vroadcast.stopRecording = function(){
         ATON.vroadcast._recBlob = ATON.vroadcast.recorder.getBlob();
         ATON.vroadcast._bMediaRecording = false;
         
-        if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
-            blob: ATON.vroadcast._recBlob,
-            id: ATON.vroadcast._myUser.id,
-            vol: ATON.vroadcast._auAVGvolume
-        });
+        if (
+            ATON.vroadcast._recBlob && 
+            ATON.vroadcast.socket && 
+            (ATON.vroadcast._auAVGvolume > ATON.vroadcast.minAuVol)
+            ) 
+            
+            ATON.vroadcast.socket.emit("UAUDIO", {
+                blob: ATON.vroadcast._recBlob,
+                id: ATON.vroadcast._myUser.id,
+                vol: ATON.vroadcast._auAVGvolume
+            });
     });
 };
 ATON.vroadcast.startOrStopMediaRecording = function(){
@@ -256,11 +263,16 @@ ATON.vroadcast._stopRecAndSend = function(){
         let rblob = ATON.vroadcast.recorder.getBlob();
         //console.log(rblob);
         
-        if (rblob && ATON.vroadcast.socket /*&& (ATON.vroadcast._auAVGvolume > 5)*/) ATON.vroadcast.socket.emit("UAUDIO", {
-            blob: rblob,
-            id: ATON.vroadcast._myUser.id,
-            vol: ATON.vroadcast._auAVGvolume
-        });
+        if (
+            rblob && 
+            ATON.vroadcast.socket && 
+            (ATON.vroadcast._auAVGvolume > ATON.vroadcast.minAuVol)
+            ) 
+            ATON.vroadcast.socket.emit("UAUDIO", {
+                blob: rblob,
+                id: ATON.vroadcast._myUser.id,
+                vol: ATON.vroadcast._auAVGvolume
+            });
     });
 };
 
@@ -477,14 +489,16 @@ ATON.vroadcast._update = function(){
         ATON.vroadcast.socket.emit("USTATE", binData.buffer);
         }
 
+    // UI
+    for (let u = 0; u < ATON.vroadcast.users.length; u++){
+        let U = ATON.vroadcast.users[u];
+        if (U && U._mtAUI) osg.mat4.scale(U._mtAUI.getMatrix(),U._mtAUI.getMatrix(), [0.99,0.99,0.99] );
+        }
+
     // Encode and send target/focus
-    var DTarg = osg.vec3.create();
-/*
-    DTarg[0] = ATON._currPOV.target[0] - pos[0];
-    DTarg[1] = ATON._currPOV.target[1] - pos[1];
-    DTarg[2] = ATON._currPOV.target[2] - pos[2];
-*/
     if (ATON._hoveredVisData == undefined) return;
+    let DTarg = osg.vec3.create();
+
     DTarg[0] = ATON._hoveredVisData.p[0] - pos[0];
     DTarg[1] = ATON._hoveredVisData.p[1] - pos[1];
     DTarg[2] = ATON._hoveredVisData.p[2] - pos[2];
@@ -864,7 +878,7 @@ ATON.vroadcast.setUserModel = function(url){
 
         ATON.vroadcast.userBG.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
         //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
-        ATON.vroadcast.userBG.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.5, 'uOpacity') );
+        //ATON.vroadcast.userBG.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 1.0, 'uOpacity') );
 
         console.log("Label BG loaded");
         });
@@ -886,7 +900,7 @@ ATON.vroadcast.setUserModel = function(url){
 
         ATON.vroadcast.userAUI.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
         //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
-        ATON.vroadcast.userAUI.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.3, 'uOpacity') );
+        ATON.vroadcast.userAUI.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.5, 'uOpacity') );
 
         console.log("User AudioUI loaded");
         });
@@ -956,7 +970,10 @@ ATON.vroadcast._registerSocketHandlers = function(){
         for (let u = 0; u < ATON.vroadcast.users.length; u++) {
             const user = ATON.vroadcast.users[u];
 
-            if (user) user._mt.setNodeMask(0x0);
+            if (user){
+                user._mt.setNodeMask(0x0);
+                user._mtAUI.setNodeMask(0x0);
+                }
             }
 
         //if (ATON.vroadcast.onDisconnect) ATON.vroadcast.onDisconnect();
@@ -1018,7 +1035,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
 
         });
 
-    // A different user entered
+    // Another user entered
     ATON.vroadcast.socket.on('ENTER', function(data){
         //console.log(data.binaryData);
         ATON.vroadcast.touchUser(data.id);
@@ -1032,10 +1049,13 @@ ATON.vroadcast._registerSocketHandlers = function(){
     // A user left
     ATON.vroadcast.socket.on('LEAVE', function(data){
         //console.log(data.binaryData);
+        let u = ATON.vroadcast.users[data.id];
 
-        if (ATON.vroadcast.users[data.id] !== undefined) ATON.vroadcast.users[data.id]._mt.setNodeMask(0x0);
+        if (u){
+            u._mt.setNodeMask(0x0);
+            u._mtAUI.setNodeMask(0x0);
+            }
 
-        var u = ATON.vroadcast.users[data.id];
         if (u.name !== undefined) console.log("User #"+u.name+" left");
 
         ATON.fireEvent("VRC_UserLeft", data);
@@ -1047,8 +1067,9 @@ ATON.vroadcast._registerSocketHandlers = function(){
 
         ATON.vroadcast.touchUser(data.id);
 
-        if (ATON.vroadcast.users[data.id] !== undefined){
-            var u = ATON.vroadcast.users[data.id];
+        let u = ATON.vroadcast.users[data.id];
+
+        if (u){
             u.name = data.name;
             u.nameNode.setText(data.name);
 
@@ -1152,6 +1173,8 @@ ATON.vroadcast._registerSocketHandlers = function(){
         u._mtAUI.setNodeMask(0x0);
 
         if (!data.vol) return;
+
+        //console.log(data.vol);
 
         let v = 0.5 + (data.vol * 0.05);
         //console.log(v);

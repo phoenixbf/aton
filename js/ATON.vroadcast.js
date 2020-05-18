@@ -258,7 +258,8 @@ ATON.vroadcast._stopRecAndSend = function(){
         
         if (rblob && ATON.vroadcast.socket /*&& (ATON.vroadcast._auAVGvolume > 5)*/) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: rblob,
-            id: ATON.vroadcast._myUser.id
+            id: ATON.vroadcast._myUser.id,
+            vol: ATON.vroadcast._auAVGvolume
         });
     });
 };
@@ -456,7 +457,6 @@ ATON.vroadcast._update = function(){
     //ori[1] = -o[2];
     //ori[2] = o[1];
 
-
     // Save bandwidth
     var dPos = osg.vec3.squaredDistance(pos, myUser.lastPos);
     var dOri = osg.vec4.squaredDistance(ori, myUser.lastOri);
@@ -649,7 +649,7 @@ ATON.vroadcast.touchUser = function(id){
     if (id < 0) return;
 
     if (ATON.vroadcast.users[id] !== undefined){
-        ATON.vroadcast.users[id]._mt.setNodeMask(0xf);
+        ATON.vroadcast.users[id]._mt.setNodeMask(ATON_MASK_UI);
         //ATON.vroadcast.users[id]._focAT.setNodeMask(0xf);
         return;
         }
@@ -670,6 +670,10 @@ ATON.vroadcast.touchUser = function(id){
 
     u._mt = new osg.MatrixTransform();
     u._mt.setCullingActive( false ); // sometimes user repr. disappears, why?
+
+    u._mtAUI = new osg.MatrixTransform();
+    u._mtAUI.addChild(ATON.vroadcast.userAUI);
+    u._mt.addChild(u._mtAUI);
 
     //var DFoc = new osg.Depth( osg.Depth.GREATER );
     //DFoc.setRange(0.9, 1.0);
@@ -737,6 +741,8 @@ ATON.vroadcast.realizeUserModel = function(id){
     u._mt.addChild(u._at);
 
     u._at.addChild(ATON.vroadcast.userBG);
+    u._at.addChild(u._mtAUI);
+    u._mtAUI.setNodeMask(0x0);
 
 
     var ulabID = id % 6; // no. colors
@@ -847,7 +853,7 @@ ATON.vroadcast.setUserModel = function(url){
         0, 0.5, -0.02 );     // height
 
     osgDB.readImageURL(ATON.vroadcast.resPath+"assets/userlabel.png").then( function ( data ){
-        var bgTex = new osg.Texture();
+        let bgTex = new osg.Texture();
         bgTex.setImage( data );
 
         bgTex.setMinFilter( osg.Texture.LINEAR_MIPMAP_LINEAR ); // LINEAR_MIPMAP_LINEAR // osg.Texture.LINEAR
@@ -861,6 +867,28 @@ ATON.vroadcast.setUserModel = function(url){
         ATON.vroadcast.userBG.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.5, 'uOpacity') );
 
         console.log("Label BG loaded");
+        });
+
+    ATON.vroadcast.userAUI = osg.createTexturedQuadGeometry(
+        -0.5, -0.5, -0.02,      // corner
+        1, 0, -0.02,       // width
+        0, 1, -0.02 );     // height
+
+    osgDB.readImageURL(ATON.vroadcast.resPath+"assets/useraui.png").then( function ( data ){
+        let bgTex = new osg.Texture();
+        bgTex.setImage( data );
+
+        bgTex.setMinFilter( osg.Texture.LINEAR_MIPMAP_LINEAR ); // LINEAR_MIPMAP_LINEAR // osg.Texture.LINEAR
+        bgTex.setMagFilter( osg.Texture.LINEAR ); // osg.Texture.LINEAR
+        
+        bgTex.setWrapS( osg.Texture.CLAMP_TO_EDGE );
+        bgTex.setWrapT( osg.Texture.CLAMP_TO_EDGE );
+
+        ATON.vroadcast.userAUI.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+        //u._mt.getOrCreateStateSet().setTextureAttributeAndModes(0, bgTex);
+        ATON.vroadcast.userAUI.getOrCreateStateSet().addUniform( osg.Uniform.createFloat1( 0.3, 'uOpacity') );
+
+        console.log("User AudioUI loaded");
         });
 };
 
@@ -1117,6 +1145,19 @@ ATON.vroadcast._registerSocketHandlers = function(){
         window.audio = new Audio();
         window.audio.src = audioURL;
         window.audio.play();
+
+        // Audio UI
+        let u = ATON.vroadcast.users[data.id];
+        if (!u) return;
+        u._mtAUI.setNodeMask(0x0);
+
+        if (!data.vol) return;
+
+        let v = 0.5 + (data.vol * 0.05);
+        //console.log(v);
+
+        osg.mat4.fromScaling( u._mtAUI.getMatrix(), [v,v,v]);
+        u._mtAUI.setNodeMask(ATON_MASK_UI);
     });
 
     // Object Spawning (can be done through custom events)

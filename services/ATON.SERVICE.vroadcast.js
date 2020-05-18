@@ -1268,6 +1268,7 @@ io.on('connection', function(socket){
             //socket.broadcast.to(sceneName).emit('UAUDIO', data);
             socket.to(sceneName).emit('UAUDIO', data);
             //console.log("Audio msg");
+            console.log(data);
             }
         });
 

@@ -69,12 +69,14 @@ ATON.vroadcast.onUserMSG = function(){
 
 // Def users colors
 ATON.vroadcast.UCOLORS = [
-    [1,0.0,0.0, 0.25],
-    [1,1,0.0, 0.25],
-    [0.0,1,0.0, 0.25],
-    [0.0,1,1, 0.25],
-    [0.0,0.0,1, 0.25],
-    [1,0.0,1, 0.25],
+    [1,0.0,0.0],
+    [1,1,0.0],
+    [0.0,1,0.0],
+    [0.0,1,1],
+    [0.0,0.0,1],
+    [1,0.0,1],
+
+    //[1,0.5,0.0],
 ];
 
 /*
@@ -179,6 +181,43 @@ ATON.vroadcast.initMediaRecorder = function(){
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
         });
+
+        // Audio analyser
+        ATON.vroadcast._auAVGvolume = 0;
+
+        ATON.vroadcast._auCTX = new AudioContext();
+        const input = ATON.vroadcast._auCTX.createMediaStreamSource(stream);
+        const analyser = ATON.vroadcast._auCTX.createAnalyser();
+        const scriptProcessor = ATON.vroadcast._auCTX.createScriptProcessor();
+
+        // Some analyser setup
+        analyser.smoothingTimeConstant = 0.3;
+        analyser.fftSize = 1024;
+        
+        input.connect(analyser);
+        analyser.connect(scriptProcessor);
+        scriptProcessor.connect(ATON.vroadcast._auCTX.destination);
+
+        const getAverageVolume = array => {
+            const L = array.length;
+            if (L <= 0) return 0; 
+            let values = 0;
+
+            for (let i=0; i<L; i++) values += array[i];
+
+            return values / L;
+        };
+
+        scriptProcessor.onaudioprocess = audioProcessingEvent => {
+            if (!ATON.vroadcast._bMediaStreaming) return;
+
+            const tempArray = new Uint8Array(analyser.frequencyBinCount);
+
+            analyser.getByteFrequencyData(tempArray);
+            ATON.vroadcast._auAVGvolume = parseInt(getAverageVolume(tempArray));
+            
+            //console.log(ATON.vroadcast._auAVGvolume);
+        };
     
         ATON.vroadcast._bMediaRecording = false;
         ATON.vroadcast._bMediaStreaming = false;
@@ -200,7 +239,8 @@ ATON.vroadcast.stopRecording = function(){
         
         if (ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: ATON.vroadcast._recBlob,
-            id: ATON.vroadcast._myUser.id
+            id: ATON.vroadcast._myUser.id,
+            vol: ATON.vroadcast._auAVGvolume
         });
     });
 };
@@ -217,7 +257,7 @@ ATON.vroadcast._stopRecAndSend = function(){
         let rblob = ATON.vroadcast.recorder.getBlob();
         //console.log(rblob);
         
-        if (rblob && ATON.vroadcast.socket) ATON.vroadcast.socket.emit("UAUDIO", {
+        if (rblob && ATON.vroadcast.socket /*&& (ATON.vroadcast._auAVGvolume > 5)*/) ATON.vroadcast.socket.emit("UAUDIO", {
             blob: rblob,
             id: ATON.vroadcast._myUser.id
         });

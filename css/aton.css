@@ -315,6 +315,8 @@ canvas {
     padding: 4px;
     border-radius: 5px;
 
+    text-shadow: none;
+
     cursor: pointer;
 
     -moz-user-select: none;

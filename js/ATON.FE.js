@@ -158,13 +158,24 @@ ATON.FE.setupVRoadcast = function(){
     
     ATON.on("VRC_UserLeft", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div><i>"+u.name+" left.</i><br></div>");
+        $('#idVRCchat').append("<div class='atonVRCchatBlock'>"+u.name+" left.</div>");
         });
     ATON.on("VRC_UserEntered", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div><i>"+u.name+" entered.</i><br></div>");
+        $('#idVRCchat').append("<div class='atonVRCchatBlock'>"+u.name+" entered.</div>");
         });
 
+    // Remote LOG
+/*
+    console.log = function(txt){
+        var s = "[Client #"+ATON.vroadcast._myUser.id+"] :: "+txt;
+        ATON.vroadcast.socket.emit("LOG", s);
+        };
+    console.error = function(txt){
+        var s = "[Client #"+ATON.vroadcast._myUser.id+"][ERROR] :: "+txt;
+        ATON.vroadcast.socket.emit("LOG", s);
+        };
+*/
 };
 
 // UI Buttons

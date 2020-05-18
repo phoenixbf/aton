@@ -1275,7 +1275,10 @@ io.on('connection', function(socket){
     socket.on('EREP', function(msg){
         if (scene){
             socket.broadcast.to(sceneName).emit( msg.e, msg.d );
-            console.log("Event replicate: "+msg.e+ " data: "+msg.d);
+            //console.log("Event replicate: "+msg.e+ " data: "+msg.d);
+            if (msg.d.store){
+                // Persistent data
+                }
             }
         });
 

@@ -172,12 +172,11 @@ ATON.vroadcast.setupResPath = function(path){
 ATON.vroadcast.initMediaRecorder = function(){
     if (!navigator.mediaDevices) return;
 
-    navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(async function(stream){
+    navigator.mediaDevices.getUserMedia({ video:false, audio:true, echoCancellation:true }).then(async function(stream){
         ATON.vroadcast.recorder = RecordRTC(stream, { 
             type: 'audio',
             audioBitsPerSecond: 9000,
             disableLogs: true,
-            echoCancellation:true
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
         });
@@ -201,8 +200,8 @@ ATON.vroadcast.initMediaRecorder = function(){
         const getAverageVolume = array => {
             const L = array.length;
             if (L <= 0) return 0; 
+            
             let values = 0;
-
             for (let i=0; i<L; i++) values += array[i];
 
             return values / L;

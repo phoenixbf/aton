@@ -800,7 +800,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         //u.nameNode.setNodeMask(0x0);
         }
     
-    u.nameNode.setCharacterSize( 0.3 );
+    u.nameNode.setCharacterSize( 0.2 );
     u.nameNode.setPosition( [ 0.0, 0.37+ATON.vroadcast._bgHoffset, 0.001 ] );
     u._at.addChild(u.nameNode);
 
@@ -815,7 +815,7 @@ ATON.vroadcast.realizeUserModel = function(id){
         //u.statusNode.setNodeMask(0x0);
         }
 
-    u.statusNode.setCharacterSize( 0.1 );
+    u.statusNode.setCharacterSize( 0.08 );
     u.statusNode.setPosition( [ 0.0, 0.2+ATON.vroadcast._bgHoffset, 0.001 ] );
     u._at.addChild(u.statusNode);   
 };

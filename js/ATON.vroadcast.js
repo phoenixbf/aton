@@ -48,25 +48,19 @@ ATON.registerEvents([
 ATON.vroadcast.users = [];
 ATON.vroadcast.manip = undefined;
 
-/*
-ATON.vroadcast = {
-    users: [],
-    socket: undefined,
-    connected: false,
-    manip: undefined,
-    uStateFreq: 0.1,
-};
-*/
 
-ATON.vroadcast.onUserEnter = function(){
+// Built-in events
+ATON.on("VRC_UserEntered", ()=>{
     ATON.vroadcast._audioLibEnter.play();
-};
-ATON.vroadcast.onUserLeave = function(){
+});
+ATON.on("VRC_UserLeft", ()=>{
+    //ATON.vroadcast._audioLibLeft.play();
+});
 
-};
-ATON.vroadcast.onUserMSG = function(){
+ATON.on("VRC_UserMessage", ()=>{
     ATON.vroadcast._audioLibMSG.play();
-};
+});
+
 
 // Def users colors
 ATON.vroadcast.UCOLORS = [
@@ -368,7 +362,7 @@ ATON.vroadcast.setUserName = function(name){
     var data = {id: ATON.vroadcast._myUser.id, name: name }
     ATON.vroadcast.socket.emit("UNAME", data);
 
-    ATON.vroadcast.onUserMSG();
+    //ATON.vroadcast.onUserMSG();
     ATON.fireEvent("VRC_UserName", data);
 };
 ATON.vroadcast.setStatus = function(status){
@@ -377,7 +371,7 @@ ATON.vroadcast.setStatus = function(status){
     var data = {id: ATON.vroadcast._myUser.id, status: status };
     ATON.vroadcast.socket.emit("UMSG", data);
     
-    ATON.vroadcast.onUserMSG();
+    //ATON.vroadcast.onUserMSG();
     ATON.fireEvent("VRC_UserMessage", data);
 };
 // Weight or rank
@@ -958,13 +952,13 @@ ATON.vroadcast._registerSocketHandlers = function(){
         // Request enter in scene node (room)
         ATON.vroadcast.socket.emit("ENTER", { scene: ATON.vroadcast._scene });
         console.log("Sent enter msg for scene "+ATON.vroadcast._scene);
-        //ATON.vroadcast.onUserEnter();
         });
 
     ATON.vroadcast.socket.on('disconnect', function(){
         console.log("DISCONNECT!!");
 
         ATON.vroadcast.socket.disconnect();
+        ATON.vroadcast._myUser.id = -1;
 
         // Hide all user representations
         for (let u = 0; u < ATON.vroadcast.users.length; u++) {
@@ -1041,7 +1035,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
         ATON.vroadcast.touchUser(data.id);
 
         console.log("User #" + data.id + " entered");
-        ATON.vroadcast.onUserEnter();
+        //ATON.vroadcast.onUserEnter();
 
         ATON.fireEvent("VRC_UserEntered", data);
         });
@@ -1056,7 +1050,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
             u._mtAUI.setNodeMask(0x0);
             }
 
-        if (u.name !== undefined) console.log("User #"+u.name+" left");
+        console.log("User #"+data.id+" left");
 
         ATON.fireEvent("VRC_UserLeft", data);
         });
@@ -1076,7 +1070,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
             //console.log(u._at.getChildren());
 
             console.log("User #"+data.id+" changed username to: "+data.name);
-            ATON.vroadcast.onUserMSG();
+            //ATON.vroadcast.onUserMSG();
 
             ATON.fireEvent("VRC_UserName", data);
             }
@@ -1094,7 +1088,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
             u.statusNode.setText(data.status);
 
             console.log("User #"+data.id+" changed status to: "+data.status);
-            ATON.vroadcast.onUserMSG();
+            //ATON.vroadcast.onUserMSG();
             ATON.fireEvent("VRC_UserMessage", data);
             }
         });

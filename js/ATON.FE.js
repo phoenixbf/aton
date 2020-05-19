@@ -58,7 +58,7 @@ ATON.FE.setup = function(){
     $('input').keydown((e)=>{e.stopPropagation(); });
     $('#idPopup').keydown((e)=>{e.stopPropagation(); });
 
-    if (ATON.FE.vrc) ATON.FE.setupVRoadcast();
+    if (ATON.FE.vrc) ATON.FE.vrcSetup();
 
     //ATON._bQueryUseOcclusion = false;
 };
@@ -85,7 +85,7 @@ ATON.FE.getUserColorString = function(uid, plight){
     return (ucolor[0]*255.0+","+ucolor[1]*255.0+","+ucolor[2]*255.0);
 };
 
-ATON.FE.setupVRoadcast = function(){
+ATON.FE.vrcTryConnect = function(){
     let vrcIP = ATON.FE.vrc;
     ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
     ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/user/head-zs.osgjs");
@@ -96,11 +96,22 @@ ATON.FE.setupVRoadcast = function(){
 
     ATON.vroadcast.uStateFreq = 0.05;
     let scenename = ATON.FE.scene;
-    
-/*
-    if (document.location.protocol == 'https:') ATON.vroadcast.connect("https://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, true);
-    else ATON.vroadcast.connect("http://"+vrcIP+":"+ATON.vroadcast.PORT+"/", scenename, false);
-*/
+
+    ATON.vroadcast.connect(vrcIP, scenename, ATON.FE._bSecureConn);
+};
+
+ATON.FE.vrcSetup = function(){
+    let vrcIP = ATON.FE.vrc;
+    ATON.vroadcast.setupResPath(ATON.FE.RES_ROOT);
+    ATON.vroadcast.setUserModel(ATON.vroadcast.resPath+"assets/user/head-zs.osgjs");
+
+    ATON.vroadcast.initMediaRecorder();
+
+    if (vrcIP.length < 3) vrcIP = window.location.hostname;
+
+    ATON.vroadcast.uStateFreq = 0.05;
+    let scenename = ATON.FE.scene;
+
     ATON.vroadcast.connect(vrcIP, scenename, ATON.FE._bSecureConn);
 
     // VRC Events
@@ -109,9 +120,9 @@ ATON.FE.setupVRoadcast = function(){
         let uid = ATON.vroadcast._myUser.id;
         let strColor = ATON.FE.getUserColorString(uid);
 
-        $('#idUserColor').show();
-        $('#idUserColor').css("cssText", "background-color: rgba("+strColor+", 0.7); box-shadow: 0 0px 30px rgba("+strColor+",1.0);" );
-        $('#idUserColor').html("<b>U"+uid+"</b>");
+        $('#idVRC').show();
+        $('#idVRC').css("cssText", "background-color: rgba("+strColor+", 0.7); box-shadow: 0 0px 30px rgba("+strColor+",1.0);" );
+        $('#idVRC').html("<b>U"+uid+"</b>");
 
         // disable controls for beta users
         //if (uid > 0) $('#idMagSetup').hide();
@@ -132,11 +143,13 @@ ATON.FE.setupVRoadcast = function(){
         ATON.vroadcast.users = [];
 
         //$('#iContainer').css("cssText", "background-color: black !important; opacity: 0.7;");
-        $('#idUserColor').css("background-color", "black");
-        $('#idUserColor').html("");
-        $('#idUserColor').hide();
+        $('#idVRC').css("cssText", "background-color: rgba(0,0,0, 0.5); box-shadow: 0 0px 30px rgba(0,0,0, 0.5);");
+        $('#idVRC').html("VRC");
+        //$('#idVRC').hide();
 
         $('#idVRCpanel').hide();
+
+        if (ATON.vroadcast._bMediaStreaming) ATON.vroadcast.stopMediaStreaming();
         });
 
     ATON.on("VRC_UserName", (d)=>{
@@ -179,8 +192,13 @@ ATON.FE.setupVRoadcast = function(){
 };
 
 // UI Buttons
-ATON.FE.uiToggleVRoadcastPanel = function(){
-    $('#idVRCpanel').toggle();
+ATON.FE.uiVRC = function(){
+    let uid = ATON.vroadcast._myUser.id;
+
+    if (uid >= 0) $('#idVRCpanel').toggle();
+    else { // reconnect
+        ATON.FE.vrcTryConnect();
+    }
 };
 
 ATON.FE.uiToggleVRoadcastStreaming = function(){
@@ -208,7 +226,7 @@ ATON.FE.uiAddQRButton = function(idToolbar){
     $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.FE.popupQR()'><img src='"+ATON.FE.RES_ROOT+"ii-qr.png'></button>");
 };
 ATON.FE.uiAddVRoadcastButton = function(idToolbar){
-    $("#"+idToolbar).append("<button id='idUserColor' type='button' class='atonBTN' onclick='ATON.FE.uiToggleVRoadcastPanel()'></button>");
+    $("#"+idToolbar).append("<button id='idVRC' type='button' class='atonBTN' onclick='ATON.FE.uiVRC()'></button>");
 };
 
 ATON.FE.uiAddVRoadcastAudioButton = function(idToolbar){

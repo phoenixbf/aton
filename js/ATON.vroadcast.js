@@ -23,7 +23,7 @@ ATON.vroadcast._bPOLdirty = true;
 ATON.vroadcast._bMediaRecording = false;
 ATON.vroadcast._bMediaStreaming = false;
 ATON.vroadcast._auStreamInterval = 250;
-ATON.vroadcast.minAuVol = 8;
+ATON.vroadcast.minAuVol = 5;
 
 // custom events
 //ATON.vroadcast.onIDassigned = undefined;
@@ -1176,7 +1176,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
 
         //console.log(data.vol);
 
-        let v = 0.5 + (data.vol * 0.05);
+        let v = 0.5 + (data.vol * 0.02);
         //console.log(v);
 
         osg.mat4.fromScaling( u._mtAUI.getMatrix(), [v,v,v]);

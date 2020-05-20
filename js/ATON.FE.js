@@ -135,7 +135,7 @@ ATON.FE.vrcSetup = function(){
             //document.getElementById("urank").max = r;
             }
 
-        $('#idVRCchat').append("<div><i>You (ID:"+uid+") entered scene '"+scenename+"'</i></div>");
+        $('#idVRCchat').append("<div class='atonVRCchatBlock'>You (ID:"+uid+") entered scene '"+scenename+"'</div>");
         });
 
     // Disconnection
@@ -162,20 +162,22 @@ ATON.FE.vrcSetup = function(){
 
         let strColor = ATON.FE.getUserColorString(d.id, 0.5);
         
-        let strchat = "<div class='atonVRCchatBlock' style='color: rgb("+strColor+")'>";
+        //let strchat = "<div class='atonVRCchatBlock' style='color: rgb("+strColor+")'>";
+        let strchat = "<div class='atonVRCchatBlock' style='text-shadow: 0px 0px 4px rgb("+strColor+")'>";
         strchat += "<span class='atonVRCchatUser' style='background-color: rgb("+strColor+")' onclick='ATON.vroadcast.snapToUser("+d.id+")'>"+uname+":</span> ";
         strchat += d.status+"</div>";
 
         $('#idVRCchat').append(strchat);
+        $("#idVRCchat").scrollTop($("#idVRCchat")[0].scrollHeight);
         });
     
     ATON.on("VRC_UserLeft", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div class='atonVRCchatBlock'>"+u.name+" left.</div>");
+        $('#idVRCchat').append("<div class='atonVRCchatBlock'>User "+u.name+" left.</div>");
         });
     ATON.on("VRC_UserEntered", (d)=>{
         var u = ATON.vroadcast.users[d.id];
-        $('#idVRCchat').append("<div class='atonVRCchatBlock'>"+u.name+" entered.</div>");
+        $('#idVRCchat').append("<div class='atonVRCchatBlock'>User "+u.name+" entered.</div>");
         });
 
     // Remote LOG

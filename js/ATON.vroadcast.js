@@ -165,6 +165,21 @@ ATON.vroadcast.setupResPath = function(path){
 };
 
 // MEDIA Recorder
+ATON.vroadcast._onAuBlob = function(rblob){
+    if (!rblob) return;
+    if (!ATON.vroadcast.socket) return;
+    //if (ATON.vroadcast._auAVGvolume <= ATON.vroadcast.minAuVol) return;
+
+    console.log("sending blob..."+rblob.size);
+
+    ATON.vroadcast.socket.emit("UAUDIO", {
+        blob: rblob,
+        id: ATON.vroadcast._myUser.id,
+        vol: ATON.vroadcast._auAVGvolume
+    });
+};
+
+
 ATON.vroadcast.initMediaRecorder = function(){
     if (!navigator.mediaDevices) return;
 
@@ -175,7 +190,9 @@ ATON.vroadcast.initMediaRecorder = function(){
             disableLogs: true,
             numberOfAudioChannels: 1,
             //recorderType: StereoAudioRecorder,
-            //timeSlice: 1000 
+            mimeType: "audio/wav",
+            //timeSlice: ATON.vroadcast._auStreamInterval,
+            //ondataavailable: ATON.vroadcast._onAuBlob,
         });
 
         // Audio analyser
@@ -220,6 +237,7 @@ ATON.vroadcast.initMediaRecorder = function(){
     });
 };
 
+/*
 ATON.vroadcast.startRecording = function(){
     if (!ATON.vroadcast.recorder) return;
     
@@ -250,6 +268,7 @@ ATON.vroadcast.startOrStopMediaRecording = function(){
     if (ATON.vroadcast._bMediaRecording) ATON.vroadcast.stopRecording();
     else ATON.vroadcast.startRecording();
 };
+*/
 
 // helper function
 ATON.vroadcast._stopRecAndSend = function(){
@@ -258,17 +277,16 @@ ATON.vroadcast._stopRecAndSend = function(){
     ATON.vroadcast.recorder.stopRecording(()=>{
         let rblob = ATON.vroadcast.recorder.getBlob();
         //console.log(rblob);
-        
-        if (
-            rblob && 
-            ATON.vroadcast.socket && 
-            (ATON.vroadcast._auAVGvolume > ATON.vroadcast.minAuVol)
-            ) 
-            ATON.vroadcast.socket.emit("UAUDIO", {
-                blob: rblob,
-                id: ATON.vroadcast._myUser.id,
-                vol: ATON.vroadcast._auAVGvolume
-            });
+
+        if (!rblob) return;
+        if (!ATON.vroadcast.socket) return;
+        if (ATON.vroadcast._auAVGvolume <= ATON.vroadcast.minAuVol) return;
+
+        ATON.vroadcast.socket.emit("UAUDIO", {
+            blob: rblob,
+            id: ATON.vroadcast._myUser.id,
+            vol: ATON.vroadcast._auAVGvolume
+        });
     });
 };
 
@@ -289,11 +307,11 @@ ATON.vroadcast.startMediaStreaming = function(){
         });       
     };
 */
+
     ATON.vroadcast._dMediaRecorder = setInterval(()=>{
         ATON.vroadcast._stopRecAndSend();
         ATON.vroadcast.recorder.startRecording();
     }, ATON.vroadcast._auStreamInterval);
-
 };
 ATON.vroadcast.stopMediaStreaming = function(){
     if (!ATON.vroadcast.recorder) return;
@@ -658,15 +676,15 @@ ATON.vroadcast.decodeDFocus = function(binData){
 ATON.vroadcast.touchUser = function(id){
     if (id < 0) return;
 
-    if (ATON.vroadcast.users[id] !== undefined){
+    if (ATON.vroadcast.users[id]){
         ATON.vroadcast.users[id]._mt.setNodeMask(ATON_MASK_UI);
         //ATON.vroadcast.users[id]._focAT.setNodeMask(0xf);
-        return;
+        return ATON.vroadcast.users[id];
         }
 
     // Create User (TODO: move into actor object)
     ATON.vroadcast.users[id] = new ATON.user();
-    var u = ATON.vroadcast.users[id];
+    let u = ATON.vroadcast.users[id];
 
     // ID
     u.id = id;
@@ -735,6 +753,8 @@ ATON.vroadcast.touchUser = function(id){
     if (id === 0) ATON.vroadcast.setUserInfluence(u, 30.0, [0.0, 0.0005]);
     else ATON.vroadcast.setUserInfluence(u, 10.0, [0.0, 0.0001]);
 */
+
+    return u;
 };
 
 ATON.vroadcast.realizeUserModel = function(id){
@@ -988,13 +1008,10 @@ ATON.vroadcast._registerSocketHandlers = function(){
     // A different user state update
     ATON.vroadcast.socket.on('USTATE', function(data){
         //console.log(data.binaryData);
-        var u = ATON.vroadcast.decodeUserStateData(data);
+        let u = ATON.vroadcast.decodeUserStateData(data);
+        let user = ATON.vroadcast.touchUser(u.id);
 
-        ATON.vroadcast.touchUser(u.id);
-
-        var user = ATON.vroadcast.users[u.id];
-
-        if (user !== undefined){
+        if (user){
             user.rank = u.rank;
             ATON.vroadcast.requestUserTransition(u.id, u.pos, u.ori);
             
@@ -1010,15 +1027,13 @@ ATON.vroadcast._registerSocketHandlers = function(){
     
     // A transmission of user focal point
     ATON.vroadcast.socket.on('UFOCUSD', function(data){
-        ATON.vroadcast.touchUser(data.id);
+        let u = ATON.vroadcast.touchUser(data.id);
 
         //console.log(data);
 
-        if (ATON.vroadcast.users[data.id] !== undefined){
-            var u = ATON.vroadcast.users[data.id];
-
-            var binData = data.bin;
-            var dtarg = ATON.vroadcast.decodeDFocus(binData);
+        if (u){
+            let binData = data.bin;
+            let dtarg = ATON.vroadcast.decodeDFocus(binData);
 
             u.target[0] = u.lastPos[0] + dtarg[0];
             u.target[1] = u.lastPos[1] + dtarg[1];
@@ -1061,10 +1076,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
     ATON.vroadcast.socket.on('UNAME', function(data){
         //console.log(data.binaryData);
 
-        ATON.vroadcast.touchUser(data.id);
-
-        let u = ATON.vroadcast.users[data.id];
-
+        let u = ATON.vroadcast.touchUser(data.id);
         if (u){
             u.name = data.name;
             u.nameNode.setText(data.name);
@@ -1082,12 +1094,11 @@ ATON.vroadcast._registerSocketHandlers = function(){
     ATON.vroadcast.socket.on('UMSG', function(data){
         //console.log(data.binaryData);
 
-        ATON.vroadcast.touchUser(data.id);
+        let u = ATON.vroadcast.touchUser(data.id);
 
-        if (ATON.vroadcast.users[data.id] !== undefined){
-            var u = ATON.vroadcast.users[data.id];
+        if (u){
             u.status = data.status;
-            u.statusNode.setText(data.status);
+            u.statusNode.setText(data.status.substring(0, 25));
 
             console.log("User #"+data.id+" changed status to: "+data.status);
             //ATON.vroadcast.onUserMSG();
@@ -1118,10 +1129,9 @@ ATON.vroadcast._registerSocketHandlers = function(){
     ATON.vroadcast.socket.on('UMAGWEIGHT', function(data){
         //console.log(data.binaryData);
 
-        ATON.vroadcast.touchUser(data.id);
+        let u = ATON.vroadcast.touchUser(data.id);
 
-        if (ATON.vroadcast.users[data.id] !== undefined){
-            var u = ATON.vroadcast.users[data.id];
+        if (u){
             u.weight = data.weight;
 
             ATON.vroadcast.setUserInfluence(u, u.radius, [0.0, u.weight]);
@@ -1134,10 +1144,9 @@ ATON.vroadcast._registerSocketHandlers = function(){
     ATON.vroadcast.socket.on('UMAGRADIUS', function(data){
         //console.log(data.binaryData);
 
-        ATON.vroadcast.touchUser(data.id);
+        let u = ATON.vroadcast.touchUser(data.id);
 
-        if (ATON.vroadcast.users[data.id] !== undefined){
-            var u = ATON.vroadcast.users[data.id];
+        if (u){
             u.radius = data.radius;
 
             ATON.vroadcast.setUserInfluence(u, u.radius, [0.0, u.weight]);
@@ -1156,7 +1165,7 @@ ATON.vroadcast._registerSocketHandlers = function(){
     });
 
     ATON.vroadcast.socket.on('UAUDIO', (data)=>{
-        let newblob = new File([data.blob], "audio");
+        let newblob  = new File([data.blob], "blob.wav", { type: 'audio/wav'});
         let audioURL = window.URL.createObjectURL(newblob);
         
         window.audio = new Audio();

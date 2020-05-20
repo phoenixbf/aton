@@ -43,7 +43,7 @@ ATON.FE.setup = function(){
         });
 
     ATON.on("AllNodeRequestsCompleted", ()=>{
-        //ATON.requestHome();
+        ATON.requestHome();
         $('#idLoader').hide();
         });
 
@@ -289,7 +289,7 @@ ATON.FE.onSceneJSONSuccess = function(){
     $("#idLoader").html("<img src='"+ATON.FE.RES_ROOT+"loader.png'>");
 
     ATON.fireEvent("FE_SceneJSONloaded");
-    ATON.requestHome();
+    //ATON.requestHome();
 };
 
 // Search in descriptors

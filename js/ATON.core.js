@@ -1295,7 +1295,10 @@ ATON.loadScene = function(scenejson, onComplete){
             for (let p in povs){
                 let pov = povs[p];
                 
-                if (p === "home") ATON.setHome(pov.pos, pov.target, pov.fov);
+                if (p === "home"){
+                    ATON.setHome(pov.pos, pov.target, pov.fov);
+                    ATON.requestHome();
+                    }
                 else ATON.addPOV(pov);
                 }
             }

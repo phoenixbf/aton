@@ -22,8 +22,9 @@ ATON.vroadcast.uStateFreq = 0.1;
 ATON.vroadcast._bPOLdirty = true;
 ATON.vroadcast._bMediaRecording = false;
 ATON.vroadcast._bMediaStreaming = false;
-ATON.vroadcast._auStreamInterval = 250;
-ATON.vroadcast.minAuVol = 5;
+ATON.vroadcast._auStreamInterval = 400;
+ATON.vroadcast._auBitsPerSecond  = 9000;
+ATON.vroadcast.minAuVol = 2;
 
 // custom events
 //ATON.vroadcast.onIDassigned = undefined;
@@ -170,8 +171,9 @@ ATON.vroadcast.initMediaRecorder = function(){
     navigator.mediaDevices.getUserMedia({ video:false, audio:true, echoCancellation:true }).then(async function(stream){
         ATON.vroadcast.recorder = RecordRTC(stream, { 
             type: 'audio',
-            audioBitsPerSecond: 11000, //9000,
+            audioBitsPerSecond: ATON.vroadcast._auBitsPerSecond,
             disableLogs: true,
+            numberOfAudioChannels: 1,
             //recorderType: StereoAudioRecorder,
             //timeSlice: 1000 
         });

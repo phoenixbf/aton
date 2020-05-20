@@ -1893,6 +1893,13 @@ window.addEventListener( 'load', function () {
                     for (let b = 1; b <= 37; b++){
                         if (ATON._isMobile) ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD2/PT"+b+"__LOD2_m.osgjs").attachTo("Castle");
                         else ATON.createAssetNode(ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD1/PT"+b+"__LOD1_m.osgjs").attachTo("Castle");
+/*
+                        ATON.createMultiResAssetNode(
+                            [ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD2/PT"+b+"__LOD2_m.osgjs",
+                            ATON.FE.MODELS_ROOT+"_prv/rsm/prog1/LOD1/PT"+b+"__LOD1_m.osgjs"],
+                            1500.0
+                            ).attachTo("Castle");
+*/
                         }
 /*
                     if (ATON._isMobile)

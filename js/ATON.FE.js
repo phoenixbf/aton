@@ -197,7 +197,7 @@ ATON.FE.vrcSetup = function(){
 ATON.FE.uiVRC = function(){
     let uid = ATON.vroadcast._myUser.id;
 
-    if (uid >= 0) $('#idVRCpanel').toggle();
+    if (uid >= 0) $('#idVRCpanel').toggle(); //.slideToggle();
     else { // reconnect
         ATON.FE.vrcTryConnect();
     }
@@ -214,6 +214,7 @@ ATON.FE.uiToggleVRoadcastStreaming = function(){
     }
 };
 
+// Built-in buttons
 ATON.FE.uiAddHomeButton = function(idToolbar){
     $("#"+idToolbar).append("<button type='button' class='atonBTN' onclick='ATON.requestHome(1.0)'><img src='"+ATON.FE.RES_ROOT+"ii-inv-home.png'></button>");
 };
@@ -230,10 +231,10 @@ ATON.FE.uiAddQRButton = function(idToolbar){
 ATON.FE.uiAddVRoadcastButton = function(idToolbar){
     $("#"+idToolbar).append("<button id='idVRC' type='button' class='atonBTN' onclick='ATON.FE.uiVRC()'></button>");
 };
-
 ATON.FE.uiAddVRoadcastAudioButton = function(idToolbar){
     $("#"+idToolbar).append("<button id='idVRCau' type='button' class='atonBTN' onclick='ATON.FE.uiToggleVRoadcastStreaming()'><img src='"+ATON.FE.RES_ROOT+"ii-inv-speech.png'></button>");
 };
+
 
 
 ATON.FE.toggleFirstPerson = function(){
@@ -259,13 +260,12 @@ ATON.FE.toggleDevOri = function(){
 };
 
 ATON.FE.toggleFullscreen = function(b){
-    if (screenfull.enabled){
-        if (b === undefined) screenfull.toggle();
-        else {
-            if (b) screenfull.request();
-            //else
-            }
+    if (b === undefined){
+        screenfull.toggle();
+        return;
         }
+
+    if (b) screenfull.request();
 };
 
 // Scene management
@@ -375,7 +375,7 @@ ATON.FE.popupAddAnnotation = function(parentdid){
     let htmlcontent = "<h1>New Annotation</h1>";
     htmlcontent += "Adding in ("+ATON._hoveredVisData.p[0].toFixed(2)+","+ATON._hoveredVisData.p[1].toFixed(2)+","+ATON._hoveredVisData.p[2].toFixed(2)+") with radius = "+ATON._hoverRadius+"<br><br>";
 
-    htmlcontent += "<label for='did'>ID:</label><input id='did' type='text' maxlength='11' size='11' autofocus><br>";
+    htmlcontent += "<label for='did'>ID:</label><input id='did' type='text' maxlength='11' size='11' autofocus ><br>";
     htmlcontent += "<textarea id='acontent' style='width:80%; height:50px'></textarea><br>";
 
     htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";

@@ -14,20 +14,22 @@
 <script>
 //============================================================================
 
+let go = function(){
+    let sid = $('#idScene').val().toLowerCase();
+    if (sid.length < 1) return;
+
+    // Build FE params
+    let feURL = window.location.href + "/fe/?s="+sid;
+    if ($('#idVRC').prop("checked")) feURL += "&vrc=1";
+
+    window.location.href = feURL; 
+};
+
 
 window.addEventListener( 'load', ()=>{
 
     $('#idScene').on('keypress', (e)=>{
-        if(e.which === 13){
-            let sid = $('#idScene').val().toLowerCase();;
-            if (sid.length < 1) return;
-
-            // Build FE params
-            let feURL = window.location.href + "/fe/?s="+sid;
-            if ($('#idVRC').prop("checked")) feURL += "&vrc=1";
-
-            window.location.href = feURL;
-        }
+        if(e.which === 13) go();
     });
 
 

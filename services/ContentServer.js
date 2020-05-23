@@ -56,7 +56,14 @@ ContentServer.configure = function(){
             pathname:"/frontend",
             query: { "m": scene }
         }));
-    next();
+
+        next();
+    });
+
+    // List all published scenes
+    this.app.get("/api/scenes", function(req,res,next){
+        //TODO:
+        next();
     });
 
     // Proxies

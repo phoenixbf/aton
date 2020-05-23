@@ -177,13 +177,12 @@ ATON.FE.setupPage = function(){
         };
 
     ATON.FE.toggleFullscreen = function(b){
-        if (screenfull.enabled){
-            if (b === undefined) screenfull.toggle();
-            else {
-                if (b) screenfull.request();
-                //else
-                }
+        if (b === undefined){
+            screenfull.toggle();
+            return;
             }
+
+        if (b) screenfull.request();
         };
     
     

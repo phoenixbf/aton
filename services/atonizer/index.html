@@ -18,11 +18,13 @@
 <script>
 //============================================================================
 const ATONIZER_SUBDIR_SEP = ":";
+const ATONIZER_LOCK_F     = "_ALOCK_.txt";
 
 let configdata = undefined;
 let bProcessing = false;
 let bCanProcess = false;
 let feURL = undefined;
+let args  = {};
 
 let baseHostURL = location.protocol+'//'+location.hostname+(location.port? ':'+location.port: '') + "/";
 
@@ -39,7 +41,7 @@ let requestProcess = function(){
     $("#idProcessBTN").html("<h3>WAIT...</h3>");
 
     // Build args
-    let args = {};
+    //let args = {};
     args.infolder = $("#inFolder").val();
 
     let bInPlace = $("#inPlaceConv").prop("checked");
@@ -81,7 +83,7 @@ let requestProcess = function(){
     console.log(args);
     //return;
 
-    if (feURL) window.open(feURL, '_blank');
+    //if (feURL) window.open(feURL, '_blank');
 
     // Fire request
     let udata = JSON.stringify(args);    
@@ -91,8 +93,25 @@ let requestProcess = function(){
         data: udata,
         contentType:"application/json; charset=utf-8",
         dataType:"json",
-        success: onTaskCompleted
+        success: onTaskLaunched
     });
+};
+
+let onTaskLaunched = function(){
+    $("#idProcessBTN").attr("class","atonBTN atonBTN-yellow atonizerProcessBTN");
+    $("#idProcessBTN").html("<h3>Task launched...</h3>");
+    let dProc = setInterval(()=>{
+        $.get( "./api/status/"+args.outfolder, function( data ){
+            //console.log(data);
+            $("#idProcessBTN").html("<h3>"+data.status+"</h3>");
+
+            if (data.status === "DONE"){
+                clearInterval(dProc);
+                onTaskCompleted();
+                }
+        });
+
+    }, 4000);
 };
 
 let onTaskCompleted = function(){

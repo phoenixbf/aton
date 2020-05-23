@@ -86,6 +86,9 @@ class AtonizerFolderProcessor {
             return;
             }
 */
+        //let fdLock = fs.openSync(lockfile, 'w');
+        fs.writeFileSync(lockfile, "Processing...");
+
         console.log("Processing folder "+inFolder);
         this._bRunning = true;
 
@@ -112,8 +115,6 @@ class AtonizerFolderProcessor {
         console.log(ostr);
         console.log(ostrjs);
 
-        fs.closeSync(fs.openSync(lockfile, 'w'));
-
         // ATON root json
         let sjson = {};
         sjson.scenegraph = {};
@@ -123,6 +124,7 @@ class AtonizerFolderProcessor {
         sjson.scenegraph.edges = [];
         sjson.scenegraph.edges.push([".","main"]);
 
+        fs.writeFileSync(lockfile, "Converting data...");
 
         let self = this;
         glob(inFolder + self.pattern, undefined, function(er, files){
@@ -134,6 +136,8 @@ class AtonizerFolderProcessor {
                 let fBasename = IFile.name;    // IFile.dir+
                 let fExt      = IFile.ext;     // eg: .obj
                 let fName     = IFile.name + IFile.ext; // model.obj
+
+                fs.writeFileSync(lockfile, "Processing "+fName+"...");
 
                 let tmpout      = outFolder+fBasename+"_m_.osg";
                 let outfilepath = outFolder+fBasename+".osgjs";
@@ -177,7 +181,7 @@ class AtonizerFolderProcessor {
                 //jsonf = deleteKey(jsonf, {key: "Name"});
                 //jsonf = deleteKey(jsonf, {key: "osg.Material"});
 
-                fs.writeFileSync(outfilepath, JSON.stringify(jsonf));
+                if (self.bGenerateSJSON) fs.writeFileSync(outfilepath, JSON.stringify(jsonf));
                 
                 if (self.bCompressGeom){
                     replace({
@@ -191,6 +195,7 @@ class AtonizerFolderProcessor {
             }
 
             if (self.bCompressGeom && files.length>0){
+                fs.writeFileSync(lockfile, "Compressing geometry...");
                 console.log("Compressing geometries...");
                 execSync('gzip -q -f --best '+outFolder+'/*.bin', {stdio: 'inherit'});
             }
@@ -199,6 +204,7 @@ class AtonizerFolderProcessor {
             if (self.bGenerateSJSON) fs.writeFileSync(outFolder+"scene.json", JSON.stringify(sjson));
 
             fs.unlinkSync(lockfile);
+
             fs.closeSync(fs.openSync(complfile, 'w'));
             self._bRunning = false;
             

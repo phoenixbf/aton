@@ -6,7 +6,7 @@
 const PORT_ATONIZER = process.env.PORT_ATONIZER || 8085;
 
 const ATONIZER_SUBDIR_SEP = ":";
-
+const ATONIZER_LOCK_F = "_ALOCK_.txt";
 
 const express = require('express')
 const app  = express();
@@ -118,6 +118,29 @@ app.get("/atonizer/config", function(req,res){
     res.json(D);
 });
 
+app.get("/atonizer/api/status/:outdir", function(req,res){
+    let outD = req.params.outdir.split(ATONIZER_SUBDIR_SEP);
+
+    if (outD.length < 2){
+        res.json({ status: "ERROR" });
+        console.log("ERROR: missing splitter");
+        return;
+        }
+
+    let outEntry  = aConfig.outputRootFolders[outD[0]];
+    let outfolder = outEntry.path + "/"+ outD[1];
+
+    let flock = outfolder+"/"+ATONIZER_LOCK_F;
+    if (fs.existsSync(flock)){
+        let ss = fs.readFileSync(flock, 'utf8');
+        res.json({ status: ss.toString() });
+    }
+    else {
+        res.json({ status: "DONE" });
+    }
+
+});
+
 app.post('/atonizer/api/process', (req, res) => {
     console.log("Requested process");
 
@@ -176,8 +199,10 @@ app.post('/atonizer/api/process', (req, res) => {
     //return;
 
     let aproc = fireAtonizerProcessor(args, ()=>{
-        res.json({ success: true });
+
         });
+
+    res.json({ success: true });
 });
 
 app.listen(PORT_ATONIZER, ()=>{

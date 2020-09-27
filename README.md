@@ -1,21 +1,20 @@
 # ATON 3.0 framework
 
-![Header](./res/aton2-header.jpg)
+![Header](./public/res/aton-header.jpg)
 
-The ATON 2.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D WebApps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
+The ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D WebApps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop/kiosks, immersive VR)
 * Complex scene-graph manipulation and support for hierarchical culling, instancing, node composition and cascading transformations
-* Immersive VR (WebVR/XR) and (multi)-touch devices interfaces
-* Shape Descriptors for 3D semantic queries and annotations with customizable events
-* Event-driven API
+* Immersive VR (WebXR) and (multi)-touch devices interfaces
+* 3D semantic queries and annotations including free-form volumetric shapes
+* Event-driven API for fully customizable events
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
 * Multi-temporal (4D) visualization
 * Real-time collaborative multi-user features (*VRoadcast* module)
-Paged multi-resolution
-* Advanced multi-texturing, PBR features and shader customization
+* Advanced multi-texturing, PBR features and custom shaders
 * Camera/POV transitions, custom POV handling and navigation constraints
 * Dynamic and customizable recommendation systems
-* Spherical panoramas and IBL
+* Spherical panoramas and virtual tours
 
 The framework also provides *built-in* services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and remote/immersive visual analytics.
 
@@ -28,12 +27,12 @@ cd services/
 npm update
 ```
 
-3) From "services" folder, deploy ATON *content service* on local machine simply using:
+3) From "services" folder, deploy ATON *main service* on local machine simply using:
 ```
-node ATON.SERVICE.content.js
+npm start
 ```
 
-4) Open http://localhost:8080/s/hebe on your browser.
+4) Open http://localhost:8080/examples/basic/ on your browser.
 
 # Publications
 Here is a list of publications where ATON was employed:

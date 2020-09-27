@@ -46,6 +46,10 @@ constructor(id, type){
 
     this._bCloneOnLoadHit = true;
 
+    // Shadows
+    this.castShadow    = false;
+    this.receiveShadow = false;
+
     // Local handlers
     this.onHover  = undefined;
     this.onLeave  = undefined;
@@ -202,6 +206,30 @@ setOpacity(f){
 
     return this;
 }
+
+// FIXME: not working
+setShadowCast(b){
+    this.castShadow = b;
+
+    this.traverse((o) => {
+        if (o.isMesh){
+            o.castShadow = b;
+        }
+    });
+
+    return this;
+};
+setShadowReceive(b){
+    this.receiveShadow = b;
+
+    this.traverse((o) => {
+        if (o.isMesh){
+            o.receiveShadow = b;
+        }
+    });
+
+    return this;
+};
 
 setEnvMap(envtex){
     this.traverse((o) => {

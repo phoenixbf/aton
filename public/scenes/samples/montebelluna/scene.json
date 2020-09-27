@@ -1,6 +1,12 @@
 {
     "status": "complete",
 
+	"environment":{
+		"mainpano":{
+			"url": "pano/samples/defsky-grass.jpg"
+        }
+	},
+
     "scenegraph": {
         "nodes": {
             "Attuale": {

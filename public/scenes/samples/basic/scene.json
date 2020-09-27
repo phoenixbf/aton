@@ -1,0 +1,35 @@
+{
+	"status": "complete",
+
+	"environment":{
+		"mainpano":{
+			"url": "pano/samples/defsky-grass.jpg",
+			"rotation": 0.0
+        },
+
+        "mainlight":{
+            "direction": [0.5,-1,-1],
+			"shadows": false
+        }
+	},
+
+    "scenegraph": {
+        "nodes": {
+            "ground": {
+                "urls": "models/samples/basic/ground.gltf",
+                "transform":{
+                    "scale": [10,10,10]
+                }
+            },
+            "atoncube":{
+                "urls": "models/samples/atoncube-pbr.glb",
+                "transform":{
+                    "position": [-4.0,0.5,4.0]
+                }
+            }
+        },
+        "edges": {
+            ".": ["ground","atoncube"]
+        }
+    }
+}

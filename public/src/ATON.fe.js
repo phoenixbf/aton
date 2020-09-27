@@ -16,7 +16,7 @@ FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup = false; // showing popup
-    FE.bPopupBlurBG = 0.02; // blur 3D content on popup show, 0.0 to disable
+    FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
 
     FE.urlParams = new URLSearchParams(window.location.search);
 

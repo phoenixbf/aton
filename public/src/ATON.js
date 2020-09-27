@@ -80,6 +80,11 @@ ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/";
 
+ATON.SHADOWS_NEAR = 0.1;
+ATON.SHADOWS_FAR  = 50.0;
+ATON.SHADOWS_SIZE = 20.0;
+ATON.SHADOWS_RES  = 512;
+
 /**
 Set path collection (3D models, audio, panoramas, ...)
 @param {string} path - path
@@ -556,6 +561,7 @@ ATON.addLightProbe = (LP)=>{
 
 // Update ALL lightprobes
 ATON.updateLightProbes = ()=>{
+    if (ATON._lps.length === 0) return;
 
     for (let i in ATON._lps) ATON._lps[i].update();
 
@@ -570,8 +576,9 @@ ATON.updateLightProbes = ()=>{
     //for (let i in ATON._lps) ATON._lps[i].update();
 
     ATON._rootVisible.traverse((o) => {
-        if (o.userData.LP !== undefined){
-            o.material.envMap = o.userData.LP.getEnvTex();
+        let LP = o.userData.LP;
+        if (LP !== undefined && LP instanceof ATON.LightProbe){
+            o.material.envMap = LP.getEnvTex();
             //o.material.combine = THREE.AddOperation;
             //o.material.envMapIntensity = 5.0;
         }
@@ -580,7 +587,7 @@ ATON.updateLightProbes = ()=>{
 };
 
 //==============================================================
-// Panorama
+// Environment
 //==============================================================
 ATON.setMainPanorama = (path)=>{
 
@@ -595,7 +602,6 @@ ATON.setMainPanorama = (path)=>{
 
     // First time: create it
     ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 30,30 );
-    ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
 
     ATON._matMainPano = new THREE.MeshBasicMaterial({ 
         map: tpano, 
@@ -611,6 +617,8 @@ ATON.setMainPanorama = (path)=>{
 
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
     ATON._mMainPano.frustumCulled = false;
+    ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
+
     ATON._mMainPano.onAfterRender = ()=>{
         //if (ATON._numReqLoad > 0) return;
         ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
@@ -622,6 +630,72 @@ ATON.setMainPanorama = (path)=>{
 ATON.setMainPanoramaRadius = (r)=>{
     if (ATON._gMainPano === undefined) return;
     ATON._gMainPano.scale( -r,r,r );
+};
+
+ATON.setMainPanoramaRotation = (r)=>{
+    if (ATON._mMainPano === undefined) return;
+    ATON._mMainPano.rotation.set( 0,r,0 );
+};
+
+
+ATON.setMainLightDirection = (d)=>{
+
+    d.x *= ATON.SHADOWS_FAR * 0.5;
+    d.y *= ATON.SHADOWS_FAR * 0.5;
+    d.z *= ATON.SHADOWS_FAR * 0.5;
+
+    if (ATON._dMainL === undefined){
+        ATON._dMainL = new THREE.DirectionalLight( new THREE.Color(1,1,1), 1.0 );
+        ATON._dMainL.castShadow = true;
+
+        ATON._dMainLtgt = new THREE.Object3D();
+        ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
+        ATON._dMainL.target = ATON._dMainLtgt;
+
+        ATON._dMainLdir = d;
+
+        ATON.ambLight.color = new THREE.Color( 0.5,0.5,0.5 ); // Check
+
+        ATON._rootVisibleGlobal.add(ATON._dMainL);
+    }
+
+    ATON._dMainL.position.set(-d.x,-d.y,-d.z);
+};
+
+ATON.toggleShadows = (b)=>{
+    if (ATON._dMainL === undefined) return;
+
+    if (b){
+        ATON._renderer.shadowMap.enabled = true;
+
+        //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
+        //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;
+        //ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // bleeding
+        ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
+
+        ATON._dMainL.shadow.mapSize.width  = ATON.SHADOWS_RES;
+        ATON._dMainL.shadow.mapSize.height = ATON.SHADOWS_RES;
+        ATON._dMainL.shadow.camera.near    = ATON.SHADOWS_NEAR;
+        ATON._dMainL.shadow.camera.far     = ATON.SHADOWS_FAR;
+        //ATON._dMainL.shadow.bias = 0.0001;
+
+        ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
+        ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
+        ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
+        ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
+    }
+    else {
+        ATON._renderer.shadowMap.enabled = false;
+    }
+};
+
+ATON.updateDirShadows = ()=>{
+    if (ATON._dMainLdir === undefined) return;
+
+    let p = ATON.Nav.getCurrentEyeLocation();
+
+    ATON._dMainL.position.set(p.x-ATON._dMainLdir.x, p.y-ATON._dMainLdir.y, p.z-ATON._dMainLdir.z);
+    ATON._dMainLtgt.position.copy(p);
 };
 
 //==============================================================
@@ -666,6 +740,9 @@ ATON._onFrame = ()=>{
 
     // UI
     ATON.SUI.update();
+
+    // Environment/lighting
+    if (ATON._renderer.shadowMap.enabled) ATON.updateDirShadows();
 
     ATON.fireEvent("frame");
 };

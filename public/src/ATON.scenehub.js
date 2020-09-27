@@ -165,6 +165,29 @@ SceneHub.getJSONsemanticConvexShapes = (semid)=>{
 SceneHub.initBaseParsers = ()=>{
     SceneHub._jsonParsers = {};
 
+    // Environment
+    SceneHub._jsonParsers.environment = (env)=>{
+
+        let pano = env.mainpano;
+        if (env.mainpano){
+            if (pano.url) ATON.setMainPanorama(ATON.PATH_COLLECTION+pano.url);
+            if (pano.rotation) ATON.setMainPanoramaRotation(pano.rotation);
+        }
+
+        let L = env.mainlight;
+        if (L){
+            if (L.direction) ATON.setMainLightDirection( new THREE.Vector3(L.direction[0],L.direction[1],L.direction[2]) );
+
+            if (ATON._dMainL){
+                if (L.color)     ATON._dMainL.color = new THREE.Color(L.color[0],L.color[1],L.color[2]);
+                if (L.intensity) ATON._dMainL.intensity = L.intensity;
+
+                if (L.shadows) ATON.toggleShadows(L.shadows);
+            }
+        }
+
+    };
+
     // Viewpoints
     SceneHub._jsonParsers.viewpoints = (povs)=>{
         if (povs === undefined) return;
@@ -217,6 +240,10 @@ SceneHub.initBaseParsers = ()=>{
                     G.load(ATON.PATH_COLLECTION+urls);
                 }
             }
+
+            // FIXME: not working
+            if (N.shadowcast)    G.setShadowCast(N.shadowcast);
+            if (N.shadowreceive) G.setShadowCast(N.shadowreceive);
 
             if (N.toYup) G.setYup();
 

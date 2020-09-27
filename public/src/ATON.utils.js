@@ -95,6 +95,10 @@ Utils.modelVisitor = (parentNode, model)=>{
             //console.log(numVertices);
 
             if (type === ATON.NTYPES.SCENE){
+                // TODO: 
+                o.castShadow    = true; //N.castShadow;
+                o.receiveShadow = true; //N.receiveShadow;
+
                 // Build accelerated ray casting
                 if (o.geometry){
                     o.geometry.computeBoundsTree();

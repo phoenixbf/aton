@@ -506,10 +506,9 @@ ATON._assetReqComplete = (url)=>{
         //ATON._bDirtyLP = true;
 
         // FIXME: dirty
-
         setTimeout( ()=>{
             let p = ATON._rootVisible.getBound().center;
-            if (p) ATON._mMainPano.position.set(p.x, p.y, p.z);
+            if (p && ATON._mMainPano) ATON._mMainPano.position.copy(p);
             ATON.updateLightProbes();
             console.log("LPs updated.");
         }, 1000);

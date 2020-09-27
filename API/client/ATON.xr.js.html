@@ -1,0 +1,361 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>ATON.xr.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand branding-logo" href="index.html" style="background-image: url(img/logo-inv-40x40.png);">
+					ATON 3.0 API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="LightProbe.html">LightProbe</a></li>
+											<li><a href="Node.html">Node</a></li>
+											<li><a href="POV.html">POV</a></li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="ATON.html">ATON</a></li>
+											<li><a href="EventHub.html">EventHub</a></li>
+											<li><a href="FE.html">FE</a></li>
+											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="Nav.html">Nav</a></li>
+											<li><a href="SceneHub.html">SceneHub</a></li>
+											<li><a href="SemFactory.html">SemFactory</a></li>
+											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="XR.html">XR</a></li>
+									</ul>
+								</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">ATON.xr.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
+    ATON immersive XR module
+
+    author: bruno.fanini_AT_gmail.com
+
+===========================================================*/
+
+/**
+ATON Immersive XR
+@namespace XR
+*/
+let XR = {};
+
+XR.STD_TELEP_DURATION = 0.03;
+
+
+XR.isPresenting = ()=>{
+    return XR._bPresenting;
+};
+
+/**
+Initializes XR component
+@function
+*/
+XR.init = ()=>{
+    ATON._renderer.xr.enabled = true;
+    ATON._renderer.xr.setReferenceSpaceType( 'local' );
+    
+    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(0.5); // WebXR density
+
+    XR._bPresenting = false;
+    XR.currSession = null;
+
+    XR.rig = new THREE.Group();
+    //XR.rig.position.set(0,0,0);
+    XR.rig.add( ATON.Nav._camera );
+    ATON._rootUI.add(XR.rig);
+
+    //XR.hmdOri = new THREE.Quaternion();
+    //XR.hmdPos = new THREE.Vector3();
+
+    XR._currPos = XR.rig.position; //new THREE.Vector3();
+    XR._fromPos = new THREE.Vector3();
+    XR._reqPos  = new THREE.Vector3();
+
+    XR.gControllers = undefined;
+
+    XR.controller0pos = new THREE.Vector3();
+    XR.controller1pos = new THREE.Vector3();
+    XR.controller0dir = new THREE.Vector3();
+    XR.controller1dir = new THREE.Vector3();
+
+    // test
+    ATON.on("XRselectStart", (c)=>{
+        XR.defaultSelectHandler(c);
+    });
+    ATON.on("XRselectEnd", (c)=>{
+        //ATON.Nav.stop();
+        //console.log("Sel end "+c);
+    });
+};
+
+XR.defaultSelectHandler = (c)=>{
+
+    if (ATON._queryDataScene){
+        let P = ATON._queryDataScene.p;
+        let N = ATON._queryDataScene.n;
+
+        //P.y += 0.8; // with 'local': half user height
+
+        if (N.y > 0.7) ATON.Nav.requestPOV( new ATON.POV().setPosition(P), XR.STD_TELEP_DURATION );
+    }
+    
+    //ATON.Nav.setMotionAmount(3.0);
+};
+
+XR._handleUISelection = ()=>{
+    if (ATON._hoveredUI === undefined) return false;
+
+    let H = ATON.getUINode(ATON._hoveredUI);
+    if (H &amp;&amp; H.onSelect) H.onSelect();
+    
+    return true;
+}
+
+
+// Set reference-space location (not the actual HMD camera location)
+// this can be used to move around the user, given a proper locomotion technique
+XR.setRefSpaceLocation = (p)=>{
+    XR.rig.position.copy(p);
+};
+
+// On XR session started
+XR.onSessionStarted = ( session )=>{
+	session.addEventListener( 'end', XR.onSessionEnded );
+
+	ATON._renderer.xr.setSession( session );
+	XR.currSession = session;
+
+    XR.controller0 = ATON._renderer.xr.getController(0);
+    XR.controller1 = ATON._renderer.xr.getController(1);
+
+    //console.log(XR.controller0);
+
+    // Controller 0
+    if (XR.controller0){
+        XR.controller0.addEventListener( 'connected', (e) => {
+            XR.controller0.visible = true;
+
+            XR.controller0.gamepad = e.data.gamepad;
+            //console.log(XR.controller0.gamepad);
+        });
+
+        XR.controller0.addEventListener( 'selectstart', ()=>{
+            if (XR._handleUISelection()) return;
+
+            ATON.fireEvent("XRselectStart", 0);
+        });
+        XR.controller0.addEventListener( 'selectend', ()=>{ 
+            ATON.fireEvent("XRselectEnd", 0);
+        });
+    }
+
+    // Controller 1
+    if (XR.controller1){ 
+        XR.controller1.addEventListener( 'connected', (e) => {
+            XR.controller1.visible = true;
+            XR.controller1.gamepad = e.data.gamepad;
+            //console.log(ATON.xrControllers1);
+        });
+
+        XR.controller1.addEventListener( 'selectstart',  ()=>{
+            //if (XR._handleUISelection()) return;
+        
+            ATON.fireEvent("XRselectStart", 1);
+        });
+        XR.controller1.addEventListener( 'selectend',  ()=>{ 
+            ATON.fireEvent("XRselectEnd", 1);
+        });
+    }
+
+    XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
+
+    XR._bPresenting = true;
+    console.log("XR now presenting");
+
+    XR.setupControllersUI();
+
+    ATON.fireEvent("XRmode", true);
+
+    //console.log(session);
+};
+
+// On XR session terminated
+XR.onSessionEnded = ( /*event*/ )=>{
+    XR.currSession.removeEventListener( 'end', XR.onSessionEnded );
+    XR.currSession = null;
+
+    XR._bPresenting = false;
+    //XR.rig.position.set(0.0,0.0,0.0);
+    XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
+
+    ATON.fireEvent("XRmode", false);
+
+    console.log("Quit XR");
+};
+
+XR.toggle = ()=>{
+    if (!ATON.device.isXRsupported) return;
+
+    // Enter XR
+    if (XR.currSession === null){
+        let sessionInit = { 
+            optionalFeatures: [
+                "local-floor" 
+                //"local" 
+                ///"bounded-floor"
+            ]
+        };
+        navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( XR.onSessionStarted );
+        //console.log(navigator.xr);
+    }
+    // Exit XR
+    else {
+        XR.currSession.end();
+    }
+};
+
+XR.setupControllersUI = ()=>{
+    if (XR.gControllers) return; // already set
+
+    var geometry = new THREE.CylinderBufferGeometry( 0.003,0.003, 10.0, 5 );
+    geometry.rotateX( -Math.PI / 2 );
+    geometry.translate(0,0,-5);
+
+    var mesh = new THREE.Mesh( geometry, ATON.MatHub.materials.controllerRay );
+
+    XR.controller0.add( mesh.clone() );
+    //XR.controller1.add( mesh.clone() );
+
+    XR.gControllers = ATON.createUINode();
+    XR.gControllers.add( XR.controller0 );
+    XR.gControllers.add( XR.controller1 );
+
+    XR.controller0.visible = false;
+    XR.controller1.visible = false;
+
+    XR.gControllers.disablePicking();
+
+    XR.rig.add(XR.gControllers);
+};
+
+XR.getControllerSpace = (i)=>{
+   if (i === 1) XR.getControllerGrip(1);
+   else XR.getControllerGrip(0);
+};
+
+XR.getControllerWorldLocation = (i)=>{
+    if (i === 1) return XR.controller1pos;
+    else return XR.controller0pos;
+};
+
+XR.getControllerWorldDirection = (i)=>{
+    if (i === 1) return XR.controller1dir;
+    else return XR.controller0dir;
+};
+
+XR.update = ()=>{
+    if (XR.controller0.visible){
+        XR.controller0.getWorldPosition(XR.controller0pos);
+        XR.controller0.getWorldDirection(XR.controller0dir);
+        XR.controller0dir.negate();
+    }
+    if (XR.controller1.visible){
+        XR.controller1.getWorldPosition(XR.controller1pos);
+        XR.controller1.getWorldDirection(XR.controller1dir);
+        XR.controller1dir.negate(); 
+    }
+};
+
+
+export default XR;</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

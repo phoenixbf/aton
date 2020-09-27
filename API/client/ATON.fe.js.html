@@ -1,0 +1,276 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>ATON.fe.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand branding-logo" href="index.html" style="background-image: url(img/logo-inv-40x40.png);">
+					ATON 3.0 API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="LightProbe.html">LightProbe</a></li>
+											<li><a href="Node.html">Node</a></li>
+											<li><a href="POV.html">POV</a></li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="ATON.html">ATON</a></li>
+											<li><a href="EventHub.html">EventHub</a></li>
+											<li><a href="FE.html">FE</a></li>
+											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="Nav.html">Nav</a></li>
+											<li><a href="SceneHub.html">SceneHub</a></li>
+											<li><a href="SemFactory.html">SemFactory</a></li>
+											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="XR.html">XR</a></li>
+									</ul>
+								</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">ATON.fe.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
+    ATON Front-end blueprint
+
+    author: bruno.fanini_AT_gmail.com
+
+===========================================================*/
+
+/**
+ATON Front-end routines
+@namespace FE
+*/
+let FE = {};
+
+
+FE.realize = ()=>{
+    FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
+
+    FE._bPopup = false; // showing popup
+    FE.bPopupBlurBG = false; // blur 3D content on popup show
+
+    FE.urlParams = new URLSearchParams(window.location.search);
+
+    FE._uiSetupBase();
+
+    ATON.realize();
+};
+
+// Add basic spinning loader
+FE.addBasicLoaderEvents = ()=>{
+    ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
+    ATON.on("AllNodeRequestsCompleted", ()=>{ 
+        $("#idLoader").hide();
+        
+        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+    });
+};
+
+FE.loadSceneID = (sid)=>{
+    if (sid === undefined) return;
+
+    let reqstr = ATON.PATH_RESTAPI_SCENE + sid;
+    if (ATON.SceneHub._bEdit) reqstr += ",edit";
+
+    ATON.SceneHub.load(reqstr, sid);
+    console.log(reqstr);
+};
+
+
+
+// HTML UI
+//=======================================
+// Sample basic UI setup
+FE.uiBasicSetup = ()=>{
+    FE.uiAddButton("idTopToolbar","fullscreen", ATON.toggleFullScreen );
+    if (ATON.Utils.isConnectionSecure()) FE.uiAddButton("idTopToolbar","vr", ATON.XR.toggle );
+
+    FE.uiAddButton("idBottomToolbar","home", ()=>{ ATON.Nav.requestHome(0.1); });
+};
+
+FE._uiSetupBase = ()=>{
+    $("#idPopup").click( FE.popupClose );
+    $("#idLoader").html("&lt;img src='"+ATON.PATH_RES+"loader.png'>");
+};
+
+// Add Generic button to a specific div container
+FE.uiAddButton = (idcontainer, iconid, onPress)=>{
+    let htmlcode = "&lt;button id='btn-"+iconid+"' type='button' class='atonBTN'>&lt;img src='"+FE.PATH_RES_ICONS+iconid+".png'>&lt;/button>";
+    $("#"+idcontainer).append(htmlcode);
+
+    if (onPress) $("#btn-"+iconid).click( onPress );
+};
+
+FE.uiAddButtonHome = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "home", ()=>{ ATON.Nav.requestHome(0.1); });
+};
+FE.uiAddButtonFirstPerson = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "fp", ATON.Nav.setFirstPersonControl );
+};
+FE.uiAddButtonVR = (idcontainer)=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+    FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
+};
+FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+    if (!ATON.Utils.isMobile()) return;
+    FE.uiAddButton(idcontainer,"devori", ATON.Nav.setDeviceOrientationControl );
+};
+
+FE.uiAddButtonQR = (idcontainer)=>{
+    FE.uiAddButton(idcontainer,"qr", FE.popupQR );
+};
+
+// Attach ID validator to given input field
+FE.uiAttachInputFilterID = (inputid)=>{
+    $("#"+inputid).on('keyup change input', ()=>{
+        let value = $("#"+inputid).val();
+        let regReplace = new RegExp('[^A-Za-z-_]', 'ig');
+        $("#"+inputid).val( value.replace(regReplace, '') );
+
+    });
+};
+
+FE.setupBasicUISounds = ()=>{
+    FE.auLib = {};
+
+    FE.auLib.switch = new Audio(ATON.PATH_RES+"audio/switch.wav");
+    FE.auLib.switch.loop = false;
+};
+
+
+// Popups
+//===================================================================
+FE.popupShow = (htmlcontent)=>{
+    if (FE._bPopup) return false;
+
+    $('#idPopup').html("&lt;div class='atonPopup' id='idPopupContent'>"+htmlcontent+"&lt;/div>");
+    $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
+    $('#idPopup').fadeIn();
+
+    FE._bPopup = true;
+
+    if (FE.bPopupBlurBG){
+        ATON._renderer.setPixelRatio( 0.1 );
+        ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    }
+
+    ATON._bPauseQuery = true;
+    ATON.renderPause();
+    return true;
+};
+
+FE.popupClose = ()=>{
+    FE._bPopup = false;
+
+    ATON.renderResume();
+    if (FE.bPopupBlurBG) ATON.resetPixelDensity();
+
+    $("#idPopup").fadeOut();
+    //$("#idPopup").empty();
+
+    ATON._bPauseQuery = false;
+    ATON.focusOn3DView();
+};
+
+FE.popupQR = ()=>{
+    let htmlcontent = "&lt;h1>Share&lt;/h1>";
+    htmlcontent += "&lt;div class='atonQRcontainer' id='idQRcode'>&lt;/div>&lt;br>&lt;br>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    let url = window.location.href;
+    new QRCode(document.getElementById("idQRcode"), url);
+};
+
+
+
+export default FE;</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

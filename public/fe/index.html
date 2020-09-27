@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON FrontEnd">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON FrontEnd">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON FrontEnd</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+    <!-- Vendors 
+    <script type="text/javascript" src="/vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="/vendors/screenfull.min.js"></script>
+    <script type="text/javascript" src="/vendors/qrcode.min.js"></script>
+    <script type="text/javascript" src="/vendors/hammer.min.js"></script>
+    -->
+    <script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+
+    <script type="module" src="/src/ATON.js"></script>
+<!-- 
+    <script type="text/javascript" src="../dist/ATON.min.js"></script>
+-->
+
+    <!-- Collaborative services
+    <script type="text/javascript" src="/vendors/RecordRTC.min.js"></script>
+    <script type="text/javascript" src="/mods/socket.io-client/dist/socket.io.js"></script>
+     -->
+
+     <script type="text/javascript" src="ATON.frontend.js"></script>
+</head>
+
+<body oncontextmenu="return false;">
+    
+<!-- 
+    <div id="idLogContainer" class="atonVRCsidePanel" style="display: none;">
+        <div id="idLog" class="atonVRCchat"></div>
+    </div>
+-->
+
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-left" style="white-space:nowrap;"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom" style="white-space:nowrap;"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>
+

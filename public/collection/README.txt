@@ -1,0 +1,1 @@
+Here can be placed all items (3D models, panoramas, audio, etc...) organized by typology to be used in scenes

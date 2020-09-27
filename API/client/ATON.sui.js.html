@@ -1,0 +1,291 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>ATON.sui.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand branding-logo" href="index.html" style="background-image: url(img/logo-inv-40x40.png);">
+					ATON 3.0 API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="LightProbe.html">LightProbe</a></li>
+											<li><a href="Node.html">Node</a></li>
+											<li><a href="POV.html">POV</a></li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="ATON.html">ATON</a></li>
+											<li><a href="EventHub.html">EventHub</a></li>
+											<li><a href="FE.html">FE</a></li>
+											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="Nav.html">Nav</a></li>
+											<li><a href="SceneHub.html">SceneHub</a></li>
+											<li><a href="SemFactory.html">SemFactory</a></li>
+											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="XR.html">XR</a></li>
+									</ul>
+								</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">ATON.sui.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
+    ATON spatial UI
+
+    author: bruno.fanini_AT_gmail.com
+
+===========================================================*/
+import Button from "./ATON.sui.button.js";
+
+
+/**
+ATON Spatial UI
+@namespace SUI
+*/
+let SUI = {};
+
+SUI.STD_BTN_SIZE = 0.1;
+
+SUI.Button = Button;
+
+
+/**
+Initializes Spatial UI module
+*/
+SUI.init = ()=>{
+    SUI.mainSelector   = ATON.createUINode();
+    //SUI.secondSelector = ATON.createUINode();
+
+    //SUI._uiSelGeom = new THREE.SphereGeometry( 0.1, 16, 16 );
+    SUI.mainSelector.add( new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") ));
+    SUI.mainSelector.disablePicking();
+
+    SUI.setSelectorRadius(0.05);
+    SUI.mainSelector.visible = false;
+
+    ATON._rootUI.add(SUI.mainSelector);
+
+    SUI.gPoints = ATON.createUINode();
+    ATON._rootUI.add(SUI.gPoints);
+
+    SUI.buildInfoNode();
+
+    SUI._labelScale   = ATON.Utils.isMobile()? 1.5 : 1.0;
+    SUI._labelScaleVR = 2.0;
+
+    ATON.on( "SemanticNodeHover", (semid)=>{
+        SUI.infoNodeText.set({ content: semid });
+    });
+/*
+    ATON.on("UINodeHover", (uiid)=>{
+        console.log("Hover UI node: "+uiid);
+    });
+    ATON.on("UINodeLeave", (uiid)=>{
+        console.log("Leave UI node: "+uiid);
+    });
+*/
+};
+
+SUI.setSelectorRadius = (r)=>{
+    SUI.mainSelector.scale.set(r,r,r);
+};
+SUI.getSelectorRadius = ()=>{
+    return SUI.mainSelector.scale.x;
+};
+
+SUI.buildInfoNode = ()=>{
+    SUI.infoNode = ATON.createUINode();
+    SUI.infoNode.attachToRoot();
+
+    SUI.infoContainer = new ThreeMeshUI.Block({
+        width: 0.15,
+        height: 0.05, //0.07,
+        padding: 0.01,
+        borderRadius: 0.02,
+        //backgroundColor: ATON.MatHub.colors.darksem,
+        //backgroundOpacity: 0.2,
+
+        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
+        fontTexture: ATON.PATH_RES+"fonts/custom.png", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
+
+        alignContent: 'center', // could be 'center' or 'left'
+        justifyContent: 'center', // could be 'center' or 'start'
+    });
+    SUI.infoNode.add(SUI.infoContainer);
+
+    SUI.infoNodeText = new ThreeMeshUI.Text({ 
+        content: "Info",
+        fontSize: 0.02,
+        fontColor: ATON.MatHub.colors.white
+    });
+    SUI.infoContainer.add(SUI.infoNodeText);
+    //SUI.infoNode.scale.set(0.07,0.07,0.07);
+};
+
+SUI.getInfoNode = ()=>{
+    return SUI.infoNode;
+};
+
+SUI.createToolbar = (buttonlist, color)=>{
+    let T = ATON.createUINode();
+
+    let num = buttonlist.length;
+    let padding = SUI.STD_BTN_SIZE * 0.3;
+
+    let cont = new ThreeMeshUI.Block({
+        width: (SUI.STD_BTN_SIZE * num) + padding,
+        height: SUI.STD_BTN_SIZE + padding,
+        padding: 0.01,
+        borderRadius: 0.02,
+        backgroundColor: color? color : ATON.MatHub.colors.black,
+        backgroundOpacity: 0.3,
+
+        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
+        fontTexture: ATON.PATH_RES+"fonts/custom.png", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
+
+        alignContent: 'center', // could be 'center' or 'left'
+        justifyContent: 'center', // could be 'center' or 'start'
+    });
+    //cont.position.set(0,0,0);
+
+    let m = (num*0.5) * SUI.STD_BTN_SIZE;
+    m -= (SUI.STD_BTN_SIZE*0.5);
+
+    for (let i=0; i&lt;num; i++){
+        let button = buttonlist[i];
+        button.position.set((i*SUI.STD_BTN_SIZE)-m, 0.0, 0.01);
+        cont.add(button);
+    }
+
+    T.add(cont);
+    return T;
+};
+
+// Main update routine
+SUI.update = ()=>{
+    if (ATON.Nav.isTransitioning()){
+        SUI.infoNode.visible = false;
+        return;
+    }
+
+    ThreeMeshUI.update();
+
+    if (ATON._queryDataScene){
+        SUI.mainSelector.visible = true;
+        SUI.mainSelector.position.copy(ATON._queryDataScene.p);    
+    }
+    else {
+        SUI.mainSelector.visible = false;
+    }
+
+    // InfoNode (semantics)
+    if (ATON._queryDataSem){
+
+        if (ATON.XR._bPresenting){
+            SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
+            SUI.infoNode.setScale(SUI._labelScaleVR);
+        }
+        else {
+            SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.2);
+            SUI.infoNode.setScale(ATON._queryDataSem.d * SUI._labelScale);
+        }
+        SUI.infoNode.quaternion.copy( ATON.Nav._qOri );
+
+        SUI.infoNode.visible = true;
+        SUI.mainSelector.visible = false;
+    }
+    else {
+        SUI.infoNode.visible = false;
+    }
+
+};
+
+export default SUI;</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

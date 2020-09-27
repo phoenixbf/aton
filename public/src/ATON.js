@@ -1,0 +1,922 @@
+/*!
+    @preserve
+
+ 	ATON
+
+ 	@author Bruno Fanini
+	VHLab, CNR ISPC
+
+==================================================================================*/
+
+'use strict';
+
+/**
+@namespace ATON
+*/
+let ATON = {};
+window.ATON = ATON;
+
+// Import
+import Node from "./ATON.node.js";
+import POV from "./ATON.pov.js";
+//import Period from "./ATON.period.js";
+import LightProbe from "./ATON.lightprobe.js";
+
+import EventHub from "./ATON.eventhub.js";
+import MatHub from "./ATON.mathub.js";
+import Utils from "./ATON.utils.js";
+import SceneHub from "./ATON.scenehub.js";
+import Nav from "./ATON.nav.js";
+import XR from "./ATON.xr.js";
+import SUI from "./ATON.sui.js";
+import VRoadcast from "./ATON.vroadcast.js";
+import SemFactory from "./ATON.semfactory.js";
+import FE from "./ATON.fe.js";
+
+// Classes
+ATON.Node       = Node;
+ATON.POV        = POV;
+ATON.LightProbe = LightProbe;
+//ATON.Period = Period;
+
+// NS
+ATON.EventHub   = EventHub;
+ATON.Utils      = Utils;
+ATON.SceneHub   = SceneHub;
+ATON.MatHub     = MatHub;
+ATON.Nav        = Nav;
+ATON.XR         = XR;
+ATON.SUI        = SUI;
+ATON.VRoadcast  = VRoadcast;
+ATON.SemFactory = SemFactory;
+ATON.FE         = FE;
+
+//==============================================================
+// Consts
+//==============================================================
+ATON.STD_UPVECTOR = new THREE.Vector3(0,1,0);
+ATON.ROOT_NID = "."; // reserved node ID for graph-roots
+
+ATON.RAD2DEG = (180.0 / Math.PI);
+ATON.DEG2RAD = (Math.PI / 180.0);
+
+// Node types
+ATON.NTYPES = {};
+// 1 and 2 are reserved
+ATON.NTYPES.SCENE  = 3;
+ATON.NTYPES.SEM    = 4;
+ATON.NTYPES.UI     = 5;
+
+// Folders
+ATON.PATH_RESTAPI       = window.location.origin + "/api/";
+ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
+ATON.PATH_MODS          = window.location.origin + "/mods/";
+ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
+ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
+ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
+
+ATON.PATH_COLLECTION = window.location.origin + "/collection/";
+ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
+ATON.PATH_SCENES     = window.location.origin + "/scenes/";
+ATON.PATH_RES        = window.location.origin + "/res/";
+
+/**
+Set path collection (3D models, audio, panoramas, ...)
+@param {string} path - path
+*/
+ATON.setPathCollection = (path)=>{
+    ATON.PATH_COLLECTION = window.location.origin + path;
+    ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
+};
+
+/**
+Set path scenes
+@param {string} path - path
+*/
+ATON.setPathScenes = (path)=>{
+    ATON.PATH_SCENES = window.location.origin + path;
+};
+
+
+ATON._setupBaseListeners = ()=>{
+    let el = ATON._renderer.domElement;
+
+    window.addEventListener( 'resize', ATON._onResize, false );
+    el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
+    ///el.addEventListener('dblclick', ATON._doubleTap, false);
+
+    el.addEventListener( 'wheel', ATON._onMouseWheel, false );
+
+
+    // Touch events
+    Hammer(el).on("doubletap", (e)=>{
+        ATON.fireEvent("DoubleTap", e.srcEvent);
+        //console.log(e.srcEvent);
+    });
+
+    Hammer(el).on("tap", (e)=>{
+        ATON._updateScreenMove(e.srcEvent);
+        ATON._handleQueries();
+
+        ATON.fireEvent("Tap", e.srcEvent);
+        //console.log(e.srcEvent);
+
+        // UI selection
+        if (ATON._hoveredUI === undefined) return;
+        let H = ATON.getUINode(ATON._hoveredUI);
+        if (H && H.onSelect) H.onSelect();
+    });
+
+    ATON.on("DoubleTap", (e)=>{
+        //console.log(e);
+        ATON.defaultDoubleTapFromScreenCoords(e);
+    });
+
+    //ATON.on("Tap", (e)=>{
+        //console.log(e);
+    //});
+
+
+    // Keyboard
+    ATON._kModShift = false;
+    ATON._kModCtrl  = false;
+
+    el.addEventListener("keydown", (e)=>{
+        if (e.key === "Shift")   ATON._kModShift = true;
+        if (e.key === "Control") ATON._kModCtrl  = true;
+        
+        ATON.fireEvent("KeyPress", e.key);
+        //ATON.fireEvent("KeyPress/"+e.key);
+    }, false);
+
+    el.addEventListener("keyup", (e)=>{
+        if (e.key === "Shift")   ATON._kModShift = false;
+        if (e.key === "Control") ATON._kModCtrl  = false;
+
+        ATON.fireEvent("KeyUp", e.key);
+        //ATON.fireEvent("KeyUp/"+e.key);
+    }, false);
+
+    // Defaults
+    ATON.on("KeyPress", (k)=>{
+
+        if (k==='+'){
+            let f = ATON.Nav.getFOV() + 1.0;
+            ATON.Nav.setFOV(f);
+        }
+        if (k==='-'){
+            let f = ATON.Nav.getFOV() - 1.0;
+            ATON.Nav.setFOV(f);
+        }
+
+        if (k==='PageUp'){
+            let r = ATON.SUI.mainSelector.scale.x + 0.02;
+            ATON.SUI.setSelectorRadius(r);
+        }
+        if (k==='PageDown'){
+            let r = ATON.SUI.mainSelector.scale.x - 0.02;
+            r = Math.max(r, 0.01);
+            ATON.SUI.setSelectorRadius(r); 
+        }
+    });
+
+    // Default semantic highlight
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.restoreDefaultMaterial();
+    });
+    ATON.on("SemanticNodeHover", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.highlight();
+    });
+            
+};
+
+ATON._onResize = ()=>{
+    ATON.Nav._camera.aspect = window.innerWidth / window.innerHeight;
+    ATON.Nav._camera.updateProjectionMatrix();
+
+    ATON._renderer.setSize( window.innerWidth, window.innerHeight );
+    console.log("onResize");
+};
+
+ATON._onMouseWheel = (e)=>{
+    e.preventDefault();
+
+    ATON.fireEvent("MouseWheel", e.deltaY);
+};
+
+ATON.focusOn3DView = ()=>{
+    ATON._renderer.domElement.focus();
+};
+
+// Default retarget from screen coordinates (eg.: on double tap)
+ATON.defaultDoubleTapFromScreenCoords = (e)=>{
+    ATON._updateScreenMove(e);
+    ATON._handleQueryScene();
+
+    let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
+
+    // When first-person mode, teleport (non immersive)
+    if (ATON._queryDataScene && bFPtrans){
+        let P = ATON._queryDataScene.p;
+        let N = ATON._queryDataScene.n;
+        
+        if (N.y > 0.7){
+            let currDir = ATON.Nav._vDir;
+            let feye = new THREE.Vector3(P.x, P.y+ATON.userHeight, P.z);
+            let ftgt = new THREE.Vector3(
+                feye.x + currDir.x,
+                feye.y + currDir.y,
+                feye.z + currDir.z,
+            );
+
+            let POV = new ATON.POV().setPosition(feye).setTarget(ftgt);
+
+            ATON.Nav.requestPOV(POV, 0.5);
+        }
+        return;
+    }
+
+    // In orbit mode, focus on selected SemNode...
+    let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
+    if (ATON._queryDataSem && hsn){
+        ATON.Nav.requestPOVbyNode( hsn, 0.3);
+        return;
+    }
+    // ...or perform standard retarget on picket surface point
+    if (ATON._queryDataScene){
+        ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.3);
+    }
+
+    // TODO: go POV in sight if any (panorama only mode)
+}
+
+ATON.toggleFullScreen = (b)=>{
+    if (b === undefined){
+        screenfull.toggle();
+        return;
+        }
+
+    if (b) screenfull.request();
+};
+
+
+//============================================================================
+// ATON init routines
+//============================================================================
+/**
+Main ATON initialization, it will take care of all sub-components initialization, device profiling and much more
+@example
+ATON.realize()
+*/
+ATON.realize = ()=>{
+    console.log("realize");
+
+    ATON.Utils.init();
+    ATON.Utils.profileDevice();
+    
+    //THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1); // mismatches WebXR y-up
+
+    // Timing
+    ATON._clock = new THREE.Clock(true);
+
+    let wglopts = {
+        //canvas: document.getElementById("idView"),
+        antialias: true, //ATON.device.isMobile? false : true,
+        alpha: true,
+        //pecision: "lowp"
+    };
+
+    ATON._renderer = new THREE.WebGLRenderer(wglopts);
+    ATON._renderer.setSize( window.innerWidth, window.innerHeight );
+
+    ATON._stdpxd = 1.0;
+    //ATON._renderer.setPixelRatio( window.devicePixelRatio? window.devicePixelRatio : 1.0 );
+    ATON._renderer.setPixelRatio( ATON._stdpxd );
+    
+    ATON._renderer.outputEncoding = THREE.sRGBEncoding;
+    //console.log(ATON._renderer.getPixelRatio());
+
+    ATON._renderer.setAnimationLoop( ATON._onFrame );
+    //ATON._bDirtyLP = false;
+
+    ATON._maxAnisotropy = 4; //ATON._renderer.capabilities.getMaxAnisotropy();
+    console.log(ATON._renderer.capabilities);
+
+    THREE.Cache.enabled = true;
+
+    ATON.userHeight = 1.6;
+ 
+    document.body.appendChild( ATON._renderer.domElement );
+    //console.log(ATON._renderer);
+
+    ATON.EventHub.init();
+    ATON.MatHub.init();
+
+    //ATON._setupLoadManager();
+    ATON._assetsManager = {};
+    ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
+    ATON._dracoLoader = new THREE.DRACOLoader();
+    ATON._dracoLoader.setDecoderPath( ATON.PATH_DRACO_LIB );
+    ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
+    ATON._numReqLoad = 0;
+
+    // Periods (TODO:)
+    //ATON.periods = [];
+
+    ATON._lps = []; // lightprobes
+
+    ATON.initGraphs();
+    ATON.SceneHub.init();
+
+    // Init nav system
+    ATON.Nav.init();
+
+    // XR
+    ATON.XR.init();
+
+    // Spatial UI
+    ATON.SUI.init();
+
+    // VRoadcast
+    ATON.VRoadcast.init();
+
+    // Semantic Factory
+    ATON.SemFactory.init();
+
+    // Query / picked data
+    ATON._queryDataScene = undefined;
+    ATON._queryDataSem   = undefined;
+    ATON._queryDataUI    = undefined;
+
+    ATON._hoveredSemNode = undefined;
+    ATON._hoveredUI      = undefined;
+
+    ATON._bQuerySemOcclusion = true; // TODO: implement
+    ATON._bQueryNormals  = true;
+    ATON._bPauseQuery    = false;
+
+    // Basis (future support)
+/*
+    ATON._basisLoader = new BasisTextureLoader();
+    ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
+    ATON._basisLoader.detectSupport( ATON._renderer );
+    
+    // Register BasisTextureLoader for .basis extension.
+    THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
+*/
+
+
+    // Mouse/Touch screen coords
+    ATON._screenPointerCoords = new THREE.Vector2(0.0,0.0);
+
+    // Ray casters
+    ATON._rcScene = new THREE.Raycaster();
+    ATON._rcScene.layers.set(ATON.NTYPES.SCENE);
+    ATON._rcSemantics = new THREE.Raycaster();
+    ATON._rcSemantics.layers.set(ATON.NTYPES.SEM);
+    ATON._rcUI = new THREE.Raycaster();
+    ATON._rcUI.layers.set(ATON.NTYPES.UI);
+
+    ATON._registerRCS();
+
+    ATON._setupBaseListeners();
+
+    ATON.focusOn3DView();
+};
+
+ATON.renderPause = ()=>{
+    ATON._renderer.setAnimationLoop( undefined );
+};
+ATON.renderResume = ()=>{
+    ATON._renderer.setAnimationLoop( ATON._onFrame );
+};
+
+ATON._setupLoadManager = ()=>{
+    ATON._loadManager = new THREE.LoadingManager();
+    ATON._loadManager.onStart = ( url, itemsLoaded, itemsTotal )=>{
+	    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+        ATON.fireEvent("NodeRequestFired", url);
+    };
+
+    ATON._loadManager.onLoad = ()=>{
+	    console.log( 'Loading complete!');
+        ATON.fireEvent("AllNodeRequestsCompleted");
+    };
+
+    ATON._loadManager.onProgress = ( url, itemsLoaded, itemsTotal )=>{
+	    //console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    };
+
+    ATON._loadManager.onError = ( url )=>{
+	    console.log( 'There was an error loading ' + url );
+    };
+};
+
+/**
+Set the default pixel density (standard is 1.0)
+@example
+ATON.setDefaultPixelDensity(0.5)
+*/
+ATON.setDefaultPixelDensity = (d)=>{
+    ATON._stdpxd = d;
+    ATON._renderer.setPixelRatio( d );
+};
+
+/**
+Reset pixel density to default
+*/
+ATON.resetPixelDensity = ()=>{
+    ATON._renderer.setPixelRatio( ATON._stdpxd );
+};
+
+
+//============================================================================
+// Scene-graphs
+//============================================================================
+ATON.snodes   = {}; // Visible scene-graph
+ATON.semnodes = {}; // Semantics graph
+ATON.uinodes  = {}; // UI graph
+
+// Visible scene-graph
+ATON.createSceneNode = (id)=>{
+    return new ATON.Node(id, ATON.NTYPES.SCENE);
+};
+ATON.getSceneNode = (id)=>{ 
+    if (id === undefined) return undefined;    
+    return ATON.snodes[id];
+};
+ATON.getOrCreateSceneNode = (id)=>{
+    let N = ATON.getSceneNode(id);
+    if (N !== undefined) return N;
+    return ATON.createSceneNode(id);
+};
+
+ATON.getRootScene = ()=>{
+    return ATON._rootVisible;
+};
+
+// Semantics, shape descriptors
+ATON.createSemanticNode = (id)=>{
+    return new ATON.Node(id, ATON.NTYPES.SEM);
+};
+ATON.getSemanticNode = (id)=>{
+    if (id === undefined) return undefined; 
+    return ATON.semnodes[id];
+};
+ATON.getOrCreateSemanticNode = (id)=>{
+    let S = ATON.getSemanticNode(id);
+    if (S !== undefined) return S;
+    return ATON.createSemanticNode(id);
+};
+
+ATON.getRootSemantics = ()=>{
+    return ATON._rootSem;
+};
+
+// UI graph
+ATON.createUINode = (id)=>{
+    return new ATON.Node(id, ATON.NTYPES.UI);
+};
+ATON.getUINode = (id)=>{
+    if (id === undefined) return undefined; 
+    return ATON.uinodes[id];
+};
+ATON.getRootUI = ()=>{
+    return ATON._rootUI;
+};
+
+// Asset loading routines
+ATON._assetReqNew = (url)=>{
+    ATON._numReqLoad++;
+    ATON.fireEvent("NodeRequestFired", url);
+};
+ATON._assetReqComplete = (url)=>{
+    ATON.fireEvent("NodeRequestCompleted", url);
+    ATON._numReqLoad--;
+
+    if (ATON._numReqLoad <= 0){
+
+        ATON.fireEvent("AllNodeRequestsCompleted");
+        //ATON.updateLightProbes();
+
+        //ATON.getRootScene().assignLightProbesByProximity();
+
+        //ATON._bDirtyLP = true;
+
+        // FIXME: dirty
+
+        setTimeout( ()=>{
+            let p = ATON._rootVisible.getBound().center;
+            if (p) ATON._mMainPano.position.set(p.x, p.y, p.z);
+            ATON.updateLightProbes();
+            console.log("LPs updated.");
+        }, 1000);
+
+    }
+};
+
+
+ATON.initGraphs = ()=>{
+    // Global root
+    ATON._mainRoot = new THREE.Scene();
+    ATON._mainRoot.background = new THREE.Color( 0.7,0.7,0.7 );
+
+    // visible scene-graph
+    ATON._rootVisibleGlobal = new THREE.Group();
+    ATON._mainRoot.add(ATON._rootVisibleGlobal);
+
+    ATON._rootVisible = ATON.createSceneNode().setAsRoot();
+    ATON._rootVisibleGlobal.add(ATON._rootVisible);
+
+
+    // semantics graph
+    ATON._rootSem = ATON.createSemanticNode().setAsRoot();
+    ATON._mainRoot.add(ATON._rootSem);
+
+    // UI graph
+    ATON._rootUI = ATON.createUINode().setAsRoot();
+    ATON._mainRoot.add(ATON._rootUI);
+
+    // Uniform lighting
+    ATON.ambLight = new THREE.AmbientLight( new THREE.Color(1,1,1) /*ATON._mainRoot.background*/ );
+    ATON._rootVisibleGlobal.add(ATON.ambLight);
+};
+
+ATON.setBackgroundColor = (bg)=>{
+    ATON._mainRoot.background = bg;
+};
+
+//==============================================================
+// LightProbes
+//==============================================================
+ATON.addLightProbe = (LP)=>{
+    ATON._lps.push(LP);
+};
+
+// Update ALL lightprobes
+ATON.updateLightProbes = ()=>{
+
+    for (let i in ATON._lps) ATON._lps[i].update();
+
+    // FIXME: indirect LP based on first LP (for now)
+    if (ATON._lps[0]){
+        if (ATON._indLP) ATON._mainRoot.remove(ATON._indLP);
+
+        ATON._indLP = THREE.LightProbeGenerator.fromCubeRenderTarget( ATON._renderer, ATON._lps[0]._prevCCtarget );
+        ATON._mainRoot.add( ATON._indLP );
+    }
+
+    //for (let i in ATON._lps) ATON._lps[i].update();
+
+    ATON._rootVisible.traverse((o) => {
+        if (o.userData.LP !== undefined){
+            o.material.envMap = o.userData.LP.getEnvTex();
+            //o.material.combine = THREE.AddOperation;
+            //o.material.envMapIntensity = 5.0;
+        }
+    });
+
+};
+
+//==============================================================
+// Panorama
+//==============================================================
+ATON.setMainPanorama = (path)=>{
+
+    let tpano = new THREE.TextureLoader().load(path);
+    tpano.encoding = THREE.sRGBEncoding;
+
+    if (ATON._matMainPano !== undefined){
+        ATON._matMainPano.map = tpano;
+        //ATON._matMainPano.emissive = tpano;
+        return;
+    }
+
+    // First time: create it
+    ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 30,30 );
+    ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
+
+    ATON._matMainPano = new THREE.MeshBasicMaterial({ 
+        map: tpano, 
+        //emissive: tpano,
+        //castShadow: false,
+        //receiveShadow: false,
+        fog: false,
+        depthTest: false,
+        depthWrite: false,
+        //depthFunc: THREE.AlwaysDepth,
+        //side: THREE.DoubleSide
+    });
+
+    ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
+    ATON._mMainPano.frustumCulled = false;
+    ATON._mMainPano.onAfterRender = ()=>{
+        //if (ATON._numReqLoad > 0) return;
+        ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
+    };
+
+    ATON._rootVisibleGlobal.add(ATON._mMainPano);
+};
+
+ATON.setMainPanoramaRadius = (r)=>{
+    if (ATON._gMainPano === undefined) return;
+    ATON._gMainPano.scale( -r,r,r );
+};
+
+//==============================================================
+// Update routines
+//==============================================================
+ATON._onFrame = ()=>{
+    // TODO: add pause render
+
+    let dt = ATON._clock.getDelta();
+
+    ATON._fps = 1.0 / dt;
+    ATON._dt  = dt;
+    //console.log(ATON._fps);
+    
+    ATON.Nav._bControlChange = false;
+    ATON.Nav._controls.update(dt);
+
+    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+
+/*
+    if (ATON.Nav._bControlChange){
+        }
+    else {
+        //ATON._handleScreenPick();
+        }
+*/
+
+    if (ATON.XR.isPresenting()){
+        ATON.XR.update();
+    }
+
+    //if (!ATON.device.isMobile || !ATON.XR.isPresenting()) 
+    if (!ATON._bPauseQuery) ATON._handleQueries();
+
+    // Navigation system
+    ATON.Nav.update();
+
+    // VRoadcast
+    ATON.VRoadcast.update();
+
+    //console.log(ATON._clock.elapsedTime);
+
+    // UI
+    ATON.SUI.update();
+
+    ATON.fireEvent("frame");
+};
+
+ATON._updateScreenMove = (e)=>{
+    e.preventDefault();
+
+    if (ATON.Nav._mode === ATON.Nav.MODE_DEVORI){
+        ATON._screenPointerCoords.x = 0.0;
+        ATON._screenPointerCoords.y = 0.0;
+        return;
+    }
+
+	ATON._screenPointerCoords.x = ( e.clientX / window.innerWidth ) * 2 - 1;
+	ATON._screenPointerCoords.y = -( e.clientY / window.innerHeight ) * 2 + 1;
+
+    //console.log(ATON._screenPointerCoords);
+};
+
+//==============================================================
+// Query rountines
+//==============================================================
+ATON._registerRCS = ()=>{
+    ATON._rcRR = 0;
+    ATON._rcHandlers = [];
+
+    ATON._rcHandlers.push( ATON._handleQueryScene );
+    ATON._rcHandlers.push( ATON._handleQuerySemantics );
+    ATON._rcHandlers.push( ATON._handleQueryUI );
+};
+
+ATON._handleQueries = ()=>{
+    if (ATON.Nav.isTransitioning()) return; // do not query during POV transitions
+
+    // round-robin
+    //ATON._rcRR = (ATON._rcRR+1) % 2;
+    //ATON._rcHandlers[ATON._rcRR]();
+
+    ATON._handleQueryScene();
+    ATON._handleQuerySemantics();
+    ATON._handleQueryUI();
+};
+
+// Ray casting visible scenegraph
+ATON._handleQueryScene = ()=>{
+    if (ATON.XR.isPresenting()){
+        ATON._rcScene.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+    }
+    else 
+        ATON._rcScene.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
+
+    ATON._hitsScene = [];
+    //ATON._rcScene.intersectObjects( ATON._rootVisible.children, true, ATON._hitsScene );
+    ATON._rcScene.intersectObjects( ATON._mainRoot.children, true, ATON._hitsScene );
+
+    //ATON._hitsOperator(ATON._hits);
+
+    // Process hits
+    let hitsnum = ATON._hitsScene.length;
+    if (hitsnum <= 0){
+        ATON._queryDataScene = undefined;
+        return;
+    }
+
+    let h = ATON._hitsScene[0];
+
+    ATON._queryDataScene = {};
+    ATON._queryDataScene.p = h.point;
+    ATON._queryDataScene.d = h.distance;
+    ATON._queryDataScene.o = h.object;
+    
+    //console.log(ATON._queryDataScene.o);
+
+    // Normals
+    if (!ATON._bQueryNormals) return;
+    if (h.face === null) return;
+    if (h.face.normal === undefined) return;
+
+    ATON._queryDataScene.matrixWorld = new THREE.Matrix3().getNormalMatrix( h.object.matrixWorld );
+    ATON._queryDataScene.n = h.face.normal.clone().applyMatrix3( ATON._queryDataScene.matrixWorld ).normalize();
+};
+
+ATON.getSceneQueriedPoint = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+    return ATON._queryDataScene.p;
+};
+ATON.getSceneQueriedDistance = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+    return ATON._queryDataScene.d;
+};
+ATON.getSceneQueriedNormal = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+    return ATON._queryDataScene.n;
+};
+
+
+// Ray casting semantic-graph
+ATON._handleQuerySemantics = ()=>{
+    if (ATON.XR.isPresenting()){
+        ATON._rcSemantics.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+    }
+    else 
+        ATON._rcSemantics.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
+
+    ATON._hitsSem = [];
+    ATON._rcSemantics.intersectObjects( ATON._mainRoot.children, true, ATON._hitsSem );
+
+    // Process hits
+    let hitsnum = ATON._hitsSem.length;
+    if (hitsnum <= 0){
+        ATON._queryDataSem = undefined;
+
+        if (ATON._hoveredSemNode){
+            ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+            let S = ATON.getSemanticNode(ATON._hoveredSemNode);
+            if (S && S.onLeave) S.onLeave();
+        }
+        
+        ATON._hoveredSemNode = undefined;
+        return;
+    }
+
+    let h = ATON._hitsSem[0];
+
+    // Occlusion
+    if (ATON._bQuerySemOcclusion && ATON._queryDataScene){
+        if (ATON._queryDataScene.d < h.distance){
+
+            ATON._queryDataSem = undefined;
+
+            if (ATON._hoveredSemNode){
+                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+                let S = ATON.getSemanticNode(ATON._hoveredSemNode);
+                if (S && S.onLeave) S.onLeave();
+            }
+
+            ATON._hoveredSemNode = undefined;
+            return;
+        }
+    }
+
+    ATON._queryDataSem = {};
+    ATON._queryDataSem.p = h.point;
+    ATON._queryDataSem.d = h.distance;
+    ATON._queryDataSem.o = h.object;
+    ATON._queryDataSem.list = []; // holds sem-nodes parental list
+
+    // traverse parents
+    let L = ATON._queryDataSem.list;
+    let sp = h.object.parent;
+    while (sp){
+        if (sp.nid && sp.nid !== ATON.ROOT_NID) L.push(sp.nid);
+        sp = sp.parent;
+    }
+
+    let hsn = L[0];
+    if (hsn){
+        if (ATON._hoveredSemNode !== hsn){
+            if (ATON._hoveredSemNode){
+                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+                let S = ATON.getSemanticNode(ATON._hoveredSemNode);
+                if (S && S.onLeave) S.onLeave();
+            }
+
+            ATON._hoveredSemNode = hsn;
+            ATON.fireEvent("SemanticNodeHover", hsn);
+            let S = ATON.getSemanticNode(hsn);
+            if (S && S.onHover) S.onHover();
+        }
+    }
+
+    //console.log(L);
+};
+
+ATON._handleQueryUI = ()=>{
+    if (ATON.XR.isPresenting()){
+        ATON._rcUI.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+    }
+    else 
+        ATON._rcUI.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
+
+    ATON._hitsUI = [];
+    ATON._rcUI.intersectObjects( ATON._mainRoot.children, true, ATON._hitsUI );
+
+    // Process hits
+    let hitsnum = ATON._hitsUI.length;
+    if (hitsnum <= 0){
+        ATON._queryDataUI = undefined;
+
+        if (ATON._hoveredUI){
+            ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+            let S = ATON.getUINode(ATON._hoveredUI);
+            if (S && S.onLeave) S.onLeave();
+        }
+        
+        ATON._hoveredUI = undefined;
+        return;
+    }
+
+    let h = ATON._hitsUI[0];
+
+    // Occlusion
+    if (ATON._queryDataScene){
+        if (ATON._queryDataScene.d < h.distance){
+
+            ATON._queryDataUI = undefined;
+
+            if (ATON._hoveredUI){
+                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredUI);
+                let S = ATON.getUINode(ATON._hoveredUI);
+                if (S && S.onLeave) S.onLeave();
+            }
+
+            ATON._hoveredUI = undefined;
+            return;
+        }
+    }
+
+    ATON._queryDataUI = {};
+    ATON._queryDataUI.p = h.point;
+    ATON._queryDataUI.d = h.distance;
+    ATON._queryDataUI.o = h.object;
+    ATON._queryDataUI.list = []; // holds ui-nodes parental list
+
+    // traverse parents
+    let L = ATON._queryDataUI.list;
+    let sp = h.object.parent;
+    while (sp){
+        if (sp.nid && sp.nid !== ATON.ROOT_NID) L.push(sp.nid);
+        sp = sp.parent;
+    }
+
+    let hui = L[0];
+    if (hui){
+        if (ATON._hoveredUI !== hui){
+            if (ATON._hoveredUI){
+                ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+                let S = ATON.getUINode(ATON._hoveredUI);
+                if (S && S.onLeave) S.onLeave();
+            }
+
+            ATON._hoveredUI = hui;
+            ATON.fireEvent("UINodeHover", hui);
+            let S = ATON.getUINode(hui);
+            if (S && S.onHover) S.onHover();
+        }
+    }
+};
+
+
+export default ATON;
+
+

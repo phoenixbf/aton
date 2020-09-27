@@ -1,0 +1,759 @@
+<!-- start:source.tmpl.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+		<title>ATON.nav.js</title>
+		<!--[if lt IE 9]>
+		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+		<link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
+		<link type="text/css" rel="stylesheet" href="css/template.min.css">
+		<script type="text/javascript">
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_AFILTER_ENABLED = false;
+		</script>
+</head>
+<body>
+	<!-- start:navbar.hbs -->
+	<header class="navbar navbar-default navbar-fixed-top navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand branding-logo" href="index.html" style="background-image: url(img/logo-inv-40x40.png);">
+					ATON 3.0 API
+				</a>
+				<!-- displayed on small devices -->
+				<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			</div>
+			<div class="navbar-collapse collapse" id="topNavigation">
+				<ul class="nav navbar-nav">
+								<li class="dropdown">
+									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="LightProbe.html">LightProbe</a></li>
+											<li><a href="Node.html">Node</a></li>
+											<li><a href="POV.html">POV</a></li>
+									</ul>
+								</li>
+								<li class="dropdown">
+									<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
+									<ul class="dropdown-menu">
+											<li><a href="ATON.html">ATON</a></li>
+											<li><a href="EventHub.html">EventHub</a></li>
+											<li><a href="FE.html">FE</a></li>
+											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="Nav.html">Nav</a></li>
+											<li><a href="SceneHub.html">SceneHub</a></li>
+											<li><a href="SemFactory.html">SemFactory</a></li>
+											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="XR.html">XR</a></li>
+									</ul>
+								</li>
+				</ul>
+					<!-- start:lunr-search-navbar.hbs -->
+					<form class="navbar-form navbar-right" role="search">
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="Search" id="lunr-search-input">
+							<div class="input-group-btn">
+								<button class="btn btn-default" id="lunr-search-submit">
+									<i class="glyphicon glyphicon-search"></i>
+								</button>
+							</div>
+						</div>
+					</form>
+					<!-- start:lunr-search-navbar.hbs -->		</div>
+		</div>
+	</header>
+	<!-- end:navbar.hbs -->		<div class="page-header">
+			<div class="container">
+				<span class="kind">source</span>
+				<h1><span class="name">ATON.nav.js</span></h1>
+			</div>
+		</div>
+	<div class="container content">
+		<div class="row">
+			<div class="col-md-12 main-content">
+		<section class="source-section">
+			<article></article>
+			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
+    ATON Navigation system
+
+    author: bruno.fanini_AT_gmail.com
+
+===========================================================*/
+
+const COSINOIDAL_DIST = function(x){ return (1.0 - Math.cos(x * Math.PI)) / 2.0; };
+
+/**
+ATON Navigation system
+@namespace Nav
+*/
+let Nav = {};
+
+// Consts
+Nav.STD_FOV  = 50.0;
+Nav.STD_NEAR = 0.05;
+Nav.STD_FAR  = 1000.0;
+
+Nav.FP_EPS = 0.01;
+Nav.STD_ROT_SPEED_ORBIT = 0.4;
+Nav.STD_ROT_SPEED_FP    = -0.3;
+Nav.STD_POV_TRANS_DURATION = 2.0;
+
+// Non-immersive navigation controls
+Nav.MODE_ORBIT  = 0;
+Nav.MODE_FP     = 1;
+Nav.MODE_DEVORI = 2;
+
+
+Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
+
+
+
+// Initialize nav system
+Nav.init = ()=>{
+    // Setup controls
+    //Nav._camera = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
+    //Nav._camera.layers.enableAll();
+    //Nav._controls = new THREE.OrbitControls( Nav._camera, ATON._renderer.domElement);
+    Nav.setOrbitControl();
+
+    // POV data
+    Nav._currPOV = new ATON.POV(); // holds current viewpoint data (eye, target, etc...)
+    Nav._fromPOV = new ATON.POV(); // initial POV when requesting a transition
+    Nav._reqPOV  = new ATON.POV(); // requested POV for transition
+
+    Nav.homePOV = undefined; //new ATON.POV();
+
+    Nav._tPOVcall = -1.0;
+    Nav._tPOVprogress = 0.0;
+
+    Nav.povlist = {}; // This will handle registered POVs
+
+    // World direction and orientation (quat)
+    // consistent within standard and immersive XR
+    Nav._vDir = new THREE.Vector3(1,0,0);
+    Nav._qOri = new THREE.Quaternion();
+
+    // Motion
+    Nav._motionAmt = 0.0;
+    Nav._motionDir = new THREE.Vector3(0,1,0);
+};
+
+// Returns current eye location (consistent within standard and immersive XR sessions)
+Nav.getCurrentEyeLocation = ()=>{
+    return Nav._currPOV.pos;
+};
+
+
+Nav.isTransitioning = ()=>{
+    if (Nav._tPOVcall >= 0.0) return true;
+    return false;
+};
+
+// Set Orbit controls (default)
+Nav.setOrbitControl = ()=>{
+    if (ATON.XR.isPresenting()) return;
+
+    Nav._mode = Nav.MODE_ORBIT;
+
+    // One-time setup
+    if (Nav._cOrbit === undefined){
+        Nav._camOrbit = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
+        Nav._camOrbit.layers.enableAll();
+
+        Nav._cOrbit = new THREE.OrbitControls( Nav._camOrbit, ATON._renderer.domElement);
+
+        let C = Nav._cOrbit;
+
+        C.rotateSpeed   = Nav.STD_ROT_SPEED_ORBIT;
+        C.enablePan     = true;
+        C.enableDamping = true;
+        C.dampingFactor = 0.1;
+        C.screenSpacePanning = true;
+        
+        C.enableZoom  = true;
+        C.minDistance = 0.03;
+        C.maxDistance = 1000.0;
+
+        C.addEventListener("change", () => { Nav._bControlChange = true; });
+    }
+
+    Nav._controls = Nav._cOrbit;
+    //Nav._controls.target.copy(Nav._camera.position);
+    Nav._camera = Nav._camOrbit;
+    
+    Nav._controls.update();
+    if (Nav._currPOV) Nav.syncCurrCamera();
+};
+
+// Set FP controls
+Nav.setFirstPersonControl = ()=>{
+    if (ATON.XR.isPresenting()) return;
+
+    Nav._mode = Nav.MODE_FP;
+
+    // One-time setup
+    if (Nav._cFirstPerson === undefined){
+        Nav._camFP = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
+        Nav._camFP.layers.enableAll();
+
+        Nav._cFirstPerson = new THREE.OrbitControls( Nav._camFP, ATON._renderer.domElement);
+
+        let C = Nav._cFirstPerson;
+
+        C.enableZoom  = false;
+        C.enablePan   = false;
+        C.rotateSpeed = Nav.STD_ROT_SPEED_FP;
+        
+        C.enableDamping = true;
+        C.dampingFactor = 0.1;
+        //C.screenSpacePanning = true;
+
+        C.target.copy(Nav._camera.position);
+
+        C.minDistance = 0.05;
+        C.maxDistance = 0.05;
+    }
+
+    Nav._controls = Nav._cFirstPerson;
+    //Nav._controls.target.copy(Nav._camera.position);
+    Nav._camera = Nav._camFP;
+
+    Nav._controls.update();
+    if (Nav._currPOV) Nav.syncCurrCamera();
+/*
+    if (Nav._controls) ATON._controls.dispose();
+    ATON._controls = new THREE.FirstPersonControls( ATON._camera, ATON._renderer.domElement);
+    ATON._controls.lookSpeed = 0.1;
+    ATON._controls.movementSpeed = 10;
+    ATON._controls.noFly = true;
+    ATON._controls.lookVertical = false;
+
+    //ATON._camera.position.set( 20.0, 5.0, 0 );
+    ATON._controls.lookAt(0,4,0);
+
+    ATON._controls.update();
+    console.log(ATON._controls);
+*/
+};
+
+// Set DevOri controls
+Nav.setDeviceOrientationControl = ()=>{
+    if (!ATON.Utils.isMobile()) return;
+
+    Nav._mode = Nav.MODE_DEVORI;
+    ATON._screenPointerCoords.set(0.0,0.0);
+
+    // One-time setup
+    if (Nav._cDevOri === undefined){
+        Nav._camDevOri = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
+        Nav._camDevOri.layers.enableAll();
+
+        Nav._cDevOri = new THREE.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
+        //Nav._cDevOri = new Nav.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
+
+        Nav._cDevOri.alphaOffset = 0.0; //The alpha offset in radians
+    }
+
+    Nav._controls = Nav._cDevOri;
+    Nav._camera   = Nav._camDevOri;
+
+    Nav._controls.update();
+    if (Nav._currPOV) Nav.syncCurrCamera();
+};
+
+
+Nav.setMotionAmount = (f)=>{
+    Nav._motionAmt = f;
+};
+
+Nav.setMotionDirection = (v)=>{
+    Nav._motionDir.copy(v);
+}
+
+Nav.stop = ()=>{
+    Nav._motionAmt = 0.0;
+};
+
+// FoV
+Nav.setFOV = (f)=>{
+    if (ATON.XR.isPresenting()) return; // skip for immersive sessions
+
+    Nav._currPOV.fov = f;
+
+    let cam = Nav._camera;
+    cam.fov = f;
+    cam.updateProjectionMatrix();
+};
+
+Nav.getFOV = ()=>{
+    return Nav._currPOV.fov;
+};
+
+
+// Retrieve currPOV from camera and controls
+Nav.syncCurrPOV = ()=>{
+    if (ATON.XR.isPresenting()){
+        
+        let C = ATON._renderer.xr.getCamera(Nav._camera);
+        C.getWorldPosition( Nav._currPOV.pos );
+        C.getWorldQuaternion( Nav._qOri );
+        C.getWorldDirection( Nav._vDir );
+        //console.log(Nav._hmdPos);
+
+        //ATON.XR.hmdPos.copy(Nav._currPOV.pos);
+        //ATON.XR.hmdDir.copy(Nav._vDir);
+        
+        //ATON._renderer.xr.getCamera(Nav._camera);
+        //ATON._renderer.xr.getCamera(Nav._camera).getWorldDirection(Nav._vDir);
+        //Nav._camera.getWorldDirection(Nav._vDir);
+        
+        //Nav._currPOV.pos.copy(Nav._camera.position);
+        return;
+    }
+
+    let ctrl  = Nav._controls;
+    let cam   = Nav._camera;
+
+    cam.getWorldDirection(Nav._vDir);
+    cam.getWorldQuaternion(Nav._qOri);
+
+    if (Nav._mode === Nav.MODE_DEVORI){
+        Nav._currPOV.pos.copy(cam.position);
+        return;
+    }
+
+    if (Nav._mode === Nav.MODE_FP){
+        Nav._currPOV.pos.copy(ctrl.target);
+
+        Nav._currPOV.target.x = Nav._currPOV.pos.x + Nav._vDir.x; //ctrl.target.x - cam.position.x;
+        Nav._currPOV.target.y = Nav._currPOV.pos.y + Nav._vDir.y; //ctrl.target.y - cam.position.y;
+        Nav._currPOV.target.z = Nav._currPOV.pos.z + Nav._vDir.z; //ctrl.target.z - cam.position.z;
+        return;
+    }
+    
+    Nav._currPOV.pos.copy(cam.position);
+    Nav._currPOV.target.copy(ctrl.target);
+};
+
+// After syncCurrPOV and before updateCamera, we maniuplate currPOV
+//==================================================================================
+Nav.handlePOV = ()=>{
+    //console.log(Nav._currPOV.pos);
+
+    if (ATON.XR.isPresenting()) Nav.handleXRtransition();
+    else Nav.handlePOVtransition();
+
+    Nav.handleMotion();
+
+    //if (ATON.XR.isPresenting()) console.log(ATON._renderer.xr);
+
+    // Handle constraints
+
+};
+
+Nav.handleMotion = ()=>{
+    if (Nav.isTransitioning()) return;
+
+    if (Nav._motionAmt != 0.0){
+
+        //if ()
+
+
+        if (ATON.XR.controller0 &amp;&amp; ATON.XR.controller0.visible){
+            ATON.XR.controller0.getWorldDirection(Nav._motionDir);
+            Nav._motionDir.negate();
+            }
+        else Nav._motionDir.copy(Nav._vDir);
+
+        let fv = Nav._motionDir.clone();
+        fv.multiplyScalar(Nav._motionAmt * ATON._dt);
+
+        Nav._currPOV.pos.add(fv);
+        Nav._currPOV.target.add(fv); // check if needed
+    }
+};
+
+Nav.handlePOVtransition = ()=>{
+    if (Nav._tPOVcall &lt; 0.0) return;
+
+    if (Nav.POVtransitionDuration &lt;= 0.0) Nav._tPOVprogress = 1.0;
+    else Nav._tPOVprogress = (ATON._clock.elapsedTime - Nav._tPOVcall) / Nav.POVtransitionDuration;
+
+    // End
+    if (Nav._tPOVprogress >= 1.0){
+
+        Nav._tPOVcall = -1.0;
+        //Nav._controls.enabled = true;
+
+        Nav._currPOV.pos.copy(Nav._reqPOV.pos);
+        Nav._currPOV.target.copy(Nav._reqPOV.target);
+        Nav._currPOV.fov = Nav._reqPOV.fov;
+
+        ATON.fireEvent("POVTransitionCompleted", Nav._reqPOV.id);
+        return;
+    }
+
+    Nav._tPOVprogress = COSINOIDAL_DIST(Nav._tPOVprogress);
+
+    Nav._currPOV.pos.lerpVectors(Nav._fromPOV.pos, Nav._reqPOV.pos, Nav._tPOVprogress);
+    Nav._currPOV.target.lerpVectors(Nav._fromPOV.target, Nav._reqPOV.target, Nav._tPOVprogress);
+
+    if (!Nav._fromPOV.fov || !Nav._reqPOV.fov) return;
+    Nav._currPOV.fov = THREE.MathUtils.lerp(Nav._fromPOV.fov, Nav._reqPOV.fov, Nav._tPOVprogress);
+
+    //console.log(Nav._camera);
+
+    Nav._camera.fov = Nav._currPOV.fov;
+    Nav._camera.updateProjectionMatrix();
+};
+
+// Immersive XR transitions
+Nav.handleXRtransition = ()=>{
+    if (Nav._tPOVcall &lt; 0.0) return;
+
+    if (Nav.POVtransitionDuration &lt;= 0.0) Nav._tPOVprogress = 1.0;
+    else Nav._tPOVprogress = (ATON._clock.elapsedTime - Nav._tPOVcall) / Nav.POVtransitionDuration;
+
+    // End
+    if (Nav._tPOVprogress >= 1.0){
+
+        Nav._tPOVcall = -1.0;
+        //Nav._controls.enabled = true;
+
+        //ATON.XR.setRefSpaceLocation(Nav._reqXRpos);
+
+        console.log("XR height"+ATON.XR._currPos.y);
+        console.log("HMD height"+Nav._currPOV.pos.y);
+
+        ATON.fireEvent("POVTransitionCompleted", Nav._reqPOV.id);
+        return;
+    }
+
+    ATON.XR._currPos.lerpVectors(ATON.XR._fromPos, ATON.XR._reqPos, Nav._tPOVprogress);
+    //ATON.XR._currPos.lerpVectors(Nav._fromPOV.pos, Nav._reqPOV.pos, Nav._tPOVprogress);
+
+};
+
+
+
+
+// Update internal camera from currPOV 
+Nav.syncCurrCamera = ()=>{
+    let ctrl  = Nav._controls;
+    let cam   = Nav._camera;
+    
+    let pos = Nav._currPOV.pos;
+    let tgt = Nav._currPOV.target;
+
+    // We are in VR
+    if (ATON.XR.isPresenting()){
+        ///let vrcam = ATON.XR.rig;
+        ///vrcam.position.copy(pos);
+        
+        ///ATON.XR.setRefSpaceLocation(pos);
+
+        //let C = ATON._renderer.xr.getCamera(cam);
+        //C.getWorldDirection(Nav._vDir);
+        return;
+    }
+
+    if (Nav._mode === Nav.MODE_DEVORI){
+        cam.position.copy(pos);
+        return;
+    }
+
+    // Common controls
+    //let d = new THREE.Vector3();
+    Nav._vDir.subVectors(tgt, pos);
+    Nav._vDir.normalize();
+
+    if (Nav._mode === Nav.MODE_FP){
+        ctrl.target.copy(pos);
+
+        cam.position.x = ctrl.target.x - (Nav._vDir.x * Nav.FP_EPS);
+        cam.position.y = ctrl.target.y - (Nav._vDir.y * Nav.FP_EPS);
+        cam.position.z = ctrl.target.z - (Nav._vDir.z * Nav.FP_EPS);
+    }
+    else {
+        cam.position.copy(pos);
+        ctrl.target.copy(tgt);
+    }
+};
+
+// Main update routine
+Nav.update = ()=>{
+
+    //Nav._bXR = ATON.XR.isPresenting();
+
+    Nav.syncCurrPOV();
+    Nav.handlePOV();
+    Nav.syncCurrCamera();
+};
+
+
+// Request transition to viewpoint (POV)
+Nav.requestPOV = (pov, duration)=>{
+    if (ATON._tPOVcall >= 0.0) return; // already requested
+
+    ATON.fireEvent("POVTransitionRequested", pov.id);
+
+    if (duration !== undefined) Nav.POVtransitionDuration = duration;
+    
+    //Nav._controls.enabled = false;
+
+    Nav._tPOVcall = ATON._clock.elapsedTime;
+    
+    if (ATON.XR.isPresenting()){
+        Nav._reqPOV.pos.copy(pov.pos? pov.pos : Nav._currPOV.pos);
+        Nav._fromPOV.pos.copy(Nav._currPOV.pos);
+
+        ATON.XR._reqPos.copy(pov.pos? pov.pos : Nav._currPOV.pos);
+        ATON.XR._fromPos.copy(ATON.XR._currPos);
+    }
+    else {
+        Nav._reqPOV.pos.copy(pov.pos? pov.pos : Nav._currPOV.pos);
+        Nav._reqPOV.target.copy( pov.target? pov.target : Nav._currPOV.target);
+        Nav._reqPOV.fov = pov.fov? pov.fov : Nav._currPOV.fov;
+
+        Nav._fromPOV.pos.copy(Nav._currPOV.pos);
+        Nav._fromPOV.target.copy(Nav._currPOV.target);
+        Nav._fromPOV.fov = Nav._currPOV.fov;
+    }
+};
+
+Nav.requestPOVbyBound = (bs, duration)=>{
+    if (bs === undefined) return;
+
+    let T = new THREE.Vector3();
+    let E = new THREE.Vector3();
+
+    T.copy(bs.center);
+    
+    let r = bs.radius * 2.5;
+    E.x = T.x - (r * Nav._vDir.x);
+    E.y = T.y - (r * Nav._vDir.y);
+    E.z = T.z - (r * Nav._vDir.z);
+
+    let pov = new ATON.POV().setPosition(E).setTarget(T);    
+    Nav.requestPOV(pov, duration);
+};
+
+Nav.requestPOVbyNode = (n, duration)=>{
+    if (n === undefined) return;
+    
+    let bs = n.getBound();
+
+    Nav.requestPOVbyBound(bs,duration);
+};
+
+Nav.requestRetarget = (point, normal, duration)=>{
+    let M = new THREE.Vector3();
+    if (normal === undefined){
+        M.lerpVectors(point, Nav._currPOV.pos, 0.8);
+    }
+    else {
+        let d = point.distanceTo(Nav._currPOV.pos);
+        d *= 0.5;
+        M.x = point.x + (normal.x * d);
+        M.y = point.y + (normal.y * d);
+        M.z = point.z + (normal.z * d);
+    }
+
+    let pov = new ATON.POV().setPosition(M).setTarget(point).setFOV(Nav._currPOV.fov);
+    console.log(pov);
+    
+    Nav.requestPOV(pov, duration);
+};
+
+// Typically after all assets are loaded
+Nav.computeDefaultHome = (dv)=>{
+    if (dv === undefined) dv = new THREE.Vector3(1,0.7,1);
+
+    let sceneBS = ATON.getRootScene().getBound();
+
+    let eye = new THREE.Vector3(
+        sceneBS.center.x + (sceneBS.radius * dv.x), 
+        sceneBS.center.y + (sceneBS.radius * dv.y), 
+        sceneBS.center.z + (sceneBS.radius * dv.z)
+    );
+
+    Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(sceneBS.center);
+};
+
+Nav.setHomePOV = (pov)=>{
+    Nav.homePOV = pov;
+};
+
+Nav.computeAndRequestDefaultHome = (duration, dv)=>{
+    Nav.computeDefaultHome(dv);
+    Nav.requestPOV(Nav.homePOV, duration);
+};
+
+Nav.requestHome = (duration)=>{
+    Nav.requestPOV(Nav.homePOV, duration);
+};
+
+
+
+// Mobile devori (modified for absolute compass - UNSTABLE)
+/**
+ * @author richt / http://richt.me
+ * @author WestLangley / http://github.com/WestLangley
+ *
+ * W3C Device Orientation control (http://w3c.github.io/deviceorientation/spec-source-orientation.html)
+ */
+Nav.DeviceOrientationControls = function ( object ) {
+    let scope = this;
+
+    this.object = object;
+    this.object.rotation.reorder( 'YXZ' );
+    this.enabled = true;
+
+    this.deviceOrientation = {};
+    this.screenOrientation = 0;
+
+    this.alphaOffset = 0; // radians
+    this.absolute = false;
+    this.alphaOffsetDevice = undefined;
+    this.alphaOffsetScreen = undefined;
+
+    let onDeviceOrientationChangeEvent = function ( event ) {
+        if(scope.absolute) return;
+        scope.deviceOrientation = event;
+    };
+
+    let onDeviceOrientationAbsoluteChangeEvent = function ( event ) {
+        scope.deviceOrientation = event;
+        scope.absolute = true;
+    };
+
+    let onScreenOrientationChangeEvent = function () {
+        scope.screenOrientation = window.orientation || 0;
+    };
+
+    // The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
+    let setObjectQuaternion = function () {
+        let zee = new THREE.Vector3( 0, 0, 1 );
+        let euler = new THREE.Euler();
+
+        let q0 = new THREE.Quaternion();
+        let q1 = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
+
+        return function ( quaternion, alpha, beta, gamma, orient ) {
+            euler.set( beta, alpha, - gamma, 'YXZ' ); // 'ZXY' for the device, but 'YXZ' for us
+            quaternion.setFromEuler( euler ); // orient the device
+            quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
+            quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
+        };
+
+    }();
+
+    this.connect = function () {
+        onScreenOrientationChangeEvent(); // run once on load
+
+        window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
+        window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+        window.addEventListener( 'deviceorientationabsolute', onDeviceOrientationAbsoluteChangeEvent, false );
+
+        scope.enabled = true;
+    };
+
+    this.disconnect = function () {
+        window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
+        window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+        window.removeEventListener( 'deviceorientationabsolute', onDeviceOrientationAbsoluteChangeEvent, false );
+
+        scope.enabled = false;
+    };
+
+    this.update = function () {
+        if ( scope.enabled === false ) return;
+
+        let device;
+        device = scope.deviceOrientation;
+
+        if ( device ) {
+            let alpha = this.getDirection() ? THREE.Math.degToRad( this.getDirection() ) + scope.alphaOffset : 0; // Z
+            let beta = device.beta ? THREE.Math.degToRad( device.beta ) : 0; // X'
+
+            let gamma = device.gamma ? THREE.Math.degToRad( device.gamma ) : 0; // Y''
+            let orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
+
+            setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
+        }
+
+    };
+
+    this.dispose = ()=>{
+        scope.disconnect();
+    };
+
+    this.iOSOrientationPermission = ()=>{
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission().then(permissionState => {
+                if (permissionState === 'granted') {
+
+                }
+
+                console.log(permissionState);
+            }).catch(console.error);
+        }
+    }
+
+    this.getDirection = ()=>{
+        return (typeof scope.deviceOrientation.webkitCompassHeading != "undefined") ? scope.deviceOrientation.webkitCompassHeading : scope.deviceOrientation.alpha;
+    }
+
+    this.getDirectionMap = ()=>{
+        return (typeof scope.deviceOrientation.webkitCompassHeading != "undefined") ? (360 - scope.deviceOrientation.webkitCompassHeading) : scope.deviceOrientation.alpha;
+    }
+
+    this.connect();
+};
+
+
+export default Nav;</code></pre>
+		</section>
+			</div>
+		</div>
+	</div>
+	<footer>
+				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+	</footer>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/clipboard.min.js"></script>
+	<script src="js/prism.min.js"></script>
+	<script src="js/template.min.js"></script>
+		<!-- start:lunr-search-modal.hbs -->
+		<div class="modal fade" id="lunr-search-modal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title">Search results</h4>
+					</div>
+					<div class="modal-body" id="lunr-search-body">
+					</div>
+					<div class="modal-footer" id="lunr-search-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div>
+		<!-- end:lunr-search-modal.hbs -->		<script src="js/lunr.min.js"></script>
+	
+</body>
+</html>
+<!-- end:source.tmpl.hbs -->

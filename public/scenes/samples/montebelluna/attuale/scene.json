@@ -1,0 +1,21 @@
+{
+    "status": "complete",
+
+    "scenegraph": {
+        "nodes": {
+            "Attuale": {
+                "urls": [
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo.019_LOD1.gltf",
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo.020_LOD1.gltf",
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo.021_LOD1.gltf",
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo.026_LOD1.gltf",
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo.027_LOD1.gltf",
+                    "models/samples/montebelluna/Attuale/Montebelluna_scavo_LOD1.gltf"
+                ]
+            }
+        },
+        "edges": {
+            ".": ["Attuale"]
+        }
+    }
+}

@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections
+
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
+
+	ATON.on("KeyPress", function(k){
+		if (k === 'x') ATON.updateLightProbes();
+	});
+
+    // Sample scene
+	//let exp = 0.1;
+	//ATON.ambLight.color = new THREE.Color( exp,exp,exp );
+
+	// Loads main panorama (equirectangular)
+	ATON.setMainPanorama(ATON.PATH_COLLECTION+"pano/samples/defsky-grass.jpg");
+
+    ATON.createSceneNode("ground")
+        .load(ATON.PATH_MODELS+"samples/basic/ground.gltf")
+        .setScale(10.0)
+        .attachToRoot();
+
+    ATON.createSceneNode("venus")
+        .load(ATON.PATH_MODELS+"samples/venus/venus.gltf")
+        .setScale(0.3)
+		.rotateY(Math.PI * 0.5)
+		.setPosition(-2,-0.5,1.0)
+        .attachToRoot();
+
+	// We create and arrange two "ATON cubes"
+	let pos_A = new THREE.Vector3(-2.0,0.5,-2.0);
+	let pos_B = new THREE.Vector3(-4.0,0.5,4.0);
+
+	ATON.Utils.createATONCubePBR("atoncube_A").setPosition(pos_A).attachToRoot();
+	ATON.Utils.createATONCubePBR("atoncube_B").setPosition(pos_B).attachToRoot();
+
+	// Create and place two walls (simple planes)
+    let sampleWall_B = ATON.createSceneNode();
+    let mat_B = new THREE.MeshStandardMaterial({ color: new THREE.Color(1,1,0), emissive: new THREE.Color(1,1,0), side: THREE.DoubleSide });
+    sampleWall_B.add( new THREE.Mesh( new THREE.PlaneGeometry(3,3).rotateY(-Math.PI * 0.5), mat_B ));
+    sampleWall_B.setPosition(-7.0,1.0,4.0).attachToRoot();
+
+    let sampleWall_A = ATON.createSceneNode();
+    let mat_A = new THREE.MeshStandardMaterial({ color: new THREE.Color(1,0,0), emissive: new THREE.Color(1,0,0), side: THREE.DoubleSide });
+    sampleWall_A.add( new THREE.Mesh( new THREE.PlaneGeometry(3,3).rotateY(-Math.PI * 0.5), mat_A ));
+    sampleWall_A.setPosition(2.0,1.0,-1.0).attachToRoot();
+
+
+	// We now create two light probes
+	// using specific capture resolution (128x128px), near (0.3m)
+	// we arrange them in correspondence of cube locations (consistent reflections)
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_A) );
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_B) );
+
+	// When all scene assets are loaded
+	ATON.on("AllNodeRequestsCompleted", function(){
+
+		// Assign each light probe (two in this case) to scene items
+		ATON.getRootScene().assignLightProbesByProximity();
+	});
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-left" style="white-space:nowrap;"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom" style="white-space:nowrap;"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

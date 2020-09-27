@@ -1,0 +1,30 @@
+{
+    "plugins": ["plugins/markdown"],
+    "recurseDepth": 10,
+    "source": {
+        "include": ["../public/src/"],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "sourceType": "module",
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "systemName": "ATON 3.0 API",
+        "systemLogo": "../public/res/logo-inv-40x40.png",
+        "systemSummary": "ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).",
+        "search": true,
+        "outputSourceFiles": false,
+        "outputSourcePath": false
+    },
+
+    "opts": {
+        "template": "templates/default",  // same as -t templates/default
+        "destination": "../API/client/",          // same as -d ./out/
+        "template": "node_modules/foodoc/template"
+    }
+}

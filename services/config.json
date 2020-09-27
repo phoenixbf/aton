@@ -1,0 +1,16 @@
+{
+	"services":{
+		"main": {
+			"PORT": 8080,
+			"PORT_S": 8083
+		},
+		"atonizer":{
+			"PORT": 8085,
+			"address": "http://localhost"
+		},
+		"vroadcast":{
+			"PORT": 8890,
+			"address": "ws://localhost"
+		}
+	}
+}

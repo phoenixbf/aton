@@ -382,6 +382,12 @@ canvas {
     animation: 0.2s ease-out 0s 1 popupAnimation;
 }
 
+@media screen and (orientation: portrait) {
+    .atonPopup {
+        width: 90%;
+    	}
+}
+
 .atonQRcontainer {
     display: inline-block;
 

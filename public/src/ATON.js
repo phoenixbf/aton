@@ -257,13 +257,16 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // TODO: go POV in sight if any (panorama only mode)
 }
 
-ATON.toggleFullScreen = (b)=>{
+ATON.toggleFullScreen = ()=>{
+    screenfull.toggle();
+/*
     if (b === undefined){
         screenfull.toggle();
         return;
-        }
+    }
 
     if (b) screenfull.request();
+*/
 };
 
 

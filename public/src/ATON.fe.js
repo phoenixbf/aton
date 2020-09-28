@@ -70,11 +70,28 @@ FE.uiAddButton = (idcontainer, iconid, onPress)=>{
     if (onPress) $("#btn-"+iconid).click( onPress );
 };
 
-FE.uiAddButtonHome = (idcontainer)=>{
-    FE.uiAddButton(idcontainer, "home", ()=>{ ATON.Nav.requestHome(0.1); });
+FE.uiSwitchButton = (iconid, b)=>{
+    if (b) $("#btn-"+iconid).addClass("switchedON");
+    else $("#btn-"+iconid).removeClass("switchedON");
 };
+
+FE.uiAddButtonHome = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "home", ()=>{ 
+        ATON.Nav.requestHome(0.3);
+    });
+};
+
 FE.uiAddButtonFirstPerson = (idcontainer)=>{
-    FE.uiAddButton(idcontainer, "fp", ATON.Nav.setFirstPersonControl );
+    FE.uiAddButton(idcontainer, "fp", ()=>{
+        if (ATON.Nav.isFirstPerson()){
+            ATON.Nav.setOrbitControl();
+            FE.uiSwitchButton("fp",false);
+        }
+        else {
+            ATON.Nav.setFirstPersonControl();
+            FE.uiSwitchButton("fp",true);
+        }
+    });
 };
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
@@ -83,11 +100,28 @@ FE.uiAddButtonVR = (idcontainer)=>{
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     if (!ATON.Utils.isMobile()) return;
-    FE.uiAddButton(idcontainer,"devori", ATON.Nav.setDeviceOrientationControl );
+
+    FE.uiAddButton(idcontainer,"devori", ()=>{
+        if (ATON.Nav.isDevOri()){
+            ATON.Nav.setOrbitControl();
+            FE.uiSwitchButton("devori",false);
+        }
+        else {
+            ATON.Nav.setDeviceOrientationControl();
+            FE.uiSwitchButton("devori",true);
+        }
+    });
 };
 
 FE.uiAddButtonQR = (idcontainer)=>{
     FE.uiAddButton(idcontainer,"qr", FE.popupQR );
+};
+
+FE.uiAddButtonFullScreen = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "fullscreen", ()=>{
+        ATON.toggleFullScreen();
+        screenfull.isFullscreen? FE.uiSwitchButton("fullscreen",false) : FE.uiSwitchButton("fullscreen",true);
+    });
 };
 
 // Attach ID validator to given input field

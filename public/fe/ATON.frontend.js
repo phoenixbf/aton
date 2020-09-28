@@ -27,18 +27,15 @@ window.addEventListener( 'load', ()=>{
 // Front-end UI
 //=======================
 AFE.uiSetup = ()=>{
-    ATON.FE.uiAddButton("idTopToolbar","fullscreen", ATON.toggleFullScreen );
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
 
-    // These require a secure connection
-    if (ATON.Utils.isConnectionSecure()){
-        ATON.FE.uiAddButton("idTopToolbar","vr", ATON.XR.toggle );
-        if (ATON.Utils.isMobile()) ATON.FE.uiAddButton("idTopToolbar","devori", ATON.Nav.setDeviceOrientationControl );
-    }
+    ATON.FE.uiAddButtonVR("idTopToolbar");
+    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
     ATON.FE.uiAddButtonQR("idTopToolbar");
     
     // Bottom toolbar
-    ATON.FE.uiAddButton("idBottomToolbar","home", ()=>{ ATON.Nav.requestHome(0.1); });
+    ATON.FE.uiAddButtonHome("idBottomToolbar");
 };
 
 

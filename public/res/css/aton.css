@@ -363,7 +363,6 @@ canvas {
 
 .atonPopup {
     position: relative;
-    overflow: hidden;
 
     margin: auto;
     width: 50%;
@@ -385,7 +384,7 @@ canvas {
 @media screen and (orientation: portrait) {
     .atonPopup {
         width: 90%;
-    	}
+    }
 }
 
 .atonQRcontainer {

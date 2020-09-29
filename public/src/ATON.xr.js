@@ -180,8 +180,8 @@ XR.toggle = ()=>{
     if (XR.currSession === null){
         let sessionInit = { 
             optionalFeatures: [
+                "local",
                 //"local-floor" 
-                "local" 
                 ///"bounded-floor"
             ]
         };

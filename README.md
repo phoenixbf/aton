@@ -2,21 +2,21 @@
 
 ![Header](./public/res/aton-header.jpg)
 
-The ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D WebApps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
-* Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop/kiosks, immersive VR)
-* Complex scene-graph manipulation and support for hierarchical culling, instancing, node composition and cascading transformations
+ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
+* Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
+* Real-time collaborative multi-user features (*VRoadcast* module)
 * Immersive VR (WebXR) and (multi)-touch devices interfaces
 * 3D semantic queries and annotations including free-form volumetric shapes
-* Event-driven API for fully customizable events
+* Event-driven API for fully customizable events (for local and collaborative contexts)
+* 360 panoramas and virtual tours
+* Complex scene-graph manipulation and support for hierarchical culling, instancing, node composition and cascading transformations
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
 * Multi-temporal (4D) visualization
-* Real-time collaborative multi-user features (*VRoadcast* module)
 * Advanced multi-texturing, PBR features and custom shaders
-* Camera/POV transitions, custom POV handling and navigation constraints
+* Camera/POV transitions, custom viewpoint handling and navigation constraints
 * Dynamic and customizable recommendation systems
-* Spherical panoramas and virtual tours
 
-The framework also provides *built-in* services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and remote/immersive visual analytics.
+The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and support for remote/immersive visual analytics.
 
 ## Getting started
 1) Install [Node.js](https://nodejs.org/) for your operating system.
@@ -35,9 +35,10 @@ npm start
 4) Open http://localhost:8080/examples/basic/ on your browser.
 
 # Publications
-Here is a list of publications where ATON was employed:
+Here is a list of publications where ATON (including previous versions) was employed:
 
-* B. Fanini, L. Cinque (2020) Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue “Emerging Artificial Intelligence (AI) Technologies for Learning”
+* B. Fanini, L. Cinque (2020). Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue “Emerging Artificial Intelligence (AI) Technologies for Learning”
+* B. Fanini (2020). Applications of a compact session encoding for immersive WebVR/XR analytics. Chapter 6 in Digital & Documentation – Digital strategies for Cultural Heritage. Vol. 2
 * M. Lo Turco, P. Piumatti, M. Calvano, E. C. Giovannini, N. Mafrici, A. Tomalini, B. Fanini (2020). Interactive Digital Environments for Cultural Heritage and Museums. Building a digital ecosystem to display hidden collections. DISEGNARECON – ISSN 1828 5961
 * Fanini, B., & Cinque, L. (2019). Encoding immersive sessions for online, interactive VR analytics. Virtual Reality, 1-16.
 * Fanini, B., Pescarin, S., & Palombini, A. (2019). A cloud-based architecture for processing and dissemination of 3D landscapes online. Digital Applications in Archaeology and Cultural Heritage, e00100.

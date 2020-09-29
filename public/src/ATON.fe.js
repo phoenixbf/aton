@@ -124,6 +124,12 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
     });
 };
 
+FE.uiAddButtonVRC = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "vrc", ()=>{
+        //TODO:
+    });
+};
+
 // Attach ID validator to given input field
 FE.uiAttachInputFilterID = (inputid)=>{
     $("#"+inputid).on('keyup change input', ()=>{

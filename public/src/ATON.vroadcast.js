@@ -67,7 +67,7 @@ VRoadcast.initMaterials = ()=>{
     let MM = ATON.MatHub.materials;
     MM.avatars = [];
 
-    let mat = new THREE.MeshStandardMaterial({
+    let mat = new THREE.MeshBasicMaterial({
         color: VRoadcast.ucolors[0], 
         transparent: true, 
         opacity: 0.4, 

@@ -503,9 +503,9 @@ Nav.computeDefaultHome = (dv)=>{
     let sceneBS = ATON.getRootScene().getBound();
 
     let eye = new THREE.Vector3(
-        sceneBS.center.x + (sceneBS.radius * dv.x), 
-        sceneBS.center.y + (sceneBS.radius * dv.y), 
-        sceneBS.center.z + (sceneBS.radius * dv.z)
+        sceneBS.center.x + (sceneBS.radius * dv.x * 1.5), 
+        sceneBS.center.y + (sceneBS.radius * dv.y * 1.5), 
+        sceneBS.center.z + (sceneBS.radius * dv.z * 1.5)
     );
 
     Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(sceneBS.center);

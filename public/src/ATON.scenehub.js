@@ -36,6 +36,7 @@ ATON.SceneHub.setEditMode(true)
 */
 SceneHub.setEditMode = (b)=>{
     SceneHub._bEdit = b;
+    console.log("Edit mode:"+b);
 };
 
 

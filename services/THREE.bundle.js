@@ -16,6 +16,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { ConvexBufferGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
+import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
@@ -42,6 +43,8 @@ THREE.DRACOLoader   = DRACOLoader;
 THREE.BasisTextureLoader = BasisTextureLoader;
 //THREE.FirstPersonControls = FirstPersonControls;
 THREE.ConvexBufferGeometry = ConvexBufferGeometry;
+THREE.BufferGeometryUtils = BufferGeometryUtils;
+
 THREE.RGBELoader = RGBELoader;
 THREE.RoughnessMipmapper = RoughnessMipmapper;
 THREE.LightProbeHelper = LightProbeHelper;

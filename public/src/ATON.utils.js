@@ -76,9 +76,33 @@ Utils.getBaseFolder = ( filepath )=>{
     return '';
 };
 
+Utils.mergeObject = ( object )=>{
+    object.updateMatrixWorld( true );
+
+    const geometry = [];
+    object.traverse( c => {
+        if ( c.isMesh ){
+            const g = c.geometry;
+            g.applyMatrix4( c.matrixWorld );
+            geometry.push( g.toNonIndexed() );
+        }
+
+    });
+
+    const mergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries( geometry, false );
+    const mergedGeometry   = THREE.BufferGeometryUtils.mergeVertices( mergedGeometries ).center();
+
+    const group = new THREE.Group();
+    const mesh = new THREE.Mesh( mergedGeometry );
+    group.add( mesh );
+    return group;
+};
+
 // Helper visitor routine
 Utils.modelVisitor = (parentNode, model)=>{
     if (!model) return this;
+
+    //model = Utils.mergeObject(model);
     
     let N = parentNode;
     let type = N.type; // Differentiate visit depending on node type

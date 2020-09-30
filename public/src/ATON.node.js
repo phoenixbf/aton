@@ -455,7 +455,6 @@ load(url, onComplete){
     if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
 
     let P = new Promise( ( resolve, reject ) => {
-
         ATON._aLoader.load( url, (data)=>{
             let model = data.scene || data.scene[0];
 

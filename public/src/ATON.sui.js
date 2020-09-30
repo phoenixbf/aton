@@ -40,7 +40,7 @@ SUI.init = ()=>{
     SUI.buildInfoNode();
     SUI.bShowInfo = true;
 
-    SUI._labelScale   = ATON.Utils.isMobile()? 1.5 : 1.0;
+    SUI._labelScale   = ATON.Utils.isMobile()? 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
     ATON.on( "SemanticNodeHover", (semid)=>{

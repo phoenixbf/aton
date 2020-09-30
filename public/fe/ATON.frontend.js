@@ -13,6 +13,9 @@ window.addEventListener( 'load', ()=>{
     AFE.paramVRC   = ATON.FE.urlParams.get('vrc');
     AFE.paramEdit  = ATON.FE.urlParams.get('edit');
 
+    if (AFE.paramEdit) ATON.SceneHub.setEditMode(AFE.paramEdit);
+    else ATON.SceneHub.setEditMode(false);
+
     ATON.FE.addBasicLoaderEvents();
 
     AFE.uiSetup();

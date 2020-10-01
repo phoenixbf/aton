@@ -334,6 +334,8 @@ ATON.realize = ()=>{
     //ATON.periods = [];
 
     ATON._lps = []; // lightprobes
+    ATON._bAutoLP = false;
+    //ATON._dirtyLPs = true;
 
     ATON.initGraphs();
     ATON.SceneHub.init();
@@ -505,20 +507,37 @@ ATON._assetReqComplete = (url)=>{
     ATON._numReqLoad--;
 
     if (ATON._numReqLoad <= 0){
-
         ATON.fireEvent("AllNodeRequestsCompleted");
-        //ATON.updateLightProbes();
 
-        //ATON.getRootScene().assignLightProbesByProximity();
+        // Bounds
+        let c = ATON._rootVisible.getBound().center;
+        let r = ATON._rootVisible.getBound().radius;
+
+        if (ATON._renderer.shadowMap.enabled){
+            ATON._rootVisible.traverse((o) => {
+                if (o.isMesh){
+                    o.castShadow = true;
+                    o.receiveShadow = true;
+                }
+            });
+        }
+
+        if (ATON._bAutoLP){
+            if (ATON._lps[0] === undefined) ATON.addLightProbe( new ATON.LightProbe().setPosition(c).setNear(r) );
+            else {
+                ATON._lps[0].setPosition(c.x, c.y, c.z).setNear(r);
+            }
+            console.log("Auto LP");
+        }
+
+        ATON.getRootScene().assignLightProbesByProximity();
 
         //ATON._bDirtyLP = true;
 
         // FIXME: dirty
         setTimeout( ()=>{
-            let p = ATON._rootVisible.getBound().center;
-            if (p && ATON._mMainPano) ATON._mMainPano.position.copy(p);
+            if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
             ATON.updateLightProbes();
-            console.log("LPs updated.");
         }, 1000);
 
     }
@@ -587,6 +606,7 @@ ATON.updateLightProbes = ()=>{
         }
     });
 
+    console.log("LPs updated.");
 };
 
 //==============================================================
@@ -657,7 +677,8 @@ ATON.setMainLightDirection = (d)=>{
 
         ATON._dMainLdir = d;
 
-        ATON.ambLight.color = new THREE.Color( 0.5,0.5,0.5 ); // Check
+        let a = 0.1; // Check
+        ATON.ambLight.color = new THREE.Color( a,a,a );
 
         ATON._rootVisibleGlobal.add(ATON._dMainL);
     }

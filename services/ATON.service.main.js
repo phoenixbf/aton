@@ -119,8 +119,8 @@ app.use(passport.session());
 
 
 // All routing here
-app.get("/s/:sid", function(req,res,next){
-	let sid = req.params.sid;
+app.get(/^\/s\/(.*)$/, function(req,res,next){
+	let sid = req.params[0];
 
 	res.redirect(url.format({
 		pathname:"/fe",

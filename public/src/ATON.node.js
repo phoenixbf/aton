@@ -253,6 +253,7 @@ assignLightProbe(LP){
 
 // (re)assign LPs for each mesh depending on proximity
 assignLightProbesByProximity(){
+    if (ATON._lps.length === 0) return this;
 
     this.traverse((o) => {
         if (o.isMesh && o.geometry){

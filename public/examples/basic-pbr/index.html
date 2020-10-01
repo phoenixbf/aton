@@ -43,11 +43,12 @@ window.addEventListener( 'load', ()=>{
 	});
 
     // Sample scene
-	//let exp = 0.1;
-	//ATON.ambLight.color = new THREE.Color( exp,exp,exp );
 
 	// Loads main panorama (equirectangular)
 	ATON.setMainPanorama(ATON.PATH_COLLECTION+"pano/samples/defsky-grass.jpg");
+
+	//ATON.setMainLightDirection( new THREE.Vector3(0, -1, -1) );
+	//ATON.toggleShadows(true);
 
     ATON.createSceneNode("ground")
         .load(ATON.PATH_MODELS+"samples/basic/ground.gltf")
@@ -61,6 +62,12 @@ window.addEventListener( 'load', ()=>{
 		.setPosition(-2,-0.5,1.0)
         .attachToRoot();
 
+/*
+    ATON.createSceneNode("skyphos")
+        .load(ATON.PATH_MODELS+"samples/skyphos/skyphos.gltf")
+		.setPosition(0,1.2,-1.0)
+        .attachToRoot();
+*/
 	// We create and arrange two "ATON cubes"
 	let pos_A = new THREE.Vector3(-2.0,0.5,-2.0);
 	let pos_B = new THREE.Vector3(-4.0,0.5,4.0);
@@ -85,14 +92,6 @@ window.addEventListener( 'load', ()=>{
 	// we arrange them in correspondence of cube locations (consistent reflections)
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_A) );
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_B) );
-
-	// When all scene assets are loaded
-	ATON.on("AllNodeRequestsCompleted", function(){
-
-		// Assign each light probe (two in this case) to scene items
-		ATON.getRootScene().assignLightProbesByProximity();
-	});
-
 });
 
 </script>

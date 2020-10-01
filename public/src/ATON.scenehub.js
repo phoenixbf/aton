@@ -187,6 +187,11 @@ SceneHub.initBaseParsers = ()=>{
             }
         }
 
+        let lps = env.lightprobes;
+        if (lps){
+            if (lps.auto) ATON._bAutoLP = true;
+        }
+
     };
 
     // Viewpoints

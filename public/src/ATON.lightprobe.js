@@ -79,6 +79,15 @@ setPosition(x,y,z){
     return this;
 }
 
+setNear(near){
+    this._near = near;
+    return this;
+}
+setFar(far){ 
+    this._far = far;
+    return this;
+}
+
 /**
 Update LP capture. Typically called when all 3D models are loaded and arranged into the scene.
 Can be called at runtime or whenever there is some change in the 3D scene

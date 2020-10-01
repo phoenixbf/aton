@@ -1,0 +1,35 @@
+{
+    "status": "complete",
+
+	"environment":{
+		"mainpano":{
+			"url": "pano/samples/defsky-grass.jpg",
+			"rotation": 0.0
+        },
+
+        "mainlight":{
+            "direction": [0.5,-1,-1],
+			"shadows": false
+        },
+
+        "lightprobes":{
+            "auto": true
+        }
+
+	},
+
+    "scenegraph": {
+        "nodes": {
+            "main": {
+                "urls": [
+                    "models/samples/skyphos/skyphos.gltf"
+                ]
+            }
+        },
+        "edges": {
+            ".": [
+                "main"
+            ]
+        }
+    }
+}

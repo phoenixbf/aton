@@ -16,6 +16,8 @@ window.addEventListener( 'load', ()=>{
     if (AFE.paramEdit) ATON.SceneHub.setEditMode(AFE.paramEdit);
     else ATON.SceneHub.setEditMode(false);
 
+    if (AFE.paramDDens && AFE.paramDDens>0.0) ATON.setDefaultPixelDensity(AFE.paramDDens);
+
     ATON.FE.addBasicLoaderEvents();
 
     AFE.uiSetup();

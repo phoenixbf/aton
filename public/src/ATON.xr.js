@@ -69,7 +69,7 @@ XR.defaultSelectHandler = (c)=>{
         //P.y += 0.8; // with 'local': half user height
 
         // FIXME: height offset needed for "local", fill this automatically
-        if (N.y > 0.7) ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y+ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
+        if (N.y > 0.7) ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
     }
     
     //ATON.Nav.setMotionAmount(3.0);

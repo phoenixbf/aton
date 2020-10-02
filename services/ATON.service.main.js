@@ -185,7 +185,40 @@ app.get("/api/scenes/", function(req,res,next){
 
 	//next();
 });
+// List all collection models
+app.get("/api/c/models/", function(req,res,next){
+	let O = {};
+	O.cwd = ServUtils.DIR_MODELS;
 
+	let M = [];
+	
+	glob("**/*.{gltf,glb}", O, (err, files)=>{
+		for (let f in files) M.push( "models/"+files[f] );
+
+		res.send(M);
+	});
+
+	//next();
+});
+// List all collection models
+app.get("/api/c/panoramas/", function(req,res,next){
+	let O = {};
+	O.cwd = ServUtils.DIR_PANO;
+
+	let P = [];
+	
+	glob("**/*.{jpg,hdr}", O, (err, files)=>{
+		for (let f in files) P.push( "pano/"+files[f] );
+
+		res.send(P);
+	});
+
+	//next();
+});
+
+
+
+// Scene edit (add or remove)
 app.post('/api/edit/scene', (req, res) => {
 	// TODO: only auth users
 
@@ -199,6 +232,23 @@ app.post('/api/edit/scene', (req, res) => {
 	res.json(J);
 });
 
+// New Scene
+app.post('/api/new/scene', (req, res) => {
+	// TODO: only auth users
+
+    let O = req.body;
+	let sid  = O.sid;
+	let data = O.data;
+
+	console.log(O);
+
+	//ServUtils.touchSceneFolder(sid);
+	let r = ServUtils.writeSceneJSON(sid, data);
+
+	res.json(r);
+});
+
+// Authenticate
 app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{ 
 	res.send(req.user);
 });
@@ -214,15 +264,16 @@ app.get("/api/user", (req,res)=>{
 
 // Micro-services proxies
 //=================================================
-
+/*
 // Atonizer
 app.use('/atonizer', createProxyMiddleware({ 
 	target: aConfig.services.atonizer.address+":"+PORT_ATONIZER, 
 	pathRewrite: { '^/atonizer': ''},
 	//changeOrigin: true 
 }));
+*/
 
-// VRC
+// VRoadcast
 app.use('/vrc', createProxyMiddleware({ 
 	target: aConfig.services.vroadcast.address+":"+PORT_VRC, 
 	ws: true, 

@@ -82,8 +82,8 @@ ATON.PATH_RES        = window.location.origin + "/res/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;
-ATON.SHADOWS_SIZE = 20.0;
-ATON.SHADOWS_RES  = 512;
+ATON.SHADOWS_SIZE = 10.0;
+ATON.SHADOWS_RES  = 512; // 512
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -314,7 +314,7 @@ ATON.realize = ()=>{
 
     THREE.Cache.enabled = true;
 
-    ATON.userHeight = 1.6;
+    ATON.userHeight = 1.7;
  
     document.body.appendChild( ATON._renderer.domElement );
     //console.log(ATON._renderer);
@@ -681,6 +681,7 @@ ATON.setMainLightDirection = (d)=>{
         ATON.ambLight.color = new THREE.Color( a,a,a );
 
         ATON._rootVisibleGlobal.add(ATON._dMainL);
+        ATON._dMainLpos = new THREE.Vector3();
     }
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
@@ -694,8 +695,8 @@ ATON.toggleShadows = (b)=>{
 
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
         //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;
-        //ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // bleeding
-        ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
+        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // bleeding
+        //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
         ATON._dMainL.shadow.mapSize.width  = ATON.SHADOWS_RES;
         ATON._dMainL.shadow.mapSize.height = ATON.SHADOWS_RES;
@@ -716,10 +717,19 @@ ATON.toggleShadows = (b)=>{
 ATON.updateDirShadows = ()=>{
     if (ATON._dMainLdir === undefined) return;
 
+    
     let p = ATON.Nav.getCurrentEyeLocation();
 
-    ATON._dMainL.position.set(p.x-ATON._dMainLdir.x, p.y-ATON._dMainLdir.y, p.z-ATON._dMainLdir.z);
-    ATON._dMainLtgt.position.copy(p);
+    ATON._dMainLpos.x = p.x + (ATON.Nav._vDir.x * ATON.SHADOWS_SIZE);
+    ATON._dMainLpos.y = p.y + (ATON.Nav._vDir.y * ATON.SHADOWS_SIZE);
+    ATON._dMainLpos.z = p.z + (ATON.Nav._vDir.z * ATON.SHADOWS_SIZE);
+
+    ATON._dMainL.position.set(
+        ATON._dMainLpos.x - ATON._dMainLdir.x, 
+        ATON._dMainLpos.y - ATON._dMainLdir.y, 
+        ATON._dMainLpos.z - ATON._dMainLdir.z
+    );
+    ATON._dMainLtgt.position.copy(ATON._dMainLpos);
 };
 
 //==============================================================

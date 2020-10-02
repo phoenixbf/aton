@@ -11,46 +11,25 @@
 <!-- Add iOS meta tags and icons -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="ATON FrontEnd">
+<meta name="apple-mobile-web-app-title" content="ATON Framework">
 <link rel="apple-touch-icon" href="/res/aton-logo.png">
-<meta name="description" content="ATON FrontEnd">
+<meta name="description" content="ATON Framework">
 <!-- Add meta theme-color -->
 <meta name="theme-color" content="#000000" />
 
 <title>ATON Framework</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/be/be.js"></script>
 
 <script>
 
-let scenes = [];
-
-let getScenes = ()=>{
-    $.getJSON( "/api/scenes/", ( data )=>{
-        scenes = data;
-
-        let slist = "<option value=''>Choose scene ID...</option>";
-
-        for (let s in scenes){
-            let sid = scenes[s];
-            slist += "<option value='"+sid+"'>"+sid+"</option>"
-        }
-
-        $("#sid").html(slist);
-    });
-};
 
 window.addEventListener( 'load', ()=>{
-    getScenes();
+    getScenesSelect("sid");
     
     $("#sid").on("change", ()=>{
-        let sid = $("#sid").val();
-        if (sid.length>1){
-            let feURL = window.location.href + "fe/?s="+sid;
-            //if ($('#idVRC').prop("checked")) feURL += "&vrc=1";
-
-            window.location.href = feURL;
-        }
+        goToScene( $("#sid").val() );
     });
 
 });

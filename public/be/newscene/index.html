@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="New Scene">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="New Scene">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>New Scene</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/be/be.js"></script>
+
+<script>
+
+let sobj = BE.createBaseScene();
+let sid  = BE.generateID("SID");
+console.log(sid);
+
+
+let requestSceneCreation = ()=>{
+
+    composeScene();
+
+    let o = {};
+    o.sid = sid;
+    o.data = sobj;
+
+    console.log(o);
+
+    BE.jsonPOST("/api/new/scene", o, handleServerResponse);
+};
+
+let handleServerResponse = (r)=>{
+    if (r) BE.goToScene(sid);
+};
+
+let composeScene = ()=>{
+
+    // LightProbes
+    let bAutoLP = $("#autoLP").is(":checked");
+    if (sobj.environment.lightprobes === undefined) sobj.environment.lightprobes = {};
+    sobj.environment.lightprobes.auto = bAutoLP;
+
+    // D-light
+    let dlight = $("#dlight").val();
+    if (dlight && dlight.length > 2){
+        values = dlight.split(",");
+
+        if (sobj.environment.mainlight === undefined) sobj.environment.mainlight = {};
+        sobj.environment.mainlight.direction = values;
+
+        let bShadows = $("#shadows").is(":checked");
+        sobj.environment.mainlight.shadows = bShadows;
+
+        console.log(sobj.environment);
+    }
+
+};
+
+window.addEventListener( 'load', ()=>{
+
+    $("#idSID").html(sid+"<br><br>");
+
+    BE.appendModelsToSelect("mpath");
+    BE.appendPanoramasToSelect("panopath");
+
+    $("#btn-addmodel").click(()=>{
+        let mp = $("#mpath").val();
+        
+        if (mp && mp.length>1){
+            sobj.scenegraph.nodes.main.urls.push(mp);
+            console.log(sobj);
+
+            let mpaths = sobj.scenegraph.nodes.main.urls;
+
+            let hlist = "";
+            for (let mp in mpaths) hlist += "<div class='atonBlockRound' style='background-color:rgba(0,255,0, 0.2)'>"+mpaths[mp]+"</div>";
+            $("#idmlist").html(hlist);
+
+            document.getElementById("mpath").selectedIndex = 0;
+        }
+    });
+
+    $("#btn-clearmodels").click(()=>{
+        sobj.scenegraph.nodes.main.urls = [];
+        //console.log(mpaths);
+        $("#idmlist").html("");
+        document.getElementById("mpath").selectedIndex = 0;
+    });
+
+    // Env
+    $("#panopath").on("change", ()=>{
+        let path = $("#panopath").val();
+        if (path && path.length > 0){
+            $("#idpanopreview").html("<img src='"+DIR_COLLECTION+path+"' style='width:200px;height:auto'>");
+
+            if (sobj.environment.mainpano === undefined) sobj.environment.mainpano = {};
+            
+            sobj.environment.mainpano.url = path;
+        }
+        else {
+            $("#idpanopreview").html("");
+            if (sobj.environment.mainpano) sobj.environment.mainpano = {};
+        }
+        console.log(sobj);
+    });
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div style="text-align: center;">
+        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+
+        <h2>Create new Scene</h2>
+        <div id="idSID"></div>
+        <!-- <label for="sid">Scene ID</label>
+        <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
+         -->
+
+        <div class="atonBlockGroup">
+            <div class="atonBlockTitle">Add 3D models</div>
+            <div class="atonBlockCut">
+                <div class='select' style='width:50%;'>
+                    <select id='mpath'><option value=''>Choose a 3D model to add...</option></select><div class='selectArrow'></div>
+                </div>
+                <button id='btn-addmodel' type='button' class='atonBTN' style='background-color:rgba(0,255,0, 0.2)'><img src='/res/icons/add.png'></button>
+                <button id='btn-clearmodels' type='button' class='atonBTN' style='background-color:rgba(255,0,0, 0.2)'><img src='/res/icons/trash.png'></button>
+
+                <br><div id="idmlist"></div>
+            </div>
+        </div>
+
+        <div class="atonBlockGroup">
+            <div class="atonBlockTitle">Environment</div>
+
+            <div class="atonBlockCut">
+                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
+                    <h3>Panorama</h3>
+                    <div class='select'>
+                        <select id='panopath'><option value=''>NONE</option></select><div class='selectArrow'></div>
+                    </div>
+                    <br><div id="idpanopreview"></div>
+                </div>
+
+                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
+                    <h3>Lighting</h3>
+                    <label for="dlight">Direct light</label>
+                    <input id="dlight" type="text" size="10" placeholder="x,y,z">
+
+                    <label for="autoLP">Automatic LightProbe</label><input id="autoLP" type="checkbox">
+                    <label for="shadows">Shadows</label><input id="shadows" type="checkbox">
+                </div>
+            </div>
+
+        </div>
+
+        <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
+        <h3>Create Scene</h3>
+        </div>
+
+
+
+        <!-- <input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label> -->
+    </div>
+    
+    </body>

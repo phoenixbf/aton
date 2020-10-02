@@ -11,6 +11,7 @@ ServUtils.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
 ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
 ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
 ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
+ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
 ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
 ServUtils.STD_SCENEFILE    = "scene.json";
 
@@ -244,15 +245,17 @@ ServUtils.cleanScene = (sobj)=>{
 
 
 
-// DEPRECATED
-ServUtils.writeSceneJSON = (sid, data, bPartial)=>{
-	if (data === undefined) return;
+// Write scene JSON from sid and data
+ServUtils.writeSceneJSON = (sid, data)=>{
+	if (sid === undefined) return false;
+	if (data === undefined) return false;
 
 	ServUtils.touchSceneFolder(sid);
 
 	let sjpath = ServUtils.getSceneJSONPath(sid);
 
 	// Use partial update (first level)
+/*
 	if (bPartial){
 		let S = ServUtils.readSceneJSON(sid);
 		//for (let k in data) S[k] = data[k];
@@ -261,8 +264,9 @@ ServUtils.writeSceneJSON = (sid, data, bPartial)=>{
 		fs.writeFileSync(sjpath, JSON.stringify(S, null, 4));
 		return;
 	}
-	
+*/	
 	fs.writeFileSync(sjpath, JSON.stringify(data, null, 4));
+	return true;
 };
 
 

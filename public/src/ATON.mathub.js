@@ -55,6 +55,7 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.white, 
         transparent: true, 
         opacity: 0.2,
+        depthWrite: false,
         flatShading: true
     });
 

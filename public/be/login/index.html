@@ -47,7 +47,7 @@ window.addEventListener( 'load', ()=>{
             password: $("#idPassword").val()
         };
 
-        BE.jsonPOST("/api/login/", o, onLoginResponse );
+        BE.postJSON("/api/login/", o, onLoginResponse );
     });
 });
 

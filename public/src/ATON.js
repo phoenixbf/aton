@@ -82,8 +82,8 @@ ATON.PATH_RES        = window.location.origin + "/res/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;
-ATON.SHADOWS_SIZE = 10.0;
-ATON.SHADOWS_RES  = 512; // 512
+ATON.SHADOWS_SIZE = 15.0;
+ATON.SHADOWS_RES  = 2048; // 512
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -298,6 +298,7 @@ ATON.realize = ()=>{
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
+    //console.log(ATON._renderer);
 
     ATON._stdpxd = 1.0;
     //ATON._renderer.setPixelRatio( window.devicePixelRatio? window.devicePixelRatio : 1.0 );
@@ -309,7 +310,7 @@ ATON.realize = ()=>{
     ATON._renderer.setAnimationLoop( ATON._onFrame );
     //ATON._bDirtyLP = false;
 
-    ATON._maxAnisotropy = 4; //ATON._renderer.capabilities.getMaxAnisotropy();
+    ATON._maxAnisotropy = ATON._renderer.capabilities.getMaxAnisotropy();
     console.log(ATON._renderer.capabilities);
 
     THREE.Cache.enabled = true;
@@ -366,6 +367,8 @@ ATON.realize = ()=>{
     ATON._bQuerySemOcclusion = true; // TODO: implement
     ATON._bQueryNormals  = true;
     ATON._bPauseQuery    = false;
+
+    //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
 
     // Basis (future support)
 /*
@@ -577,7 +580,13 @@ ATON.setBackgroundColor = (bg)=>{
 //==============================================================
 // LightProbes
 //==============================================================
+ATON.setNeutralAmbientLight = (a)=>{
+    ATON.ambLight.color = new THREE.Color( a,a,a );
+};
+
 ATON.addLightProbe = (LP)=>{
+    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(0.1);
+
     ATON._lps.push(LP);
 };
 
@@ -661,7 +670,9 @@ ATON.setMainPanoramaRotation = (r)=>{
 };
 
 
-ATON.setMainLightDirection = (d)=>{
+ATON.setMainLightDirection = (v)=>{
+
+    let d = v.clone();
 
     d.x *= ATON.SHADOWS_FAR * 0.5;
     d.y *= ATON.SHADOWS_FAR * 0.5;
@@ -669,20 +680,19 @@ ATON.setMainLightDirection = (d)=>{
 
     if (ATON._dMainL === undefined){
         ATON._dMainL = new THREE.DirectionalLight( new THREE.Color(1,1,1), 1.0 );
-        ATON._dMainL.castShadow = true;
+        ATON._dMainL.castShadow = false;
 
         ATON._dMainLtgt = new THREE.Object3D();
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
         ATON._dMainL.target = ATON._dMainLtgt;
 
-        ATON._dMainLdir = d;
-
-        let a = 0.1; // Check
-        ATON.ambLight.color = new THREE.Color( a,a,a );
+        ATON.setNeutralAmbientLight(0.1);
 
         ATON._rootVisibleGlobal.add(ATON._dMainL);
         ATON._dMainLpos = new THREE.Vector3();
     }
+
+    ATON._dMainLdir = d;
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
 };
@@ -691,6 +701,7 @@ ATON.toggleShadows = (b)=>{
     if (ATON._dMainL === undefined) return;
 
     if (b){
+        ATON._dMainL.castShadow = true;
         ATON._renderer.shadowMap.enabled = true;
 
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
@@ -708,9 +719,20 @@ ATON.toggleShadows = (b)=>{
         ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
         ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
         ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
+
+        ATON._rootVisible.traverse((o) => {
+            if (o.isMesh){
+                o.castShadow = true;
+                o.receiveShadow = true;
+            }
+        });
+
+        console.log("Shadows ON");
     }
     else {
+        ATON._dMainL.castShadow = false;
         ATON._renderer.shadowMap.enabled = false;
+        console.log("Shadows OFF");
     }
 };
 
@@ -730,6 +752,12 @@ ATON.updateDirShadows = ()=>{
         ATON._dMainLpos.z - ATON._dMainLdir.z
     );
     ATON._dMainLtgt.position.copy(ATON._dMainLpos);
+};
+
+ATON._updateEnvironment = ()=>{
+    if (!ATON._renderer.shadowMap.enabled) return;
+    
+    ATON.updateDirShadows();
 };
 
 //==============================================================
@@ -757,12 +785,11 @@ ATON._onFrame = ()=>{
         }
 */
 
-    if (ATON.XR.isPresenting()){
-        ATON.XR.update();
-    }
+    if (ATON.XR._bPresenting) ATON.XR.update();
 
-    //if (!ATON.device.isMobile || !ATON.XR.isPresenting()) 
-    if (!ATON._bPauseQuery) ATON._handleQueries();
+    ///if (!ATON.device.isMobile || !ATON.XR.isPresenting()) 
+    ATON._handleQueries();
+
 
     // Navigation system
     ATON.Nav.update();
@@ -770,13 +797,11 @@ ATON._onFrame = ()=>{
     // VRoadcast
     ATON.VRoadcast.update();
 
-    //console.log(ATON._clock.elapsedTime);
-
     // UI
     ATON.SUI.update();
 
     // Environment/lighting
-    if (ATON._renderer.shadowMap.enabled) ATON.updateDirShadows();
+    ATON._updateEnvironment();
 
     ATON.fireEvent("frame");
 };
@@ -809,6 +834,8 @@ ATON._registerRCS = ()=>{
 };
 
 ATON._handleQueries = ()=>{
+    if (ATON._bPauseQuery) return;
+    if (ATON._numReqLoad > 0) return;
     if (ATON.Nav.isTransitioning()) return; // do not query during POV transitions
 
     // round-robin

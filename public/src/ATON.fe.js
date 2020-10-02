@@ -20,6 +20,10 @@ FE.realize = ()=>{
 
     FE.urlParams = new URLSearchParams(window.location.search);
 
+    // built-in base front-end parameters
+    let ddens = ATON.FE.urlParams.get('d');
+    if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
+
     FE._uiSetupBase();
 
     ATON.realize();
@@ -31,7 +35,12 @@ FE.addBasicLoaderEvents = ()=>{
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
         
+        //console.log(ATON.Nav.homePOV);
+
         if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+        else {
+            ATON.Nav.requestHome(0.5);
+        }
     });
 };
 

@@ -87,6 +87,7 @@ addKeyword(kw){
 
 setKeywords(kwarray){
     this.kwords = kwarray;
+    return this;
 }
 
 /**

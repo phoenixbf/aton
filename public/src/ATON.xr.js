@@ -197,9 +197,11 @@ XR.toggle = ()=>{
 XR.setupControllersUI = ()=>{
     if (XR.gControllers) return; // already set
 
-    var geometry = new THREE.CylinderBufferGeometry( 0.003,0.003, 10.0, 5 );
+    let raytick = 0.003;
+    let raylen  = 5.0;
+    var geometry = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
     geometry.rotateX( -Math.PI / 2 );
-    geometry.translate(0,0,-5);
+    geometry.translate(0,0,-(raylen*0.5));
 
     var mesh = new THREE.Mesh( geometry, ATON.MatHub.materials.controllerRay );
 

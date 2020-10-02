@@ -39,7 +39,7 @@ let requestSceneCreation = ()=>{
 
     console.log(o);
 
-    BE.jsonPOST("/api/new/scene", o, handleServerResponse);
+    BE.postJSON("/api/new/scene", o, handleServerResponse);
 };
 
 let handleServerResponse = (r)=>{

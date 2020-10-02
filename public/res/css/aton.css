@@ -732,10 +732,12 @@ label {
     text-align: center;
 
     background-color: rgba(0,0,0, 0.5);
-    border-radius: 20px;
+    border-radius: 10px;
 
     padding: 15px;
     margin: 0px;
+    margin-left: 5px;
+    margin-right: 5px;
 
     font-size: larger;
     font-weight: bold;

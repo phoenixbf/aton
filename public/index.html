@@ -26,27 +26,35 @@
 
 
 window.addEventListener( 'load', ()=>{
-    getScenesSelect("sid");
-    
+/*
+    BE.getScenesSelect("sid");
     $("#sid").on("change", ()=>{
-        goToScene( $("#sid").val() );
+        BE.goToScene( $("#sid").val() );
     });
+*/
+    BE.getScenesInputList("idScenes");
+    $("#btn-go").click(()=>{
+        let sid = $("#sid").val();
 
+        if (sid && sid.length > 1) BE.goToScene( sid );
+    });
 });
 
 </script>
 </head>
 
-<body style="background-color: #666;">
+<body class="atonDefaultBody">
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
         <h2>Published Scenes</h2>
+        <div id='idScenes'></div><button id='btn-go' type='button' class='atonBTN atonBTN-green' style="width:30%;">GO</button>
+<!--
         <div class='select' style='width:50%;'>
             <select id='sid'></select><div class='selectArrow'></div>
         </div>
+-->
 
-        <!-- <input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label> -->
     </div>
     
     </body>

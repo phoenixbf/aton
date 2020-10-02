@@ -16,8 +16,6 @@ window.addEventListener( 'load', ()=>{
     if (AFE.paramEdit) ATON.SceneHub.setEditMode(AFE.paramEdit);
     else ATON.SceneHub.setEditMode(false);
 
-    if (AFE.paramDDens && AFE.paramDDens>0.0) ATON.setDefaultPixelDensity(AFE.paramDDens);
-
     ATON.FE.addBasicLoaderEvents();
 
     AFE.uiSetup();
@@ -166,6 +164,35 @@ AFE.setupEventHandlers = ()=>{
         if (k==='S'){
             AFE.popupAddSemanticConvex();
         }
+
+        if (k==='#'){
+            ATON.toggleShadows(!ATON._renderer.shadowMap.enabled);
+        }
+        if (k==='l'){
+            ATON.setMainLightDirection( ATON.Nav.getCurrentDirection() );
+        }
+
+        if (k==='h'){
+            let hp = new ATON.POV();
+            hp.pos.copy(ATON.Nav._currPOV.pos);
+            hp.target.copy(ATON.Nav._currPOV.target);
+            hp.fov = ATON.Nav._currPOV.fov;
+
+            ATON.Nav.setHomePOV( hp );
+
+            let E = {};
+            E.viewpoints = {};
+            E.viewpoints.home = {};
+            E.viewpoints.home.position = [hp.pos.x, hp.pos.y, hp.pos.z];
+            E.viewpoints.home.target   = [hp.target.x, hp.target.y, hp.target.z];
+            E.viewpoints.home.fov      = hp.fov;
+
+            console.log("Set home POV");
+            console.log(hp);
+
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        }
     });
 
     ATON.on("KeyUp",(k)=>{
@@ -180,6 +207,7 @@ AFE.setupEventHandlers = ()=>{
         ATON.VRoadcast.setUsername(d.username);
     });
 
+/*
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
         console.log("All assets loaded!");
@@ -192,7 +220,7 @@ AFE.setupEventHandlers = ()=>{
         //ATON.Nav.setFirstPersonControl();
         //ATON.Nav.setDeviceOrientationControl();
     });
-
+*/
 };
 
 // Popups

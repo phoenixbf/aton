@@ -21,7 +21,7 @@ BE.goToScene = (sid, vrc)=>{
     window.location.href = feURL;
 };
 
-BE.jsonPOST = (endpoint, obj, onReceive)=>{
+BE.postJSON = (endpoint, obj, onReceive)=>{
     $.ajax({
         url: endpoint,
         type:"POST",
@@ -35,6 +35,12 @@ BE.jsonPOST = (endpoint, obj, onReceive)=>{
     });
 };
 
+BE.getJSON = (endpoint, onReceive)=>{
+    $.getJSON( endpoint, (data)=>{
+        if (onReceive) onReceive(data);
+    });  
+};
+
 BE.getScenesSelect = (idselect)=>{
     $.getJSON( "/api/scenes/", ( data )=>{
         let list = "<option value=''>Choose scene ID...</option>";
@@ -45,6 +51,18 @@ BE.getScenesSelect = (idselect)=>{
         }
 
         $("#"+idselect).html(list);
+    });
+};
+
+BE.getScenesInputList = (idlist)=>{
+    let htmlcontent = "<label for='sid'>Scene ID</label><br><input id='sid' type='text' list='sidlist' style='width:50%'>";
+
+    $.getJSON( "/api/scenes/", ( data )=>{
+        htmlcontent += "<datalist id='sidlist'>";
+        for (let s in data) htmlcontent += "<option>"+data[s]+"</option>";
+        htmlcontent += "</datalist>";
+
+        $("#"+idlist).html(htmlcontent);
     });
 };
 

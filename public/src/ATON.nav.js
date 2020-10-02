@@ -70,6 +70,10 @@ Nav.getCurrentEyeLocation = ()=>{
     return Nav._currPOV.pos;
 };
 
+Nav.getCurrentDirection = ()=>{
+    return Nav._vDir;
+};
+
 
 Nav.isTransitioning = ()=>{
     if (Nav._tPOVcall >= 0.0) return true;
@@ -97,8 +101,10 @@ Nav.setOrbitControl = ()=>{
 
         C.rotateSpeed   = Nav.STD_ROT_SPEED_ORBIT;
         C.enablePan     = true;
-        C.enableDamping = true;
-        C.dampingFactor = 0.1;
+        
+        C.enableDamping = false;
+        //C.dampingFactor = 0.1;
+        
         C.screenSpacePanning = true;
         
         C.enableZoom  = true;
@@ -135,8 +141,9 @@ Nav.setFirstPersonControl = ()=>{
         C.enablePan   = false;
         C.rotateSpeed = Nav.STD_ROT_SPEED_FP;
         
-        C.enableDamping = true;
-        C.dampingFactor = 0.1;
+        C.enableDamping = false;
+        //C.dampingFactor = 0.1;
+        
         //C.screenSpacePanning = true;
 
         C.target.copy(Nav._camera.position);

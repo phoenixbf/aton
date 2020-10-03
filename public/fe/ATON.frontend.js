@@ -12,6 +12,7 @@ window.addEventListener( 'load', ()=>{
     AFE.paramDDens = ATON.FE.urlParams.get('d');
     AFE.paramVRC   = ATON.FE.urlParams.get('vrc');
     AFE.paramEdit  = ATON.FE.urlParams.get('edit');
+    AFE.paramFPS   = ATON.FE.urlParams.get('fps');
 
     if (AFE.paramEdit) ATON.SceneHub.setEditMode(AFE.paramEdit);
     else ATON.SceneHub.setEditMode(false);
@@ -39,6 +40,15 @@ AFE.uiSetup = ()=>{
     
     // Bottom toolbar
     ATON.FE.uiAddButtonHome("idBottomToolbar");
+
+    if (AFE.paramFPS){
+        $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
+
+        ATON.on("frame", ()=>{
+            let fps = parseInt(ATON._fps);
+            $("#idFPS").html(fps);
+        });
+    }
 };
 
 
@@ -85,6 +95,13 @@ AFE.setupEventHandlers = ()=>{
     ATON.on("SemanticNodeLeave", (nid)=>{
         console.log("Leaving "+nid);
         //ATON.getSemanticNode(nid).visible = false;
+    });
+
+    ATON.on("MouseRightButton", ()=>{
+        if (ATON._hoveredSemNode) AFE.popupSemDescription(ATON._hoveredSemNode);
+    });
+    ATON.on("DoubleTap", (e)=>{
+        if (ATON._hoveredSemNode) AFE.popupSemDescription(ATON._hoveredSemNode);
     });
 
     ATON.on("MouseWheel", (d)=>{
@@ -166,10 +183,28 @@ AFE.setupEventHandlers = ()=>{
         }
 
         if (k==='#'){
-            ATON.toggleShadows(!ATON._renderer.shadowMap.enabled);
+            let bShadows = !ATON._renderer.shadowMap.enabled;
+            ATON.toggleShadows(bShadows);
+
+            let E = {};
+            E.environment = {};
+            E.environment.mainlight = {};
+            E.environment.mainlight.shadows = bShadows;
+
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
         if (k==='l'){
-            ATON.setMainLightDirection( ATON.Nav.getCurrentDirection() );
+            let D = ATON.Nav.getCurrentDirection();
+            ATON.setMainLightDirection(D);
+
+            let E = {};
+            E.environment = {};
+            E.environment.mainlight = {};
+            E.environment.mainlight.direction = [D.x,D.y,D.z];
+
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
 
         if (k==='h'){
@@ -239,11 +274,27 @@ AFE._createPopupStdSem = ()=>{
     for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
     htmlcontent += "</datalist>";
 
-    //htmlcontent += "<textarea id='idSemContent' style='width:80%; height:50px'></textarea><br>";
+    htmlcontent += "<textarea id='idSemDescription' style='width:100%;'></textarea><br>";
 
     htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
 
     return htmlcontent;
+};
+
+AFE.createSemanticTextEditor = (idtextarea)=>{
+    let txtarea = document.getElementById(idtextarea);
+    sceditor.create(txtarea, {
+        //format: 'bbcode',
+        //bbcodeTrim: true,
+        width: "100%",
+        height: "100%",
+        resizeEnabled: false,
+        autoExpand: true,
+        emoticonsEnabled: false,
+        autoUpdate: true,
+        style: 'vendors/sceditor/minified/themes/content/default.min.css',
+        toolbar: "bold,italic,underline,link,unlink|left,center,right,justify|bulletlist,orderedlist,table|image,youtube"
+    });
 };
 
 AFE.popupAddSemanticSphere = ()=>{
@@ -255,20 +306,28 @@ AFE.popupAddSemanticSphere = ()=>{
     ATON.FE.uiAttachInputFilterID("semid");
     //$("#semid").val("");
 
+    AFE.createSemanticTextEditor("idSemDescription");
+
     $("#idAnnOK").click(()=>{
         $("#semid").blur();
-        $("#idSemContent").blur();
+        $("#idSemDescription").blur();
 
-        ATON.FE.popupClose();
-        
         let semid  = $("#semid").val();
         let psemid = $("#psemid").val();
+        let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
+        console.log(xxtmldescr);
+
+        if (semid.length<1) return;
+
+        ATON.FE.popupClose();
 
         if (semid === undefined || semid.length<2 || semid === ATON.ROOT_NID) return;
         if (semid === psemid) return;
 
         let S = ATON.SemFactory.createSurfaceSphere(semid);
         if (S === undefined) return;
+
+        if (xxtmldescr && xxtmldescr.length>0) S.setDescription( xxtmldescr );
         
         let parS = ATON.getSemanticNode(psemid);
 
@@ -280,19 +339,11 @@ AFE.popupAddSemanticSphere = ()=>{
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
         E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
+        E.semanticgraph.nodes[S.nid].description = S.getDescription();
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-
-        if (AFE.paramVRC === undefined) return;
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
-/*
-        ATON.VRoadcast.fireEvent("AFE_AddSemSphere", {
-            nid: semid,
-            pnid: psemid,
-            spheres: ATON.SceneHub.getJSONsemanticSpheresList(semid)
-        });
-*/
     });
 };
 
@@ -303,20 +354,28 @@ AFE.popupAddSemanticConvex = ()=>{
 
     ATON.FE.uiAttachInputFilterID("semid");
 
+    AFE.createSemanticTextEditor("idSemDescription");
+
     $("#idAnnOK").click(()=>{
-        ATON.FE.popupClose();
-        
         let semid  = $("#semid").val();
         let psemid = $("#psemid").val();
+        let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
+        console.log(xxtmldescr);
+
+        if (semid.length<1) return;
+
+        ATON.FE.popupClose();
 
         if (semid === undefined || semid === ATON.ROOT_NID) return;
         if (semid === psemid) return;
 
         let S = ATON.SemFactory.completeConvexShape(semid);
         if (S === undefined) return;
+
+        if (xxtmldescr && xxtmldescr.length>0) S.setDescription( xxtmldescr );
         
         $("#semid").blur();
-        $("#idSemContent").blur();
+        $("#idSemDescription").blur();
 
         if (psemid !== undefined && ATON.getSemanticNode(psemid)) ATON.getSemanticNode(psemid).add(S); 
         else ATON.getRootSemantics().add(S);
@@ -326,6 +385,7 @@ AFE.popupAddSemanticConvex = ()=>{
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
         E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
+        E.semanticgraph.nodes[S.nid].description = S.getDescription();
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM);
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD );
@@ -334,6 +394,21 @@ AFE.popupAddSemanticConvex = ()=>{
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
 
     });
+};
+
+AFE.popupSemDescription = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+    if (S === undefined) return;
+    
+    let descr = S.getDescription();
+    if (descr === undefined) return;
+
+    descr = JSON.parse(descr);
+
+    let htmlcontent = "<h1>"+semid+"</h1>";
+    htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
+
+    ATON.FE.popupShow(htmlcontent);
 };
 
 AFE.popupUser = ()=>{

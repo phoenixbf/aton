@@ -175,6 +175,10 @@ FE.popupShow = (htmlcontent)=>{
 
     ATON._bPauseQuery = true;
     //ATON.renderPause();
+
+    $("#idTopToolbar").hide();
+    $("#idBottomToolbar").hide();
+
     return true;
 };
 
@@ -188,6 +192,10 @@ FE.popupClose = ()=>{
     //$("#idPopup").empty();
 
     ATON._bPauseQuery = false;
+
+    $("#idTopToolbar").show();
+    $("#idBottomToolbar").show();
+
     ATON.focusOn3DView();
 };
 

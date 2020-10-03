@@ -83,7 +83,7 @@ ATON.PATH_RES        = window.location.origin + "/res/";
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;
 ATON.SHADOWS_SIZE = 15.0;
-ATON.SHADOWS_RES  = 2048; // 512
+ATON.SHADOWS_RES  = 512; // 512
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -109,6 +109,11 @@ ATON._setupBaseListeners = ()=>{
     window.addEventListener( 'resize', ATON._onResize, false );
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
+
+    el.addEventListener('mousedown', (e)=>{
+        if (e.button === 1) ATON.fireEvent("MouseMidButton");      // middle-click
+        if (e.button === 2) ATON.fireEvent("MouseRightButton");    // right-click
+    });
 
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
 
@@ -293,16 +298,16 @@ ATON.realize = ()=>{
         //canvas: document.getElementById("idView"),
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
-        //pecision: "lowp"
+        //pecision: "mediump"
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
     //console.log(ATON._renderer);
 
-    ATON._stdpxd = 1.0;
-    //ATON._renderer.setPixelRatio( window.devicePixelRatio? window.devicePixelRatio : 1.0 );
+    ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );
+    console.log(ATON._stdpxd);
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
     //console.log(ATON._renderer.getPixelRatio());
@@ -770,7 +775,6 @@ ATON._onFrame = ()=>{
 
     ATON._fps = 1.0 / dt;
     ATON._dt  = dt;
-    //console.log(ATON._fps);
     
     ATON.Nav._bControlChange = false;
     ATON.Nav._controls.update(dt);
@@ -787,9 +791,8 @@ ATON._onFrame = ()=>{
 
     if (ATON.XR._bPresenting) ATON.XR.update();
 
-    ///if (!ATON.device.isMobile || !ATON.XR.isPresenting()) 
+    // Spatial queries
     ATON._handleQueries();
-
 
     // Navigation system
     ATON.Nav.update();
@@ -837,6 +840,7 @@ ATON._handleQueries = ()=>{
     if (ATON._bPauseQuery) return;
     if (ATON._numReqLoad > 0) return;
     if (ATON.Nav.isTransitioning()) return; // do not query during POV transitions
+    //if (ATON.device.isMobile || !ATON.XR.isPresenting()) return; 
 
     // round-robin
     //ATON._rcRR = (ATON._rcRR+1) % 2;

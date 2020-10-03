@@ -134,7 +134,7 @@ SUI.createToolbar = (buttonlist, color)=>{
 
 // Main update routine
 SUI.update = ()=>{
-    if (ATON.Nav.isTransitioning()){
+    if (ATON.Nav.isTransitioning() || ATON._bPauseQuery){
         SUI.infoNode.visible = false;
         return;
     }

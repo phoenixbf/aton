@@ -92,10 +92,41 @@ Adds a keyword to this node
 myNode.addKeyword("heritage").addKeyword("reconstruction")
 */
 addKeyword(kw){
-    if (this.kwords === undefined) this.kwords = [];
-    this.kwords.push(kw);
+    if (this.kwords === undefined) this.kwords = {};
+    this.kwords[kw] = true;
 
     return this;
+}
+
+/**
+Returns true if this node has specific keyword
+@param {string} kw - the keyword
+@example
+if (myNode.hasKeyword("heritage")){ ... }
+*/
+hasKeyword(kw){
+    if (this.kwords === undefined) return;
+    return (this.kwords[kw] !== undefined);
+}
+
+/**
+Set custom description (string) to the node
+@param {string} s - content
+@example
+myNode.setDescription("This is a small description");
+*/
+setDescription(s){
+    this.userData.description = s;
+    return this;
+}
+
+/**
+Get node description (string) if any
+@example
+myNode.getContent();
+*/
+getDescription(){
+    return this.userData.description;
 }
 
 /**

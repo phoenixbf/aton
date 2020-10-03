@@ -253,6 +253,9 @@ SceneHub.initBaseParsers = ()=>{
 
             if (N.toYup) G.setYup();
 
+            // Keywords
+            if (N.keywords) G.kwords = N.keywords;
+
             // Transform node
             let transform = N.transform;
             if (transform){
@@ -319,6 +322,11 @@ SceneHub.initBaseParsers = ()=>{
             }
 
             if (N.toYup) G.setYup();
+
+            if (N.description) G.setDescription(N.description);
+
+            // Keywords
+            if (N.keywords) G.kwords = N.keywords;
 
             // Sphere [x,y,z, r]
             let spheres = N.spheres;

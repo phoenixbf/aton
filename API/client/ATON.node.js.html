@@ -93,11 +93,11 @@
 
 
 /**
-Class representing an ATON node
-Constructor allows to create different types (Scene nodes, semantic nodes and UI nodes)
+Class representing an ATON node.
+Constructor allows to create different types (scene nodes, semantic nodes and UI nodes)
 @class Node
 @example 
-new ATON.Node("someID")
+let myNode = new ATON.Node("someID")
 */
 class Node extends THREE.Group {
 
@@ -130,6 +130,10 @@ constructor(id, type){
     this.kwords = undefined;
 
     this._bCloneOnLoadHit = true;
+
+    // Shadows
+    this.castShadow    = false;
+    this.receiveShadow = false;
 
     // Local handlers
     this.onHover  = undefined;
@@ -167,16 +171,55 @@ setCloneOnLoadHit(b){
 }
 
 /**
-Adds a keyword to this node
-@param {string} kw - the keyword
+Add keyword(s) to this node. Keywords are also recursively added into the sub-graph
+@param {string} kw - the keyword or comma-separated list of keywords
 @example
-myNode.addKeyword("heritage").addKeyword("reconstruction")
+myNode.addKeywords("heritage,reconstruction");
 */
-addKeyword(kw){
-    if (this.kwords === undefined) this.kwords = [];
-    this.kwords.push(kw);
+addKeywords(kw){
+    let K = kw.split(",");
+
+    if (this.kwords === undefined) this.kwords = {};
+    for (let k in K) this.kwords[ K[k] ] = true;
+
+    // recurse into ATON nodes
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.type !== undefined) C.addKeywords(kw);
+    }
 
     return this;
+}
+
+/**
+Returns true if this node has specific keyword
+@param {string} kw - the keyword
+@example
+if (myNode.hasKeyword("heritage")){ ... }
+*/
+hasKeyword(kw){
+    if (this.kwords === undefined) return;
+    return (this.kwords[kw] !== undefined);
+}
+
+/**
+Set custom description (string) to the node
+@param {string} s - content
+@example
+myNode.setDescription("This is a small description");
+*/
+setDescription(s){
+    this.userData.description = s;
+    return this;
+}
+
+/**
+Get node description (string) if any
+@example
+myNode.getContent();
+*/
+getDescription(){
+    return this.userData.description;
 }
 
 /**
@@ -256,6 +299,10 @@ setMaterial(M){
 
     return this;
 }
+
+/** 
+Get cascading material
+*/
 getMaterial(){
     return this.userData.cMat;
 }
@@ -288,6 +335,30 @@ setOpacity(f){
     return this;
 }
 
+// FIXME: not working
+setShadowCast(b){
+    this.castShadow = b;
+
+    this.traverse((o) => {
+        if (o.isMesh){
+            o.castShadow = b;
+        }
+    });
+
+    return this;
+};
+setShadowReceive(b){
+    this.receiveShadow = b;
+
+    this.traverse((o) => {
+        if (o.isMesh){
+            o.receiveShadow = b;
+        }
+    });
+
+    return this;
+};
+
 setEnvMap(envtex){
     this.traverse((o) => {
         if (o.isMesh){
@@ -310,6 +381,7 @@ assignLightProbe(LP){
 
 // (re)assign LPs for each mesh depending on proximity
 assignLightProbesByProximity(){
+    if (ATON._lps.length === 0) return this;
 
     this.traverse((o) => {
         if (o.isMesh &amp;&amp; o.geometry){
@@ -393,7 +465,9 @@ removeChild(c){
 
     return this;
 }
-
+/**
+Delete all children of this node
+*/
 removeChildren(){
     let num = this.children.length;
     for (let i=(num-1); i>=0; i--) this.removeChild(this.children[i]);
@@ -401,14 +475,13 @@ removeChildren(){
     return this;
 }
 
-// Attach this node to parent by ID or object
-
 
 /**
 Attach this node to parent by proding ID (string) or node object
 @param {string} node - the parent node ID
 @example
 myNode.attachTo("someGroupID")
+@example
 myNode.attachTo(myParentGroup)
 */
 attachTo(node){
@@ -433,9 +506,9 @@ attachToRoot(){
 }
 
 /**
-Return bound of this node
+Return bounding sphere of this node
 @example
-myNode.getBound()
+let bs = myNode.getBound()
 */
 getBound(){
     let bb = new THREE.Box3().setFromObject( this );
@@ -468,6 +541,13 @@ setRotation(rx,ry,rz){
     
     return this;
 }
+/**
+Orient this node to current camera
+*/
+orientToCamera(){
+    this.quaternion.copy( ATON.Nav._qOri );
+    return this;
+}
 
 setYup(){
     this.rotation.set(-1.57079632679,0.0,0.0);
@@ -476,7 +556,7 @@ setYup(){
 
 /**
 Load a 3D model under this node, with optional onComplete handler.
-Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding to waste bandwidth
+Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth
 @param {string} url - the url of the 3D model
 @param {function} onComplete - the optional handler to be fired on completion
 @example
@@ -488,14 +568,15 @@ load(url, onComplete){
     let N = this;
 
     // Fire new request
-    if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
+    //if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
 
     // [C] Promise already requested
     if ( N._bCloneOnLoadHit &amp;&amp; ATON._assetsManager[url] !== undefined ){
         ATON._assetsManager[url].then(( o ) => {
             N.add( o.clone() );
 
-            if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            //if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            if (onComplete) onComplete();
         });
 
         console.log("HIT!");
@@ -503,8 +584,9 @@ load(url, onComplete){
     }
 
     // Fire request
-    let P = new Promise( ( resolve, reject ) => {
+    if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
 
+    let P = new Promise( ( resolve, reject ) => {
         ATON._aLoader.load( url, (data)=>{
             let model = data.scene || data.scene[0];
 
@@ -524,6 +606,9 @@ load(url, onComplete){
         (err)=>{
             console.log(err);
             //reject(model);
+
+            if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            if (onComplete) onComplete();
         });
 
 /*
@@ -630,7 +715,7 @@ export default Node;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 4th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

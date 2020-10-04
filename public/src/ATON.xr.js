@@ -13,14 +13,8 @@ let XR = {};
 
 XR.STD_TELEP_DURATION = 0.03;
 
-
-XR.isPresenting = ()=>{
-    return XR._bPresenting;
-};
-
 /**
 Initializes XR component
-@function
 */
 XR.init = ()=>{
     ATON._renderer.xr.enabled = true;
@@ -60,6 +54,14 @@ XR.init = ()=>{
     });
 };
 
+/**
+Return true if we are presenting (immersive mode)
+*/
+XR.isPresenting = ()=>{
+    return XR._bPresenting;
+};
+
+
 XR.defaultSelectHandler = (c)=>{
 
     if (ATON._queryDataScene){
@@ -85,8 +87,11 @@ XR._handleUISelection = ()=>{
 }
 
 
-// Set reference-space location (not the actual HMD camera location)
-// this can be used to move around the user, given a proper locomotion technique
+/**
+Set reference-space location (not the actual HMD camera location).
+This can be used to move around the user, given a proper locomotion technique
+@param {THREE.Vector3} p - the new location of reference space
+*/
 XR.setRefSpaceLocation = (p)=>{
     XR.rig.position.copy(p);
 };
@@ -173,6 +178,9 @@ XR.onSessionEnded = ( /*event*/ )=>{
     console.log("Quit XR");
 };
 
+/**
+Toggle immersive mode
+*/
 XR.toggle = ()=>{
     if (!ATON.device.isXRsupported) return;
 
@@ -226,11 +234,19 @@ XR.getControllerSpace = (i)=>{
    else XR.getControllerGrip(0);
 };
 
+/**
+Get controller world location
+@param {number} i - the controller ID (0 or 1)
+*/
 XR.getControllerWorldLocation = (i)=>{
     if (i === 1) return XR.controller1pos;
     else return XR.controller0pos;
 };
 
+/**
+Get controller world direction
+@param {number} i - the controller ID (0 or 1)
+*/
 XR.getControllerWorldDirection = (i)=>{
     if (i === 1) return XR.controller1dir;
     else return XR.controller0dir;

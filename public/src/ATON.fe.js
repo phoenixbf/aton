@@ -142,6 +142,14 @@ FE.uiAddButtonVRC = (idcontainer)=>{
             ATON.VRoadcast.connect();
         }
     });
+
+    ATON.on("VRC_IDassigned", (uid)=>{
+        $("#btn-vrc").addClass("atonVRCu"+(uid%6));
+    });
+
+    ATON.on("VRC_Disconnected", ()=>{
+        $("#btn-vrc").attr("class","atonBTN");
+    });
 };
 
 // Attach ID validator to given input field

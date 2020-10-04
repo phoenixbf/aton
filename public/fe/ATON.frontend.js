@@ -63,14 +63,6 @@ AFE.setupVRCEventHandlers = ()=>{
 
     //ATON.VRoadcast.on("VRC_test", (d)=>{ console.log(d); });
 
-    ATON.on("VRC_IDassigned", (uid)=>{
-        $("#btn-vrc").addClass("atonVRCu"+(uid%6));
-    });
-
-    ATON.on("VRC_Disconnected", ()=>{
-        $("#btn-vrc").attr("class","atonBTN");
-    });
-
     ATON.VRoadcast.on("AFE_DeleteNode", (d)=>{
         let nid  = d.nid;
         let type = d.t;
@@ -324,6 +316,20 @@ AFE.popupAddSemanticSphere = ()=>{
 
     AFE.createSemanticTextEditor("idSemDescription");
 
+    //console.log(sceditor);
+/*
+    $("#semid").on("input", ()=>{
+        let semid  = $("#semid").val();
+
+        let descr = AFE.getHTMLDescriptionFromSemNode(semid);
+        if (descr !== undefined){
+            $("#idSemDescription").val(descr);
+            //sceditor.instance.val(descr);
+            console.log(descr);
+        }
+    });
+*/
+
     $("#idAnnOK").click(()=>{
         $("#semid").blur();
         $("#idSemDescription").blur();
@@ -412,14 +418,20 @@ AFE.popupAddSemanticConvex = ()=>{
     });
 };
 
-AFE.popupSemDescription = (semid)=>{
+AFE.getHTMLDescriptionFromSemNode = (semid)=>{
     let S = ATON.getSemanticNode(semid);
-    if (S === undefined) return;
+    if (S === undefined) return undefined;
     
     let descr = S.getDescription();
-    if (descr === undefined) return;
+    if (descr === undefined) return undefined;
 
     descr = JSON.parse(descr);
+    return descr;
+};
+
+AFE.popupSemDescription = (semid)=>{
+    let descr = AFE.getHTMLDescriptionFromSemNode(semid);
+    if (descr === undefined) return;
 
     let htmlcontent = "<h1>"+semid+"</h1>";
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";

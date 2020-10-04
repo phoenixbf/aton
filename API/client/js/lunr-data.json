@@ -229,14 +229,49 @@
           "node#a",
           "re)assign"
         ],
-        "Node.html#addKeyword": [
+        "Node.html#addKeywords": [
+          "ad",
           "add",
           "addkeyword",
           "function",
+          "graph",
+          "keyword",
+          "keyword(",
+          "kw",
+          "node",
+          "node#addkeyword",
+          "recurs",
+          "sub"
+        ],
+        "Node.html#hasKeyword": [
+          "function",
+          "haskeyword",
           "keyword",
           "kw",
           "node",
-          "node#addkeyword"
+          "node#haskeyword",
+          "return",
+          "specif",
+          "true"
+        ],
+        "Node.html#setDescription": [
+          "custom",
+          "descript",
+          "function",
+          "node",
+          "node#setdescript",
+          "s",
+          "set",
+          "setdescript",
+          "string"
+        ],
+        "Node.html#getDescription": [
+          "descript",
+          "function",
+          "getdescript",
+          "node",
+          "node#getdescript",
+          "string"
         ],
         "Node.html#hide": [
           "cast",
@@ -318,6 +353,21 @@
           "still",
           "those"
         ],
+        "Node.html#getMaterial": [
+          "cascad",
+          "function",
+          "getmateri",
+          "materi",
+          "node#getmateri"
+        ],
+        "Node.html#removeChildren": [
+          "children",
+          "delet",
+          "function",
+          "node",
+          "node#removechildren",
+          "removechildren"
+        ],
         "Node.html#attachTo": [
           "attach",
           "attachto",
@@ -357,7 +407,17 @@
           "getbound",
           "node",
           "node#getbound",
-          "return"
+          "return",
+          "sphere"
+        ],
+        "Node.html#orientToCamera": [
+          "camera",
+          "current",
+          "function",
+          "node",
+          "node#orienttocamera",
+          "orient",
+          "orienttocamera"
         ],
         "Node.html#load": [
           "3d",
@@ -470,6 +530,65 @@
           "xr",
           "xr.init"
         ],
+        "XR.html#.isPresenting": [
+          "function",
+          "immers",
+          "ispres",
+          "lt;static&gt",
+          "mode",
+          "present",
+          "return",
+          "true",
+          "xr.ispres"
+        ],
+        "XR.html#.setRefSpaceLocation": [
+          "actual",
+          "around",
+          "camera",
+          "function",
+          "given",
+          "hmd",
+          "locat",
+          "locomot",
+          "lt;static&gt",
+          "move",
+          "p",
+          "proper",
+          "refer",
+          "set",
+          "setrefspaceloc",
+          "space",
+          "techniqu",
+          "us",
+          "user",
+          "xr.setrefspaceloc"
+        ],
+        "XR.html#.toggle": [
+          "function",
+          "immers",
+          "lt;static&gt",
+          "mode",
+          "toggl",
+          "xr.toggl"
+        ],
+        "XR.html#.getControllerWorldLocation": [
+          "control",
+          "function",
+          "getcontrollerworldloc",
+          "locat",
+          "lt;static&gt",
+          "world",
+          "xr.getcontrollerworldloc"
+        ],
+        "XR.html#.getControllerWorldDirection": [
+          "control",
+          "direct",
+          "function",
+          "getcontrollerworlddirect",
+          "lt;static&gt",
+          "world",
+          "xr.getcontrollerworlddirect"
+        ],
         "MatHub.html": [
           "aton",
           "hub",
@@ -528,6 +647,187 @@
           "nav",
           "navig",
           "system"
+        ],
+        "Nav.html#.getCurrentEyeLocation": [
+          "consist",
+          "current",
+          "ey",
+          "function",
+          "getcurrenteyeloc",
+          "immers",
+          "locat",
+          "lt;static&gt",
+          "nav.getcurrenteyeloc",
+          "session",
+          "standard",
+          "within",
+          "xr"
+        ],
+        "Nav.html#.getCurrentDirection": [
+          "consist",
+          "current",
+          "direct",
+          "function",
+          "getcurrentdirect",
+          "immers",
+          "lt;static&gt",
+          "nav.getcurrentdirect",
+          "normal",
+          "session",
+          "standard",
+          "view",
+          "within",
+          "xr"
+        ],
+        "Nav.html#.copyCurrentPOV": [
+          "copi",
+          "copycurrentpov",
+          "current",
+          "function",
+          "grab",
+          "lt;static&gt",
+          "nav.copycurrentpov",
+          "pov",
+          "return"
+        ],
+        "Nav.html#.isTransitioning": [
+          "current",
+          "function",
+          "istransit",
+          "lt;static&gt",
+          "nav.istransit",
+          "navig",
+          "perform",
+          "return",
+          "system",
+          "transit",
+          "true"
+        ],
+        "Nav.html#.setOrbitControl": [
+          "default",
+          "function",
+          "lt;static&gt",
+          "mode",
+          "nav.setorbitcontrol",
+          "navig",
+          "orbit",
+          "set",
+          "setorbitcontrol"
+        ],
+        "Nav.html#.setFirstPersonControl": [
+          "first",
+          "function",
+          "lt;static&gt",
+          "mode",
+          "nav.setfirstpersoncontrol",
+          "navig",
+          "person",
+          "set",
+          "setfirstpersoncontrol"
+        ],
+        "Nav.html#.setDeviceOrientationControl": [
+          "devic",
+          "function",
+          "lt;static&gt",
+          "mode",
+          "nav.setdeviceorientationcontrol",
+          "navig",
+          "orient",
+          "set",
+          "setdeviceorientationcontrol"
+        ],
+        "Nav.html#.setMotionAmount": [
+          "amount",
+          "f",
+          "function",
+          "lt;static&gt",
+          "motion",
+          "nav.setmotionamount",
+          "set",
+          "setmotionamount"
+        ],
+        "Nav.html#.setMotionDirection": [
+          "direct",
+          "f",
+          "function",
+          "lt;static&gt",
+          "motion",
+          "nav.setmotiondirect",
+          "set",
+          "setmotiondirect"
+        ],
+        "Nav.html#.stop": [
+          "current",
+          "function",
+          "lt;static&gt",
+          "motion",
+          "nav.stop",
+          "stop"
+        ],
+        "Nav.html#.setFOV": [
+          "degre",
+          "f",
+          "field",
+          "fov",
+          "function",
+          "lt;static&gt",
+          "nav.setfov",
+          "set",
+          "setfov",
+          "view"
+        ],
+        "Nav.html#.getFOV": [
+          "current",
+          "degre",
+          "field",
+          "fov",
+          "function",
+          "getfov",
+          "lt;static&gt",
+          "nav.getfov",
+          "view"
+        ],
+        "Nav.html#.requestPOV": [
+          "durat",
+          "function",
+          "lt;static&gt",
+          "nav.requestpov",
+          "pov",
+          "request",
+          "requestpov",
+          "transit",
+          "viewpoint"
+        ],
+        "Nav.html#.requestPOVbyNode": [
+          "aton",
+          "durat",
+          "function",
+          "lt;static&gt",
+          "n",
+          "nav.requestpovbynod",
+          "node",
+          "request",
+          "requestpovbynod",
+          "specif",
+          "transit"
+        ],
+        "Nav.html#.computeDefaultHome": [
+          "asset",
+          "bound",
+          "call",
+          "comput",
+          "computedefaulthom",
+          "default",
+          "depend",
+          "dv",
+          "function",
+          "home",
+          "load",
+          "lt;static&gt",
+          "nav.computedefaulthom",
+          "sphere",
+          "typic",
+          "visibil"
         ],
         "Nav.html#.DeviceOrientationControls": [
           "deviceorientationcontrol",
@@ -618,7 +918,7 @@
           "resetpixeldens"
         ]
       },
-      "length": 51
+      "length": 77
     },
     "tokenStore": {
       "root": {
@@ -678,7 +978,12 @@
         "a": {
           "docs": {},
           "d": {
-            "docs": {},
+            "docs": {
+              "Node.html#addKeywords": {
+                "ref": "Node.html#addKeywords",
+                "tf": 6.25
+              }
+            },
             "a": {
               "docs": {},
               "p": {
@@ -713,9 +1018,9 @@
                   "ref": "POV.html#addKeyword",
                   "tf": 16.666666666666664
                 },
-                "Node.html#addKeyword": {
-                  "ref": "Node.html#addKeyword",
-                  "tf": 16.666666666666664
+                "Node.html#addKeywords": {
+                  "ref": "Node.html#addKeywords",
+                  "tf": 6.25
                 }
               },
               "k": {
@@ -736,8 +1041,8 @@
                                 "ref": "POV.html#addKeyword",
                                 "tf": 700
                               },
-                              "Node.html#addKeyword": {
-                                "ref": "Node.html#addKeyword",
+                              "Node.html#addKeywords": {
+                                "ref": "Node.html#addKeywords",
                                 "tf": 700
                               }
                             }
@@ -845,6 +1150,10 @@
                   "Nav.html": {
                     "ref": "Nav.html",
                     "tf": 16.666666666666664
+                  },
+                  "Nav.html#.requestPOVbyNode": {
+                    "ref": "Nav.html#.requestPOVbyNode",
+                    "tf": 10
                   },
                   "SUI.html": {
                     "ref": "SUI.html",
@@ -1138,6 +1447,23 @@
                   }
                 }
               }
+            },
+            "o": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "d": {
+                    "docs": {
+                      "XR.html#.setRefSpaceLocation": {
+                        "ref": "XR.html#.setRefSpaceLocation",
+                        "tf": 3.125
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "b": {
@@ -1204,6 +1530,17 @@
                     }
                   }
                 }
+              },
+              "e": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Nav.html#.computeDefaultHome": {
+                      "ref": "Nav.html#.computeDefaultHome",
+                      "tf": 4.545454545454546
+                    }
+                  }
+                }
               }
             }
           },
@@ -1218,6 +1555,46 @@
                     "Node.html#load": {
                       "ref": "Node.html#load",
                       "tf": 2.1739130434782608
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "c": {
+            "docs": {},
+            "t": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "l": {
+                    "docs": {
+                      "XR.html#.setRefSpaceLocation": {
+                        "ref": "XR.html#.setRefSpaceLocation",
+                        "tf": 3.125
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "m": {
+            "docs": {},
+            "o": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Nav.html#.setMotionAmount": {
+                        "ref": "Nav.html#.setMotionAmount",
+                        "tf": 16.666666666666664
+                      }
                     }
                   }
                 }
@@ -1267,6 +1644,10 @@
                           "Node.html#setMaterial": {
                             "ref": "Node.html#setMaterial",
                             "tf": 4.545454545454546
+                          },
+                          "Node.html#removeChildren": {
+                            "ref": "Node.html#removeChildren",
+                            "tf": 16.666666666666664
                           }
                         }
                       }
@@ -1384,6 +1765,10 @@
                   "LightProbe.html#update": {
                     "ref": "LightProbe.html#update",
                     "tf": 6.25
+                  },
+                  "Nav.html#.computeDefaultHome": {
+                    "ref": "Nav.html#.computeDefaultHome",
+                    "tf": 4.545454545454546
                   }
                 }
               }
@@ -1443,6 +1828,31 @@
                       "Node.html#setMaterial": {
                         "ref": "Node.html#setMaterial",
                         "tf": 4.545454545454546
+                      },
+                      "Node.html#getMaterial": {
+                        "ref": "Node.html#getMaterial",
+                        "tf": 25
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "m": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "a": {
+                    "docs": {
+                      "Node.html#orientToCamera": {
+                        "ref": "Node.html#orientToCamera",
+                        "tf": 12.5
+                      },
+                      "XR.html#.setRefSpaceLocation": {
+                        "ref": "XR.html#.setRefSpaceLocation",
+                        "tf": 3.125
                       }
                     }
                   }
@@ -1500,6 +1910,45 @@
                       }
                     }
                   }
+                },
+                "i": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Nav.html#.getCurrentEyeLocation": {
+                          "ref": "Nav.html#.getCurrentEyeLocation",
+                          "tf": 5.555555555555555
+                        },
+                        "Nav.html#.getCurrentDirection": {
+                          "ref": "Nav.html#.getCurrentDirection",
+                          "tf": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "t": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "XR.html#.getControllerWorldLocation": {
+                          "ref": "XR.html#.getControllerWorldLocation",
+                          "tf": 16.666666666666664
+                        },
+                        "XR.html#.getControllerWorldDirection": {
+                          "ref": "XR.html#.getControllerWorldDirection",
+                          "tf": 16.666666666666664
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -1529,6 +1978,104 @@
                       }
                     }
                   }
+                },
+                "u": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Nav.html#.computeDefaultHome": {
+                        "ref": "Nav.html#.computeDefaultHome",
+                        "tf": 4.545454545454546
+                      }
+                    },
+                    "e": {
+                      "docs": {},
+                      "d": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "f": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "u": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "h": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "m": {
+                                          "docs": {
+                                            "Nav.html#.computeDefaultHome": {
+                                              "ref": "Nav.html#.computeDefaultHome",
+                                              "tf": 683.3333333333334
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "p": {
+              "docs": {},
+              "i": {
+                "docs": {
+                  "Nav.html#.copyCurrentPOV": {
+                    "ref": "Nav.html#.copyCurrentPOV",
+                    "tf": 10
+                  }
+                }
+              },
+              "y": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "u": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "v": {
+                                    "docs": {
+                                      "Nav.html#.copyCurrentPOV": {
+                                        "ref": "Nav.html#.copyCurrentPOV",
+                                        "tf": 700
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -1545,6 +2092,70 @@
                         "ATON.html#.setPathCollection": {
                           "ref": "ATON.html#.setPathCollection",
                           "tf": 7.142857142857142
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "u": {
+            "docs": {},
+            "s": {
+              "docs": {},
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "m": {
+                    "docs": {
+                      "Node.html#setDescription": {
+                        "ref": "Node.html#setDescription",
+                        "tf": 10
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "r": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Node.html#orientToCamera": {
+                          "ref": "Node.html#orientToCamera",
+                          "tf": 12.5
+                        },
+                        "Nav.html#.getCurrentEyeLocation": {
+                          "ref": "Nav.html#.getCurrentEyeLocation",
+                          "tf": 5.555555555555555
+                        },
+                        "Nav.html#.getCurrentDirection": {
+                          "ref": "Nav.html#.getCurrentDirection",
+                          "tf": 5
+                        },
+                        "Nav.html#.copyCurrentPOV": {
+                          "ref": "Nav.html#.copyCurrentPOV",
+                          "tf": 10
+                        },
+                        "Nav.html#.isTransitioning": {
+                          "ref": "Nav.html#.isTransitioning",
+                          "tf": 7.142857142857142
+                        },
+                        "Nav.html#.stop": {
+                          "ref": "Nav.html#.stop",
+                          "tf": 16.666666666666664
+                        },
+                        "Nav.html#.getFOV": {
+                          "ref": "Nav.html#.getFOV",
+                          "tf": 10
                         }
                       }
                     }
@@ -1583,6 +2194,10 @@
                       "Node.html#attachToRoot": {
                         "ref": "Node.html#attachToRoot",
                         "tf": 2.1739130434782608
+                      },
+                      "Nav.html#.computeDefaultHome": {
+                        "ref": "Nav.html#.computeDefaultHome",
+                        "tf": 4.545454545454546
                       }
                     }
                   }
@@ -1633,6 +2248,27 @@
               },
               "c": {
                 "docs": {},
+                "r": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "Node.html#setDescription": {
+                            "ref": "Node.html#setDescription",
+                            "tf": 10
+                          },
+                          "Node.html#getDescription": {
+                            "ref": "Node.html#getDescription",
+                            "tf": 16.666666666666664
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "e": {
                   "docs": {},
                   "n": {
@@ -1679,6 +2315,10 @@
                     "POV.html": {
                       "ref": "POV.html",
                       "tf": 2.5
+                    },
+                    "Nav.html#.setDeviceOrientationControl": {
+                      "ref": "Nav.html#.setDeviceOrientationControl",
+                      "tf": 10
                     },
                     "ATON.html#.realize": {
                       "ref": "ATON.html#.realize",
@@ -1759,6 +2399,28 @@
                     "POV.html#setFOV": {
                       "ref": "POV.html#setFOV",
                       "tf": 10
+                    },
+                    "Nav.html#.setFOV": {
+                      "ref": "Nav.html#.setFOV",
+                      "tf": 10
+                    },
+                    "Nav.html#.getFOV": {
+                      "ref": "Nav.html#.getFOV",
+                      "tf": 10
+                    }
+                  }
+                }
+              }
+            },
+            "l": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Node.html#removeChildren": {
+                      "ref": "Node.html#removeChildren",
+                      "tf": 16.666666666666664
                     }
                   }
                 }
@@ -1774,6 +2436,14 @@
                     "docs": {},
                     "t": {
                       "docs": {
+                        "Nav.html#.setOrbitControl": {
+                          "ref": "Nav.html#.setOrbitControl",
+                          "tf": 10
+                        },
+                        "Nav.html#.computeDefaultHome": {
+                          "ref": "Nav.html#.computeDefaultHome",
+                          "tf": 4.545454545454546
+                        },
                         "ATON.html#.setDefaultPixelDensity": {
                           "ref": "ATON.html#.setDefaultPixelDensity",
                           "tf": 8.333333333333332
@@ -1902,6 +2572,31 @@
                   }
                 }
               }
+            },
+            "r": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "XR.html#.getControllerWorldDirection": {
+                        "ref": "XR.html#.getControllerWorldDirection",
+                        "tf": 16.666666666666664
+                      },
+                      "Nav.html#.getCurrentDirection": {
+                        "ref": "Nav.html#.getCurrentDirection",
+                        "tf": 5
+                      },
+                      "Nav.html#.setMotionDirection": {
+                        "ref": "Nav.html#.setMotionDirection",
+                        "tf": 16.666666666666664
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "u": {
@@ -1922,6 +2617,24 @@
                   }
                 }
               }
+            },
+            "r": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Nav.html#.requestPOV": {
+                      "ref": "Nav.html#.requestPOV",
+                      "tf": 25
+                    },
+                    "Nav.html#.requestPOVbyNode": {
+                      "ref": "Nav.html#.requestPOVbyNode",
+                      "tf": 25
+                    }
+                  }
+                }
+              }
             }
           },
           "a": {
@@ -1935,6 +2648,14 @@
                     "tf": 28.333333333333332
                   }
                 }
+              }
+            }
+          },
+          "v": {
+            "docs": {
+              "Nav.html#.computeDefaultHome": {
+                "ref": "Nav.html#.computeDefaultHome",
+                "tf": 33.33333333333333
               }
             }
           }
@@ -2230,6 +2951,10 @@
               "POV.html#setPosition": {
                 "ref": "POV.html#setPosition",
                 "tf": 16.666666666666664
+              },
+              "Nav.html#.getCurrentEyeLocation": {
+                "ref": "Nav.html#.getCurrentEyeLocation",
+                "tf": 5.555555555555555
               }
             }
           },
@@ -2253,6 +2978,18 @@
             "POV.html#setFOV": {
               "ref": "POV.html#setFOV",
               "tf": 50
+            },
+            "Nav.html#.setMotionAmount": {
+              "ref": "Nav.html#.setMotionAmount",
+              "tf": 33.33333333333333
+            },
+            "Nav.html#.setMotionDirection": {
+              "ref": "Nav.html#.setMotionDirection",
+              "tf": 33.33333333333333
+            },
+            "Nav.html#.setFOV": {
+              "ref": "Nav.html#.setFOV",
+              "tf": 33.33333333333333
             }
           },
           "i": {
@@ -2280,6 +3017,14 @@
                     "POV.html#setFOV": {
                       "ref": "POV.html#setFOV",
                       "tf": 10
+                    },
+                    "Nav.html#.setFOV": {
+                      "ref": "Nav.html#.setFOV",
+                      "tf": 10
+                    },
+                    "Nav.html#.getFOV": {
+                      "ref": "Nav.html#.getFOV",
+                      "tf": 10
                     }
                   }
                 }
@@ -2302,6 +3047,17 @@
                         "ref": "EventHub.html#.fireEvent",
                         "tf": 670
                       }
+                    }
+                  }
+                }
+              },
+              "s": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Nav.html#.setFirstPersonControl": {
+                      "ref": "Nav.html#.setFirstPersonControl",
+                      "tf": 10
                     }
                   }
                 }
@@ -2405,8 +3161,20 @@
                             "ref": "Node.html#as",
                             "tf": 110
                           },
-                          "Node.html#addKeyword": {
-                            "ref": "Node.html#addKeyword",
+                          "Node.html#addKeywords": {
+                            "ref": "Node.html#addKeywords",
+                            "tf": 110
+                          },
+                          "Node.html#hasKeyword": {
+                            "ref": "Node.html#hasKeyword",
+                            "tf": 110
+                          },
+                          "Node.html#setDescription": {
+                            "ref": "Node.html#setDescription",
+                            "tf": 110
+                          },
+                          "Node.html#getDescription": {
+                            "ref": "Node.html#getDescription",
                             "tf": 110
                           },
                           "Node.html#hide": {
@@ -2433,6 +3201,14 @@
                             "ref": "Node.html#setMaterial",
                             "tf": 110
                           },
+                          "Node.html#getMaterial": {
+                            "ref": "Node.html#getMaterial",
+                            "tf": 110
+                          },
+                          "Node.html#removeChildren": {
+                            "ref": "Node.html#removeChildren",
+                            "tf": 110
+                          },
                           "Node.html#attachTo": {
                             "ref": "Node.html#attachTo",
                             "tf": 110
@@ -2443,6 +3219,10 @@
                           },
                           "Node.html#getBound": {
                             "ref": "Node.html#getBound",
+                            "tf": 110
+                          },
+                          "Node.html#orientToCamera": {
+                            "ref": "Node.html#orientToCamera",
                             "tf": 110
                           },
                           "Node.html#load": {
@@ -2469,6 +3249,26 @@
                             "ref": "XR.html#.init",
                             "tf": 110
                           },
+                          "XR.html#.isPresenting": {
+                            "ref": "XR.html#.isPresenting",
+                            "tf": 110
+                          },
+                          "XR.html#.setRefSpaceLocation": {
+                            "ref": "XR.html#.setRefSpaceLocation",
+                            "tf": 110
+                          },
+                          "XR.html#.toggle": {
+                            "ref": "XR.html#.toggle",
+                            "tf": 110
+                          },
+                          "XR.html#.getControllerWorldLocation": {
+                            "ref": "XR.html#.getControllerWorldLocation",
+                            "tf": 110
+                          },
+                          "XR.html#.getControllerWorldDirection": {
+                            "ref": "XR.html#.getControllerWorldDirection",
+                            "tf": 110
+                          },
                           "SceneHub.html#.init": {
                             "ref": "SceneHub.html#.init",
                             "tf": 110
@@ -2479,6 +3279,66 @@
                           },
                           "SceneHub.html#.load": {
                             "ref": "SceneHub.html#.load",
+                            "tf": 110
+                          },
+                          "Nav.html#.getCurrentEyeLocation": {
+                            "ref": "Nav.html#.getCurrentEyeLocation",
+                            "tf": 110
+                          },
+                          "Nav.html#.getCurrentDirection": {
+                            "ref": "Nav.html#.getCurrentDirection",
+                            "tf": 110
+                          },
+                          "Nav.html#.copyCurrentPOV": {
+                            "ref": "Nav.html#.copyCurrentPOV",
+                            "tf": 110
+                          },
+                          "Nav.html#.isTransitioning": {
+                            "ref": "Nav.html#.isTransitioning",
+                            "tf": 110
+                          },
+                          "Nav.html#.setOrbitControl": {
+                            "ref": "Nav.html#.setOrbitControl",
+                            "tf": 110
+                          },
+                          "Nav.html#.setFirstPersonControl": {
+                            "ref": "Nav.html#.setFirstPersonControl",
+                            "tf": 110
+                          },
+                          "Nav.html#.setDeviceOrientationControl": {
+                            "ref": "Nav.html#.setDeviceOrientationControl",
+                            "tf": 110
+                          },
+                          "Nav.html#.setMotionAmount": {
+                            "ref": "Nav.html#.setMotionAmount",
+                            "tf": 110
+                          },
+                          "Nav.html#.setMotionDirection": {
+                            "ref": "Nav.html#.setMotionDirection",
+                            "tf": 110
+                          },
+                          "Nav.html#.stop": {
+                            "ref": "Nav.html#.stop",
+                            "tf": 110
+                          },
+                          "Nav.html#.setFOV": {
+                            "ref": "Nav.html#.setFOV",
+                            "tf": 110
+                          },
+                          "Nav.html#.getFOV": {
+                            "ref": "Nav.html#.getFOV",
+                            "tf": 110
+                          },
+                          "Nav.html#.requestPOV": {
+                            "ref": "Nav.html#.requestPOV",
+                            "tf": 110
+                          },
+                          "Nav.html#.requestPOVbyNode": {
+                            "ref": "Nav.html#.requestPOVbyNode",
+                            "tf": 110
+                          },
+                          "Nav.html#.computeDefaultHome": {
+                            "ref": "Nav.html#.computeDefaultHome",
                             "tf": 110
                           },
                           "Nav.html#.DeviceOrientationControls": {
@@ -2523,6 +3383,14 @@
               "docs": {
                 "POV.html#setFOV": {
                   "ref": "POV.html#setFOV",
+                  "tf": 10
+                },
+                "Nav.html#.setFOV": {
+                  "ref": "Nav.html#.setFOV",
+                  "tf": 10
+                },
+                "Nav.html#.getFOV": {
+                  "ref": "Nav.html#.getFOV",
                   "tf": 10
                 }
               }
@@ -2604,6 +3472,10 @@
                 "docs": {},
                 "h": {
                   "docs": {
+                    "Node.html#addKeywords": {
+                      "ref": "Node.html#addKeywords",
+                      "tf": 6.25
+                    },
                     "Node.html#hide": {
                       "ref": "Node.html#hide",
                       "tf": 5.555555555555555
@@ -2618,6 +3490,14 @@
                     }
                   }
                 }
+              },
+              "b": {
+                "docs": {
+                  "Nav.html#.copyCurrentPOV": {
+                    "ref": "Nav.html#.copyCurrentPOV",
+                    "tf": 10
+                  }
+                }
               }
             }
           },
@@ -2625,6 +3505,58 @@
             "docs": {},
             "t": {
               "docs": {},
+              "d": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "c": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "p": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Node.html#getDescription": {
+                                  "ref": "Node.html#getDescription",
+                                  "tf": 750
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "m": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "i": {
+                          "docs": {
+                            "Node.html#getMaterial": {
+                              "ref": "Node.html#getMaterial",
+                              "tf": 750
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "b": {
                 "docs": {},
                 "o": {
@@ -2640,6 +3572,166 @@
                             "tf": 750
                           }
                         }
+                      }
+                    }
+                  }
+                }
+              },
+              "c": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "l": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "w": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "c": {
+                                                  "docs": {
+                                                    "XR.html#.getControllerWorldLocation": {
+                                                      "ref": "XR.html#.getControllerWorldLocation",
+                                                      "tf": 700
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            },
+                                            "d": {
+                                              "docs": {},
+                                              "i": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "c": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {
+                                                          "XR.html#.getControllerWorldDirection": {
+                                                            "ref": "XR.html#.getControllerWorldDirection",
+                                                            "tf": 700
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "u": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "y": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "c": {
+                                        "docs": {
+                                          "Nav.html#.getCurrentEyeLocation": {
+                                            "ref": "Nav.html#.getCurrentEyeLocation",
+                                            "tf": 700
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "d": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {
+                                          "Nav.html#.getCurrentDirection": {
+                                            "ref": "Nav.html#.getCurrentDirection",
+                                            "tf": 700
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "f": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "v": {
+                    "docs": {
+                      "Nav.html#.getFOV": {
+                        "ref": "Nav.html#.getFOV",
+                        "tf": 700
                       }
                     }
                   }
@@ -2662,6 +3754,10 @@
                     "EventHub.html#.on": {
                       "ref": "EventHub.html#.on",
                       "tf": 6.25
+                    },
+                    "XR.html#.setRefSpaceLocation": {
+                      "ref": "XR.html#.setRefSpaceLocation",
+                      "tf": 3.125
                     }
                   }
                 }
@@ -2692,6 +3788,22 @@
                       "XR.html": {
                         "ref": "XR.html",
                         "tf": 16.666666666666664
+                      },
+                      "XR.html#.isPresenting": {
+                        "ref": "XR.html#.isPresenting",
+                        "tf": 10
+                      },
+                      "XR.html#.toggle": {
+                        "ref": "XR.html#.toggle",
+                        "tf": 16.666666666666664
+                      },
+                      "Nav.html#.getCurrentEyeLocation": {
+                        "ref": "Nav.html#.getCurrentEyeLocation",
+                        "tf": 5.555555555555555
+                      },
+                      "Nav.html#.getCurrentDirection": {
+                        "ref": "Nav.html#.getCurrentDirection",
+                        "tf": 5
                       }
                     }
                   }
@@ -2848,6 +3960,52 @@
               }
             }
           },
+          "s": {
+            "docs": {},
+            "p": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "s": {
+                    "docs": {
+                      "XR.html#.isPresenting": {
+                        "ref": "XR.html#.isPresenting",
+                        "tf": 700
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "t": {
+                          "docs": {
+                            "Nav.html#.isTransitioning": {
+                              "ref": "Nav.html#.isTransitioning",
+                              "tf": 700
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           ".": {
             "docs": {
               "SceneHub.html#.setEditMode": {
@@ -2888,9 +4046,29 @@
               "docs": {},
               "e": {
                 "docs": {
+                  "XR.html#.isPresenting": {
+                    "ref": "XR.html#.isPresenting",
+                    "tf": 10
+                  },
+                  "XR.html#.toggle": {
+                    "ref": "XR.html#.toggle",
+                    "tf": 16.666666666666664
+                  },
                   "SceneHub.html#.setEditMode": {
                     "ref": "SceneHub.html#.setEditMode",
                     "tf": 5
+                  },
+                  "Nav.html#.setOrbitControl": {
+                    "ref": "Nav.html#.setOrbitControl",
+                    "tf": 10
+                  },
+                  "Nav.html#.setFirstPersonControl": {
+                    "ref": "Nav.html#.setFirstPersonControl",
+                    "tf": 10
+                  },
+                  "Nav.html#.setDeviceOrientationControl": {
+                    "ref": "Nav.html#.setDeviceOrientationControl",
+                    "tf": 10
                   }
                 },
                 "l": {
@@ -2922,6 +4100,42 @@
                 }
               }
             },
+            "v": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "XR.html#.setRefSpaceLocation": {
+                    "ref": "XR.html#.setRefSpaceLocation",
+                    "tf": 3.125
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "n": {
+                    "docs": {
+                      "Nav.html#.setMotionAmount": {
+                        "ref": "Nav.html#.setMotionAmount",
+                        "tf": 16.666666666666664
+                      },
+                      "Nav.html#.setMotionDirection": {
+                        "ref": "Nav.html#.setMotionDirection",
+                        "tf": 16.666666666666664
+                      },
+                      "Nav.html#.stop": {
+                        "ref": "Nav.html#.stop",
+                        "tf": 16.666666666666664
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "r": {
               "docs": {},
               "e": {
@@ -2947,6 +4161,10 @@
                       "Node.html#setMaterial": {
                         "ref": "Node.html#setMaterial",
                         "tf": 4.545454545454546
+                      },
+                      "Node.html#getMaterial": {
+                        "ref": "Node.html#getMaterial",
+                        "tf": 25
                       },
                       "MatHub.html": {
                         "ref": "MatHub.html",
@@ -3154,11 +4372,80 @@
                   }
                 }
               }
+            },
+            "i": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Node.html#orientToCamera": {
+                        "ref": "Node.html#orientToCamera",
+                        "tf": 12.5
+                      },
+                      "Nav.html#.setDeviceOrientationControl": {
+                        "ref": "Nav.html#.setDeviceOrientationControl",
+                        "tf": 10
+                      }
+                    },
+                    "t": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "m": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {
+                                      "Node.html#orientToCamera": {
+                                        "ref": "Node.html#orientToCamera",
+                                        "tf": 750
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "b": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Nav.html#.setOrbitControl": {
+                      "ref": "Nav.html#.setOrbitControl",
+                      "tf": 10
+                    }
+                  }
+                }
+              }
             }
           }
         },
         "p": {
-          "docs": {},
+          "docs": {
+            "XR.html#.setRefSpaceLocation": {
+              "ref": "XR.html#.setRefSpaceLocation",
+              "tf": 33.33333333333333
+            }
+          },
           "r": {
             "docs": {},
             "e": {
@@ -3174,6 +4461,10 @@
                         "index.html": {
                           "ref": "index.html",
                           "tf": 1.9444444444444444
+                        },
+                        "XR.html#.isPresenting": {
+                          "ref": "XR.html#.isPresenting",
+                          "tf": 10
                         }
                       }
                     }
@@ -3218,6 +4509,20 @@
                     "Node.html#attachTo": {
                       "ref": "Node.html#attachTo",
                       "tf": 6.25
+                    }
+                  }
+                }
+              },
+              "p": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "XR.html#.setRefSpaceLocation": {
+                        "ref": "XR.html#.setRefSpaceLocation",
+                        "tf": 3.125
+                      }
                     }
                   }
                 }
@@ -3289,6 +4594,14 @@
                 "POV.html#setPrevPOV": {
                   "ref": "POV.html#setPrevPOV",
                   "tf": 62.5
+                },
+                "Nav.html#.copyCurrentPOV": {
+                  "ref": "Nav.html#.copyCurrentPOV",
+                  "tf": 10
+                },
+                "Nav.html#.requestPOV": {
+                  "ref": "Nav.html#.requestPOV",
+                  "tf": 37.5
                 }
               },
               "#": {
@@ -3573,6 +4886,34 @@
                       }
                     }
                   }
+                },
+                "o": {
+                  "docs": {},
+                  "n": {
+                    "docs": {
+                      "Nav.html#.setFirstPersonControl": {
+                        "ref": "Nav.html#.setFirstPersonControl",
+                        "tf": 10
+                      }
+                    }
+                  }
+                }
+              },
+              "f": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "m": {
+                      "docs": {
+                        "Nav.html#.isTransitioning": {
+                          "ref": "Nav.html#.isTransitioning",
+                          "tf": 7.142857142857142
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -3634,6 +4975,48 @@
                         "Node.html#load": {
                           "ref": "Node.html#load",
                           "tf": 2.1739130434782608
+                        },
+                        "Nav.html#.requestPOV": {
+                          "ref": "Nav.html#.requestPOV",
+                          "tf": 12.5
+                        },
+                        "Nav.html#.requestPOVbyNode": {
+                          "ref": "Nav.html#.requestPOVbyNode",
+                          "tf": 10
+                        }
+                      },
+                      "p": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "v": {
+                            "docs": {
+                              "Nav.html#.requestPOV": {
+                                "ref": "Nav.html#.requestPOV",
+                                "tf": 675
+                              }
+                            },
+                            "b": {
+                              "docs": {},
+                              "y": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {
+                                        "Nav.html#.requestPOVbyNode": {
+                                          "ref": "Nav.html#.requestPOVbyNode",
+                                          "tf": 675
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -3709,6 +5092,23 @@
                 }
               }
             },
+            "c": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "s": {
+                    "docs": {
+                      "Node.html#addKeywords": {
+                        "ref": "Node.html#addKeywords",
+                        "tf": 6.25
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "t": {
               "docs": {},
               "u": {
@@ -3717,9 +5117,66 @@
                   "docs": {},
                   "n": {
                     "docs": {
+                      "Node.html#hasKeyword": {
+                        "ref": "Node.html#hasKeyword",
+                        "tf": 10
+                      },
                       "Node.html#getBound": {
                         "ref": "Node.html#getBound",
-                        "tf": 16.666666666666664
+                        "tf": 12.5
+                      },
+                      "XR.html#.isPresenting": {
+                        "ref": "XR.html#.isPresenting",
+                        "tf": 10
+                      },
+                      "Nav.html#.copyCurrentPOV": {
+                        "ref": "Nav.html#.copyCurrentPOV",
+                        "tf": 10
+                      },
+                      "Nav.html#.isTransitioning": {
+                        "ref": "Nav.html#.isTransitioning",
+                        "tf": 7.142857142857142
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "m": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "v": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "c": {
+                      "docs": {},
+                      "h": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "d": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {
+                                      "Node.html#removeChildren": {
+                                        "ref": "Node.html#removeChildren",
+                                        "tf": 750
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -3784,6 +5241,20 @@
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            },
+            "f": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "XR.html#.setRefSpaceLocation": {
+                      "ref": "XR.html#.setRefSpaceLocation",
+                      "tf": 3.125
                     }
                   }
                 }
@@ -3878,7 +5349,12 @@
           }
         },
         "s": {
-          "docs": {},
+          "docs": {
+            "Node.html#setDescription": {
+              "ref": "Node.html#setDescription",
+              "tf": 50
+            }
+          },
           "c": {
             "docs": {},
             "e": {
@@ -4038,6 +5514,14 @@
                       "docs": {},
                       "d": {
                         "docs": {
+                          "Nav.html#.getCurrentEyeLocation": {
+                            "ref": "Nav.html#.getCurrentEyeLocation",
+                            "tf": 5.555555555555555
+                          },
+                          "Nav.html#.getCurrentDirection": {
+                            "ref": "Nav.html#.getCurrentDirection",
+                            "tf": 5
+                          },
                           "ATON.html#.setDefaultPixelDensity": {
                             "ref": "ATON.html#.setDefaultPixelDensity",
                             "tf": 8.333333333333332
@@ -4061,6 +5545,14 @@
                         "ref": "POV.html",
                         "tf": 2.5
                       },
+                      "Node.html#setDescription": {
+                        "ref": "Node.html#setDescription",
+                        "tf": 10
+                      },
+                      "Node.html#getDescription": {
+                        "ref": "Node.html#getDescription",
+                        "tf": 16.666666666666664
+                      },
                       "Node.html#attachTo": {
                         "ref": "Node.html#attachTo",
                         "tf": 6.25
@@ -4080,6 +5572,17 @@
                       "ref": "Node.html#setMaterial",
                       "tf": 4.545454545454546
                     }
+                  }
+                }
+              }
+            },
+            "o": {
+              "docs": {},
+              "p": {
+                "docs": {
+                  "Nav.html#.stop": {
+                    "ref": "Nav.html#.stop",
+                    "tf": 716.6666666666666
                   }
                 }
               }
@@ -4113,9 +5616,41 @@
                   "ref": "POV.html#setPrevPOV",
                   "tf": 12.5
                 },
+                "Node.html#setDescription": {
+                  "ref": "Node.html#setDescription",
+                  "tf": 10
+                },
                 "Node.html#setMaterial": {
                   "ref": "Node.html#setMaterial",
                   "tf": 4.545454545454546
+                },
+                "XR.html#.setRefSpaceLocation": {
+                  "ref": "XR.html#.setRefSpaceLocation",
+                  "tf": 3.125
+                },
+                "Nav.html#.setOrbitControl": {
+                  "ref": "Nav.html#.setOrbitControl",
+                  "tf": 10
+                },
+                "Nav.html#.setFirstPersonControl": {
+                  "ref": "Nav.html#.setFirstPersonControl",
+                  "tf": 10
+                },
+                "Nav.html#.setDeviceOrientationControl": {
+                  "ref": "Nav.html#.setDeviceOrientationControl",
+                  "tf": 10
+                },
+                "Nav.html#.setMotionAmount": {
+                  "ref": "Nav.html#.setMotionAmount",
+                  "tf": 16.666666666666664
+                },
+                "Nav.html#.setMotionDirection": {
+                  "ref": "Nav.html#.setMotionDirection",
+                  "tf": 16.666666666666664
+                },
+                "Nav.html#.setFOV": {
+                  "ref": "Nav.html#.setFOV",
+                  "tf": 10
                 },
                 "ATON.html#.setPathCollection": {
                   "ref": "ATON.html#.setPathCollection",
@@ -4261,6 +5796,66 @@
                       "POV.html#setFOV": {
                         "ref": "POV.html#setFOV",
                         "tf": 700
+                      },
+                      "Nav.html#.setFOV": {
+                        "ref": "Nav.html#.setFOV",
+                        "tf": 683.3333333333334
+                      }
+                    }
+                  }
+                },
+                "i": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "p": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {
+                                                    "Nav.html#.setFirstPersonControl": {
+                                                      "ref": "Nav.html#.setFirstPersonControl",
+                                                      "tf": 700
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -4292,59 +5887,104 @@
                   }
                 }
               },
-              "m": {
+              "d": {
                 "docs": {},
-                "a": {
+                "e": {
                   "docs": {},
-                  "t": {
+                  "s": {
                     "docs": {},
-                    "e": {
+                    "c": {
                       "docs": {},
                       "r": {
                         "docs": {},
                         "i": {
-                          "docs": {
-                            "Node.html#setMaterial": {
-                              "ref": "Node.html#setMaterial",
-                              "tf": 700
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
-              "e": {
-                "docs": {},
-                "d": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "t": {
-                      "docs": {},
-                      "m": {
-                        "docs": {},
-                        "o": {
                           "docs": {},
-                          "d": {
-                            "docs": {
-                              "SceneHub.html#.setEditMode": {
-                                "ref": "SceneHub.html#.setEditMode",
-                                "tf": 683.3333333333334
+                          "p": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Node.html#setDescription": {
+                                  "ref": "Node.html#setDescription",
+                                  "tf": 700
+                                }
                               }
                             }
                           }
                         }
                       }
                     }
-                  }
-                }
-              },
-              "d": {
-                "docs": {},
-                "e": {
-                  "docs": {},
+                  },
+                  "v": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "n": {
+                                                "docs": {},
+                                                "c": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "n": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {},
+                                                        "r": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "l": {
+                                                              "docs": {
+                                                                "Nav.html#.setDeviceOrientationControl": {
+                                                                  "ref": "Nav.html#.setDeviceOrientationControl",
+                                                                  "tf": 700
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
                   "f": {
                     "docs": {},
                     "a": {
@@ -4380,6 +6020,195 @@
                                               }
                                             }
                                           }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "m": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "i": {
+                          "docs": {
+                            "Node.html#setMaterial": {
+                              "ref": "Node.html#setMaterial",
+                              "tf": 700
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "o": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "m": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "u": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {
+                                        "Nav.html#.setMotionAmount": {
+                                          "ref": "Nav.html#.setMotionAmount",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "d": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {
+                                        "Nav.html#.setMotionDirection": {
+                                          "ref": "Nav.html#.setMotionDirection",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "f": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "l": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {
+                                      "XR.html#.setRefSpaceLocation": {
+                                        "ref": "XR.html#.setRefSpaceLocation",
+                                        "tf": 683.3333333333334
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "e": {
+                "docs": {},
+                "d": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "m": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "d": {
+                            "docs": {
+                              "SceneHub.html#.setEditMode": {
+                                "ref": "SceneHub.html#.setEditMode",
+                                "tf": 683.3333333333334
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "b": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {
+                                        "Nav.html#.setOrbitControl": {
+                                          "ref": "Nav.html#.setOrbitControl",
+                                          "tf": 700
                                         }
                                       }
                                     }
@@ -4490,6 +6319,30 @@
                   }
                 }
               }
+            },
+            "s": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "Nav.html#.getCurrentEyeLocation": {
+                          "ref": "Nav.html#.getCurrentEyeLocation",
+                          "tf": 5.555555555555555
+                        },
+                        "Nav.html#.getCurrentDirection": {
+                          "ref": "Nav.html#.getCurrentDirection",
+                          "tf": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "p": {
@@ -4503,6 +6356,10 @@
                     "POV.html": {
                       "ref": "POV.html",
                       "tf": 2.5
+                    },
+                    "XR.html#.setRefSpaceLocation": {
+                      "ref": "XR.html#.setRefSpaceLocation",
+                      "tf": 3.125
                     }
                   }
                 }
@@ -4528,12 +6385,58 @@
                   }
                 }
               }
+            },
+            "e": {
+              "docs": {},
+              "c": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "f": {
+                    "docs": {
+                      "Node.html#hasKeyword": {
+                        "ref": "Node.html#hasKeyword",
+                        "tf": 10
+                      },
+                      "Nav.html#.requestPOVbyNode": {
+                        "ref": "Nav.html#.requestPOVbyNode",
+                        "tf": 10
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "h": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "e": {
+                    "docs": {
+                      "Node.html#getBound": {
+                        "ref": "Node.html#getBound",
+                        "tf": 12.5
+                      },
+                      "Nav.html#.computeDefaultHome": {
+                        "ref": "Nav.html#.computeDefaultHome",
+                        "tf": 4.545454545454546
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "u": {
             "docs": {},
             "b": {
               "docs": {
+                "Node.html#addKeywords": {
+                  "ref": "Node.html#addKeywords",
+                  "tf": 6.25
+                },
                 "Node.html#hide": {
                   "ref": "Node.html#hide",
                   "tf": 5.555555555555555
@@ -4642,6 +6545,10 @@
                       "Nav.html": {
                         "ref": "Nav.html",
                         "tf": 16.666666666666664
+                      },
+                      "Nav.html#.isTransitioning": {
+                        "ref": "Nav.html#.isTransitioning",
+                        "tf": 7.142857142857142
                       }
                     }
                   }
@@ -4685,6 +6592,10 @@
                     "Node.html#toggle": {
                       "ref": "Node.html#toggle",
                       "tf": 757.1428571428571
+                    },
+                    "XR.html#.toggle": {
+                      "ref": "XR.html#.toggle",
+                      "tf": 716.6666666666666
                     }
                   }
                 }
@@ -4702,6 +6613,10 @@
                     "LightProbe.html#update": {
                       "ref": "LightProbe.html#update",
                       "tf": 3.125
+                    },
+                    "Nav.html#.computeDefaultHome": {
+                      "ref": "Nav.html#.computeDefaultHome",
+                      "tf": 4.545454545454546
                     }
                   }
                 }
@@ -4755,6 +6670,56 @@
               }
             }
           },
+          "r": {
+            "docs": {},
+            "u": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "Node.html#hasKeyword": {
+                    "ref": "Node.html#hasKeyword",
+                    "tf": 10
+                  },
+                  "XR.html#.isPresenting": {
+                    "ref": "XR.html#.isPresenting",
+                    "tf": 10
+                  },
+                  "Nav.html#.isTransitioning": {
+                    "ref": "Nav.html#.isTransitioning",
+                    "tf": 7.142857142857142
+                  }
+                }
+              }
+            },
+            "a": {
+              "docs": {},
+              "n": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Nav.html#.isTransitioning": {
+                          "ref": "Nav.html#.isTransitioning",
+                          "tf": 7.142857142857142
+                        },
+                        "Nav.html#.requestPOV": {
+                          "ref": "Nav.html#.requestPOV",
+                          "tf": 12.5
+                        },
+                        "Nav.html#.requestPOVbyNode": {
+                          "ref": "Nav.html#.requestPOVbyNode",
+                          "tf": 10
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "h": {
             "docs": {},
             "o": {
@@ -4766,6 +6731,32 @@
                     "Node.html#setMaterial": {
                       "ref": "Node.html#setMaterial",
                       "tf": 4.545454545454546
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "e": {
+            "docs": {},
+            "c": {
+              "docs": {},
+              "h": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "q": {
+                      "docs": {},
+                      "u": {
+                        "docs": {
+                          "XR.html#.setRefSpaceLocation": {
+                            "ref": "XR.html#.setRefSpaceLocation",
+                            "tf": 3.125
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -4784,6 +6775,10 @@
               "Node.html#disablePicking": {
                 "ref": "Node.html#disablePicking",
                 "tf": 5
+              },
+              "XR.html#.setRefSpaceLocation": {
+                "ref": "XR.html#.setRefSpaceLocation",
+                "tf": 3.125
               }
             },
             "e": {
@@ -4793,6 +6788,10 @@
                   "index.html": {
                     "ref": "index.html",
                     "tf": 1.9444444444444444
+                  },
+                  "XR.html#.setRefSpaceLocation": {
+                    "ref": "XR.html#.setRefSpaceLocation",
+                    "tf": 3.125
                   }
                 }
               }
@@ -4915,6 +6914,18 @@
                   "POV.html#setFOV": {
                     "ref": "POV.html#setFOV",
                     "tf": 10
+                  },
+                  "Nav.html#.getCurrentDirection": {
+                    "ref": "Nav.html#.getCurrentDirection",
+                    "tf": 5
+                  },
+                  "Nav.html#.setFOV": {
+                    "ref": "Nav.html#.setFOV",
+                    "tf": 10
+                  },
+                  "Nav.html#.getFOV": {
+                    "ref": "Nav.html#.getFOV",
+                    "tf": 10
                   }
                 },
                 "p": {
@@ -4934,6 +6945,10 @@
                             "POV.html#addKeyword": {
                               "ref": "POV.html#addKeyword",
                               "tf": 16.666666666666664
+                            },
+                            "Nav.html#.requestPOV": {
+                              "ref": "Nav.html#.requestPOV",
+                              "tf": 12.5
                             }
                           }
                         }
@@ -4984,6 +6999,17 @@
                       "Node.html#attachToRoot": {
                         "ref": "Node.html#attachToRoot",
                         "tf": 2.1739130434782608
+                      }
+                    }
+                  },
+                  "i": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "Nav.html#.computeDefaultHome": {
+                          "ref": "Nav.html#.computeDefaultHome",
+                          "tf": 4.545454545454546
+                        }
                       }
                     }
                   }
@@ -5066,6 +7092,21 @@
                       }
                     }
                   }
+                },
+                "i": {
+                  "docs": {},
+                  "n": {
+                    "docs": {
+                      "Nav.html#.getCurrentEyeLocation": {
+                        "ref": "Nav.html#.getCurrentEyeLocation",
+                        "tf": 5.555555555555555
+                      },
+                      "Nav.html#.getCurrentDirection": {
+                        "ref": "Nav.html#.getCurrentDirection",
+                        "tf": 5
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -5099,6 +7140,27 @@
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
+                  }
+                }
+              }
+            }
+          },
+          "o": {
+            "docs": {},
+            "r": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "XR.html#.getControllerWorldLocation": {
+                      "ref": "XR.html#.getControllerWorldLocation",
+                      "tf": 16.666666666666664
+                    },
+                    "XR.html#.getControllerWorldDirection": {
+                      "ref": "XR.html#.getControllerWorldDirection",
+                      "tf": 16.666666666666664
+                    }
                   }
                 }
               }
@@ -5294,6 +7356,10 @@
                   "SceneHub.html#.load": {
                     "ref": "SceneHub.html#.load",
                     "tf": 680
+                  },
+                  "Nav.html#.computeDefaultHome": {
+                    "ref": "Nav.html#.computeDefaultHome",
+                    "tf": 4.545454545454546
                   }
                 }
               }
@@ -5311,6 +7377,39 @@
                     "EventHub.html#.fireEvent": {
                       "ref": "EventHub.html#.fireEvent",
                       "tf": 8.333333333333332
+                    }
+                  }
+                },
+                "t": {
+                  "docs": {
+                    "XR.html#.setRefSpaceLocation": {
+                      "ref": "XR.html#.setRefSpaceLocation",
+                      "tf": 6.25
+                    },
+                    "XR.html#.getControllerWorldLocation": {
+                      "ref": "XR.html#.getControllerWorldLocation",
+                      "tf": 16.666666666666664
+                    },
+                    "Nav.html#.getCurrentEyeLocation": {
+                      "ref": "Nav.html#.getCurrentEyeLocation",
+                      "tf": 5.555555555555555
+                    }
+                  }
+                }
+              },
+              "o": {
+                "docs": {},
+                "m": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "XR.html#.setRefSpaceLocation": {
+                          "ref": "XR.html#.setRefSpaceLocation",
+                          "tf": 3.125
+                        }
+                      }
                     }
                   }
                 }
@@ -5359,6 +7458,26 @@
                                     "ref": "XR.html#.init",
                                     "tf": 50
                                   },
+                                  "XR.html#.isPresenting": {
+                                    "ref": "XR.html#.isPresenting",
+                                    "tf": 50
+                                  },
+                                  "XR.html#.setRefSpaceLocation": {
+                                    "ref": "XR.html#.setRefSpaceLocation",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "XR.html#.toggle": {
+                                    "ref": "XR.html#.toggle",
+                                    "tf": 50
+                                  },
+                                  "XR.html#.getControllerWorldLocation": {
+                                    "ref": "XR.html#.getControllerWorldLocation",
+                                    "tf": 50
+                                  },
+                                  "XR.html#.getControllerWorldDirection": {
+                                    "ref": "XR.html#.getControllerWorldDirection",
+                                    "tf": 50
+                                  },
                                   "SceneHub.html#.init": {
                                     "ref": "SceneHub.html#.init",
                                     "tf": 50
@@ -5370,6 +7489,66 @@
                                   "SceneHub.html#.load": {
                                     "ref": "SceneHub.html#.load",
                                     "tf": 20
+                                  },
+                                  "Nav.html#.getCurrentEyeLocation": {
+                                    "ref": "Nav.html#.getCurrentEyeLocation",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.getCurrentDirection": {
+                                    "ref": "Nav.html#.getCurrentDirection",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.copyCurrentPOV": {
+                                    "ref": "Nav.html#.copyCurrentPOV",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.isTransitioning": {
+                                    "ref": "Nav.html#.isTransitioning",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.setOrbitControl": {
+                                    "ref": "Nav.html#.setOrbitControl",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.setFirstPersonControl": {
+                                    "ref": "Nav.html#.setFirstPersonControl",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.setDeviceOrientationControl": {
+                                    "ref": "Nav.html#.setDeviceOrientationControl",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.setMotionAmount": {
+                                    "ref": "Nav.html#.setMotionAmount",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.setMotionDirection": {
+                                    "ref": "Nav.html#.setMotionDirection",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.stop": {
+                                    "ref": "Nav.html#.stop",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.setFOV": {
+                                    "ref": "Nav.html#.setFOV",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.getFOV": {
+                                    "ref": "Nav.html#.getFOV",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.requestPOV": {
+                                    "ref": "Nav.html#.requestPOV",
+                                    "tf": 25
+                                  },
+                                  "Nav.html#.requestPOVbyNode": {
+                                    "ref": "Nav.html#.requestPOVbyNode",
+                                    "tf": 25
+                                  },
+                                  "Nav.html#.computeDefaultHome": {
+                                    "ref": "Nav.html#.computeDefaultHome",
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.DeviceOrientationControls": {
                                     "ref": "Nav.html#.DeviceOrientationControls",
@@ -5413,7 +7592,12 @@
           }
         },
         "n": {
-          "docs": {},
+          "docs": {
+            "Nav.html#.requestPOVbyNode": {
+              "ref": "Nav.html#.requestPOVbyNode",
+              "tf": 25
+            }
+          },
           "a": {
             "docs": {},
             "m": {
@@ -5489,12 +7673,577 @@
                     "Nav.html": {
                       "ref": "Nav.html",
                       "tf": 16.666666666666664
+                    },
+                    "Nav.html#.isTransitioning": {
+                      "ref": "Nav.html#.isTransitioning",
+                      "tf": 7.142857142857142
+                    },
+                    "Nav.html#.setOrbitControl": {
+                      "ref": "Nav.html#.setOrbitControl",
+                      "tf": 10
+                    },
+                    "Nav.html#.setFirstPersonControl": {
+                      "ref": "Nav.html#.setFirstPersonControl",
+                      "tf": 10
+                    },
+                    "Nav.html#.setDeviceOrientationControl": {
+                      "ref": "Nav.html#.setDeviceOrientationControl",
+                      "tf": 10
                     }
                   }
                 }
               },
               ".": {
                 "docs": {},
+                "g": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "y": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "l": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "c": {
+                                                "docs": {
+                                                  "Nav.html#.getCurrentEyeLocation": {
+                                                    "ref": "Nav.html#.getCurrentEyeLocation",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "d": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {
+                                                  "Nav.html#.getCurrentDirection": {
+                                                    "ref": "Nav.html#.getCurrentDirection",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "f": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "v": {
+                            "docs": {
+                              "Nav.html#.getFOV": {
+                                "ref": "Nav.html#.getFOV",
+                                "tf": 1150
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "c": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "y": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "u": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "p": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "v": {
+                                            "docs": {
+                                              "Nav.html#.copyCurrentPOV": {
+                                                "ref": "Nav.html#.copyCurrentPOV",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "m": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "d": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "f": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {},
+                                            "h": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "m": {
+                                                  "docs": {
+                                                    "Nav.html#.computeDefaultHome": {
+                                                      "ref": "Nav.html#.computeDefaultHome",
+                                                      "tf": 1150
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "i": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "Nav.html#.isTransitioning": {
+                                      "ref": "Nav.html#.isTransitioning",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "s": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "b": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {
+                                                "Nav.html#.setOrbitControl": {
+                                                  "ref": "Nav.html#.setOrbitControl",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "f": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "n": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {},
+                                                  "t": {
+                                                    "docs": {},
+                                                    "r": {
+                                                      "docs": {},
+                                                      "o": {
+                                                        "docs": {},
+                                                        "l": {
+                                                          "docs": {
+                                                            "Nav.html#.setFirstPersonControl": {
+                                                              "ref": "Nav.html#.setFirstPersonControl",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "o": {
+                          "docs": {},
+                          "v": {
+                            "docs": {
+                              "Nav.html#.setFOV": {
+                                "ref": "Nav.html#.setFOV",
+                                "tf": 1150
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "d": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "v": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "n": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {},
+                                              "a": {
+                                                "docs": {},
+                                                "t": {
+                                                  "docs": {},
+                                                  "i": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {},
+                                                      "n": {
+                                                        "docs": {},
+                                                        "c": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "n": {
+                                                              "docs": {},
+                                                              "t": {
+                                                                "docs": {},
+                                                                "r": {
+                                                                  "docs": {},
+                                                                  "o": {
+                                                                    "docs": {},
+                                                                    "l": {
+                                                                      "docs": {
+                                                                        "Nav.html#.setDeviceOrientationControl": {
+                                                                          "ref": "Nav.html#.setDeviceOrientationControl",
+                                                                          "tf": 1150
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "m": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "m": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "u": {
+                                          "docs": {},
+                                          "n": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "Nav.html#.setMotionAmount": {
+                                                  "ref": "Nav.html#.setMotionAmount",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "d": {
+                                    "docs": {},
+                                    "i": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "c": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "Nav.html#.setMotionDirection": {
+                                                  "ref": "Nav.html#.setMotionDirection",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "t": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "p": {
+                        "docs": {
+                          "Nav.html#.stop": {
+                            "ref": "Nav.html#.stop",
+                            "tf": 1150
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "r": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "q": {
+                      "docs": {},
+                      "u": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "v": {
+                                    "docs": {
+                                      "Nav.html#.requestPOV": {
+                                        "ref": "Nav.html#.requestPOV",
+                                        "tf": 1150
+                                      }
+                                    },
+                                    "b": {
+                                      "docs": {},
+                                      "y": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "d": {
+                                              "docs": {
+                                                "Nav.html#.requestPOVbyNode": {
+                                                  "ref": "Nav.html#.requestPOVbyNode",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "d": {
                   "docs": {},
                   "e": {
@@ -5627,8 +8376,20 @@
                     "ref": "Node.html#as",
                     "tf": 16.666666666666664
                   },
-                  "Node.html#addKeyword": {
-                    "ref": "Node.html#addKeyword",
+                  "Node.html#addKeywords": {
+                    "ref": "Node.html#addKeywords",
+                    "tf": 6.25
+                  },
+                  "Node.html#hasKeyword": {
+                    "ref": "Node.html#hasKeyword",
+                    "tf": 10
+                  },
+                  "Node.html#setDescription": {
+                    "ref": "Node.html#setDescription",
+                    "tf": 10
+                  },
+                  "Node.html#getDescription": {
+                    "ref": "Node.html#getDescription",
                     "tf": 16.666666666666664
                   },
                   "Node.html#hide": {
@@ -5655,6 +8416,10 @@
                     "ref": "Node.html#setMaterial",
                     "tf": 4.545454545454546
                   },
+                  "Node.html#removeChildren": {
+                    "ref": "Node.html#removeChildren",
+                    "tf": 16.666666666666664
+                  },
                   "Node.html#attachTo": {
                     "ref": "Node.html#attachTo",
                     "tf": 62.5
@@ -5665,11 +8430,19 @@
                   },
                   "Node.html#getBound": {
                     "ref": "Node.html#getBound",
-                    "tf": 16.666666666666664
+                    "tf": 12.5
+                  },
+                  "Node.html#orientToCamera": {
+                    "ref": "Node.html#orientToCamera",
+                    "tf": 12.5
                   },
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
+                  },
+                  "Nav.html#.requestPOVbyNode": {
+                    "ref": "Nav.html#.requestPOVbyNode",
+                    "tf": 10
                   }
                 },
                 "#": {
@@ -5699,8 +8472,8 @@
                                     "docs": {},
                                     "d": {
                                       "docs": {
-                                        "Node.html#addKeyword": {
-                                          "ref": "Node.html#addKeyword",
+                                        "Node.html#addKeywords": {
+                                          "ref": "Node.html#addKeywords",
                                           "tf": 1150
                                         }
                                       }
@@ -5759,6 +8532,38 @@
                   },
                   "h": {
                     "docs": {},
+                    "a": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "k": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "y": {
+                              "docs": {},
+                              "w": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {
+                                        "Node.html#hasKeyword": {
+                                          "ref": "Node.html#hasKeyword",
+                                          "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "i": {
                       "docs": {},
                       "d": {
@@ -5773,24 +8578,39 @@
                   },
                   "s": {
                     "docs": {},
-                    "h": {
-                      "docs": {},
-                      "o": {
-                        "docs": {},
-                        "w": {
-                          "docs": {
-                            "Node.html#show": {
-                              "ref": "Node.html#show",
-                              "tf": 1150
-                            }
-                          }
-                        }
-                      }
-                    },
                     "e": {
                       "docs": {},
                       "t": {
                         "docs": {},
+                        "d": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "p": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {
+                                          "Node.html#setDescription": {
+                                            "ref": "Node.html#setDescription",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
                         "m": {
                           "docs": {},
                           "a": {
@@ -5807,6 +8627,101 @@
                                         "ref": "Node.html#setMaterial",
                                         "tf": 1150
                                       }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "h": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "w": {
+                          "docs": {
+                            "Node.html#show": {
+                              "ref": "Node.html#show",
+                              "tf": 1150
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "g": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "p": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {
+                                          "Node.html#getDescription": {
+                                            "ref": "Node.html#getDescription",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "m": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {
+                                      "Node.html#getMaterial": {
+                                        "ref": "Node.html#getMaterial",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "b": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "u": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "d": {
+                                  "docs": {
+                                    "Node.html#getBound": {
+                                      "ref": "Node.html#getBound",
+                                      "tf": 1150
                                     }
                                   }
                                 }
@@ -5910,25 +8825,90 @@
                       }
                     }
                   },
-                  "g": {
+                  "r": {
                     "docs": {},
                     "e": {
                       "docs": {},
-                      "t": {
+                      "m": {
                         "docs": {},
-                        "b": {
+                        "o": {
                           "docs": {},
-                          "o": {
+                          "v": {
                             "docs": {},
-                            "u": {
+                            "e": {
                               "docs": {},
-                              "n": {
+                              "c": {
                                 "docs": {},
-                                "d": {
-                                  "docs": {
-                                    "Node.html#getBound": {
-                                      "ref": "Node.html#getBound",
-                                      "tf": 1150
+                                "h": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "d": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "n": {
+                                              "docs": {
+                                                "Node.html#removeChildren": {
+                                                  "ref": "Node.html#removeChildren",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "m": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "a": {
+                                              "docs": {
+                                                "Node.html#orientToCamera": {
+                                                  "ref": "Node.html#orientToCamera",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -5973,6 +8953,23 @@
                   }
                 }
               }
+            },
+            "r": {
+              "docs": {},
+              "m": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "l": {
+                    "docs": {
+                      "Nav.html#.getCurrentDirection": {
+                        "ref": "Nav.html#.getCurrentDirection",
+                        "tf": 5
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         },
@@ -5991,6 +8988,14 @@
               "XR.html#.init": {
                 "ref": "XR.html#.init",
                 "tf": 16.666666666666664
+              },
+              "Nav.html#.getCurrentEyeLocation": {
+                "ref": "Nav.html#.getCurrentEyeLocation",
+                "tf": 5.555555555555555
+              },
+              "Nav.html#.getCurrentDirection": {
+                "ref": "Nav.html#.getCurrentDirection",
+                "tf": 5
               }
             },
             ".": {
@@ -6006,6 +9011,184 @@
                         "XR.html#.init": {
                           "ref": "XR.html#.init",
                           "tf": 1150
+                        }
+                      }
+                    }
+                  }
+                },
+                "s": {
+                  "docs": {},
+                  "p": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "s": {
+                          "docs": {
+                            "XR.html#.isPresenting": {
+                              "ref": "XR.html#.isPresenting",
+                              "tf": 1150
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "s": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "p": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {
+                                            "XR.html#.setRefSpaceLocation": {
+                                              "ref": "XR.html#.setRefSpaceLocation",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "g": {
+                    "docs": {},
+                    "g": {
+                      "docs": {},
+                      "l": {
+                        "docs": {
+                          "XR.html#.toggle": {
+                            "ref": "XR.html#.toggle",
+                            "tf": 1150
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "g": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "c": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "w": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "l": {
+                                                "docs": {},
+                                                "d": {
+                                                  "docs": {},
+                                                  "l": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {},
+                                                      "c": {
+                                                        "docs": {
+                                                          "XR.html#.getControllerWorldLocation": {
+                                                            "ref": "XR.html#.getControllerWorldLocation",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "d": {
+                                                    "docs": {},
+                                                    "i": {
+                                                      "docs": {},
+                                                      "r": {
+                                                        "docs": {},
+                                                        "e": {
+                                                          "docs": {},
+                                                          "c": {
+                                                            "docs": {},
+                                                            "t": {
+                                                              "docs": {
+                                                                "XR.html#.getControllerWorldDirection": {
+                                                                  "ref": "XR.html#.getControllerWorldDirection",
+                                                                  "tf": 1150
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -6033,9 +9216,21 @@
                           "ref": "POV.html#addKeyword",
                           "tf": 16.666666666666664
                         },
-                        "Node.html#addKeyword": {
-                          "ref": "Node.html#addKeyword",
-                          "tf": 16.666666666666664
+                        "Node.html#addKeywords": {
+                          "ref": "Node.html#addKeywords",
+                          "tf": 6.25
+                        },
+                        "Node.html#hasKeyword": {
+                          "ref": "Node.html#hasKeyword",
+                          "tf": 10
+                        }
+                      },
+                      "(": {
+                        "docs": {
+                          "Node.html#addKeywords": {
+                            "ref": "Node.html#addKeywords",
+                            "tf": 6.25
+                          }
                         }
                       }
                     }
@@ -6050,8 +9245,12 @@
                 "ref": "POV.html#addKeyword",
                 "tf": 50
               },
-              "Node.html#addKeyword": {
-                "ref": "Node.html#addKeyword",
+              "Node.html#addKeywords": {
+                "ref": "Node.html#addKeywords",
+                "tf": 50
+              },
+              "Node.html#hasKeyword": {
+                "ref": "Node.html#hasKeyword",
                 "tf": 50
               }
             }
@@ -6059,22 +9258,37 @@
         },
         "h": {
           "docs": {},
-          "i": {
+          "a": {
             "docs": {},
-            "d": {
+            "s": {
               "docs": {},
-              "e": {
-                "docs": {
-                  "Node.html#hide": {
-                    "ref": "Node.html#hide",
-                    "tf": 755.5555555555555
+              "k": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "y": {
+                    "docs": {},
+                    "w": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "d": {
+                            "docs": {
+                              "Node.html#hasKeyword": {
+                                "ref": "Node.html#hasKeyword",
+                                "tf": 700
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
-            }
-          },
-          "a": {
-            "docs": {},
+            },
             "n": {
               "docs": {},
               "d": {
@@ -6144,6 +9358,20 @@
               }
             }
           },
+          "i": {
+            "docs": {},
+            "d": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "Node.html#hide": {
+                    "ref": "Node.html#hide",
+                    "tf": 755.5555555555555
+                  }
+                }
+              }
+            }
+          },
           "u": {
             "docs": {},
             "b": {
@@ -6159,6 +9387,31 @@
                 "SceneHub.html": {
                   "ref": "SceneHub.html",
                   "tf": 16.666666666666664
+                }
+              }
+            }
+          },
+          "m": {
+            "docs": {},
+            "d": {
+              "docs": {
+                "XR.html#.setRefSpaceLocation": {
+                  "ref": "XR.html#.setRefSpaceLocation",
+                  "tf": 3.125
+                }
+              }
+            }
+          },
+          "o": {
+            "docs": {},
+            "m": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "Nav.html#.computeDefaultHome": {
+                    "ref": "Nav.html#.computeDefaultHome",
+                    "tf": 4.545454545454546
+                  }
                 }
               }
             }
@@ -6238,7 +9491,11 @@
                   "docs": {
                     "Node.html#getBound": {
                       "ref": "Node.html#getBound",
-                      "tf": 16.666666666666664
+                      "tf": 12.5
+                    },
+                    "Nav.html#.computeDefaultHome": {
+                      "ref": "Nav.html#.computeDefaultHome",
+                      "tf": 4.545454545454546
                     }
                   }
                 }
@@ -6345,23 +9602,28 @@
           }
         }
       },
-      "length": 476
+      "length": 724
     },
     "corpusTokens": [
       "1.0",
       "3.0",
       "3d",
       "abstract",
+      "actual",
+      "ad",
       "adapt",
       "add",
       "addkeyword",
       "adopt",
       "allow",
+      "amount",
       "api",
       "app",
       "appli",
       "approach",
+      "around",
       "arrang",
+      "asset",
       "assign",
       "aton",
       "aton.r",
@@ -6382,6 +9644,7 @@
       "bound",
       "breplic",
       "call",
+      "camera",
       "captur",
       "care",
       "cascad",
@@ -6395,25 +9658,38 @@
       "cleareventhandl",
       "collect",
       "compon",
+      "comput",
+      "computedefaulthom",
+      "consist",
       "constructor",
+      "control",
+      "copi",
+      "copycurrentpov",
       "creat",
+      "current",
+      "custom",
       "data",
       "default",
       "degre",
+      "delet",
       "densiti",
       "depend",
       "deploy",
       "descend",
+      "descript",
       "desktop",
       "desktop/kiosk",
       "develop",
       "devic",
       "deviceorientationcontrol",
       "differ",
+      "direct",
       "disabl",
       "disablepick",
       "document",
       "duplic",
+      "durat",
+      "dv",
       "edit",
       "enabl",
       "enablepick",
@@ -6437,19 +9713,31 @@
       "final",
       "fire",
       "fireev",
+      "first",
       "fov",
       "framework",
       "front",
       "function",
       "game",
       "getbound",
+      "getcontrollerworlddirect",
+      "getcontrollerworldloc",
+      "getcurrentdirect",
+      "getcurrenteyeloc",
+      "getdescript",
+      "getfov",
+      "getmateri",
       "given",
       "global",
+      "grab",
       "graph",
       "handler",
       "handlerloc",
       "handlernetwork",
+      "haskeyword",
       "hide",
+      "hmd",
+      "home",
       "hub",
       "i.",
       "id",
@@ -6461,8 +9749,11 @@
       "instanc",
       "interact",
       "invis",
+      "ispres",
+      "istransit",
       "json",
       "keyword",
+      "keyword(",
       "kw",
       "light",
       "lightprob",
@@ -6473,6 +9764,8 @@
       "list:namespac",
       "load",
       "local",
+      "locat",
+      "locomot",
       "lp",
       "lt;static&gt",
       "m",
@@ -6486,10 +9779,28 @@
       "model",
       "modul",
       "more",
+      "motion",
+      "move",
       "much",
+      "n",
       "namespac",
       "nav",
+      "nav.computedefaulthom",
+      "nav.copycurrentpov",
       "nav.deviceorientationcontrol",
+      "nav.getcurrentdirect",
+      "nav.getcurrenteyeloc",
+      "nav.getfov",
+      "nav.istransit",
+      "nav.requestpov",
+      "nav.requestpovbynod",
+      "nav.setdeviceorientationcontrol",
+      "nav.setfirstpersoncontrol",
+      "nav.setfov",
+      "nav.setmotionamount",
+      "nav.setmotiondirect",
+      "nav.setorbitcontrol",
+      "nav.stop",
       "navig",
       "network",
       "next",
@@ -6501,21 +9812,34 @@
       "node#disablepick",
       "node#enablepick",
       "node#getbound",
+      "node#getdescript",
+      "node#getmateri",
+      "node#haskeyword",
       "node#hid",
       "node#load",
+      "node#orienttocamera",
+      "node#removechildren",
+      "node#setdescript",
       "node#setmateri",
       "node#show",
       "node#toggl",
+      "normal",
       "note",
       "object",
       "onc",
       "oncomplet",
       "option",
+      "orbit",
       "order",
+      "orient",
+      "orienttocamera",
+      "p",
       "panorama",
       "parent",
       "path",
+      "perform",
       "persist",
+      "person",
       "pick",
       "pickabl",
       "pixel",
@@ -6532,15 +9856,21 @@
       "probe",
       "prode",
       "profil",
+      "proper",
       "provid",
       "queri",
       "ray",
       "re)assign",
       "readm",
       "realiz",
+      "recurs",
+      "refer",
+      "removechildren",
       "repres",
       "reqpath",
       "request",
+      "requestpov",
+      "requestpovbynod",
       "requir",
       "reset",
       "resetpixeldens",
@@ -6549,6 +9879,7 @@
       "root",
       "routin",
       "runtim",
+      "s",
       "same",
       "scene",
       "scenehub",
@@ -6560,24 +9891,35 @@
       "sensibl",
       "sent",
       "server",
+      "session",
       "set",
       "setdefaultpixeldens",
+      "setdescript",
+      "setdeviceorientationcontrol",
       "seteditmod",
+      "setfirstpersoncontrol",
       "setfov",
       "setmateri",
+      "setmotionamount",
+      "setmotiondirect",
       "setnextpov",
+      "setorbitcontrol",
       "setpathcollect",
       "setpathscen",
       "setposit",
       "setprevpov",
+      "setrefspaceloc",
       "settarget",
       "show",
       "sid",
       "space",
       "spatial",
+      "specif",
+      "sphere",
       "standard",
       "static",
       "still",
+      "stop",
       "string",
       "sub",
       "subscrib",
@@ -6586,9 +9928,12 @@
       "system",
       "take",
       "target",
+      "techniqu",
       "those",
       "toggl",
       "tool",
+      "transit",
+      "true",
       "type",
       "typic",
       "ui",
@@ -6603,6 +9948,7 @@
       "viceversa",
       "view",
       "viewpoint",
+      "visibil",
       "visibl",
       "visual",
       "vr",
@@ -6610,9 +9956,16 @@
       "web",
       "web3d",
       "whenev",
+      "within",
       "without",
+      "world",
       "xr",
-      "xr.init"
+      "xr.getcontrollerworlddirect",
+      "xr.getcontrollerworldloc",
+      "xr.init",
+      "xr.ispres",
+      "xr.setrefspaceloc",
+      "xr.toggl"
     ],
     "pipeline": [
       "trimmer",
@@ -6775,7 +10128,7 @@
       "name": "Node",
       "tags": "Node",
       "summary": "",
-      "description": "Class representing an ATON node Constructor allows to create different types (Scene nodes, semantic nodes and UI nodes)",
+      "description": "Class representing an ATON node. Constructor allows to create different types (scene nodes, semantic nodes and UI nodes)",
       "body": ""
     },
     "Node.html#as": {
@@ -6788,15 +10141,45 @@
       "summary": "",
       "description": "(Re)assign node ID"
     },
-    "Node.html#addKeyword": {
-      "id": "Node.html#addKeyword",
+    "Node.html#addKeywords": {
+      "id": "Node.html#addKeywords",
       "kind": "function",
-      "title": "addKeyword( kw )",
-      "longname": "Node#addKeyword",
-      "name": "addKeyword",
-      "tags": "Node#addKeyword addKeyword",
+      "title": "addKeywords( kw )",
+      "longname": "Node#addKeywords",
+      "name": "addKeywords",
+      "tags": "Node#addKeywords addKeywords",
       "summary": "",
-      "description": "Adds a keyword to this node"
+      "description": "Add keyword(s) to this node. Keywords are also recursively added into the sub-graph"
+    },
+    "Node.html#hasKeyword": {
+      "id": "Node.html#hasKeyword",
+      "kind": "function",
+      "title": "hasKeyword( kw )",
+      "longname": "Node#hasKeyword",
+      "name": "hasKeyword",
+      "tags": "Node#hasKeyword hasKeyword",
+      "summary": "",
+      "description": "Returns true if this node has specific keyword"
+    },
+    "Node.html#setDescription": {
+      "id": "Node.html#setDescription",
+      "kind": "function",
+      "title": "setDescription( s )",
+      "longname": "Node#setDescription",
+      "name": "setDescription",
+      "tags": "Node#setDescription setDescription",
+      "summary": "",
+      "description": "Set custom description (string) to the node"
+    },
+    "Node.html#getDescription": {
+      "id": "Node.html#getDescription",
+      "kind": "function",
+      "title": "getDescription()",
+      "longname": "Node#getDescription",
+      "name": "getDescription",
+      "tags": "Node#getDescription getDescription",
+      "summary": "",
+      "description": "Get node description (string) if any"
     },
     "Node.html#hide": {
       "id": "Node.html#hide",
@@ -6858,6 +10241,26 @@
       "summary": "",
       "description": "Set cascading material. Note this applies to this node and all children (even all those still loading)"
     },
+    "Node.html#getMaterial": {
+      "id": "Node.html#getMaterial",
+      "kind": "function",
+      "title": "getMaterial()",
+      "longname": "Node#getMaterial",
+      "name": "getMaterial",
+      "tags": "Node#getMaterial getMaterial",
+      "summary": "",
+      "description": "Get cascading material"
+    },
+    "Node.html#removeChildren": {
+      "id": "Node.html#removeChildren",
+      "kind": "function",
+      "title": "removeChildren()",
+      "longname": "Node#removeChildren",
+      "name": "removeChildren",
+      "tags": "Node#removeChildren removeChildren",
+      "summary": "",
+      "description": "Delete all children of this node"
+    },
     "Node.html#attachTo": {
       "id": "Node.html#attachTo",
       "kind": "function",
@@ -6886,7 +10289,17 @@
       "name": "getBound",
       "tags": "Node#getBound getBound",
       "summary": "",
-      "description": "Return bound of this node"
+      "description": "Return bounding sphere of this node"
+    },
+    "Node.html#orientToCamera": {
+      "id": "Node.html#orientToCamera",
+      "kind": "function",
+      "title": "orientToCamera()",
+      "longname": "Node#orientToCamera",
+      "name": "orientToCamera",
+      "tags": "Node#orientToCamera orientToCamera",
+      "summary": "",
+      "description": "Orient this node to current camera"
     },
     "Node.html#load": {
       "id": "Node.html#load",
@@ -6896,7 +10309,7 @@
       "name": "load",
       "tags": "Node#load load",
       "summary": "",
-      "description": "Load a 3D model under this node, with optional onComplete handler. Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding to waste bandwidth"
+      "description": "Load a 3D model under this node, with optional onComplete handler. Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth"
     },
     "EventHub.html": {
       "id": "EventHub.html",
@@ -6992,6 +10405,56 @@
       "summary": "",
       "description": "Initializes XR component"
     },
+    "XR.html#.isPresenting": {
+      "id": "XR.html#.isPresenting",
+      "kind": "function",
+      "title": "&lt;static&gt; isPresenting()",
+      "longname": "XR.isPresenting",
+      "name": "isPresenting",
+      "tags": "XR.isPresenting isPresenting",
+      "summary": "",
+      "description": "Return true if we are presenting (immersive mode)"
+    },
+    "XR.html#.setRefSpaceLocation": {
+      "id": "XR.html#.setRefSpaceLocation",
+      "kind": "function",
+      "title": "&lt;static&gt; setRefSpaceLocation( p )",
+      "longname": "XR.setRefSpaceLocation",
+      "name": "setRefSpaceLocation",
+      "tags": "XR.setRefSpaceLocation setRefSpaceLocation",
+      "summary": "",
+      "description": "Set reference-space location (not the actual HMD camera location). This can be used to move around the user, given a proper locomotion technique"
+    },
+    "XR.html#.toggle": {
+      "id": "XR.html#.toggle",
+      "kind": "function",
+      "title": "&lt;static&gt; toggle()",
+      "longname": "XR.toggle",
+      "name": "toggle",
+      "tags": "XR.toggle toggle",
+      "summary": "",
+      "description": "Toggle immersive mode"
+    },
+    "XR.html#.getControllerWorldLocation": {
+      "id": "XR.html#.getControllerWorldLocation",
+      "kind": "function",
+      "title": "&lt;static&gt; getControllerWorldLocation( i )",
+      "longname": "XR.getControllerWorldLocation",
+      "name": "getControllerWorldLocation",
+      "tags": "XR.getControllerWorldLocation getControllerWorldLocation",
+      "summary": "",
+      "description": "Get controller world location"
+    },
+    "XR.html#.getControllerWorldDirection": {
+      "id": "XR.html#.getControllerWorldDirection",
+      "kind": "function",
+      "title": "&lt;static&gt; getControllerWorldDirection( i )",
+      "longname": "XR.getControllerWorldDirection",
+      "name": "getControllerWorldDirection",
+      "tags": "XR.getControllerWorldDirection getControllerWorldDirection",
+      "summary": "",
+      "description": "Get controller world direction"
+    },
     "MatHub.html": {
       "id": "MatHub.html",
       "kind": "namespace",
@@ -7054,6 +10517,156 @@
       "summary": "",
       "description": "ATON Navigation system",
       "body": ""
+    },
+    "Nav.html#.getCurrentEyeLocation": {
+      "id": "Nav.html#.getCurrentEyeLocation",
+      "kind": "function",
+      "title": "&lt;static&gt; getCurrentEyeLocation()",
+      "longname": "Nav.getCurrentEyeLocation",
+      "name": "getCurrentEyeLocation",
+      "tags": "Nav.getCurrentEyeLocation getCurrentEyeLocation",
+      "summary": "",
+      "description": "Get current eye location, consistent within standard and immersive XR sessions."
+    },
+    "Nav.html#.getCurrentDirection": {
+      "id": "Nav.html#.getCurrentDirection",
+      "kind": "function",
+      "title": "&lt;static&gt; getCurrentDirection()",
+      "longname": "Nav.getCurrentDirection",
+      "name": "getCurrentDirection",
+      "tags": "Nav.getCurrentDirection getCurrentDirection",
+      "summary": "",
+      "description": "Get current view direction (normalized). Consistent within standard and immersive XR sessions."
+    },
+    "Nav.html#.copyCurrentPOV": {
+      "id": "Nav.html#.copyCurrentPOV",
+      "kind": "function",
+      "title": "&lt;static&gt; copyCurrentPOV()",
+      "longname": "Nav.copyCurrentPOV",
+      "name": "copyCurrentPOV",
+      "tags": "Nav.copyCurrentPOV copyCurrentPOV",
+      "summary": "",
+      "description": "Grab current POV and returns a copy"
+    },
+    "Nav.html#.isTransitioning": {
+      "id": "Nav.html#.isTransitioning",
+      "kind": "function",
+      "title": "&lt;static&gt; isTransitioning()",
+      "longname": "Nav.isTransitioning",
+      "name": "isTransitioning",
+      "tags": "Nav.isTransitioning isTransitioning",
+      "summary": "",
+      "description": "Return true if the navigation system is currently performing a transition"
+    },
+    "Nav.html#.setOrbitControl": {
+      "id": "Nav.html#.setOrbitControl",
+      "kind": "function",
+      "title": "&lt;static&gt; setOrbitControl()",
+      "longname": "Nav.setOrbitControl",
+      "name": "setOrbitControl",
+      "tags": "Nav.setOrbitControl setOrbitControl",
+      "summary": "",
+      "description": "Set Orbit navigation mode (default)"
+    },
+    "Nav.html#.setFirstPersonControl": {
+      "id": "Nav.html#.setFirstPersonControl",
+      "kind": "function",
+      "title": "&lt;static&gt; setFirstPersonControl()",
+      "longname": "Nav.setFirstPersonControl",
+      "name": "setFirstPersonControl",
+      "tags": "Nav.setFirstPersonControl setFirstPersonControl",
+      "summary": "",
+      "description": "Set First-Person navigation mode"
+    },
+    "Nav.html#.setDeviceOrientationControl": {
+      "id": "Nav.html#.setDeviceOrientationControl",
+      "kind": "function",
+      "title": "&lt;static&gt; setDeviceOrientationControl()",
+      "longname": "Nav.setDeviceOrientationControl",
+      "name": "setDeviceOrientationControl",
+      "tags": "Nav.setDeviceOrientationControl setDeviceOrientationControl",
+      "summary": "",
+      "description": "Set device-orientation navigation mode"
+    },
+    "Nav.html#.setMotionAmount": {
+      "id": "Nav.html#.setMotionAmount",
+      "kind": "function",
+      "title": "&lt;static&gt; setMotionAmount( f )",
+      "longname": "Nav.setMotionAmount",
+      "name": "setMotionAmount",
+      "tags": "Nav.setMotionAmount setMotionAmount",
+      "summary": "",
+      "description": "Set a motion amount"
+    },
+    "Nav.html#.setMotionDirection": {
+      "id": "Nav.html#.setMotionDirection",
+      "kind": "function",
+      "title": "&lt;static&gt; setMotionDirection( f )",
+      "longname": "Nav.setMotionDirection",
+      "name": "setMotionDirection",
+      "tags": "Nav.setMotionDirection setMotionDirection",
+      "summary": "",
+      "description": "Set a motion direction"
+    },
+    "Nav.html#.stop": {
+      "id": "Nav.html#.stop",
+      "kind": "function",
+      "title": "&lt;static&gt; stop()",
+      "longname": "Nav.stop",
+      "name": "stop",
+      "tags": "Nav.stop stop",
+      "summary": "",
+      "description": "Stop current motion"
+    },
+    "Nav.html#.setFOV": {
+      "id": "Nav.html#.setFOV",
+      "kind": "function",
+      "title": "&lt;static&gt; setFOV( f )",
+      "longname": "Nav.setFOV",
+      "name": "setFOV",
+      "tags": "Nav.setFOV setFOV",
+      "summary": "",
+      "description": "Set field-of-view (FoV) in degrees"
+    },
+    "Nav.html#.getFOV": {
+      "id": "Nav.html#.getFOV",
+      "kind": "function",
+      "title": "&lt;static&gt; getFOV()",
+      "longname": "Nav.getFOV",
+      "name": "getFOV",
+      "tags": "Nav.getFOV getFOV",
+      "summary": "",
+      "description": "Get current field-of-view (FoV) in degrees"
+    },
+    "Nav.html#.requestPOV": {
+      "id": "Nav.html#.requestPOV",
+      "kind": "function",
+      "title": "&lt;static&gt; requestPOV( pov, duration )",
+      "longname": "Nav.requestPOV",
+      "name": "requestPOV",
+      "tags": "Nav.requestPOV requestPOV",
+      "summary": "",
+      "description": "Request transition to viewpoint (POV)"
+    },
+    "Nav.html#.requestPOVbyNode": {
+      "id": "Nav.html#.requestPOVbyNode",
+      "kind": "function",
+      "title": "&lt;static&gt; requestPOVbyNode( n, duration )",
+      "longname": "Nav.requestPOVbyNode",
+      "name": "requestPOVbyNode",
+      "tags": "Nav.requestPOVbyNode requestPOVbyNode",
+      "summary": "",
+      "description": "Request transition to specific ATON Node"
+    },
+    "Nav.html#.computeDefaultHome": {
+      "id": "Nav.html#.computeDefaultHome",
+      "kind": "function",
+      "title": "&lt;static&gt; computeDefaultHome( dv )",
+      "longname": "Nav.computeDefaultHome",
+      "name": "computeDefaultHome",
+      "tags": "Nav.computeDefaultHome computeDefaultHome",
+      "summary": "",
+      "description": "Compute a default home, depending on visibile bounding sphere. Typically called after all assets are loaded"
     },
     "Nav.html#.DeviceOrientationControls": {
       "id": "Nav.html#.DeviceOrientationControls",

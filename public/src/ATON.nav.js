@@ -65,16 +65,41 @@ Nav.init = ()=>{
     Nav._motionDir = new THREE.Vector3(0,1,0);
 };
 
-// Returns current eye location (consistent within standard and immersive XR sessions)
+/**
+Get current eye location, consistent within standard and immersive XR sessions.
+@example
+ATON.Nav.getCurrentDirection();
+*/
 Nav.getCurrentEyeLocation = ()=>{
     return Nav._currPOV.pos;
 };
 
+/**
+Get current view direction (normalized). Consistent within standard and immersive XR sessions.
+@example
+ATON.Nav.getCurrentDirection();
+*/
 Nav.getCurrentDirection = ()=>{
     return Nav._vDir;
 };
 
+/**
+Grab current POV and returns a copy 
+@example
+let pov = ATON.Nav.copyCurrentPOV();
+*/
+Nav.copyCurrentPOV = ()=>{
+    let pov = new ATON.POV();
+    pov.pos.copy(Nav._currPOV.pos);
+    pov.target.copy(Nav._currPOV.target);
+    pov.fov = Nav._currPOV.fov;
 
+    return pov;
+};
+
+/**
+Return true if the navigation system is currently performing a transition
+*/
 Nav.isTransitioning = ()=>{
     if (Nav._tPOVcall >= 0.0) return true;
     return false;
@@ -84,7 +109,9 @@ Nav.isOrbit = ()=>{ return (Nav._mode === Nav.MODE_ORBIT); };
 Nav.isFirstPerson = ()=>{ return (Nav._mode === Nav.MODE_FP); };
 Nav.isDevOri = ()=>{ return (Nav._mode === Nav.MODE_DEVORI); };
 
-// Set Orbit controls (default)
+/**
+Set Orbit navigation mode (default)
+*/
 Nav.setOrbitControl = ()=>{
     if (ATON.XR.isPresenting()) return;
 
@@ -122,7 +149,9 @@ Nav.setOrbitControl = ()=>{
     if (Nav._currPOV) Nav.syncCurrCamera();
 };
 
-// Set FP controls
+/**
+Set First-Person navigation mode
+*/
 Nav.setFirstPersonControl = ()=>{
     if (ATON.XR.isPresenting()) return;
 
@@ -174,7 +203,9 @@ Nav.setFirstPersonControl = ()=>{
 */
 };
 
-// Set DevOri controls
+/**
+Set device-orientation navigation mode
+*/
 Nav.setDeviceOrientationControl = ()=>{
     if (!ATON.Utils.isMobile()) return;
 
@@ -199,20 +230,40 @@ Nav.setDeviceOrientationControl = ()=>{
     if (Nav._currPOV) Nav.syncCurrCamera();
 };
 
-
+/**
+Set a motion amount
+@param {number} f - the motion amount
+@example
+ATON.Nav.setMotionAmount(0.1);
+*/
 Nav.setMotionAmount = (f)=>{
     Nav._motionAmt = f;
 };
 
+/**
+Set a motion direction
+@param {THREE.Vector3} f - the motion direction
+@example
+ATON.Nav.setMotionDirection( new THREE.Vector(1,0,0) );
+*/
 Nav.setMotionDirection = (v)=>{
     Nav._motionDir.copy(v);
 }
 
+/**
+Stop current motion
+*/
 Nav.stop = ()=>{
     Nav._motionAmt = 0.0;
+    //TODO: stop any transition
 };
 
-// FoV
+/**
+Set field-of-view (FoV) in degrees
+@param {number} f
+@example
+ATON.Nav.setFOV(30.0);
+*/
 Nav.setFOV = (f)=>{
     if (ATON.XR.isPresenting()) return; // skip for immersive sessions
 
@@ -223,6 +274,9 @@ Nav.setFOV = (f)=>{
     cam.updateProjectionMatrix();
 };
 
+/**
+Get current field-of-view (FoV) in degrees
+*/
 Nav.getFOV = ()=>{
     return Nav._currPOV.fov;
 };
@@ -429,7 +483,13 @@ Nav.update = ()=>{
 };
 
 
-// Request transition to viewpoint (POV)
+/**
+Request transition to viewpoint (POV)
+@param {POV} pov - the target POV
+@param {number} duration - duration of transition in seconds (optional), otherwise use standard duration
+@example
+ATON.Nav.requestPOV( myTargetPOV );
+*/
 Nav.requestPOV = (pov, duration)=>{
     if (ATON._tPOVcall >= 0.0) return; // already requested
 
@@ -459,6 +519,7 @@ Nav.requestPOV = (pov, duration)=>{
     }
 };
 
+
 Nav.requestPOVbyBound = (bs, duration)=>{
     if (bs === undefined) return;
 
@@ -476,6 +537,13 @@ Nav.requestPOVbyBound = (bs, duration)=>{
     Nav.requestPOV(pov, duration);
 };
 
+/**
+Request transition to specific ATON Node
+@param {Node} n - the target ATON Node
+@param {number} duration - duration of transition in seconds (optional), otherwise use standard duration
+@example
+ATON.Nav.requestPOVbyNode( myNode );
+*/
 Nav.requestPOVbyNode = (n, duration)=>{
     if (n === undefined) return;
     
@@ -503,7 +571,13 @@ Nav.requestRetarget = (point, normal, duration)=>{
     Nav.requestPOV(pov, duration);
 };
 
-// Typically after all assets are loaded
+
+/**
+Compute a default home, depending on visibile bounding sphere. Typically called after all assets are loaded
+@param {THREE.Vector3} dv - the normalized offset direction (optional)
+@example
+ATON.Nav.computeDefaultHome();
+*/
 Nav.computeDefaultHome = (dv)=>{
     if (dv === undefined) dv = new THREE.Vector3(1,0.7,1);
 

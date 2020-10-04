@@ -92,10 +92,10 @@
 </dt>
 <dd class="symbol-details class  collapsible-symbol expanded" style="max-height: 9999px;">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Class representing an ATON node
-			Constructor allows to create different types (Scene nodes, semantic nodes and UI nodes)</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Class representing an ATON node.
+			Constructor allows to create different types (scene nodes, semantic nodes and UI nodes)</p></div>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">new ATON.Node(&quot;someID&quot;)</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">let myNode &#x3D; new ATON.Node(&quot;someID&quot;)</code></pre>
 					</div>
 			</div>	</div>
 </dd>
@@ -138,11 +138,44 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="addKeyword" class="function public"><span class="name">addKeyword</span><span class="signature-params">( <span class="signature-param">kw</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id="addKeywords" class="function public"><span class="name">addKeywords</span><span class="signature-params">( <span class="signature-param">kw</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Adds a keyword to this node</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Add keyword(s) to this node. Keywords are also recursively added into the sub-graph</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>kw</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the keyword or comma-separated list of keywords</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.addKeywords(&quot;heritage,reconstruction&quot;);</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="hasKeyword" class="function public"><span class="name">hasKeyword</span><span class="signature-params">( <span class="signature-param">kw</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Returns true if this node has specific keyword</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -165,7 +198,52 @@
 				</table>
 			</div>
 			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.addKeyword(&quot;heritage&quot;).addKeyword(&quot;reconstruction&quot;)</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">if (myNode.hasKeyword(&quot;heritage&quot;)){ ... }</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setDescription" class="function public"><span class="name">setDescription</span><span class="signature-params">( <span class="signature-param">s</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set custom description (string) to the node</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>s</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>content</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setDescription(&quot;This is a small description&quot;);</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="getDescription" class="function public"><span class="name">getDescription</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get node description (string) if any</p></div>
+			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.getContent();</code></pre>
 					</div>
 			</div>	</div>
 </dd>
@@ -264,6 +342,24 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="getMaterial" class="function public"><span class="name">getMaterial</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get cascading material</p></div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="removeChildren" class="function public"><span class="name">removeChildren</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Delete all children of this node</p></div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
 			<h4 id="attachTo" class="function public"><span class="name">attachTo</span><span class="signature-params">( <span class="signature-param">node</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
@@ -291,8 +387,10 @@
 				</table>
 			</div>
 			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.attachTo(&quot;someGroupID&quot;)
-			myNode.attachTo(myParentGroup)</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.attachTo(&quot;someGroupID&quot;)</code></pre>
+					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.attachTo(myParentGroup)</code></pre>
 					</div>
 			</div>	</div>
 </dd>
@@ -315,10 +413,19 @@
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return bound of this node</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return bounding sphere of this node</p></div>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.getBound()</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">let bs &#x3D; myNode.getBound()</code></pre>
 					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="orientToCamera" class="function public"><span class="name">orientToCamera</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Orient this node to current camera</p></div>
 			</div>	</div>
 </dd>
 											<hr/>
@@ -328,7 +435,7 @@
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Load a 3D model under this node, with optional onComplete handler.
-			Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding to waste bandwidth</p></div>
+			Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -373,7 +480,7 @@
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 27th Sep 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 4th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

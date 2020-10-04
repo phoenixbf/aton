@@ -12,7 +12,7 @@ Class representing a light probe (LP), can be static or updated at runtime
 @param {number} near - Capture near (default 1m)
 @param {number} far - Capture far (default 1Km)
 @example 
-new ATON.LightProbe()
+let LP = new ATON.LightProbe()
 */
 class LightProbe {
 

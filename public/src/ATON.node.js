@@ -8,11 +8,11 @@
 
 
 /**
-Class representing an ATON node
-Constructor allows to create different types (Scene nodes, semantic nodes and UI nodes)
+Class representing an ATON node.
+Constructor allows to create different types (scene nodes, semantic nodes and UI nodes)
 @class Node
 @example 
-new ATON.Node("someID")
+let myNode = new ATON.Node("someID")
 */
 class Node extends THREE.Group {
 
@@ -86,14 +86,22 @@ setCloneOnLoadHit(b){
 }
 
 /**
-Adds a keyword to this node
-@param {string} kw - the keyword
+Add keyword(s) to this node. Keywords are also recursively added into the sub-graph
+@param {string} kw - the keyword or comma-separated list of keywords
 @example
-myNode.addKeyword("heritage").addKeyword("reconstruction")
+myNode.addKeywords("heritage,reconstruction");
 */
-addKeyword(kw){
+addKeywords(kw){
+    let K = kw.split(",");
+
     if (this.kwords === undefined) this.kwords = {};
-    this.kwords[kw] = true;
+    for (let k in K) this.kwords[ K[k] ] = true;
+
+    // recurse into ATON nodes
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.type !== undefined) C.addKeywords(kw);
+    }
 
     return this;
 }
@@ -206,6 +214,10 @@ setMaterial(M){
 
     return this;
 }
+
+/** 
+Get cascading material
+*/
 getMaterial(){
     return this.userData.cMat;
 }
@@ -368,7 +380,9 @@ removeChild(c){
 
     return this;
 }
-
+/**
+Delete all children of this node
+*/
 removeChildren(){
     let num = this.children.length;
     for (let i=(num-1); i>=0; i--) this.removeChild(this.children[i]);
@@ -376,14 +390,13 @@ removeChildren(){
     return this;
 }
 
-// Attach this node to parent by ID or object
-
 
 /**
 Attach this node to parent by proding ID (string) or node object
 @param {string} node - the parent node ID
 @example
 myNode.attachTo("someGroupID")
+@example
 myNode.attachTo(myParentGroup)
 */
 attachTo(node){
@@ -408,9 +421,9 @@ attachToRoot(){
 }
 
 /**
-Return bound of this node
+Return bounding sphere of this node
 @example
-myNode.getBound()
+let bs = myNode.getBound()
 */
 getBound(){
     let bb = new THREE.Box3().setFromObject( this );
@@ -443,7 +456,9 @@ setRotation(rx,ry,rz){
     
     return this;
 }
-
+/**
+Orient this node to current camera
+*/
 orientToCamera(){
     this.quaternion.copy( ATON.Nav._qOri );
     return this;
@@ -456,7 +471,7 @@ setYup(){
 
 /**
 Load a 3D model under this node, with optional onComplete handler.
-Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding to waste bandwidth
+Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth
 @param {string} url - the url of the 3D model
 @param {function} onComplete - the optional handler to be fired on completion
 @example

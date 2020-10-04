@@ -348,6 +348,9 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // TODO: go POV in sight if any (panorama only mode)
 }
 
+/**
+Toggle fullscreen
+*/
 ATON.toggleFullScreen = ()=>{
     screenfull.toggle();
 /*
@@ -490,9 +493,16 @@ ATON.realize = ()=>{
     ATON.focusOn3DView();
 };
 
+/**
+Pause rendering
+*/
 ATON.renderPause = ()=>{
     ATON._renderer.setAnimationLoop( undefined );
 };
+
+/**
+Resume rendering (if paused)
+*/
 ATON.renderResume = ()=>{
     ATON._renderer.setAnimationLoop( ATON._onFrame );
 };
@@ -544,49 +554,112 @@ ATON.semnodes = {}; // Semantics graph
 ATON.uinodes  = {}; // UI graph
 
 // Visible scene-graph
+//=============================================
+/**
+Create a scene node (visible scene-graph)
+@param {string} id - a string representing unique ID of the node (optional)
+@returns {Node}
+*/
 ATON.createSceneNode = (id)=>{
     return new ATON.Node(id, ATON.NTYPES.SCENE);
 };
+
+/**
+Get a previously created scene node (visible scene-graph)
+@param {string} id - the node ID
+@returns {Node}
+*/
 ATON.getSceneNode = (id)=>{ 
     if (id === undefined) return undefined;    
     return ATON.snodes[id];
 };
+
+/**
+Get or create a scene node (visible scene-graph)
+@param {string} id - the node ID
+@returns {Node}
+*/
 ATON.getOrCreateSceneNode = (id)=>{
     let N = ATON.getSceneNode(id);
     if (N !== undefined) return N;
     return ATON.createSceneNode(id);
 };
 
+/**
+Get root (visible scene-graph)
+@returns {Node}
+*/
 ATON.getRootScene = ()=>{
     return ATON._rootVisible;
 };
 
 // Semantics, shape descriptors
+//=============================================
+
+/**
+Create a semantic node
+@param {string} id - a string representing unique ID of the node (optional)
+@returns {Node}
+*/
 ATON.createSemanticNode = (id)=>{
     return new ATON.Node(id, ATON.NTYPES.SEM);
 };
+
+/**
+Get a previously created semantic node
+@param {string} id - the node ID
+@returns {Node}
+*/
 ATON.getSemanticNode = (id)=>{
     if (id === undefined) return undefined; 
     return ATON.semnodes[id];
 };
+
+/**
+Get or create a semantic node
+@param {string} id - the node ID
+@returns {Node}
+*/
 ATON.getOrCreateSemanticNode = (id)=>{
     let S = ATON.getSemanticNode(id);
     if (S !== undefined) return S;
     return ATON.createSemanticNode(id);
 };
 
+/**
+Get root of semantic graph
+@returns {Node}
+*/
 ATON.getRootSemantics = ()=>{
     return ATON._rootSem;
 };
 
 // UI graph
+//=============================================
+
+/**
+Create a UI node
+@param {string} id - a string representing unique ID of the node (optional)
+@returns {Node}
+*/
 ATON.createUINode = (id)=>{
     return new ATON.Node(id, ATON.NTYPES.UI);
 };
+
+/**
+Get a previously created UI node
+@param {string} id - the node ID
+@returns {Node}
+*/
 ATON.getUINode = (id)=>{
     if (id === undefined) return undefined; 
     return ATON.uinodes[id];
 };
+
+/**
+Get root of UI graph
+@returns {Node}
+*/
 ATON.getRootUI = ()=>{
     return ATON._rootUI;
 };
@@ -675,13 +748,19 @@ ATON.setNeutralAmbientLight = (a)=>{
     ATON.ambLight.color = new THREE.Color( a,a,a );
 };
 
+/**
+Add a LightProbe to the scene
+@param {LightProbe} LP - the light probe being added 
+*/
 ATON.addLightProbe = (LP)=>{
     if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(0.1);
 
     ATON._lps.push(LP);
 };
 
-// Update ALL lightprobes
+/**
+Update all LightProbes in the scene
+*/
 ATON.updateLightProbes = ()=>{
     if (ATON._lps.length === 0) return;
 
@@ -712,6 +791,13 @@ ATON.updateLightProbes = ()=>{
 //==============================================================
 // Environment
 //==============================================================
+
+/**
+Set the main panorama (360)
+@param {string} path - url to equirectangular image
+@example
+ATON.setMainPanorama("my/pano.jpg");
+*/
 ATON.setMainPanorama = (path)=>{
 
     let tpano = new THREE.TextureLoader().load(path);
@@ -750,17 +836,29 @@ ATON.setMainPanorama = (path)=>{
     ATON._rootVisibleGlobal.add(ATON._mMainPano);
 };
 
+
 ATON.setMainPanoramaRadius = (r)=>{
     if (ATON._gMainPano === undefined) return;
     ATON._gMainPano.scale( -r,r,r );
 };
 
+/**
+Set main panorama rotation (radians) around up vector
+@param {number} r - rotation
+@example
+ATON.setMainPanoramaRotation(1.5);
+*/
 ATON.setMainPanoramaRotation = (r)=>{
     if (ATON._mMainPano === undefined) return;
     ATON._mMainPano.rotation.set( 0,r,0 );
 };
 
-
+/**
+Set and activate main directional light
+@param {THREE.Vector3} v - light direction
+@example
+ATON.setMainLightDirection( new THREE.Vector(0.1,-1.0,0.0) );
+*/
 ATON.setMainLightDirection = (v)=>{
 
     let d = v.clone();
@@ -976,14 +1074,37 @@ ATON._handleQueryScene = ()=>{
     ATON._queryDataScene.n = h.face.normal.clone().applyMatrix3( ATON._queryDataScene.matrixWorld ).normalize();
 };
 
+/**
+Get location of current queried point (if any) on visible scene.
+If no point is queried, return undefined
+@returns {THREE.Vector3}
+@example
+let p = ATON.getSceneQueriedPoint()
+*/
 ATON.getSceneQueriedPoint = ()=>{
     if (ATON._queryDataScene === undefined) return undefined;
     return ATON._queryDataScene.p;
 };
+
+/**
+Get distance to queried location (if any) on visible scene.
+If no point is queried, return undefined
+@returns {number}
+@example
+let d = ATON.getSceneQueriedDistance()
+*/
 ATON.getSceneQueriedDistance = ()=>{
     if (ATON._queryDataScene === undefined) return undefined;
     return ATON._queryDataScene.d;
 };
+
+/**
+Get queried location normal (if any) on visible scene.
+If no point is queried, return undefined
+@returns {THREE.Vector3}
+@example
+let n = ATON.getSceneQueriedNormal()
+*/
 ATON.getSceneQueriedNormal = ()=>{
     if (ATON._queryDataScene === undefined) return undefined;
     return ATON._queryDataScene.n;

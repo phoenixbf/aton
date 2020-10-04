@@ -125,6 +125,7 @@ VRoadcast.on = (evtname, handler)=>{
 
 /**
 Return true if VRoadcast is connected to the service
+@returns {boolean}
 */
 VRoadcast.isConnected = ()=>{
     return VRoadcast._connected;

@@ -102,35 +102,68 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".getCurrentEyeLocation" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getCurrentEyeLocation</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".init" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">init</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Initialize nav system</p></div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".getCurrentEyeLocation" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getCurrentEyeLocation</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{THREE.Vector3}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get current eye location, consistent within standard and immersive XR sessions.</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">THREE.Vector3</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.Nav.getCurrentDirection();</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">let p &#x3D; ATON.Nav.getCurrentEyeLocation();</code></pre>
 					</div>
 			</div>	</div>
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".getCurrentDirection" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getCurrentDirection</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".getCurrentDirection" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getCurrentDirection</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{THREE.Vector3}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get current view direction (normalized). Consistent within standard and immersive XR sessions.</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">THREE.Vector3</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.Nav.getCurrentDirection();</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">let d &#x3D; ATON.Nav.getCurrentDirection();</code></pre>
 					</div>
 			</div>	</div>
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".copyCurrentPOV" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">copyCurrentPOV</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".copyCurrentPOV" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">copyCurrentPOV</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{<a href="POV.html">POV</a>}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Grab current POV and returns a copy</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Grab current POV and return a copy.</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="POV.html">POV</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
 						<pre class="prettyprint source language-javascript"><code class="language-javascript">let pov &#x3D; ATON.Nav.copyCurrentPOV();</code></pre>
 					</div>
@@ -138,11 +171,70 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".isTransitioning" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isTransitioning</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".isTransitioning" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isTransitioning</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return true if the navigation system is currently performing a transition</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".isOrbit" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isOrbit</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return true if the navigation system is in Orbit mode</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".isFirstPerson" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isFirstPerson</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return true if the navigation system is in First-person mode</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".isDevOri" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isDevOri</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return true if the navigation system is in Device-orientation mode</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>	</div>
 </dd>
 											<hr/>
@@ -281,11 +373,19 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".getFOV" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getFOV</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".getFOV" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getFOV</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{number}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get current field-of-view (FoV) in degrees</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">number</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>	</div>
 </dd>
 											<hr/>
@@ -400,6 +500,66 @@
 						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.Nav.computeDefaultHome();</code></pre>
 					</div>
 			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".setHomePOV" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">setHomePOV</span><span class="signature-params">( <span class="signature-param">pov</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set the home viewpoint (POV)</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>pov</code></td>
+							<td><span class="param-type"><a href="POV.html">POV</a></span></td>
+							<td class="last">
+									<p>the home POV</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".requestHome" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">requestHome</span><span class="signature-params">( <span class="signature-param">duration</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Request home viewpoint</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>duration</code></td>
+							<td><span class="param-type">number</span></td>
+							<td class="last">
+									<p>transition duration</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
 </dd>
 									</dl>
 							</article>

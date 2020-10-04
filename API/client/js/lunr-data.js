@@ -244,6 +244,7 @@ window.lunrData = {
           "sub"
         ],
         "Node.html#hasKeyword": [
+          "boolean",
           "function",
           "haskeyword",
           "keyword",
@@ -358,7 +359,8 @@ window.lunrData = {
           "function",
           "getmateri",
           "materi",
-          "node#getmateri"
+          "node#getmateri",
+          "three.materi"
         ],
         "Node.html#removeChildren": [
           "children",
@@ -377,7 +379,7 @@ window.lunrData = {
           "node#attachto",
           "object",
           "parent",
-          "prode",
+          "provid",
           "string"
         ],
         "Node.html#attachToRoot": [
@@ -408,7 +410,36 @@ window.lunrData = {
           "node",
           "node#getbound",
           "return",
-          "sphere"
+          "sphere",
+          "three.spher"
+        ],
+        "Node.html#setPosition": [
+          "function",
+          "locat",
+          "node",
+          "node#setposit",
+          "set",
+          "setposit",
+          "translat"
+        ],
+        "Node.html#setScale": [
+          "function",
+          "node",
+          "node#setscal",
+          "scale",
+          "set",
+          "setscal"
+        ],
+        "Node.html#setRotation": [
+          "euler",
+          "function",
+          "node",
+          "node#setrot",
+          "radian",
+          "rotat",
+          "rx,ry,rz",
+          "set",
+          "setrot"
         ],
         "Node.html#orientToCamera": [
           "camera",
@@ -531,6 +562,7 @@ window.lunrData = {
           "xr.init"
         ],
         "XR.html#.isPresenting": [
+          "boolean",
           "function",
           "immers",
           "ispres",
@@ -577,6 +609,7 @@ window.lunrData = {
           "getcontrollerworldloc",
           "locat",
           "lt;static&gt",
+          "three.vector3",
           "world",
           "xr.getcontrollerworldloc"
         ],
@@ -586,6 +619,7 @@ window.lunrData = {
           "function",
           "getcontrollerworlddirect",
           "lt;static&gt",
+          "three.vector3",
           "world",
           "xr.getcontrollerworlddirect"
         ],
@@ -648,6 +682,15 @@ window.lunrData = {
           "navig",
           "system"
         ],
+        "Nav.html#.init": [
+          "function",
+          "init",
+          "initi",
+          "lt;static&gt",
+          "nav",
+          "nav.init",
+          "system"
+        ],
         "Nav.html#.getCurrentEyeLocation": [
           "consist",
           "current",
@@ -660,6 +703,7 @@ window.lunrData = {
           "nav.getcurrenteyeloc",
           "session",
           "standard",
+          "three.vector3",
           "within",
           "xr"
         ],
@@ -675,6 +719,7 @@ window.lunrData = {
           "normal",
           "session",
           "standard",
+          "three.vector3",
           "view",
           "within",
           "xr"
@@ -691,6 +736,7 @@ window.lunrData = {
           "return"
         ],
         "Nav.html#.isTransitioning": [
+          "boolean",
           "current",
           "function",
           "istransit",
@@ -701,6 +747,47 @@ window.lunrData = {
           "return",
           "system",
           "transit",
+          "true"
+        ],
+        "Nav.html#.isOrbit": [
+          "boolean",
+          "function",
+          "isorbit",
+          "lt;static&gt",
+          "mode",
+          "nav.isorbit",
+          "navig",
+          "orbit",
+          "return",
+          "system",
+          "true"
+        ],
+        "Nav.html#.isFirstPerson": [
+          "boolean",
+          "first",
+          "function",
+          "isfirstperson",
+          "lt;static&gt",
+          "mode",
+          "nav.isfirstperson",
+          "navig",
+          "person",
+          "return",
+          "system",
+          "true"
+        ],
+        "Nav.html#.isDevOri": [
+          "boolean",
+          "devic",
+          "function",
+          "isdevori",
+          "lt;static&gt",
+          "mode",
+          "nav.isdevori",
+          "navig",
+          "orient",
+          "return",
+          "system",
           "true"
         ],
         "Nav.html#.setOrbitControl": [
@@ -785,6 +872,7 @@ window.lunrData = {
           "getfov",
           "lt;static&gt",
           "nav.getfov",
+          "number",
           "view"
         ],
         "Nav.html#.requestPOV": [
@@ -828,6 +916,26 @@ window.lunrData = {
           "sphere",
           "typic",
           "visibil"
+        ],
+        "Nav.html#.setHomePOV": [
+          "function",
+          "home",
+          "lt;static&gt",
+          "nav.sethomepov",
+          "pov",
+          "set",
+          "sethomepov",
+          "viewpoint"
+        ],
+        "Nav.html#.requestHome": [
+          "durat",
+          "function",
+          "home",
+          "lt;static&gt",
+          "nav.requesthom",
+          "request",
+          "requesthom",
+          "viewpoint"
         ],
         "SUI.html": [
           "aton",
@@ -885,6 +993,7 @@ window.lunrData = {
           "vroadcast.on"
         ],
         "VRoadcast.html#.isConnected": [
+          "boolean",
           "connect",
           "function",
           "isconnect",
@@ -941,6 +1050,14 @@ window.lunrData = {
           "set",
           "setpathscen"
         ],
+        "ATON.html#.toggleFullScreen": [
+          "aton.togglefullscreen",
+          "fullscreen",
+          "function",
+          "lt;static&gt",
+          "toggl",
+          "togglefullscreen"
+        ],
         "ATON.html#.realize": [
           "aton",
           "aton.r",
@@ -957,6 +1074,23 @@ window.lunrData = {
           "realiz",
           "sub",
           "take"
+        ],
+        "ATON.html#.renderPause": [
+          "aton.renderpaus",
+          "function",
+          "lt;static&gt",
+          "paus",
+          "render",
+          "renderpaus"
+        ],
+        "ATON.html#.renderResume": [
+          "aton.renderresum",
+          "function",
+          "lt;static&gt",
+          "paus",
+          "render",
+          "renderresum",
+          "resum"
         ],
         "ATON.html#.setDefaultPixelDensity": [
           "1.0",
@@ -979,9 +1113,231 @@ window.lunrData = {
           "pixel",
           "reset",
           "resetpixeldens"
+        ],
+        "ATON.html#.createSceneNode": [
+          "aton.createscenenod",
+          "creat",
+          "createscenenod",
+          "function",
+          "graph",
+          "id",
+          "lt;static&gt",
+          "node",
+          "scene",
+          "visibl"
+        ],
+        "ATON.html#.getSceneNode": [
+          "aton.getscenenod",
+          "creat",
+          "function",
+          "getscenenod",
+          "graph",
+          "id",
+          "lt;static&gt",
+          "node",
+          "previous",
+          "scene",
+          "visibl"
+        ],
+        "ATON.html#.getOrCreateSceneNode": [
+          "aton.getorcreatescenenod",
+          "creat",
+          "function",
+          "getorcreatescenenod",
+          "graph",
+          "id",
+          "lt;static&gt",
+          "node",
+          "scene",
+          "visibl"
+        ],
+        "ATON.html#.getRootScene": [
+          "aton.getrootscen",
+          "function",
+          "getrootscen",
+          "graph",
+          "lt;static&gt",
+          "node",
+          "root",
+          "scene",
+          "visibl"
+        ],
+        "ATON.html#.createSemanticNode": [
+          "aton.createsemanticnod",
+          "creat",
+          "createsemanticnod",
+          "function",
+          "id",
+          "lt;static&gt",
+          "node",
+          "semant"
+        ],
+        "ATON.html#.getSemanticNode": [
+          "aton.getsemanticnod",
+          "creat",
+          "function",
+          "getsemanticnod",
+          "id",
+          "lt;static&gt",
+          "node",
+          "previous",
+          "semant"
+        ],
+        "ATON.html#.getOrCreateSemanticNode": [
+          "aton.getorcreatesemanticnod",
+          "creat",
+          "function",
+          "getorcreatesemanticnod",
+          "id",
+          "lt;static&gt",
+          "node",
+          "semant"
+        ],
+        "ATON.html#.getRootSemantics": [
+          "aton.getrootsemant",
+          "function",
+          "getrootsemant",
+          "graph",
+          "lt;static&gt",
+          "node",
+          "root",
+          "semant"
+        ],
+        "ATON.html#.createUINode": [
+          "aton.createuinod",
+          "creat",
+          "createuinod",
+          "function",
+          "id",
+          "lt;static&gt",
+          "node",
+          "ui"
+        ],
+        "ATON.html#.getUINode": [
+          "aton.getuinod",
+          "creat",
+          "function",
+          "getuinod",
+          "id",
+          "lt;static&gt",
+          "node",
+          "previous",
+          "ui"
+        ],
+        "ATON.html#.getRootUI": [
+          "aton.getrootui",
+          "function",
+          "getrootui",
+          "graph",
+          "lt;static&gt",
+          "node",
+          "root",
+          "ui"
+        ],
+        "ATON.html#.addLightProbe": [
+          "add",
+          "addlightprob",
+          "aton.addlightprob",
+          "function",
+          "lightprob",
+          "lp",
+          "lt;static&gt",
+          "scene"
+        ],
+        "ATON.html#.updateLightProbes": [
+          "aton.updatelightprob",
+          "function",
+          "lightprob",
+          "lt;static&gt",
+          "scene",
+          "updat",
+          "updatelightprob"
+        ],
+        "ATON.html#.setMainPanorama": [
+          "360",
+          "aton.setmainpanorama",
+          "function",
+          "lt;static&gt",
+          "main",
+          "panorama",
+          "path",
+          "set",
+          "setmainpanorama"
+        ],
+        "ATON.html#.setMainPanoramaRotation": [
+          "around",
+          "aton.setmainpanoramarot",
+          "function",
+          "lt;static&gt",
+          "main",
+          "panorama",
+          "r",
+          "radian",
+          "rotat",
+          "set",
+          "setmainpanoramarot",
+          "up",
+          "vector"
+        ],
+        "ATON.html#.setMainLightDirection": [
+          "activ",
+          "aton.setmainlightdirect",
+          "direct",
+          "function",
+          "light",
+          "lt;static&gt",
+          "main",
+          "set",
+          "setmainlightdirect",
+          "v"
+        ],
+        "ATON.html#.getSceneQueriedPoint": [
+          "aton.getscenequeriedpoint",
+          "current",
+          "function",
+          "getscenequeriedpoint",
+          "locat",
+          "lt;static&gt",
+          "point",
+          "queri",
+          "return",
+          "scene",
+          "three.vector3",
+          "undefin",
+          "visibl"
+        ],
+        "ATON.html#.getSceneQueriedDistance": [
+          "aton.getscenequerieddist",
+          "distanc",
+          "function",
+          "getscenequerieddist",
+          "locat",
+          "lt;static&gt",
+          "number",
+          "point",
+          "queri",
+          "return",
+          "scene",
+          "undefin",
+          "visibl"
+        ],
+        "ATON.html#.getSceneQueriedNormal": [
+          "aton.getscenequeriednorm",
+          "function",
+          "getscenequeriednorm",
+          "locat",
+          "lt;static&gt",
+          "normal",
+          "point",
+          "queri",
+          "return",
+          "scene",
+          "three.vector3",
+          "undefin",
+          "visibl"
         ]
       },
-      "length": 83
+      "length": 114
     },
     "tokenStore": {
       "root": {
@@ -1000,6 +1356,17 @@ window.lunrData = {
           }
         },
         "3": {
+          "6": {
+            "0": {
+              "docs": {
+                "ATON.html#.setMainPanorama": {
+                  "ref": "ATON.html#.setMainPanorama",
+                  "tf": 12.5
+                }
+              }
+            },
+            "docs": {}
+          },
           "docs": {},
           ".": {
             "0": {
@@ -1084,6 +1451,10 @@ window.lunrData = {
                 "Node.html#addKeywords": {
                   "ref": "Node.html#addKeywords",
                   "tf": 6.25
+                },
+                "ATON.html#.addLightProbe": {
+                  "ref": "ATON.html#.addLightProbe",
+                  "tf": 16.666666666666664
                 }
               },
               "k": {
@@ -1127,6 +1498,38 @@ window.lunrData = {
                         "VRoadcast.html#.connect": {
                           "ref": "VRoadcast.html#.connect",
                           "tf": 33.33333333333333
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "l": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "g": {
+                    "docs": {},
+                    "h": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "p": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "b": {
+                                "docs": {
+                                  "ATON.html#.addLightProbe": {
+                                    "ref": "ATON.html#.addLightProbe",
+                                    "tf": 683.3333333333334
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -1367,6 +1770,152 @@ window.lunrData = {
                               }
                             }
                           }
+                        },
+                        "m": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "a": {
+                                            "docs": {},
+                                            "m": {
+                                              "docs": {},
+                                              "a": {
+                                                "docs": {
+                                                  "ATON.html#.setMainPanorama": {
+                                                    "ref": "ATON.html#.setMainPanorama",
+                                                    "tf": 1150
+                                                  }
+                                                },
+                                                "r": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "t": {
+                                                      "docs": {
+                                                        "ATON.html#.setMainPanoramaRotation": {
+                                                          "ref": "ATON.html#.setMainPanoramaRotation",
+                                                          "tf": 1150
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "l": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "g": {
+                                      "docs": {},
+                                      "h": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "i": {
+                                              "docs": {},
+                                              "r": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "c": {
+                                                    "docs": {},
+                                                    "t": {
+                                                      "docs": {
+                                                        "ATON.html#.setMainLightDirection": {
+                                                          "ref": "ATON.html#.setMainLightDirection",
+                                                          "tf": 1150
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "t": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "g": {
+                        "docs": {},
+                        "g": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "f": {
+                                "docs": {},
+                                "u": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {
+                                                    "ATON.html#.toggleFullScreen": {
+                                                      "ref": "ATON.html#.toggleFullScreen",
+                                                      "tf": 1150
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -1380,6 +1929,55 @@ window.lunrData = {
                     },
                     "e": {
                       "docs": {},
+                      "n": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "u": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {
+                                        "ATON.html#.renderPause": {
+                                          "ref": "ATON.html#.renderPause",
+                                          "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "r": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "s": {
+                                    "docs": {},
+                                    "u": {
+                                      "docs": {},
+                                      "m": {
+                                        "docs": {
+                                          "ATON.html#.renderResume": {
+                                            "ref": "ATON.html#.renderResume",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
                       "s": {
                         "docs": {},
                         "e": {
@@ -1407,6 +2005,515 @@ window.lunrData = {
                                                 "ATON.html#.resetPixelDensity": {
                                                   "ref": "ATON.html#.resetPixelDensity",
                                                   "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "c": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "d": {
+                                              "docs": {
+                                                "ATON.html#.createSceneNode": {
+                                                  "ref": "ATON.html#.createSceneNode",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "e": {
+                                  "docs": {},
+                                  "m": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "n": {
+                                                "docs": {},
+                                                "o": {
+                                                  "docs": {},
+                                                  "d": {
+                                                    "docs": {
+                                                      "ATON.html#.createSemanticNode": {
+                                                        "ref": "ATON.html#.createSemanticNode",
+                                                        "tf": 1150
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "u": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "d": {
+                                        "docs": {
+                                          "ATON.html#.createUINode": {
+                                            "ref": "ATON.html#.createUINode",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "g": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "d": {
+                                        "docs": {
+                                          "ATON.html#.getSceneNode": {
+                                            "ref": "ATON.html#.getSceneNode",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "q": {
+                                    "docs": {},
+                                    "u": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "d": {
+                                                "docs": {},
+                                                "p": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "i": {
+                                                      "docs": {},
+                                                      "n": {
+                                                        "docs": {},
+                                                        "t": {
+                                                          "docs": {
+                                                            "ATON.html#.getSceneQueriedPoint": {
+                                                              "ref": "ATON.html#.getSceneQueriedPoint",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "d": {
+                                                  "docs": {},
+                                                  "i": {
+                                                    "docs": {},
+                                                    "s": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {
+                                                          "ATON.html#.getSceneQueriedDistance": {
+                                                            "ref": "ATON.html#.getSceneQueriedDistance",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                },
+                                                "n": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "r": {
+                                                      "docs": {},
+                                                      "m": {
+                                                        "docs": {
+                                                          "ATON.html#.getSceneQueriedNormal": {
+                                                            "ref": "ATON.html#.getSceneQueriedNormal",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "e": {
+                            "docs": {},
+                            "m": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "i": {
+                                      "docs": {},
+                                      "c": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "d": {
+                                              "docs": {
+                                                "ATON.html#.getSemanticNode": {
+                                                  "ref": "ATON.html#.getSemanticNode",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "o": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "s": {
+                                          "docs": {},
+                                          "c": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "n": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "n": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {},
+                                                      "d": {
+                                                        "docs": {
+                                                          "ATON.html#.getOrCreateSceneNode": {
+                                                            "ref": "ATON.html#.getOrCreateSceneNode",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          },
+                                          "e": {
+                                            "docs": {},
+                                            "m": {
+                                              "docs": {},
+                                              "a": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {},
+                                                  "t": {
+                                                    "docs": {},
+                                                    "i": {
+                                                      "docs": {},
+                                                      "c": {
+                                                        "docs": {},
+                                                        "n": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "d": {
+                                                              "docs": {
+                                                                "ATON.html#.getOrCreateSemanticNode": {
+                                                                  "ref": "ATON.html#.getOrCreateSemanticNode",
+                                                                  "tf": 1150
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "r": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {
+                                          "ATON.html#.getRootScene": {
+                                            "ref": "ATON.html#.getRootScene",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "e": {
+                                    "docs": {},
+                                    "m": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "ATON.html#.getRootSemantics": {
+                                                "ref": "ATON.html#.getRootSemantics",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "u": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {
+                                      "ATON.html#.getRootUI": {
+                                        "ref": "ATON.html#.getRootUI",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "u": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "d": {
+                                  "docs": {
+                                    "ATON.html#.getUINode": {
+                                      "ref": "ATON.html#.getUINode",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "a": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "d": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "g": {
+                              "docs": {},
+                              "h": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {},
+                                  "p": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "b": {
+                                          "docs": {
+                                            "ATON.html#.addLightProbe": {
+                                              "ref": "ATON.html#.addLightProbe",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "u": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "d": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "l": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "g": {
+                                    "docs": {},
+                                    "h": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {},
+                                        "p": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "b": {
+                                                "docs": {
+                                                  "ATON.html#.updateLightProbes": {
+                                                    "ref": "ATON.html#.updateLightProbes",
+                                                    "tf": 1150
+                                                  }
                                                 }
                                               }
                                             }
@@ -1543,6 +2650,10 @@ window.lunrData = {
                       "XR.html#.setRefSpaceLocation": {
                         "ref": "XR.html#.setRefSpaceLocation",
                         "tf": 3.125
+                      },
+                      "ATON.html#.setMainPanoramaRotation": {
+                        "ref": "ATON.html#.setMainPanoramaRotation",
+                        "tf": 6.25
                       }
                     }
                   }
@@ -1662,6 +2773,17 @@ window.lunrData = {
                     }
                   }
                 }
+              },
+              "i": {
+                "docs": {},
+                "v": {
+                  "docs": {
+                    "ATON.html#.setMainLightDirection": {
+                      "ref": "ATON.html#.setMainLightDirection",
+                      "tf": 10
+                    }
+                  }
+                }
               }
             }
           },
@@ -1756,6 +2878,125 @@ window.lunrData = {
                     "Node.html": {
                       "ref": "Node.html",
                       "tf": 3.3333333333333335
+                    },
+                    "ATON.html#.createSceneNode": {
+                      "ref": "ATON.html#.createSceneNode",
+                      "tf": 8.333333333333332
+                    },
+                    "ATON.html#.getSceneNode": {
+                      "ref": "ATON.html#.getSceneNode",
+                      "tf": 7.142857142857142
+                    },
+                    "ATON.html#.getOrCreateSceneNode": {
+                      "ref": "ATON.html#.getOrCreateSceneNode",
+                      "tf": 8.333333333333332
+                    },
+                    "ATON.html#.createSemanticNode": {
+                      "ref": "ATON.html#.createSemanticNode",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getSemanticNode": {
+                      "ref": "ATON.html#.getSemanticNode",
+                      "tf": 12.5
+                    },
+                    "ATON.html#.getOrCreateSemanticNode": {
+                      "ref": "ATON.html#.getOrCreateSemanticNode",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.createUINode": {
+                      "ref": "ATON.html#.createUINode",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getUINode": {
+                      "ref": "ATON.html#.getUINode",
+                      "tf": 12.5
+                    }
+                  },
+                  "e": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "ATON.html#.createSceneNode": {
+                                        "ref": "ATON.html#.createSceneNode",
+                                        "tf": 675
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "e": {
+                        "docs": {},
+                        "m": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "d": {
+                                          "docs": {
+                                            "ATON.html#.createSemanticNode": {
+                                              "ref": "ATON.html#.createSemanticNode",
+                                              "tf": 675
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "u": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "d": {
+                              "docs": {
+                                "ATON.html#.createUINode": {
+                                  "ref": "ATON.html#.createUINode",
+                                  "tf": 675
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -2177,7 +3418,7 @@ window.lunrData = {
                                     "docs": {
                                       "Nav.html#.copyCurrentPOV": {
                                         "ref": "Nav.html#.copyCurrentPOV",
-                                        "tf": 700
+                                        "tf": 683.3333333333334
                                       }
                                     }
                                   }
@@ -2269,6 +3510,10 @@ window.lunrData = {
                         "Nav.html#.getFOV": {
                           "ref": "Nav.html#.getFOV",
                           "tf": 10
+                        },
+                        "ATON.html#.getSceneQueriedPoint": {
+                          "ref": "ATON.html#.getSceneQueriedPoint",
+                          "tf": 5
                         }
                       }
                     }
@@ -2428,6 +3673,10 @@ window.lunrData = {
                     "POV.html": {
                       "ref": "POV.html",
                       "tf": 2.5
+                    },
+                    "Nav.html#.isDevOri": {
+                      "ref": "Nav.html#.isDevOri",
+                      "tf": 7.142857142857142
                     },
                     "Nav.html#.setDeviceOrientationControl": {
                       "ref": "Nav.html#.setDeviceOrientationControl",
@@ -2622,6 +3871,23 @@ window.lunrData = {
                     }
                   }
                 }
+              },
+              "t": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "c": {
+                      "docs": {
+                        "ATON.html#.getSceneQueriedDistance": {
+                          "ref": "ATON.html#.getSceneQueriedDistance",
+                          "tf": 5.555555555555555
+                        }
+                      }
+                    }
+                  }
+                }
               }
             },
             "r": {
@@ -2643,6 +3909,10 @@ window.lunrData = {
                       "Nav.html#.setMotionDirection": {
                         "ref": "Nav.html#.setMotionDirection",
                         "tf": 16.666666666666664
+                      },
+                      "ATON.html#.setMainLightDirection": {
+                        "ref": "ATON.html#.setMainLightDirection",
+                        "tf": 10
                       }
                     }
                   }
@@ -2682,6 +3952,10 @@ window.lunrData = {
                     "Nav.html#.requestPOVbyNode": {
                       "ref": "Nav.html#.requestPOVbyNode",
                       "tf": 25
+                    },
+                    "Nav.html#.requestHome": {
+                      "ref": "Nav.html#.requestHome",
+                      "tf": 33.33333333333333
                     }
                   }
                 }
@@ -3043,6 +4317,23 @@ window.lunrData = {
               }
             }
           },
+          "u": {
+            "docs": {},
+            "l": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "Node.html#setRotation": {
+                      "ref": "Node.html#setRotation",
+                      "tf": 8.333333333333332
+                    }
+                  }
+                }
+              }
+            }
+          },
           "d": {
             "docs": {},
             "i": {
@@ -3148,6 +4439,10 @@ window.lunrData = {
                 "docs": {},
                 "t": {
                   "docs": {
+                    "Nav.html#.isFirstPerson": {
+                      "ref": "Nav.html#.isFirstPerson",
+                      "tf": 7.142857142857142
+                    },
                     "Nav.html#.setFirstPersonControl": {
                       "ref": "Nav.html#.setFirstPersonControl",
                       "tf": 10
@@ -3314,6 +4609,18 @@ window.lunrData = {
                             "ref": "Node.html#getBound",
                             "tf": 110
                           },
+                          "Node.html#setPosition": {
+                            "ref": "Node.html#setPosition",
+                            "tf": 110
+                          },
+                          "Node.html#setScale": {
+                            "ref": "Node.html#setScale",
+                            "tf": 110
+                          },
+                          "Node.html#setRotation": {
+                            "ref": "Node.html#setRotation",
+                            "tf": 110
+                          },
                           "Node.html#orientToCamera": {
                             "ref": "Node.html#orientToCamera",
                             "tf": 110
@@ -3374,6 +4681,10 @@ window.lunrData = {
                             "ref": "SceneHub.html#.load",
                             "tf": 110
                           },
+                          "Nav.html#.init": {
+                            "ref": "Nav.html#.init",
+                            "tf": 110
+                          },
                           "Nav.html#.getCurrentEyeLocation": {
                             "ref": "Nav.html#.getCurrentEyeLocation",
                             "tf": 110
@@ -3388,6 +4699,18 @@ window.lunrData = {
                           },
                           "Nav.html#.isTransitioning": {
                             "ref": "Nav.html#.isTransitioning",
+                            "tf": 110
+                          },
+                          "Nav.html#.isOrbit": {
+                            "ref": "Nav.html#.isOrbit",
+                            "tf": 110
+                          },
+                          "Nav.html#.isFirstPerson": {
+                            "ref": "Nav.html#.isFirstPerson",
+                            "tf": 110
+                          },
+                          "Nav.html#.isDevOri": {
+                            "ref": "Nav.html#.isDevOri",
                             "tf": 110
                           },
                           "Nav.html#.setOrbitControl": {
@@ -3434,6 +4757,14 @@ window.lunrData = {
                             "ref": "Nav.html#.computeDefaultHome",
                             "tf": 110
                           },
+                          "Nav.html#.setHomePOV": {
+                            "ref": "Nav.html#.setHomePOV",
+                            "tf": 110
+                          },
+                          "Nav.html#.requestHome": {
+                            "ref": "Nav.html#.requestHome",
+                            "tf": 110
+                          },
                           "SUI.html#.init": {
                             "ref": "SUI.html#.init",
                             "tf": 110
@@ -3470,8 +4801,20 @@ window.lunrData = {
                             "ref": "ATON.html#.setPathScenes",
                             "tf": 110
                           },
+                          "ATON.html#.toggleFullScreen": {
+                            "ref": "ATON.html#.toggleFullScreen",
+                            "tf": 110
+                          },
                           "ATON.html#.realize": {
                             "ref": "ATON.html#.realize",
+                            "tf": 110
+                          },
+                          "ATON.html#.renderPause": {
+                            "ref": "ATON.html#.renderPause",
+                            "tf": 110
+                          },
+                          "ATON.html#.renderResume": {
+                            "ref": "ATON.html#.renderResume",
                             "tf": 110
                           },
                           "ATON.html#.setDefaultPixelDensity": {
@@ -3481,6 +4824,111 @@ window.lunrData = {
                           "ATON.html#.resetPixelDensity": {
                             "ref": "ATON.html#.resetPixelDensity",
                             "tf": 110
+                          },
+                          "ATON.html#.createSceneNode": {
+                            "ref": "ATON.html#.createSceneNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getSceneNode": {
+                            "ref": "ATON.html#.getSceneNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getOrCreateSceneNode": {
+                            "ref": "ATON.html#.getOrCreateSceneNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getRootScene": {
+                            "ref": "ATON.html#.getRootScene",
+                            "tf": 110
+                          },
+                          "ATON.html#.createSemanticNode": {
+                            "ref": "ATON.html#.createSemanticNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getSemanticNode": {
+                            "ref": "ATON.html#.getSemanticNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getOrCreateSemanticNode": {
+                            "ref": "ATON.html#.getOrCreateSemanticNode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getRootSemantics": {
+                            "ref": "ATON.html#.getRootSemantics",
+                            "tf": 110
+                          },
+                          "ATON.html#.createUINode": {
+                            "ref": "ATON.html#.createUINode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getUINode": {
+                            "ref": "ATON.html#.getUINode",
+                            "tf": 110
+                          },
+                          "ATON.html#.getRootUI": {
+                            "ref": "ATON.html#.getRootUI",
+                            "tf": 110
+                          },
+                          "ATON.html#.addLightProbe": {
+                            "ref": "ATON.html#.addLightProbe",
+                            "tf": 110
+                          },
+                          "ATON.html#.updateLightProbes": {
+                            "ref": "ATON.html#.updateLightProbes",
+                            "tf": 110
+                          },
+                          "ATON.html#.setMainPanorama": {
+                            "ref": "ATON.html#.setMainPanorama",
+                            "tf": 110
+                          },
+                          "ATON.html#.setMainPanoramaRotation": {
+                            "ref": "ATON.html#.setMainPanoramaRotation",
+                            "tf": 110
+                          },
+                          "ATON.html#.setMainLightDirection": {
+                            "ref": "ATON.html#.setMainLightDirection",
+                            "tf": 110
+                          },
+                          "ATON.html#.getSceneQueriedPoint": {
+                            "ref": "ATON.html#.getSceneQueriedPoint",
+                            "tf": 110
+                          },
+                          "ATON.html#.getSceneQueriedDistance": {
+                            "ref": "ATON.html#.getSceneQueriedDistance",
+                            "tf": 110
+                          },
+                          "ATON.html#.getSceneQueriedNormal": {
+                            "ref": "ATON.html#.getSceneQueriedNormal",
+                            "tf": 110
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "l": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {
+                              "ATON.html#.toggleFullScreen": {
+                                "ref": "ATON.html#.toggleFullScreen",
+                                "tf": 25
+                              }
+                            }
                           }
                         }
                       }
@@ -3600,6 +5048,30 @@ window.lunrData = {
                     "Node.html#attachToRoot": {
                       "ref": "Node.html#attachToRoot",
                       "tf": 4.3478260869565215
+                    },
+                    "ATON.html#.createSceneNode": {
+                      "ref": "ATON.html#.createSceneNode",
+                      "tf": 8.333333333333332
+                    },
+                    "ATON.html#.getSceneNode": {
+                      "ref": "ATON.html#.getSceneNode",
+                      "tf": 7.142857142857142
+                    },
+                    "ATON.html#.getOrCreateSceneNode": {
+                      "ref": "ATON.html#.getOrCreateSceneNode",
+                      "tf": 8.333333333333332
+                    },
+                    "ATON.html#.getRootScene": {
+                      "ref": "ATON.html#.getRootScene",
+                      "tf": 12.5
+                    },
+                    "ATON.html#.getRootSemantics": {
+                      "ref": "ATON.html#.getRootSemantics",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getRootUI": {
+                      "ref": "ATON.html#.getRootUI",
+                      "tf": 16.666666666666664
                     }
                   }
                 }
@@ -3636,7 +5108,7 @@ window.lunrData = {
                               "docs": {
                                 "Node.html#getDescription": {
                                   "ref": "Node.html#getDescription",
-                                  "tf": 750
+                                  "tf": 700
                                 }
                               }
                             }
@@ -3661,7 +5133,7 @@ window.lunrData = {
                           "docs": {
                             "Node.html#getMaterial": {
                               "ref": "Node.html#getMaterial",
-                              "tf": 750
+                              "tf": 700
                             }
                           }
                         }
@@ -3682,7 +5154,7 @@ window.lunrData = {
                         "docs": {
                           "Node.html#getBound": {
                             "ref": "Node.html#getBound",
-                            "tf": 750
+                            "tf": 700
                           }
                         }
                       }
@@ -3728,7 +5200,7 @@ window.lunrData = {
                                                   "docs": {
                                                     "XR.html#.getControllerWorldLocation": {
                                                       "ref": "XR.html#.getControllerWorldLocation",
-                                                      "tf": 700
+                                                      "tf": 683.3333333333334
                                                     }
                                                   }
                                                 }
@@ -3748,7 +5220,7 @@ window.lunrData = {
                                                         "docs": {
                                                           "XR.html#.getControllerWorldDirection": {
                                                             "ref": "XR.html#.getControllerWorldDirection",
-                                                            "tf": 700
+                                                            "tf": 683.3333333333334
                                                           }
                                                         }
                                                       }
@@ -3797,7 +5269,7 @@ window.lunrData = {
                                         "docs": {
                                           "Nav.html#.getCurrentEyeLocation": {
                                             "ref": "Nav.html#.getCurrentEyeLocation",
-                                            "tf": 700
+                                            "tf": 683.3333333333334
                                           }
                                         }
                                       }
@@ -3820,7 +5292,7 @@ window.lunrData = {
                                         "docs": {
                                           "Nav.html#.getCurrentDirection": {
                                             "ref": "Nav.html#.getCurrentDirection",
-                                            "tf": 700
+                                            "tf": 683.3333333333334
                                           }
                                         }
                                       }
@@ -3844,7 +5316,314 @@ window.lunrData = {
                     "docs": {
                       "Nav.html#.getFOV": {
                         "ref": "Nav.html#.getFOV",
-                        "tf": 700
+                        "tf": 683.3333333333334
+                      }
+                    }
+                  }
+                }
+              },
+              "s": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "n": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "d": {
+                              "docs": {
+                                "ATON.html#.getSceneNode": {
+                                  "ref": "ATON.html#.getSceneNode",
+                                  "tf": 675
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "q": {
+                          "docs": {},
+                          "u": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {},
+                                      "p": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "n": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {
+                                                  "ATON.html#.getSceneQueriedPoint": {
+                                                    "ref": "ATON.html#.getSceneQueriedPoint",
+                                                    "tf": 683.3333333333334
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "d": {
+                                        "docs": {},
+                                        "i": {
+                                          "docs": {},
+                                          "s": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "ATON.html#.getSceneQueriedDistance": {
+                                                  "ref": "ATON.html#.getSceneQueriedDistance",
+                                                  "tf": 683.3333333333334
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "n": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "m": {
+                                              "docs": {
+                                                "ATON.html#.getSceneQueriedNormal": {
+                                                  "ref": "ATON.html#.getSceneQueriedNormal",
+                                                  "tf": 683.3333333333334
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "e": {
+                  "docs": {},
+                  "m": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "ATON.html#.getSemanticNode": {
+                                        "ref": "ATON.html#.getSemanticNode",
+                                        "tf": 675
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "d": {
+                                              "docs": {
+                                                "ATON.html#.getOrCreateSceneNode": {
+                                                  "ref": "ATON.html#.getOrCreateSceneNode",
+                                                  "tf": 675
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "e": {
+                                  "docs": {},
+                                  "m": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "n": {
+                                                "docs": {},
+                                                "o": {
+                                                  "docs": {},
+                                                  "d": {
+                                                    "docs": {
+                                                      "ATON.html#.getOrCreateSemanticNode": {
+                                                        "ref": "ATON.html#.getOrCreateSemanticNode",
+                                                        "tf": 675
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "r": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "n": {
+                              "docs": {
+                                "ATON.html#.getRootScene": {
+                                  "ref": "ATON.html#.getRootScene",
+                                  "tf": 683.3333333333334
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "e": {
+                          "docs": {},
+                          "m": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "ATON.html#.getRootSemantics": {
+                                      "ref": "ATON.html#.getRootSemantics",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "u": {
+                        "docs": {},
+                        "i": {
+                          "docs": {
+                            "ATON.html#.getRootUI": {
+                              "ref": "ATON.html#.getRootUI",
+                              "tf": 683.3333333333334
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "u": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "d": {
+                        "docs": {
+                          "ATON.html#.getUINode": {
+                            "ref": "ATON.html#.getUINode",
+                            "tf": 675
+                          }
+                        }
                       }
                     }
                   }
@@ -4033,6 +5812,10 @@ window.lunrData = {
                     "ref": "SceneHub.html#.init",
                     "tf": 700
                   },
+                  "Nav.html#.init": {
+                    "ref": "Nav.html#.init",
+                    "tf": 700
+                  },
                   "SUI.html#.init": {
                     "ref": "SUI.html#.init",
                     "tf": 700
@@ -4055,6 +5838,10 @@ window.lunrData = {
                     "SceneHub.html#.init": {
                       "ref": "SceneHub.html#.init",
                       "tf": 25
+                    },
+                    "Nav.html#.init": {
+                      "ref": "Nav.html#.init",
+                      "tf": 16.666666666666664
                     },
                     "SUI.html#.init": {
                       "ref": "SUI.html#.init",
@@ -4086,6 +5873,38 @@ window.lunrData = {
               "Node.html#attachTo": {
                 "ref": "Node.html#attachTo",
                 "tf": 6.25
+              },
+              "ATON.html#.createSceneNode": {
+                "ref": "ATON.html#.createSceneNode",
+                "tf": 25
+              },
+              "ATON.html#.getSceneNode": {
+                "ref": "ATON.html#.getSceneNode",
+                "tf": 25
+              },
+              "ATON.html#.getOrCreateSceneNode": {
+                "ref": "ATON.html#.getOrCreateSceneNode",
+                "tf": 25
+              },
+              "ATON.html#.createSemanticNode": {
+                "ref": "ATON.html#.createSemanticNode",
+                "tf": 25
+              },
+              "ATON.html#.getSemanticNode": {
+                "ref": "ATON.html#.getSemanticNode",
+                "tf": 25
+              },
+              "ATON.html#.getOrCreateSemanticNode": {
+                "ref": "ATON.html#.getOrCreateSemanticNode",
+                "tf": 25
+              },
+              "ATON.html#.createUINode": {
+                "ref": "ATON.html#.createUINode",
+                "tf": 25
+              },
+              "ATON.html#.getUINode": {
+                "ref": "ATON.html#.getUINode",
+                "tf": 25
               }
             }
           },
@@ -4101,7 +5920,7 @@ window.lunrData = {
                     "docs": {
                       "XR.html#.isPresenting": {
                         "ref": "XR.html#.isPresenting",
-                        "tf": 700
+                        "tf": 683.3333333333334
                       }
                     }
                   }
@@ -4124,8 +5943,89 @@ window.lunrData = {
                           "docs": {
                             "Nav.html#.isTransitioning": {
                               "ref": "Nav.html#.isTransitioning",
-                              "tf": 700
+                              "tf": 683.3333333333334
                             }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "o": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "b": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Nav.html#.isOrbit": {
+                          "ref": "Nav.html#.isOrbit",
+                          "tf": 683.3333333333334
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "f": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {
+                                    "Nav.html#.isFirstPerson": {
+                                      "ref": "Nav.html#.isFirstPerson",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "d": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "v": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "i": {
+                        "docs": {
+                          "Nav.html#.isDevOri": {
+                            "ref": "Nav.html#.isDevOri",
+                            "tf": 683.3333333333334
                           }
                         }
                       }
@@ -4150,7 +6050,7 @@ window.lunrData = {
                           "docs": {
                             "VRoadcast.html#.isConnected": {
                               "ref": "VRoadcast.html#.isConnected",
-                              "tf": 700
+                              "tf": 683.3333333333334
                             }
                           }
                         }
@@ -4212,6 +6112,18 @@ window.lunrData = {
                   "SceneHub.html#.setEditMode": {
                     "ref": "SceneHub.html#.setEditMode",
                     "tf": 5
+                  },
+                  "Nav.html#.isOrbit": {
+                    "ref": "Nav.html#.isOrbit",
+                    "tf": 8.333333333333332
+                  },
+                  "Nav.html#.isFirstPerson": {
+                    "ref": "Nav.html#.isFirstPerson",
+                    "tf": 7.142857142857142
+                  },
+                  "Nav.html#.isDevOri": {
+                    "ref": "Nav.html#.isDevOri",
+                    "tf": 7.142857142857142
                   },
                   "Nav.html#.setOrbitControl": {
                     "ref": "Nav.html#.setOrbitControl",
@@ -4355,6 +6267,18 @@ window.lunrData = {
                   "ATON.html#.realize": {
                     "ref": "ATON.html#.realize",
                     "tf": 4.166666666666666
+                  },
+                  "ATON.html#.setMainPanorama": {
+                    "ref": "ATON.html#.setMainPanorama",
+                    "tf": 12.5
+                  },
+                  "ATON.html#.setMainPanoramaRotation": {
+                    "ref": "ATON.html#.setMainPanoramaRotation",
+                    "tf": 6.25
+                  },
+                  "ATON.html#.setMainLightDirection": {
+                    "ref": "ATON.html#.setMainLightDirection",
+                    "tf": 10
                   }
                 }
               }
@@ -4540,6 +6464,10 @@ window.lunrData = {
                         "ref": "Node.html#orientToCamera",
                         "tf": 12.5
                       },
+                      "Nav.html#.isDevOri": {
+                        "ref": "Nav.html#.isDevOri",
+                        "tf": 7.142857142857142
+                      },
                       "Nav.html#.setDeviceOrientationControl": {
                         "ref": "Nav.html#.setDeviceOrientationControl",
                         "tf": 10
@@ -4584,6 +6512,10 @@ window.lunrData = {
                 "docs": {},
                 "t": {
                   "docs": {
+                    "Nav.html#.isOrbit": {
+                      "ref": "Nav.html#.isOrbit",
+                      "tf": 8.333333333333332
+                    },
                     "Nav.html#.setOrbitControl": {
                       "ref": "Nav.html#.setOrbitControl",
                       "tf": 10
@@ -4638,6 +6570,22 @@ window.lunrData = {
                           "ref": "POV.html#setPrevPOV",
                           "tf": 12.5
                         }
+                      },
+                      "s": {
+                        "docs": {
+                          "ATON.html#.getSceneNode": {
+                            "ref": "ATON.html#.getSceneNode",
+                            "tf": 7.142857142857142
+                          },
+                          "ATON.html#.getSemanticNode": {
+                            "ref": "ATON.html#.getSemanticNode",
+                            "tf": 12.5
+                          },
+                          "ATON.html#.getUINode": {
+                            "ref": "ATON.html#.getUINode",
+                            "tf": 12.5
+                          }
+                        }
                       }
                     }
                   }
@@ -4657,13 +6605,20 @@ window.lunrData = {
                   }
                 }
               },
-              "d": {
+              "v": {
                 "docs": {},
-                "e": {
-                  "docs": {
-                    "Node.html#attachTo": {
-                      "ref": "Node.html#attachTo",
-                      "tf": 6.25
+                "i": {
+                  "docs": {},
+                  "d": {
+                    "docs": {
+                      "Node.html#attachTo": {
+                        "ref": "Node.html#attachTo",
+                        "tf": 6.25
+                      },
+                      "SceneHub.html#.load": {
+                        "ref": "SceneHub.html#.load",
+                        "tf": 10
+                      }
                     }
                   }
                 }
@@ -4677,20 +6632,6 @@ window.lunrData = {
                       "XR.html#.setRefSpaceLocation": {
                         "ref": "XR.html#.setRefSpaceLocation",
                         "tf": 3.125
-                      }
-                    }
-                  }
-                }
-              },
-              "v": {
-                "docs": {},
-                "i": {
-                  "docs": {},
-                  "d": {
-                    "docs": {
-                      "SceneHub.html#.load": {
-                        "ref": "SceneHub.html#.load",
-                        "tf": 10
                       }
                     }
                   }
@@ -4752,11 +6693,15 @@ window.lunrData = {
                 },
                 "Nav.html#.copyCurrentPOV": {
                   "ref": "Nav.html#.copyCurrentPOV",
-                  "tf": 10
+                  "tf": 43.33333333333333
                 },
                 "Nav.html#.requestPOV": {
                   "ref": "Nav.html#.requestPOV",
                   "tf": 37.5
+                },
+                "Nav.html#.setHomePOV": {
+                  "ref": "Nav.html#.setHomePOV",
+                  "tf": 45.83333333333333
                 }
               },
               "#": {
@@ -4912,6 +6857,28 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "i": {
+              "docs": {},
+              "n": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "ATON.html#.getSceneQueriedPoint": {
+                      "ref": "ATON.html#.getSceneQueriedPoint",
+                      "tf": 10
+                    },
+                    "ATON.html#.getSceneQueriedDistance": {
+                      "ref": "ATON.html#.getSceneQueriedDistance",
+                      "tf": 5.555555555555555
+                    },
+                    "ATON.html#.getSceneQueriedNormal": {
+                      "ref": "ATON.html#.getSceneQueriedNormal",
+                      "tf": 5.555555555555555
+                    }
+                  }
+                }
+              }
             }
           },
           "i": {
@@ -4994,6 +6961,10 @@ window.lunrData = {
                   "ATON.html#.setPathScenes": {
                     "ref": "ATON.html#.setPathScenes",
                     "tf": 49.99999999999999
+                  },
+                  "ATON.html#.setMainPanorama": {
+                    "ref": "ATON.html#.setMainPanorama",
+                    "tf": 33.33333333333333
                   }
                 }
               }
@@ -5013,10 +6984,33 @@ window.lunrData = {
                           "ATON.html#.setPathCollection": {
                             "ref": "ATON.html#.setPathCollection",
                             "tf": 7.142857142857142
+                          },
+                          "ATON.html#.setMainPanorama": {
+                            "ref": "ATON.html#.setMainPanorama",
+                            "tf": 12.5
+                          },
+                          "ATON.html#.setMainPanoramaRotation": {
+                            "ref": "ATON.html#.setMainPanoramaRotation",
+                            "tf": 6.25
                           }
                         }
                       }
                     }
+                  }
+                }
+              }
+            },
+            "u": {
+              "docs": {},
+              "s": {
+                "docs": {
+                  "ATON.html#.renderPause": {
+                    "ref": "ATON.html#.renderPause",
+                    "tf": 25
+                  },
+                  "ATON.html#.renderResume": {
+                    "ref": "ATON.html#.renderResume",
+                    "tf": 16.666666666666664
                   }
                 }
               }
@@ -5046,6 +7040,10 @@ window.lunrData = {
                   "docs": {},
                   "n": {
                     "docs": {
+                      "Nav.html#.isFirstPerson": {
+                        "ref": "Nav.html#.isFirstPerson",
+                        "tf": 7.142857142857142
+                      },
                       "Nav.html#.setFirstPersonControl": {
                         "ref": "Nav.html#.setFirstPersonControl",
                         "tf": 10
@@ -5075,7 +7073,12 @@ window.lunrData = {
           }
         },
         "r": {
-          "docs": {},
+          "docs": {
+            "ATON.html#.setMainPanoramaRotation": {
+              "ref": "ATON.html#.setMainPanoramaRotation",
+              "tf": 33.33333333333333
+            }
+          },
           "e": {
             "docs": {},
             "a": {
@@ -5139,6 +7142,10 @@ window.lunrData = {
                           "ref": "Nav.html#.requestPOVbyNode",
                           "tf": 10
                         },
+                        "Nav.html#.requestHome": {
+                          "ref": "Nav.html#.requestHome",
+                          "tf": 16.666666666666664
+                        },
                         "VRoadcast.html#.requestSceneEnter": {
                           "ref": "VRoadcast.html#.requestSceneEnter",
                           "tf": 12.5
@@ -5173,6 +7180,20 @@ window.lunrData = {
                                     }
                                   }
                                 }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "h": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "m": {
+                            "docs": {
+                              "Nav.html#.requestHome": {
+                                "ref": "Nav.html#.requestHome",
+                                "tf": 683.3333333333334
                               }
                             }
                           }
@@ -5339,9 +7360,33 @@ window.lunrData = {
                         "ref": "Nav.html#.isTransitioning",
                         "tf": 7.142857142857142
                       },
+                      "Nav.html#.isOrbit": {
+                        "ref": "Nav.html#.isOrbit",
+                        "tf": 8.333333333333332
+                      },
+                      "Nav.html#.isFirstPerson": {
+                        "ref": "Nav.html#.isFirstPerson",
+                        "tf": 7.142857142857142
+                      },
+                      "Nav.html#.isDevOri": {
+                        "ref": "Nav.html#.isDevOri",
+                        "tf": 7.142857142857142
+                      },
                       "VRoadcast.html#.isConnected": {
                         "ref": "VRoadcast.html#.isConnected",
                         "tf": 10
+                      },
+                      "ATON.html#.getSceneQueriedPoint": {
+                        "ref": "ATON.html#.getSceneQueriedPoint",
+                        "tf": 5
+                      },
+                      "ATON.html#.getSceneQueriedDistance": {
+                        "ref": "ATON.html#.getSceneQueriedDistance",
+                        "tf": 5.555555555555555
+                      },
+                      "ATON.html#.getSceneQueriedNormal": {
+                        "ref": "ATON.html#.getSceneQueriedNormal",
+                        "tf": 5.555555555555555
                       }
                     }
                   }
@@ -5408,6 +7453,17 @@ window.lunrData = {
                   }
                 }
               },
+              "u": {
+                "docs": {},
+                "m": {
+                  "docs": {
+                    "ATON.html#.renderResume": {
+                      "ref": "ATON.html#.renderResume",
+                      "tf": 16.666666666666664
+                    }
+                  }
+                }
+              },
               "e": {
                 "docs": {},
                 "t": {
@@ -5461,6 +7517,64 @@ window.lunrData = {
                     "XR.html#.setRefSpaceLocation": {
                       "ref": "XR.html#.setRefSpaceLocation",
                       "tf": 3.125
+                    }
+                  }
+                }
+              }
+            },
+            "n": {
+              "docs": {},
+              "d": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "ATON.html#.renderPause": {
+                        "ref": "ATON.html#.renderPause",
+                        "tf": 25
+                      },
+                      "ATON.html#.renderResume": {
+                        "ref": "ATON.html#.renderResume",
+                        "tf": 16.666666666666664
+                      }
+                    },
+                    "p": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "s": {
+                            "docs": {
+                              "ATON.html#.renderPause": {
+                                "ref": "ATON.html#.renderPause",
+                                "tf": 700
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "u": {
+                            "docs": {},
+                            "m": {
+                              "docs": {
+                                "ATON.html#.renderResume": {
+                                  "ref": "ATON.html#.renderResume",
+                                  "tf": 700
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -5520,6 +7634,27 @@ window.lunrData = {
                   "tf": 8.333333333333332
                 }
               }
+            },
+            "d": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "n": {
+                    "docs": {
+                      "Node.html#setRotation": {
+                        "ref": "Node.html#setRotation",
+                        "tf": 8.333333333333332
+                      },
+                      "ATON.html#.setMainPanoramaRotation": {
+                        "ref": "ATON.html#.setMainPanoramaRotation",
+                        "tf": 6.25
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "o": {
@@ -5531,6 +7666,36 @@ window.lunrData = {
                   "Node.html#attachToRoot": {
                     "ref": "Node.html#attachToRoot",
                     "tf": 8.695652173913043
+                  },
+                  "ATON.html#.getRootScene": {
+                    "ref": "ATON.html#.getRootScene",
+                    "tf": 12.5
+                  },
+                  "ATON.html#.getRootSemantics": {
+                    "ref": "ATON.html#.getRootSemantics",
+                    "tf": 16.666666666666664
+                  },
+                  "ATON.html#.getRootUI": {
+                    "ref": "ATON.html#.getRootUI",
+                    "tf": 16.666666666666664
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Node.html#setRotation": {
+                      "ref": "Node.html#setRotation",
+                      "tf": 8.333333333333332
+                    },
+                    "ATON.html#.setMainPanoramaRotation": {
+                      "ref": "ATON.html#.setMainPanoramaRotation",
+                      "tf": 6.25
+                    }
                   }
                 }
               }
@@ -5546,6 +7711,32 @@ window.lunrData = {
                       "FE.html": {
                         "ref": "FE.html",
                         "tf": 12.5
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "x": {
+            "docs": {},
+            ",": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "y": {
+                  "docs": {},
+                  ",": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "z": {
+                        "docs": {
+                          "Node.html#setRotation": {
+                            "ref": "Node.html#setRotation",
+                            "tf": 8.333333333333332
+                          }
+                        }
                       }
                     }
                   }
@@ -5604,6 +7795,42 @@ window.lunrData = {
                     "ATON.html#.setPathScenes": {
                       "ref": "ATON.html#.setPathScenes",
                       "tf": 16.666666666666664
+                    },
+                    "ATON.html#.createSceneNode": {
+                      "ref": "ATON.html#.createSceneNode",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getSceneNode": {
+                      "ref": "ATON.html#.getSceneNode",
+                      "tf": 14.285714285714285
+                    },
+                    "ATON.html#.getOrCreateSceneNode": {
+                      "ref": "ATON.html#.getOrCreateSceneNode",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getRootScene": {
+                      "ref": "ATON.html#.getRootScene",
+                      "tf": 12.5
+                    },
+                    "ATON.html#.addLightProbe": {
+                      "ref": "ATON.html#.addLightProbe",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.updateLightProbes": {
+                      "ref": "ATON.html#.updateLightProbes",
+                      "tf": 16.666666666666664
+                    },
+                    "ATON.html#.getSceneQueriedPoint": {
+                      "ref": "ATON.html#.getSceneQueriedPoint",
+                      "tf": 5
+                    },
+                    "ATON.html#.getSceneQueriedDistance": {
+                      "ref": "ATON.html#.getSceneQueriedDistance",
+                      "tf": 5.555555555555555
+                    },
+                    "ATON.html#.getSceneQueriedNormal": {
+                      "ref": "ATON.html#.getSceneQueriedNormal",
+                      "tf": 5.555555555555555
                     }
                   },
                   "h": {
@@ -5705,6 +7932,20 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "a": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "e": {
+                  "docs": {
+                    "Node.html#setScale": {
+                      "ref": "Node.html#setScale",
+                      "tf": 16.666666666666664
+                    }
+                  }
+                }
+              }
             }
           },
           "t": {
@@ -5772,7 +8013,7 @@ window.lunrData = {
                       },
                       "Node.html#getDescription": {
                         "ref": "Node.html#getDescription",
-                        "tf": 16.666666666666664
+                        "tf": 66.66666666666666
                       },
                       "Node.html#attachTo": {
                         "ref": "Node.html#attachTo",
@@ -5845,6 +8086,18 @@ window.lunrData = {
                   "ref": "Node.html#setMaterial",
                   "tf": 4.545454545454546
                 },
+                "Node.html#setPosition": {
+                  "ref": "Node.html#setPosition",
+                  "tf": 12.5
+                },
+                "Node.html#setScale": {
+                  "ref": "Node.html#setScale",
+                  "tf": 16.666666666666664
+                },
+                "Node.html#setRotation": {
+                  "ref": "Node.html#setRotation",
+                  "tf": 8.333333333333332
+                },
                 "XR.html#.setRefSpaceLocation": {
                   "ref": "XR.html#.setRefSpaceLocation",
                   "tf": 3.125
@@ -5873,6 +8126,10 @@ window.lunrData = {
                   "ref": "Nav.html#.setFOV",
                   "tf": 10
                 },
+                "Nav.html#.setHomePOV": {
+                  "ref": "Nav.html#.setHomePOV",
+                  "tf": 12.5
+                },
                 "ATON.html#.setPathCollection": {
                   "ref": "ATON.html#.setPathCollection",
                   "tf": 7.142857142857142
@@ -5884,6 +8141,18 @@ window.lunrData = {
                 "ATON.html#.setDefaultPixelDensity": {
                   "ref": "ATON.html#.setDefaultPixelDensity",
                   "tf": 8.333333333333332
+                },
+                "ATON.html#.setMainPanorama": {
+                  "ref": "ATON.html#.setMainPanorama",
+                  "tf": 12.5
+                },
+                "ATON.html#.setMainPanoramaRotation": {
+                  "ref": "ATON.html#.setMainPanoramaRotation",
+                  "tf": 6.25
+                },
+                "ATON.html#.setMainLightDirection": {
+                  "ref": "ATON.html#.setMainLightDirection",
+                  "tf": 10
                 }
               },
               "p": {
@@ -5902,6 +8171,10 @@ window.lunrData = {
                           },
                           "POV.html#setPosition": {
                             "ref": "POV.html#setPosition",
+                            "tf": 750
+                          },
+                          "Node.html#setPosition": {
+                            "ref": "Node.html#setPosition",
                             "tf": 750
                           }
                         }
@@ -6275,6 +8548,93 @@ window.lunrData = {
                         }
                       }
                     }
+                  },
+                  "i": {
+                    "docs": {},
+                    "n": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "m": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {
+                                        "ATON.html#.setMainPanorama": {
+                                          "ref": "ATON.html#.setMainPanorama",
+                                          "tf": 683.3333333333334
+                                        }
+                                      },
+                                      "r": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "ATON.html#.setMainPanoramaRotation": {
+                                                "ref": "ATON.html#.setMainPanoramaRotation",
+                                                "tf": 683.3333333333334
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "l": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "g": {
+                            "docs": {},
+                            "h": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "d": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "ATON.html#.setMainLightDirection": {
+                                                "ref": "ATON.html#.setMainLightDirection",
+                                                "tf": 683.3333333333334
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 "o": {
@@ -6339,8 +8699,36 @@ window.lunrData = {
                   }
                 }
               },
+              "s": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "Node.html#setScale": {
+                          "ref": "Node.html#setScale",
+                          "tf": 750
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "r": {
                 "docs": {},
+                "o": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Node.html#setRotation": {
+                        "ref": "Node.html#setRotation",
+                        "tf": 750
+                      }
+                    }
+                  }
+                },
                 "e": {
                   "docs": {},
                   "f": {
@@ -6443,6 +8831,32 @@ window.lunrData = {
                     }
                   }
                 }
+              },
+              "h": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "m": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "v": {
+                            "docs": {
+                              "Nav.html#.setHomePOV": {
+                                "ref": "Nav.html#.setHomePOV",
+                                "tf": 683.3333333333334
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             },
             "m": {
@@ -6463,6 +8877,22 @@ window.lunrData = {
                       },
                       "SemFactory.html": {
                         "ref": "SemFactory.html",
+                        "tf": 16.666666666666664
+                      },
+                      "ATON.html#.createSemanticNode": {
+                        "ref": "ATON.html#.createSemanticNode",
+                        "tf": 16.666666666666664
+                      },
+                      "ATON.html#.getSemanticNode": {
+                        "ref": "ATON.html#.getSemanticNode",
+                        "tf": 12.5
+                      },
+                      "ATON.html#.getOrCreateSemanticNode": {
+                        "ref": "ATON.html#.getOrCreateSemanticNode",
+                        "tf": 16.666666666666664
+                      },
+                      "ATON.html#.getRootSemantics": {
+                        "ref": "ATON.html#.getRootSemantics",
                         "tf": 16.666666666666664
                       }
                     }
@@ -6786,8 +9216,24 @@ window.lunrData = {
                         "ref": "Nav.html",
                         "tf": 16.666666666666664
                       },
+                      "Nav.html#.init": {
+                        "ref": "Nav.html#.init",
+                        "tf": 16.666666666666664
+                      },
                       "Nav.html#.isTransitioning": {
                         "ref": "Nav.html#.isTransitioning",
+                        "tf": 7.142857142857142
+                      },
+                      "Nav.html#.isOrbit": {
+                        "ref": "Nav.html#.isOrbit",
+                        "tf": 8.333333333333332
+                      },
+                      "Nav.html#.isFirstPerson": {
+                        "ref": "Nav.html#.isFirstPerson",
+                        "tf": 7.142857142857142
+                      },
+                      "Nav.html#.isDevOri": {
+                        "ref": "Nav.html#.isDevOri",
                         "tf": 7.142857142857142
                       }
                     }
@@ -6836,6 +9282,48 @@ window.lunrData = {
                     "XR.html#.toggle": {
                       "ref": "XR.html#.toggle",
                       "tf": 716.6666666666666
+                    },
+                    "ATON.html#.toggleFullScreen": {
+                      "ref": "ATON.html#.toggleFullScreen",
+                      "tf": 25
+                    }
+                  },
+                  "e": {
+                    "docs": {},
+                    "f": {
+                      "docs": {},
+                      "u": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {
+                                          "ATON.html#.toggleFullScreen": {
+                                            "ref": "ATON.html#.toggleFullScreen",
+                                            "tf": 700
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -6928,6 +9416,18 @@ window.lunrData = {
                     "ref": "Nav.html#.isTransitioning",
                     "tf": 7.142857142857142
                   },
+                  "Nav.html#.isOrbit": {
+                    "ref": "Nav.html#.isOrbit",
+                    "tf": 8.333333333333332
+                  },
+                  "Nav.html#.isFirstPerson": {
+                    "ref": "Nav.html#.isFirstPerson",
+                    "tf": 7.142857142857142
+                  },
+                  "Nav.html#.isDevOri": {
+                    "ref": "Nav.html#.isDevOri",
+                    "tf": 7.142857142857142
+                  },
                   "VRoadcast.html#.isConnected": {
                     "ref": "VRoadcast.html#.isConnected",
                     "tf": 10
@@ -6941,6 +9441,20 @@ window.lunrData = {
                 "docs": {},
                 "s": {
                   "docs": {},
+                  "l": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "Node.html#setPosition": {
+                            "ref": "Node.html#setPosition",
+                            "tf": 12.5
+                          }
+                        }
+                      }
+                    }
+                  },
                   "i": {
                     "docs": {},
                     "t": {
@@ -6982,6 +9496,104 @@ window.lunrData = {
             },
             "r": {
               "docs": {},
+              "e": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  ".": {
+                    "docs": {},
+                    "m": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "i": {
+                                "docs": {
+                                  "Node.html#getMaterial": {
+                                    "ref": "Node.html#getMaterial",
+                                    "tf": 50
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "s": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "h": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {
+                                "Node.html#getBound": {
+                                  "ref": "Node.html#getBound",
+                                  "tf": 50
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "v": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "r": {
+                                "3": {
+                                  "docs": {
+                                    "XR.html#.getControllerWorldLocation": {
+                                      "ref": "XR.html#.getControllerWorldLocation",
+                                      "tf": 33.33333333333333
+                                    },
+                                    "XR.html#.getControllerWorldDirection": {
+                                      "ref": "XR.html#.getControllerWorldDirection",
+                                      "tf": 33.33333333333333
+                                    },
+                                    "Nav.html#.getCurrentEyeLocation": {
+                                      "ref": "Nav.html#.getCurrentEyeLocation",
+                                      "tf": 33.33333333333333
+                                    },
+                                    "Nav.html#.getCurrentDirection": {
+                                      "ref": "Nav.html#.getCurrentDirection",
+                                      "tf": 33.33333333333333
+                                    },
+                                    "ATON.html#.getSceneQueriedPoint": {
+                                      "ref": "ATON.html#.getSceneQueriedPoint",
+                                      "tf": 33.33333333333333
+                                    },
+                                    "ATON.html#.getSceneQueriedNormal": {
+                                      "ref": "ATON.html#.getSceneQueriedNormal",
+                                      "tf": 33.33333333333333
+                                    }
+                                  }
+                                },
+                                "docs": {}
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "o": {
                 "docs": {},
                 "u": {
@@ -7076,7 +9688,12 @@ window.lunrData = {
             }
           },
           "p": {
-            "docs": {},
+            "docs": {
+              "ATON.html#.setMainPanoramaRotation": {
+                "ref": "ATON.html#.setMainPanoramaRotation",
+                "tf": 6.25
+              }
+            },
             "d": {
               "docs": {},
               "a": {
@@ -7090,6 +9707,45 @@ window.lunrData = {
                     "LightProbe.html#update": {
                       "ref": "LightProbe.html#update",
                       "tf": 753.125
+                    },
+                    "ATON.html#.updateLightProbes": {
+                      "ref": "ATON.html#.updateLightProbes",
+                      "tf": 16.666666666666664
+                    }
+                  },
+                  "e": {
+                    "docs": {},
+                    "l": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "g": {
+                          "docs": {},
+                          "h": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "b": {
+                                      "docs": {
+                                        "ATON.html#.updateLightProbes": {
+                                          "ref": "ATON.html#.updateLightProbes",
+                                          "tf": 700
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -7123,6 +9779,28 @@ window.lunrData = {
                       "tf": 2.1739130434782608
                     }
                   }
+                },
+                "f": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "ATON.html#.getSceneQueriedPoint": {
+                          "ref": "ATON.html#.getSceneQueriedPoint",
+                          "tf": 5
+                        },
+                        "ATON.html#.getSceneQueriedDistance": {
+                          "ref": "ATON.html#.getSceneQueriedDistance",
+                          "tf": 5.555555555555555
+                        },
+                        "ATON.html#.getSceneQueriedNormal": {
+                          "ref": "ATON.html#.getSceneQueriedNormal",
+                          "tf": 5.555555555555555
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -7144,6 +9822,18 @@ window.lunrData = {
               "SUI.html#.init": {
                 "ref": "SUI.html#.init",
                 "tf": 12.5
+              },
+              "ATON.html#.createUINode": {
+                "ref": "ATON.html#.createUINode",
+                "tf": 16.666666666666664
+              },
+              "ATON.html#.getUINode": {
+                "ref": "ATON.html#.getUINode",
+                "tf": 12.5
+              },
+              "ATON.html#.getRootUI": {
+                "ref": "ATON.html#.getRootUI",
+                "tf": 16.666666666666664
               }
             }
           },
@@ -7160,7 +9850,12 @@ window.lunrData = {
           }
         },
         "v": {
-          "docs": {},
+          "docs": {
+            "ATON.html#.setMainLightDirection": {
+              "ref": "ATON.html#.setMainLightDirection",
+              "tf": 33.33333333333333
+            }
+          },
           "r": {
             "docs": {
               "index.html": {
@@ -7406,6 +10101,14 @@ window.lunrData = {
                             "Nav.html#.requestPOV": {
                               "ref": "Nav.html#.requestPOV",
                               "tf": 12.5
+                            },
+                            "Nav.html#.setHomePOV": {
+                              "ref": "Nav.html#.setHomePOV",
+                              "tf": 12.5
+                            },
+                            "Nav.html#.requestHome": {
+                              "ref": "Nav.html#.requestHome",
+                              "tf": 16.666666666666664
                             }
                           }
                         }
@@ -7456,6 +10159,34 @@ window.lunrData = {
                       "Node.html#attachToRoot": {
                         "ref": "Node.html#attachToRoot",
                         "tf": 2.1739130434782608
+                      },
+                      "ATON.html#.createSceneNode": {
+                        "ref": "ATON.html#.createSceneNode",
+                        "tf": 8.333333333333332
+                      },
+                      "ATON.html#.getSceneNode": {
+                        "ref": "ATON.html#.getSceneNode",
+                        "tf": 7.142857142857142
+                      },
+                      "ATON.html#.getOrCreateSceneNode": {
+                        "ref": "ATON.html#.getOrCreateSceneNode",
+                        "tf": 8.333333333333332
+                      },
+                      "ATON.html#.getRootScene": {
+                        "ref": "ATON.html#.getRootScene",
+                        "tf": 12.5
+                      },
+                      "ATON.html#.getSceneQueriedPoint": {
+                        "ref": "ATON.html#.getSceneQueriedPoint",
+                        "tf": 5
+                      },
+                      "ATON.html#.getSceneQueriedDistance": {
+                        "ref": "ATON.html#.getSceneQueriedDistance",
+                        "tf": 5.555555555555555
+                      },
+                      "ATON.html#.getSceneQueriedNormal": {
+                        "ref": "ATON.html#.getSceneQueriedNormal",
+                        "tf": 5.555555555555555
                       }
                     }
                   },
@@ -7499,6 +10230,23 @@ window.lunrData = {
                     "Node.html#disablePicking": {
                       "ref": "Node.html#disablePicking",
                       "tf": 5
+                    }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "ATON.html#.setMainPanoramaRotation": {
+                        "ref": "ATON.html#.setMainPanoramaRotation",
+                        "tf": 6.25
+                      }
                     }
                   }
                 }
@@ -7704,6 +10452,10 @@ window.lunrData = {
                     "LightProbe.html": {
                       "ref": "LightProbe.html",
                       "tf": 6.25
+                    },
+                    "ATON.html#.setMainLightDirection": {
+                      "ref": "ATON.html#.setMainLightDirection",
+                      "tf": 10
                     }
                   },
                   "p": {
@@ -7717,6 +10469,14 @@ window.lunrData = {
                             "LightProbe.html": {
                               "ref": "LightProbe.html",
                               "tf": 1900
+                            },
+                            "ATON.html#.addLightProbe": {
+                              "ref": "ATON.html#.addLightProbe",
+                              "tf": 16.666666666666664
+                            },
+                            "ATON.html#.updateLightProbes": {
+                              "ref": "ATON.html#.updateLightProbes",
+                              "tf": 16.666666666666664
                             }
                           },
                           "e": {
@@ -7789,6 +10549,10 @@ window.lunrData = {
               "LightProbe.html#update": {
                 "ref": "LightProbe.html#update",
                 "tf": 3.125
+              },
+              "ATON.html#.addLightProbe": {
+                "ref": "ATON.html#.addLightProbe",
+                "tf": 33.33333333333333
               }
             }
           },
@@ -7825,20 +10589,12 @@ window.lunrData = {
               "docs": {},
               "a": {
                 "docs": {},
-                "l": {
-                  "docs": {
-                    "EventHub.html#.on": {
-                      "ref": "EventHub.html#.on",
-                      "tf": 6.25
-                    },
-                    "EventHub.html#.fireEvent": {
-                      "ref": "EventHub.html#.fireEvent",
-                      "tf": 8.333333333333332
-                    }
-                  }
-                },
                 "t": {
                   "docs": {
+                    "Node.html#setPosition": {
+                      "ref": "Node.html#setPosition",
+                      "tf": 12.5
+                    },
                     "XR.html#.setRefSpaceLocation": {
                       "ref": "XR.html#.setRefSpaceLocation",
                       "tf": 6.25
@@ -7850,6 +10606,30 @@ window.lunrData = {
                     "Nav.html#.getCurrentEyeLocation": {
                       "ref": "Nav.html#.getCurrentEyeLocation",
                       "tf": 5.555555555555555
+                    },
+                    "ATON.html#.getSceneQueriedPoint": {
+                      "ref": "ATON.html#.getSceneQueriedPoint",
+                      "tf": 5
+                    },
+                    "ATON.html#.getSceneQueriedDistance": {
+                      "ref": "ATON.html#.getSceneQueriedDistance",
+                      "tf": 5.555555555555555
+                    },
+                    "ATON.html#.getSceneQueriedNormal": {
+                      "ref": "ATON.html#.getSceneQueriedNormal",
+                      "tf": 5.555555555555555
+                    }
+                  }
+                },
+                "l": {
+                  "docs": {
+                    "EventHub.html#.on": {
+                      "ref": "EventHub.html#.on",
+                      "tf": 6.25
+                    },
+                    "EventHub.html#.fireEvent": {
+                      "ref": "EventHub.html#.fireEvent",
+                      "tf": 8.333333333333332
                     }
                   }
                 }
@@ -7917,7 +10697,7 @@ window.lunrData = {
                                   },
                                   "XR.html#.isPresenting": {
                                     "ref": "XR.html#.isPresenting",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "XR.html#.setRefSpaceLocation": {
                                     "ref": "XR.html#.setRefSpaceLocation",
@@ -7929,11 +10709,11 @@ window.lunrData = {
                                   },
                                   "XR.html#.getControllerWorldLocation": {
                                     "ref": "XR.html#.getControllerWorldLocation",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "XR.html#.getControllerWorldDirection": {
                                     "ref": "XR.html#.getControllerWorldDirection",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "SceneHub.html#.init": {
                                     "ref": "SceneHub.html#.init",
@@ -7947,21 +10727,37 @@ window.lunrData = {
                                     "ref": "SceneHub.html#.load",
                                     "tf": 20
                                   },
+                                  "Nav.html#.init": {
+                                    "ref": "Nav.html#.init",
+                                    "tf": 50
+                                  },
                                   "Nav.html#.getCurrentEyeLocation": {
                                     "ref": "Nav.html#.getCurrentEyeLocation",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.getCurrentDirection": {
                                     "ref": "Nav.html#.getCurrentDirection",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.copyCurrentPOV": {
                                     "ref": "Nav.html#.copyCurrentPOV",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.isTransitioning": {
                                     "ref": "Nav.html#.isTransitioning",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.isOrbit": {
+                                    "ref": "Nav.html#.isOrbit",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.isFirstPerson": {
+                                    "ref": "Nav.html#.isFirstPerson",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.isDevOri": {
+                                    "ref": "Nav.html#.isDevOri",
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.setOrbitControl": {
                                     "ref": "Nav.html#.setOrbitControl",
@@ -7993,7 +10789,7 @@ window.lunrData = {
                                   },
                                   "Nav.html#.getFOV": {
                                     "ref": "Nav.html#.getFOV",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.requestPOV": {
                                     "ref": "Nav.html#.requestPOV",
@@ -8005,6 +10801,14 @@ window.lunrData = {
                                   },
                                   "Nav.html#.computeDefaultHome": {
                                     "ref": "Nav.html#.computeDefaultHome",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.setHomePOV": {
+                                    "ref": "Nav.html#.setHomePOV",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.requestHome": {
+                                    "ref": "Nav.html#.requestHome",
                                     "tf": 33.33333333333333
                                   },
                                   "SUI.html#.init": {
@@ -8025,7 +10829,7 @@ window.lunrData = {
                                   },
                                   "VRoadcast.html#.isConnected": {
                                     "ref": "VRoadcast.html#.isConnected",
-                                    "tf": 50
+                                    "tf": 33.33333333333333
                                   },
                                   "VRoadcast.html#.requestSceneEnter": {
                                     "ref": "VRoadcast.html#.requestSceneEnter",
@@ -8043,8 +10847,20 @@ window.lunrData = {
                                     "ref": "ATON.html#.setPathScenes",
                                     "tf": 33.33333333333333
                                   },
+                                  "ATON.html#.toggleFullScreen": {
+                                    "ref": "ATON.html#.toggleFullScreen",
+                                    "tf": 50
+                                  },
                                   "ATON.html#.realize": {
                                     "ref": "ATON.html#.realize",
+                                    "tf": 50
+                                  },
+                                  "ATON.html#.renderPause": {
+                                    "ref": "ATON.html#.renderPause",
+                                    "tf": 50
+                                  },
+                                  "ATON.html#.renderResume": {
+                                    "ref": "ATON.html#.renderResume",
                                     "tf": 50
                                   },
                                   "ATON.html#.setDefaultPixelDensity": {
@@ -8054,6 +10870,82 @@ window.lunrData = {
                                   "ATON.html#.resetPixelDensity": {
                                     "ref": "ATON.html#.resetPixelDensity",
                                     "tf": 50
+                                  },
+                                  "ATON.html#.createSceneNode": {
+                                    "ref": "ATON.html#.createSceneNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getSceneNode": {
+                                    "ref": "ATON.html#.getSceneNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getOrCreateSceneNode": {
+                                    "ref": "ATON.html#.getOrCreateSceneNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getRootScene": {
+                                    "ref": "ATON.html#.getRootScene",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.createSemanticNode": {
+                                    "ref": "ATON.html#.createSemanticNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getSemanticNode": {
+                                    "ref": "ATON.html#.getSemanticNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getOrCreateSemanticNode": {
+                                    "ref": "ATON.html#.getOrCreateSemanticNode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getRootSemantics": {
+                                    "ref": "ATON.html#.getRootSemantics",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.createUINode": {
+                                    "ref": "ATON.html#.createUINode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getUINode": {
+                                    "ref": "ATON.html#.getUINode",
+                                    "tf": 25
+                                  },
+                                  "ATON.html#.getRootUI": {
+                                    "ref": "ATON.html#.getRootUI",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.addLightProbe": {
+                                    "ref": "ATON.html#.addLightProbe",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.updateLightProbes": {
+                                    "ref": "ATON.html#.updateLightProbes",
+                                    "tf": 50
+                                  },
+                                  "ATON.html#.setMainPanorama": {
+                                    "ref": "ATON.html#.setMainPanorama",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.setMainPanoramaRotation": {
+                                    "ref": "ATON.html#.setMainPanoramaRotation",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.setMainLightDirection": {
+                                    "ref": "ATON.html#.setMainLightDirection",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.getSceneQueriedPoint": {
+                                    "ref": "ATON.html#.getSceneQueriedPoint",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.getSceneQueriedDistance": {
+                                    "ref": "ATON.html#.getSceneQueriedDistance",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "ATON.html#.getSceneQueriedNormal": {
+                                    "ref": "ATON.html#.getSceneQueriedNormal",
+                                    "tf": 33.33333333333333
                                   }
                                 }
                               }
@@ -8145,6 +11037,10 @@ window.lunrData = {
                 "Nav.html": {
                   "ref": "Nav.html",
                   "tf": 1900
+                },
+                "Nav.html#.init": {
+                  "ref": "Nav.html#.init",
+                  "tf": 16.666666666666664
                 }
               },
               "i": {
@@ -8157,6 +11053,18 @@ window.lunrData = {
                     },
                     "Nav.html#.isTransitioning": {
                       "ref": "Nav.html#.isTransitioning",
+                      "tf": 7.142857142857142
+                    },
+                    "Nav.html#.isOrbit": {
+                      "ref": "Nav.html#.isOrbit",
+                      "tf": 8.333333333333332
+                    },
+                    "Nav.html#.isFirstPerson": {
+                      "ref": "Nav.html#.isFirstPerson",
+                      "tf": 7.142857142857142
+                    },
+                    "Nav.html#.isDevOri": {
+                      "ref": "Nav.html#.isDevOri",
                       "tf": 7.142857142857142
                     },
                     "Nav.html#.setOrbitControl": {
@@ -8176,6 +11084,133 @@ window.lunrData = {
               },
               ".": {
                 "docs": {},
+                "i": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "Nav.html#.init": {
+                            "ref": "Nav.html#.init",
+                            "tf": 1150
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "Nav.html#.isTransitioning": {
+                                      "ref": "Nav.html#.isTransitioning",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "b": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Nav.html#.isOrbit": {
+                                  "ref": "Nav.html#.isOrbit",
+                                  "tf": 1150
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "f": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {
+                                            "Nav.html#.isFirstPerson": {
+                                              "ref": "Nav.html#.isFirstPerson",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "d": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "v": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "i": {
+                                "docs": {
+                                  "Nav.html#.isDevOri": {
+                                    "ref": "Nav.html#.isDevOri",
+                                    "tf": 1150
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "g": {
                   "docs": {},
                   "e": {
@@ -8352,38 +11387,6 @@ window.lunrData = {
                                           }
                                         }
                                       }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "i": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "t": {
-                      "docs": {},
-                      "r": {
-                        "docs": {},
-                        "a": {
-                          "docs": {},
-                          "n": {
-                            "docs": {},
-                            "s": {
-                              "docs": {},
-                              "i": {
-                                "docs": {},
-                                "t": {
-                                  "docs": {
-                                    "Nav.html#.isTransitioning": {
-                                      "ref": "Nav.html#.isTransitioning",
-                                      "tf": 1150
                                     }
                                   }
                                 }
@@ -8652,6 +11655,32 @@ window.lunrData = {
                             }
                           }
                         }
+                      },
+                      "h": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "m": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "v": {
+                                    "docs": {
+                                      "Nav.html#.setHomePOV": {
+                                        "ref": "Nav.html#.setHomePOV",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   },
@@ -8713,6 +11742,20 @@ window.lunrData = {
                                             }
                                           }
                                         }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "h": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "m": {
+                                    "docs": {
+                                      "Nav.html#.requestHome": {
+                                        "ref": "Nav.html#.requestHome",
+                                        "tf": 1150
                                       }
                                     }
                                   }
@@ -8844,6 +11887,18 @@ window.lunrData = {
                     "ref": "Node.html#getBound",
                     "tf": 12.5
                   },
+                  "Node.html#setPosition": {
+                    "ref": "Node.html#setPosition",
+                    "tf": 12.5
+                  },
+                  "Node.html#setScale": {
+                    "ref": "Node.html#setScale",
+                    "tf": 16.666666666666664
+                  },
+                  "Node.html#setRotation": {
+                    "ref": "Node.html#setRotation",
+                    "tf": 8.333333333333332
+                  },
                   "Node.html#orientToCamera": {
                     "ref": "Node.html#orientToCamera",
                     "tf": 12.5
@@ -8855,6 +11910,50 @@ window.lunrData = {
                   "Nav.html#.requestPOVbyNode": {
                     "ref": "Nav.html#.requestPOVbyNode",
                     "tf": 10
+                  },
+                  "ATON.html#.createSceneNode": {
+                    "ref": "ATON.html#.createSceneNode",
+                    "tf": 33.33333333333333
+                  },
+                  "ATON.html#.getSceneNode": {
+                    "ref": "ATON.html#.getSceneNode",
+                    "tf": 32.14285714285714
+                  },
+                  "ATON.html#.getOrCreateSceneNode": {
+                    "ref": "ATON.html#.getOrCreateSceneNode",
+                    "tf": 33.33333333333333
+                  },
+                  "ATON.html#.getRootScene": {
+                    "ref": "ATON.html#.getRootScene",
+                    "tf": 33.33333333333333
+                  },
+                  "ATON.html#.createSemanticNode": {
+                    "ref": "ATON.html#.createSemanticNode",
+                    "tf": 41.666666666666664
+                  },
+                  "ATON.html#.getSemanticNode": {
+                    "ref": "ATON.html#.getSemanticNode",
+                    "tf": 37.5
+                  },
+                  "ATON.html#.getOrCreateSemanticNode": {
+                    "ref": "ATON.html#.getOrCreateSemanticNode",
+                    "tf": 41.666666666666664
+                  },
+                  "ATON.html#.getRootSemantics": {
+                    "ref": "ATON.html#.getRootSemantics",
+                    "tf": 33.33333333333333
+                  },
+                  "ATON.html#.createUINode": {
+                    "ref": "ATON.html#.createUINode",
+                    "tf": 41.666666666666664
+                  },
+                  "ATON.html#.getUINode": {
+                    "ref": "ATON.html#.getUINode",
+                    "tf": 37.5
+                  },
+                  "ATON.html#.getRootUI": {
+                    "ref": "ATON.html#.getRootUI",
+                    "tf": 33.33333333333333
                   }
                 },
                 "#": {
@@ -9041,6 +12140,57 @@ window.lunrData = {
                                       }
                                     }
                                   }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "p": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "Node.html#setPosition": {
+                                      "ref": "Node.html#setPosition",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "s": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "l": {
+                                "docs": {
+                                  "Node.html#setScale": {
+                                    "ref": "Node.html#setScale",
+                                    "tf": 1150
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "r": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Node.html#setRotation": {
+                                  "ref": "Node.html#setRotation",
+                                  "tf": 1150
                                 }
                               }
                             }
@@ -9377,6 +12527,34 @@ window.lunrData = {
                       "Nav.html#.getCurrentDirection": {
                         "ref": "Nav.html#.getCurrentDirection",
                         "tf": 5
+                      },
+                      "ATON.html#.getSceneQueriedNormal": {
+                        "ref": "ATON.html#.getSceneQueriedNormal",
+                        "tf": 5.555555555555555
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "u": {
+            "docs": {},
+            "m": {
+              "docs": {},
+              "b": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Nav.html#.getFOV": {
+                        "ref": "Nav.html#.getFOV",
+                        "tf": 33.33333333333333
+                      },
+                      "ATON.html#.getSceneQueriedDistance": {
+                        "ref": "ATON.html#.getSceneQueriedDistance",
+                        "tf": 33.33333333333333
                       }
                     }
                   }
@@ -9663,7 +12841,186 @@ window.lunrData = {
               },
               "Node.html#hasKeyword": {
                 "ref": "Node.html#hasKeyword",
-                "tf": 50
+                "tf": 33.33333333333333
+              }
+            }
+          }
+        },
+        "b": {
+          "docs": {
+            "SceneHub.html#.setEditMode": {
+              "ref": "SceneHub.html#.setEditMode",
+              "tf": 33.33333333333333
+            }
+          },
+          "o": {
+            "docs": {},
+            "o": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "Node.html#hasKeyword": {
+                          "ref": "Node.html#hasKeyword",
+                          "tf": 33.33333333333333
+                        },
+                        "XR.html#.isPresenting": {
+                          "ref": "XR.html#.isPresenting",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.isTransitioning": {
+                          "ref": "Nav.html#.isTransitioning",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.isOrbit": {
+                          "ref": "Nav.html#.isOrbit",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.isFirstPerson": {
+                          "ref": "Nav.html#.isFirstPerson",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.isDevOri": {
+                          "ref": "Nav.html#.isDevOri",
+                          "tf": 33.33333333333333
+                        },
+                        "VRoadcast.html#.isConnected": {
+                          "ref": "VRoadcast.html#.isConnected",
+                          "tf": 33.33333333333333
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "u": {
+              "docs": {},
+              "n": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "Node.html#getBound": {
+                      "ref": "Node.html#getBound",
+                      "tf": 12.5
+                    },
+                    "Nav.html#.computeDefaultHome": {
+                      "ref": "Nav.html#.computeDefaultHome",
+                      "tf": 4.545454545454546
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "e": {
+            "docs": {},
+            "c": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "m": {
+                  "docs": {
+                    "Node.html#show": {
+                      "ref": "Node.html#show",
+                      "tf": 5
+                    },
+                    "Node.html#toggle": {
+                      "ref": "Node.html#toggle",
+                      "tf": 7.142857142857142
+                    },
+                    "SceneHub.html#.setEditMode": {
+                      "ref": "SceneHub.html#.setEditMode",
+                      "tf": 5
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "a": {
+            "docs": {},
+            "c": {
+              "docs": {},
+              "k": {
+                "docs": {},
+                "g": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "u": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "d": {
+                            "docs": {
+                              "Node.html#load": {
+                                "ref": "Node.html#load",
+                                "tf": 2.1739130434782608
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "n": {
+              "docs": {},
+              "d": {
+                "docs": {},
+                "w": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "h": {
+                          "docs": {
+                            "Node.html#load": {
+                              "ref": "Node.html#load",
+                              "tf": 2.1739130434782608
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "r": {
+            "docs": {},
+            "e": {
+              "docs": {},
+              "p": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "c": {
+                      "docs": {
+                        "EventHub.html#.fireEvent": {
+                          "ref": "EventHub.html#.fireEvent",
+                          "tf": 20
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -9690,7 +13047,7 @@ window.lunrData = {
                             "docs": {
                               "Node.html#hasKeyword": {
                                 "ref": "Node.html#hasKeyword",
-                                "tf": 700
+                                "tf": 683.3333333333334
                               }
                             }
                           }
@@ -9827,6 +13184,14 @@ window.lunrData = {
                   "Nav.html#.computeDefaultHome": {
                     "ref": "Nav.html#.computeDefaultHome",
                     "tf": 4.545454545454546
+                  },
+                  "Nav.html#.setHomePOV": {
+                    "ref": "Nav.html#.setHomePOV",
+                    "tf": 12.5
+                  },
+                  "Nav.html#.requestHome": {
+                    "ref": "Nav.html#.requestHome",
+                    "tf": 16.666666666666664
                   }
                 }
               }
@@ -9858,141 +13223,18 @@ window.lunrData = {
                     "Node.html#enablePicking": {
                       "ref": "Node.html#enablePicking",
                       "tf": 8.333333333333332
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "b": {
-          "docs": {
-            "SceneHub.html#.setEditMode": {
-              "ref": "SceneHub.html#.setEditMode",
-              "tf": 33.33333333333333
-            }
-          },
-          "e": {
-            "docs": {},
-            "c": {
-              "docs": {},
-              "o": {
-                "docs": {},
-                "m": {
-                  "docs": {
-                    "Node.html#show": {
-                      "ref": "Node.html#show",
-                      "tf": 5
                     },
-                    "Node.html#toggle": {
-                      "ref": "Node.html#toggle",
-                      "tf": 7.142857142857142
+                    "ATON.html#.getSceneQueriedPoint": {
+                      "ref": "ATON.html#.getSceneQueriedPoint",
+                      "tf": 10
                     },
-                    "SceneHub.html#.setEditMode": {
-                      "ref": "SceneHub.html#.setEditMode",
-                      "tf": 5
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "o": {
-            "docs": {},
-            "u": {
-              "docs": {},
-              "n": {
-                "docs": {},
-                "d": {
-                  "docs": {
-                    "Node.html#getBound": {
-                      "ref": "Node.html#getBound",
-                      "tf": 12.5
+                    "ATON.html#.getSceneQueriedDistance": {
+                      "ref": "ATON.html#.getSceneQueriedDistance",
+                      "tf": 11.11111111111111
                     },
-                    "Nav.html#.computeDefaultHome": {
-                      "ref": "Nav.html#.computeDefaultHome",
-                      "tf": 4.545454545454546
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "a": {
-            "docs": {},
-            "c": {
-              "docs": {},
-              "k": {
-                "docs": {},
-                "g": {
-                  "docs": {},
-                  "r": {
-                    "docs": {},
-                    "o": {
-                      "docs": {},
-                      "u": {
-                        "docs": {},
-                        "n": {
-                          "docs": {},
-                          "d": {
-                            "docs": {
-                              "Node.html#load": {
-                                "ref": "Node.html#load",
-                                "tf": 2.1739130434782608
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "n": {
-              "docs": {},
-              "d": {
-                "docs": {},
-                "w": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "d": {
-                      "docs": {},
-                      "t": {
-                        "docs": {},
-                        "h": {
-                          "docs": {
-                            "Node.html#load": {
-                              "ref": "Node.html#load",
-                              "tf": 2.1739130434782608
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "r": {
-            "docs": {},
-            "e": {
-              "docs": {},
-              "p": {
-                "docs": {},
-                "l": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "c": {
-                      "docs": {
-                        "EventHub.html#.fireEvent": {
-                          "ref": "EventHub.html#.fireEvent",
-                          "tf": 20
-                        }
-                      }
+                    "ATON.html#.getSceneQueriedNormal": {
+                      "ref": "ATON.html#.getSceneQueriedNormal",
+                      "tf": 11.11111111111111
                     }
                   }
                 }
@@ -10018,18 +13260,21 @@ window.lunrData = {
           }
         }
       },
-      "length": 775
+      "length": 1069
     },
     "corpusTokens": [
       "1.0",
       "3.0",
+      "360",
       "3d",
       "abstract",
+      "activ",
       "actual",
       "ad",
       "adapt",
       "add",
       "addkeyword",
+      "addlightprob",
       "address",
       "adopt",
       "allow",
@@ -10043,11 +13288,33 @@ window.lunrData = {
       "asset",
       "assign",
       "aton",
+      "aton.addlightprob",
+      "aton.createscenenod",
+      "aton.createsemanticnod",
+      "aton.createuinod",
+      "aton.getorcreatescenenod",
+      "aton.getorcreatesemanticnod",
+      "aton.getrootscen",
+      "aton.getrootsemant",
+      "aton.getrootui",
+      "aton.getscenenod",
+      "aton.getscenequerieddist",
+      "aton.getscenequeriednorm",
+      "aton.getscenequeriedpoint",
+      "aton.getsemanticnod",
+      "aton.getuinod",
       "aton.r",
+      "aton.renderpaus",
+      "aton.renderresum",
       "aton.resetpixeldens",
       "aton.setdefaultpixeldens",
+      "aton.setmainlightdirect",
+      "aton.setmainpanorama",
+      "aton.setmainpanoramarot",
       "aton.setpathcollect",
       "aton.setpathscen",
+      "aton.togglefullscreen",
+      "aton.updatelightprob",
       "attach",
       "attachto",
       "attachtoroot",
@@ -10058,6 +13325,7 @@ window.lunrData = {
       "background",
       "bandwidth",
       "becom",
+      "boolean",
       "bound",
       "breplic",
       "call",
@@ -10084,6 +13352,9 @@ window.lunrData = {
       "copi",
       "copycurrentpov",
       "creat",
+      "createscenenod",
+      "createsemanticnod",
+      "createuinod",
       "current",
       "custom",
       "data",
@@ -10103,6 +13374,7 @@ window.lunrData = {
       "direct",
       "disabl",
       "disablepick",
+      "distanc",
       "document",
       "duplic",
       "durat",
@@ -10114,6 +13386,7 @@ window.lunrData = {
       "end",
       "enter",
       "etc",
+      "euler",
       "even",
       "event",
       "eventhub",
@@ -10135,6 +13408,7 @@ window.lunrData = {
       "fov",
       "framework",
       "front",
+      "fullscreen",
       "function",
       "game",
       "getbound",
@@ -10145,6 +13419,17 @@ window.lunrData = {
       "getdescript",
       "getfov",
       "getmateri",
+      "getorcreatescenenod",
+      "getorcreatesemanticnod",
+      "getrootscen",
+      "getrootsemant",
+      "getrootui",
+      "getscenenod",
+      "getscenequerieddist",
+      "getscenequeriednorm",
+      "getscenequeriedpoint",
+      "getsemanticnod",
+      "getuinod",
       "given",
       "global",
       "grab",
@@ -10168,6 +13453,9 @@ window.lunrData = {
       "interact",
       "invis",
       "isconnect",
+      "isdevori",
+      "isfirstperson",
+      "isorbit",
       "ispres",
       "istransit",
       "json",
@@ -10209,12 +13497,18 @@ window.lunrData = {
       "nav.getcurrentdirect",
       "nav.getcurrenteyeloc",
       "nav.getfov",
+      "nav.init",
+      "nav.isdevori",
+      "nav.isfirstperson",
+      "nav.isorbit",
       "nav.istransit",
+      "nav.requesthom",
       "nav.requestpov",
       "nav.requestpovbynod",
       "nav.setdeviceorientationcontrol",
       "nav.setfirstpersoncontrol",
       "nav.setfov",
+      "nav.sethomepov",
       "nav.setmotionamount",
       "nav.setmotiondirect",
       "nav.setorbitcontrol",
@@ -10239,10 +13533,14 @@ window.lunrData = {
       "node#removechildren",
       "node#setdescript",
       "node#setmateri",
+      "node#setposit",
+      "node#setrot",
+      "node#setscal",
       "node#show",
       "node#toggl",
       "normal",
       "note",
+      "number",
       "object",
       "onc",
       "oncomplet",
@@ -10255,12 +13553,14 @@ window.lunrData = {
       "panorama",
       "parent",
       "path",
+      "paus",
       "perform",
       "persist",
       "person",
       "pick",
       "pickabl",
       "pixel",
+      "point",
       "posit",
       "pov",
       "pov#addkeyword",
@@ -10271,12 +13571,14 @@ window.lunrData = {
       "pov#settarget",
       "present",
       "previou",
+      "previous",
       "probe",
-      "prode",
       "profil",
       "proper",
       "provid",
       "queri",
+      "r",
+      "radian",
       "ray",
       "re)assign",
       "readm",
@@ -10284,10 +13586,14 @@ window.lunrData = {
       "recurs",
       "refer",
       "removechildren",
+      "render",
+      "renderpaus",
+      "renderresum",
       "replic",
       "repres",
       "reqpath",
       "request",
+      "requesthom",
       "requestpov",
       "requestpovbynod",
       "requestsceneent",
@@ -10295,12 +13601,16 @@ window.lunrData = {
       "reset",
       "resetpixeldens",
       "resourc",
+      "resum",
       "return",
       "root",
+      "rotat",
       "routin",
       "runtim",
+      "rx,ry,rz",
       "s",
       "same",
+      "scale",
       "scene",
       "scenehub",
       "scenehub.init",
@@ -10321,6 +13631,10 @@ window.lunrData = {
       "seteditmod",
       "setfirstpersoncontrol",
       "setfov",
+      "sethomepov",
+      "setmainlightdirect",
+      "setmainpanorama",
+      "setmainpanoramarot",
       "setmateri",
       "setmotionamount",
       "setmotiondirect",
@@ -10331,6 +13645,8 @@ window.lunrData = {
       "setposit",
       "setprevpov",
       "setrefspaceloc",
+      "setrot",
+      "setscal",
       "settarget",
       "show",
       "sid",
@@ -10352,21 +13668,31 @@ window.lunrData = {
       "target",
       "techniqu",
       "those",
+      "three.materi",
+      "three.spher",
+      "three.vector3",
       "through",
       "toggl",
+      "togglefullscreen",
       "tool",
       "transit",
+      "translat",
       "true",
       "type",
       "typic",
       "ui",
+      "undefin",
       "under",
       "uniqu",
+      "up",
       "updat",
+      "updatelightprob",
       "url",
       "us",
       "user",
       "usual",
+      "v",
+      "vector",
       "veget",
       "viceversa",
       "view",
@@ -10584,7 +13910,7 @@ window.lunrData = {
     "Node.html#hasKeyword": {
       "id": "Node.html#hasKeyword",
       "kind": "function",
-      "title": "hasKeyword( kw )",
+      "title": "hasKeyword( kw ) → {boolean}",
       "longname": "Node#hasKeyword",
       "name": "hasKeyword",
       "tags": "Node#hasKeyword hasKeyword",
@@ -10604,7 +13930,7 @@ window.lunrData = {
     "Node.html#getDescription": {
       "id": "Node.html#getDescription",
       "kind": "function",
-      "title": "getDescription()",
+      "title": "getDescription() → {string}",
       "longname": "Node#getDescription",
       "name": "getDescription",
       "tags": "Node#getDescription getDescription",
@@ -10674,7 +14000,7 @@ window.lunrData = {
     "Node.html#getMaterial": {
       "id": "Node.html#getMaterial",
       "kind": "function",
-      "title": "getMaterial()",
+      "title": "getMaterial() → {THREE.Material}",
       "longname": "Node#getMaterial",
       "name": "getMaterial",
       "tags": "Node#getMaterial getMaterial",
@@ -10699,7 +14025,7 @@ window.lunrData = {
       "name": "attachTo",
       "tags": "Node#attachTo attachTo",
       "summary": "",
-      "description": "Attach this node to parent by proding ID (string) or node object"
+      "description": "Attach this node to parent by providing ID (string) or node object"
     },
     "Node.html#attachToRoot": {
       "id": "Node.html#attachToRoot",
@@ -10714,12 +14040,42 @@ window.lunrData = {
     "Node.html#getBound": {
       "id": "Node.html#getBound",
       "kind": "function",
-      "title": "getBound()",
+      "title": "getBound() → {THREE.Sphere}",
       "longname": "Node#getBound",
       "name": "getBound",
       "tags": "Node#getBound getBound",
       "summary": "",
       "description": "Return bounding sphere of this node"
+    },
+    "Node.html#setPosition": {
+      "id": "Node.html#setPosition",
+      "kind": "function",
+      "title": "setPosition()",
+      "longname": "Node#setPosition",
+      "name": "setPosition",
+      "tags": "Node#setPosition setPosition",
+      "summary": "",
+      "description": "Set location (translation) of this node"
+    },
+    "Node.html#setScale": {
+      "id": "Node.html#setScale",
+      "kind": "function",
+      "title": "setScale()",
+      "longname": "Node#setScale",
+      "name": "setScale",
+      "tags": "Node#setScale setScale",
+      "summary": "",
+      "description": "Set scale of this node"
+    },
+    "Node.html#setRotation": {
+      "id": "Node.html#setRotation",
+      "kind": "function",
+      "title": "setRotation()",
+      "longname": "Node#setRotation",
+      "name": "setRotation",
+      "tags": "Node#setRotation setRotation",
+      "summary": "",
+      "description": "Set rotation of this node (Euler rx,ry,rz) in radians"
     },
     "Node.html#orientToCamera": {
       "id": "Node.html#orientToCamera",
@@ -10838,7 +14194,7 @@ window.lunrData = {
     "XR.html#.isPresenting": {
       "id": "XR.html#.isPresenting",
       "kind": "function",
-      "title": "&lt;static&gt; isPresenting()",
+      "title": "&lt;static&gt; isPresenting() → {boolean}",
       "longname": "XR.isPresenting",
       "name": "isPresenting",
       "tags": "XR.isPresenting isPresenting",
@@ -10868,7 +14224,7 @@ window.lunrData = {
     "XR.html#.getControllerWorldLocation": {
       "id": "XR.html#.getControllerWorldLocation",
       "kind": "function",
-      "title": "&lt;static&gt; getControllerWorldLocation( i )",
+      "title": "&lt;static&gt; getControllerWorldLocation( i ) → {THREE.Vector3}",
       "longname": "XR.getControllerWorldLocation",
       "name": "getControllerWorldLocation",
       "tags": "XR.getControllerWorldLocation getControllerWorldLocation",
@@ -10878,7 +14234,7 @@ window.lunrData = {
     "XR.html#.getControllerWorldDirection": {
       "id": "XR.html#.getControllerWorldDirection",
       "kind": "function",
-      "title": "&lt;static&gt; getControllerWorldDirection( i )",
+      "title": "&lt;static&gt; getControllerWorldDirection( i ) → {THREE.Vector3}",
       "longname": "XR.getControllerWorldDirection",
       "name": "getControllerWorldDirection",
       "tags": "XR.getControllerWorldDirection getControllerWorldDirection",
@@ -10948,10 +14304,20 @@ window.lunrData = {
       "description": "ATON Navigation system",
       "body": ""
     },
+    "Nav.html#.init": {
+      "id": "Nav.html#.init",
+      "kind": "function",
+      "title": "&lt;static&gt; init()",
+      "longname": "Nav.init",
+      "name": "init",
+      "tags": "Nav.init init",
+      "summary": "",
+      "description": "Initialize nav system"
+    },
     "Nav.html#.getCurrentEyeLocation": {
       "id": "Nav.html#.getCurrentEyeLocation",
       "kind": "function",
-      "title": "&lt;static&gt; getCurrentEyeLocation()",
+      "title": "&lt;static&gt; getCurrentEyeLocation() → {THREE.Vector3}",
       "longname": "Nav.getCurrentEyeLocation",
       "name": "getCurrentEyeLocation",
       "tags": "Nav.getCurrentEyeLocation getCurrentEyeLocation",
@@ -10961,7 +14327,7 @@ window.lunrData = {
     "Nav.html#.getCurrentDirection": {
       "id": "Nav.html#.getCurrentDirection",
       "kind": "function",
-      "title": "&lt;static&gt; getCurrentDirection()",
+      "title": "&lt;static&gt; getCurrentDirection() → {THREE.Vector3}",
       "longname": "Nav.getCurrentDirection",
       "name": "getCurrentDirection",
       "tags": "Nav.getCurrentDirection getCurrentDirection",
@@ -10971,22 +14337,52 @@ window.lunrData = {
     "Nav.html#.copyCurrentPOV": {
       "id": "Nav.html#.copyCurrentPOV",
       "kind": "function",
-      "title": "&lt;static&gt; copyCurrentPOV()",
+      "title": "&lt;static&gt; copyCurrentPOV() → {POV}",
       "longname": "Nav.copyCurrentPOV",
       "name": "copyCurrentPOV",
       "tags": "Nav.copyCurrentPOV copyCurrentPOV",
       "summary": "",
-      "description": "Grab current POV and returns a copy"
+      "description": "Grab current POV and return a copy."
     },
     "Nav.html#.isTransitioning": {
       "id": "Nav.html#.isTransitioning",
       "kind": "function",
-      "title": "&lt;static&gt; isTransitioning()",
+      "title": "&lt;static&gt; isTransitioning() → {boolean}",
       "longname": "Nav.isTransitioning",
       "name": "isTransitioning",
       "tags": "Nav.isTransitioning isTransitioning",
       "summary": "",
       "description": "Return true if the navigation system is currently performing a transition"
+    },
+    "Nav.html#.isOrbit": {
+      "id": "Nav.html#.isOrbit",
+      "kind": "function",
+      "title": "&lt;static&gt; isOrbit() → {boolean}",
+      "longname": "Nav.isOrbit",
+      "name": "isOrbit",
+      "tags": "Nav.isOrbit isOrbit",
+      "summary": "",
+      "description": "Return true if the navigation system is in Orbit mode"
+    },
+    "Nav.html#.isFirstPerson": {
+      "id": "Nav.html#.isFirstPerson",
+      "kind": "function",
+      "title": "&lt;static&gt; isFirstPerson() → {boolean}",
+      "longname": "Nav.isFirstPerson",
+      "name": "isFirstPerson",
+      "tags": "Nav.isFirstPerson isFirstPerson",
+      "summary": "",
+      "description": "Return true if the navigation system is in First-person mode"
+    },
+    "Nav.html#.isDevOri": {
+      "id": "Nav.html#.isDevOri",
+      "kind": "function",
+      "title": "&lt;static&gt; isDevOri() → {boolean}",
+      "longname": "Nav.isDevOri",
+      "name": "isDevOri",
+      "tags": "Nav.isDevOri isDevOri",
+      "summary": "",
+      "description": "Return true if the navigation system is in Device-orientation mode"
     },
     "Nav.html#.setOrbitControl": {
       "id": "Nav.html#.setOrbitControl",
@@ -11061,7 +14457,7 @@ window.lunrData = {
     "Nav.html#.getFOV": {
       "id": "Nav.html#.getFOV",
       "kind": "function",
-      "title": "&lt;static&gt; getFOV()",
+      "title": "&lt;static&gt; getFOV() → {number}",
       "longname": "Nav.getFOV",
       "name": "getFOV",
       "tags": "Nav.getFOV getFOV",
@@ -11097,6 +14493,26 @@ window.lunrData = {
       "tags": "Nav.computeDefaultHome computeDefaultHome",
       "summary": "",
       "description": "Compute a default home, depending on visibile bounding sphere. Typically called after all assets are loaded"
+    },
+    "Nav.html#.setHomePOV": {
+      "id": "Nav.html#.setHomePOV",
+      "kind": "function",
+      "title": "&lt;static&gt; setHomePOV( pov )",
+      "longname": "Nav.setHomePOV",
+      "name": "setHomePOV",
+      "tags": "Nav.setHomePOV setHomePOV",
+      "summary": "",
+      "description": "Set the home viewpoint (POV)"
+    },
+    "Nav.html#.requestHome": {
+      "id": "Nav.html#.requestHome",
+      "kind": "function",
+      "title": "&lt;static&gt; requestHome( duration )",
+      "longname": "Nav.requestHome",
+      "name": "requestHome",
+      "tags": "Nav.requestHome requestHome",
+      "summary": "",
+      "description": "Request home viewpoint"
     },
     "SUI.html": {
       "id": "SUI.html",
@@ -11163,7 +14579,7 @@ window.lunrData = {
     "VRoadcast.html#.isConnected": {
       "id": "VRoadcast.html#.isConnected",
       "kind": "function",
-      "title": "&lt;static&gt; isConnected()",
+      "title": "&lt;static&gt; isConnected() → {boolean}",
       "longname": "VRoadcast.isConnected",
       "name": "isConnected",
       "tags": "VRoadcast.isConnected isConnected",
@@ -11221,6 +14637,16 @@ window.lunrData = {
       "summary": "",
       "description": "Set path scenes"
     },
+    "ATON.html#.toggleFullScreen": {
+      "id": "ATON.html#.toggleFullScreen",
+      "kind": "function",
+      "title": "&lt;static&gt; toggleFullScreen()",
+      "longname": "ATON.toggleFullScreen",
+      "name": "toggleFullScreen",
+      "tags": "ATON.toggleFullScreen toggleFullScreen",
+      "summary": "",
+      "description": "Toggle fullscreen"
+    },
     "ATON.html#.realize": {
       "id": "ATON.html#.realize",
       "kind": "function",
@@ -11230,6 +14656,26 @@ window.lunrData = {
       "tags": "ATON.realize realize",
       "summary": "",
       "description": "Main ATON initialization, it will take care of all sub-components initialization, device profiling and much more"
+    },
+    "ATON.html#.renderPause": {
+      "id": "ATON.html#.renderPause",
+      "kind": "function",
+      "title": "&lt;static&gt; renderPause()",
+      "longname": "ATON.renderPause",
+      "name": "renderPause",
+      "tags": "ATON.renderPause renderPause",
+      "summary": "",
+      "description": "Pause rendering"
+    },
+    "ATON.html#.renderResume": {
+      "id": "ATON.html#.renderResume",
+      "kind": "function",
+      "title": "&lt;static&gt; renderResume()",
+      "longname": "ATON.renderResume",
+      "name": "renderResume",
+      "tags": "ATON.renderResume renderResume",
+      "summary": "",
+      "description": "Resume rendering (if paused)"
     },
     "ATON.html#.setDefaultPixelDensity": {
       "id": "ATON.html#.setDefaultPixelDensity",
@@ -11250,6 +14696,196 @@ window.lunrData = {
       "tags": "ATON.resetPixelDensity resetPixelDensity",
       "summary": "",
       "description": "Reset pixel density to default"
+    },
+    "ATON.html#.createSceneNode": {
+      "id": "ATON.html#.createSceneNode",
+      "kind": "function",
+      "title": "&lt;static&gt; createSceneNode( id ) → {Node}",
+      "longname": "ATON.createSceneNode",
+      "name": "createSceneNode",
+      "tags": "ATON.createSceneNode createSceneNode",
+      "summary": "",
+      "description": "Create a scene node (visible scene-graph)"
+    },
+    "ATON.html#.getSceneNode": {
+      "id": "ATON.html#.getSceneNode",
+      "kind": "function",
+      "title": "&lt;static&gt; getSceneNode( id ) → {Node}",
+      "longname": "ATON.getSceneNode",
+      "name": "getSceneNode",
+      "tags": "ATON.getSceneNode getSceneNode",
+      "summary": "",
+      "description": "Get a previously created scene node (visible scene-graph)"
+    },
+    "ATON.html#.getOrCreateSceneNode": {
+      "id": "ATON.html#.getOrCreateSceneNode",
+      "kind": "function",
+      "title": "&lt;static&gt; getOrCreateSceneNode( id ) → {Node}",
+      "longname": "ATON.getOrCreateSceneNode",
+      "name": "getOrCreateSceneNode",
+      "tags": "ATON.getOrCreateSceneNode getOrCreateSceneNode",
+      "summary": "",
+      "description": "Get or create a scene node (visible scene-graph)"
+    },
+    "ATON.html#.getRootScene": {
+      "id": "ATON.html#.getRootScene",
+      "kind": "function",
+      "title": "&lt;static&gt; getRootScene() → {Node}",
+      "longname": "ATON.getRootScene",
+      "name": "getRootScene",
+      "tags": "ATON.getRootScene getRootScene",
+      "summary": "",
+      "description": "Get root (visible scene-graph)"
+    },
+    "ATON.html#.createSemanticNode": {
+      "id": "ATON.html#.createSemanticNode",
+      "kind": "function",
+      "title": "&lt;static&gt; createSemanticNode( id ) → {Node}",
+      "longname": "ATON.createSemanticNode",
+      "name": "createSemanticNode",
+      "tags": "ATON.createSemanticNode createSemanticNode",
+      "summary": "",
+      "description": "Create a semantic node"
+    },
+    "ATON.html#.getSemanticNode": {
+      "id": "ATON.html#.getSemanticNode",
+      "kind": "function",
+      "title": "&lt;static&gt; getSemanticNode( id ) → {Node}",
+      "longname": "ATON.getSemanticNode",
+      "name": "getSemanticNode",
+      "tags": "ATON.getSemanticNode getSemanticNode",
+      "summary": "",
+      "description": "Get a previously created semantic node"
+    },
+    "ATON.html#.getOrCreateSemanticNode": {
+      "id": "ATON.html#.getOrCreateSemanticNode",
+      "kind": "function",
+      "title": "&lt;static&gt; getOrCreateSemanticNode( id ) → {Node}",
+      "longname": "ATON.getOrCreateSemanticNode",
+      "name": "getOrCreateSemanticNode",
+      "tags": "ATON.getOrCreateSemanticNode getOrCreateSemanticNode",
+      "summary": "",
+      "description": "Get or create a semantic node"
+    },
+    "ATON.html#.getRootSemantics": {
+      "id": "ATON.html#.getRootSemantics",
+      "kind": "function",
+      "title": "&lt;static&gt; getRootSemantics() → {Node}",
+      "longname": "ATON.getRootSemantics",
+      "name": "getRootSemantics",
+      "tags": "ATON.getRootSemantics getRootSemantics",
+      "summary": "",
+      "description": "Get root of semantic graph"
+    },
+    "ATON.html#.createUINode": {
+      "id": "ATON.html#.createUINode",
+      "kind": "function",
+      "title": "&lt;static&gt; createUINode( id ) → {Node}",
+      "longname": "ATON.createUINode",
+      "name": "createUINode",
+      "tags": "ATON.createUINode createUINode",
+      "summary": "",
+      "description": "Create a UI node"
+    },
+    "ATON.html#.getUINode": {
+      "id": "ATON.html#.getUINode",
+      "kind": "function",
+      "title": "&lt;static&gt; getUINode( id ) → {Node}",
+      "longname": "ATON.getUINode",
+      "name": "getUINode",
+      "tags": "ATON.getUINode getUINode",
+      "summary": "",
+      "description": "Get a previously created UI node"
+    },
+    "ATON.html#.getRootUI": {
+      "id": "ATON.html#.getRootUI",
+      "kind": "function",
+      "title": "&lt;static&gt; getRootUI() → {Node}",
+      "longname": "ATON.getRootUI",
+      "name": "getRootUI",
+      "tags": "ATON.getRootUI getRootUI",
+      "summary": "",
+      "description": "Get root of UI graph"
+    },
+    "ATON.html#.addLightProbe": {
+      "id": "ATON.html#.addLightProbe",
+      "kind": "function",
+      "title": "&lt;static&gt; addLightProbe( LP )",
+      "longname": "ATON.addLightProbe",
+      "name": "addLightProbe",
+      "tags": "ATON.addLightProbe addLightProbe",
+      "summary": "",
+      "description": "Add a LightProbe to the scene"
+    },
+    "ATON.html#.updateLightProbes": {
+      "id": "ATON.html#.updateLightProbes",
+      "kind": "function",
+      "title": "&lt;static&gt; updateLightProbes()",
+      "longname": "ATON.updateLightProbes",
+      "name": "updateLightProbes",
+      "tags": "ATON.updateLightProbes updateLightProbes",
+      "summary": "",
+      "description": "Update all LightProbes in the scene"
+    },
+    "ATON.html#.setMainPanorama": {
+      "id": "ATON.html#.setMainPanorama",
+      "kind": "function",
+      "title": "&lt;static&gt; setMainPanorama( path )",
+      "longname": "ATON.setMainPanorama",
+      "name": "setMainPanorama",
+      "tags": "ATON.setMainPanorama setMainPanorama",
+      "summary": "",
+      "description": "Set the main panorama (360)"
+    },
+    "ATON.html#.setMainPanoramaRotation": {
+      "id": "ATON.html#.setMainPanoramaRotation",
+      "kind": "function",
+      "title": "&lt;static&gt; setMainPanoramaRotation( r )",
+      "longname": "ATON.setMainPanoramaRotation",
+      "name": "setMainPanoramaRotation",
+      "tags": "ATON.setMainPanoramaRotation setMainPanoramaRotation",
+      "summary": "",
+      "description": "Set main panorama rotation (radians) around up vector"
+    },
+    "ATON.html#.setMainLightDirection": {
+      "id": "ATON.html#.setMainLightDirection",
+      "kind": "function",
+      "title": "&lt;static&gt; setMainLightDirection( v )",
+      "longname": "ATON.setMainLightDirection",
+      "name": "setMainLightDirection",
+      "tags": "ATON.setMainLightDirection setMainLightDirection",
+      "summary": "",
+      "description": "Set and activate main directional light"
+    },
+    "ATON.html#.getSceneQueriedPoint": {
+      "id": "ATON.html#.getSceneQueriedPoint",
+      "kind": "function",
+      "title": "&lt;static&gt; getSceneQueriedPoint() → {THREE.Vector3}",
+      "longname": "ATON.getSceneQueriedPoint",
+      "name": "getSceneQueriedPoint",
+      "tags": "ATON.getSceneQueriedPoint getSceneQueriedPoint",
+      "summary": "",
+      "description": "Get location of current queried point (if any) on visible scene. If no point is queried, return undefined"
+    },
+    "ATON.html#.getSceneQueriedDistance": {
+      "id": "ATON.html#.getSceneQueriedDistance",
+      "kind": "function",
+      "title": "&lt;static&gt; getSceneQueriedDistance() → {number}",
+      "longname": "ATON.getSceneQueriedDistance",
+      "name": "getSceneQueriedDistance",
+      "tags": "ATON.getSceneQueriedDistance getSceneQueriedDistance",
+      "summary": "",
+      "description": "Get distance to queried location (if any) on visible scene. If no point is queried, return undefined"
+    },
+    "ATON.html#.getSceneQueriedNormal": {
+      "id": "ATON.html#.getSceneQueriedNormal",
+      "kind": "function",
+      "title": "&lt;static&gt; getSceneQueriedNormal() → {THREE.Vector3}",
+      "longname": "ATON.getSceneQueriedNormal",
+      "name": "getSceneQueriedNormal",
+      "tags": "ATON.getSceneQueriedNormal getSceneQueriedNormal",
+      "summary": "",
+      "description": "Get queried location normal (if any) on visible scene. If no point is queried, return undefined"
     }
   }
 };

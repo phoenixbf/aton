@@ -172,7 +172,7 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="hasKeyword" class="function public"><span class="name">hasKeyword</span><span class="signature-params">( <span class="signature-param">kw</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id="hasKeyword" class="function public"><span class="name">hasKeyword</span><span class="signature-params">( <span class="signature-param">kw</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
@@ -198,7 +198,15 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
 						<pre class="prettyprint source language-javascript"><code class="language-javascript">if (myNode.hasKeyword(&quot;heritage&quot;)){ ... }</code></pre>
 					</div>
 			</div>	</div>
@@ -238,13 +246,21 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="getDescription" class="function public"><span class="name">getDescription</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id="getDescription" class="function public"><span class="name">getDescription</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get node description (string) if any</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.getContent();</code></pre>
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">let desc &#x3D; myNode.getDescription();</code></pre>
 					</div>
 			</div>	</div>
 </dd>
@@ -343,11 +359,19 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="getMaterial" class="function public"><span class="name">getMaterial</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id="getMaterial" class="function public"><span class="name">getMaterial</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{THREE.Material}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get cascading material</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">THREE.Material</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>	</div>
 </dd>
 											<hr/>
@@ -365,7 +389,7 @@
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Attach this node to parent by proding ID (string) or node object</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Attach this node to parent by providing ID (string) or node object</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -379,9 +403,9 @@
 					<tbody>
 						<tr>
 								<td><code>node</code></td>
-							<td><span class="param-type">string</span></td>
+							<td><span class="param-type">string</span> | <span class="param-type"><a href="Node.html">Node</a></span></td>
 							<td class="last">
-									<p>the parent node ID</p>
+									<p>the parent node</p>
 							</td>
 						</tr>
 					</tbody>
@@ -410,13 +434,69 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="getBound" class="function public"><span class="name">getBound</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id="getBound" class="function public"><span class="name">getBound</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{THREE.Sphere}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
 			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Return bounding sphere of this node</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">THREE.Sphere</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
 						<pre class="prettyprint source language-javascript"><code class="language-javascript">let bs &#x3D; myNode.getBound()</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setPosition" class="function public"><span class="name">setPosition</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set location (translation) of this node</p></div>
+			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setPosition(1.0,3.0,0.0)</code></pre>
+					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setPosition( new THREE.Vector3(1.0,3.0,0.0) )</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setScale" class="function public"><span class="name">setScale</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set scale of this node</p></div>
+			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setScale(3.0,2.0,1.0)</code></pre>
+					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setScale(2.0)</code></pre>
+					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setScale( new THREE.Vector3(3.0,2.0,1.0) )</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id="setRotation" class="function public"><span class="name">setRotation</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set rotation of this node (Euler rx,ry,rz) in radians</p></div>
+			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setRotation(3.0,2.0,1.0)</code></pre>
+					</div>
+					<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">myNode.setRotation( new THREE.Vector3(3.0,2.0,1.0) )</code></pre>
 					</div>
 			</div>	</div>
 </dd>

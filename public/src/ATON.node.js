@@ -109,6 +109,7 @@ addKeywords(kw){
 /**
 Returns true if this node has specific keyword
 @param {string} kw - the keyword
+@returns {boolean}
 @example
 if (myNode.hasKeyword("heritage")){ ... }
 */
@@ -130,8 +131,9 @@ setDescription(s){
 
 /**
 Get node description (string) if any
+@returns {string}
 @example
-myNode.getContent();
+let desc = myNode.getDescription();
 */
 getDescription(){
     return this.userData.description;
@@ -217,6 +219,7 @@ setMaterial(M){
 
 /** 
 Get cascading material
+@returns {THREE.Material}
 */
 getMaterial(){
     return this.userData.cMat;
@@ -392,8 +395,8 @@ removeChildren(){
 
 
 /**
-Attach this node to parent by proding ID (string) or node object
-@param {string} node - the parent node ID
+Attach this node to parent by providing ID (string) or node object
+@param {string|Node} node - the parent node
 @example
 myNode.attachTo("someGroupID")
 @example
@@ -422,6 +425,7 @@ attachToRoot(){
 
 /**
 Return bounding sphere of this node
+@returns {THREE.Sphere}
 @example
 let bs = myNode.getBound()
 */
@@ -433,6 +437,13 @@ getBound(){
     return bs;
 }
 
+/**
+Set location (translation) of this node
+@example
+myNode.setPosition(1.0,3.0,0.0)
+@example
+myNode.setPosition( new THREE.Vector3(1.0,3.0,0.0) )
+*/
 setPosition(x,y,z){
     if (x instanceof THREE.Vector3) this.position.copy(x);
     else this.position.set(x,y,z);
@@ -440,6 +451,15 @@ setPosition(x,y,z){
     return this;
 }
 
+/**
+Set scale of this node
+@example
+myNode.setScale(3.0,2.0,1.0)
+@example
+myNode.setScale(2.0)
+@example
+myNode.setScale( new THREE.Vector3(3.0,2.0,1.0) )
+*/
 setScale(sx,sy,sz){
     if (sx instanceof THREE.Vector3) this.scale.copy(sx);
     else {
@@ -450,6 +470,13 @@ setScale(sx,sy,sz){
     return this;
 }
 
+/**
+Set rotation of this node (Euler rx,ry,rz) in radians
+@example
+myNode.setRotation(3.0,2.0,1.0)
+@example
+myNode.setRotation( new THREE.Vector3(3.0,2.0,1.0) )
+*/
 setRotation(rx,ry,rz){
     if (rx instanceof THREE.Vector3) this.rotation.copy(rx);
     else this.rotation.set(rx,ry,rz);

@@ -56,6 +56,7 @@ XR.init = ()=>{
 
 /**
 Return true if we are presenting (immersive mode)
+@returns {boolean}
 */
 XR.isPresenting = ()=>{
     return XR._bPresenting;
@@ -237,6 +238,7 @@ XR.getControllerSpace = (i)=>{
 /**
 Get controller world location
 @param {number} i - the controller ID (0 or 1)
+@returns {THREE.Vector3}
 */
 XR.getControllerWorldLocation = (i)=>{
     if (i === 1) return XR.controller1pos;
@@ -246,6 +248,7 @@ XR.getControllerWorldLocation = (i)=>{
 /**
 Get controller world direction
 @param {number} i - the controller ID (0 or 1)
+@returns {THREE.Vector3}
 */
 XR.getControllerWorldDirection = (i)=>{
     if (i === 1) return XR.controller1dir;

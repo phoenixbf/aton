@@ -33,7 +33,9 @@ Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
 
 
 
-// Initialize nav system
+/**
+Initialize nav system
+*/
 Nav.init = ()=>{
     Nav._mode = undefined;
 
@@ -67,8 +69,9 @@ Nav.init = ()=>{
 
 /**
 Get current eye location, consistent within standard and immersive XR sessions.
+@returns {THREE.Vector3}
 @example
-ATON.Nav.getCurrentDirection();
+let p = ATON.Nav.getCurrentEyeLocation();
 */
 Nav.getCurrentEyeLocation = ()=>{
     return Nav._currPOV.pos;
@@ -76,15 +79,17 @@ Nav.getCurrentEyeLocation = ()=>{
 
 /**
 Get current view direction (normalized). Consistent within standard and immersive XR sessions.
+@returns {THREE.Vector3}
 @example
-ATON.Nav.getCurrentDirection();
+let d = ATON.Nav.getCurrentDirection();
 */
 Nav.getCurrentDirection = ()=>{
     return Nav._vDir;
 };
 
 /**
-Grab current POV and returns a copy 
+Grab current POV and return a copy.
+@returns {POV}
 @example
 let pov = ATON.Nav.copyCurrentPOV();
 */
@@ -99,14 +104,29 @@ Nav.copyCurrentPOV = ()=>{
 
 /**
 Return true if the navigation system is currently performing a transition
+@returns {boolean}
 */
 Nav.isTransitioning = ()=>{
     if (Nav._tPOVcall >= 0.0) return true;
     return false;
 };
 
+/**
+Return true if the navigation system is in Orbit mode
+@returns {boolean}
+*/
 Nav.isOrbit = ()=>{ return (Nav._mode === Nav.MODE_ORBIT); };
+
+/**
+Return true if the navigation system is in First-person mode
+@returns {boolean}
+*/
 Nav.isFirstPerson = ()=>{ return (Nav._mode === Nav.MODE_FP); };
+
+/**
+Return true if the navigation system is in Device-orientation mode
+@returns {boolean}
+*/
 Nav.isDevOri = ()=>{ return (Nav._mode === Nav.MODE_DEVORI); };
 
 /**
@@ -276,6 +296,7 @@ Nav.setFOV = (f)=>{
 
 /**
 Get current field-of-view (FoV) in degrees
+@returns {number}
 */
 Nav.getFOV = ()=>{
     return Nav._currPOV.fov;
@@ -425,9 +446,6 @@ Nav.handleXRtransition = ()=>{
     //ATON.XR._currPos.lerpVectors(Nav._fromPOV.pos, Nav._reqPOV.pos, Nav._tPOVprogress);
 
 };
-
-
-
 
 // Update internal camera from currPOV 
 Nav.syncCurrCamera = ()=>{
@@ -592,6 +610,10 @@ Nav.computeDefaultHome = (dv)=>{
     Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(sceneBS.center);
 };
 
+/** 
+Set the home viewpoint (POV)
+@param {POV} pov - the home POV
+*/
 Nav.setHomePOV = (pov)=>{
     Nav.homePOV = pov;
 };
@@ -601,6 +623,10 @@ Nav.computeAndRequestDefaultHome = (duration, dv)=>{
     Nav.requestPOV(Nav.homePOV, duration);
 };
 
+/** 
+Request home viewpoint
+@param {number} duration - transition duration
+*/
 Nav.requestHome = (duration)=>{
     Nav.requestPOV(Nav.homePOV, duration);
 };

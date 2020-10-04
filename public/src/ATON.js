@@ -191,6 +191,7 @@ ATON._setupBaseListeners = ()=>{
     });
 
     // Default semantic highlight
+/*
     ATON.on("SemanticNodeLeave", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S) S.restoreDefaultMaterial();
@@ -199,7 +200,7 @@ ATON._setupBaseListeners = ()=>{
         let S = ATON.getSemanticNode(semid);
         if (S) S.highlight();
     });
-            
+*/          
 };
 
 ATON._onResize = ()=>{

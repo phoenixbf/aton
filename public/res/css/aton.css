@@ -424,7 +424,8 @@ canvas {
     position: relative;
     margin: auto;
     max-width: 50%;
-    max-height: 70%;
+    max-height: 80%;
+    
     top: 50%;
     transform: translate(0%,-50%);
 
@@ -464,6 +465,14 @@ canvas {
 
     padding: 25px;
     border-radius: 10px;
+
+    width: 50%;
+    height: auto;
+}
+
+.atonQRcontainer img {
+    width: 100%;
+    height: auto;
 }
 
 .atonPopupDescriptionContainer {

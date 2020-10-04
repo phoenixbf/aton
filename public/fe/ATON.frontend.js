@@ -95,14 +95,13 @@ AFE.setupEventHandlers = ()=>{
         $("#idLoader").show();
     });
 
-    ATON.on("SemanticNodeHover", (nid)=>{
-        console.log("Hovering "+nid);
-        //ATON.getSemanticNode(nid).visible = true;
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.restoreDefaultMaterial();
     });
-
-    ATON.on("SemanticNodeLeave", (nid)=>{
-        console.log("Leaving "+nid);
-        //ATON.getSemanticNode(nid).visible = false;
+    ATON.on("SemanticNodeHover", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.highlight();
     });
 
     ATON.on("MouseRightButton", ()=>{

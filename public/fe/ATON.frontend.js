@@ -13,6 +13,8 @@ window.addEventListener( 'load', ()=>{
     AFE.paramVRC   = ATON.FE.urlParams.get('vrc');
     AFE.paramEdit  = ATON.FE.urlParams.get('edit');
     AFE.paramFPS   = ATON.FE.urlParams.get('fps');
+    
+    AFE._bVRCsetup = false;
 
     if (AFE.paramEdit) ATON.SceneHub.setEditMode(AFE.paramEdit);
     else ATON.SceneHub.setEditMode(false);
@@ -31,6 +33,8 @@ window.addEventListener( 'load', ()=>{
 // Front-end UI
 //=======================
 AFE.uiSetup = ()=>{
+
+    ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonFullScreen("idTopToolbar");
 
     ATON.FE.uiAddButtonVR("idTopToolbar");
@@ -55,7 +59,17 @@ AFE.uiSetup = ()=>{
 // Front-end event handling
 //=======================
 AFE.setupVRCEventHandlers = ()=>{
+    if (AFE._bVRCsetup) return;
+
     //ATON.VRoadcast.on("VRC_test", (d)=>{ console.log(d); });
+
+    ATON.on("VRC_IDassigned", (uid)=>{
+        $("#btn-vrc").addClass("atonVRCu"+(uid%6));
+    });
+
+    ATON.on("VRC_Disconnected", ()=>{
+        $("#btn-vrc").attr("class","atonBTN");
+    });
 
     ATON.VRoadcast.on("AFE_DeleteNode", (d)=>{
         let nid  = d.nid;
@@ -70,17 +84,19 @@ AFE.setupVRCEventHandlers = ()=>{
     ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
         ATON.SceneHub.parseScene(d);
     });
+
+    AFE._bVRCsetup = true;
 };
 
 AFE.setupEventHandlers = ()=>{
-    if (AFE.paramVRC){
-        ATON.on("VRC_Connected", ()=>{
-            AFE.setupVRCEventHandlers();
-        });
-    }
+
+    // VRC
+    ATON.on("VRC_Connected", ()=>{
+        AFE.setupVRCEventHandlers();
+    });
 
     ATON.on("SceneJSONLoaded",()=>{
-        if (AFE.paramVRC) ATON.VRoadcast.connect();
+        if (AFE.paramVRC) ATON.VRoadcast.connect(); // maybe not needed
     });
 
     ATON.on("NodeRequestFired", ()=>{ 
@@ -194,7 +210,7 @@ AFE.setupEventHandlers = ()=>{
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
-        if (k==='l'){
+        if (k==='L'){
             let D = ATON.Nav.getCurrentDirection();
             ATON.setMainLightDirection(D);
 

@@ -135,7 +135,12 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
 
 FE.uiAddButtonVRC = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
-        //TODO:
+        if (ATON.VRoadcast.isConnected()){
+
+        }
+        else {
+            ATON.VRoadcast.connect();
+        }
     });
 };
 

@@ -198,8 +198,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("Your ID is " + data);
         VRoadcast.uid = data;
 
-        //if (ATON.vroadcast.onIDassigned) ATON.vroadcast.onIDassigned();
-        ATON.fireEvent("VRC_IDassigned", data.id);
+        ATON.fireEvent("VRC_IDassigned", data);
     });
 
     VRoadcast.socket.on('UENTER', (data)=>{

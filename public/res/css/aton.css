@@ -151,6 +151,9 @@ canvas {
   position: fixed;
   display: inline-block;
 
+  white-space: nowrap;
+  overflow: hidden;
+
   margin: 0;
 
   color: #FFF;
@@ -176,9 +179,32 @@ canvas {
     text-align: right;
 }
 
+.atonToolbar-top-left {
+    top: 0px;
+    left: 0px;
+    
+    width: 100%;
+    text-align: left;
+}
+
 .atonToolbar-bottom {
     bottom: 0%;
     width:100%;
+}
+
+.scrollableX {
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+
+    -webkit-overflow-scrolling: touch;
+}
+.scrollableY {
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: nowrap;
+
+    -webkit-overflow-scrolling: touch;
 }
 
 .atonCenterLoader {
@@ -331,6 +357,31 @@ canvas {
     -webkit-user-select: none;
     -o-user-select: none;
     user-select: none;
+}
+
+.atonVRCu0 {
+    background-color: rgba(127, 0, 0, 0.5);
+    box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0);
+}
+.atonVRCu1 {
+    background-color: rgba(127, 127, 0, 0.5);
+    box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0);
+}
+.atonVRCu2 {
+    background-color: rgba(0, 127, 0, 0.5);
+    box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0);
+}
+.atonVRCu3 {
+    background-color: rgba(0, 127, 127, 0.5);
+    box-shadow: 0 0px 10px rgba(0, 255, 255, 1.0);
+}
+.atonVRCu4 {
+    background-color: rgba(0, 0, 127, 0.5);
+    box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
+}
+.atonVRCu5 {
+    background-color: rgba(127, 0, 127, 0.5);
+    box-shadow: 0 0px 10px rgba(255, 0, 255, 1.0);
 }
 
 /*

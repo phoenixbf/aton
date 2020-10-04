@@ -829,12 +829,6 @@
           "typic",
           "visibil"
         ],
-        "Nav.html#.DeviceOrientationControls": [
-          "deviceorientationcontrol",
-          "function",
-          "lt;static&gt",
-          "nav.deviceorientationcontrol"
-        ],
         "SUI.html": [
           "aton",
           "namespac",
@@ -851,6 +845,75 @@
           "spatial",
           "sui.init",
           "ui"
+        ],
+        "VRoadcast.html": [
+          "aton",
+          "compon",
+          "namespac",
+          "vroadcast"
+        ],
+        "VRoadcast.html#.init": [
+          "compon",
+          "function",
+          "init",
+          "initi",
+          "lt;static&gt",
+          "vroadcast.init"
+        ],
+        "VRoadcast.html#.fireEvent": [
+          "data",
+          "event",
+          "evtnam",
+          "fire",
+          "fireev",
+          "function",
+          "lt;static&gt",
+          "network",
+          "replic",
+          "vroadcast.fireev"
+        ],
+        "VRoadcast.html#.on": [
+          "event",
+          "evtnam",
+          "function",
+          "given",
+          "handler",
+          "lt;static&gt",
+          "network",
+          "subscrib",
+          "through",
+          "vroadcast.on"
+        ],
+        "VRoadcast.html#.isConnected": [
+          "connect",
+          "function",
+          "isconnect",
+          "lt;static&gt",
+          "return",
+          "servic",
+          "true",
+          "vroadcast",
+          "vroadcast.isconnect"
+        ],
+        "VRoadcast.html#.requestSceneEnter": [
+          "enter",
+          "function",
+          "given",
+          "lt;static&gt",
+          "request",
+          "requestsceneent",
+          "scene",
+          "sceneid",
+          "vroadcast.requestsceneent"
+        ],
+        "VRoadcast.html#.connect": [
+          "address",
+          "connect",
+          "function",
+          "lt;static&gt",
+          "servic",
+          "vroadcast",
+          "vroadcast.connect"
         ],
         "ATON.html": [
           "aton",
@@ -918,7 +981,7 @@
           "resetpixeldens"
         ]
       },
-      "length": 77
+      "length": 83
     },
     "tokenStore": {
       "root": {
@@ -1052,6 +1115,23 @@
                     }
                   }
                 }
+              },
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "s": {
+                      "docs": {
+                        "VRoadcast.html#.connect": {
+                          "ref": "VRoadcast.html#.connect",
+                          "tf": 33.33333333333333
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -1157,6 +1237,10 @@
                   },
                   "SUI.html": {
                     "ref": "SUI.html",
+                    "tf": 16.666666666666664
+                  },
+                  "VRoadcast.html": {
+                    "ref": "VRoadcast.html",
                     "tf": 16.666666666666664
                   },
                   "ATON.html": {
@@ -1950,6 +2034,27 @@
                     }
                   }
                 }
+              },
+              "n": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "VRoadcast.html#.isConnected": {
+                          "ref": "VRoadcast.html#.isConnected",
+                          "tf": 10
+                        },
+                        "VRoadcast.html#.connect": {
+                          "ref": "VRoadcast.html#.connect",
+                          "tf": 700
+                        }
+                      }
+                    }
+                  }
+                }
               }
             },
             "m": {
@@ -1970,6 +2075,14 @@
                       },
                       "SceneHub.html#.init": {
                         "ref": "SceneHub.html#.init",
+                        "tf": 25
+                      },
+                      "VRoadcast.html": {
+                        "ref": "VRoadcast.html",
+                        "tf": 16.666666666666664
+                      },
+                      "VRoadcast.html#.init": {
+                        "ref": "VRoadcast.html#.init",
                         "tf": 25
                       },
                       "ATON.html#.realize": {
@@ -2324,68 +2437,6 @@
                       "ref": "ATON.html#.realize",
                       "tf": 4.166666666666666
                     }
-                  },
-                  "e": {
-                    "docs": {},
-                    "o": {
-                      "docs": {},
-                      "r": {
-                        "docs": {},
-                        "i": {
-                          "docs": {},
-                          "e": {
-                            "docs": {},
-                            "n": {
-                              "docs": {},
-                              "t": {
-                                "docs": {},
-                                "a": {
-                                  "docs": {},
-                                  "t": {
-                                    "docs": {},
-                                    "i": {
-                                      "docs": {},
-                                      "o": {
-                                        "docs": {},
-                                        "n": {
-                                          "docs": {},
-                                          "c": {
-                                            "docs": {},
-                                            "o": {
-                                              "docs": {},
-                                              "n": {
-                                                "docs": {},
-                                                "t": {
-                                                  "docs": {},
-                                                  "r": {
-                                                    "docs": {},
-                                                    "o": {
-                                                      "docs": {},
-                                                      "l": {
-                                                        "docs": {
-                                                          "Nav.html#.DeviceOrientationControls": {
-                                                            "ref": "Nav.html#.DeviceOrientationControls",
-                                                            "tf": 700
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
                   }
                 }
               }
@@ -2646,6 +2697,10 @@
                   "EventHub.html#.fireEvent": {
                     "ref": "EventHub.html#.fireEvent",
                     "tf": 28.333333333333332
+                  },
+                  "VRoadcast.html#.fireEvent": {
+                    "ref": "VRoadcast.html#.fireEvent",
+                    "tf": 25
                   }
                 }
               }
@@ -2729,6 +2784,20 @@
                   }
                 }
               }
+            },
+            "t": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "VRoadcast.html#.requestSceneEnter": {
+                      "ref": "VRoadcast.html#.requestSceneEnter",
+                      "tf": 12.5
+                    }
+                  }
+                }
+              }
             }
           },
           "t": {
@@ -2797,6 +2866,14 @@
                     "EventHub.html#.fireEvent": {
                       "ref": "EventHub.html#.fireEvent",
                       "tf": 8.333333333333332
+                    },
+                    "VRoadcast.html#.fireEvent": {
+                      "ref": "VRoadcast.html#.fireEvent",
+                      "tf": 12.5
+                    },
+                    "VRoadcast.html#.on": {
+                      "ref": "VRoadcast.html#.on",
+                      "tf": 7.142857142857142
                     }
                   },
                   "h": {
@@ -2939,6 +3016,14 @@
                       "EventHub.html#.fireEvent": {
                         "ref": "EventHub.html#.fireEvent",
                         "tf": 20
+                      },
+                      "VRoadcast.html#.fireEvent": {
+                        "ref": "VRoadcast.html#.fireEvent",
+                        "tf": 25
+                      },
+                      "VRoadcast.html#.on": {
+                        "ref": "VRoadcast.html#.on",
+                        "tf": 33.33333333333333
                       }
                     }
                   }
@@ -3037,6 +3122,10 @@
                   "EventHub.html#.fireEvent": {
                     "ref": "EventHub.html#.fireEvent",
                     "tf": 8.333333333333332
+                  },
+                  "VRoadcast.html#.fireEvent": {
+                    "ref": "VRoadcast.html#.fireEvent",
+                    "tf": 12.5
                   }
                 },
                 "e": {
@@ -3046,6 +3135,10 @@
                       "EventHub.html#.fireEvent": {
                         "ref": "EventHub.html#.fireEvent",
                         "tf": 670
+                      },
+                      "VRoadcast.html#.fireEvent": {
+                        "ref": "VRoadcast.html#.fireEvent",
+                        "tf": 675
                       }
                     }
                   }
@@ -3341,12 +3434,32 @@
                             "ref": "Nav.html#.computeDefaultHome",
                             "tf": 110
                           },
-                          "Nav.html#.DeviceOrientationControls": {
-                            "ref": "Nav.html#.DeviceOrientationControls",
-                            "tf": 110
-                          },
                           "SUI.html#.init": {
                             "ref": "SUI.html#.init",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.init": {
+                            "ref": "VRoadcast.html#.init",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.fireEvent": {
+                            "ref": "VRoadcast.html#.fireEvent",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.on": {
+                            "ref": "VRoadcast.html#.on",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.isConnected": {
+                            "ref": "VRoadcast.html#.isConnected",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.requestSceneEnter": {
+                            "ref": "VRoadcast.html#.requestSceneEnter",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.connect": {
+                            "ref": "VRoadcast.html#.connect",
                             "tf": 110
                           },
                           "ATON.html#.setPathCollection": {
@@ -3758,6 +3871,14 @@
                     "XR.html#.setRefSpaceLocation": {
                       "ref": "XR.html#.setRefSpaceLocation",
                       "tf": 3.125
+                    },
+                    "VRoadcast.html#.on": {
+                      "ref": "VRoadcast.html#.on",
+                      "tf": 14.285714285714285
+                    },
+                    "VRoadcast.html#.requestSceneEnter": {
+                      "ref": "VRoadcast.html#.requestSceneEnter",
+                      "tf": 12.5
                     }
                   }
                 }
@@ -3915,6 +4036,10 @@
                   "SUI.html#.init": {
                     "ref": "SUI.html#.init",
                     "tf": 700
+                  },
+                  "VRoadcast.html#.init": {
+                    "ref": "VRoadcast.html#.init",
+                    "tf": 700
                   }
                 },
                 "i": {
@@ -3934,6 +4059,10 @@
                     "SUI.html#.init": {
                       "ref": "SUI.html#.init",
                       "tf": 12.5
+                    },
+                    "VRoadcast.html#.init": {
+                      "ref": "VRoadcast.html#.init",
+                      "tf": 25
                     },
                     "ATON.html#.realize": {
                       "ref": "ATON.html#.realize",
@@ -3995,6 +4124,32 @@
                           "docs": {
                             "Nav.html#.isTransitioning": {
                               "ref": "Nav.html#.isTransitioning",
+                              "tf": 700
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "t": {
+                          "docs": {
+                            "VRoadcast.html#.isConnected": {
+                              "ref": "VRoadcast.html#.isConnected",
                               "tf": 700
                             }
                           }
@@ -4983,6 +5138,10 @@
                         "Nav.html#.requestPOVbyNode": {
                           "ref": "Nav.html#.requestPOVbyNode",
                           "tf": 10
+                        },
+                        "VRoadcast.html#.requestSceneEnter": {
+                          "ref": "VRoadcast.html#.requestSceneEnter",
+                          "tf": 12.5
                         }
                       },
                       "p": {
@@ -5009,6 +5168,35 @@
                                         "Nav.html#.requestPOVbyNode": {
                                           "ref": "Nav.html#.requestPOVbyNode",
                                           "tf": 675
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "s": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {
+                                        "VRoadcast.html#.requestSceneEnter": {
+                                          "ref": "VRoadcast.html#.requestSceneEnter",
+                                          "tf": 683.3333333333334
                                         }
                                       }
                                     }
@@ -5060,6 +5248,20 @@
                       "Node.html": {
                         "ref": "Node.html",
                         "tf": 3.3333333333333335
+                      }
+                    }
+                  }
+                }
+              },
+              "l": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "c": {
+                    "docs": {
+                      "VRoadcast.html#.fireEvent": {
+                        "ref": "VRoadcast.html#.fireEvent",
+                        "tf": 12.5
                       }
                     }
                   }
@@ -5136,6 +5338,10 @@
                       "Nav.html#.isTransitioning": {
                         "ref": "Nav.html#.isTransitioning",
                         "tf": 7.142857142857142
+                      },
+                      "VRoadcast.html#.isConnected": {
+                        "ref": "VRoadcast.html#.isConnected",
+                        "tf": 10
                       }
                     }
                   }
@@ -5391,6 +5597,10 @@
                       "ref": "SceneHub.html#.load",
                       "tf": 10
                     },
+                    "VRoadcast.html#.requestSceneEnter": {
+                      "ref": "VRoadcast.html#.requestSceneEnter",
+                      "tf": 12.5
+                    },
                     "ATON.html#.setPathScenes": {
                       "ref": "ATON.html#.setPathScenes",
                       "tf": 16.666666666666664
@@ -5478,6 +5688,17 @@
                               }
                             }
                           }
+                        }
+                      }
+                    }
+                  },
+                  "i": {
+                    "docs": {},
+                    "d": {
+                      "docs": {
+                        "VRoadcast.html#.requestSceneEnter": {
+                          "ref": "VRoadcast.html#.requestSceneEnter",
+                          "tf": 33.33333333333333
                         }
                       }
                     }
@@ -6317,6 +6538,21 @@
                       }
                     }
                   }
+                },
+                "i": {
+                  "docs": {},
+                  "c": {
+                    "docs": {
+                      "VRoadcast.html#.isConnected": {
+                        "ref": "VRoadcast.html#.isConnected",
+                        "tf": 10
+                      },
+                      "VRoadcast.html#.connect": {
+                        "ref": "VRoadcast.html#.connect",
+                        "tf": 16.666666666666664
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -6463,6 +6699,10 @@
                           "EventHub.html#.on": {
                             "ref": "EventHub.html#.on",
                             "tf": 6.25
+                          },
+                          "VRoadcast.html#.on": {
+                            "ref": "VRoadcast.html#.on",
+                            "tf": 7.142857142857142
                           }
                         }
                       }
@@ -6687,6 +6927,10 @@
                   "Nav.html#.isTransitioning": {
                     "ref": "Nav.html#.isTransitioning",
                     "tf": 7.142857142857142
+                  },
+                  "VRoadcast.html#.isConnected": {
+                    "ref": "VRoadcast.html#.isConnected",
+                    "tf": 10
                   }
                 }
               }
@@ -6731,6 +6975,26 @@
                     "Node.html#setMaterial": {
                       "ref": "Node.html#setMaterial",
                       "tf": 4.545454545454546
+                    }
+                  }
+                }
+              }
+            },
+            "r": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "g": {
+                    "docs": {},
+                    "h": {
+                      "docs": {
+                        "VRoadcast.html#.on": {
+                          "ref": "VRoadcast.html#.on",
+                          "tf": 7.142857142857142
+                        }
+                      }
                     }
                   }
                 }
@@ -6902,6 +7166,199 @@
               "index.html": {
                 "ref": "index.html",
                 "tf": 1.9444444444444444
+              }
+            },
+            "o": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "d": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "t": {
+                          "docs": {
+                            "VRoadcast.html": {
+                              "ref": "VRoadcast.html",
+                              "tf": 1916.6666666666667
+                            },
+                            "VRoadcast.html#.isConnected": {
+                              "ref": "VRoadcast.html#.isConnected",
+                              "tf": 10
+                            },
+                            "VRoadcast.html#.connect": {
+                              "ref": "VRoadcast.html#.connect",
+                              "tf": 16.666666666666664
+                            }
+                          },
+                          ".": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {
+                                      "VRoadcast.html#.init": {
+                                        "ref": "VRoadcast.html#.init",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "s": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "c": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "VRoadcast.html#.isConnected": {
+                                                  "ref": "VRoadcast.html#.isConnected",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "f": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "v": {
+                                        "docs": {
+                                          "VRoadcast.html#.fireEvent": {
+                                            "ref": "VRoadcast.html#.fireEvent",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "o": {
+                              "docs": {},
+                              "n": {
+                                "docs": {
+                                  "VRoadcast.html#.on": {
+                                    "ref": "VRoadcast.html#.on",
+                                    "tf": 1300
+                                  }
+                                }
+                              }
+                            },
+                            "r": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "q": {
+                                  "docs": {},
+                                  "u": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "s": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "e": {
+                                                      "docs": {},
+                                                      "n": {
+                                                        "docs": {},
+                                                        "t": {
+                                                          "docs": {
+                                                            "VRoadcast.html#.requestSceneEnter": {
+                                                              "ref": "VRoadcast.html#.requestSceneEnter",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "c": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "c": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {
+                                            "VRoadcast.html#.connect": {
+                                              "ref": "VRoadcast.html#.connect",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -7550,13 +8007,33 @@
                                     "ref": "Nav.html#.computeDefaultHome",
                                     "tf": 33.33333333333333
                                   },
-                                  "Nav.html#.DeviceOrientationControls": {
-                                    "ref": "Nav.html#.DeviceOrientationControls",
-                                    "tf": 50
-                                  },
                                   "SUI.html#.init": {
                                     "ref": "SUI.html#.init",
                                     "tf": 50
+                                  },
+                                  "VRoadcast.html#.init": {
+                                    "ref": "VRoadcast.html#.init",
+                                    "tf": 50
+                                  },
+                                  "VRoadcast.html#.fireEvent": {
+                                    "ref": "VRoadcast.html#.fireEvent",
+                                    "tf": 25
+                                  },
+                                  "VRoadcast.html#.on": {
+                                    "ref": "VRoadcast.html#.on",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "VRoadcast.html#.isConnected": {
+                                    "ref": "VRoadcast.html#.isConnected",
+                                    "tf": 50
+                                  },
+                                  "VRoadcast.html#.requestSceneEnter": {
+                                    "ref": "VRoadcast.html#.requestSceneEnter",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "VRoadcast.html#.connect": {
+                                    "ref": "VRoadcast.html#.connect",
+                                    "tf": 33.33333333333333
                                   },
                                   "ATON.html#.setPathCollection": {
                                     "ref": "ATON.html#.setPathCollection",
@@ -7646,6 +8123,10 @@
                           },
                           "SUI.html": {
                             "ref": "SUI.html",
+                            "tf": 110
+                          },
+                          "VRoadcast.html": {
+                            "ref": "VRoadcast.html",
                             "tf": 110
                           },
                           "ATON.html": {
@@ -8243,83 +8724,6 @@
                       }
                     }
                   }
-                },
-                "d": {
-                  "docs": {},
-                  "e": {
-                    "docs": {},
-                    "v": {
-                      "docs": {},
-                      "i": {
-                        "docs": {},
-                        "c": {
-                          "docs": {},
-                          "e": {
-                            "docs": {},
-                            "o": {
-                              "docs": {},
-                              "r": {
-                                "docs": {},
-                                "i": {
-                                  "docs": {},
-                                  "e": {
-                                    "docs": {},
-                                    "n": {
-                                      "docs": {},
-                                      "t": {
-                                        "docs": {},
-                                        "a": {
-                                          "docs": {},
-                                          "t": {
-                                            "docs": {},
-                                            "i": {
-                                              "docs": {},
-                                              "o": {
-                                                "docs": {},
-                                                "n": {
-                                                  "docs": {},
-                                                  "c": {
-                                                    "docs": {},
-                                                    "o": {
-                                                      "docs": {},
-                                                      "n": {
-                                                        "docs": {},
-                                                        "t": {
-                                                          "docs": {},
-                                                          "r": {
-                                                            "docs": {},
-                                                            "o": {
-                                                              "docs": {},
-                                                              "l": {
-                                                                "docs": {
-                                                                  "Nav.html#.DeviceOrientationControls": {
-                                                                    "ref": "Nav.html#.DeviceOrientationControls",
-                                                                    "tf": 1150
-                                                                  }
-                                                                }
-                                                              }
-                                                            }
-                                                          }
-                                                        }
-                                                      }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
                 }
               }
             }
@@ -8354,6 +8758,14 @@
                         "EventHub.html#.fireEvent": {
                           "ref": "EventHub.html#.fireEvent",
                           "tf": 8.333333333333332
+                        },
+                        "VRoadcast.html#.fireEvent": {
+                          "ref": "VRoadcast.html#.fireEvent",
+                          "tf": 12.5
+                        },
+                        "VRoadcast.html#.on": {
+                          "ref": "VRoadcast.html#.on",
+                          "tf": 7.142857142857142
                         }
                       }
                     }
@@ -9310,6 +9722,10 @@
                         "EventHub.html#.on": {
                           "ref": "EventHub.html#.on",
                           "tf": 12.5
+                        },
+                        "VRoadcast.html#.on": {
+                          "ref": "VRoadcast.html#.on",
+                          "tf": 40.47619047619047
                         }
                       },
                       "l": {
@@ -9602,7 +10018,7 @@
           }
         }
       },
-      "length": 724
+      "length": 775
     },
     "corpusTokens": [
       "1.0",
@@ -9614,6 +10030,7 @@
       "adapt",
       "add",
       "addkeyword",
+      "address",
       "adopt",
       "allow",
       "amount",
@@ -9660,6 +10077,7 @@
       "compon",
       "comput",
       "computedefaulthom",
+      "connect",
       "consist",
       "constructor",
       "control",
@@ -9681,7 +10099,6 @@
       "desktop/kiosk",
       "develop",
       "devic",
-      "deviceorientationcontrol",
       "differ",
       "direct",
       "disabl",
@@ -9695,6 +10112,7 @@
       "enablepick",
       "enables/dis",
       "end",
+      "enter",
       "etc",
       "even",
       "event",
@@ -9749,6 +10167,7 @@
       "instanc",
       "interact",
       "invis",
+      "isconnect",
       "ispres",
       "istransit",
       "json",
@@ -9787,7 +10206,6 @@
       "nav",
       "nav.computedefaulthom",
       "nav.copycurrentpov",
-      "nav.deviceorientationcontrol",
       "nav.getcurrentdirect",
       "nav.getcurrenteyeloc",
       "nav.getfov",
@@ -9866,11 +10284,13 @@
       "recurs",
       "refer",
       "removechildren",
+      "replic",
       "repres",
       "reqpath",
       "request",
       "requestpov",
       "requestpovbynod",
+      "requestsceneent",
       "requir",
       "reset",
       "resetpixeldens",
@@ -9886,11 +10306,13 @@
       "scenehub.init",
       "scenehub.load",
       "scenehub.seteditmod",
+      "sceneid",
       "semant",
       "semfactori",
       "sensibl",
       "sent",
       "server",
+      "servic",
       "session",
       "set",
       "setdefaultpixeldens",
@@ -9930,6 +10352,7 @@
       "target",
       "techniqu",
       "those",
+      "through",
       "toggl",
       "tool",
       "transit",
@@ -9952,6 +10375,13 @@
       "visibl",
       "visual",
       "vr",
+      "vroadcast",
+      "vroadcast.connect",
+      "vroadcast.fireev",
+      "vroadcast.init",
+      "vroadcast.isconnect",
+      "vroadcast.on",
+      "vroadcast.requestsceneent",
       "wast",
       "web",
       "web3d",
@@ -10668,16 +11098,6 @@
       "summary": "",
       "description": "Compute a default home, depending on visibile bounding sphere. Typically called after all assets are loaded"
     },
-    "Nav.html#.DeviceOrientationControls": {
-      "id": "Nav.html#.DeviceOrientationControls",
-      "kind": "function",
-      "title": "&lt;static&gt; DeviceOrientationControls()",
-      "longname": "Nav.DeviceOrientationControls",
-      "name": "DeviceOrientationControls",
-      "tags": "Nav.DeviceOrientationControls DeviceOrientationControls",
-      "summary": "",
-      "description": ""
-    },
     "SUI.html": {
       "id": "SUI.html",
       "kind": "namespace",
@@ -10698,6 +11118,77 @@
       "tags": "SUI.init init",
       "summary": "",
       "description": "Initializes Spatial UI module"
+    },
+    "VRoadcast.html": {
+      "id": "VRoadcast.html",
+      "kind": "namespace",
+      "title": "VRoadcast",
+      "longname": "VRoadcast",
+      "name": "VRoadcast",
+      "tags": "VRoadcast",
+      "summary": "",
+      "description": "ATON VRoadcast component",
+      "body": ""
+    },
+    "VRoadcast.html#.init": {
+      "id": "VRoadcast.html#.init",
+      "kind": "function",
+      "title": "&lt;static&gt; init()",
+      "longname": "VRoadcast.init",
+      "name": "init",
+      "tags": "VRoadcast.init init",
+      "summary": "",
+      "description": "Initialize the component"
+    },
+    "VRoadcast.html#.fireEvent": {
+      "id": "VRoadcast.html#.fireEvent",
+      "kind": "function",
+      "title": "&lt;static&gt; fireEvent( evtname, data )",
+      "longname": "VRoadcast.fireEvent",
+      "name": "fireEvent",
+      "tags": "VRoadcast.fireEvent fireEvent",
+      "summary": "",
+      "description": "Fire a replicated event (network)"
+    },
+    "VRoadcast.html#.on": {
+      "id": "VRoadcast.html#.on",
+      "kind": "function",
+      "title": "&lt;static&gt; on( evtname, handler )",
+      "longname": "VRoadcast.on",
+      "name": "on",
+      "tags": "VRoadcast.on on",
+      "summary": "",
+      "description": "Subscribe to a given network event, through given handler"
+    },
+    "VRoadcast.html#.isConnected": {
+      "id": "VRoadcast.html#.isConnected",
+      "kind": "function",
+      "title": "&lt;static&gt; isConnected()",
+      "longname": "VRoadcast.isConnected",
+      "name": "isConnected",
+      "tags": "VRoadcast.isConnected isConnected",
+      "summary": "",
+      "description": "Return true if VRoadcast is connected to the service"
+    },
+    "VRoadcast.html#.requestSceneEnter": {
+      "id": "VRoadcast.html#.requestSceneEnter",
+      "kind": "function",
+      "title": "&lt;static&gt; requestSceneEnter( sceneid )",
+      "longname": "VRoadcast.requestSceneEnter",
+      "name": "requestSceneEnter",
+      "tags": "VRoadcast.requestSceneEnter requestSceneEnter",
+      "summary": "",
+      "description": "Request enter in a given scene"
+    },
+    "VRoadcast.html#.connect": {
+      "id": "VRoadcast.html#.connect",
+      "kind": "function",
+      "title": "&lt;static&gt; connect( address )",
+      "longname": "VRoadcast.connect",
+      "name": "connect",
+      "tags": "VRoadcast.connect connect",
+      "summary": "",
+      "description": "Connect to VRoadcast service"
     },
     "ATON.html": {
       "id": "ATON.html",

@@ -132,7 +132,7 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 
 // API
 //=======================================================
-// /api/scenes/<path>
+// /api/scenes/<SID>
 app.get(/^\/api\/scene\/(.*)$/, function(req,res,next){
 	let args = req.params[0].split(',');
 
@@ -174,14 +174,14 @@ app.get(/^\/api\/scene\/(.*)$/, function(req,res,next){
 app.get("/api/scenes/", function(req,res,next){
 	let O = {};
 	O.cwd = ServUtils.DIR_SCENES;
+	O.follow = true;
 	
-	glob("**/"+ServUtils.STD_SCENEFILE, O, (err, files)=>{
-		let S = [];
+	let files = glob.sync("**/"+ServUtils.STD_SCENEFILE, O);
 
-		for (let f in files) S.push( path.dirname(files[f]) );
+	let S = [];
+	for (let f in files) S.push( path.dirname(files[f]) );
 
-		res.send(S);
-	});
+	res.send(S);
 
 	//next();
 });
@@ -189,29 +189,31 @@ app.get("/api/scenes/", function(req,res,next){
 app.get("/api/c/models/", function(req,res,next){
 	let O = {};
 	O.cwd = ServUtils.DIR_MODELS;
+	O.follow = true;
+
+	let files = glob.sync("**/*.{gltf,glb}", O);
 
 	let M = [];
-	
-	glob("**/*.{gltf,glb}", O, (err, files)=>{
-		for (let f in files) M.push( "models/"+files[f] );
+	for (let f in files) M.push( "models/"+files[f] );
 
-		res.send(M);
-	});
+	res.send(M);
 
 	//next();
 });
-// List all collection models
+// List all collection panoramas
 app.get("/api/c/panoramas/", function(req,res,next){
 	let O = {};
 	O.cwd = ServUtils.DIR_PANO;
+	O.follow = true;
+
+	let files = glob.sync("**/*.{jpg,hdr}", O);
 
 	let P = [];
-	
-	glob("**/*.{jpg,hdr}", O, (err, files)=>{
-		for (let f in files) P.push( "pano/"+files[f] );
+	for (let f in files) P.push( "pano/"+files[f] );
 
-		res.send(P);
-	});
+	res.send(P);
+	
+	//glob("**/*.{jpg,hdr}", O, (err, files)=>{ });
 
 	//next();
 });

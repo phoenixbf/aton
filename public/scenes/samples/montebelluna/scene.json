@@ -3,7 +3,8 @@
 
 	"environment":{
 		"mainpano":{
-			"url": "pano/samples/defsky-grass.jpg"
+            "url": "pano/samples/defsky-grass.jpg",
+            "rotation": 1.0
         }
 	},
 

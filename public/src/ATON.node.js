@@ -509,15 +509,14 @@ load(url, onComplete){
 
     let N = this;
 
-    // Fire new request
-    //if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
-
     // [C] Promise already requested
     if ( N._bCloneOnLoadHit && ATON._assetsManager[url] !== undefined ){
-        ATON._assetsManager[url].then(( o ) => {
-            N.add( o.clone() );
+        ATON._assetsManager[url].then(( o ) =>{
+            let C = o.clone();
 
-            //if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            ATON.Utils.modelVisitor(N, C); // check
+            N.add( C );
+
             if (onComplete) onComplete();
         });
 

@@ -5,15 +5,22 @@
 ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
 * Real-time collaborative multi-user features (*VRoadcast* module)
-* Immersive VR (WebXR) and (multi)-touch devices interfaces
-* 3D semantic queries and annotations including free-form volumetric shapes
-* Event-driven API for fully customizable events (for local and collaborative contexts)
+* Immersive VR (WebXR) 3DOF and 6DOF
+* Multi-touch interfaces
+* Spatial UI (3D labels, buttons, etc...) targeting immersive XR sessions
+* Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*
+* 3D semantic annotations including free-form volumetric shapes
+* Fast, real-time 3D queries on visible graph, semantic graph and UI nodes
+* Built-in Front-End with WYSIWYG rich annotation editor (HTML5)
+* Built-in profiler (adapt presentation to different devices)
+* Event-driven API for fully customizable events (local and synchronous collaborative contexts)
 * 360 panoramas and virtual tours
-* Complex scene-graph manipulation and support for hierarchical culling, instancing, node composition and cascading transformations
+* Advanced multi-texturing, PBR (physically-based rendering) for advanced materials and custom shaders
+* Advanced lighting, including IBL and Light Probes
+* Camera/POV transitions, viewpoint handling and custom navigation constraints
+* Complex scene-graph manipulation, hierarchical culling, instancing, composition and cascading transformations
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
 * Multi-temporal (4D) visualization
-* Advanced multi-texturing, PBR features and custom shaders
-* Camera/POV transitions, custom viewpoint handling and navigation constraints
 * Dynamic and customizable recommendation systems
 
 The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and support for remote/immersive visual analytics.

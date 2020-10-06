@@ -83,7 +83,7 @@ ATON.PATH_RES        = window.location.origin + "/res/";
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;
 ATON.SHADOWS_SIZE = 15.0;
-ATON.SHADOWS_RES  = 512; // 512
+ATON.SHADOWS_RES  = 1024; // 512
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -346,6 +346,7 @@ ATON.realize = ()=>{
     ATON._lps = []; // lightprobes
     ATON._bAutoLP = false;
     //ATON._dirtyLPs = true;
+    ATON._bShadowsFixedBound = false;
 
     ATON.initGraphs();
     ATON.SceneHub.init();
@@ -373,7 +374,7 @@ ATON.realize = ()=>{
     ATON._hoveredSemNode = undefined;
     ATON._hoveredUI      = undefined;
 
-    ATON._bQuerySemOcclusion = true; // TODO: implement
+    ATON._bQuerySemOcclusion = true;
     ATON._bQueryNormals  = true;
     ATON._bPauseQuery    = false;
 
@@ -401,7 +402,7 @@ ATON.realize = ()=>{
     ATON._rcUI = new THREE.Raycaster();
     ATON._rcUI.layers.set(ATON.NTYPES.UI);
 
-    ATON._registerRCS();
+    //ATON._registerRCS(); // not used for now
 
     ATON._setupBaseListeners();
 
@@ -602,6 +603,18 @@ ATON._assetReqComplete = (url)=>{
                     o.receiveShadow = true;
                 }
             });
+
+            // TODO: experimental
+            if (ATON._bShadowsFixedBound){
+                ATON.SHADOWS_SIZE = r*1.5;
+
+                ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
+                ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
+                ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
+                ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
+
+                ATON.updateDirShadows(c);
+            }
         }
 
         if (ATON._bAutoLP){
@@ -831,6 +844,11 @@ ATON.toggleShadows = (b)=>{
             }
         });
 
+        if (ATON._bShadowsFixedBound){
+            let c = ATON._rootVisible.getBound().center;
+            ATON.updateDirShadows(c);
+        }
+
         console.log("Shadows ON");
     }
     else {
@@ -840,11 +858,10 @@ ATON.toggleShadows = (b)=>{
     }
 };
 
-ATON.updateDirShadows = ()=>{
+ATON.updateDirShadows = (p)=>{
     if (ATON._dMainLdir === undefined) return;
 
-    
-    let p = ATON.Nav.getCurrentEyeLocation();
+    if (p === undefined) p = ATON.Nav.getCurrentEyeLocation();
 
     ATON._dMainLpos.x = p.x + (ATON.Nav._vDir.x * ATON.SHADOWS_SIZE);
     ATON._dMainLpos.y = p.y + (ATON.Nav._vDir.y * ATON.SHADOWS_SIZE);
@@ -860,7 +877,8 @@ ATON.updateDirShadows = ()=>{
 
 ATON._updateEnvironment = ()=>{
     if (!ATON._renderer.shadowMap.enabled) return;
-    
+    if (ATON._bShadowsFixedBound) return;
+
     ATON.updateDirShadows();
 };
 

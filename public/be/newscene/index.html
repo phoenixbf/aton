@@ -80,7 +80,9 @@ window.addEventListener( 'load', ()=>{
         let mp = $("#mpath").val();
         
         if (mp && mp.length>1){
-            sobj.scenegraph.nodes.main.urls.push(mp);
+            let paths = mp.split(",");
+
+            for (let p in paths) sobj.scenegraph.nodes.main.urls.push( paths[p] );
             console.log(sobj);
 
             let mpaths = sobj.scenegraph.nodes.main.urls;
@@ -135,10 +137,10 @@ window.addEventListener( 'load', ()=>{
             <div class="atonBlockTitle">Add 3D models</div>
             <div class="atonBlockCut">
                 <div class='select' style='width:50%;'>
-                    <select id='mpath'><option value=''>Choose a 3D model to add...</option></select><div class='selectArrow'></div>
+                    <select id='mpath'><option value=''>Choose a 3D model or Folder to add...</option></select><div class='selectArrow'></div>
                 </div>
-                <button id='btn-addmodel' type='button' class='atonBTN' style='background-color:rgba(0,255,0, 0.2)'><img src='/res/icons/add.png'></button>
-                <button id='btn-clearmodels' type='button' class='atonBTN' style='background-color:rgba(255,0,0, 0.2)'><img src='/res/icons/trash.png'></button>
+                <button id='btn-addmodel' type='button' class='atonBTN atonBTN-green'><img src='/res/icons/add.png'></button>
+                <button id='btn-clearmodels' type='button' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></button>
 
                 <br><div id="idmlist"></div>
             </div>
@@ -158,11 +160,13 @@ window.addEventListener( 'load', ()=>{
 
                 <div class="atonOptionBlock" style="max-width:400px; width:100%;">
                     <h3>Lighting</h3>
+                    <label for="autoLP">Automatic LightProbe</label><input id="autoLP" type="checkbox"><br>
+<!--
                     <label for="dlight">Direct light</label>
                     <input id="dlight" type="text" size="10" placeholder="x,y,z">
 
-                    <label for="autoLP">Automatic LightProbe</label><input id="autoLP" type="checkbox">
                     <label for="shadows">Shadows</label><input id="shadows" type="checkbox">
+-->
                 </div>
             </div>
 

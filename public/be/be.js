@@ -4,6 +4,13 @@ const PATH_FE        = window.location.origin + "/fe/";
 
 let BE = {};
 
+BE.getBaseFolder = ( filepath )=>{
+    let index  = filepath.lastIndexOf( '/' );
+    if ( index !== -1 ) return filepath.substring( 0, index + 1 );
+    
+    return '';
+};
+
 BE.generateID = (prefix)=>{
     if (prefix === undefined) prefix = "id";
     //let currDate = new Date();
@@ -87,11 +94,18 @@ BE.createBaseScene = ()=>{
 BE.appendModelsToSelect = (idselect)=>{
     $.getJSON( "/api/c/models/", ( data )=>{
         let list = "";
+        let folders = {};
 
         for (let m in data){
             let mp = data[m];
-            list += "<option value='"+mp+"'>"+mp+"</option>"
+            list += "<option value='"+mp+"'>[MODEL] "+mp+"</option>";
+
+            let F = BE.getBaseFolder(mp);
+            if (folders[F] === undefined) folders[F] = mp;
+            else folders[F] += ","+mp;
         }
+
+        for (let k in folders) list += "<option value='"+folders[k]+"'>[FOLDER] "+k+"</option>";
 
         $("#"+idselect).append(list);
     });

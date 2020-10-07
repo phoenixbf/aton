@@ -38,8 +38,8 @@ $.getJSON( "/api/examples/", (data)=>{
 
     for (let e in data){
         let url   = data[e];
-        let title = getBaseFolder(url).slice(0,-1);
-        let cover = title + "/cover.jpg";
+        let title = getBaseFolder(url).slice(0,-1).replace("-"," ");
+        let cover = getBaseFolder(url) + "cover.jpg";
 
         if (url !== "index.html") htmlcontent += "<div class='atonCover'><a href='"+url+"'><img src='"+cover+"'></a><br>"+title+"</div>";
     }

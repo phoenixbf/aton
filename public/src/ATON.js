@@ -303,6 +303,7 @@ ATON.realize = ()=>{
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
         //pecision: "mediump"
+        preserveDrawingBuffer: true
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);

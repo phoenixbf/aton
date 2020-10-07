@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    // We use built-in scene loader
+    // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network
+    // Scene-graph, semantic-graph and environment parameters can be defined in the corresponding JSON scene descriptor
+    ATON.FE.loadSceneID("samples/montebelluna/attuale");
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

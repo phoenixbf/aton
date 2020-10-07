@@ -246,6 +246,9 @@ canvas {
 .atonCover img {
     border-radius: 15px;
 }
+.atonCover img:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+}
 
 /* icon / button */
 .atonBTN {

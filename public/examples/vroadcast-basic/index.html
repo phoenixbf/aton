@@ -33,8 +33,11 @@ window.addEventListener( 'load', ()=>{
 
     // Create some HTML UI
     ATON.FE.uiAddButtonVRC("idTopToolbar"); // We add our VRoadcast button
-	ATON.FE.uiAddButtonHome("idTopToolbar");
-    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+    ATON.FE.uiAddButtonHome("idTopToolbar");
+
+    ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
+    ATON.FE.uiAddButtonVR("idTopToolbar");                // Immersive VR mode (will show up only on secure connections)
+    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar"); // Device-orientation mode (will show up only on mobile devices with secure connections)
 
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();

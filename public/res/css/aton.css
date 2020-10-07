@@ -390,25 +390,43 @@ canvas {
     background-color: rgba(127, 0, 0, 0.5);
     box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0);
 }
+.atonVRCu0:hover {
+    box-shadow: 0 0px 10px rgba(255,0,0, 1.0);
+}
 .atonVRCu1 {
     background-color: rgba(127, 127, 0, 0.5);
     box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0);
+}
+.atonVRCu1:hover {
+    box-shadow: 0 0px 10px rgba(255,255,0, 1.0);
 }
 .atonVRCu2 {
     background-color: rgba(0, 127, 0, 0.5);
     box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0);
 }
+.atonVRCu2:hover {
+    box-shadow: 0 0px 10px rgba(0,255,0, 1.0);
+}
 .atonVRCu3 {
     background-color: rgba(0, 127, 127, 0.5);
     box-shadow: 0 0px 10px rgba(0, 255, 255, 1.0);
+}
+.atonVRCu3:hover {
+    box-shadow: 0 0px 10px rgba(0,255,255, 1.0);
 }
 .atonVRCu4 {
     background-color: rgba(0, 0, 127, 0.5);
     box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
 }
+.atonVRCu4:hover {
+    box-shadow: 0 0px 10px rgba(0,0,255, 1.0);
+}
 .atonVRCu5 {
     background-color: rgba(127, 0, 127, 0.5);
     box-shadow: 0 0px 10px rgba(255, 0, 255, 1.0);
+}
+.atonVRCu5:hover {
+    box-shadow: 0 0px 10px rgba(255,0,255, 1.0);
 }
 
 /*

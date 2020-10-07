@@ -33,11 +33,13 @@ window.addEventListener( 'load', ()=>{
 
     // Create some HTML UI
     ATON.FE.uiAddButtonVRC("idTopToolbar"); // We add our VRoadcast button
-    ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
 
     ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
     ATON.FE.uiAddButtonVR("idTopToolbar");                // Immersive VR mode (will show up only on secure connections)
     ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar"); // Device-orientation mode (will show up only on mobile devices with secure connections)
+
+    ATON.FE.uiAddButtonHome("idBottomToolbar"); // Home button
 
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();
@@ -45,6 +47,11 @@ window.addEventListener( 'load', ()=>{
     // We use built-in scene loader
     // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network 
     ATON.FE.loadSceneID("samples/montebelluna/attuale");
+
+    // We subscribe to VRoadcast "user ID assigned" event (a positive number the service assign to identify us in the scene)
+    ATON.on("VRC_IDassigned", (uid)=>{
+        console.log("Great! VRoadcast service assigned me ID: "+uid);
+    });
 
 });
 

@@ -218,6 +218,22 @@ app.get("/api/c/panoramas/", function(req,res,next){
 	//next();
 });
 
+// List examples
+app.get("/api/examples/", function(req,res,next){
+	let O = {};
+	O.cwd = ServUtils.DIR_EXAMPLES;
+	//O.follow = true;
+	
+	let files = glob.sync("**/*.html", O);
+
+	let S = [];
+	for (let f in files) S.push(files[f]);
+
+	res.send(S);
+
+	//next();
+});
+
 
 
 // Scene edit (add or remove)

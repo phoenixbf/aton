@@ -230,6 +230,23 @@ canvas {
     border-radius: 10px;
 }
 
+.atonCover {
+    border: 0px;
+    display: inline-block;
+    cursor: pointer;
+
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 4px;
+    margin: 4px;
+
+    outline: none;
+}
+.atonCover img {
+    border-radius: 15px;
+}
+
 /* icon / button */
 .atonBTN {
     border: 0px;
@@ -283,6 +300,13 @@ canvas {
 }
 .atonBTN-blue:hover {
     box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
+}
+.atonBTN-white {
+    background-color: rgba(255, 255, 255, 0.5) !important;
+    color: black;
+}
+.atonBTN-white:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
 .switchedON {
@@ -812,7 +836,7 @@ label {
     display: block;
     position: relative;
 
-    /*cursor: pointer;*/
+    cursor: pointer;
 
     text-align: center;
 
@@ -834,6 +858,9 @@ label {
 .atonOptionBlock {
     display: inline-block;
     vertical-align: top;
+
+    padding: 5px;
+    border-radius: 10px;
 
     white-space: nowrap;
 }

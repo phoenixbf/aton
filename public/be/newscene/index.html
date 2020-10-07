@@ -48,6 +48,23 @@ let handleServerResponse = (r)=>{
 
 let composeScene = ()=>{
 
+    // Transform
+    let transP = $("#idTransPos").val();
+    let transR = $("#idTransRot").val();
+    let transS = $("#idTransScale").val();
+
+    let bTransP = (transP && transP.length>0)
+    let bTransR = (transR && transR.length>0)
+    let bTransS = (transS && transS.length>0);
+
+    if (bTransP || bTransR || bTransS){
+        sobj.scenegraph.nodes.main.transform = {};
+
+        if (bTransP) sobj.scenegraph.nodes.main.transform.position = transP.split(",");
+        if (bTransR) sobj.scenegraph.nodes.main.transform.rotation = transR.split(",");
+        if (bTransS) sobj.scenegraph.nodes.main.transform.scale    = transS.split(",");
+    }
+
     // LightProbes
     let bAutoLP = $("#autoLP").is(":checked");
     if (sobj.environment.lightprobes === undefined) sobj.environment.lightprobes = {};
@@ -76,6 +93,10 @@ window.addEventListener( 'load', ()=>{
     BE.appendModelsToSelect("mpath");
     BE.appendPanoramasToSelect("panopath");
 
+    // initial blocks
+    $('#blockTransform').hide();
+    $('#blockEnv').hide();
+
     $("#btn-addmodel").click(()=>{
         let mp = $("#mpath").val();
         
@@ -88,7 +109,7 @@ window.addEventListener( 'load', ()=>{
             let mpaths = sobj.scenegraph.nodes.main.urls;
 
             let hlist = "";
-            for (let mp in mpaths) hlist += "<div class='atonBlockRound' style='background-color:rgba(0,255,0, 0.2)'>"+mpaths[mp]+"</div>";
+            for (let mp in mpaths) hlist += "<div class='atonBlockRound atonBTN-white'>"+mpaths[mp]+"</div>";
             $("#idmlist").html(hlist);
 
             document.getElementById("mpath").selectedIndex = 0;
@@ -134,8 +155,10 @@ window.addEventListener( 'load', ()=>{
          -->
 
         <div class="atonBlockGroup">
-            <div class="atonBlockTitle">Add 3D models</div>
-            <div class="atonBlockCut">
+            <div class="atonBlockTitle" onclick="$('#blockModels').toggle()">Add 3D models</div>
+            <div id='blockModels' class="atonBlockCut">
+                Here you can select and add ('+') 3D models to the base scene (under a main node) from the collection. You can pick single 3D models (*.gltf or *.glb) or entire folders.
+                <br><br>
                 <div class='select' style='width:50%;'>
                     <select id='mpath'><option value=''>Choose a 3D model or Folder to add...</option></select><div class='selectArrow'></div>
                 </div>
@@ -147,10 +170,20 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <div class="atonBlockGroup">
-            <div class="atonBlockTitle">Environment</div>
+            <div class="atonBlockTitle" onclick="$('#blockTransform').toggle()">Transform</div>
+            <div id='blockTransform' class="atonBlockCut">
+                An optional base transformation can be applied to the main node (all 3D models in the previous step). Position, rotation and scale are provided by comma-separated values.
+                <br><br>
+                <label for="idTransPos">Position</label><input id="idTransPos" type="text" size="10" placeholder="x,y,z">
+                <label for="idTransRot">Rotation</label><input id="idTransRot" type="text" size="10" placeholder="x,y,z">
+                <label for="idTransScale">Scale</label><input id="idTransScale" type="text" size="10" placeholder="x,y,z">
+            </div>
+        </div>
 
-            <div class="atonBlockCut">
-                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
+        <div class="atonBlockGroup">
+            <div class="atonBlockTitle" onclick="$('#blockEnv').toggle()">Environment</div>
+            <di id='blockEnv' class="atonBlockCut">
+                <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
                     <h3>Panorama</h3>
                     <div class='select'>
                         <select id='panopath'><option value=''>NONE</option></select><div class='selectArrow'></div>
@@ -158,7 +191,7 @@ window.addEventListener( 'load', ()=>{
                     <br><div id="idpanopreview"></div>
                 </div>
 
-                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
+                <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
                     <h3>Lighting</h3>
                     <label for="autoLP">Automatic LightProbe</label><input id="autoLP" type="checkbox"><br>
 <!--
@@ -172,6 +205,7 @@ window.addEventListener( 'load', ()=>{
 
         </div>
 
+        <br>
         <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
         <h3>Create Scene</h3>
         </div>

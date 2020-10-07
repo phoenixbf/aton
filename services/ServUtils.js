@@ -13,6 +13,7 @@ ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
 ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
 ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
 ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
+ServUtils.DIR_EXAMPLES     = path.join(ServUtils.DIR_PUBLIC,"examples/");
 ServUtils.STD_SCENEFILE    = "scene.json";
 
 ServUtils.STATUS_COMPLETE   = "complete";

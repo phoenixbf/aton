@@ -15,6 +15,7 @@ ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
 ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
 ServUtils.DIR_EXAMPLES     = path.join(ServUtils.DIR_PUBLIC,"examples/");
 ServUtils.STD_SCENEFILE    = "scene.json";
+ServUtils.STD_PUBFILE      = "pub.txt";
 
 ServUtils.STATUS_COMPLETE   = "complete";
 ServUtils.STATUS_PROCESSING = "processing";
@@ -50,8 +51,11 @@ ServUtils.getSceneFolder = (sid)=>{
 };
 ServUtils.getSceneJSONPath = (sid)=>{
 	let jsonfile = path.join( ServUtils.getSceneFolder(sid), ServUtils.STD_SCENEFILE);
-
 	return jsonfile;
+};
+ServUtils.getPubFilePath = (sid)=>{
+	let pubfile = path.join( ServUtils.getSceneFolder(sid), ServUtils.STD_PUBFILE);
+	return pubfile;
 };
 
 // Check if scene exists on disk
@@ -247,7 +251,7 @@ ServUtils.cleanScene = (sobj)=>{
 
 
 // Write scene JSON from sid and data
-ServUtils.writeSceneJSON = (sid, data)=>{
+ServUtils.writeSceneJSON = (sid, data, pub)=>{
 	if (sid === undefined) return false;
 	if (data === undefined) return false;
 
@@ -267,6 +271,11 @@ ServUtils.writeSceneJSON = (sid, data)=>{
 	}
 */	
 	fs.writeFileSync(sjpath, JSON.stringify(data, null, 4));
+	if (pub){
+		let pubfile = ServUtils.getPubFilePath(sid);
+		fs.writeFileSync(pubfile, "");
+	}
+
 	return true;
 };
 

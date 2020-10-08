@@ -35,6 +35,7 @@ let requestSceneCreation = ()=>{
 
     let o = {};
     o.sid = sid;
+    o.pub = ($("#sidvis").val()==='pub');
     o.data = sobj;
 
     console.log(o);
@@ -148,11 +149,22 @@ window.addEventListener( 'load', ()=>{
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
-        <h2>Create new Scene</h2>
+        <h2>New Scene</h2>
         <div id="idSID"></div>
         <!-- <label for="sid">Scene ID</label>
         <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
          -->
+
+         <label for="sidvis">Scene visibility</label>
+         <div class='select' style="width:200px;">
+            <select id='sidvis'>
+                <option value='pvt'>Private link</option>
+                <option value='pub'>Public (listed)</option>
+            </select>
+            <div class='selectArrow'></div>
+        </div>
+
+        <br><br>
 
         <div class="atonBlockGroup">
             <div class="atonBlockTitle" onclick="$('#blockModels').toggle()">Add 3D models</div>
@@ -193,7 +205,7 @@ window.addEventListener( 'load', ()=>{
 
                 <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
                     <h3>Lighting</h3>
-                    <label for="autoLP">Automatic LightProbe</label><input id="autoLP" type="checkbox"><br>
+                    <input id="autoLP" type="checkbox"><label for="autoLP">Automatic LightProbe</label><br>
 <!--
                     <label for="dlight">Direct light</label>
                     <input id="dlight" type="text" size="10" placeholder="x,y,z">

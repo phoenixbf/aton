@@ -179,7 +179,12 @@ app.get("/api/scenes/", function(req,res,next){
 	let files = glob.sync("**/"+ServUtils.STD_SCENEFILE, O);
 
 	let S = [];
-	for (let f in files) S.push( path.dirname(files[f]) );
+	for (let f in files){
+		let basepath = path.dirname(files[f]);
+		let pubfile  = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
+
+		if (fs.existsSync(pubfile)) S.push( basepath );
+	}
 
 	res.send(S);
 
@@ -257,11 +262,12 @@ app.post('/api/new/scene', (req, res) => {
     let O = req.body;
 	let sid  = O.sid;
 	let data = O.data;
+	let pub  = O.pub;
 
 	console.log(O);
 
 	//ServUtils.touchSceneFolder(sid);
-	let r = ServUtils.writeSceneJSON(sid, data);
+	let r = ServUtils.writeSceneJSON(sid, data, pub);
 
 	res.json(r);
 });

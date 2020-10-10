@@ -111,21 +111,7 @@ AFE.setupEventHandlers = ()=>{
         if (ATON._hoveredSemNode) AFE.popupSemDescription(ATON._hoveredSemNode);
     });
 
-    ATON.on("MouseWheel", (d)=>{
-
-        if (ATON.Nav._controls.enableZoom === undefined) return;
-
-        if (ATON._kModShift){
-            ATON.Nav._controls.enableZoom = false;
-
-            let r = ATON.SUI.mainSelector.scale.x;
-            r += (-d*0.001);
-            if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
-        }
-        else {
-            ATON.Nav._controls.enableZoom = true;
-        }
-    });
+    ATON.FE.useMouseWheelToScaleSelector(0.001);
 
     ATON.on("KeyPress", (k)=>{
         if (k === 'Delete'){

@@ -14,7 +14,7 @@ constructor(uid){
     super(undefined /*uid*/, ATON.NTYPES.UI);
 
     this.userid   = uid;
-    this.username = "anonymous";
+    this.username = "User #"+uid;
     this.message  = "...";
     this.bTalking = false;
 

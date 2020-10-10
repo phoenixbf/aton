@@ -197,6 +197,13 @@ enablePicking(){
     return this;
 }
 
+setPickable(b){
+    if (b) this.enablePicking();
+    else this.disablePicking();
+
+    return this;
+}
+
 /**
 Set cascading material. Note this applies to this node and all children (even all those still loading)
 @param {THREE.Material} M - the Material

@@ -64,6 +64,15 @@ SUI.getSelectorRadius = ()=>{
     return SUI.mainSelector.scale.x;
 };
 
+SUI.setMainSelectorModel = (path, bUseStdMat)=>{
+    if (path === undefined) return;
+
+    SUI.mainSelector.removeChildren();
+
+    SUI.mainSelector.load(path).disablePicking();
+    if (bUseStdMat) SUI.mainSelector.setMaterial( ATON.MatHub.getMaterial("selector") );
+};
+
 SUI.buildInfoNode = ()=>{
     SUI.infoNode = ATON.createUINode();
     SUI.infoNode.attachToRoot();

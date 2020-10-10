@@ -15,8 +15,10 @@ let FE = {};
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
-    FE._bPopup = false; // showing popup
+    FE._bPopup = false;     // showing popup
     FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+
+    FE._bReqHome = false;   // auto-compute home
 
     FE.urlParams = new URLSearchParams(window.location.search);
 
@@ -37,9 +39,35 @@ FE.addBasicLoaderEvents = ()=>{
         
         //console.log(ATON.Nav.homePOV);
 
-        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+        if (FE._bReqHome) return;
+
+        if (ATON.Nav.homePOV === undefined){
+            ATON.Nav.computeAndRequestDefaultHome(0.5);
+        }
         else {
             ATON.Nav.requestHome(0.5);
+        }
+
+        FE._bReqHome = true;
+    });
+};
+
+FE.useMouseWheelToScaleSelector = (f)=>{
+
+    if (f === undefined) f = 0.001;
+
+    ATON.on("MouseWheel", (d)=>{
+        if (ATON.Nav._controls.enableZoom === undefined) return;
+
+        if (ATON._kModShift){
+            ATON.Nav._controls.enableZoom = false;
+
+            let r = ATON.SUI.mainSelector.scale.x;
+            r += (-d*f);
+            if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
+        }
+        else {
+            ATON.Nav._controls.enableZoom = true;
         }
     });
 };
@@ -72,8 +100,20 @@ FE._uiSetupBase = ()=>{
 };
 
 // Add Generic button to a specific div container
-FE.uiAddButton = (idcontainer, iconid, onPress)=>{
-    let htmlcode = "<button id='btn-"+iconid+"' type='button' class='atonBTN'><img src='"+FE.PATH_RES_ICONS+iconid+".png'></button>";
+FE.uiAddButton = (idcontainer, icon, onPress)=>{
+    let iconurl;
+    let iconid;
+
+    if (icon.endsWith(".png")){
+        iconurl = icon;
+        iconid  = icon.slice(0,-4);
+    }
+    else {
+        iconurl = FE.PATH_RES_ICONS+icon+".png";
+        iconid  = icon;
+    }
+
+    let htmlcode = "<button id='btn-"+iconid+"' type='button' class='atonBTN'><img src='"+iconurl+"'></button>";
     $("#"+idcontainer).append(htmlcode);
 
     if (onPress) $("#btn-"+iconid).click( onPress );
@@ -136,7 +176,7 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
 FE.uiAddButtonVRC = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
         if (ATON.VRoadcast.isConnected()){
-
+            FE.popupVRC();
         }
         else {
             ATON.VRoadcast.connect();
@@ -222,6 +262,44 @@ FE.popupQR = ()=>{
     new QRCode(document.getElementById("idQRcode"), url);
 };
 
+FE.popupVRC = ()=>{
+    let htmlcontent = "";
+    //htmlcontent += "<h1>VRoadcast</h1>";
+    htmlcontent += "<div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'></div>";
+
+    htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...'>";
+    htmlcontent += "<input id='idVRCmsg' type='text' placeholder='message...'>";
+    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>DISCONNECT</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#idChatBox").append(ATON.VRoadcast._elChat);
+
+    $("#idVRCmsg").keypress((e)=>{
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode == '13'){
+            let str = $("#idVRCmsg").val();
+            ATON.VRoadcast.setMessage( str );
+            $("#idVRCmsg").val("");
+            //$("#idChatBox:first-child").scrollTop( $("#idChatBox:first-child").height() );
+        }
+    });
+
+    $("#idVRCusername").keypress((e)=>{
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode == '13'){
+            let str = $("#idVRCusername").val();
+            ATON.VRoadcast.setUsername( str );
+            //$("#idVRCusername").hide();
+        }
+    });
+
+    $("#idVRCdisconnect").click(()=>{
+        ATON.VRoadcast.disconnect();
+        ATON.FE.popupClose();
+    });
+
+};
 
 
 export default FE;

@@ -7,7 +7,7 @@
 			"rotation": 0.0
         },
 
-        "mainlight":{
+        "mainlightx":{
             "direction": [0.5,-1,-1],
 			"shadows": false
         }

@@ -35,8 +35,8 @@ VRoadcast.init = ()=>{
     VRoadcast.socket = undefined;
     VRoadcast._connected = false;
 
-    //VRoadcast.sid = "_SHARED_";
     VRoadcast.uid = undefined; // my userID (0,1,....)
+    VRoadcast._numUsers = 0;
 
     VRoadcast.avatarList = [];
 
@@ -48,6 +48,15 @@ VRoadcast.init = ()=>{
     VRoadcast._lastStateSent = undefined;
 
     console.log("VRoadcast initialized");
+    VRoadcast.enableChatLog();
+};
+
+VRoadcast.enableChatLog = ()=>{
+    VRoadcast._elChat = $("<div></div>").text("");
+};
+
+VRoadcast.getNumUsers = ()=>{
+    return VRoadcast._numUsers;
 };
 
 // Register materials (avatars/users)
@@ -68,6 +77,14 @@ VRoadcast.initMaterials = ()=>{
     VRoadcast.ucolorsdark.push( new THREE.Color(0.0,0.2,0.2) );
     VRoadcast.ucolorsdark.push( new THREE.Color(0.0,0.0,0.2) );
     VRoadcast.ucolorsdark.push( new THREE.Color(0.2,0.0,0.2) );
+
+    VRoadcast.ucolorhex = [];
+    VRoadcast.ucolorhex.push("#F00");
+    VRoadcast.ucolorhex.push("#FF0");
+    VRoadcast.ucolorhex.push("#0F0");
+    VRoadcast.ucolorhex.push("#0FF");
+    VRoadcast.ucolorhex.push("#00F");
+    VRoadcast.ucolorhex.push("#F0F");
 
     let MM = ATON.MatHub.materials;
     MM.avatars = [];
@@ -156,6 +173,7 @@ Connect to VRoadcast service
 ATON.VRoadcast.connect();
 */
 VRoadcast.connect = (address)=>{
+    if (VRoadcast._connected) return;
     if (address) VRoadcast.address = address;
 
     let opts = {};
@@ -180,6 +198,13 @@ VRoadcast.connect = (address)=>{
     VRoadcast._registerSocketHandlers();
 };
 
+VRoadcast.disconnect = ()=>{
+    if (VRoadcast.socket === undefined) return;
+
+    VRoadcast.socket.disconnect();
+    VRoadcast._connected = false;
+};
+
 
 VRoadcast._onConnected = ()=>{
     //
@@ -188,9 +213,24 @@ VRoadcast._onConnected = ()=>{
 VRoadcast.setUsername = (username)=>{
     VRoadcast._username = username;
     if (VRoadcast.socket === undefined) return;
+    if (VRoadcast.uid === undefined) return;
 
+    if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your username is now: "+username+"</i><br>");
     VRoadcast.socket.emit("UNAME", username);
 };
+VRoadcast.setMessage = (msg)=>{
+    VRoadcast._msg = msg;
+    if (VRoadcast.socket === undefined) return;
+    if (VRoadcast.uid === undefined) return;
+
+    if (VRoadcast._elChat){
+        VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[VRoadcast.uid%6]+"'><b>YOU</b>: "+msg+"</span><br>");
+        VRoadcast._elChat.scrollTop(VRoadcast._elChat.scrollHeight);
+    }
+
+    VRoadcast.socket.emit("UMSG", msg);
+};
+
 
 // Handle incoming server msgs
 VRoadcast._registerSocketHandlers = ()=>{
@@ -214,6 +254,8 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         VRoadcast.avaGroup.hide();
 
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>YOU disconnected from VRoadcast service</i><br>");
+
         console.log("VRC disconnected!");
         ATON.fireEvent("VRC_Disconnected");
     });
@@ -231,6 +273,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("Your ID is " + data);
         VRoadcast.uid = data;
 
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your ID is #"+data+"</i><br>");
+
         ATON.fireEvent("VRC_IDassigned", data);
     });
 
@@ -239,17 +283,22 @@ VRoadcast._registerSocketHandlers = ()=>{
         //if (uid === VRoadcast.uid) return; // myself
 
         console.log("User #" +uid+" entered the scene");
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" entered the scene</i><br>");
 
         VRoadcast.touchAvatar(uid);
     });
 
     VRoadcast.socket.on('ULEAVE', (data)=>{
         let uid = data;
+        if (uid === undefined) return;
         
         let A = VRoadcast.avatarList[uid];
         if (A) A.hide();
 
         console.log("User #" +uid+" left the scene");
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" left the scene</i><br>");
+
+        if (VRoadcast._numUsers>0) VRoadcast._numUsers--;
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
@@ -267,9 +316,26 @@ VRoadcast._registerSocketHandlers = ()=>{
         let uid   = data.uid;
         let uname = data.name;
 
+        if (uid === undefined) return;
+
         let A = VRoadcast.touchAvatar(uid);
         A.setUsername(uname);
+
         console.log("User #" +uid+" changed username to: "+uname);
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" changed username to: "+uname+"</i><br>");
+    });
+
+    VRoadcast.socket.on('UMSG', (data)=>{
+        let uid = data.uid;
+        let msg = data.msg;
+
+        if (uid === undefined) return;
+
+        let A = VRoadcast.touchAvatar(uid);
+        A.setMessage(msg);
+
+        console.log("User #" +uid+": "+msg);
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.username+"</b>: "+msg+"</span><br>");
     });
 };
 
@@ -393,6 +459,7 @@ VRoadcast.touchAvatar = (uid)=>{
         //console.log(VRoadcast.avatarList);
         //console.log(ATON.MatHub.materials.avatars);
         //console.log(A);
+        VRoadcast._numUsers++;
     }
 
     let A = VRoadcast.avatarList[uid];

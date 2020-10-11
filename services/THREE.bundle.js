@@ -14,6 +14,7 @@ import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOri
 //import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
+import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { ConvexBufferGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -39,6 +40,7 @@ THREE.OrbitControls = OrbitControls;
 THREE.DeviceOrientationControls = DeviceOrientationControls;
 THREE.GLTFLoader    = GLTFLoader;
 THREE.GLTFExporter  = GLTFExporter;
+THREE.OBJExporter   = OBJExporter;
 THREE.DRACOLoader   = DRACOLoader;
 THREE.BasisTextureLoader = BasisTextureLoader;
 //THREE.FirstPersonControls = FirstPersonControls;

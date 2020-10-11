@@ -18,9 +18,7 @@ SUI.STD_BTN_SIZE = 0.1;
 SUI.Button = Button;
 
 
-/**
-Initializes Spatial UI module
-*/
+//Initializes Spatial UI module
 SUI.init = ()=>{
     SUI.mainSelector   = ATON.createUINode();
     //SUI.secondSelector = ATON.createUINode();
@@ -57,14 +55,28 @@ SUI.init = ()=>{
 */
 };
 
+/**
+Set selector radius
+@param {number} r - the radius
+*/
 SUI.setSelectorRadius = (r)=>{
     SUI.mainSelector.scale.set(r,r,r);
 };
+
+/**
+Get selector current radius
+@returns {number}
+*/
 SUI.getSelectorRadius = ()=>{
     return SUI.mainSelector.scale.x;
 };
 
-SUI.setMainSelectorModel = (path, bUseStdMat)=>{
+/**
+Set selector 3D model
+@param {string} path - the model path (usually gltf or glb)
+@param {boolean} bUseStdMat - (optional) overwrites 3D model materials with standard selector material 
+*/
+SUI.setSelectorModel = (path, bUseStdMat)=>{
     if (path === undefined) return;
 
     SUI.mainSelector.removeChildren();
@@ -102,10 +114,21 @@ SUI.buildInfoNode = ()=>{
     //SUI.infoNode.scale.set(0.07,0.07,0.07);
 };
 
+/**
+Get main UI Info Node
+@returns {Node}
+*/
 SUI.getInfoNode = ()=>{
     return SUI.infoNode;
 };
 
+/**
+Create a SpatialUI toolbar from a list of SUI buttons
+This can be arranged anywhere in the scene or attached to other UI nodes
+@param {string} buttonlist - a list (array) of SUI buttons
+@param {THREE.Color} color - (optional) base color for the toolbar
+@returns {Node}
+*/
 SUI.createToolbar = (buttonlist, color)=>{
     let T = ATON.createUINode();
 
@@ -120,8 +143,8 @@ SUI.createToolbar = (buttonlist, color)=>{
         backgroundColor: color? color : ATON.MatHub.colors.black,
         backgroundOpacity: 0.3,
 
-        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
-        fontTexture: ATON.PATH_RES+"fonts/custom.png", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
+        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json",
+        fontTexture: ATON.PATH_RES+"fonts/custom.png",
 
         alignContent: 'center', // could be 'center' or 'left'
         justifyContent: 'center', // could be 'center' or 'start'

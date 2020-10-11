@@ -73,7 +73,7 @@ window.addEventListener( 'load', ()=>{
 
 	// Setup our spatial UI
 	ATON.SUI.setSelectorRadius(0.5);
-	ATON.SUI.setMainSelectorModel( items[currItem].url );
+	ATON.SUI.setSelectorModel( items[currItem].url );
 	ATON.FE.useMouseWheelToScaleSelector(0.0002);
 
 
@@ -116,6 +116,7 @@ window.addEventListener( 'load', ()=>{
 
 	ATON.on("AllNodeRequestsCompleted",()=>{
 		//ATON.toggleShadows(true);
+		ATON.setNeutralAmbientLight(0.9);
 
 		ATON.VRoadcast.connect();
 	});

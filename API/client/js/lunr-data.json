@@ -476,20 +476,70 @@
           "url",
           "wast"
         ],
+        "Button.html": [
+          "button",
+          "class",
+          "constructor",
+          "id",
+          "node",
+          "repres",
+          "requir",
+          "spatialui",
+          "ui",
+          "uiid"
+        ],
+        "Button.html#setBaseColor": [
+          "base",
+          "button",
+          "button#setbasecolor",
+          "c",
+          "color",
+          "function",
+          "set",
+          "setbasecolor"
+        ],
+        "Button.html#setSwitchColor": [
+          "activ",
+          "button",
+          "button#setswitchcolor",
+          "c",
+          "color",
+          "function",
+          "set",
+          "setswitchcolor",
+          "switch"
+        ],
+        "Button.html#setText": [
+          "button",
+          "button#settext",
+          "function",
+          "set",
+          "settext",
+          "text"
+        ],
+        "Button.html#switch": [
+          "b",
+          "button",
+          "button#switch",
+          "function",
+          "on/off",
+          "switch"
+        ],
+        "Button.html#setIcon": [
+          "button",
+          "button#seticon",
+          "function",
+          "icon",
+          "set",
+          "seticon",
+          "url"
+        ],
         "EventHub.html": [
           "aton",
           "event",
           "eventhub",
           "hub",
           "namespac"
-        ],
-        "EventHub.html#.init": [
-          "compon",
-          "eventhub.init",
-          "function",
-          "init",
-          "initi",
-          "lt;static&gt"
         ],
         "EventHub.html#.clearEventHandlers": [
           "clear",
@@ -503,6 +553,8 @@
           "lt;static&gt"
         ],
         "EventHub.html#.on": [
+          "access",
+          "aton.on",
           "event",
           "eventhub.on",
           "evtnam",
@@ -518,6 +570,8 @@
           "subscrib"
         ],
         "EventHub.html#.fireEvent": [
+          "access",
+          "aton.fireev",
           "breplic",
           "data",
           "event",
@@ -551,15 +605,6 @@
           "immers",
           "namespac",
           "xr"
-        ],
-        "XR.html#.init": [
-          "compon",
-          "function",
-          "init",
-          "initi",
-          "lt;static&gt",
-          "xr",
-          "xr.init"
         ],
         "XR.html#.isPresenting": [
           "boolean",
@@ -675,20 +720,41 @@
           "scenehub.load",
           "sid"
         ],
+        "Utils.html": [
+          "aton",
+          "namespac",
+          "util"
+        ],
+        "Utils.html#.isConnectionSecure": [
+          "boolean",
+          "connect",
+          "current",
+          "function",
+          "isconnectionsecur",
+          "lt;static&gt",
+          "secur",
+          "utils.isconnectionsecur"
+        ],
+        "Utils.html#.isMobile": [
+          "boolean",
+          "current",
+          "devic",
+          "e.g",
+          "function",
+          "ismobil",
+          "lt;static&gt",
+          "mobil",
+          "oculu",
+          "quest",
+          "smartphon",
+          "tablet",
+          "utils.ismobil"
+        ],
         "Nav.html": [
           "aton",
           "namespac",
           "nav",
           "navig",
-          "system"
-        ],
-        "Nav.html#.init": [
-          "function",
-          "init",
-          "initi",
-          "lt;static&gt",
-          "nav",
-          "nav.init",
           "system"
         ],
         "Nav.html#.getCurrentEyeLocation": [
@@ -944,14 +1010,66 @@
           "sui",
           "ui"
         ],
-        "SUI.html#.init": [
+        "SUI.html#.setSelectorRadius": [
           "function",
-          "init",
-          "initi",
           "lt;static&gt",
-          "modul",
-          "spatial",
-          "sui.init",
+          "r",
+          "radiu",
+          "selector",
+          "set",
+          "setselectorradiu",
+          "sui.setselectorradiu"
+        ],
+        "SUI.html#.getSelectorRadius": [
+          "current",
+          "function",
+          "getselectorradiu",
+          "lt;static&gt",
+          "number",
+          "radiu",
+          "selector",
+          "sui.getselectorradiu"
+        ],
+        "SUI.html#.setSelectorModel": [
+          "3d",
+          "busestdmat",
+          "function",
+          "lt;static&gt",
+          "model",
+          "path",
+          "selector",
+          "set",
+          "setselectormodel",
+          "sui.setselectormodel"
+        ],
+        "SUI.html#.getInfoNode": [
+          "function",
+          "getinfonod",
+          "info",
+          "lt;static&gt",
+          "main",
+          "node",
+          "sui.getinfonod",
+          "ui"
+        ],
+        "SUI.html#.createToolbar": [
+          "anywher",
+          "arrang",
+          "attach",
+          "button",
+          "buttonlist",
+          "color",
+          "creat",
+          "createtoolbar",
+          "function",
+          "list",
+          "lt;static&gt",
+          "node",
+          "scene",
+          "spatialui",
+          "sui",
+          "sui.createtoolbar",
+          "toolbar",
           "ui"
         ],
         "VRoadcast.html": [
@@ -1337,7 +1455,7 @@
           "visibl"
         ]
       },
-      "length": 114
+      "length": 124
     },
     "tokenStore": {
       "root": {
@@ -1396,6 +1514,10 @@
               "Node.html#load": {
                 "ref": "Node.html#load",
                 "tf": 2.1739130434782608
+              },
+              "SUI.html#.setSelectorModel": {
+                "ref": "SUI.html#.setSelectorModel",
+                "tf": 12.5
               },
               "ATON.html#.setPathCollection": {
                 "ref": "ATON.html#.setPathCollection",
@@ -1630,6 +1752,10 @@
                     "ref": "SceneHub.html",
                     "tf": 16.666666666666664
                   },
+                  "Utils.html": {
+                    "ref": "Utils.html",
+                    "tf": 25
+                  },
                   "Nav.html": {
                     "ref": "Nav.html",
                     "tf": 16.666666666666664
@@ -1657,6 +1783,40 @@
                 },
                 ".": {
                   "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "EventHub.html#.on": {
+                          "ref": "EventHub.html#.on",
+                          "tf": 5
+                        }
+                      }
+                    }
+                  },
+                  "f": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "v": {
+                              "docs": {
+                                "EventHub.html#.fireEvent": {
+                                  "ref": "EventHub.html#.fireEvent",
+                                  "tf": 6.25
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
                   "s": {
                     "docs": {},
                     "e": {
@@ -2548,6 +2708,10 @@
                       "Node.html#attachToRoot": {
                         "ref": "Node.html#attachToRoot",
                         "tf": 2.1739130434782608
+                      },
+                      "SUI.html#.createToolbar": {
+                        "ref": "SUI.html#.createToolbar",
+                        "tf": 4.166666666666666
                       }
                     },
                     "t": {
@@ -2633,6 +2797,10 @@
                       "LightProbe.html#update": {
                         "ref": "LightProbe.html#update",
                         "tf": 3.125
+                      },
+                      "SUI.html#.createToolbar": {
+                        "ref": "SUI.html#.createToolbar",
+                        "tf": 4.166666666666666
                       }
                     }
                   }
@@ -2760,6 +2928,21 @@
             "docs": {},
             "t": {
               "docs": {},
+              "i": {
+                "docs": {},
+                "v": {
+                  "docs": {
+                    "Button.html#setSwitchColor": {
+                      "ref": "Button.html#setSwitchColor",
+                      "tf": 10
+                    },
+                    "ATON.html#.setMainLightDirection": {
+                      "ref": "ATON.html#.setMainLightDirection",
+                      "tf": 10
+                    }
+                  }
+                }
+              },
               "u": {
                 "docs": {},
                 "a": {
@@ -2773,14 +2956,24 @@
                     }
                   }
                 }
-              },
-              "i": {
+              }
+            },
+            "c": {
+              "docs": {},
+              "e": {
                 "docs": {},
-                "v": {
-                  "docs": {
-                    "ATON.html#.setMainLightDirection": {
-                      "ref": "ATON.html#.setMainLightDirection",
-                      "tf": 10
+                "s": {
+                  "docs": {},
+                  "s": {
+                    "docs": {
+                      "EventHub.html#.on": {
+                        "ref": "EventHub.html#.on",
+                        "tf": 5
+                      },
+                      "EventHub.html#.fireEvent": {
+                        "ref": "EventHub.html#.fireEvent",
+                        "tf": 6.25
+                      }
                     }
                   }
                 }
@@ -2806,10 +2999,42 @@
                 }
               }
             }
+          },
+          "n": {
+            "docs": {},
+            "y": {
+              "docs": {},
+              "w": {
+                "docs": {},
+                "h": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "SUI.html#.createToolbar": {
+                          "ref": "SUI.html#.createToolbar",
+                          "tf": 4.166666666666666
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "c": {
-          "docs": {},
+          "docs": {
+            "Button.html#setBaseColor": {
+              "ref": "Button.html#setBaseColor",
+              "tf": 50
+            },
+            "Button.html#setSwitchColor": {
+              "ref": "Button.html#setSwitchColor",
+              "tf": 50
+            }
+          },
           "h": {
             "docs": {
               "index.html": {
@@ -2879,6 +3104,10 @@
                       "ref": "Node.html",
                       "tf": 3.3333333333333335
                     },
+                    "SUI.html#.createToolbar": {
+                      "ref": "SUI.html#.createToolbar",
+                      "tf": 4.166666666666666
+                    },
                     "ATON.html#.createSceneNode": {
                       "ref": "ATON.html#.createSceneNode",
                       "tf": 8.333333333333332
@@ -2914,6 +3143,32 @@
                   },
                   "e": {
                     "docs": {},
+                    "t": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "b": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {
+                                    "SUI.html#.createToolbar": {
+                                      "ref": "SUI.html#.createToolbar",
+                                      "tf": 670
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "s": {
                       "docs": {},
                       "c": {
@@ -3026,6 +3281,10 @@
                     "Node.html": {
                       "ref": "Node.html",
                       "tf": 113.33333333333333
+                    },
+                    "Button.html": {
+                      "ref": "Button.html",
+                      "tf": 115
                     }
                   }
                 }
@@ -3227,6 +3486,10 @@
                                 "Node.html": {
                                   "ref": "Node.html",
                                   "tf": 3.3333333333333335
+                                },
+                                "Button.html": {
+                                  "ref": "Button.html",
+                                  "tf": 5
                                 }
                               }
                             }
@@ -3284,6 +3547,10 @@
                     "docs": {},
                     "t": {
                       "docs": {
+                        "Utils.html#.isConnectionSecure": {
+                          "ref": "Utils.html#.isConnectionSecure",
+                          "tf": 16.666666666666664
+                        },
                         "VRoadcast.html#.isConnected": {
                           "ref": "VRoadcast.html#.isConnected",
                           "tf": 10
@@ -3291,6 +3558,45 @@
                         "VRoadcast.html#.connect": {
                           "ref": "VRoadcast.html#.connect",
                           "tf": 700
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "l": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "Button.html#setBaseColor": {
+                      "ref": "Button.html#setBaseColor",
+                      "tf": 12.5
+                    },
+                    "Button.html#setSwitchColor": {
+                      "ref": "Button.html#setSwitchColor",
+                      "tf": 10
+                    },
+                    "SUI.html#.createToolbar": {
+                      "ref": "SUI.html#.createToolbar",
+                      "tf": 20
+                    }
+                  }
+                }
+              },
+              "l": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "ATON.html#.setPathCollection": {
+                          "ref": "ATON.html#.setPathCollection",
+                          "tf": 7.142857142857142
                         }
                       }
                     }
@@ -3306,14 +3612,6 @@
                   "docs": {},
                   "n": {
                     "docs": {
-                      "EventHub.html#.init": {
-                        "ref": "EventHub.html#.init",
-                        "tf": 25
-                      },
-                      "XR.html#.init": {
-                        "ref": "XR.html#.init",
-                        "tf": 16.666666666666664
-                      },
                       "SceneHub.html#.init": {
                         "ref": "SceneHub.html#.init",
                         "tf": 25
@@ -3432,26 +3730,6 @@
                   }
                 }
               }
-            },
-            "l": {
-              "docs": {},
-              "l": {
-                "docs": {},
-                "e": {
-                  "docs": {},
-                  "c": {
-                    "docs": {},
-                    "t": {
-                      "docs": {
-                        "ATON.html#.setPathCollection": {
-                          "ref": "ATON.html#.setPathCollection",
-                          "tf": 7.142857142857142
-                        }
-                      }
-                    }
-                  }
-                }
-              }
             }
           },
           "u": {
@@ -3487,6 +3765,14 @@
                           "ref": "Node.html#orientToCamera",
                           "tf": 12.5
                         },
+                        "Utils.html#.isConnectionSecure": {
+                          "ref": "Utils.html#.isConnectionSecure",
+                          "tf": 16.666666666666664
+                        },
+                        "Utils.html#.isMobile": {
+                          "ref": "Utils.html#.isMobile",
+                          "tf": 6.25
+                        },
                         "Nav.html#.getCurrentEyeLocation": {
                           "ref": "Nav.html#.getCurrentEyeLocation",
                           "tf": 5.555555555555555
@@ -3510,6 +3796,10 @@
                         "Nav.html#.getFOV": {
                           "ref": "Nav.html#.getFOV",
                           "tf": 10
+                        },
+                        "SUI.html#.getSelectorRadius": {
+                          "ref": "SUI.html#.getSelectorRadius",
+                          "tf": 16.666666666666664
                         },
                         "ATON.html#.getSceneQueriedPoint": {
                           "ref": "ATON.html#.getSceneQueriedPoint",
@@ -3673,6 +3963,10 @@
                     "POV.html": {
                       "ref": "POV.html",
                       "tf": 2.5
+                    },
+                    "Utils.html#.isMobile": {
+                      "ref": "Utils.html#.isMobile",
+                      "tf": 6.25
                     },
                     "Nav.html#.isDevOri": {
                       "ref": "Nav.html#.isDevOri",
@@ -3970,7 +4264,7 @@
                 "docs": {
                   "EventHub.html#.fireEvent": {
                     "ref": "EventHub.html#.fireEvent",
-                    "tf": 28.333333333333332
+                    "tf": 26.25
                   },
                   "VRoadcast.html#.fireEvent": {
                     "ref": "VRoadcast.html#.fireEvent",
@@ -4135,11 +4429,11 @@
                     },
                     "EventHub.html#.on": {
                       "ref": "EventHub.html#.on",
-                      "tf": 6.25
+                      "tf": 5
                     },
                     "EventHub.html#.fireEvent": {
                       "ref": "EventHub.html#.fireEvent",
-                      "tf": 8.333333333333332
+                      "tf": 6.25
                     },
                     "VRoadcast.html#.fireEvent": {
                       "ref": "VRoadcast.html#.fireEvent",
@@ -4163,23 +4457,6 @@
                         },
                         ".": {
                           "docs": {},
-                          "i": {
-                            "docs": {},
-                            "n": {
-                              "docs": {},
-                              "i": {
-                                "docs": {},
-                                "t": {
-                                  "docs": {
-                                    "EventHub.html#.init": {
-                                      "ref": "EventHub.html#.init",
-                                      "tf": 1150
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
                           "c": {
                             "docs": {},
                             "l": {
@@ -4347,6 +4624,17 @@
                 }
               }
             }
+          },
+          ".": {
+            "docs": {},
+            "g": {
+              "docs": {
+                "Utils.html#.isMobile": {
+                  "ref": "Utils.html#.isMobile",
+                  "tf": 6.25
+                }
+              }
+            }
           }
         },
         "f": {
@@ -4412,7 +4700,7 @@
                 "docs": {
                   "EventHub.html#.fireEvent": {
                     "ref": "EventHub.html#.fireEvent",
-                    "tf": 8.333333333333332
+                    "tf": 6.25
                   },
                   "VRoadcast.html#.fireEvent": {
                     "ref": "VRoadcast.html#.fireEvent",
@@ -4629,8 +4917,24 @@
                             "ref": "Node.html#load",
                             "tf": 110
                           },
-                          "EventHub.html#.init": {
-                            "ref": "EventHub.html#.init",
+                          "Button.html#setBaseColor": {
+                            "ref": "Button.html#setBaseColor",
+                            "tf": 110
+                          },
+                          "Button.html#setSwitchColor": {
+                            "ref": "Button.html#setSwitchColor",
+                            "tf": 110
+                          },
+                          "Button.html#setText": {
+                            "ref": "Button.html#setText",
+                            "tf": 110
+                          },
+                          "Button.html#switch": {
+                            "ref": "Button.html#switch",
+                            "tf": 110
+                          },
+                          "Button.html#setIcon": {
+                            "ref": "Button.html#setIcon",
                             "tf": 110
                           },
                           "EventHub.html#.clearEventHandlers": {
@@ -4643,10 +4947,6 @@
                           },
                           "EventHub.html#.fireEvent": {
                             "ref": "EventHub.html#.fireEvent",
-                            "tf": 110
-                          },
-                          "XR.html#.init": {
-                            "ref": "XR.html#.init",
                             "tf": 110
                           },
                           "XR.html#.isPresenting": {
@@ -4681,8 +4981,12 @@
                             "ref": "SceneHub.html#.load",
                             "tf": 110
                           },
-                          "Nav.html#.init": {
-                            "ref": "Nav.html#.init",
+                          "Utils.html#.isConnectionSecure": {
+                            "ref": "Utils.html#.isConnectionSecure",
+                            "tf": 110
+                          },
+                          "Utils.html#.isMobile": {
+                            "ref": "Utils.html#.isMobile",
                             "tf": 110
                           },
                           "Nav.html#.getCurrentEyeLocation": {
@@ -4765,8 +5069,24 @@
                             "ref": "Nav.html#.requestHome",
                             "tf": 110
                           },
-                          "SUI.html#.init": {
-                            "ref": "SUI.html#.init",
+                          "SUI.html#.setSelectorRadius": {
+                            "ref": "SUI.html#.setSelectorRadius",
+                            "tf": 110
+                          },
+                          "SUI.html#.getSelectorRadius": {
+                            "ref": "SUI.html#.getSelectorRadius",
+                            "tf": 110
+                          },
+                          "SUI.html#.setSelectorModel": {
+                            "ref": "SUI.html#.setSelectorModel",
+                            "tf": 110
+                          },
+                          "SUI.html#.getInfoNode": {
+                            "ref": "SUI.html#.getInfoNode",
+                            "tf": 110
+                          },
+                          "SUI.html#.createToolbar": {
+                            "ref": "SUI.html#.createToolbar",
                             "tf": 110
                           },
                           "VRoadcast.html#.init": {
@@ -5324,6 +5644,79 @@
               },
               "s": {
                 "docs": {},
+                "e": {
+                  "docs": {},
+                  "l": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {},
+                                    "i": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {
+                                          "SUI.html#.getSelectorRadius": {
+                                            "ref": "SUI.html#.getSelectorRadius",
+                                            "tf": 683.3333333333334
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "m": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "ATON.html#.getSemanticNode": {
+                                        "ref": "ATON.html#.getSemanticNode",
+                                        "tf": 675
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "c": {
                   "docs": {},
                   "e": {
@@ -5424,34 +5817,25 @@
                       }
                     }
                   }
-                },
-                "e": {
+                }
+              },
+              "i": {
+                "docs": {},
+                "n": {
                   "docs": {},
-                  "m": {
+                  "f": {
                     "docs": {},
-                    "a": {
+                    "o": {
                       "docs": {},
                       "n": {
                         "docs": {},
-                        "t": {
+                        "o": {
                           "docs": {},
-                          "i": {
-                            "docs": {},
-                            "c": {
-                              "docs": {},
-                              "n": {
-                                "docs": {},
-                                "o": {
-                                  "docs": {},
-                                  "d": {
-                                    "docs": {
-                                      "ATON.html#.getSemanticNode": {
-                                        "ref": "ATON.html#.getSemanticNode",
-                                        "tf": 675
-                                      }
-                                    }
-                                  }
-                                }
+                          "d": {
+                            "docs": {
+                              "SUI.html#.getInfoNode": {
+                                "ref": "SUI.html#.getInfoNode",
+                                "tf": 683.3333333333334
                               }
                             }
                           }
@@ -5645,7 +6029,7 @@
                     },
                     "EventHub.html#.on": {
                       "ref": "EventHub.html#.on",
-                      "tf": 6.25
+                      "tf": 5
                     },
                     "XR.html#.setRefSpaceLocation": {
                       "ref": "XR.html#.setRefSpaceLocation",
@@ -5800,24 +6184,8 @@
               "docs": {},
               "t": {
                 "docs": {
-                  "EventHub.html#.init": {
-                    "ref": "EventHub.html#.init",
-                    "tf": 700
-                  },
-                  "XR.html#.init": {
-                    "ref": "XR.html#.init",
-                    "tf": 700
-                  },
                   "SceneHub.html#.init": {
                     "ref": "SceneHub.html#.init",
-                    "tf": 700
-                  },
-                  "Nav.html#.init": {
-                    "ref": "Nav.html#.init",
-                    "tf": 700
-                  },
-                  "SUI.html#.init": {
-                    "ref": "SUI.html#.init",
                     "tf": 700
                   },
                   "VRoadcast.html#.init": {
@@ -5827,25 +6195,9 @@
                 },
                 "i": {
                   "docs": {
-                    "EventHub.html#.init": {
-                      "ref": "EventHub.html#.init",
-                      "tf": 25
-                    },
-                    "XR.html#.init": {
-                      "ref": "XR.html#.init",
-                      "tf": 16.666666666666664
-                    },
                     "SceneHub.html#.init": {
                       "ref": "SceneHub.html#.init",
                       "tf": 25
-                    },
-                    "Nav.html#.init": {
-                      "ref": "Nav.html#.init",
-                      "tf": 16.666666666666664
-                    },
-                    "SUI.html#.init": {
-                      "ref": "SUI.html#.init",
-                      "tf": 12.5
                     },
                     "VRoadcast.html#.init": {
                       "ref": "VRoadcast.html#.init",
@@ -5855,6 +6207,17 @@
                       "ref": "ATON.html#.realize",
                       "tf": 8.333333333333332
                     }
+                  }
+                }
+              }
+            },
+            "f": {
+              "docs": {},
+              "o": {
+                "docs": {
+                  "SUI.html#.getInfoNode": {
+                    "ref": "SUI.html#.getInfoNode",
+                    "tf": 12.5
                   }
                 }
               }
@@ -5873,6 +6236,10 @@
               "Node.html#attachTo": {
                 "ref": "Node.html#attachTo",
                 "tf": 6.25
+              },
+              "Button.html": {
+                "ref": "Button.html",
+                "tf": 5
               },
               "ATON.html#.createSceneNode": {
                 "ref": "ATON.html#.createSceneNode",
@@ -5908,6 +6275,20 @@
               }
             }
           },
+          "c": {
+            "docs": {},
+            "o": {
+              "docs": {},
+              "n": {
+                "docs": {
+                  "Button.html#setIcon": {
+                    "ref": "Button.html#setIcon",
+                    "tf": 16.666666666666664
+                  }
+                }
+              }
+            }
+          },
           "s": {
             "docs": {},
             "p": {
@@ -5921,6 +6302,81 @@
                       "XR.html#.isPresenting": {
                         "ref": "XR.html#.isPresenting",
                         "tf": 683.3333333333334
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "t": {
+                          "docs": {
+                            "VRoadcast.html#.isConnected": {
+                              "ref": "VRoadcast.html#.isConnected",
+                              "tf": 683.3333333333334
+                            }
+                          },
+                          "i": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {
+                                            "Utils.html#.isConnectionSecure": {
+                                              "ref": "Utils.html#.isConnectionSecure",
+                                              "tf": 683.3333333333334
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "m": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "b": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "Utils.html#.isMobile": {
+                          "ref": "Utils.html#.isMobile",
+                          "tf": 683.3333333333334
+                        }
                       }
                     }
                   }
@@ -6033,32 +6489,6 @@
                   }
                 }
               }
-            },
-            "c": {
-              "docs": {},
-              "o": {
-                "docs": {},
-                "n": {
-                  "docs": {},
-                  "n": {
-                    "docs": {},
-                    "e": {
-                      "docs": {},
-                      "c": {
-                        "docs": {},
-                        "t": {
-                          "docs": {
-                            "VRoadcast.html#.isConnected": {
-                              "ref": "VRoadcast.html#.isConnected",
-                              "tf": 683.3333333333334
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
             }
           },
           ".": {
@@ -6092,6 +6522,10 @@
                     "POV.html": {
                       "ref": "POV.html",
                       "tf": 2.5
+                    },
+                    "Utils.html#.isMobile": {
+                      "ref": "Utils.html#.isMobile",
+                      "tf": 6.25
                     }
                   }
                 }
@@ -6148,20 +6582,13 @@
                       "ref": "Node.html#load",
                       "tf": 2.1739130434782608
                     },
+                    "SUI.html#.setSelectorModel": {
+                      "ref": "SUI.html#.setSelectorModel",
+                      "tf": 12.5
+                    },
                     "ATON.html#.setPathCollection": {
                       "ref": "ATON.html#.setPathCollection",
                       "tf": 7.142857142857142
-                    }
-                  }
-                }
-              },
-              "u": {
-                "docs": {},
-                "l": {
-                  "docs": {
-                    "SUI.html#.init": {
-                      "ref": "SUI.html#.init",
-                      "tf": 12.5
                     }
                   }
                 }
@@ -6263,6 +6690,10 @@
                   "Node.html#attachToRoot": {
                     "ref": "Node.html#attachToRoot",
                     "tf": 2.1739130434782608
+                  },
+                  "SUI.html#.getInfoNode": {
+                    "ref": "SUI.html#.getInfoNode",
+                    "tf": 12.5
                   },
                   "ATON.html#.realize": {
                     "ref": "ATON.html#.realize",
@@ -6398,6 +6829,23 @@
                   }
                 }
               }
+            },
+            "/": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "f": {
+                  "docs": {},
+                  "f": {
+                    "docs": {
+                      "Button.html#switch": {
+                        "ref": "Button.html#switch",
+                        "tf": 16.666666666666664
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "p": {
@@ -6424,11 +6872,11 @@
                       },
                       "EventHub.html#.on": {
                         "ref": "EventHub.html#.on",
-                        "tf": 6.25
+                        "tf": 5
                       },
                       "EventHub.html#.fireEvent": {
                         "ref": "EventHub.html#.fireEvent",
-                        "tf": 8.333333333333332
+                        "tf": 6.25
                       }
                     }
                   }
@@ -6519,6 +6967,23 @@
                     "Nav.html#.setOrbitControl": {
                       "ref": "Nav.html#.setOrbitControl",
                       "tf": 10
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "c": {
+            "docs": {},
+            "u": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "u": {
+                  "docs": {
+                    "Utils.html#.isMobile": {
+                      "ref": "Utils.html#.isMobile",
+                      "tf": 6.25
                     }
                   }
                 }
@@ -6954,6 +7419,10 @@
                     "ref": "SceneHub.html#.load",
                     "tf": 10
                   },
+                  "SUI.html#.setSelectorModel": {
+                    "ref": "SUI.html#.setSelectorModel",
+                    "tf": 25
+                  },
                   "ATON.html#.setPathCollection": {
                     "ref": "ATON.html#.setPathCollection",
                     "tf": 40.47619047619047
@@ -7074,6 +7543,10 @@
         },
         "r": {
           "docs": {
+            "SUI.html#.setSelectorRadius": {
+              "ref": "SUI.html#.setSelectorRadius",
+              "tf": 33.33333333333333
+            },
             "ATON.html#.setMainPanoramaRotation": {
               "ref": "ATON.html#.setMainPanoramaRotation",
               "tf": 33.33333333333333
@@ -7120,6 +7593,10 @@
                       "index.html": {
                         "ref": "index.html",
                         "tf": 1.9444444444444444
+                      },
+                      "Button.html": {
+                        "ref": "Button.html",
+                        "tf": 5
                       }
                     }
                   }
@@ -7269,6 +7746,10 @@
                       "Node.html": {
                         "ref": "Node.html",
                         "tf": 3.3333333333333335
+                      },
+                      "Button.html": {
+                        "ref": "Button.html",
+                        "tf": 5
                       }
                     }
                   }
@@ -7653,6 +8134,18 @@
                       }
                     }
                   }
+                },
+                "u": {
+                  "docs": {
+                    "SUI.html#.setSelectorRadius": {
+                      "ref": "SUI.html#.setSelectorRadius",
+                      "tf": 16.666666666666664
+                    },
+                    "SUI.html#.getSelectorRadius": {
+                      "ref": "SUI.html#.getSelectorRadius",
+                      "tf": 16.666666666666664
+                    }
+                  }
                 }
               }
             }
@@ -7787,6 +8280,10 @@
                     "SceneHub.html#.load": {
                       "ref": "SceneHub.html#.load",
                       "tf": 10
+                    },
+                    "SUI.html#.createToolbar": {
+                      "ref": "SUI.html#.createToolbar",
+                      "tf": 4.166666666666666
                     },
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
@@ -8098,6 +8595,22 @@
                   "ref": "Node.html#setRotation",
                   "tf": 8.333333333333332
                 },
+                "Button.html#setBaseColor": {
+                  "ref": "Button.html#setBaseColor",
+                  "tf": 12.5
+                },
+                "Button.html#setSwitchColor": {
+                  "ref": "Button.html#setSwitchColor",
+                  "tf": 10
+                },
+                "Button.html#setText": {
+                  "ref": "Button.html#setText",
+                  "tf": 16.666666666666664
+                },
+                "Button.html#setIcon": {
+                  "ref": "Button.html#setIcon",
+                  "tf": 16.666666666666664
+                },
                 "XR.html#.setRefSpaceLocation": {
                   "ref": "XR.html#.setRefSpaceLocation",
                   "tf": 3.125
@@ -8128,6 +8641,14 @@
                 },
                 "Nav.html#.setHomePOV": {
                   "ref": "Nav.html#.setHomePOV",
+                  "tf": 12.5
+                },
+                "SUI.html#.setSelectorRadius": {
+                  "ref": "SUI.html#.setSelectorRadius",
+                  "tf": 16.666666666666664
+                },
+                "SUI.html#.setSelectorModel": {
+                  "ref": "SUI.html#.setSelectorModel",
                   "tf": 12.5
                 },
                 "ATON.html#.setPathCollection": {
@@ -8275,6 +8796,20 @@
                               "tf": 750
                             }
                           }
+                        }
+                      }
+                    }
+                  }
+                },
+                "e": {
+                  "docs": {},
+                  "x": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Button.html#setText": {
+                          "ref": "Button.html#setText",
+                          "tf": 700
                         }
                       }
                     }
@@ -8714,6 +9249,102 @@
                       }
                     }
                   }
+                },
+                "w": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "h": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "l": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {
+                                      "Button.html#setSwitchColor": {
+                                        "ref": "Button.html#setSwitchColor",
+                                        "tf": 700
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "e": {
+                  "docs": {},
+                  "l": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {},
+                                    "i": {
+                                      "docs": {},
+                                      "u": {
+                                        "docs": {
+                                          "SUI.html#.setSelectorRadius": {
+                                            "ref": "SUI.html#.setSelectorRadius",
+                                            "tf": 683.3333333333334
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "m": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "l": {
+                                        "docs": {
+                                          "SUI.html#.setSelectorModel": {
+                                            "ref": "SUI.html#.setSelectorModel",
+                                            "tf": 675
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
               "r": {
@@ -8759,6 +9390,55 @@
                               }
                             }
                           }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "b": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "r": {
+                                "docs": {
+                                  "Button.html#setBaseColor": {
+                                    "ref": "Button.html#setBaseColor",
+                                    "tf": 700
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "i": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "Button.html#setIcon": {
+                          "ref": "Button.html#setIcon",
+                          "tf": 700
                         }
                       }
                     }
@@ -8986,6 +9666,20 @@
                 }
               }
             },
+            "c": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "Utils.html#.isConnectionSecure": {
+                      "ref": "Utils.html#.isConnectionSecure",
+                      "tf": 16.666666666666664
+                    }
+                  }
+                }
+              }
+            },
             "s": {
               "docs": {},
               "s": {
@@ -9003,6 +9697,37 @@
                         "Nav.html#.getCurrentDirection": {
                           "ref": "Nav.html#.getCurrentDirection",
                           "tf": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "l": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {
+                          "SUI.html#.setSelectorRadius": {
+                            "ref": "SUI.html#.setSelectorRadius",
+                            "tf": 16.666666666666664
+                          },
+                          "SUI.html#.getSelectorRadius": {
+                            "ref": "SUI.html#.getSelectorRadius",
+                            "tf": 16.666666666666664
+                          },
+                          "SUI.html#.setSelectorModel": {
+                            "ref": "SUI.html#.setSelectorModel",
+                            "tf": 12.5
+                          }
                         }
                       }
                     }
@@ -9041,10 +9766,21 @@
                         "SUI.html": {
                           "ref": "SUI.html",
                           "tf": 16.666666666666664
-                        },
-                        "SUI.html#.init": {
-                          "ref": "SUI.html#.init",
-                          "tf": 12.5
+                        }
+                      },
+                      "u": {
+                        "docs": {},
+                        "i": {
+                          "docs": {
+                            "Button.html": {
+                              "ref": "Button.html",
+                              "tf": 5
+                            },
+                            "SUI.html#.createToolbar": {
+                              "ref": "SUI.html#.createToolbar",
+                              "tf": 4.166666666666666
+                            }
+                          }
                         }
                       }
                     }
@@ -9128,7 +9864,7 @@
                         "docs": {
                           "EventHub.html#.on": {
                             "ref": "EventHub.html#.on",
-                            "tf": 6.25
+                            "tf": 5
                           },
                           "VRoadcast.html#.on": {
                             "ref": "VRoadcast.html#.on",
@@ -9146,21 +9882,204 @@
                 "SUI.html": {
                   "ref": "SUI.html",
                   "tf": 1900
+                },
+                "SUI.html#.createToolbar": {
+                  "ref": "SUI.html#.createToolbar",
+                  "tf": 4.166666666666666
                 }
               },
               ".": {
                 "docs": {},
-                "i": {
+                "s": {
                   "docs": {},
-                  "n": {
+                  "e": {
                     "docs": {},
-                    "i": {
+                    "t": {
                       "docs": {},
-                      "t": {
-                        "docs": {
-                          "SUI.html#.init": {
-                            "ref": "SUI.html#.init",
-                            "tf": 1150
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "i": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {
+                                                  "SUI.html#.setSelectorRadius": {
+                                                    "ref": "SUI.html#.setSelectorRadius",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "m": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "l": {
+                                                "docs": {
+                                                  "SUI.html#.setSelectorModel": {
+                                                    "ref": "SUI.html#.setSelectorModel",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "g": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "i": {
+                                              "docs": {},
+                                              "u": {
+                                                "docs": {
+                                                  "SUI.html#.getSelectorRadius": {
+                                                    "ref": "SUI.html#.getSelectorRadius",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "i": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "f": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "SUI.html#.getInfoNode": {
+                                        "ref": "SUI.html#.getInfoNode",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "c": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "b": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {
+                                            "SUI.html#.createToolbar": {
+                                              "ref": "SUI.html#.createToolbar",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -9216,10 +10135,6 @@
                         "ref": "Nav.html",
                         "tf": 16.666666666666664
                       },
-                      "Nav.html#.init": {
-                        "ref": "Nav.html#.init",
-                        "tf": 16.666666666666664
-                      },
                       "Nav.html#.isTransitioning": {
                         "ref": "Nav.html#.isTransitioning",
                         "tf": 7.142857142857142
@@ -9242,6 +10157,30 @@
               }
             }
           },
+          "w": {
+            "docs": {},
+            "i": {
+              "docs": {},
+              "t": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "h": {
+                    "docs": {
+                      "Button.html#setSwitchColor": {
+                        "ref": "Button.html#setSwitchColor",
+                        "tf": 10
+                      },
+                      "Button.html#switch": {
+                        "ref": "Button.html#switch",
+                        "tf": 716.6666666666666
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "i": {
             "docs": {},
             "d": {
@@ -9249,6 +10188,35 @@
                 "SceneHub.html#.load": {
                   "ref": "SceneHub.html#.load",
                   "tf": 20
+                }
+              }
+            }
+          },
+          "m": {
+            "docs": {},
+            "a": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "t": {
+                  "docs": {},
+                  "p": {
+                    "docs": {},
+                    "h": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "n": {
+                          "docs": {
+                            "Utils.html#.isMobile": {
+                              "ref": "Utils.html#.isMobile",
+                              "tf": 6.25
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -9265,6 +10233,20 @@
                   "index.html": {
                     "ref": "index.html",
                     "tf": 1.9444444444444444
+                  }
+                },
+                "b": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "SUI.html#.createToolbar": {
+                          "ref": "SUI.html#.createToolbar",
+                          "tf": 4.166666666666666
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -9393,6 +10375,23 @@
                   "ATON.html#.realize": {
                     "ref": "ATON.html#.realize",
                     "tf": 4.166666666666666
+                  }
+                }
+              }
+            },
+            "b": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Utils.html#.isMobile": {
+                        "ref": "Utils.html#.isMobile",
+                        "tf": 6.25
+                      }
+                    }
                   }
                 }
               }
@@ -9615,6 +10614,17 @@
           },
           "e": {
             "docs": {},
+            "x": {
+              "docs": {},
+              "t": {
+                "docs": {
+                  "Button.html#setText": {
+                    "ref": "Button.html#setText",
+                    "tf": 66.66666666666666
+                  }
+                }
+              }
+            },
             "c": {
               "docs": {},
               "h": {
@@ -9815,13 +10825,21 @@
                 "ref": "Node.html#attachToRoot",
                 "tf": 2.1739130434782608
               },
+              "Button.html": {
+                "ref": "Button.html",
+                "tf": 5
+              },
               "SUI.html": {
                 "ref": "SUI.html",
                 "tf": 16.666666666666664
               },
-              "SUI.html#.init": {
-                "ref": "SUI.html#.init",
+              "SUI.html#.getInfoNode": {
+                "ref": "SUI.html#.getInfoNode",
                 "tf": 12.5
+              },
+              "SUI.html#.createToolbar": {
+                "ref": "SUI.html#.createToolbar",
+                "tf": 4.166666666666666
               },
               "ATON.html#.createUINode": {
                 "ref": "ATON.html#.createUINode",
@@ -9835,6 +10853,17 @@
                 "ref": "ATON.html#.getRootUI",
                 "tf": 16.666666666666664
               }
+            },
+            "i": {
+              "docs": {},
+              "d": {
+                "docs": {
+                  "Button.html": {
+                    "ref": "Button.html",
+                    "tf": 5
+                  }
+                }
+              }
             }
           },
           "r": {
@@ -9844,6 +10873,106 @@
                 "Node.html#load": {
                   "ref": "Node.html#load",
                   "tf": 33.33333333333333
+                },
+                "Button.html#setIcon": {
+                  "ref": "Button.html#setIcon",
+                  "tf": 50
+                }
+              }
+            }
+          },
+          "t": {
+            "docs": {},
+            "i": {
+              "docs": {},
+              "l": {
+                "docs": {
+                  "Utils.html": {
+                    "ref": "Utils.html",
+                    "tf": 1925
+                  }
+                },
+                "s": {
+                  "docs": {},
+                  ".": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "n": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "c": {
+                                                  "docs": {},
+                                                  "u": {
+                                                    "docs": {},
+                                                    "r": {
+                                                      "docs": {
+                                                        "Utils.html#.isConnectionSecure": {
+                                                          "ref": "Utils.html#.isConnectionSecure",
+                                                          "tf": 1150
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "m": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "b": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {
+                                    "Utils.html#.isMobile": {
+                                      "ref": "Utils.html#.isMobile",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -10387,6 +11516,10 @@
                   "list_namespace.html": {
                     "ref": "list_namespace.html",
                     "tf": 110
+                  },
+                  "SUI.html#.createToolbar": {
+                    "ref": "SUI.html#.createToolbar",
+                    "tf": 4.166666666666666
                   }
                 },
                 ":": {
@@ -10625,11 +11758,11 @@
                   "docs": {
                     "EventHub.html#.on": {
                       "ref": "EventHub.html#.on",
-                      "tf": 6.25
+                      "tf": 5
                     },
                     "EventHub.html#.fireEvent": {
                       "ref": "EventHub.html#.fireEvent",
-                      "tf": 8.333333333333332
+                      "tf": 6.25
                     }
                   }
                 }
@@ -10675,10 +11808,6 @@
                               "docs": {},
                               "t": {
                                 "docs": {
-                                  "EventHub.html#.init": {
-                                    "ref": "EventHub.html#.init",
-                                    "tf": 50
-                                  },
                                   "EventHub.html#.clearEventHandlers": {
                                     "ref": "EventHub.html#.clearEventHandlers",
                                     "tf": 33.33333333333333
@@ -10690,10 +11819,6 @@
                                   "EventHub.html#.fireEvent": {
                                     "ref": "EventHub.html#.fireEvent",
                                     "tf": 20
-                                  },
-                                  "XR.html#.init": {
-                                    "ref": "XR.html#.init",
-                                    "tf": 50
                                   },
                                   "XR.html#.isPresenting": {
                                     "ref": "XR.html#.isPresenting",
@@ -10727,9 +11852,13 @@
                                     "ref": "SceneHub.html#.load",
                                     "tf": 20
                                   },
-                                  "Nav.html#.init": {
-                                    "ref": "Nav.html#.init",
-                                    "tf": 50
+                                  "Utils.html#.isConnectionSecure": {
+                                    "ref": "Utils.html#.isConnectionSecure",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Utils.html#.isMobile": {
+                                    "ref": "Utils.html#.isMobile",
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.getCurrentEyeLocation": {
                                     "ref": "Nav.html#.getCurrentEyeLocation",
@@ -10811,9 +11940,25 @@
                                     "ref": "Nav.html#.requestHome",
                                     "tf": 33.33333333333333
                                   },
-                                  "SUI.html#.init": {
-                                    "ref": "SUI.html#.init",
-                                    "tf": 50
+                                  "SUI.html#.setSelectorRadius": {
+                                    "ref": "SUI.html#.setSelectorRadius",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "SUI.html#.getSelectorRadius": {
+                                    "ref": "SUI.html#.getSelectorRadius",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "SUI.html#.setSelectorModel": {
+                                    "ref": "SUI.html#.setSelectorModel",
+                                    "tf": 25
+                                  },
+                                  "SUI.html#.getInfoNode": {
+                                    "ref": "SUI.html#.getInfoNode",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "SUI.html#.createToolbar": {
+                                    "ref": "SUI.html#.createToolbar",
+                                    "tf": 20
                                   },
                                   "VRoadcast.html#.init": {
                                     "ref": "VRoadcast.html#.init",
@@ -11009,6 +12154,10 @@
                             "ref": "SceneHub.html",
                             "tf": 110
                           },
+                          "Utils.html": {
+                            "ref": "Utils.html",
+                            "tf": 110
+                          },
                           "Nav.html": {
                             "ref": "Nav.html",
                             "tf": 110
@@ -11037,10 +12186,6 @@
                 "Nav.html": {
                   "ref": "Nav.html",
                   "tf": 1900
-                },
-                "Nav.html#.init": {
-                  "ref": "Nav.html#.init",
-                  "tf": 16.666666666666664
                 }
               },
               "i": {
@@ -11084,133 +12229,6 @@
               },
               ".": {
                 "docs": {},
-                "i": {
-                  "docs": {},
-                  "n": {
-                    "docs": {},
-                    "i": {
-                      "docs": {},
-                      "t": {
-                        "docs": {
-                          "Nav.html#.init": {
-                            "ref": "Nav.html#.init",
-                            "tf": 1150
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "s": {
-                    "docs": {},
-                    "t": {
-                      "docs": {},
-                      "r": {
-                        "docs": {},
-                        "a": {
-                          "docs": {},
-                          "n": {
-                            "docs": {},
-                            "s": {
-                              "docs": {},
-                              "i": {
-                                "docs": {},
-                                "t": {
-                                  "docs": {
-                                    "Nav.html#.isTransitioning": {
-                                      "ref": "Nav.html#.isTransitioning",
-                                      "tf": 1150
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "o": {
-                      "docs": {},
-                      "r": {
-                        "docs": {},
-                        "b": {
-                          "docs": {},
-                          "i": {
-                            "docs": {},
-                            "t": {
-                              "docs": {
-                                "Nav.html#.isOrbit": {
-                                  "ref": "Nav.html#.isOrbit",
-                                  "tf": 1150
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "f": {
-                      "docs": {},
-                      "i": {
-                        "docs": {},
-                        "r": {
-                          "docs": {},
-                          "s": {
-                            "docs": {},
-                            "t": {
-                              "docs": {},
-                              "p": {
-                                "docs": {},
-                                "e": {
-                                  "docs": {},
-                                  "r": {
-                                    "docs": {},
-                                    "s": {
-                                      "docs": {},
-                                      "o": {
-                                        "docs": {},
-                                        "n": {
-                                          "docs": {
-                                            "Nav.html#.isFirstPerson": {
-                                              "ref": "Nav.html#.isFirstPerson",
-                                              "tf": 1150
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "d": {
-                      "docs": {},
-                      "e": {
-                        "docs": {},
-                        "v": {
-                          "docs": {},
-                          "o": {
-                            "docs": {},
-                            "r": {
-                              "docs": {},
-                              "i": {
-                                "docs": {
-                                  "Nav.html#.isDevOri": {
-                                    "ref": "Nav.html#.isDevOri",
-                                    "tf": 1150
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
                 "g": {
                   "docs": {},
                   "e": {
@@ -11388,6 +12406,119 @@
                                         }
                                       }
                                     }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "i": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "Nav.html#.isTransitioning": {
+                                      "ref": "Nav.html#.isTransitioning",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "b": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Nav.html#.isOrbit": {
+                                  "ref": "Nav.html#.isOrbit",
+                                  "tf": 1150
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "f": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {
+                                            "Nav.html#.isFirstPerson": {
+                                              "ref": "Nav.html#.isFirstPerson",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "d": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "v": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "i": {
+                                "docs": {
+                                  "Nav.html#.isDevOri": {
+                                    "ref": "Nav.html#.isDevOri",
+                                    "tf": 1150
                                   }
                                 }
                               }
@@ -11796,11 +12927,11 @@
                       "docs": {
                         "EventHub.html#.on": {
                           "ref": "EventHub.html#.on",
-                          "tf": 6.25
+                          "tf": 5
                         },
                         "EventHub.html#.fireEvent": {
                           "ref": "EventHub.html#.fireEvent",
-                          "tf": 8.333333333333332
+                          "tf": 6.25
                         },
                         "VRoadcast.html#.fireEvent": {
                           "ref": "VRoadcast.html#.fireEvent",
@@ -11907,9 +13038,21 @@
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
                   },
+                  "Button.html": {
+                    "ref": "Button.html",
+                    "tf": 5
+                  },
                   "Nav.html#.requestPOVbyNode": {
                     "ref": "Nav.html#.requestPOVbyNode",
                     "tf": 10
+                  },
+                  "SUI.html#.getInfoNode": {
+                    "ref": "SUI.html#.getInfoNode",
+                    "tf": 45.83333333333333
+                  },
+                  "SUI.html#.createToolbar": {
+                    "ref": "SUI.html#.createToolbar",
+                    "tf": 24.166666666666664
                   },
                   "ATON.html#.createSceneNode": {
                     "ref": "ATON.html#.createSceneNode",
@@ -12552,6 +13695,10 @@
                         "ref": "Nav.html#.getFOV",
                         "tf": 33.33333333333333
                       },
+                      "SUI.html#.getSelectorRadius": {
+                        "ref": "SUI.html#.getSelectorRadius",
+                        "tf": 33.33333333333333
+                      },
                       "ATON.html#.getSceneQueriedDistance": {
                         "ref": "ATON.html#.getSceneQueriedDistance",
                         "tf": 33.33333333333333
@@ -12575,10 +13722,6 @@
                 "ref": "XR.html",
                 "tf": 1916.6666666666667
               },
-              "XR.html#.init": {
-                "ref": "XR.html#.init",
-                "tf": 16.666666666666664
-              },
               "Nav.html#.getCurrentEyeLocation": {
                 "ref": "Nav.html#.getCurrentEyeLocation",
                 "tf": 5.555555555555555
@@ -12592,20 +13735,6 @@
               "docs": {},
               "i": {
                 "docs": {},
-                "n": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "t": {
-                      "docs": {
-                        "XR.html#.init": {
-                          "ref": "XR.html#.init",
-                          "tf": 1150
-                        }
-                      }
-                    }
-                  }
-                },
                 "s": {
                   "docs": {},
                   "p": {
@@ -12848,6 +13977,10 @@
         },
         "b": {
           "docs": {
+            "Button.html#switch": {
+              "ref": "Button.html#switch",
+              "tf": 50
+            },
             "SceneHub.html#.setEditMode": {
               "ref": "SceneHub.html#.setEditMode",
               "tf": 33.33333333333333
@@ -12871,6 +14004,14 @@
                         },
                         "XR.html#.isPresenting": {
                           "ref": "XR.html#.isPresenting",
+                          "tf": 33.33333333333333
+                        },
+                        "Utils.html#.isConnectionSecure": {
+                          "ref": "Utils.html#.isConnectionSecure",
+                          "tf": 33.33333333333333
+                        },
+                        "Utils.html#.isMobile": {
+                          "ref": "Utils.html#.isMobile",
                           "tf": 33.33333333333333
                         },
                         "Nav.html#.isTransitioning": {
@@ -12999,6 +14140,243 @@
                   }
                 }
               }
+            },
+            "s": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "Button.html#setBaseColor": {
+                    "ref": "Button.html#setBaseColor",
+                    "tf": 12.5
+                  }
+                }
+              }
+            }
+          },
+          "u": {
+            "docs": {},
+            "t": {
+              "docs": {},
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "n": {
+                    "docs": {
+                      "Button.html": {
+                        "ref": "Button.html",
+                        "tf": 1905
+                      },
+                      "Button.html#setBaseColor": {
+                        "ref": "Button.html#setBaseColor",
+                        "tf": 12.5
+                      },
+                      "Button.html#setSwitchColor": {
+                        "ref": "Button.html#setSwitchColor",
+                        "tf": 10
+                      },
+                      "Button.html#setText": {
+                        "ref": "Button.html#setText",
+                        "tf": 16.666666666666664
+                      },
+                      "Button.html#switch": {
+                        "ref": "Button.html#switch",
+                        "tf": 16.666666666666664
+                      },
+                      "Button.html#setIcon": {
+                        "ref": "Button.html#setIcon",
+                        "tf": 16.666666666666664
+                      },
+                      "SUI.html#.createToolbar": {
+                        "ref": "SUI.html#.createToolbar",
+                        "tf": 4.166666666666666
+                      }
+                    },
+                    "#": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "b": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {
+                                                "Button.html#setBaseColor": {
+                                                  "ref": "Button.html#setBaseColor",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "s": {
+                              "docs": {},
+                              "w": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "h": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {
+                                                    "Button.html#setSwitchColor": {
+                                                      "ref": "Button.html#setSwitchColor",
+                                                      "tf": 1150
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "t": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "x": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {
+                                      "Button.html#setText": {
+                                        "ref": "Button.html#setText",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "i": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {
+                                      "Button.html#setIcon": {
+                                        "ref": "Button.html#setIcon",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "w": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "h": {
+                                  "docs": {
+                                    "Button.html#switch": {
+                                      "ref": "Button.html#switch",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "l": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "t": {
+                            "docs": {
+                              "SUI.html#.createToolbar": {
+                                "ref": "SUI.html#.createToolbar",
+                                "tf": 20
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "s": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "m": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "t": {
+                            "docs": {
+                              "SUI.html#.setSelectorModel": {
+                                "ref": "SUI.html#.setSelectorModel",
+                                "tf": 25
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "r": {
@@ -13078,7 +14456,7 @@
                         },
                         "EventHub.html#.on": {
                           "ref": "EventHub.html#.on",
-                          "tf": 12.5
+                          "tf": 10
                         },
                         "VRoadcast.html#.on": {
                           "ref": "VRoadcast.html#.on",
@@ -13238,6 +14616,17 @@
                     }
                   }
                 }
+              },
+              "s": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "Utils.html#.isMobile": {
+                      "ref": "Utils.html#.isMobile",
+                      "tf": 6.25
+                    }
+                  }
+                }
               }
             }
           }
@@ -13260,7 +14649,7 @@
           }
         }
       },
-      "length": 1069
+      "length": 1167
     },
     "corpusTokens": [
       "1.0",
@@ -13268,6 +14657,7 @@
       "360",
       "3d",
       "abstract",
+      "access",
       "activ",
       "actual",
       "ad",
@@ -13279,6 +14669,7 @@
       "adopt",
       "allow",
       "amount",
+      "anywher",
       "api",
       "app",
       "appli",
@@ -13292,6 +14683,7 @@
       "aton.createscenenod",
       "aton.createsemanticnod",
       "aton.createuinod",
+      "aton.fireev",
       "aton.getorcreatescenenod",
       "aton.getorcreatesemanticnod",
       "aton.getrootscen",
@@ -13303,6 +14695,7 @@
       "aton.getscenequeriedpoint",
       "aton.getsemanticnod",
       "aton.getuinod",
+      "aton.on",
       "aton.r",
       "aton.renderpaus",
       "aton.renderresum",
@@ -13324,10 +14717,20 @@
       "b",
       "background",
       "bandwidth",
+      "base",
       "becom",
       "boolean",
       "bound",
       "breplic",
+      "busestdmat",
+      "button",
+      "button#setbasecolor",
+      "button#seticon",
+      "button#setswitchcolor",
+      "button#settext",
+      "button#switch",
+      "buttonlist",
+      "c",
       "call",
       "camera",
       "captur",
@@ -13342,6 +14745,7 @@
       "clear",
       "cleareventhandl",
       "collect",
+      "color",
       "compon",
       "comput",
       "computedefaulthom",
@@ -13354,6 +14758,7 @@
       "creat",
       "createscenenod",
       "createsemanticnod",
+      "createtoolbar",
       "createuinod",
       "current",
       "custom",
@@ -13379,6 +14784,7 @@
       "duplic",
       "durat",
       "dv",
+      "e.g",
       "edit",
       "enabl",
       "enablepick",
@@ -13392,7 +14798,6 @@
       "eventhub",
       "eventhub.cleareventhandl",
       "eventhub.fireev",
-      "eventhub.init",
       "eventhub.on",
       "everywher",
       "evtnam",
@@ -13418,6 +14823,7 @@
       "getcurrenteyeloc",
       "getdescript",
       "getfov",
+      "getinfonod",
       "getmateri",
       "getorcreatescenenod",
       "getorcreatesemanticnod",
@@ -13428,6 +14834,7 @@
       "getscenequerieddist",
       "getscenequeriednorm",
       "getscenequeriedpoint",
+      "getselectorradiu",
       "getsemanticnod",
       "getuinod",
       "given",
@@ -13443,9 +14850,11 @@
       "home",
       "hub",
       "i.",
+      "icon",
       "id",
       "immers",
       "index",
+      "info",
       "init",
       "initi",
       "instal",
@@ -13453,8 +14862,10 @@
       "interact",
       "invis",
       "isconnect",
+      "isconnectionsecur",
       "isdevori",
       "isfirstperson",
+      "ismobil",
       "isorbit",
       "ispres",
       "istransit",
@@ -13484,7 +14895,6 @@
       "mobil",
       "mode",
       "model",
-      "modul",
       "more",
       "motion",
       "move",
@@ -13497,7 +14907,6 @@
       "nav.getcurrentdirect",
       "nav.getcurrenteyeloc",
       "nav.getfov",
-      "nav.init",
       "nav.isdevori",
       "nav.isfirstperson",
       "nav.isorbit",
@@ -13542,6 +14951,8 @@
       "note",
       "number",
       "object",
+      "oculu",
+      "on/off",
       "onc",
       "oncomplet",
       "option",
@@ -13577,8 +14988,10 @@
       "proper",
       "provid",
       "queri",
+      "quest",
       "r",
       "radian",
+      "radiu",
       "ray",
       "re)assign",
       "readm",
@@ -13617,6 +15030,8 @@
       "scenehub.load",
       "scenehub.seteditmod",
       "sceneid",
+      "secur",
+      "selector",
       "semant",
       "semfactori",
       "sensibl",
@@ -13625,6 +15040,7 @@
       "servic",
       "session",
       "set",
+      "setbasecolor",
       "setdefaultpixeldens",
       "setdescript",
       "setdeviceorientationcontrol",
@@ -13632,6 +15048,7 @@
       "setfirstpersoncontrol",
       "setfov",
       "sethomepov",
+      "seticon",
       "setmainlightdirect",
       "setmainpanorama",
       "setmainpanoramarot",
@@ -13647,11 +15064,17 @@
       "setrefspaceloc",
       "setrot",
       "setscal",
+      "setselectormodel",
+      "setselectorradiu",
+      "setswitchcolor",
       "settarget",
+      "settext",
       "show",
       "sid",
+      "smartphon",
       "space",
       "spatial",
+      "spatialui",
       "specif",
       "sphere",
       "standard",
@@ -13662,11 +15085,18 @@
       "sub",
       "subscrib",
       "sui",
-      "sui.init",
+      "sui.createtoolbar",
+      "sui.getinfonod",
+      "sui.getselectorradiu",
+      "sui.setselectormodel",
+      "sui.setselectorradiu",
+      "switch",
       "system",
+      "tablet",
       "take",
       "target",
       "techniqu",
+      "text",
       "those",
       "three.materi",
       "three.spher",
@@ -13675,12 +15105,14 @@
       "toggl",
       "togglefullscreen",
       "tool",
+      "toolbar",
       "transit",
       "translat",
       "true",
       "type",
       "typic",
       "ui",
+      "uiid",
       "undefin",
       "under",
       "uniqu",
@@ -13691,6 +15123,9 @@
       "us",
       "user",
       "usual",
+      "util",
+      "utils.isconnectionsecur",
+      "utils.ismobil",
       "v",
       "vector",
       "veget",
@@ -13718,7 +15153,6 @@
       "xr",
       "xr.getcontrollerworlddirect",
       "xr.getcontrollerworldloc",
-      "xr.init",
       "xr.ispres",
       "xr.setrefspaceloc",
       "xr.toggl"
@@ -14097,6 +15531,67 @@
       "summary": "",
       "description": "Load a 3D model under this node, with optional onComplete handler. Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth"
     },
+    "Button.html": {
+      "id": "Button.html",
+      "kind": "class",
+      "title": "Button",
+      "longname": "Button",
+      "name": "Button",
+      "tags": "Button",
+      "summary": "",
+      "description": "Class representing a SpatialUI Button. Constructor requires a uiid (UI Node ID)",
+      "body": ""
+    },
+    "Button.html#setBaseColor": {
+      "id": "Button.html#setBaseColor",
+      "kind": "function",
+      "title": "setBaseColor( c )",
+      "longname": "Button#setBaseColor",
+      "name": "setBaseColor",
+      "tags": "Button#setBaseColor setBaseColor",
+      "summary": "",
+      "description": "Set base color of the button"
+    },
+    "Button.html#setSwitchColor": {
+      "id": "Button.html#setSwitchColor",
+      "kind": "function",
+      "title": "setSwitchColor( c )",
+      "longname": "Button#setSwitchColor",
+      "name": "setSwitchColor",
+      "tags": "Button#setSwitchColor setSwitchColor",
+      "summary": "",
+      "description": "Set button switch color (when activated)"
+    },
+    "Button.html#setText": {
+      "id": "Button.html#setText",
+      "kind": "function",
+      "title": "setText( text )",
+      "longname": "Button#setText",
+      "name": "setText",
+      "tags": "Button#setText setText",
+      "summary": "",
+      "description": "Set button text"
+    },
+    "Button.html#switch": {
+      "id": "Button.html#switch",
+      "kind": "function",
+      "title": "switch( b )",
+      "longname": "Button#switch",
+      "name": "switch",
+      "tags": "Button#switch switch",
+      "summary": "",
+      "description": "Switch the button (ON/OFF)"
+    },
+    "Button.html#setIcon": {
+      "id": "Button.html#setIcon",
+      "kind": "function",
+      "title": "setIcon( url )",
+      "longname": "Button#setIcon",
+      "name": "setIcon",
+      "tags": "Button#setIcon setIcon",
+      "summary": "",
+      "description": "Set button icon"
+    },
     "EventHub.html": {
       "id": "EventHub.html",
       "kind": "namespace",
@@ -14107,16 +15602,6 @@
       "summary": "",
       "description": "ATON Event Hub",
       "body": ""
-    },
-    "EventHub.html#.init": {
-      "id": "EventHub.html#.init",
-      "kind": "function",
-      "title": "&lt;static&gt; init()",
-      "longname": "EventHub.init",
-      "name": "init",
-      "tags": "EventHub.init init",
-      "summary": "",
-      "description": "Initializes the component"
     },
     "EventHub.html#.clearEventHandlers": {
       "id": "EventHub.html#.clearEventHandlers",
@@ -14136,7 +15621,7 @@
       "name": "on",
       "tags": "EventHub.on on",
       "summary": "",
-      "description": "Subscribe to a given event, with local handler and optional network handler"
+      "description": "Subscribe to a given event, with local handler and optional network handler. This is also accessible as ATON.on()"
     },
     "EventHub.html#.fireEvent": {
       "id": "EventHub.html#.fireEvent",
@@ -14146,7 +15631,7 @@
       "name": "fireEvent",
       "tags": "EventHub.fireEvent fireEvent",
       "summary": "",
-      "description": "Fire a local (and optionally network) event, with data"
+      "description": "Fire a local (and optionally network) event, with data. This is also accessible as ATON.fireEvent()"
     },
     "FE.html": {
       "id": "FE.html",
@@ -14180,16 +15665,6 @@
       "summary": "",
       "description": "ATON Immersive XR",
       "body": ""
-    },
-    "XR.html#.init": {
-      "id": "XR.html#.init",
-      "kind": "function",
-      "title": "&lt;static&gt; init()",
-      "longname": "XR.init",
-      "name": "init",
-      "tags": "XR.init init",
-      "summary": "",
-      "description": "Initializes XR component"
     },
     "XR.html#.isPresenting": {
       "id": "XR.html#.isPresenting",
@@ -14293,6 +15768,37 @@
       "summary": "",
       "description": "Loads a scene by providing JSON path"
     },
+    "Utils.html": {
+      "id": "Utils.html",
+      "kind": "namespace",
+      "title": "Utils",
+      "longname": "Utils",
+      "name": "Utils",
+      "tags": "Utils",
+      "summary": "",
+      "description": "ATON Utils",
+      "body": ""
+    },
+    "Utils.html#.isConnectionSecure": {
+      "id": "Utils.html#.isConnectionSecure",
+      "kind": "function",
+      "title": "&lt;static&gt; isConnectionSecure() → {boolean}",
+      "longname": "Utils.isConnectionSecure",
+      "name": "isConnectionSecure",
+      "tags": "Utils.isConnectionSecure isConnectionSecure",
+      "summary": "",
+      "description": "If current connection is secure"
+    },
+    "Utils.html#.isMobile": {
+      "id": "Utils.html#.isMobile",
+      "kind": "function",
+      "title": "&lt;static&gt; isMobile() → {boolean}",
+      "longname": "Utils.isMobile",
+      "name": "isMobile",
+      "tags": "Utils.isMobile isMobile",
+      "summary": "",
+      "description": "If current device is mobile (e.g. smartphone, tablet, Oculus Quest)"
+    },
     "Nav.html": {
       "id": "Nav.html",
       "kind": "namespace",
@@ -14303,16 +15809,6 @@
       "summary": "",
       "description": "ATON Navigation system",
       "body": ""
-    },
-    "Nav.html#.init": {
-      "id": "Nav.html#.init",
-      "kind": "function",
-      "title": "&lt;static&gt; init()",
-      "longname": "Nav.init",
-      "name": "init",
-      "tags": "Nav.init init",
-      "summary": "",
-      "description": "Initialize nav system"
     },
     "Nav.html#.getCurrentEyeLocation": {
       "id": "Nav.html#.getCurrentEyeLocation",
@@ -14525,15 +16021,55 @@
       "description": "ATON Spatial UI",
       "body": ""
     },
-    "SUI.html#.init": {
-      "id": "SUI.html#.init",
+    "SUI.html#.setSelectorRadius": {
+      "id": "SUI.html#.setSelectorRadius",
       "kind": "function",
-      "title": "&lt;static&gt; init()",
-      "longname": "SUI.init",
-      "name": "init",
-      "tags": "SUI.init init",
+      "title": "&lt;static&gt; setSelectorRadius( r )",
+      "longname": "SUI.setSelectorRadius",
+      "name": "setSelectorRadius",
+      "tags": "SUI.setSelectorRadius setSelectorRadius",
       "summary": "",
-      "description": "Initializes Spatial UI module"
+      "description": "Set selector radius"
+    },
+    "SUI.html#.getSelectorRadius": {
+      "id": "SUI.html#.getSelectorRadius",
+      "kind": "function",
+      "title": "&lt;static&gt; getSelectorRadius() → {number}",
+      "longname": "SUI.getSelectorRadius",
+      "name": "getSelectorRadius",
+      "tags": "SUI.getSelectorRadius getSelectorRadius",
+      "summary": "",
+      "description": "Get selector current radius"
+    },
+    "SUI.html#.setSelectorModel": {
+      "id": "SUI.html#.setSelectorModel",
+      "kind": "function",
+      "title": "&lt;static&gt; setSelectorModel( path, bUseStdMat )",
+      "longname": "SUI.setSelectorModel",
+      "name": "setSelectorModel",
+      "tags": "SUI.setSelectorModel setSelectorModel",
+      "summary": "",
+      "description": "Set selector 3D model"
+    },
+    "SUI.html#.getInfoNode": {
+      "id": "SUI.html#.getInfoNode",
+      "kind": "function",
+      "title": "&lt;static&gt; getInfoNode() → {Node}",
+      "longname": "SUI.getInfoNode",
+      "name": "getInfoNode",
+      "tags": "SUI.getInfoNode getInfoNode",
+      "summary": "",
+      "description": "Get main UI Info Node"
+    },
+    "SUI.html#.createToolbar": {
+      "id": "SUI.html#.createToolbar",
+      "kind": "function",
+      "title": "&lt;static&gt; createToolbar( buttonlist, color ) → {Node}",
+      "longname": "SUI.createToolbar",
+      "name": "createToolbar",
+      "tags": "SUI.createToolbar createToolbar",
+      "summary": "",
+      "description": "Create a SpatialUI toolbar from a list of SUI buttons This can be arranged anywhere in the scene or attached to other UI nodes"
     },
     "VRoadcast.html": {
       "id": "VRoadcast.html",

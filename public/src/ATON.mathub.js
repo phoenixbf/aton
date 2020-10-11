@@ -45,7 +45,8 @@ MatHub.addDefaults = ()=>{
     // Selector
     MatHub.materials.selector = new THREE.MeshBasicMaterial({
         color: MatHub.colors.green,
-        transparent: true, 
+        transparent: true,
+        depthWrite: false,
         opacity: 0.2, 
         flatShading: true
     });
@@ -78,7 +79,7 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.orange, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.2,
+        opacity: 0.8,
         flatShading: true
     });
 };

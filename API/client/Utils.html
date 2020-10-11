@@ -1,10 +1,9 @@
-<!-- start:source.tmpl.hbs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>ATON.lightprobe.js</title>
+		<title>Utils</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -14,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
 			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
-			window.DOCLET_TOC_ENABLED = false;
+			window.DOCLET_TOC_ENABLED = true;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
 </head>
@@ -77,183 +76,73 @@
 	</header>
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
-				<span class="kind">source</span>
-				<h1><span class="name">ATON.lightprobe.js</span></h1>
+				<span class="kind">namespace</span>
+				<h1><span class="name">Utils</span></h1>
 			</div>
 		</div>
 	<div class="container content">
 		<div class="row">
-			<div class="col-md-12 main-content">
-		<section class="source-section">
-			<article></article>
-			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
-    ATON Light Probe Class
-
-    author: bruno.fanini_AT_gmail.com
-
-===========================================================*/
-
-/**
-Class representing a light probe (LP), can be static or updated at runtime
-@class LightProbe
-@param {number} res - Resolution in pixel of lightprobe (default 64)
-@param {number} near - Capture near (default 1m)
-@param {number} far - Capture far (default 1Km)
-@example 
-let LP = new ATON.LightProbe()
-*/
-class LightProbe {
-
-constructor(res, near, far){
-    this.pos = new THREE.Vector3(0,0,0);
-
-    this._res  = (res !== undefined)?  res  : 64;
-    this._near = (near !== undefined)? near : 1.0;
-    this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
-/*
-    this._LPtarget0 = undefined;
-    this._LPtarget1 = undefined;
-
-    this._LP0 = undefined;
-    this._LP1 = undefined;
-
-    this._flipLP = false;
-*/
-    this._envtex = undefined;
-    this._prevCCtarget = undefined;
-
-    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
-
-    //this.realize();
-}
-
-/*
-realize(){
-    this._LPtarget0 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
-    });
-
-    this._LPtarget1 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    this._LP0 = new THREE.CubeCamera( this._near, this._far, this._LPtarget0 );
-    this._LP1 = new THREE.CubeCamera( this._near, this._far, this._LPtarget1 );
-
-    return this;
-}
-*/
-
-/**
-Set LP position
-@example
-LP.setPosition(2.0,6.0,1.5)
-@example
-LP.setPosition( new THREE.Vector3(2.0,6.0,1.5) )
-*/
-setPosition(x,y,z){
-    if (x instanceof THREE.Vector3) this.pos.copy(x);
-    else this.pos.set(x,y,z);
-
-    //if (this._LP0) this._LP0.position.copy(this.pos);
-    //if (this._LP1) this._LP1.position.copy(this.pos);
-
-    return this;
-}
-
-setNear(near){
-    this._near = near;
-    return this;
-}
-setFar(far){ 
-    this._far = far;
-    return this;
-}
-
-/**
-Update LP capture. Typically called when all 3D models are loaded and arranged into the scene.
-Can be called at runtime or whenever there is some change in the 3D scene
-@example
-LP.update()
-*/
-update(){
-    if (this._envtex) this._envtex.dispose();
-    if (this._prevCCtarget) this._prevCCtarget.dispose();
-
-    let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBEFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
-    });
-
-    let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
-    CC.position.copy(this.pos);
-
-    CC.update( ATON._renderer, ATON._rootVisibleGlobal );
-
-    this._envtex = CCtarget.texture;
-    
-/*
-    console.log(CC);
-    console.log(CCtarget);
-
-    let CCtargetX = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        //generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    let CCX = new THREE.CubeCamera( this._near, this._far, CCtargetX );
-    CCX.position.copy(this.pos);
-
-    CCX.update( ATON._renderer, ATON._rootVisible );
-    this._envtex = this._pmremGenerator.fromCubemap(CCtargetX.texture).texture;
-*/
-
-    this._prevCCtarget = CCtarget;
-
-
-/*
-    if (this._LP0 === undefined || this._LP1 === undefined) return this;
-
-    this._flipLP = !this._flipLP;
-    //ATON._flipLP = !ATON._flipLP;
-
-    if (this._flipLP){
-        this._LP0.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget0.texture;
-    }
-    else {
-        this._LP1.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget1.texture;
-    }
-*/
-    return this;
-}
-
-
-getEnvTex(){
-    return this._envtex;
-}
-
-assignToNode(N){
-    if (N === undefined) return;
-    //TODO:
-}
-
-}
-
-export default LightProbe;</code></pre>
-		</section>
+			<div class="col-md-9 main-content">
+						<ol class="breadcrumb">
+							<li><a href="index.html">Home</a></li>
+							<li><a href="list_namespace.html">Namespaces</a></li>
+							<li class="active">Utils</li>
+						</ol>
+					<section>
+							<dl class="symbol primary">
+								<dt class="symbol-title namespace collapsible-symbol expanded">
+			<h2 class="namespace"><span class="name">Utils</span></h2>
+</dt>
+<dd class="symbol-details namespace  collapsible-symbol expanded" style="max-height: 9999px;">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>ATON Utils</p></div>
+			</div>	</div>
+</dd>
+							</dl>
+							<article class="secondary">
+									<h3>Methods</h3>
+									<dl class="symbol">
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".isConnectionSecure" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isConnectionSecure</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current connection is secure</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".isMobile" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isMobile</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current device is mobile (e.g. smartphone, tablet, Oculus Quest)</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+									</dl>
+							</article>
+					</section>
 			</div>
+				<div class="col-md-3 side-content">
+					<nav class="toc hidden-print hidden-sm hidden-xs"></nav>
+				</div>
 		</div>
 	</div>
 	<footer>
@@ -285,4 +174,3 @@ export default LightProbe;</code></pre>
 	
 </body>
 </html>
-<!-- end:source.tmpl.hbs -->

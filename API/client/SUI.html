@@ -37,6 +37,7 @@
 								<li class="dropdown">
 									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 									<ul class="dropdown-menu">
+											<li><a href="Button.html">Button</a></li>
 											<li><a href="LightProbe.html">LightProbe</a></li>
 											<li><a href="Node.html">Node</a></li>
 											<li><a href="POV.html">POV</a></li>
@@ -53,6 +54,7 @@
 											<li><a href="SceneHub.html">SceneHub</a></li>
 											<li><a href="SemFactory.html">SemFactory</a></li>
 											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="Utils.html">Utils</a></li>
 											<li><a href="VRoadcast.html">VRoadcast</a></li>
 											<li><a href="XR.html">XR</a></li>
 									</ul>
@@ -102,11 +104,149 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".init" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">init</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+			<h4 id=".setSelectorRadius" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">setSelectorRadius</span><span class="signature-params">( <span class="signature-param">r</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Initializes Spatial UI module</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set selector radius</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>r</code></td>
+							<td><span class="param-type">number</span></td>
+							<td class="last">
+									<p>the radius</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".getSelectorRadius" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getSelectorRadius</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{number}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get selector current radius</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">number</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".setSelectorModel" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">setSelectorModel</span><span class="signature-params">( <span class="signature-param">path</span>, <span class="signature-param">bUseStdMat</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set selector 3D model</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>path</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the model path (usually gltf or glb)</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>bUseStdMat</code></td>
+							<td><span class="param-type">boolean</span></td>
+							<td class="last">
+									<p>(optional) overwrites 3D model materials with standard selector material</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".getInfoNode" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getInfoNode</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{<a href="Node.html">Node</a>}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get main UI Info Node</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="Node.html">Node</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".createToolbar" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">createToolbar</span><span class="signature-params">( <span class="signature-param">buttonlist</span>, <span class="signature-param">color</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{<a href="Node.html">Node</a>}</span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Create a SpatialUI toolbar from a list of SUI buttons
+			This can be arranged anywhere in the scene or attached to other UI nodes</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>buttonlist</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>a list (array) of SUI buttons</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>color</code></td>
+							<td><span class="param-type">THREE.Color</span></td>
+							<td class="last">
+									<p>(optional) base color for the toolbar</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type"><a href="Node.html">Node</a></span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"></div>
+								</div>
+							</div>
+					</form>
 			</div>	</div>
 </dd>
 									</dl>
@@ -120,7 +260,7 @@
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 5th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 11th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

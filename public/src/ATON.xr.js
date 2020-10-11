@@ -13,9 +13,8 @@ let XR = {};
 
 XR.STD_TELEP_DURATION = 0.03;
 
-/**
-Initializes XR component
-*/
+
+//Initializes XR component
 XR.init = ()=>{
     ATON._renderer.xr.enabled = true;
     ATON._renderer.xr.setReferenceSpaceType( 'local' );

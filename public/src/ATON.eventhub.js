@@ -11,9 +11,7 @@ ATON Event Hub
 */
 let EventHub = {};
 
-/**
-Initializes the component
-*/
+//Initializes the component
 EventHub.init = ()=>{
 
     EventHub.evLocal   = {};
@@ -30,8 +28,6 @@ Clear all event handlers for a given event
 @param {string} evtname - event name
 */
 EventHub.clearEventHandlers = (evtname)=>{
-    //let evHandlers = (bNetwork)? EventHub.evNetwork : EventHub.evLocal;
-
     EventHub.evLocal[evtname]   = [];
     EventHub.evNetwork[evtname] = [];
 };
@@ -47,12 +43,15 @@ EventHub.executeHandlers = (ehList, data)=>{
 };
 
 /**
-Subscribe to a given event, with local handler and optional network handler
+Subscribe to a given event, with local handler and optional network handler.
+This is also accessible as ATON.on()
 @param {string} evtname - event name
 @param {function} handlerLocal - local event handler
 @param {function} handlerNetwork - optional network (see VRoadcast) event handler
 @example
 ATON.EventHub.on("myEvent", function(data){ console.log("received local event"); })
+@example
+ATON.on("myEvent", function(data){ console.log("received local event"); })
 */
 EventHub.on = (evtname, handlerLocal, handlerNetwork)=>{
     // Local event (default)
@@ -71,12 +70,15 @@ EventHub.on = (evtname, handlerLocal, handlerNetwork)=>{
 };
 
 /**
-Fire a local (and optionally network) event, with data
+Fire a local (and optionally network) event, with data.
+This is also accessible as ATON.fireEvent()
 @param {string} evtname - event name
 @param {object} data - object containing data to be transmitted with this event
 @param {bool} bReplicate - if true, it will replicate (broadcast) the event to other connected peers in the same scene (see VRoadcast)
 @example
-ATON.EventHub.on("myEvent", function(data){ console.log("received local event"); })
+ATON.EventHub.fireEvent("myEvent", data)
+@example
+ATON.fireEvent("myEvent", data)
 */
 EventHub.fireEvent = (evtname, data, bReplicate)=>{
     let ehList = EventHub.evLocal[evtname];

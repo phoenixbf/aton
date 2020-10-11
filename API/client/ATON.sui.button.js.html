@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>ATON.lightprobe.js</title>
+		<title>ATON.sui.button.js</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -78,7 +78,7 @@
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
 				<span class="kind">source</span>
-				<h1><span class="name">ATON.lightprobe.js</span></h1>
+				<h1><span class="name">ATON.sui.button.js</span></h1>
 			</div>
 		</div>
 	<div class="container content">
@@ -87,171 +87,145 @@
 		<section class="source-section">
 			<article></article>
 			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
-    ATON Light Probe Class
+    ATON spatial UI Button class
 
     author: bruno.fanini_AT_gmail.com
 
 ===========================================================*/
 
+import Node from "./ATON.node.js";
+
 /**
-Class representing a light probe (LP), can be static or updated at runtime
-@class LightProbe
-@param {number} res - Resolution in pixel of lightprobe (default 64)
-@param {number} near - Capture near (default 1m)
-@param {number} far - Capture far (default 1Km)
+Class representing a SpatialUI Button.
+Constructor requires a uiid (UI Node ID)
+@class Button
 @example 
-let LP = new ATON.LightProbe()
+new ATON.SUI.Button("myButton")
 */
-class LightProbe {
+class Button extends Node {
 
-constructor(res, near, far){
-    this.pos = new THREE.Vector3(0,0,0);
+constructor(uiid){
+    super(uiid, ATON.NTYPES.UI);
 
-    this._res  = (res !== undefined)?  res  : 64;
-    this._near = (near !== undefined)? near : 1.0;
-    this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
-/*
-    this._LPtarget0 = undefined;
-    this._LPtarget1 = undefined;
+    this.baseColor   = ATON.MatHub.colors.black;
+    this.switchColor = ATON.MatHub.colors.green;
 
-    this._LP0 = undefined;
-    this._LP1 = undefined;
+    this._bSwitched = false;
 
-    this._flipLP = false;
-*/
-    this._envtex = undefined;
-    this._prevCCtarget = undefined;
+    this.container = new ThreeMeshUI.Block({
+        width: 0.1,
+        height: 0.1,
+        padding: 0.01,
+        borderRadius: 0.02,
+        backgroundColor: this.baseColor,
+        backgroundOpacity: 0.5,
 
-    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json",
+        fontTexture: ATON.PATH_RES+"fonts/custom.png",
 
-    //this.realize();
-}
-
-/*
-realize(){
-    this._LPtarget0 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
+        justifyContent: 'center',
+        alignContent: 'center'
     });
+    this.add(this.container);
 
-    this._LPtarget1 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
+    this.uiText = new ThreeMeshUI.Text({ 
+        content: "button",
+        fontSize: 0.02,
+        fontColor: ATON.MatHub.colors.white
     });
+    this.container.add(this.uiText);
 
-    this._LP0 = new THREE.CubeCamera( this._near, this._far, this._LPtarget0 );
-    this._LP1 = new THREE.CubeCamera( this._near, this._far, this._LPtarget1 );
+    this._trigger = new THREE.Mesh( 
+        new THREE.PlaneGeometry( ATON.SUI.STD_BTN_SIZE*0.9, ATON.SUI.STD_BTN_SIZE*0.9, 2 ), 
+        ATON.MatHub.materials.fullyTransparent
+    );
+    this._trigger.position.set(0,0,0.002);
 
-    return this;
+    this.add( this._trigger );
+
+    this.onHover = ()=>{
+        this.container.set({ 
+            backgroundOpacity: 0.8
+        });
+    };
+    this.onLeave = ()=>{
+        this.container.set({ 
+            backgroundOpacity: 0.5 
+        });
+    };
+
+    this.enablePicking();
 }
-*/
 
 /**
-Set LP position
-@example
-LP.setPosition(2.0,6.0,1.5)
-@example
-LP.setPosition( new THREE.Vector3(2.0,6.0,1.5) )
+Set base color of the button
+@param {THREE.Color} c - the color
 */
-setPosition(x,y,z){
-    if (x instanceof THREE.Vector3) this.pos.copy(x);
-    else this.pos.set(x,y,z);
-
-    //if (this._LP0) this._LP0.position.copy(this.pos);
-    //if (this._LP1) this._LP1.position.copy(this.pos);
-
-    return this;
-}
-
-setNear(near){
-    this._near = near;
-    return this;
-}
-setFar(far){ 
-    this._far = far;
+setBaseColor(c){
+    this.baseColor = c;
+    if (!this._bSwitched) this.container.set({ backgroundColor: this.baseColor });
     return this;
 }
 
 /**
-Update LP capture. Typically called when all 3D models are loaded and arranged into the scene.
-Can be called at runtime or whenever there is some change in the 3D scene
-@example
-LP.update()
+Set button switch color (when activated)
+@param {THREE.Color} c - the color
 */
-update(){
-    if (this._envtex) this._envtex.dispose();
-    if (this._prevCCtarget) this._prevCCtarget.dispose();
+setSwitchColor(c){
+    this.switchColor = c;
+    if (this._bSwitched) this.container.set({ backgroundColor: this.switchColor });
+    return this;
+}
 
-    let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBEFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
-    });
+/**
+Set button text
+@param {string} text
+*/
+setText(text){
+    this.uiText.set({ content: text });
+    return this;
+}
 
-    let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
-    CC.position.copy(this.pos);
-
-    CC.update( ATON._renderer, ATON._rootVisibleGlobal );
-
-    this._envtex = CCtarget.texture;
+/**
+Switch the button (ON/OFF)
+@param {boolean} b
+*/
+switch(b){
+    this._bSwitched = b;
+    if (b) this.container.set({ backgroundColor: this.switchColor });
+    else this.container.set({ backgroundColor: this.baseColor });
     
-/*
-    console.log(CC);
-    console.log(CCtarget);
-
-    let CCtargetX = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        //generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    let CCX = new THREE.CubeCamera( this._near, this._far, CCtargetX );
-    CCX.position.copy(this.pos);
-
-    CCX.update( ATON._renderer, ATON._rootVisible );
-    this._envtex = this._pmremGenerator.fromCubemap(CCtargetX.texture).texture;
-*/
-
-    this._prevCCtarget = CCtarget;
-
-
-/*
-    if (this._LP0 === undefined || this._LP1 === undefined) return this;
-
-    this._flipLP = !this._flipLP;
-    //ATON._flipLP = !ATON._flipLP;
-
-    if (this._flipLP){
-        this._LP0.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget0.texture;
-    }
-    else {
-        this._LP1.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget1.texture;
-    }
-*/
     return this;
 }
 
+/**
+Set button icon
+@param {string} url - the url to the icon (tipically a PNG file)
+*/
+setIcon(url){
+    ATON.Utils.textureLoader.load(url, (texture) => {
 
-getEnvTex(){
-    return this._envtex;
+        this._trigger.material = new THREE.MeshStandardMaterial({
+            map: texture,
+            transparent: true,
+            depthWrite: false
+        });
+/*
+        this.container.set({ 
+            backgroundTexture: texture,
+            backgroundOpacity: 1.0,
+            backgroundColor: undefined 
+        });
+*/
+        this.uiText.position.set(0,-0.035,0);
+    });
+
+    return this;
 }
 
-assignToNode(N){
-    if (N === undefined) return;
-    //TODO:
 }
 
-}
-
-export default LightProbe;</code></pre>
+export default Button;</code></pre>
 		</section>
 			</div>
 		</div>

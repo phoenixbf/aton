@@ -33,9 +33,8 @@ Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
 
 
 
-/**
-Initialize nav system
-*/
+
+//Initialize nav system
 Nav.init = ()=>{
     Nav._mode = undefined;
 

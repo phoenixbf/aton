@@ -50,7 +50,7 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     // Spatial UI
     let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("semanticShapeEdit"));
     M.position.copy(p);
-    M.scale.set(0.01,0.01,0.01);
+    M.scale.set(0.001,0.001,0.001);
     ATON.SUI.gPoints.add( M );
 
     if (numPoints < 4) return false;
@@ -182,11 +182,15 @@ SemFactory.addSurfaceConvexPoint = (/*semid,*/ offset)=>{
 
     if (offset === undefined) offset = 0.02;
 
-    let p = ATON._queryDataScene.p;
+    let p   = ATON._queryDataScene.p;
+    let eye = ATON.Nav.getCurrentEyeLocation();
+/*
     let n = ATON._queryDataScene.n;
     p.x += (n.x * offset);
     p.y += (n.y * offset);
     p.z += (n.z * offset);
+*/
+    p.lerpVectors(p, eye, offset);
 
     SemFactory.addConvexPoint(p);
     return p;

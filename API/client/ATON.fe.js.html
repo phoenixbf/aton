@@ -38,6 +38,7 @@
 								<li class="dropdown">
 									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 									<ul class="dropdown-menu">
+											<li><a href="Button.html">Button</a></li>
 											<li><a href="LightProbe.html">LightProbe</a></li>
 											<li><a href="Node.html">Node</a></li>
 											<li><a href="POV.html">POV</a></li>
@@ -54,6 +55,7 @@
 											<li><a href="SceneHub.html">SceneHub</a></li>
 											<li><a href="SemFactory.html">SemFactory</a></li>
 											<li><a href="SUI.html">SUI</a></li>
+											<li><a href="Utils.html">Utils</a></li>
 											<li><a href="VRoadcast.html">VRoadcast</a></li>
 											<li><a href="XR.html">XR</a></li>
 									</ul>
@@ -101,8 +103,10 @@ let FE = {};
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
-    FE._bPopup = false; // showing popup
+    FE._bPopup = false;     // showing popup
     FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+
+    FE._bReqHome = false;   // auto-compute home
 
     FE.urlParams = new URLSearchParams(window.location.search);
 
@@ -123,9 +127,35 @@ FE.addBasicLoaderEvents = ()=>{
         
         //console.log(ATON.Nav.homePOV);
 
-        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+        if (FE._bReqHome) return;
+
+        if (ATON.Nav.homePOV === undefined){
+            ATON.Nav.computeAndRequestDefaultHome(0.5);
+        }
         else {
             ATON.Nav.requestHome(0.5);
+        }
+
+        FE._bReqHome = true;
+    });
+};
+
+FE.useMouseWheelToScaleSelector = (f)=>{
+
+    if (f === undefined) f = 0.001;
+
+    ATON.on("MouseWheel", (d)=>{
+        if (ATON.Nav._controls.enableZoom === undefined) return;
+
+        if (ATON._kModShift){
+            ATON.Nav._controls.enableZoom = false;
+
+            let r = ATON.SUI.mainSelector.scale.x;
+            r += (-d*f);
+            if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
+        }
+        else {
+            ATON.Nav._controls.enableZoom = true;
         }
     });
 };
@@ -158,8 +188,20 @@ FE._uiSetupBase = ()=>{
 };
 
 // Add Generic button to a specific div container
-FE.uiAddButton = (idcontainer, iconid, onPress)=>{
-    let htmlcode = "&lt;button id='btn-"+iconid+"' type='button' class='atonBTN'>&lt;img src='"+FE.PATH_RES_ICONS+iconid+".png'>&lt;/button>";
+FE.uiAddButton = (idcontainer, icon, onPress)=>{
+    let iconurl;
+    let iconid;
+
+    if (icon.endsWith(".png")){
+        iconurl = icon;
+        iconid  = icon.slice(0,-4);
+    }
+    else {
+        iconurl = FE.PATH_RES_ICONS+icon+".png";
+        iconid  = icon;
+    }
+
+    let htmlcode = "&lt;button id='btn-"+iconid+"' type='button' class='atonBTN'>&lt;img src='"+iconurl+"'>&lt;/button>";
     $("#"+idcontainer).append(htmlcode);
 
     if (onPress) $("#btn-"+iconid).click( onPress );
@@ -222,7 +264,7 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
 FE.uiAddButtonVRC = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
         if (ATON.VRoadcast.isConnected()){
-
+            FE.popupVRC();
         }
         else {
             ATON.VRoadcast.connect();
@@ -308,6 +350,44 @@ FE.popupQR = ()=>{
     new QRCode(document.getElementById("idQRcode"), url);
 };
 
+FE.popupVRC = ()=>{
+    let htmlcontent = "";
+    //htmlcontent += "&lt;h1>VRoadcast&lt;/h1>";
+    htmlcontent += "&lt;div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'>&lt;/div>";
+
+    htmlcontent += "&lt;input id='idVRCusername' type='text' size='10' placeholder='username...'>";
+    htmlcontent += "&lt;input id='idVRCmsg' type='text' placeholder='message...'>";
+    htmlcontent += "&lt;button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>DISCONNECT&lt;/div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#idChatBox").append(ATON.VRoadcast._elChat);
+
+    $("#idVRCmsg").keypress((e)=>{
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode == '13'){
+            let str = $("#idVRCmsg").val();
+            ATON.VRoadcast.setMessage( str );
+            $("#idVRCmsg").val("");
+            //$("#idChatBox:first-child").scrollTop( $("#idChatBox:first-child").height() );
+        }
+    });
+
+    $("#idVRCusername").keypress((e)=>{
+        let keycode = (e.keyCode ? e.keyCode : e.which);
+        if(keycode == '13'){
+            let str = $("#idVRCusername").val();
+            ATON.VRoadcast.setUsername( str );
+            //$("#idVRCusername").hide();
+        }
+    });
+
+    $("#idVRCdisconnect").click(()=>{
+        ATON.VRoadcast.disconnect();
+        ATON.FE.popupClose();
+    });
+
+};
 
 
 export default FE;</code></pre>
@@ -317,7 +397,7 @@ export default FE;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 5th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 11th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

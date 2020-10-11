@@ -111,7 +111,7 @@ AFE.setupEventHandlers = ()=>{
         if (ATON._hoveredSemNode) AFE.popupSemDescription(ATON._hoveredSemNode);
     });
 
-    ATON.FE.useMouseWheelToScaleSelector(0.001);
+    ATON.FE.useMouseWheelToScaleSelector(0.0001);
 
     ATON.on("KeyPress", (k)=>{
         if (k === 'Delete'){
@@ -153,11 +153,10 @@ AFE.setupEventHandlers = ()=>{
         }
 
         if (k==='x'){
-            //ATON.fireEvent("VRC_test", {}, true);
-            //ATON.VRoadcast.fireEvent("VRC_test", "TEST");
-            //ATON.getSemanticNode("wall").exportAs("wall.glb");
-            AFE.popupUser();
+            //AFE.popupUser();
+            AFE.popupExportSemShapes();
         }
+
         if (k==='w'){
             if (ATON.Nav._mode === ATON.Nav.MODE_FP) ATON.Nav.setMotionAmount(0.5);
         }
@@ -200,11 +199,13 @@ AFE.setupEventHandlers = ()=>{
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
 
+        if (k==='v'){
+            let v = ATON.Nav.copyCurrentPOV();
+            console.log(v);
+        }
+
         if (k==='h'){
-            let hp = new ATON.POV();
-            hp.pos.copy(ATON.Nav._currPOV.pos);
-            hp.target.copy(ATON.Nav._currPOV.target);
-            hp.fov = ATON.Nav._currPOV.fov;
+            let hp = ATON.Nav.copyCurrentPOV();
 
             ATON.Nav.setHomePOV( hp );
 
@@ -334,7 +335,7 @@ AFE.popupAddSemanticSphere = ()=>{
         let S = ATON.SemFactory.createSurfaceSphere(semid);
         if (S === undefined) return;
 
-        if (xxtmldescr && xxtmldescr.length>0) S.setDescription( xxtmldescr );
+        if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
         
         let parS = ATON.getSemanticNode(psemid);
 
@@ -346,7 +347,7 @@ AFE.popupAddSemanticSphere = ()=>{
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
         E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
-        E.semanticgraph.nodes[S.nid].description = S.getDescription();
+        if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
@@ -379,7 +380,7 @@ AFE.popupAddSemanticConvex = ()=>{
         let S = ATON.SemFactory.completeConvexShape(semid);
         if (S === undefined) return;
 
-        if (xxtmldescr && xxtmldescr.length>0) S.setDescription( xxtmldescr );
+        if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
         
         $("#semid").blur();
         $("#idSemDescription").blur();
@@ -392,7 +393,7 @@ AFE.popupAddSemanticConvex = ()=>{
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
         E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
-        E.semanticgraph.nodes[S.nid].description = S.getDescription();
+        if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM);
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD );
@@ -422,6 +423,42 @@ AFE.popupSemDescription = (semid)=>{
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
 
     ATON.FE.popupShow(htmlcontent);
+};
+
+AFE.popupExportSemShapes = ()=>{
+    let htmlcontent = "<h1>Export</h1>";
+
+    htmlcontent += "<label for='semid'>Semantic Shape ID:</label><br>";
+    htmlcontent += "<div class='select' style='width:80%;'><select id='semid'>";
+    htmlcontent += "<option value=''></option>";
+    for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
+    htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
+
+    htmlcontent += "<label for='idxformat'>3D format:</label>";
+    htmlcontent += "<div class='select' style='width:150px;'><select id='idxformat'>";
+    htmlcontent += "<option value='.glb'>GLTF (*.glb)</option>";
+    htmlcontent += "<option value='.obj'>OBJ</option>";
+    htmlcontent += "</select><div class='selectArrow'></div></div>";
+
+    htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idExport' style='width:80%'>EXPORT</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#idExport").click(()=>{
+        let semid = $("#semid").val();
+        let ext   = $("#idxformat").val();
+
+        if (semid.length > 0){
+            let S = ATON.getSemanticNode(semid);
+            if (S){
+                for (let s in S.children){
+                    ATON.Utils.exportNode(S.children[s], semid + String(s) + ext);
+                }
+            }
+        }
+
+
+    });
 };
 
 AFE.popupUser = ()=>{

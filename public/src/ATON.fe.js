@@ -269,7 +269,7 @@ FE.popupVRC = ()=>{
 
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...'>";
     htmlcontent += "<input id='idVRCmsg' type='text' placeholder='message...'>";
-    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>DISCONNECT</div>";
+    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>Leave Collaborative Session</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 

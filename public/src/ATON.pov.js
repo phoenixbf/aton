@@ -15,12 +15,6 @@ new ATON.POV("myView")
 class POV {
 
 constructor(id){
-    // Register
-    if (id !== undefined){
-        ATON.Nav.povlist[id] = this;
-        this.id = id;
-    }
-
     this.pos    = new THREE.Vector3(1,0,0);
     this.target = new THREE.Vector3(0,0,0);
     this.up     = ATON.STD_UPVECTOR;
@@ -30,6 +24,18 @@ constructor(id){
 
     this.nextPOV = undefined;
     this.prevPOV = undefined;
+
+    // Register
+    this.as(id);
+}
+
+as(id){
+    if (id === undefined) return;
+
+    ATON.Nav.povlist[id] = this;
+    this.id = id;
+
+    return this;
 }
 
 /**

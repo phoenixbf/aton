@@ -8,7 +8,7 @@
         },
 
         "mainlightx":{
-            "direction": [0.5,-1,-1],
+            "direction": [-0.1,-1,-1],
 			"shadows": false
         }
 	},

@@ -458,7 +458,7 @@ canvas {
 }
 
 .atonPopup {
-    
+    display: inline-block;
 /*
     position: fixed;
     top: 100px;
@@ -468,7 +468,9 @@ canvas {
 */
     position: relative;
     margin: auto;
+/*
     max-width: 50%;
+*/
     max-height: 80%;
     
     top: 50%;
@@ -499,7 +501,7 @@ canvas {
 @media screen and (orientation: portrait){
 /*@media screen and (max-width: 800px){*/
     .atonPopup {
-        max-width: 90%;
+        width: 90%;
     }
 }
 
@@ -513,6 +515,7 @@ canvas {
     border-radius: 10px;
 
     width: 80%;
+    max-width: 300px;
     height: auto;
 }
 

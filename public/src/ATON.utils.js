@@ -229,6 +229,7 @@ Utils.exportNode = (node, filename)=>{
         }, opts);
     }
 
+    // OBJ format
     if (ext === "obj"){
         if (Utils.exporterOBJ === undefined) Utils.exporterOBJ = new THREE.OBJExporter();
 

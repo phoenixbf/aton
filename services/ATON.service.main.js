@@ -151,7 +151,7 @@ app.get(/^\/api\/scene\/(.*)$/, function(req,res,next){
 	let O = {};
 	O.cwd = mfolder;
 
-	glob("*.gltf", O, (err, files)=>{ // "**/*.gltf"
+	glob("*.{gltf,glb}", O, (err, files)=>{ // "**/*.gltf"
 
 		// build scene json
 		let sobj = ServUtils.createBasicScene();

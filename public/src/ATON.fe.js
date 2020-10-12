@@ -212,10 +212,13 @@ FE.setupBasicUISounds = ()=>{
 
 // Popups
 //===================================================================
-FE.popupShow = (htmlcontent)=>{
+FE.popupShow = (htmlcontent, style)=>{
     if (FE._bPopup) return false;
 
-    $('#idPopup').html("<div class='atonPopup' id='idPopupContent'>"+htmlcontent+"</div>");
+    let htcont = "<div id='idPopupContent' class='atonPopup' style='"+style+"'>";
+    htcont += htmlcontent+"</div>"
+
+    $('#idPopup').html(htcont);
     $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
     $('#idPopup').fadeIn();
 
@@ -264,14 +267,19 @@ FE.popupQR = ()=>{
 
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    //htmlcontent += "<h1>VRoadcast</h1>";
+    htmlcontent += "<h1>Collaborative Session</h1>";
+
+    htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...'>" 
     htmlcontent += "<div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'></div>";
 
-    htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...'>";
-    htmlcontent += "<input id='idVRCmsg' type='text' placeholder='message...'>";
-    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>Leave Collaborative Session</div>";
+    //htmlcontent += "<div style='text-align:left'>";
+    htmlcontent += "<input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
+    //htmlcontent += "</div>";
+
+    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>LEAVE</button>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
 
     $("#idChatBox").append(ATON.VRoadcast._elChat);
 

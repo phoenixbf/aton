@@ -27,100 +27,41 @@
 
 <script>
 window.addEventListener( 'load', ()=>{
-
-	// Our items library
-	let currItem = 0;
-	let items = [];
-	items.push({
-		url: ATON.PATH_MODELS+"samples/atoncube.glb",
-		pickable: true
-	});
-	items.push({
-		url: ATON.PATH_MODELS+"samples/vegetation/tree1b.gltf",
-		pickable: false
-	});
-	items.push({
-		url: ATON.PATH_MODELS+"samples/vegetation/grass.gltf",
-		pickable: false
-	});
-	items.push({
-		url: ATON.PATH_MODELS+"samples/vegetation/flowers.gltf",
-		pickable: false
-	});
-
-	// We use this function to switch between items
-	let switchItem = ()=>{
-		currItem = (currItem+1) % items.length;
-		ATON.SUI.setSelectorModel( items[currItem].url );
-	};
-
     // Realize the base front-end
     ATON.FE.realize();
 
-    // Create some HTML UI
-    ATON.FE.uiAddButtonVRC("idTopToolbar"); // We add our VRoadcast button
-    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
-	ATON.FE.uiAddButtonHome("idTopToolbar"); // Home button
+	// sample POVs
+	let currpov = 0;
+	let povs = [];
+	povs.push( new ATON.POV("pov_face").setPosition(-0.74,2.0,0.0).setTarget(-0.2,2.0,0.0).setFOV(50.0) );
+	povs.push( new ATON.POV("pov_foot").setPosition(-0.4,0.7,-0.5).setTarget(0.0,0.5,0.0).setFOV(50.0) );
+	povs.push( new ATON.POV("pov_base").setPosition(-8,0.5,0).setTarget(0.0,0.3,0.0).setFOV(5.0) );
+	povs.push( new ATON.POV("pov_arm_r").setPosition(-9,-0.1,-20).setTarget(0,1.8,-0.2).setFOV(1.0) );
 
-	ATON.FE.uiAddButton("idBottomToolbar", "next", switchItem );
+    // Create some HTML UI
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+
+    ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
+    ATON.FE.uiAddButtonVR("idTopToolbar");                // Immersive VR mode (will show up only on secure connections)
+    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar"); // Device-orientation mode (will show up only on mobile devices with secure connections)
+
+	ATON.FE.uiAddButton("idBottomToolbar", "prev",()=>{ // prev pov button
+		currpov--;
+		if (currpov<0) currpov = (povs.length-1);
+		ATON.Nav.requestPOV( povs[currpov], 2.0 );
+	});
+    ATON.FE.uiAddButtonHome("idBottomToolbar"); // Home button
+	ATON.FE.uiAddButton("idBottomToolbar", "next",()=>{ // next pov button
+		currpov = (currpov + 1) % povs.length;
+		ATON.Nav.requestPOV( povs[currpov], 2.0 );
+	});
 
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();
 
     // We use built-in scene loader
     // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network
-    ATON.FE.loadSceneID("samples/basic");
-
-	// Setup our spatial UI
-	ATON.SUI.setSelectorRadius(0.5);
-	ATON.SUI.setSelectorModel( items[currItem].url );
-	ATON.FE.useMouseWheelToScaleSelector(0.0002);
-
-
-	ATON.on("KeyPress", (k)=>{
-
-		// We use spacebar to switch current item
-		if (k === ' ') switchItem();
-
-		// We use 'x' to place the item
-		if (k === 'x'){
-			let p = ATON.getSceneQueriedPoint();
-			let s = ATON.SUI.getSelectorRadius();
-
-			if (p){
-				// We create and place the item
-				ATON.createSceneNode()
-					.load( items[currItem].url )
-					.setPickable(items[currItem].pickable)
-					.setPosition(p)
-					.setScale(s)
-					.attachToRoot();
-
-				// Alert other users in the same scene
-				ATON.VRoadcast.fireEvent("myNetworkSpawnEvent", {item: currItem, pos: p, scale: s});
-			}
-		}
-	});
-
-	// We handle incoming remote items placement fom other users
-	ATON.VRoadcast.on("myNetworkSpawnEvent", (data)=>{
-		let item = items[data.item];
-
-		ATON.createSceneNode()
-			.load( item.url )
-			.setPickable( item.pickable )
-			.setPosition(data.pos.x,data.pos.y,data.pos.z)
-			.setScale(data.scale)
-			.attachToRoot();
-	});
-
-	ATON.on("AllNodeRequestsCompleted",()=>{
-		//ATON.toggleShadows(true);
-		ATON.setNeutralAmbientLight(0.9);
-
-		ATON.VRoadcast.connect();
-	});
-
+    ATON.FE.loadSceneID("samples/venus");
 });
 
 </script>

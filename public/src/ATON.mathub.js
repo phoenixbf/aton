@@ -79,7 +79,7 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.orange, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.8,
+        opacity: 0.5,
         flatShading: true
     });
 };

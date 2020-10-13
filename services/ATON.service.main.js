@@ -17,6 +17,7 @@ const compression = require('compression');
 const path        = require('path');
 const cors        = require('cors');
 const glob        = require("glob");
+const nanoid      = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 var passport = require('passport');
@@ -221,6 +222,12 @@ app.get("/api/c/panoramas/", function(req,res,next){
 	//glob("**/*.{jpg,hdr}", O, (err, files)=>{ });
 
 	//next();
+});
+
+// Get ID
+app.get("/api/getid/", function(req,res,next){
+	let id = nanoid.nanoid();
+	res.send(id);
 });
 
 // List examples

@@ -212,10 +212,13 @@ FE.setupBasicUISounds = ()=>{
 
 // Popups
 //===================================================================
-FE.popupShow = (htmlcontent, style)=>{
+FE.popupShow = (htmlcontent, cssClasses)=>{
     if (FE._bPopup) return false;
 
-    let htcont = "<div id='idPopupContent' class='atonPopup' style='"+style+"'>";
+    let clstr = "atonPopup ";
+    if (cssClasses) clstr += cssClasses;
+
+    let htcont = "<div id='idPopupContent' class='"+clstr+"'>";
     htcont += htmlcontent+"</div>"
 
     $('#idPopup').html(htcont);
@@ -278,7 +281,7 @@ FE.popupVRC = ()=>{
 
     htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>LEAVE</button>";
 
-    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
 
     $("#idChatBox").append(ATON.VRoadcast._elChat);

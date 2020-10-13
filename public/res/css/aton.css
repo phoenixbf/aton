@@ -489,14 +489,6 @@ canvas {
     transform-origin: center;
     animation: 0.2s ease-out 0s 1 popupAnimation;
 }
-/*
-@media screen and (orientation: portrait) {
-    .atonPopup {
-        left: 10px;
-        right: 10px;
-    }
-}
-*/
 
 @media screen and (orientation: portrait){
 /*@media screen and (max-width: 800px){*/
@@ -504,6 +496,16 @@ canvas {
         width: 90%;
     }
 }
+
+.atonPopupLarge {
+    width: 80%;
+}
+@media screen and (orientation: portrait){
+    /*@media screen and (max-width: 800px){*/
+        .atonPopupLarge {
+            width: 90%;
+        }
+    }
 
 .atonQRcontainer {
     display: inline-block;

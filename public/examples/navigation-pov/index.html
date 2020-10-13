@@ -38,12 +38,11 @@ window.addEventListener( 'load', ()=>{
 	povs.push( new ATON.POV("pov_base").setPosition(-8,0.5,0).setTarget(0.0,0.3,0.0).setFOV(5.0) );
 	povs.push( new ATON.POV("pov_arm_r").setPosition(-9,-0.1,-20).setTarget(0,1.8,-0.2).setFOV(1.0) );
 
+	// set our home POV
+	ATON.Nav.setHomePOV( new ATON.POV().setPosition(-4, 1.5, 0.0).setTarget(0, 1.5, 0) );
+
     // Create some HTML UI
     ATON.FE.uiAddButtonFullScreen("idTopToolbar");
-
-    ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
-    ATON.FE.uiAddButtonVR("idTopToolbar");                // Immersive VR mode (will show up only on secure connections)
-    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar"); // Device-orientation mode (will show up only on mobile devices with secure connections)
 
 	ATON.FE.uiAddButton("idBottomToolbar", "prev",()=>{ // prev pov button
 		currpov--;

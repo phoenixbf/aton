@@ -89,7 +89,7 @@ let composeScene = ()=>{
 
 window.addEventListener( 'load', ()=>{
 
-    $("#idSID").html(sid+"<br><br>");
+    $("#idSID").html(sid);
 
     BE.appendModelsToSelect("mpath");
     BE.appendPanoramasToSelect("panopath");
@@ -149,8 +149,7 @@ window.addEventListener( 'load', ()=>{
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
-        <h2>New Scene</h2>
-        <div id="idSID"></div>
+        <h2>New Scene ('<span id="idSID"></span>')</h2>
         <!-- <label for="sid">Scene ID</label>
         <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
          -->

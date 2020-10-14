@@ -128,7 +128,7 @@ window.addEventListener( 'load', ()=>{
     $("#panopath").on("change", ()=>{
         let path = $("#panopath").val();
         if (path && path.length > 0){
-            $("#idpanopreview").html("<img src='"+DIR_COLLECTION+path+"' style='width:200px;height:auto'>");
+            $("#idpanopreview").html("<img src='"+DIR_COLLECTION+path+"' style='width:100%;height:auto'>");
 
             if (sobj.environment.mainpano === undefined) sobj.environment.mainpano = {};
             
@@ -149,18 +149,22 @@ window.addEventListener( 'load', ()=>{
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
-        <h2>New Scene ('<span id="idSID"></span>')</h2>
-        <!-- <label for="sid">Scene ID</label>
-        <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
-         -->
+        <div class="atonBlockRound">
+            <h2>New Scene ('<span id="idSID"></span>')</h2>
 
-         <label for="sidvis">Scene visibility</label>
-         <div class='select' style="width:200px;">
-            <select id='sidvis'>
-                <option value='pvt'>Private link</option>
-                <option value='pub'>Public (listed)</option>
-            </select>
-            <div class='selectArrow'></div>
+            <!-- <label for="sid">Scene ID</label>
+            <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
+            -->
+
+            <label for="sidvis">Scene visibility</label>
+            <div class='select' style="width:200px;">
+                <select id='sidvis'>
+                    <option value='pvt'>Private link</option>
+                    <option value='pub'>Public (listed)</option>
+                </select>
+                <div class='selectArrow'></div>
+            </div>
+
         </div>
 
         <br><br>

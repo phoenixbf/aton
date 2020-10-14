@@ -828,7 +828,7 @@ input[type="number"]:hover {
 }
 
 .atonDefaultBody {
-    background-color: #666666;
+    background-color: #999;
     color: #FFF;
 
     overflow-y: auto;

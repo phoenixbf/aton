@@ -111,7 +111,7 @@ SceneHub.getJSONgraphEdges = (type)=>{
         //if (N && N.children) edges[n] = SceneHub.getJSONchildren(n, type);
 
         let E = {};
-        if (N.parent && N.parent.nid){
+        if (N && N.parent && N.parent.nid){
             //edges.push([N.parent.nid, N.nid]);
             if (edges[N.parent.nid] === undefined) edges[N.parent.nid] = [];
             edges[N.parent.nid].push(N.nid);

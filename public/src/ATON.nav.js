@@ -19,8 +19,6 @@ Nav.STD_NEAR = 0.05;
 Nav.STD_FAR  = 1000.0;
 
 Nav.FP_EPS = 0.01;
-Nav.STD_ROT_SPEED_ORBIT = 0.4;
-Nav.STD_ROT_SPEED_FP    = -0.3;
 Nav.STD_POV_TRANS_DURATION = 2.0;
 
 // Non-immersive navigation controls
@@ -37,6 +35,10 @@ Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
 //Initialize nav system
 Nav.init = ()=>{
     Nav._mode = undefined;
+
+    Nav._rotSpeedOrbit = 0.4;
+    Nav._rotSpeedFP    = -0.2;
+    Nav._inertia       = 0.0; // 0.0 = disabled
 
     // Setup controls
     //Nav._camera = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
@@ -145,11 +147,13 @@ Nav.setOrbitControl = ()=>{
 
         let C = Nav._cOrbit;
 
-        C.rotateSpeed   = Nav.STD_ROT_SPEED_ORBIT;
+        C.rotateSpeed   = Nav._rotSpeedOrbit;
         C.enablePan     = true;
         
-        C.enableDamping = false;
-        //C.dampingFactor = 0.1;
+        if (Nav._inertia > 0.0){
+            C.enableDamping = true;
+            C.dampingFactor = 0.1;
+        }
         
         C.screenSpacePanning = true;
         
@@ -187,10 +191,12 @@ Nav.setFirstPersonControl = ()=>{
 
         C.enableZoom  = false;
         C.enablePan   = false;
-        C.rotateSpeed = Nav.STD_ROT_SPEED_FP;
+        C.rotateSpeed = Nav._rotSpeedFP;
         
-        C.enableDamping = false;
-        //C.dampingFactor = 0.1;
+        if (Nav._inertia > 0.0){
+            C.enableDamping = true;
+            C.dampingFactor = 0.1;
+        }
         
         //C.screenSpacePanning = true;
 

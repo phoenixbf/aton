@@ -673,6 +673,10 @@ ATON.setBackgroundColor = (bg)=>{
 //==============================================================
 // LightProbes
 //==============================================================
+ATON.setAutoLP = (b)=>{
+    ATON._bAutoLP = b;
+};
+
 ATON.setNeutralAmbientLight = (a)=>{
     ATON.ambLight.color = new THREE.Color( a,a,a );
 };

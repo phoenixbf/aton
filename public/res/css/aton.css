@@ -340,6 +340,21 @@ canvas {
     outline: none;
 }
 
+.atonSidePanelRight {
+    position: absolute;
+    width: 90%;
+    max-width: 300px;
+
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    
+    padding: 8px;
+    padding-top: 70px;
+
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .atonVRCsidePanel {
     position: absolute;
     width: 90%;

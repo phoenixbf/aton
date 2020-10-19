@@ -84,10 +84,16 @@ Utils.getFileExtension = ( filepath )=>{
 };
 
 Utils.getBaseFolder = ( filepath )=>{
-    var index  = filepath.lastIndexOf( '/' );
-    if ( index !== -1 ) return filepath.substring( 0, index + 1 );
+    var index = filepath.lastIndexOf('/');
+    if (index !== -1) return filepath.substring( 0, index + 1 );
     
     return '';
+};
+
+Utils.isResourceURL = (s)=>{
+    if (s.startsWith("http://"))  return true;
+    if (s.startsWith("https://")) return true;
+    return false;
 };
 
 Utils.mergeObject = ( object )=>{

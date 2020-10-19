@@ -743,7 +743,7 @@ ATON.setMainPanorama = (path)=>{
     }
 
     // First time: create it
-    ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 30,30 );
+    ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 60,60 );
 
     ATON._matMainPano = new THREE.MeshBasicMaterial({ 
         map: tpano, 

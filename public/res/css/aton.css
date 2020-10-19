@@ -483,9 +483,8 @@ canvas {
 */
     position: relative;
     margin: auto;
-/*
-    max-width: 50%;
-*/
+
+    max-width: 70%;
     max-height: 80%;
     
     top: 50%;
@@ -509,6 +508,7 @@ canvas {
 /*@media screen and (max-width: 800px){*/
     .atonPopup {
         width: 90%;
+        max-width: 90%;
     }
 }
 

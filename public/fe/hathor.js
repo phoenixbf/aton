@@ -464,13 +464,10 @@ AFE.popupExportSemShapes = ()=>{
 };
 
 AFE.checkAuth = (onReceive)=>{
-    console.log("xxx");
-
     $.ajax({
         type: 'GET',
         url: ATON.PATH_RESTAPI+"user",
-        xhrFields: { withCredentials: true },
-        contentType:"application/json; charset=utf-8",              
+        xhrFields: { withCredentials: true },            
         dataType: 'json',
 
         success: (data)=>{ 

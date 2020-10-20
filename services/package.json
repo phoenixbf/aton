@@ -21,6 +21,7 @@
     "clamp": "^1.0.1",
     "command-line-args": "^4.0.7",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -51,6 +52,8 @@
     "three": "^0.117.1",
     "three-mesh-bvh": "^0.2.0",
     "three-mesh-ui": "^4.4.1",
+    "webdav": "^3.6.1",
+    "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }
 }

@@ -114,7 +114,7 @@ passport.deserializeUser(function(id, cb) {
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ 
 	secret: 'aton shu',
-	cookie: { maxAge: 1800000 }, // 60000 = 1 min
+	//cookie: { maxAge: 1800000 }, // 60000 = 1 min
 	resave: true, 
 	saveUninitialized: false,
 	rolling: true
@@ -287,9 +287,40 @@ app.post('/api/new/scene', (req, res) => {
 });
 
 // Authenticate
-app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
-	res.send(req.user);
+//app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
+//	res.send(req.user);
+//});
+app.post("/api/login", (req,res,next)=>{
+	passport.authenticate('local', function(err, user, info) {
+
+		if (err){
+			console.log(err);
+			return next(err);
+		}
+
+		if (!user) {
+			return res.status(401).json({
+				err: info
+			});
+		}
+
+		req.logIn(user, function(err){
+
+			if (err) {
+				console.log(err);
+				return res.status(500).json({
+					err: 'Could not log in user'
+				});
+			}
+
+			res.status(200).json({
+				status: 'Login successful!'
+			});
+
+		});
+	})(req, res, next);
 });
+
 
 app.get('/api/logout', (req, res)=>{
 	req.logout();

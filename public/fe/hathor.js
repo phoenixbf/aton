@@ -157,6 +157,7 @@ AFE.setupEventHandlers = ()=>{
             //AFE.popupUser();
             AFE.popupExportSemShapes();
         }
+        if (k==='X') AFE.popupUser();
 
         if (k==='w'){
             if (ATON.Nav._mode === ATON.Nav.MODE_FP) ATON.Nav.setMotionAmount(0.5);

@@ -18,6 +18,7 @@ const path        = require('path');
 const cors        = require('cors');
 const glob        = require("glob");
 const nanoid      = require("nanoid");
+
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 var passport = require('passport');
@@ -36,7 +37,7 @@ const PORT            = aConfig.services.main.PORT || 8080;
 const PORT_SECURE     = aConfig.services.main.PORT_S || 8083;
 const PORT_ATONIZER   = aConfig.services.atonizer.PORT || 8085;
 const PORT_VRC        = aConfig.services.vroadcast.PORT || 8890;
-//const PORT_VRC_SECURE = aConfig.services.vroadcast.PORT_S || 8891;
+const PORT_WEBDAV     = aConfig.services.webdav.PORT || 8891;
 
 const pathCert = ServUtils.getCertPath();
 const pathKey  = ServUtils.getKeyPath();
@@ -111,7 +112,12 @@ passport.deserializeUser(function(id, cb) {
 });
 
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(require('express-session')({ secret: 'aton shu', resave: false, saveUninitialized: false }));
+app.use(require('express-session')({ 
+	secret: 'aton shu',
+	cookie: { maxAge: 60000 },
+	resave: false, 
+	saveUninitialized: false
+}));
 
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize());
@@ -280,7 +286,7 @@ app.post('/api/new/scene', (req, res) => {
 });
 
 // Authenticate
-app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{ 
+app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
 	res.send(req.user);
 });
 
@@ -319,6 +325,13 @@ app.use('/svrc', createProxyMiddleware({
 	changeOrigin: true 
 }));
 
+/*
+app.use('/webdav', createProxyMiddleware({ 
+	target: aConfig.services.webdav.address+":"+PORT_WEBDAV, 
+	pathRewrite: { '^/webdav': ''}
+	//changeOrigin: true 
+}));
+*/
 
 // START
 //==================================

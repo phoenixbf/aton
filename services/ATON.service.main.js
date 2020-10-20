@@ -115,9 +115,9 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ 
 	secret: 'aton shu',
 	//cookie: { maxAge: 1800000 }, // 60000 = 1 min
-	resave: true, 
-	saveUninitialized: false,
-	rolling: true
+	//resave: true, 
+	//saveUninitialized: false,
+	//rolling: true
 }));
 
 // Initialize Passport and restore authentication state, if any, from the session

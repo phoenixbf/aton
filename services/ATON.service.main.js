@@ -116,7 +116,7 @@ app.use(require('express-session')({
 	secret: 'aton shu',
 	cookie: { maxAge: 1800000 }, // 60000 = 1 min
 	resave: true, 
-	saveUninitialized: true,
+	saveUninitialized: false,
 	rolling: true
 }));
 

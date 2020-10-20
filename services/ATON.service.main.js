@@ -287,9 +287,10 @@ app.post('/api/new/scene', (req, res) => {
 });
 
 // Authenticate
-//app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
-//	res.send(req.user);
-//});
+app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
+	res.send(req.user);
+});
+/*
 app.post("/api/login", (req,res,next)=>{
 	passport.authenticate('local', function(err, user, info) {
 
@@ -320,7 +321,7 @@ app.post("/api/login", (req,res,next)=>{
 		});
 	})(req, res, next);
 });
-
+*/
 
 app.get('/api/logout', (req, res)=>{
 	req.logout();
@@ -328,7 +329,8 @@ app.get('/api/logout', (req, res)=>{
 });
 
 app.get("/api/user", (req,res)=>{
-	res.send(req.user);
+	if (req.user) res.send(req.user);
+	else res.send({});
 });
 
 // Micro-services proxies

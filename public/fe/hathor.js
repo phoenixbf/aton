@@ -463,9 +463,38 @@ AFE.popupExportSemShapes = ()=>{
     });
 };
 
+AFE.checkAuth = (onReceive)=>{
+    console.log("xxx");
+
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },
+        contentType:"application/json; charset=utf-8",              
+        dataType: 'json',
+
+        success: (data)=>{ 
+            onReceive(data);
+        }
+    });
+};
+
 AFE.popupUser = ()=>{
-    $.get(ATON.PATH_RESTAPI+"user", (r)=>{
-        if (r){
+
+    AFE.checkAuth((r)=>{
+
+    //$.get(ATON.PATH_RESTAPI+"user", (r)=>{
+/*
+    fetch(ATON.PATH_RESTAPI+"user", {
+        credentials: 'include',
+        method: 'GET'
+        })
+        //.then((resp) => resp.json()) // Transform the data into json
+        .then(function(r){
+*/
+        console.log(r);
+
+        if (r.username !== undefined){
             let htmlcontent = "<h1>User</h1>";
             htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br>";
 
@@ -517,5 +546,4 @@ AFE.popupUser = ()=>{
             });
         }
     });
-
 };

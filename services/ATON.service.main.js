@@ -37,7 +37,7 @@ const PORT            = aConfig.services.main.PORT || 8080;
 const PORT_SECURE     = aConfig.services.main.PORT_S || 8083;
 const PORT_ATONIZER   = aConfig.services.atonizer.PORT || 8085;
 const PORT_VRC        = aConfig.services.vroadcast.PORT || 8890;
-const PORT_WEBDAV     = aConfig.services.webdav.PORT || 8891;
+//const PORT_WEBDAV     = aConfig.services.webdav.PORT || 8891;
 
 const pathCert = ServUtils.getCertPath();
 const pathKey  = ServUtils.getKeyPath();

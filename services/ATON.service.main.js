@@ -20,10 +20,6 @@ const cors        = require('cors');
 const cookieParser   = require('cookie-parser');
 const session        = require('express-session');
 const FileStore      = require('session-file-store')(session);
-//const LowdbStore     = require('lowdb-session-store')(session);
-//const lowdb          = require('lowdb');
-//const FileSync       = require('lowdb/adapters/FileSync');
-// connect-memcached
 
 const glob   = require("glob");
 const nanoid = require("nanoid");
@@ -132,7 +128,7 @@ app.use(
 		resave: true, 
 		saveUninitialized: true,
 		//rolling: true
-		store: new FileStore(fileStoreOptions)
+		store: new FileStore(fileStoreOptions)	// required for consistency in cluster mode
 	})
 );
 

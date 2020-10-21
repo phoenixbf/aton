@@ -29,6 +29,8 @@ let targetURL = urlParams.get('url');
 
 
 let onLoginResponse = (r)=>{
+    console.log(r);
+
     if (r){
         if (targetURL === undefined || targetURL === null) return;
         window.location.href = targetURL;

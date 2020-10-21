@@ -16,7 +16,7 @@ const url         = require('url');
 const compression = require('compression');
 const path        = require('path');
 const cors         = require('cors');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 const glob         = require("glob");
 const nanoid       = require("nanoid");
 
@@ -114,8 +114,9 @@ passport.deserializeUser(function(id, cb) {
 	});
 });
 
-//app.use(require('cookie-parser'));
+
 app.use(require('body-parser').urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(require('express-session')({ 
 	secret: 'aton shu',
 	//cookie: { maxAge: 1800000 }, // 60000 = 1 min

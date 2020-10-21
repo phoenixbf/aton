@@ -66,6 +66,8 @@ typings/
 #   ATON framework custom
 #################################
 
+/services/sessions
+
 _prv
 *.psd
 

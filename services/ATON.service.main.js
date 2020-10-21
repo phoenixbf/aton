@@ -15,17 +15,22 @@ const https       = require('https');
 const url         = require('url');
 const compression = require('compression');
 const path        = require('path');
-const cors         = require('cors');
-const cookieParser = require('cookie-parser');
-const glob         = require("glob");
-const nanoid       = require("nanoid");
+const cors        = require('cors');
 
+const cookieParser   = require('cookie-parser');
+const session        = require('express-session');
+const FileStore      = require('session-file-store')(session);
+//const LowdbStore     = require('lowdb-session-store')(session);
+//const lowdb          = require('lowdb');
+//const FileSync       = require('lowdb/adapters/FileSync');
+
+const glob   = require("glob");
+const nanoid = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
 
-//const basicAuth = require('express-basic-auth');
 const ServUtils   = require('./ServUtils');
 
 
@@ -52,7 +57,7 @@ let logger = function(req, res, next){
 
 let app = express();
 
-app.set('trust proxy', 1); 	// trust first proxy
+//app.set('trust proxy', 1); 	// trust first proxy
 
 app.use(compression());
 app.use(cors({credentials: true, origin: true}));
@@ -115,15 +120,20 @@ passport.deserializeUser(function(id, cb) {
 });
 
 
+let fileStoreOptions = {};
+
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(require('express-session')({ 
-	secret: 'aton shu',
-	//cookie: { maxAge: 1800000 }, // 60000 = 1 min
-	resave: false, 
-	saveUninitialized: false,
-	//rolling: true
-}));
+app.use(
+	session({ 
+		secret: 'shu',
+		//cookie: { maxAge: 1800000 }, // 60000 = 1 min
+		resave: false, 
+		saveUninitialized: false,
+		//rolling: true
+		store: new FileStore(fileStoreOptions)
+	})
+);
 
 // Initialize Passport and restore authentication state, if any, from the session
 app.use(passport.initialize());
@@ -293,6 +303,9 @@ app.post('/api/new/scene', (req, res) => {
 
 // Authenticate
 app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
+
+	//if (req.user) ServUtils.userLogin(req.user.username);
+
 	res.send(req.user);
 });
 /*
@@ -329,6 +342,8 @@ app.post("/api/login", (req,res,next)=>{
 */
 
 app.get('/api/logout', (req, res)=>{
+	console.log(req.user);
+
 	req.logout();
 	res.send(true);
 });

@@ -7,6 +7,7 @@ const jsonpatch   = require('fast-json-patch');
 ServUtils = {};
 
 ServUtils.DIR_PUBLIC       = path.join(__dirname,"/../public/");
+ServUtils.DIR_PRV          = path.join(__dirname, "_prv/");
 ServUtils.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
 ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
 ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
@@ -23,7 +24,7 @@ ServUtils.STATUS_PROCESSING = "processing";
 
 // Routine for loading custom -> default fallback config JSON files
 ServUtils.loadConfigFile = (jsonfile)=>{
-	let customconfig  = path.join(__dirname, "_prv/"+jsonfile);
+	let customconfig  = path.join(ServUtils.DIR_PRV + jsonfile);
 	let defaultconfig = path.join(__dirname, jsonfile);
 
 	if (fs.existsSync(customconfig)){
@@ -39,10 +40,10 @@ ServUtils.loadConfigFile = (jsonfile)=>{
 
 // SSL certs
 ServUtils.getCertPath = ()=>{
-	return path.join(__dirname,'/_prv/server.crt');
+	return path.join(ServUtils.DIR_PRV,'server.crt');
 };
 ServUtils.getKeyPath = ()=>{
-	return path.join(__dirname,'/_prv/server.key');
+	return path.join(ServUtils.DIR_PRV,'server.key');
 };
 
 // Scene utils
@@ -277,6 +278,17 @@ ServUtils.writeSceneJSON = (sid, data, pub)=>{
 	}
 
 	return true;
+};
+
+// Not used
+ServUtils.userLogin = (id)=>{
+	let sessionfile = ServUtils.DIR_PRV + "s-"+id+".json";
+	if (!fs.existsSync(sessionfile)) fs.writeFileSync(sessionfile, "");
+};
+
+ServUtils.userLogout = (id)=>{
+	let sessionfile = ServUtils.DIR_PRV + "s-"+id+".json";
+	if (!fs.existsSync(sessionfile)) fs.unlinkSync(sessionfile);
 };
 
 

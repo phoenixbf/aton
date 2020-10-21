@@ -124,7 +124,7 @@ passport.deserializeUser(function(id, cb) {
 let fileStoreOptions = {};
 
 app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(
 	session({ 
 		secret: 'shu',

@@ -23,6 +23,7 @@ const FileStore      = require('session-file-store')(session);
 //const LowdbStore     = require('lowdb-session-store')(session);
 //const lowdb          = require('lowdb');
 //const FileSync       = require('lowdb/adapters/FileSync');
+// connect-memcached
 
 const glob   = require("glob");
 const nanoid = require("nanoid");

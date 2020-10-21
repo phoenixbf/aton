@@ -124,13 +124,13 @@ passport.deserializeUser(function(id, cb) {
 let fileStoreOptions = {};
 
 app.use(require('body-parser').urlencoded({ extended: true }));
-//app.use(cookieParser());
+app.use(cookieParser());
 app.use(
 	session({ 
 		secret: 'shu',
 		//cookie: { maxAge: 1800000 }, // 60000 = 1 min
-		resave: false, 
-		saveUninitialized: false,
+		resave: true, 
+		saveUninitialized: true,
 		//rolling: true
 		store: new FileStore(fileStoreOptions)
 	})

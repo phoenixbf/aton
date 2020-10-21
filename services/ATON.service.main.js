@@ -52,6 +52,8 @@ let logger = function(req, res, next){
 
 let app = express();
 
+app.set('trust proxy', 1); 	// trust first proxy
+
 app.use(compression());
 app.use(cors({credentials: true, origin: true}));
 
@@ -117,7 +119,7 @@ app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ 
 	secret: 'aton shu',
 	//cookie: { maxAge: 1800000 }, // 60000 = 1 min
-	resave: true, 
+	resave: false, 
 	saveUninitialized: false,
 	//rolling: true
 }));
@@ -331,6 +333,8 @@ app.get('/api/logout', (req, res)=>{
 });
 
 app.get("/api/user", (req,res)=>{
+	console.log(req.session);
+
 	if (req.user) res.send(req.user);
 	else res.send({});
 });

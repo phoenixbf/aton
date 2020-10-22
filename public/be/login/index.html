@@ -27,20 +27,22 @@
 let urlParams = new URLSearchParams(window.location.search);
 let targetURL = urlParams.get('url');
 
-
-let onLoginResponse = (r)=>{
+// Success
+let onLoginSuccess = (r)=>{
     console.log(r);
 
-    if (r){
-        if (targetURL === undefined || targetURL === null) return;
-        window.location.href = targetURL;
-        return;
-    }
+    $("#idLoginBTN").html("Logged in");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-green");
 
-    // Failed
-    $("#idLoginBTN").html("Login FAILED");
+    if (targetURL === undefined || targetURL === null) return;
+    window.location.href = targetURL;
 };
 
+// Failed
+let onLoginFail = ()=>{
+    $("#idLoginBTN").html("Login FAILED");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
+};
 
 window.addEventListener( 'load', ()=>{
     $("#idLoginBTN").click(()=>{
@@ -49,7 +51,7 @@ window.addEventListener( 'load', ()=>{
             password: $("#idPassword").val()
         };
 
-        BE.postJSON("/api/login/", o, onLoginResponse );
+        BE.postJSON("/api/login/", o, onLoginSuccess, onLoginFail );
     });
 });
 
@@ -61,15 +63,10 @@ window.addEventListener( 'load', ()=>{
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
         <div class="atonBlockGroup">
-            <div class="atonBlockTitle">Login</div>
+            username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>
+            password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>
 
-            <div class="atonBlockCut">
-                <label for='idUsername'>username:</label><input id='idUsername' type='text' maxlength='15' size='15' ><br>
-                <label for='idPassword'>password:</label><input id='idPassword' type='password' maxlength='15' size='15' ><br>
-
-                <button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:80%'>LOGIN</div>
-            </div>
-
+            <button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:80%'>LOGIN</button>
         </div>
 
     </div>

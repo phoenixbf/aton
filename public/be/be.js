@@ -28,7 +28,7 @@ BE.goToScene = (sid, vrc)=>{
     window.location.href = feURL;
 };
 
-BE.postJSON = (endpoint, obj, onReceive)=>{
+BE.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({
         url: endpoint,
         type:"POST",
@@ -39,6 +39,9 @@ BE.postJSON = (endpoint, obj, onReceive)=>{
         success: (data)=>{
             if (onReceive) onReceive(data);
         }
+    }).fail((err)=>{
+        console.log(err);
+        if (onFail) onFail();
     });
 };
 

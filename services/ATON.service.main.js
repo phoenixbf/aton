@@ -33,7 +33,7 @@ const ServUtils   = require('./ServUtils');
 
 // Loads config
 let aConfig = ServUtils.loadConfigFile("config.json");
-let users   = ServUtils.loadConfigFile("users.json");
+let users   = ServUtils.loadConfigFile("db-users.json");
 
 
 const PORT            = aConfig.services.main.PORT || 8080;
@@ -71,6 +71,7 @@ app.use(express.json());
 
 app.use('/', express.static(ServUtils.DIR_PUBLIC));
 app.use('/mods', express.static(ServUtils.DIR_NODE_MODULES));
+app.use('/fe', express.static(ServUtils.DIR_FE));
 app.use('/apidoc', express.static(ServUtils.DIR_APIDOC));
 
 
@@ -301,9 +302,9 @@ app.post('/api/new/scene', (req, res) => {
 // Authenticate
 app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
 
-	//if (req.user) ServUtils.userLogin(req.user.username);
+	let U = ServUtils.createClientUserAuthResponse(req);
 
-	res.send(req.user);
+	res.send(U);
 });
 /*
 app.post("/api/login", (req,res,next)=>{
@@ -348,8 +349,8 @@ app.get('/api/logout', (req, res)=>{
 app.get("/api/user", (req,res)=>{
 	console.log(req.session);
 
-	if (req.user) res.send(req.user);
-	else res.send({});
+	let U = ServUtils.createClientUserAuthResponse(req);
+	res.send(U);
 });
 
 // Micro-services proxies

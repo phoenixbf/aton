@@ -10,6 +10,7 @@ ServUtils.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 ServUtils.DIR_PRV          = path.join(__dirname, "_prv/");
 ServUtils.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
 ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
+ServUtils.DIR_FE           = path.join(ServUtils.DIR_PUBLIC,"hathor/");
 ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
 ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
 ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
@@ -278,6 +279,15 @@ ServUtils.writeSceneJSON = (sid, data, pub)=>{
 	}
 
 	return true;
+};
+
+ServUtils.createClientUserAuthResponse = (req)=>{
+	if (req.user === undefined) return {};
+
+	let U = {};
+	U.username = req.user.username;
+
+	return U;
 };
 
 // Not used

@@ -17,6 +17,7 @@ FE.realize = ()=>{
 
     FE._bPopup = false;     // showing popup
     FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+    FE._userAuth = {};
 
     FE._bReqHome = false;   // auto-compute home
 
@@ -192,6 +193,27 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     });
 };
 
+FE.uiAddButtonUser = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "user", ()=>{
+        FE.popupUser();
+    });
+};
+
+FE.uiAddButtonEditMode = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "edit", ()=>{
+        FE.checkAuth((data)=>{
+            if (data.username !== undefined){
+                ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
+                FE.uiSwitchButton("edit",ATON.SceneHub._bEdit);
+            }
+
+            else {
+                FE.popupUser();  
+            }
+        });
+    });
+};
+
 // Attach ID validator to given input field
 FE.uiAttachInputFilterID = (inputid)=>{
     $("#"+inputid).on('keyup change input', ()=>{
@@ -310,6 +332,88 @@ FE.popupVRC = ()=>{
         ATON.FE.popupClose();
     });
 
+};
+
+// User auth
+FE.checkAuth = (onReceive)=>{
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{
+            FE._userAuth = data;
+            console.log(FE._userAuth);
+
+            onReceive(data);
+        }
+    });
+};
+
+FE.popupUser = ()=>{
+
+    FE.checkAuth((r)=>{
+        // We are already logged
+        if (r.username !== undefined){
+            let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
+            htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br><br>";
+
+            htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:100%'>LOGOUT</div>";
+
+            if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+            $("#idLogoutBTN").click(()=>{
+                $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
+                    console.log(r);
+                    ATON.SceneHub.setEditMode(false);
+                    ATON.fireEvent("Logout");
+                });
+
+                ATON.FE.popupClose();
+            });
+
+        }
+
+        // Not logged in
+        else {
+            let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
+            htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
+            htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
+
+            htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:100%'>LOGIN</div>";
+
+            if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+            $("#idLoginBTN").click(()=>{
+                let jstr = JSON.stringify({
+                    username: $("#idUsername").val(),
+                    password: $("#idPassword").val()
+                });
+
+                $.ajax({
+                    url: ATON.PATH_RESTAPI+"login",
+                    type:"POST",
+                    data: jstr,
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"json",
+
+                    success: (r)=>{
+                        console.log(r);
+                        if (r){
+                            ATON.fireEvent("Login", r);
+                            ATON.FE.popupClose();
+                        }
+                    }
+
+                }).fail((err)=>{
+                    //console.log(err);
+                    $("#idLoginBTN").html("LOGIN FAILED");
+                    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
+                });
+            });
+        }
+    });
 };
 
 

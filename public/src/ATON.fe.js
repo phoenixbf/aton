@@ -11,6 +11,10 @@ ATON Front-end routines
 */
 let FE = {};
 
+// Semantic-shapes types
+FE.SEMSHAPE_SPHERE = 0;
+FE.SEMSHAPE_CONVEX = 1;
+
 
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";

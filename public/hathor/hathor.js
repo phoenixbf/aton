@@ -186,7 +186,7 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='a'){
             ATON.SemFactory.stopCurrentConvex();
-            HATHOR.popupAddSemanticSphere();
+            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
         }
 
         if (k==='s'){
@@ -194,7 +194,7 @@ HATHOR.setupEventHandlers = ()=>{
         }
 
         if (k==='S'){
-            HATHOR.popupAddSemanticConvex();
+            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
 
         if (k==='#'){
@@ -314,8 +314,11 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
     });
 };
 
-HATHOR.popupAddSemanticSphere = ()=>{
+// Add/Finalize semantic shape
+HATHOR.popupAddSemantic = (semtype)=>{
     let htmlcontent = HATHOR._createPopupStdSem();
+
+    if (semtype === undefined) semtype = ATON.FE.SEMSHAPE_SPHERE;
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
@@ -355,7 +358,9 @@ HATHOR.popupAddSemanticSphere = ()=>{
         if (semid === undefined || semid.length<2 || semid === ATON.ROOT_NID) return;
         if (semid === psemid) return;
 
-        let S = ATON.SemFactory.createSurfaceSphere(semid);
+        let S;
+        if (semtype === ATON.FE.SEMSHAPE_SPHERE) S = ATON.SemFactory.createSurfaceSphere(semid);
+        if (semtype === ATON.FE.SEMSHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(semid);
         if (S === undefined) return;
 
         if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
@@ -369,7 +374,10 @@ HATHOR.popupAddSemanticSphere = ()=>{
         E.semanticgraph = {};
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
-        E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
+
+        if (semtype === ATON.FE.SEMSHAPE_SPHERE) E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
+        if (semtype === ATON.FE.SEMSHAPE_CONVEX) E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
+        
         if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
@@ -378,54 +386,6 @@ HATHOR.popupAddSemanticSphere = ()=>{
     });
 };
 
-HATHOR.popupAddSemanticConvex = ()=>{
-    let htmlcontent = HATHOR._createPopupStdSem();
-
-    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
-
-    ATON.FE.uiAttachInputFilterID("semid");
-
-    HATHOR.createSemanticTextEditor("idSemDescription");
-
-    $("#idAnnOK").click(()=>{
-        let semid  = $("#semid").val();
-        let psemid = $("#psemid").val();
-        let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
-        console.log(xxtmldescr);
-
-        if (semid.length<1) return;
-
-        ATON.FE.popupClose();
-
-        if (semid === undefined || semid === ATON.ROOT_NID) return;
-        if (semid === psemid) return;
-
-        let S = ATON.SemFactory.completeConvexShape(semid);
-        if (S === undefined) return;
-
-        if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
-        
-        $("#semid").blur();
-        $("#idSemDescription").blur();
-
-        if (psemid !== undefined && ATON.getSemanticNode(psemid)) ATON.getSemanticNode(psemid).add(S); 
-        else ATON.getRootSemantics().add(S);
-
-        let E = {};
-        E.semanticgraph = {};
-        E.semanticgraph.nodes = {};
-        E.semanticgraph.nodes[S.nid] = {};
-        E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
-        if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
-        E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM);
-        
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD );
-
-        if (HATHOR.paramVRC === undefined) return;
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
-
-    });
-};
 
 HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
     let S = ATON.getSemanticNode(semid);

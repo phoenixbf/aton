@@ -20,7 +20,7 @@
 <title>Login</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="/be/be.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
 
 <script>
 
@@ -34,7 +34,10 @@ let onLoginSuccess = (r)=>{
     $("#idLoginBTN").html("Logged in");
     $("#idLoginBTN").attr("class","atonBTN atonBTN-green");
 
-    if (targetURL === undefined || targetURL === null) return;
+    if (targetURL === undefined || targetURL === null){
+        location.reload();
+        return;
+    }
     window.location.href = targetURL;
 };
 
@@ -44,14 +47,46 @@ let onLoginFail = ()=>{
     $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
 };
 
-window.addEventListener( 'load', ()=>{
-    $("#idLoginBTN").click(()=>{
-        let o = {
-            username: $("#idUsername").val(), 
-            password: $("#idPassword").val()
-        };
+let renderAuthForm = (data)=>{
+    let htmlcontent = "";
 
-        BE.postJSON("/api/login/", o, onLoginSuccess, onLoginFail );
+    if (data.username){
+        htmlcontent += "You are logged in as: <b>"+data.username+"</b><br><br>";
+        htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:80%'>LOGOUT</button>";
+
+        $("#idAuth").html(htmlcontent);
+
+        $("#idLogoutBTN").click(()=>{
+            SHU.getJSON("/api/logout/",(r)=>{
+                location.reload();
+            });
+        });
+
+    }
+    else {
+
+        htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
+        htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
+
+        htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:80%'>LOGIN</button>";
+
+        $("#idAuth").html(htmlcontent);
+
+        $("#idLoginBTN").click(()=>{
+            let o = {
+                username: $("#idUsername").val(), 
+                password: $("#idPassword").val()
+            };
+
+            SHU.postJSON("/api/login/", o, onLoginSuccess, onLoginFail );
+        });
+    }
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.checkAuth((data)=>{
+        renderAuthForm(data);
     });
 });
 
@@ -62,11 +97,7 @@ window.addEventListener( 'load', ()=>{
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
 
-        <div class="atonBlockGroup">
-            username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>
-            password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>
-
-            <button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:80%'>LOGIN</button>
+        <div class="atonBlockGroup" id="idAuth">
         </div>
 
     </div>

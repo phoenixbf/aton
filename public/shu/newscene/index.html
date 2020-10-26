@@ -20,12 +20,12 @@
 <title>New Scene</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="/be/be.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
 
 <script>
 
-let sobj = BE.createBaseScene();
-let sid  = BE.generateID("SID");
+let sobj = SHU.createBaseScene();
+let sid  = SHU.generateID("sid");
 console.log(sid);
 
 
@@ -40,11 +40,11 @@ let requestSceneCreation = ()=>{
 
     console.log(o);
 
-    BE.postJSON("/api/new/scene", o, handleServerResponse);
+    SHU.postJSON("/api/new/scene", o, handleServerResponse);
 };
 
 let handleServerResponse = (r)=>{
-    if (r) BE.goToScene(sid);
+    if (r) SHU.goToScene(sid);
 };
 
 let composeScene = ()=>{
@@ -87,12 +87,11 @@ let composeScene = ()=>{
 
 };
 
-window.addEventListener( 'load', ()=>{
-
+let renderForm = ()=>{
     $("#idSID").html(sid);
 
-    BE.appendModelsToSelect("mpath");
-    BE.appendPanoramasToSelect("panopath");
+    SHU.appendModelsToSelect("mpath");
+    SHU.appendPanoramasToSelect("panopath");
 
     // initial blocks
     $('#blockTransform').hide();
@@ -140,6 +139,21 @@ window.addEventListener( 'load', ()=>{
         }
         console.log(sobj);
     });
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.checkAuth((data)=>{
+        if (data.username){
+            sid = data.username+"/"+sid;
+            renderForm();
+        }
+        else {
+            window.location.href = "/shu/auth/?url="+window.location.href;
+        }
+    });
+
+
 });
 
 </script>

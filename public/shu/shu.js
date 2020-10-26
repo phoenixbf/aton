@@ -2,23 +2,23 @@ const DIR_COLLECTION = "/collection/";
 const DIR_SCENES     = "/scenes/";
 const PATH_FE        = window.location.origin + "/fe/";
 
-let BE = {};
+let SHU = {};
 
-BE.getBaseFolder = ( filepath )=>{
+SHU.getBaseFolder = ( filepath )=>{
     let index  = filepath.lastIndexOf( '/' );
     if ( index !== -1 ) return filepath.substring( 0, index + 1 );
     
     return '';
 };
 
-BE.generateID = (prefix)=>{
+SHU.generateID = (prefix)=>{
     if (prefix === undefined) prefix = "id";
     //let currDate = new Date();
     //let ts = currDate.getYear()+":"+currDate.getMonth()+":"+currDate.getDay()+":"+currDate.getHours()+":"+currDate.getMinutes() +":"+ currDate.getSeconds();
     return prefix+'-' + Math.random().toString(36).substr(2,9);
 };
 
-BE.goToScene = (sid, vrc)=>{
+SHU.goToScene = (sid, vrc)=>{
     if (sid === undefined) return;
     if (sid.length < 2) return;
 
@@ -28,7 +28,7 @@ BE.goToScene = (sid, vrc)=>{
     window.location.href = feURL;
 };
 
-BE.postJSON = (endpoint, obj, onReceive, onFail)=>{
+SHU.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({
         url: endpoint,
         type:"POST",
@@ -45,13 +45,27 @@ BE.postJSON = (endpoint, obj, onReceive, onFail)=>{
     });
 };
 
-BE.getJSON = (endpoint, onReceive)=>{
+// Users
+SHU.checkAuth = (onReceive)=>{
+    $.ajax({
+        type: 'GET',
+        url: "/api/user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{
+            onReceive(data);
+        }
+    });
+};
+
+SHU.getJSON = (endpoint, onReceive)=>{
     $.getJSON( endpoint, (data)=>{
         if (onReceive) onReceive(data);
     });  
 };
 
-BE.getScenesSelect = (idselect)=>{
+SHU.getScenesSelect = (idselect)=>{
     $.getJSON( "/api/scenes/", ( data )=>{
         let list = "<option value=''>Choose scene ID...</option>";
 
@@ -64,7 +78,7 @@ BE.getScenesSelect = (idselect)=>{
     });
 };
 
-BE.getScenesInputList = (idlist)=>{
+SHU.getScenesInputList = (idlist)=>{
     let htmlcontent = "<label for='sid'>Scene ID</label><br><input id='sid' type='text' list='sidlist' style='width:50%'>";
 
     $.getJSON( "/api/scenes/", ( data )=>{
@@ -76,7 +90,7 @@ BE.getScenesInputList = (idlist)=>{
     });
 };
 
-BE.createBaseScene = ()=>{
+SHU.createBaseScene = ()=>{
     let sobj = {};
 
     sobj.status = "complete";
@@ -94,7 +108,7 @@ BE.createBaseScene = ()=>{
     return sobj;
 };
 
-BE.appendModelsToSelect = (idselect)=>{
+SHU.appendModelsToSelect = (idselect)=>{
     $.getJSON( "/api/c/models/", ( data )=>{
         let list = "";
         let folders = {};
@@ -103,7 +117,7 @@ BE.appendModelsToSelect = (idselect)=>{
             let mp = data[m];
             list += "<option value='"+mp+"'>[MODEL] "+mp+"</option>";
 
-            let F = BE.getBaseFolder(mp);
+            let F = SHU.getBaseFolder(mp);
             if (folders[F] === undefined) folders[F] = mp;
             else folders[F] += ","+mp;
         }
@@ -114,7 +128,7 @@ BE.appendModelsToSelect = (idselect)=>{
     });
 };
 
-BE.appendPanoramasToSelect = (idselect)=>{
+SHU.appendPanoramasToSelect = (idselect)=>{
     $.getJSON( "/api/c/panoramas/", ( data )=>{
         let list = "";
 

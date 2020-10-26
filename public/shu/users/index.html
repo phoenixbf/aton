@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="New Scene">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="Users">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>Users</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
+
+<script>
+
+let renderForm = ()=>{
+
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.checkAuth((data)=>{
+        if (data.username){
+            sid = data.username+"/"+sid;
+            renderForm();
+        }
+        else {
+            window.location.href = "/shu/auth/?url="+window.location.href;
+        }
+    });
+
+
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div style="text-align: center;">
+        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+
+        <br>
+        <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
+        <h3>Create Scene</h3>
+        </div>
+
+
+
+        <!-- <input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label> -->
+    </div>
+    
+    </body>

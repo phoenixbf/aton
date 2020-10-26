@@ -20,7 +20,7 @@
 <title>ATON Framework</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="/be/be.js"></script>
+<script type="text/javascript" src="shu/shu.js"></script>
 
 <script>
 
@@ -32,7 +32,7 @@ window.addEventListener( 'load', ()=>{
         BE.goToScene( $("#sid").val() );
     });
 */
-    BE.getScenesInputList("idScenes");
+    SHU.getScenesInputList("idScenes");
     $("#btn-go").click(()=>{
         let sid = $("#sid").val();
 

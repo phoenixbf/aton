@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="New Scene">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="Users">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>Scenes</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
+
+<script>
+
+let renderForm = ()=>{
+    $.getJSON( "/api/scenes/own", (data)=>{
+
+        for (let i in data){
+            let sid = data[i];
+
+            let shtml = "";
+            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:250px'>";
+            shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
+            shtml += "<br>";
+            shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='/res/icons/play.png'></button>";
+            
+            shtml += "<button id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></button>";
+            
+            shtml += "<div id='delConf-"+i+"' class='atonBlockRound' style='width:90%; display:none'>Delete this scene: are you sure?<br>"
+            shtml += "<button id='del-"+i+"' class='atonBTN atonBTN-red'>YES</button><button id='delNo-"+i+"' class='atonBTN'>NO</button>"
+            shtml += "</div>";
+            
+            shtml += "</div>";
+
+            $('#idOwnScenes').append(shtml);
+
+            $('#go-'+i).click(()=>{
+                SHU.goToScene( sid );
+            });
+
+            $('#delAsk-'+i).click(()=>{
+                $('#delConf-'+i).show();
+                $('#go-'+i).hide();
+                $('#delAsk-'+i).hide();
+
+                $("#s"+i).css("background-color","rgba(127,0,0,0.3)");
+
+                $('#del-'+i).click(()=>{
+                    SHU.postJSON("/api/del/scene", {sid: sid}, (b)=>{
+                        if (b) $("#s"+i).hide();
+                    });
+                });
+
+                $('#delNo-'+i).click(()=>{
+                    $('#delConf-'+i).hide();
+                    $("#s"+i).css("background-color","");
+                    $('#go-'+i).show();
+                    $('#delAsk-'+i).show();
+                });
+
+            });
+        }
+        
+    });
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.uiAddMainToolbar("idTopToolbar");
+
+    SHU.checkAuth((data)=>{
+        if (data.username){
+            renderForm();
+
+            $("#btn-newscene").click(()=>{
+                window.location.href = "/shu/newscene/";
+                console.log("X");
+            });
+        }
+        else {
+            window.location.href = "/shu/auth/?url="+window.location.href;
+        }
+    });
+
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
+
+    <div style="text-align:center; margin-top: 50px;">
+        <div class="atonTitle">Your Scenes</div>
+        <br>
+
+        <div class="" id='idOwnScenes'></div>
+
+        <br><button id="btn-newscene" class="atonBTN atonBTN-green atonProcessBTN">New Scene</button>
+
+    </div>
+    
+</body>

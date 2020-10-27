@@ -2,7 +2,9 @@
 	"services":{
 		"main": {
 			"PORT": 8080,
-			"PORT_S": 8083
+			"PORT_S": 8083,
+			"apidoc": true,
+			"perusercollection": true
 		},
 		"atonizer":{
 			"PORT": 8085,

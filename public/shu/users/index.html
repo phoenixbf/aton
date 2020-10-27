@@ -32,7 +32,6 @@ window.addEventListener( 'load', ()=>{
 
     SHU.checkAuth((data)=>{
         if (data.username){
-            sid = data.username+"/"+sid;
             renderForm();
         }
         else {
@@ -47,17 +46,14 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-    <div style="text-align: center;">
-        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
-        <br>
+    <div style="text-align:center; margin-top: 60px;">
+
         <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
         <h3>Create Scene</h3>
         </div>
 
-
-
-        <!-- <input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label> -->
     </div>
     
     </body>

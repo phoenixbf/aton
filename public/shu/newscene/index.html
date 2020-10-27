@@ -20,7 +20,7 @@
 <title>New Scene</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="../shu.js"></script>
+<script type="text/javascript" src="/shu/shu.js"></script>
 
 <script>
 
@@ -143,6 +143,8 @@ let renderForm = ()=>{
 
 window.addEventListener( 'load', ()=>{
 
+    SHU.uiAddMainToolbar("idTopToolbar");
+
     SHU.checkAuth((data)=>{
         if (data.username){
             sid = data.username+"/"+sid;
@@ -160,11 +162,13 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-    <div style="text-align: center;">
-        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
+
+    <div style="text-align:center; margin-top: 50px;">
+        <div class="atonTitle">New Scene</div>
 
         <div class="atonBlockRound">
-            <h2>New Scene ('<span id="idSID"></span>')</h2>
+            <div id="idSID" class="atonBlockRound" style="background-color: rgba(0,0,0, 0.1); width: 90%;"></div><br><br>
 
             <!-- <label for="sid">Scene ID</label>
             <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
@@ -237,13 +241,7 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
-        <h3>Create Scene</h3>
-        </div>
-
-
-
-        <!-- <input id="idVRC" type="checkbox"><label for="idVRC">VRoadcast</label> -->
+        <button type='button' id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">Create Scene</button>
     </div>
     
     </body>

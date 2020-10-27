@@ -37,6 +37,9 @@ const PORT_VRC        = aConfig.services.vroadcast.PORT || 8890;
 const pathCert = ServUtils.getCertPath();
 const pathKey  = ServUtils.getKeyPath();
 
+let bExamples = aConfig.services.main.examples;
+let bAPIdoc   = aConfig.services.main.apidoc;
+
 // Debug on req received (client)
 let logger = function(req, res, next){
     console.log('Request from: ' + req.ip + ' For: ' + req.path);
@@ -79,7 +82,7 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 app.use('/', express.static(ServUtils.DIR_PUBLIC));
 app.use('/mods', express.static(ServUtils.DIR_NODE_MODULES));
 app.use('/fe', express.static(ServUtils.DIR_FE));
-app.use('/apidoc', express.static(ServUtils.DIR_APIDOC));
+if (bAPIdoc) app.use('/apidoc', express.static(ServUtils.DIR_APIDOC));
 
 
 ServUtils.setupPassport();

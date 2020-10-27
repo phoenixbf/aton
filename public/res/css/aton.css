@@ -864,6 +864,24 @@ label {
     font-size: smaller;
 }
 
+.atonTitle {
+    display: block;
+    position: relative;
+
+    font-size: x-large;
+    text-align: center;
+
+    background-color: rgba(255,255,255, 0.5);
+    color: #000;
+    font-weight: bold;
+
+    border-radius: 0px;
+    box-shadow: 0 0px 5px rgba(255,255,255, 0.5);
+
+    margin: 0px;
+    padding: 10px;
+}
+
 .atonBlockGroup {
     text-align: center;
 
@@ -944,8 +962,10 @@ label {
 }
 
 .atonProcessBTN {
+/*
     display: block;
     position: relative;
+*/
 /*
     z-index: 100;
     position: fixed;
@@ -953,9 +973,14 @@ label {
     bottom: 0px;
 */
     width: 80%;
-    margin: auto;
 
-    padding: 10px;
+    font-size: large;
+
+    height: 60px;
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 5px;
 
     border-radius: 20px;
 

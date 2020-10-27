@@ -18,6 +18,7 @@ ServUtils.DIR_PRV          = path.join(__dirname, "_prv/");
 ServUtils.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
 ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
 ServUtils.DIR_FE           = path.join(ServUtils.DIR_PUBLIC,"hathor/");
+ServUtils.DIR_BE           = path.join(ServUtils.DIR_PUBLIC,"shu/");
 ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
 ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
 ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
@@ -85,7 +86,7 @@ ServUtils.createBasicScene = ()=>{
 	sobj.scenegraph = {};
 	sobj.scenegraph.nodes = {};
 	sobj.scenegraph.nodes.main = {};
-	sobj.scenegraph.edges = {}; //[[".","main"]];
+	sobj.scenegraph.edges = {};
 	sobj.scenegraph.edges["."] = ["main"];
 
 	sobj.scenegraph.nodes.main.urls = [];
@@ -99,6 +100,13 @@ ServUtils.createBasicScene = ()=>{
 ServUtils.touchSceneFolder = (sid)=>{
 	let D = ServUtils.getSceneFolder(sid);
 	if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 10.0
+};
+
+// Delete a scene folder
+ServUtils.deleteScene = (sid)=>{
+	let D = ServUtils.getSceneFolder(sid);
+	console.log("Deleting "+D);
+	if (fs.existsSync(D)) fs.rmdirSync(D, { recursive: true }); // note: NodeJS > 10.0
 };
 
 ServUtils.readSceneJSON = (sid)=>{
@@ -422,6 +430,17 @@ ServUtils.realizeBaseAPI = (app)=>{
 		//next();
 	});
 
+	// Back-end (SHU)
+/*
+	app.get("/be/newscene/", (req,res,next)=>{
+		if (req.user === undefined){
+			res.sendFile(path.join(ServUtils.DIR_BE, "auth/index.html"));
+			return;
+		}
+
+		res.sendFile(path.join(ServUtils.DIR_BE,"newscene/index.html"));
+	});
+*/
 	// List all published scenes
 	app.get("/api/scenes/", function(req,res,next){
 		let O = {};
@@ -443,9 +462,8 @@ ServUtils.realizeBaseAPI = (app)=>{
 		//next();
 	});
 
-	// List all collection models
-	app.get("/api/c/models/", function(req,res,next){
-
+	// List own scenes (authenticated user)
+	app.get("/api/scenes/own/", function(req,res,next){
 		if (req.user === undefined){
 			res.send([]);
 			return;
@@ -454,13 +472,41 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let uname = req.user.username;
 
 		let O = {};
+		O.cwd = ServUtils.DIR_SCENES+uname;
+		O.follow = true;
+		
+		let files = glob.sync("**/"+ServUtils.STD_SCENEFILE, O);
+
+		let S = [];
+		for (let f in files){
+			let basepath = path.dirname(files[f]);
+			S.push( uname + "/"+ basepath );
+		}
+
+		res.send(S);
+
+		//next();
+	});
+
+	// List all collection models
+	app.get("/api/c/models/", function(req,res,next){
+
+		if (req.user === undefined){
+			res.send([]);
+			return;
+		}
+
+		let uname   = req.user.username;
+		let relpath = "models/"+uname+"/";
+
+		let O = {};
 		O.cwd = ServUtils.DIR_MODELS+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{gltf,glb}", O);
 
 		let M = [];
-		for (let f in files) M.push( "models/"+uname+"/"+files[f] );
+		for (let f in files) M.push( relpath + files[f] );
 
 		res.send(M);
 
@@ -474,7 +520,8 @@ ServUtils.realizeBaseAPI = (app)=>{
 			return;
 		}
 
-		let uname = req.user.username;
+		let uname   = req.user.username;
+		let relpath = "pano/"+uname+"/";
 
 		let O = {};
 		O.cwd = ServUtils.DIR_PANO+uname;
@@ -483,7 +530,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let files = glob.sync("**/*.{jpg,hdr}", O);
 
 		let P = [];
-		for (let f in files) P.push( "pano/"+uname+"/"+files[f] );
+		for (let f in files) P.push( relpath + files[f] );
 
 		res.send(P);
 		
@@ -508,7 +555,25 @@ ServUtils.realizeBaseAPI = (app)=>{
 		//next();
 	});
 
+	app.post("/api/del/scene/", (req,res,next)=>{
+		let O = req.body;
+		let sid = O.sid;
 
+		// Only auth users can delete a scene
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
+
+		let uname = req.user.username;
+		if (!sid.startsWith(uname)){ // only own scenes
+			res.send(false);
+			return;
+		}
+
+		ServUtils.deleteScene(sid);
+		res.send(true);
+	});
 
 	// Scene edit (add or remove)
 	app.post('/api/edit/scene', (req, res) => {

@@ -20,7 +20,7 @@
 <title>Login</title>
 <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="../shu.js"></script>
+<script type="text/javascript" src="/shu/shu.js"></script>
 
 <script>
 
@@ -32,7 +32,7 @@ let onLoginSuccess = (r)=>{
     console.log(r);
 
     $("#idLoginBTN").html("Logged in");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-green");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-green atonProcessBTN");
 
     if (targetURL === undefined || targetURL === null){
         location.reload();
@@ -44,15 +44,17 @@ let onLoginSuccess = (r)=>{
 // Failed
 let onLoginFail = ()=>{
     $("#idLoginBTN").html("Login FAILED");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-red atonProcessBTN");
 };
 
 let renderAuthForm = (data)=>{
     let htmlcontent = "";
 
     if (data.username){
-        htmlcontent += "You are logged in as: <b>"+data.username+"</b><br><br>";
-        htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:80%'>LOGOUT</button>";
+        htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
+        htmlcontent += "<h3>You are logged in as:<br>'"+data.username+"'</h3><br>";
+        htmlcontent += "<button type='button' class='atonBTN atonBTN-red atonProcessBTN' id='idLogoutBTN'>LOGOUT</button>";
+        htmlcontent += "</div>";
 
         $("#idAuth").html(htmlcontent);
 
@@ -65,10 +67,12 @@ let renderAuthForm = (data)=>{
     }
     else {
 
+        htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
         htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
         htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-        htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:80%'>LOGIN</button>";
+        htmlcontent += "<button type='button' class='atonBTN atonBTN-green atonProcessBTN' id='idLoginBTN'>LOGIN</button>";
+        htmlcontent += "</div>";
 
         $("#idAuth").html(htmlcontent);
 
@@ -85,6 +89,8 @@ let renderAuthForm = (data)=>{
 
 window.addEventListener( 'load', ()=>{
 
+    SHU.uiAddMainToolbar("idTopToolbar");
+
     SHU.checkAuth((data)=>{
         renderAuthForm(data);
     });
@@ -94,12 +100,11 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-    <div style="text-align: center;">
-        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
-        <div class="atonBlockGroup" id="idAuth">
-        </div>
-
+    <div style="text-align:center; margin-top: 50px;">
+        <div class="atonTitle">User Authentication</div>
+        <div class="atonBlockGroup" id="idAuth"></div>
     </div>
     
     </body>

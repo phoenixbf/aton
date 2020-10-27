@@ -32,6 +32,7 @@ SHU.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({
         url: endpoint,
         type:"POST",
+        xhrFields: { withCredentials: true },
         data: JSON.stringify(obj),
         contentType:"application/json; charset=utf-8",
         dataType:"json",
@@ -88,6 +89,19 @@ SHU.getScenesInputList = (idlist)=>{
 
         $("#"+idlist).html(htmlcontent);
     });
+};
+
+SHU.uiAddMainToolbar = (idcontainer)=>{
+    let htmlcode = "";
+    htmlcode += "<button id='btn-t-home' type='button' class='atonBTN'><img src='/res/icons/home.png'></button>";
+    htmlcode += "<button id='btn-t-user' type='button' class='atonBTN'><img src='/res/icons/user.png'></button>";
+    htmlcode += "<button id='btn-t-newscene' type='button' class='atonBTN'><img src='/res/icons/scene.png'></button>";
+
+    $("#"+idcontainer).append(htmlcode);
+
+    $("#btn-t-home").click(()=>{ window.location.href = "/shu/scenes/"; });
+    $("#btn-t-user").click(()=>{ window.location.href = "/shu/auth/"; });
+    $("#btn-t-newscene").click(()=>{ window.location.href = "/shu/newscene/"; });
 };
 
 SHU.createBaseScene = ()=>{

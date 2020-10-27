@@ -451,14 +451,16 @@ ServUtils.realizeBaseAPI = (app)=>{
 			return;
 		}
 
+		let uname = req.user.username;
+
 		let O = {};
-		O.cwd = ServUtils.DIR_MODELS+req.user.username;
+		O.cwd = ServUtils.DIR_MODELS+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{gltf,glb}", O);
 
 		let M = [];
-		for (let f in files) M.push( "models/"+req.user.username+"/"+files[f] );
+		for (let f in files) M.push( "models/"+uname+"/"+files[f] );
 
 		res.send(M);
 
@@ -467,14 +469,21 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 	// List all collection panoramas
 	app.get("/api/c/panoramas/", function(req,res,next){
+		if (req.user === undefined){
+			res.send([]);
+			return;
+		}
+
+		let uname = req.user.username;
+
 		let O = {};
-		O.cwd = ServUtils.DIR_PANO;
+		O.cwd = ServUtils.DIR_PANO+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{jpg,hdr}", O);
 
 		let P = [];
-		for (let f in files) P.push( "pano/"+files[f] );
+		for (let f in files) P.push( "pano/"+uname+"/"+files[f] );
 
 		res.send(P);
 		

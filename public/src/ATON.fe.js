@@ -300,14 +300,20 @@ FE.popupScreenShot = ()=>{
     FE.checkAuth((r)=>{
 
         let htmlcontent = "<h1>Screenshot</h1>";
-        htmlcontent += "<input id='isShotSize' type='number' min='100' max='4000' value='200'> px<br>";
+        htmlcontent += "This is a preview of what your screenshot will look like:<br><br>";
+        htmlcontent += "<img src='"+cover.src+"'><br>";
+        htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='200'>px<br>";
 
+        // <img src='"+FE.PATH_RES_ICONS+"sshot.png'>
         htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='btnScreenShot' style='width:100%'>SHOT</button>";
 
         if (r.username !== undefined){
+            htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='btnSetCover' style='width:100%'>Set as Cover</button>";
+            /*
             htmlcontent += "<div class='atonBTN' id='btnSetCover' style='width:220px; height:220px; padding:5px'>";
             htmlcontent += "<img src='"+cover.src+"'><br>";
             htmlcontent += "Set as Cover</div>";
+            */
         }
 
         if ( !ATON.FE.popupShow(htmlcontent) ) return;

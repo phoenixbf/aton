@@ -876,7 +876,7 @@ label {
     font-weight: bold;
 
     border-radius: 0px;
-    box-shadow: 0 0px 5px rgba(255,255,255, 0.5);
+    box-shadow: 0 0px 5px rgba(0,0,0, 1.0);
 
     margin: 0px;
     padding: 10px;
@@ -983,8 +983,9 @@ label {
     padding: 5px;
 
     border-radius: 20px;
+    box-shadow: 0 0px 5px rgba(0,0,0, 1.0);
 
-    border: 2px solid black;
+    /*border: 2px solid black;*/
 }
 
 /* Icon sprites */

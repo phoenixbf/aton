@@ -62,7 +62,7 @@ app.use(cors({credentials: true, origin: true}));
     });
 */
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Redirect
 app.get(/^\/s\/(.*)$/, function(req,res,next){
@@ -86,24 +86,6 @@ if (bAPIdoc) app.use('/apidoc', express.static(ServUtils.DIR_APIDOC));
 
 
 ServUtils.setupPassport();
-
-/*
-let fileStoreOptions = {};
-
-app.use(require('body-parser').urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(
-	session({ 
-		secret: 'shu',
-		//cookie: { maxAge: 1800000 }, // 60000 = 1 min
-		resave: true, 
-		saveUninitialized: true,
-		//rolling: true
-		store: new FileStore(fileStoreOptions)	// required for consistency in cluster mode
-	})
-);
-*/
-
 ServUtils.realizeAuth(app);
 
 

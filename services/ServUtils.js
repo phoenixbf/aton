@@ -363,7 +363,12 @@ ServUtils.setupPassport = ()=>{
 ServUtils.realizeAuth = (app)=>{
 	let fileStoreOptions = {};
 
-	app.use(require('body-parser').urlencoded({ extended: true }));
+	let bodyParser = require('body-parser');
+	app.use(bodyParser.json({ limit: '50mb' }));
+	app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+
+	//app.use(require('body-parser').urlencoded({ extended: true }));
+	
 	app.use(cookieParser());
 	app.use(
 		session({ 
@@ -486,10 +491,13 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let S = [];
 		for (let f in files){
 			let basepath  = uname+"/"+path.dirname(files[f]);
+			let pubfile   = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
 			let coverfile = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_COVERFILE;
+
 			S.push({
 				sid: basepath,
-				cover: fs.existsSync(coverfile)? true : false
+				cover: fs.existsSync(coverfile)? true : false,
+				pub: fs.existsSync(pubfile)? true : false
 			});
 		}
 

@@ -32,8 +32,9 @@ let renderForm = ()=>{
             let sid = scene.sid;
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:250px'>";
+            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:220px;'>";
             shtml += "<a href='/s/"+sid+"'><div class='atonBlockTitle'>"+sid+"</div></a><br>";
+            //shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
             
             shtml += "<a class='atonCover' href='/s/"+sid+"'>";
             if (scene.cover) shtml += "<img src='"+DIR_SCENES+sid+"/cover.png'>";

@@ -28,13 +28,20 @@ let renderForm = ()=>{
     $.getJSON( "/api/scenes/own", (data)=>{
 
         for (let i in data){
-            let sid = data[i];
+            let scene = data[i];
+            let sid = scene.sid;
 
             let shtml = "";
             shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:250px'>";
-            shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
+            shtml += "<a href='/s/"+sid+"'><div class='atonBlockTitle'>"+sid+"</div></a><br>";
+            
+            shtml += "<a class='atonCover' href='/s/"+sid+"'>";
+            if (scene.cover) shtml += "<img src='"+DIR_SCENES+sid+"/cover.png'>";
+            else shtml += "<img src='/res/scenecover.png'>";
+            shtml += "</a>";
+
             shtml += "<br>";
-            shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='/res/icons/play.png'></button>";
+            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='/res/icons/play.png'></button>";
             
             shtml += "<button id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></button>";
             
@@ -46,9 +53,7 @@ let renderForm = ()=>{
 
             $('#idOwnScenes').append(shtml);
 
-            $('#go-'+i).click(()=>{
-                SHU.goToScene( sid );
-            });
+            //$('#go-'+i).click(()=>{ SHU.goToScene( sid ); });
 
             $('#delAsk-'+i).click(()=>{
                 $('#delConf-'+i).show();

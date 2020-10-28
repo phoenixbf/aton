@@ -71,7 +71,7 @@ SHU.getScenesSelect = (idselect)=>{
         let list = "<option value=''>Choose scene ID...</option>";
 
         for (let s in data){
-            let sid = data[s];
+            let sid = data[s].sid;
             list += "<option value='"+sid+"'>"+sid+"</option>"
         }
 
@@ -84,7 +84,7 @@ SHU.getScenesInputList = (idlist)=>{
 
     $.getJSON( "/api/scenes/", ( data )=>{
         htmlcontent += "<datalist id='sidlist'>";
-        for (let s in data) htmlcontent += "<option>"+data[s]+"</option>";
+        for (let s in data) htmlcontent += "<option>"+data[s].sid+"</option>";
         htmlcontent += "</datalist>";
 
         $("#"+idlist).html(htmlcontent);

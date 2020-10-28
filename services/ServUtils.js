@@ -26,6 +26,7 @@ ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
 ServUtils.DIR_EXAMPLES     = path.join(ServUtils.DIR_PUBLIC,"examples/");
 ServUtils.STD_SCENEFILE    = "scene.json";
 ServUtils.STD_PUBFILE      = "pub.txt";
+ServUtils.STD_COVERFILE    = "cover.png";
 
 ServUtils.STATUS_COMPLETE   = "complete";
 ServUtils.STATUS_PROCESSING = "processing";
@@ -451,10 +452,15 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		let S = [];
 		for (let f in files){
-			let basepath = path.dirname(files[f]);
-			let pubfile  = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
+			let basepath  = path.dirname(files[f]);
+			let pubfile   = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
+			let coverfile = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_COVERFILE;
 
-			if (fs.existsSync(pubfile)) S.push( basepath );
+			if (fs.existsSync(pubfile))
+				S.push({
+					sid: basepath,
+					cover: fs.existsSync(coverfile)? true : false
+				});
 		}
 
 		res.send(S);
@@ -479,8 +485,12 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		let S = [];
 		for (let f in files){
-			let basepath = path.dirname(files[f]);
-			S.push( uname + "/"+ basepath );
+			let basepath  = uname+"/"+path.dirname(files[f]);
+			let coverfile = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_COVERFILE;
+			S.push({
+				sid: basepath,
+				cover: fs.existsSync(coverfile)? true : false
+			});
 		}
 
 		res.send(S);
@@ -555,9 +565,15 @@ ServUtils.realizeBaseAPI = (app)=>{
 		//next();
 	});
 
+	// Delete a scene
 	app.post("/api/del/scene/", (req,res,next)=>{
 		let O = req.body;
 		let sid = O.sid;
+
+		if (sid === undefined){
+			res.send(false);
+			return;	
+		}
 
 		// Only auth users can delete a scene
 		if (req.user === undefined){
@@ -573,6 +589,33 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		ServUtils.deleteScene(sid);
 		res.send(true);
+	});
+
+	// Set scene cover
+	app.post("/api/setcover/", (req,res,next)=>{
+		let O = req.body;
+		let sid = O.sid;
+		let img = O.img;
+
+		if (sid === undefined || img === undefined){
+			res.send(false);
+			return;
+		}
+
+		// Only auth users can delete a scene
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
+
+		img = img.replace(/^data:image\/png;base64,/, "");
+
+		let coverfile = path.join(ServUtils.getSceneFolder(sid), "cover.png");
+		console.log(coverfile);
+
+		fs.writeFile(coverfile, img, 'base64', (err)=>{
+			res.send(true);
+		});
 	});
 
 	// Scene edit (add or remove)

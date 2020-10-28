@@ -197,6 +197,10 @@ HATHOR.setupEventHandlers = ()=>{
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
 
+        if (k==='c'){
+            ATON.FE.popupScreenShot();
+        }
+
         if (k==='#'){
             let bShadows = !ATON._renderer.shadowMap.enabled;
             ATON.toggleShadows(bShadows);

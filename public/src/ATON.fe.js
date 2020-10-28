@@ -294,6 +294,42 @@ FE.popupQR = ()=>{
     new QRCode(document.getElementById("idQRcode"), url);
 };
 
+FE.popupScreenShot = ()=>{
+    let cover = ATON.Utils.takeScreenshot(200);
+
+    FE.checkAuth((r)=>{
+
+        let htmlcontent = "<h1>Screenshot</h1>";
+        htmlcontent += "<input id='isShotSize' type='number' min='100' max='4000' value='200'> px<br>";
+
+        htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='btnScreenShot' style='width:100%'>SHOT</button>";
+
+        if (r.username !== undefined){
+            htmlcontent += "<div class='atonBTN' id='btnSetCover' style='width:220px; height:220px; padding:5px'>";
+            htmlcontent += "<img src='"+cover.src+"'><br>";
+            htmlcontent += "Set as Cover</div>";
+        }
+
+        if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+        $("#btnScreenShot").click(()=>{
+            ATON.FE.popupClose();
+
+            let s = parseInt( $('#isShotSize').val() );
+            let img = ATON.Utils.takeScreenshot(s,"shot.png");
+        });
+
+        $("#btnSetCover").click(()=>{
+            ATON.FE.popupClose();
+
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"setcover/", {sid: ATON.SceneHub.currID, img: cover.src }, (r)=>{
+                console.log(r);
+            });
+
+        });
+    });
+};
+
 FE.popupVRC = ()=>{
     let htmlcontent = "";
     htmlcontent += "<h1>Collaborative Session</h1>";

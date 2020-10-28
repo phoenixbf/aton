@@ -96,6 +96,25 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
+Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
+    $.ajax({
+        url: endpoint,
+        type:"POST",
+        xhrFields: { withCredentials: true },
+        data: JSON.stringify(obj),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+
+        success: (data)=>{
+            if (onReceive) onReceive(data);
+        }
+    }).fail((err)=>{
+        console.log(err);
+        if (onFail) onFail();
+    });
+};
+
+
 Utils.mergeObject = ( object )=>{
     object.updateMatrixWorld( true );
 
@@ -243,6 +262,30 @@ Utils.exportNode = (node, filename)=>{
         //console.log(output);
         Utils.downloadText(output, filename);
     }
+};
+
+Utils.takeScreenshot = (size, filename)=>{
+    let img = new Image();
+
+    console.log("Screenshot with size:"+size);
+
+    ATON.Nav._camera.aspect = 1.0;
+    ATON.Nav._camera.updateProjectionMatrix();
+    
+    ATON._renderer.setSize(size,size);
+    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+
+    let b64img = ATON._renderer.domElement.toDataURL();
+    img.src = b64img;
+
+    if (filename){
+        Utils._dlink.href = b64img.replace("image/png", "image/octet-stream");
+        Utils._dlink.download = filename;
+        Utils._dlink.click();
+    }
+
+    ATON._onResize();
+    return img;
 };
 
 Utils.assignLightProbeToMesh = (LP, mesh)=>{

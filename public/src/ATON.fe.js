@@ -36,7 +36,7 @@ FE.realize = ()=>{
     if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
 };
 
-// Add basic spinning loader
+// Add basic front-end events
 FE.addBasicLoaderEvents = ()=>{
     ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
@@ -49,12 +49,14 @@ FE.addBasicLoaderEvents = ()=>{
         if (ATON.Nav.homePOV === undefined){
             ATON.Nav.computeAndRequestDefaultHome(0.5);
         }
-        else {
-            ATON.Nav.requestHome(0.5);
-        }
-
+        
         FE._bReqHome = true;
     });
+
+    ATON.on("SceneJSONLoaded",()=>{
+        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.5);
+    });
+
 };
 
 FE.useMouseWheelToScaleSelector = (f)=>{

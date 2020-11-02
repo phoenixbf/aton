@@ -85,6 +85,16 @@ let composeScene = ()=>{
         console.log(sobj.environment);
     }
 
+    let numModels = sobj.scenegraph.nodes.main.urls.length;
+    if (numModels<=0){ // Panoramic content only
+        sobj.viewpoints = {};
+        sobj.viewpoints.home = {};
+        sobj.viewpoints.home.position = [0,0,0];
+        sobj.viewpoints.home.target   = [1,0,0];
+
+        sobj.navmode = 1; // FirstPerson mode
+    }
+
 };
 
 let renderForm = ()=>{

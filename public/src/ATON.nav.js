@@ -131,6 +131,18 @@ Return true if the navigation system is in Device-orientation mode
 Nav.isDevOri = ()=>{ return (Nav._mode === Nav.MODE_DEVORI); };
 
 /**
+Set Navigation mode
+@param {number} navmode - navigation mode (0: Orbit, 1: FirstPerson, 2: DeviceOrientation)
+*/
+Nav.setNavMode = (navmode)=>{
+    if (navmode === undefined) return;
+
+    if (navmode === Nav.MODE_ORBIT)  Nav.setOrbitControl();
+    if (navmode === Nav.MODE_FP)     Nav.setFirstPersonControl();
+    if (navmode === Nav.MODE_DEVORI) Nav.setDeviceOrientationControl();
+};
+
+/**
 Set Orbit navigation mode (default)
 */
 Nav.setOrbitControl = ()=>{

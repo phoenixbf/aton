@@ -194,6 +194,13 @@ SceneHub.initBaseParsers = ()=>{
 
     };
 
+    // NavMode
+    SceneHub._jsonParsers.navmode = (navmode)=>{
+        if (navmode === undefined) return;
+
+        ATON.Nav.setNavMode(navmode);
+    };
+
     // Viewpoints
     SceneHub._jsonParsers.viewpoints = (povs)=>{
         if (povs === undefined) return;

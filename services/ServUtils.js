@@ -3,6 +3,7 @@ const path        = require('path');
 const glob        = require("glob");
 const jsonpatch   = require('fast-json-patch');
 const del         = require('del');
+const makeDir     = require('make-dir');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -101,7 +102,8 @@ ServUtils.createBasicScene = ()=>{
 // Create sub-folder structure on disk
 ServUtils.touchSceneFolder = (sid)=>{
 	let D = ServUtils.getSceneFolder(sid);
-	if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 12.0
+	//if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 12.0
+	if (!fs.existsSync(D)) makeDir.sync(D);
 };
 
 // Delete a scene folder

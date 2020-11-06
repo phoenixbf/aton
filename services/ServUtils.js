@@ -2,6 +2,7 @@ const fs          = require('fs');
 const path        = require('path');
 const glob        = require("glob");
 const jsonpatch   = require('fast-json-patch');
+const del         = require('del');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -100,14 +101,15 @@ ServUtils.createBasicScene = ()=>{
 // Create sub-folder structure on disk
 ServUtils.touchSceneFolder = (sid)=>{
 	let D = ServUtils.getSceneFolder(sid);
-	if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 10.0
+	if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 12.0
 };
 
 // Delete a scene folder
 ServUtils.deleteScene = (sid)=>{
 	let D = ServUtils.getSceneFolder(sid);
 	console.log("Deleting "+D);
-	if (fs.existsSync(D)) fs.rmdirSync(D, { recursive: true }); // note: NodeJS > 10.0
+	//if (fs.existsSync(D)) fs.rmdirSync(D, { recursive: true }); // note: NodeJS > 12.0
+	if (fs.existsSync(D)) del(D, {force: true});
 };
 
 ServUtils.readSceneJSON = (sid)=>{
@@ -585,12 +587,14 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		// Only auth users can delete a scene
 		if (req.user === undefined){
+			console.log("Only auth users can delete a scene");
 			res.send(false);
 			return;
 		}
 
 		let uname = req.user.username;
 		if (!sid.startsWith(uname)){ // only own scenes
+			console.log("Only "+uname+" can delete this scene");
 			res.send(false);
 			return;
 		}

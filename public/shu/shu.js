@@ -93,8 +93,8 @@ SHU.getScenesInputList = (idlist)=>{
 
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
-    htmlcode += "<button id='btn-t-user' type='button' class='atonBTN'><img src='/res/icons/user.png'></button>";
-    htmlcode += "<button id='btn-t-scenes' type='button' class='atonBTN'><img src='/res/icons/scene.png'></button>";
+    htmlcode += "<div id='btn-t-user' type='button' class='atonBTN'><img src='/res/icons/user.png'>User</div>";
+    htmlcode += "<div id='btn-t-scenes' type='button' class='atonBTN'><img src='/res/icons/scene.png'>Scenes</div>";
 
     $("#"+idcontainer).append(htmlcode);
 

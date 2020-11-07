@@ -32,7 +32,7 @@ let renderForm = ()=>{
             let sid = scene.sid;
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:250px;'>";
+            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:230px;'>";
             shtml += "<a href='/s/"+sid+"'><div class='atonBlockTitle' style='font-size:small;'>"+sid+"</div></a><br>";
             //shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
             
@@ -44,10 +44,10 @@ let renderForm = ()=>{
             shtml += "<br>";
             //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='/res/icons/play.png'></button>";
             
-            shtml += "<button id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></button>";
+            shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></div>";
             
-            shtml += "<div id='delConf-"+i+"' class='atonBlockRound' style='width:90%; display:none'>Delete this scene: are you sure?<br>"
-            shtml += "<button id='del-"+i+"' class='atonBTN atonBTN-red'>YES</button><button id='delNo-"+i+"' class='atonBTN'>NO</button>"
+            shtml += "<div id='delConf-"+i+"' style='display:none;'>Delete this scene: are you sure?<br>";
+            shtml += "<div id='del-"+i+"' class='atonBTN atonBTN-red'>YES</div><div id='delNo-"+i+"' class='atonBTN'>NO</div>";
             shtml += "</div>";
             
             shtml += "</div>";
@@ -114,7 +114,7 @@ window.addEventListener( 'load', ()=>{
 
         <div class="" id='idOwnScenes'></div>
 
-        <br><button id="btn-newscene" class="atonBTN atonBTN-green atonProcessBTN">New Scene</button>
+        <br><div id="btn-newscene" class="atonBTN atonBTN-green atonBTN-large"><img src='/res/icons/scene.png'>New Scene</div>
 
     </div>
     

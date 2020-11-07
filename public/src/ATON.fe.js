@@ -120,7 +120,7 @@ FE.uiAddButton = (idcontainer, icon, onPress)=>{
         iconid  = icon;
     }
 
-    let htmlcode = "<button id='btn-"+iconid+"' type='button' class='atonBTN'><img src='"+iconurl+"'></button>";
+    let htmlcode = "<div id='btn-"+iconid+"' class='atonBTN'><img src='"+iconurl+"'></div>";
     $("#"+idcontainer).append(htmlcode);
 
     if (onPress) $("#btn-"+iconid).click( onPress );
@@ -192,6 +192,9 @@ FE.uiAddButtonVRC = (idcontainer)=>{
 
     ATON.on("VRC_IDassigned", (uid)=>{
         $("#btn-vrc").addClass("atonVRCu"+(uid%6));
+        FE.checkAuth((data)=>{
+            if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
+        });
     });
 
     ATON.on("VRC_Disconnected", ()=>{
@@ -306,11 +309,10 @@ FE.popupScreenShot = ()=>{
         htmlcontent += "<img src='"+cover.src+"'><br>";
         htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='200'>px<br>";
 
-        // <img src='"+FE.PATH_RES_ICONS+"sshot.png'>
-        htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='btnScreenShot' style='width:100%'>SHOT</button>";
+        htmlcontent += "<div class='atonBTN atonBTN-green' id='btnScreenShot' style='width:90%'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT</div>";
 
         if (r.username !== undefined){
-            htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='btnSetCover' style='width:100%'>Set as Cover</button>";
+            htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover' style='width:90%'>Set as Cover</div>";
             /*
             htmlcontent += "<div class='atonBTN' id='btnSetCover' style='width:220px; height:220px; padding:5px'>";
             htmlcontent += "<img src='"+cover.src+"'><br>";
@@ -342,17 +344,31 @@ FE.popupVRC = ()=>{
     let htmlcontent = "";
     htmlcontent += "<h1>Collaborative Session</h1>";
 
-    htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...'>" 
+    // Username
+    htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
+    htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:200px; display:none'>"+ATON.VRoadcast._username+"</div>";
+
     htmlcontent += "<div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'></div>";
 
     //htmlcontent += "<div style='text-align:left'>";
     htmlcontent += "<input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
     //htmlcontent += "</div>";
 
-    htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>LEAVE</button>";
+    htmlcontent += "<div class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:90%'>LEAVE</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
+    if (ATON.VRoadcast._username === undefined){
+        $('#idVRCusername').show();
+        $('#idVRCusernameBTN').hide();
+    }
+    else {
+        $('#idVRCusername').val(ATON.VRoadcast._username);
+        $('#idVRCusername').hide();
+        $('#idVRCusernameBTN').show();
+    }
+
+    if (ATON.VRoadcast.uid !== undefined) $('#idVRCusernameBTN').addClass("atonVRCu"+(ATON.VRoadcast.uid % 6));
 
     $("#idChatBox").append(ATON.VRoadcast._elChat);
 
@@ -371,8 +387,16 @@ FE.popupVRC = ()=>{
         if(keycode == '13'){
             let str = $("#idVRCusername").val();
             ATON.VRoadcast.setUsername( str );
-            //$("#idVRCusername").hide();
+            
+            $('#idVRCusername').hide();
+            $('#idVRCusernameBTN').html(ATON.VRoadcast._username);
+            $('#idVRCusernameBTN').show();
         }
+    });
+
+    $("#idVRCusernameBTN").click(()=>{
+        $('#idVRCusername').show();
+        $('#idVRCusernameBTN').hide();
     });
 
     $("#idVRCdisconnect").click(()=>{
@@ -394,6 +418,8 @@ FE.checkAuth = (onReceive)=>{
             FE._userAuth = data;
             console.log(FE._userAuth);
 
+            if (data.username!==undefined && ATON.VRoadcast._username===undefined) ATON.VRoadcast.setUsername(data.username);
+
             onReceive(data);
         }
     });
@@ -407,7 +433,7 @@ FE.popupUser = ()=>{
             let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
             htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br><br>";
 
-            htmlcontent += "<button type='button' class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:100%'>LOGOUT</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT</div>";
 
             if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
@@ -429,7 +455,7 @@ FE.popupUser = ()=>{
             htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
             htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-            htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idLoginBTN' style='width:100%'>LOGIN</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-green' id='idLoginBTN' style='width:90%'>LOGIN</div>";
 
             if ( !ATON.FE.popupShow(htmlcontent) ) return;
 

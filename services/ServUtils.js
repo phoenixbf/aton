@@ -365,7 +365,9 @@ ServUtils.setupPassport = ()=>{
 };
 
 ServUtils.realizeAuth = (app)=>{
-	let fileStoreOptions = {};
+	let fileStoreOptions = {
+		fileExtension: ".ses"
+	};
 
 	let bodyParser = require('body-parser');
 	app.use(bodyParser.json({ limit: '50mb' }));

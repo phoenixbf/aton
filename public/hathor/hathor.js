@@ -297,7 +297,7 @@ HATHOR._createPopupStdSem = ()=>{
 
     htmlcontent += "<textarea id='idSemDescription' style='width:100%;'></textarea><br>";
 
-    htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
 
     return htmlcontent;
 };
@@ -415,19 +415,20 @@ HATHOR.popupSemDescription = (semid)=>{
 HATHOR.popupExportSemShapes = ()=>{
     let htmlcontent = "<h1>Export</h1>";
 
-    htmlcontent += "<label for='semid'>Semantic Shape ID:</label><br>";
-    htmlcontent += "<div class='select' style='width:80%;'><select id='semid'>";
+    htmlcontent += "<label for='semid'>Semantic Node ID:</label><br>";
+    htmlcontent += "<div class='select' style='width:250px;'><select id='semid'>";
     htmlcontent += "<option value=''></option>";
     for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
     htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
 
-    htmlcontent += "<label for='idxformat'>3D format:</label>";
+    htmlcontent += "<label for='idxformat'>3D format:</label><br>";
     htmlcontent += "<div class='select' style='width:150px;'><select id='idxformat'>";
     htmlcontent += "<option value='.glb'>GLTF (*.glb)</option>";
     htmlcontent += "<option value='.obj'>OBJ</option>";
     htmlcontent += "</select><div class='selectArrow'></div></div>";
 
-    htmlcontent += "<button type='button' class='atonBTN atonBTN-green' id='idExport' style='width:80%'>EXPORT</div>";
+    htmlcontent += "<br><br>";
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='idExport' style='width:80%'><img src='"+ATON.FE.PATH_RES_ICONS+"download.png'>EXPORT</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 

@@ -14,7 +14,7 @@ constructor(uid){
     super(undefined /*uid*/, ATON.NTYPES.UI);
 
     this.userid   = uid;
-    this.username = "User #"+uid;
+    this.username = undefined; //"User #"+uid;
     this.message  = "...";
     this.bTalking = false;
 
@@ -121,6 +121,12 @@ setUsername(username){
 
     return this;
 }
+
+getUsername(){
+    if (this.userid === undefined) return undefined;
+    if (this.username === undefined) return "User #"+this.userid;
+    return this.username;
+};
 
 setMessage(msg){
     this.message = msg;

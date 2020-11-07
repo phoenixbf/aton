@@ -35,6 +35,8 @@ VRoadcast.init = ()=>{
     VRoadcast.socket = undefined;
     VRoadcast._connected = false;
 
+    VRoadcast._username = undefined;
+
     VRoadcast.uid = undefined; // my userID (0,1,....)
     VRoadcast._numUsers = 0;
 
@@ -335,7 +337,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         A.setMessage(msg);
 
         console.log("User #" +uid+": "+msg);
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.username+"</b>: "+msg+"</span><br>");
+        if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.getUsername()+"</b>: "+msg+"</span><br>");
     });
 };
 

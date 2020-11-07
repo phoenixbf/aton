@@ -207,8 +207,8 @@ window.addEventListener( 'load', ()=>{
                     <select id='mpath'><option value=''>Choose a 3D model or Folder to add...</option></select><div class='selectArrow'></div>
                 </div><br>
 
-                <button id='btn-addmodel' type='button' class='atonBTN atonBTN-green' style="width:150px;"><img src='/res/icons/add.png'></button>
-                <button id='btn-clearmodels' type='button' class='atonBTN atonBTN-red' style="width:150px;"><img src='/res/icons/trash.png'></button>
+                <div id='btn-addmodel' class='atonBTN atonBTN-green' style="width:150px;"><img src='/res/icons/add.png'></div>
+                <div id='btn-clearmodels' class='atonBTN atonBTN-red' style="width:150px;"><img src='/res/icons/trash.png'></div>
 
                 <br><div id="idmlist"></div>
 
@@ -252,7 +252,7 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <button type='button' id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">Create Scene</button>
+        <div id="btn-createscene" class="atonBTN atonBTN-green atonBTN-large" onclick="requestSceneCreation()"><img src='/res/icons/scene.png'>Create Scene</div>
     </div>
     
     </body>

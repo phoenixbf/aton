@@ -32,7 +32,7 @@ let onLoginSuccess = (r)=>{
     console.log(r);
 
     $("#idLoginBTN").html("Logged in");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-green atonProcessBTN");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-green atonBTN-large");
 
     if (targetURL === undefined || targetURL === null){
         location.reload();
@@ -44,7 +44,7 @@ let onLoginSuccess = (r)=>{
 // Failed
 let onLoginFail = ()=>{
     $("#idLoginBTN").html("Login FAILED");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-red atonProcessBTN");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-red atonBTN-large");
 };
 
 let renderAuthForm = (data)=>{
@@ -53,7 +53,7 @@ let renderAuthForm = (data)=>{
     if (data.username){
         htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
         htmlcontent += "<h3>You are logged in as:<br>'"+data.username+"'</h3><br>";
-        htmlcontent += "<button type='button' class='atonBTN atonBTN-red atonProcessBTN' id='idLogoutBTN'>LOGOUT</button>";
+        htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-large' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 
         $("#idAuth").html(htmlcontent);
@@ -71,7 +71,7 @@ let renderAuthForm = (data)=>{
         htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
         htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-        htmlcontent += "<button type='button' class='atonBTN atonBTN-green atonProcessBTN' id='idLoginBTN'>LOGIN</button>";
+        htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-large' id='idLoginBTN'>LOGIN</div>";
         htmlcontent += "</div>";
 
         $("#idAuth").html(htmlcontent);

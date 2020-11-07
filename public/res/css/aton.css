@@ -258,10 +258,11 @@ canvas {
 
     color: #FFF;
 
-    width: 45px;
-    height: 45px;
+    min-width: 36px;
+    min-height: 36px;
 
-    /*line-height: 18px;*/
+    line-height: 30px;
+    
     text-align: center;
     vertical-align: middle;
 
@@ -272,6 +273,25 @@ canvas {
     margin: 4px;
 
     outline: none;
+}
+
+.atonBTN img {
+    position: relative;
+    vertical-align: middle;
+/*
+    top: 50%;
+    transform: translateY(-50%);
+    */
+}
+
+.atonBTN-large {
+    width: 80%;
+
+    padding: 10px;
+    line-height: 30px;
+
+    font-size: large;
+    border-radius: 15px;
 }
 
 .atonBTN:hover {
@@ -973,14 +993,9 @@ label {
     bottom: 0px;
 */
     width: 80%;
+    min-height: 60px;
 
     font-size: large;
-
-    height: 60px;
-    text-align: center;
-    vertical-align: middle;
-
-    padding: 5px;
 
     border-radius: 20px;
     box-shadow: 0 0px 5px rgba(0,0,0, 1.0);

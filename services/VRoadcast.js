@@ -25,9 +25,9 @@ VRoadcast.user = class {
     }
 
     sendSnapshot(socket){
-        if (this.name)     socket.emit("UNAME", { uid: this.uid, name: this.name });
-        if (this.message)  socket.emit("UMSG", { uid: this.uid, msg: this.message });
-        if (this.binState) socket.emit("USTATE", this.binState);
+        if (this.name !== undefined)     socket.emit("UNAME", { uid: this.uid, name: this.name });
+        if (this.message !== undefined)  socket.emit("UMSG", { uid: this.uid, msg: this.message });
+        if (this.binState !== undefined) socket.emit("USTATE", this.binState);
     }
 };
 

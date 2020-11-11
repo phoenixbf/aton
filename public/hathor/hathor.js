@@ -32,6 +32,7 @@ window.addEventListener( 'load', ()=>{
     ATON.FE.addBasicLoaderEvents();
 
     HATHOR.uiSetup();
+    HATHOR.suiSetup();
     HATHOR.setupEventHandlers();
 
     // Load scene
@@ -70,6 +71,33 @@ HATHOR.uiSetup = ()=>{
     }
 };
 
+// Spatial UI
+//=======================
+HATHOR.suiSetup = ()=>{
+    
+    let buttons = [];
+
+    buttons.push( new ATON.SUI.Button("sui_exitxr") );
+
+    ATON.getUINode("sui_exitxr")
+        .setText("exit")
+        .setBaseColor(ATON.MatHub.colors.red)
+        .setIcon(ATON.FE.PATH_RES_ICONS+"vr.png")
+        .onSelect = ()=>{
+            ATON.XR.toggle();
+        };
+
+
+    HATHOR.suiToolbar = ATON.SUI.createToolbar( buttons );
+
+    // wrist sui
+    let pi2 = (Math.PI * 0.5);
+    HATHOR.suiToolbar.setPosition(-0.1,0,0.1).setRotation(-pi2,-pi2,pi2).setScale(0.5);
+
+    HATHOR.suiToolbar.attachToRoot();
+    HATHOR.suiToolbar.hide();
+
+};
 
 // Front-end event handling
 //=======================
@@ -116,6 +144,18 @@ HATHOR.setupEventHandlers = ()=>{
     });
     ATON.on("Logout", ()=>{
         $('#idAuthTools').hide();
+    });
+
+    // Immersive Sessions
+    ATON.on("XRmode", (b)=>{
+        if (b){
+            ATON.XR.controller1.add(HATHOR.suiToolbar);
+            HATHOR.suiToolbar.show();  
+        }
+        else {
+            HATHOR.suiToolbar.attachToRoot();
+            HATHOR.suiToolbar.hide();
+        }
     });
 
     ATON.on("SemanticNodeLeave", (semid)=>{

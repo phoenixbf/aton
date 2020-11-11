@@ -186,6 +186,7 @@ SUI.update = ()=>{
 
         if (ATON.XR._bPresenting){
             SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
+            SUI.infoNode.position.y += 0.1;
             SUI.infoNode.setScale(SUI._labelScaleVR);
         }
         else {

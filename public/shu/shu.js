@@ -1,6 +1,6 @@
-const DIR_COLLECTION = "/collection/";
-const DIR_SCENES     = "/scenes/";
-const PATH_FE        = window.location.origin + "/fe/";
+const DIR_COLLECTION = "../../collection/";
+const DIR_SCENES     = "../../scenes/";
+const PATH_FE        = "../../fe/";
 
 let SHU = {};
 

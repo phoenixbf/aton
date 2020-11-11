@@ -37,8 +37,10 @@ html {
 }
 
 body {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+
     width: 100%;
     height: 100%;
 
@@ -63,17 +65,15 @@ a {
     color: inherit;
 }
 
-.dark-bg {
-    color: #FFF;
-    background: rgba(127,127,127, 1.0);
-}
-
-/*
 canvas {
     display: block;
 
     height: 100%;
     width: 100%;
+
+    margin: 0px;
+    padding: 0px;
+    border: none;
 
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -84,13 +84,14 @@ canvas {
     cursor: default;
     cursor: -moz-default;
     cursor: -webkit-default;
-
+/*
     touch-action: none;
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-
+*/
 }
 
+/*
 .view3D {
     position: absolute !important;
     width: 100%;

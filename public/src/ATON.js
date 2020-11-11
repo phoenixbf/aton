@@ -68,17 +68,17 @@ ATON.NTYPES.SEM    = 4;
 ATON.NTYPES.UI     = 5;
 
 // Folders
-ATON.PATH_RESTAPI       = window.location.origin + "/api/";
+ATON.PATH_RESTAPI       = "../api/"; //window.location.origin + "/api/";
 ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
-ATON.PATH_MODS          = window.location.origin + "/mods/";
+ATON.PATH_MODS          = "../mods/"; //window.location.origin + "/mods/";
 ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
-ATON.PATH_COLLECTION = window.location.origin + "/collection/";
+ATON.PATH_COLLECTION = "../collection/"; //window.location.origin + "/collection/";
 ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
-ATON.PATH_SCENES     = window.location.origin + "/scenes/";
-ATON.PATH_RES        = window.location.origin + "/res/";
+ATON.PATH_SCENES     = "../scenes/"; //window.location.origin + "/scenes/";
+ATON.PATH_RES        = "../res/"; //window.location.origin + "/res/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;
@@ -90,7 +90,7 @@ Set path collection (3D models, audio, panoramas, ...)
 @param {string} path - path
 */
 ATON.setPathCollection = (path)=>{
-    ATON.PATH_COLLECTION = window.location.origin + path;
+    ATON.PATH_COLLECTION = /*window.location.origin + */path;
     ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
 };
 
@@ -99,7 +99,7 @@ Set path scenes
 @param {string} path - path
 */
 ATON.setPathScenes = (path)=>{
-    ATON.PATH_SCENES = window.location.origin + path;
+    ATON.PATH_SCENES = /*window.location.origin +*/ path;
 };
 
 
@@ -329,6 +329,13 @@ ATON.realize = ()=>{
  
     document.body.appendChild( ATON._renderer.domElement );
     //console.log(ATON._renderer);
+    
+    //let canvas = ATON._renderer.domElement;
+    //canvas.style.padding = "0px";
+    //canvas.style.margin  = "0px";
+    //canvas.style.border  = "none";
+    //canvas.style.width   = "100%";
+    //canvas.style.height  = "100%";
 
     ATON.EventHub.init();
     ATON.MatHub.init();

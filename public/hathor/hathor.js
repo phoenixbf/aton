@@ -60,6 +60,7 @@ HATHOR.uiSetup = ()=>{
     
     // Bottom toolbar
     ATON.FE.uiAddButtonHome("idBottomToolbar");
+    //ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
     if (HATHOR.paramFPS){
         $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
@@ -77,7 +78,22 @@ HATHOR.suiSetup = ()=>{
     
     let buttons = [];
 
+    buttons.push( new ATON.SUI.Button("sui_talk") );
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
+
+    let btnTalk = ATON.getUINode("sui_talk");
+    btnTalk.setIcon(ATON.FE.PATH_RES_ICONS+"talk.png")
+        .setSwitchColor(ATON.MatHub.colors.green)
+        .onSelect = ()=>{
+            if (ATON.MediaRec.isAudioRecording()){
+                ATON.MediaRec.stopMediaStreaming();
+                btnTalk.switch(false);
+            }
+            else {
+                ATON.MediaRec.startMediaStreaming();
+                btnTalk.switch(true);
+            }
+        };
 
     ATON.getUINode("sui_exitxr")
         .setText("exit")
@@ -112,8 +128,15 @@ HATHOR.setupVRCEventHandlers = ()=>{
         if (nid === undefined) return;
         if (type === undefined) return;
 
-        if (type === ATON.NTYPES.SEM)   ATON.getSemanticNode(nid).removeChildren();
-        //if (type === ATON.NTYPES.SCENE) ATON.getSceneNode(nid).removeChildren();
+        if (type === ATON.NTYPES.SEM){
+            let N = ATON.getSemanticNode(nid);
+            if (N === undefined) return;
+            N.removeChildren();
+        }
+        /*
+        if (type === ATON.NTYPES.SCENE){
+            ATON.getSceneNode(nid).removeChildren();
+        }*/
     });
 
     ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
@@ -289,12 +312,18 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
+
+        if (k==='.') ATON.MediaRec.startMediaStreaming();
+        if (k==='r') ATON.MediaRec.startRecording();
     });
 
     ATON.on("KeyUp",(k)=>{
         if (k==='w'){
             ATON.Nav.stop();
         }
+
+        if (k==='.') ATON.MediaRec.stopMediaStreaming();
+        if (k==='r') ATON.MediaRec.stopRecording();
     });
 
     ATON.on("Login", (d)=>{
@@ -322,9 +351,9 @@ HATHOR.setupEventHandlers = ()=>{
 // Popups
 //=======================================
 HATHOR._createPopupStdSem = ()=>{
-    let htmlcontent = "<h1>Add Semantic Shape</h1>";
+    let htmlcontent = "<h1>Annotation</h1>";
 
-    htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='11' size='11' list='semlist' >";
+    htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
     htmlcontent += "<label for='psemid'>child of:</label>";
     htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
     htmlcontent += "<option value='.'>root</option>";
@@ -336,6 +365,9 @@ HATHOR._createPopupStdSem = ()=>{
     htmlcontent += "</datalist>";
 
     htmlcontent += "<textarea id='idSemDescription' style='width:100%;'></textarea><br>";
+
+    //htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+    //htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
 
@@ -385,8 +417,35 @@ HATHOR.popupAddSemantic = (semtype)=>{
         }
     });
 */
+    let vocnote = undefined;
+    let bRecVN  = false;
+    ATON.on("AudioRecordCompleted", (au64)=>{
+        vocnote = au64;
+        console.log(vocnote);
+
+        $('#ctrlVocalNote').attr("src",au64);
+    });
+
+
+    $('#btnVocalNote').click(()=>{
+        // We start recording a vocal note
+        if (!ATON.MediaRec.isAudioRecording()){
+            bRecVN = true;
+            $('#btnVocalNote').attr("class","atonBTN atonBTN-green");
+            ATON.MediaRec.startRecording();
+
+        }
+        else {
+            $('#btnVocalNote').attr("class","atonBTN");
+            ATON.MediaRec.stopRecording();
+            $('#ctrlVocalNote').show();
+        }
+    });
 
     $("#idAnnOK").click(()=>{
+        if (ATON.MediaRec.isAudioRecording()) return;
+        if (bRecVN && vocnote===undefined) return;
+
         $("#semid").blur();
         $("#idSemDescription").blur();
 
@@ -408,6 +467,7 @@ HATHOR.popupAddSemantic = (semtype)=>{
         if (S === undefined) return;
 
         if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
+        if (vocnote) S.setAudio(vocnote);
         
         let parS = ATON.getSemanticNode(psemid);
 
@@ -423,6 +483,8 @@ HATHOR.popupAddSemantic = (semtype)=>{
         if (semtype === ATON.FE.SEMSHAPE_CONVEX) E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
         
         if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
+        if (S.getAudio()) E.semanticgraph.nodes[S.nid].audio = S.getAudio();
+
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
@@ -443,6 +505,17 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 };
 
 HATHOR.popupSemDescription = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+    if (S !== undefined){
+        let au = S.getAudio();
+        if (au){
+            let A = new Audio();
+            A.src = au;
+            A.type = ATON.MediaRec.auType;
+            A.play();
+        }
+    }
+
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (descr === undefined) return;
 

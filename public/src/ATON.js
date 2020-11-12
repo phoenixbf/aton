@@ -32,6 +32,7 @@ import SUI from "./ATON.sui.js";
 import VRoadcast from "./ATON.vroadcast.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
+import MediaRec from "./ATON.mediarec.js";
 
 // Classes
 ATON.Node       = Node;
@@ -50,6 +51,7 @@ ATON.SUI        = SUI;
 ATON.VRoadcast  = VRoadcast;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
+ATON.MediaRec   = MediaRec;
 
 //==============================================================
 // Consts
@@ -370,6 +372,9 @@ ATON.realize = ()=>{
 
     // VRoadcast
     ATON.VRoadcast.init();
+
+    // Media Recorder
+    ATON.MediaRec.init();
 
     // Semantic Factory
     ATON.SemFactory.init();

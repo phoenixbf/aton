@@ -246,10 +246,19 @@ XR.setupControllersUI = ()=>{
 
     // Hands
     let handurl = ATON.PATH_RES+"models/hand/hand.glb";
-    let rhand = ATON.createUINode().load(handurl).setMaterial(ATON.MatHub.materials.controllerRay);
-    let lhand = ATON.createUINode().load(handurl).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
+    let rhand = ATON.createUINode("Rhand").load(handurl).setMaterial(ATON.MatHub.materials.controllerRay);
+    let lhand = ATON.createUINode("Lhand").load(handurl).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
     XR.controller0.add(rhand);
     XR.controller1.add(lhand);
+
+    ATON.on("VRC_IDassigned", (uid)=>{
+        let avMats = ATON.MatHub.materials.avatars;
+        if (avMats === undefined || uid === undefined) return;
+        
+        let am = avMats[uid % avMats.length];
+        rhand.setMaterial( am );
+        lhand.setMaterial( am );
+    });
 
     XR.gControllers = ATON.createUINode();
     XR.gControllers.add( XR.controller0 );

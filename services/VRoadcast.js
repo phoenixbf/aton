@@ -194,6 +194,11 @@ VRoadcast.onNewConnection = (socket)=>{
         // Broadcast to other users in scene
         socket.broadcast.to(sid).emit("EREP", data );
     });
+
+    socket.on('UTALK', (data)=>{
+        socket.to(sid).compress(false).binary(true).emit('UTALK', data);
+        //console.log(data.audio);
+    });
 };
 
 

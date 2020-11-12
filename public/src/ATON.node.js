@@ -139,6 +139,15 @@ getDescription(){
     return this.userData.description;
 }
 
+setAudio(au){
+    this.userData.audio = au;
+    return this;
+}
+
+getAudio(){
+    return this.userData.audio;
+}
+
 /**
 Hide this node (and sub-graph), also invisible to queries (ray casting, picking)
 @example

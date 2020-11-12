@@ -149,6 +149,7 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
         }
     });
 };
+
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
@@ -165,6 +166,19 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
         else {
             ATON.Nav.setDeviceOrientationControl();
             FE.uiSwitchButton("devori",true);
+        }
+    });
+};
+
+FE.uiAddButtonTalk = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "talk", ()=>{
+        if (ATON.MediaRec.isAudioRecording()){
+            ATON.MediaRec.stopMediaStreaming();
+            FE.uiSwitchButton("talk",false);
+        }
+        else {
+            ATON.MediaRec.startMediaStreaming();
+            FE.uiSwitchButton("talk",true);
         }
     });
 };

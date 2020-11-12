@@ -107,6 +107,21 @@ VRoadcast.initMaterials = ()=>{
 
         MM.avatars.push(M);
     }
+
+    // AudioUI user materials
+    VRoadcast.uspritemats = [];
+
+    let texAUI = new THREE.TextureLoader().load( ATON.PATH_RES+"useraui.png" );
+    for (let c=0; c<VRoadcast.ucolors.length; c++){
+        let smat = new THREE.SpriteMaterial({ 
+            map: texAUI,
+            depthWrite: false,
+            color: VRoadcast.ucolors[c] // multiply
+        });
+        smat.sizeAttenuation = true;
+
+        VRoadcast.uspritemats.push(smat);
+    }
 };
 
 /**
@@ -338,6 +353,35 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         console.log("User #" +uid+": "+msg);
         if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.getUsername()+"</b>: "+msg+"</span><br>");
+    });
+
+    VRoadcast.socket.on('UTALK', (data)=>{
+        let uid = data.uid;
+        if (uid === undefined) return;
+
+        let A = VRoadcast.touchAvatar(uid);
+        A.setTalkVolume(data.vol);
+
+        //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
+        //let audioURL = window.URL.createObjectURL(newblob);
+        let audioURL = data.audio;
+        
+        if (A._auTalk === undefined){
+            A._auTalk = new Audio();
+            //A._auTalk.type = ATON.MediaRec.auType;
+        }
+        else A._auTalk.pause();
+
+        A._auTalk.src = audioURL;
+        A._auTalk.play();
+        
+
+/*
+        A._auChunks.push({
+            audio: au, 
+            volume: data.vol
+        });
+*/
     });
 };
 

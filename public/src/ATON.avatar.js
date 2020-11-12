@@ -16,7 +16,11 @@ constructor(uid){
     this.userid   = uid;
     this.username = undefined; //"User #"+uid;
     this.message  = "...";
-    this.bTalking = false;
+    
+    //this.bTalking = false;
+    this._auTalk = undefined;
+    this._bPlayingAudio = false;
+    this._auChunks = [];
 
     this._tStateCall = -1.0;
     this._tStateDur  = 0.1;
@@ -56,6 +60,12 @@ realize(){
 
     // CHECK / FIXME: this is to avoid cloning of the same mesh when using same representation for all avatars
     this.usermeshnode.setCloneOnLoadHit(false);
+
+    // Talk UI
+    this.userauinode = new THREE.Sprite( ATON.VRoadcast.uspritemats[this.userid % ATON.VRoadcast.uspritemats.length] );
+    this.userauinode.position.set(0,0,0);
+    this.userauinode.visible = false;
+
 
     // Build Label
     this.userlabelnode = ATON.createUINode();
@@ -97,6 +107,7 @@ realize(){
     
     this.add(this.usermeshnode);
     this.add(this.userlabelnode);
+    this.add(this.userauinode);
 };
 
 // Loads custom avatar representation (3D model)
@@ -126,7 +137,7 @@ getUsername(){
     if (this.userid === undefined) return undefined;
     if (this.username === undefined) return "User #"+this.userid;
     return this.username;
-};
+}
 
 setMessage(msg){
     this.message = msg;
@@ -137,6 +148,19 @@ setMessage(msg){
     });
 
     return this;
+}
+
+setTalkVolume(vol){
+    if (vol === undefined){
+        this.userauinode.visible = false;
+        return;
+    }
+    if (vol > 0){
+        this.userauinode.visible = true;
+        let v = 0.1 + (vol * 0.03);
+        this.userauinode.scale.set(v,v,v);
+    }
+    else this.userauinode.visible = false;
 }
 
 requestStateTransition(S){
@@ -193,6 +217,15 @@ update(){
 
     this.userlabelnode.orientToCamera(); //quaternion.copy( ATON.Nav._qOri );
 
+    // Talk UI
+    //this._handleTalk();
+
+    let avol = this.userauinode.scale.x;
+    avol *= 0.97; // shrinking rate
+
+    if (avol > 0.01) this.userauinode.scale.set(avol, avol, avol);
+    else this.userauinode.visible = false;
+
 /*
     this.userlabelnode.rotation.y = Math.atan2(
         ( cam.position.x - this.userlabelnode.position.x ),
@@ -200,6 +233,23 @@ update(){
     );
 */
     //this.userlabelnode.matrix.copy( cam.matrix );
+}
+
+_handleTalk(){
+    if (this._bPlayingAudio) return;
+    if (this._auChunks.length < 1) return;
+
+    let d = this._auChunks.shift();
+
+    d.audio.play();
+    this._bPlayingAudio = true;
+
+    d.audio.onended = ()=>{
+        this._bPlayingAudio = false;
+        console.log("finished playing chunk");
+    };
+
+    this.setTalkVolume(d.volume);
 }
 
 

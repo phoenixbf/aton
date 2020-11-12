@@ -331,6 +331,7 @@ SceneHub.initBaseParsers = ()=>{
             if (N.toYup) G.setYup();
 
             if (N.description) G.setDescription(N.description);
+            if (N.audio) G.setAudio(N.audio);
 
             // Keywords
             if (N.keywords) G.kwords = N.keywords;

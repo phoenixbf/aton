@@ -16,18 +16,28 @@ MediaRec.auExt  = ".wav";
 //MediaRec.auExt  = ".webm";
 
 MediaRec.auBitsPerSecond  = 9000; //9000;
-MediaRec.auStreamInterval = 1000; //400;
-MediaRec.auMinVol = 2;
+MediaRec.auStreamInterval = 700; //400;
+MediaRec.auMinVol = 1;
 
 
 MediaRec.init = ()=>{
     MediaRec._bAudioRecording = false;
-    //MediaRec._bStreaming = false;
+    MediaRec._bStreaming = false;
 
-    MediaRec._auRecord = undefined;
+    MediaRec.recorder = undefined;
+};
 
+MediaRec.realizeAudioRecorder = ( onComplete )=>{
+    if (MediaRec.recorder){
+        if (onComplete) onComplete();
+        return;
+    }
+
+    // First time
     if (!ATON.Utils.isConnectionSecure()) return;
     if (!navigator.mediaDevices) return;
+
+    MediaRec._ds = setInterval( MediaRec._streamChunk, MediaRec.auStreamInterval);
 
     let UM = navigator.mediaDevices.getUserMedia({ 
         video: false, 
@@ -39,6 +49,7 @@ MediaRec.init = ()=>{
     UM.then(async function(stream){
         MediaRec.recorder = RecordRTC(stream, { 
             type: 'audio',
+            mimeType: MediaRec.auType,
             
             bitsPerSecond: MediaRec.auBitsPerSecond,
             audioBitsPerSecond: MediaRec.auBitsPerSecond,
@@ -48,16 +59,13 @@ MediaRec.init = ()=>{
             
             disableLogs: true,
             
+            //recorderType: MediaStreamRecorder,
             numberOfAudioChannels: 1,
-            //recorderType: StereoAudioRecorder,
             //bufferSize: 16384,
-            
-            mimeType: MediaRec.auType,
 
             //timeSlice: MediaRec.auStreamInterval,
             //ondataavailable: MediaRec._onAuBlob,
         });
-
 
         // Audio analyser
         MediaRec._auAVGvolume = 0;
@@ -95,6 +103,8 @@ MediaRec.init = ()=>{
             
             //console.log(MediaRec._auAVGvolume);
         };
+
+        if (onComplete) onComplete();
     });
 };
 
@@ -112,7 +122,7 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
     MediaRec.recorder.stopRecording(()=>{
         let rblob = MediaRec.recorder.getBlob();
 
-        if (!rblob || rblob.size < 5 || !ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined /*|| MediaRec._auAVGvolume <= MediaRec.auMinVol*/){
+        if (!rblob || rblob.size < 5 || !ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined || MediaRec._auAVGvolume <= MediaRec.auMinVol){
             if (onFinish) onFinish();
             return;
         }
@@ -162,13 +172,16 @@ MediaRec._onAuBlob = (rblob)=>{
 
 // Audio Recording
 MediaRec.startRecording = ()=>{
-    if (!MediaRec.recorder) return;
-    if (MediaRec._bAudioRecording) return;
+    MediaRec.realizeAudioRecorder(()=>{
 
-    console.log("Recording...");
+        if (!MediaRec.recorder) return;
+        if (MediaRec._bAudioRecording) return;
 
-    MediaRec.recorder.startRecording();
-    MediaRec._bAudioRecording = true;
+        console.log("Recording...");
+
+        MediaRec.recorder.startRecording();
+        MediaRec._bAudioRecording = true;
+    });
 };
 
 MediaRec.stopRecording = ()=>{
@@ -198,21 +211,29 @@ MediaRec.startOrStopRecording = ()=>{
     else MediaRec.startRecording();
 };
 
+MediaRec._streamChunk = ()=>{
+    if (!MediaRec.recorder) return;
+    if (!MediaRec._bStreaming) return;
+
+    MediaRec._stopRecAndSend(()=>{ 
+        MediaRec.recorder.startRecording();
+    });
+};
+
 // Audio Streaming
 MediaRec.startMediaStreaming = ()=>{
-    if (!MediaRec.recorder) return;
-    if (MediaRec._bAudioRecording) return;
+    MediaRec.realizeAudioRecorder(()=>{
+        if (!MediaRec.recorder) return;
+        if (MediaRec._bAudioRecording) return;
 
-    console.log("Start MediaStreaming");
+        //MediaRec.recorder.stopRecording(()=>{
+        console.log("Start MediaStreaming");
 
-    MediaRec.recorder.startRecording();
-    MediaRec._bAudioRecording = true;
-
-    //return;
-
-    MediaRec._dMediaRecorder = setInterval(()=>{
-        MediaRec._stopRecAndSend(()=>{ MediaRec.recorder.startRecording(); });
-    }, MediaRec.auStreamInterval);
+        MediaRec.recorder.startRecording();
+        MediaRec._bAudioRecording = true;
+        MediaRec._bStreaming = true;
+        //});
+    });
 };
 
 MediaRec.stopMediaStreaming = ()=>{
@@ -222,9 +243,16 @@ MediaRec.stopMediaStreaming = ()=>{
     console.log("Stop MediaStreaming");
 
     MediaRec._stopRecAndSend(()=>{
+        MediaRec._bStreaming = false;
+        MediaRec._bAudioRecording = false;
+    });
+
+/*
+    MediaRec._stopRecAndSend(()=>{
         clearInterval(MediaRec._dMediaRecorder);
         MediaRec._bAudioRecording = false;
     });
+*/
 };
 
 MediaRec.startOrStopMediaStreaming = ()=>{

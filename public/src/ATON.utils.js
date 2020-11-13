@@ -38,13 +38,6 @@ Utils.isConnectionSecure = ()=>{
     return window.isSecureContext;
 }
 
-/**
-If current device is mobile (e.g. smartphone, tablet, Oculus Quest)
-@returns {boolean}
-*/
-Utils.isMobile = ()=>{
-    return ATON.device.isMobile;
-}
 
 // Profile device capabilities
 Utils.profileDevice = ()=>{
@@ -77,6 +70,23 @@ Utils.profileDevice = ()=>{
 		});
     }
 };
+
+/**
+If current device is mobile (e.g. smartphone, tablet, Oculus Quest)
+@returns {boolean}
+*/
+Utils.isMobile = ()=>{
+    return ATON.device.isMobile;
+}
+
+/**
+If current device supports WebXR
+@returns {boolean}
+*/
+Utils.isWebXRsupported = ()=>{
+    return ATON.device.isXRsupported;
+}
+
 
 // Path utils
 Utils.getFileExtension = ( filepath )=>{

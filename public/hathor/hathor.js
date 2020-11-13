@@ -170,15 +170,16 @@ HATHOR.setupEventHandlers = ()=>{
     });
 
     // Immersive Sessions
-    ATON.on("XRmode", (b)=>{
-        if (b){
+    ATON.on("XRcontrollerConnected", (c)=>{
+        if (c === ATON.XR.HAND_L){
             ATON.XR.controller1.add(HATHOR.suiToolbar);
             HATHOR.suiToolbar.show();  
         }
-        else {
-            HATHOR.suiToolbar.attachToRoot();
-            HATHOR.suiToolbar.hide();
-        }
+
+        //else {
+        //    HATHOR.suiToolbar.attachToRoot();
+        //    HATHOR.suiToolbar.hide();
+        // }
     });
 
     ATON.on("SemanticNodeLeave", (semid)=>{
@@ -364,10 +365,13 @@ HATHOR._createPopupStdSem = ()=>{
     for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
     htmlcontent += "</datalist>";
 
-    htmlcontent += "<textarea id='idSemDescription' style='width:100%;'></textarea><br>";
+    //htmlcontent += "<br>";
+    //htmlcontent += "<div id='btnRichContent' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
+    //htmlcontent += "<div id='idSemDescCont'><textarea id='idSemDescription' style='width:100%'></textarea></div><br>";
+    htmlcontent += "<textarea id='idSemDescription' style='width:100%'></textarea><br>";
 
-    //htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
-    //htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
+    htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+    htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
 
@@ -380,7 +384,7 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
         //format: 'bbcode',
         //bbcodeTrim: true,
         width: "100%",
-        height: "100%",
+        height: "300px", //"100%",
         resizeEnabled: false,
         autoExpand: true,
         emoticonsEnabled: false,
@@ -442,6 +446,8 @@ HATHOR.popupAddSemantic = (semtype)=>{
         }
     });
 
+    //$('#btnRichContent').click(()=>{ $('#idSemDescCont').toggle(); });
+
     $("#idAnnOK").click(()=>{
         if (ATON.MediaRec.isAudioRecording()) return;
         if (bRecVN && vocnote===undefined) return;
@@ -452,7 +458,7 @@ HATHOR.popupAddSemantic = (semtype)=>{
         let semid  = $("#semid").val();
         let psemid = $("#psemid").val();
         let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
-        console.log(xxtmldescr);
+        //console.log(xxtmldescr);
 
         if (semid.length<1) return;
 
@@ -505,16 +511,7 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 };
 
 HATHOR.popupSemDescription = (semid)=>{
-    let S = ATON.getSemanticNode(semid);
-    if (S !== undefined){
-        let au = S.getAudio();
-        if (au){
-            let A = new Audio();
-            A.src = au;
-            A.type = ATON.MediaRec.auType;
-            A.play();
-        }
-    }
+    ATON.FE.playAudioFromSemanticNode(semid);
 
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (descr === undefined) return;

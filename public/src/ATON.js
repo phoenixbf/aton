@@ -1140,7 +1140,7 @@ ATON._handleQuerySemantics = ()=>{
 };
 
 ATON._handleQueryUI = ()=>{
-    if (ATON.XR.isPresenting()){
+    if (ATON.XR.isPresenting() && ATON.XR.controller0){
         ATON._rcUI.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
     }
     else 

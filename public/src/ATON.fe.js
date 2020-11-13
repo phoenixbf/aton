@@ -23,6 +23,9 @@ FE.realize = ()=>{
     FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
     FE._userAuth = {};
 
+    FE._auSemNode = undefined;
+    FE._auSemNodePlaying = false;
+
     FE._bReqHome = false;   // auto-compute home
 
     FE.urlParams = new URLSearchParams(window.location.search);
@@ -152,6 +155,8 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
 
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
+    //if (!ATON.Utils.isWebXRsupported()) return; //Not showing on mobile
+
     FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
 };
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
@@ -171,6 +176,8 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
 };
 
 FE.uiAddButtonTalk = (idcontainer)=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+
     FE.uiAddButton(idcontainer, "talk", ()=>{
         if (ATON.MediaRec.isAudioRecording()){
             ATON.MediaRec.stopMediaStreaming();
@@ -252,6 +259,28 @@ FE.setupBasicUISounds = ()=>{
 
     FE.auLib.switch = new Audio(ATON.PATH_RES+"audio/switch.wav");
     FE.auLib.switch.loop = false;
+};
+
+FE.playAudioFromSemanticNode = (semid)=>{
+    //if (FE._auSemNodePlaying) return;
+    if (semid === undefined) return;
+
+    let S = ATON.getSemanticNode(semid);
+    if (S === undefined) return;
+
+    let au = S.getAudio();
+    if (au === undefined) return;
+
+    if (FE._auSemNode === undefined) FE._auSemNode = new Audio();
+    
+    FE._auSemNodePlaying = true;
+    FE._auSemNode.src = au;
+    //FE._auSemNode.type = ATON.MediaRec.auType;
+    FE._auSemNode.play();
+
+    FE._auSemNode.onended = ()=>{
+        FE._auSemNodePlaying = false;
+    };
 };
 
 

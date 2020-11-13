@@ -189,6 +189,10 @@ VRoadcast.onNewConnection = (socket)=>{
         }
     });
 
+    socket.on('LOG', (data)=>{
+        console.log(data);
+    });
+
     // Replicated event
     socket.on('EREP', (data)=>{
         // Broadcast to other users in scene

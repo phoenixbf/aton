@@ -166,6 +166,17 @@ VRoadcast.isConnected = ()=>{
 };
 
 /**
+Utility for server-side logging
+@param {string} d - string data to be logged
+*/
+VRoadcast.log = (d)=>{
+    if (!VRoadcast._connected) return;
+    let sock = VRoadcast.socket;
+
+    if (sock) sock.emit("LOG", d);
+};
+
+/**
 Request enter in a given scene
 @param {string} sceneid - the scene id (sid)
 @example
@@ -359,12 +370,13 @@ VRoadcast._registerSocketHandlers = ()=>{
         let uid = data.uid;
         if (uid === undefined) return;
 
+        let audioURL = data.audio;
         let A = VRoadcast.touchAvatar(uid);
+/*
         A.setTalkVolume(data.vol);
 
         //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
         //let audioURL = window.URL.createObjectURL(newblob);
-        let audioURL = data.audio;
         
         if (A._auTalk === undefined){
             A._auTalk = new Audio();
@@ -374,14 +386,13 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         A._auTalk.src = audioURL;
         A._auTalk.play();
-        
+*/  
 
-/*
         A._auChunks.push({
-            audio: au, 
+            data: audioURL,
             volume: data.vol
         });
-*/
+
     });
 };
 

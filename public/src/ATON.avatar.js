@@ -74,7 +74,8 @@ realize(){
         height: 0.25,
         padding: 0.03,
         borderRadius: 0.05,
-        backgroundColor: ATON.VRoadcast.ucolorsdark[this.userid % ATON.VRoadcast.ucolorsdark.length],
+        //backgroundColor: ATON.VRoadcast.ucolorsdark[this.userid % ATON.VRoadcast.ucolorsdark.length],
+        backgroundColor: ATON.MatHub.colors.black,
 
         fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
         fontTexture: ATON.PATH_RES+"fonts/custom.png" //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
@@ -90,7 +91,8 @@ realize(){
     this.usernametext = new ThreeMeshUI.Text({ 
         content: "User #"+this.userid,
         fontSize: 0.09,
-        fontColor: ATON.MatHub.colors.white //ATON.VRoadcast.ucolors[this.userid % ATON.VRoadcast.ucolors.length]
+        //fontColor: ATON.MatHub.colors.white
+        fontColor: ATON.VRoadcast.ucolors[this.userid % ATON.VRoadcast.ucolors.length]
     });
     this.usernametext.position.y = 0.0;
 
@@ -218,7 +220,7 @@ update(){
     this.userlabelnode.orientToCamera(); //quaternion.copy( ATON.Nav._qOri );
 
     // Talk UI
-    //this._handleTalk();
+    this._handleTalk();
 
     let avol = this.userauinode.scale.x;
     avol *= 0.97; // shrinking rate
@@ -241,12 +243,15 @@ _handleTalk(){
 
     let d = this._auChunks.shift();
 
-    d.audio.play();
+    let au = new Audio();
+    au.src = d.data;
+
+    au.play();
     this._bPlayingAudio = true;
 
-    d.audio.onended = ()=>{
+    au.onended = ()=>{
         this._bPlayingAudio = false;
-        console.log("finished playing chunk");
+        //console.log("finished playing chunk");
     };
 
     this.setTalkVolume(d.volume);

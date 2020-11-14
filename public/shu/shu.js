@@ -1,6 +1,8 @@
 const DIR_COLLECTION = "../../collection/";
 const DIR_SCENES     = "../../scenes/";
 const PATH_FE        = "../../fe/";
+const PATH_RESTAPI   = "../../api/";
+const PATH_RES       = "../../res/";
 
 let SHU = {};
 
@@ -50,7 +52,7 @@ SHU.postJSON = (endpoint, obj, onReceive, onFail)=>{
 SHU.checkAuth = (onReceive)=>{
     $.ajax({
         type: 'GET',
-        url: "/api/user",
+        url: PATH_RESTAPI+"user",
         xhrFields: { withCredentials: true },            
         dataType: 'json',
 
@@ -67,7 +69,7 @@ SHU.getJSON = (endpoint, onReceive)=>{
 };
 
 SHU.getScenesSelect = (idselect)=>{
-    $.getJSON( "/api/scenes/", ( data )=>{
+    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
         let list = "<option value=''>Choose scene ID...</option>";
 
         for (let s in data){
@@ -82,7 +84,7 @@ SHU.getScenesSelect = (idselect)=>{
 SHU.getScenesInputList = (idlist)=>{
     let htmlcontent = "<label for='sid'>Scene ID</label><br><input id='sid' type='text' list='sidlist' style='width:50%'>";
 
-    $.getJSON( "/api/scenes/", ( data )=>{
+    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
         htmlcontent += "<datalist id='sidlist'>";
         for (let s in data) htmlcontent += "<option>"+data[s].sid+"</option>";
         htmlcontent += "</datalist>";
@@ -93,13 +95,18 @@ SHU.getScenesInputList = (idlist)=>{
 
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
-    htmlcode += "<div id='btn-t-user' type='button' class='atonBTN'><img src='/res/icons/user.png'>User</div>";
-    htmlcode += "<div id='btn-t-scenes' type='button' class='atonBTN'><img src='/res/icons/scene.png'>Scenes</div>";
+    htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'></div>";
+    htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+PATH_RES+"icons/scene.png'>Scenes</div>";
 
     $("#"+idcontainer).append(htmlcode);
 
     $("#btn-t-user").click(()=>{ window.location.href = "/shu/auth/"; });
     $("#btn-t-scenes").click(()=>{ window.location.href = "/shu/scenes/"; });
+
+    SHU.checkAuth((data)=>{
+        if (data.username) $("#btn-t-user").html("<img src='"+PATH_RES+"icons/user.png'>"+data.username);
+        else $("#btn-t-user").html("<img src='"+PATH_RES+"icons/user.png'>User");
+    });
 };
 
 SHU.createBaseScene = ()=>{
@@ -121,7 +128,7 @@ SHU.createBaseScene = ()=>{
 };
 
 SHU.appendModelsToSelect = (idselect)=>{
-    $.getJSON( "/api/c/models/", ( data )=>{
+    $.getJSON( PATH_RESTAPI+"c/models/", ( data )=>{
         let list = "";
         let folders = {};
 
@@ -141,7 +148,7 @@ SHU.appendModelsToSelect = (idselect)=>{
 };
 
 SHU.appendPanoramasToSelect = (idselect)=>{
-    $.getJSON( "/api/c/panoramas/", ( data )=>{
+    $.getJSON( PATH_RESTAPI+"c/panoramas/", ( data )=>{
         let list = "";
 
         for (let p in data){

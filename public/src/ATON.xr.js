@@ -51,6 +51,8 @@ XR.init = ()=>{
     XR.gpad0 = undefined;
     XR.gpad1 = undefined;
 
+    XR._urlHand = ATON.PATH_RES+"models/hand/hand.glb";
+
     // Base ev
     ATON.on("XRselectStart", (c)=>{
         if (c === XR.HAND_R) XR.defaultSelectHandler(c);
@@ -286,9 +288,11 @@ XR.toggle = ()=>{
 XR.setupControllerUI = (h)=>{
     let raytick = 0.003;
     let raylen  = 5.0;
-    let handurl = ATON.PATH_RES+"models/hand/hand.glb";
+
     let rhand = undefined;
     let lhand = undefined;
+
+    //console.log("Setup controller "+h);
 
     if (XR.gControllers === undefined){
         XR.gControllers = ATON.createUINode();
@@ -297,7 +301,15 @@ XR.setupControllerUI = (h)=>{
         XR.rig.add(XR.gControllers);
     }
 
-    if (h === undefined || h === XR.HAND_R){
+    // Left
+    if (h === XR.HAND_L){
+        XR.gControllers.add( XR.controller1 );
+
+        lhand = ATON.createUINode("Lhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
+        XR.controller1.add(lhand);
+    }
+    // Right
+    else {
         var geometry = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
         geometry.rotateX( -Math.PI / 2 );
         geometry.translate(0,0,-(raylen*0.5));
@@ -307,15 +319,9 @@ XR.setupControllerUI = (h)=>{
         XR.controller0.add( mesh.clone() );
         XR.gControllers.add( XR.controller0 );
 
-        rhand = ATON.createUINode("Rhand").load(handurl).setMaterial(ATON.MatHub.materials.controllerRay);
+        rhand = ATON.createUINode("Rhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay);
 
         XR.controller0.add(rhand);
-    }
-    else if (h === XR.HAND_L){
-        XR.gControllers.add( XR.controller1 );
-
-        lhand = ATON.createUINode("Lhand").load(handurl).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
-        XR.controller1.add(lhand);
     }
 
     // We are connected to VRoadcast
@@ -325,9 +331,51 @@ XR.setupControllerUI = (h)=>{
         if (h === XR.HAND_L) lhand.setMaterial(am);
         else rhand.setMaterial(am);
     }
-    
-
 };
+
+// FIXME:
+XR.switchHands = ()=>{
+
+/*
+    let C0 = new THREE.Group();
+    for (let cr in XR.controller0.children){
+        C0.add(XR.controller0.children[cr]);
+    }
+
+    let C1 = new THREE.Group();
+    for (let cl in XR.controller1.children){
+        C1.add(XR.controller1.children[cl]);
+    }
+
+    //XR.controller1.removeChildren();
+    //XR.controller0.removeChildren();
+
+    return;
+
+    for (let c in C1.children){
+        XR.controller0.add(C1.children[c]);
+    }
+    for (let c in C0.children){
+        XR.controller1.add(C0.children[c]);
+    }
+*/
+    let H = XR.controller1;
+    XR.controller1 = XR.controller0;
+    XR.controller0 = H;
+
+    //XR.controller0 = ATON._renderer.xr.getController(1);
+    //XR.controller1 = ATON._renderer.xr.getController(0);
+
+    for (let c in XR.controller0.children) XR.controller0.remove(XR.controller0.children[c]);
+    for (let c in XR.controller1.children) XR.controller1.remove(XR.controller1.children[c]);
+    XR.gControllers.removeChildren();
+
+    XR.setupControllerUI(XR.HAND_L);
+    XR.setupControllerUI(XR.HAND_R);
+
+    console.log("VR controllers switched");
+};
+
 
 /* DEPRECATED
 XR.setupControllersUI = ()=>{

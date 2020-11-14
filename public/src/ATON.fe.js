@@ -181,11 +181,13 @@ FE.uiAddButtonTalk = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "talk", ()=>{
         if (ATON.MediaRec.isAudioRecording()){
             ATON.MediaRec.stopMediaStreaming();
-            FE.uiSwitchButton("talk",false);
+            //FE.uiSwitchButton("talk",false);
+            $("#btn-talk").removeClass("atonBTN-rec");
         }
         else {
             ATON.MediaRec.startMediaStreaming();
-            FE.uiSwitchButton("talk",true);
+            //FE.uiSwitchButton("talk",true);
+            $("#btn-talk").addClass("atonBTN-rec");
         }
     });
 };

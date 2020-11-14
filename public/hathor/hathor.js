@@ -314,6 +314,8 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
 
+        //if (k==='y') ATON.XR.switchHands();
+
         if (k==='.') ATON.MediaRec.startMediaStreaming();
         if (k==='r') ATON.MediaRec.startRecording();
     });
@@ -370,9 +372,10 @@ HATHOR._createPopupStdSem = ()=>{
     //htmlcontent += "<div id='idSemDescCont'><textarea id='idSemDescription' style='width:100%'></textarea></div><br>";
     htmlcontent += "<textarea id='idSemDescription' style='width:100%'></textarea><br>";
 
-    htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
-    htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
-
+    if (ATON.Utils.isConnectionSecure()){
+        htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+        htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
+    }
     htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
 
     return htmlcontent;
@@ -435,12 +438,14 @@ HATHOR.popupAddSemantic = (semtype)=>{
         // We start recording a vocal note
         if (!ATON.MediaRec.isAudioRecording()){
             bRecVN = true;
-            $('#btnVocalNote').attr("class","atonBTN atonBTN-green");
+            $('#btnVocalNote').attr("class","atonBTN atonBTN-rec");
+            $('#btnVocalNote').html("<img src='"+ATON.FE.PATH_RES_ICONS+"rec.png'>STOP Recording");
             ATON.MediaRec.startRecording();
 
         }
         else {
             $('#btnVocalNote').attr("class","atonBTN");
+            $('#btnVocalNote').html("<img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note");
             ATON.MediaRec.stopRecording();
             $('#ctrlVocalNote').show();
         }

@@ -52,14 +52,14 @@ let renderAuthForm = (data)=>{
 
     if (data.username){
         htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
-        htmlcontent += "<h3>You are logged in as:<br>'"+data.username+"'</h3><br>";
+        htmlcontent += "<h3>You are logged in as: '"+data.username+"'</h3><br>";
         htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-large' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 
         $("#idAuth").html(htmlcontent);
 
         $("#idLogoutBTN").click(()=>{
-            SHU.getJSON("/api/logout/",(r)=>{
+            SHU.getJSON(PATH_RESTAPI+"logout/",(r)=>{
                 location.reload();
             });
         });
@@ -82,7 +82,7 @@ let renderAuthForm = (data)=>{
                 password: $("#idPassword").val()
             };
 
-            SHU.postJSON("/api/login/", o, onLoginSuccess, onLoginFail );
+            SHU.postJSON(PATH_RESTAPI+"login/", o, onLoginSuccess, onLoginFail );
         });
     }
 };
@@ -102,7 +102,7 @@ window.addEventListener( 'load', ()=>{
 <body class="atonDefaultBody">
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
-    <div style="text-align:center; margin-top: 50px;">
+    <div class='shuMainContainer'>
         <div class="atonTitle">User Authentication</div>
         <div class="atonBlockGroup" id="idAuth"></div>
     </div>

@@ -25,7 +25,7 @@
 <script>
 
 let renderForm = ()=>{
-    $.getJSON( "/api/scenes/own", (data)=>{
+    $.getJSON( PATH_RESTAPI+"scenes/own", (data)=>{
 
         for (let i in data){
             let scene = data[i];
@@ -38,13 +38,13 @@ let renderForm = ()=>{
             
             shtml += "<a class='atonCover' href='/s/"+sid+"'>";
             if (scene.cover) shtml += "<img src='"+DIR_SCENES+sid+"/cover.png'>";
-            else shtml += "<img src='/res/scenecover.png'>";
+            else shtml += "<img src='"+PATH_RES+"icons/scenecover.png'>";
             shtml += "</a>";
 
             shtml += "<br>";
-            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='/res/icons/play.png'></button>";
+            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='"+PATH_RES+"icons/play.png'></button>";
             
-            shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='/res/icons/trash.png'></div>";
+            shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='"+PATH_RES+"icons/trash.png'></div>";
             
             shtml += "<div id='delConf-"+i+"' style='display:none;'>Delete this scene: are you sure?<br>";
             shtml += "<div id='del-"+i+"' class='atonBTN atonBTN-red'>YES</div><div id='delNo-"+i+"' class='atonBTN'>NO</div>";
@@ -64,7 +64,7 @@ let renderForm = ()=>{
                 $("#s"+i).css("background-color","rgba(127,0,0,0.3)");
 
                 $('#del-'+i).click(()=>{
-                    SHU.postJSON("/api/del/scene", {sid: sid}, (b)=>{
+                    SHU.postJSON(PATH_RESTAPI+"del/scene", {sid: sid}, (b)=>{
                         if (b) $("#s"+i).hide();
                     });
                 });
@@ -108,13 +108,13 @@ window.addEventListener( 'load', ()=>{
 <body class="atonDefaultBody">
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
-    <div style="text-align:center; margin-top: 50px;">
+    <div class='shuMainContainer'>
         <div class="atonTitle">Your Scenes</div>
         <br>
 
         <div class="" id='idOwnScenes'></div>
 
-        <br><div id="btn-newscene" class="atonBTN atonBTN-green atonBTN-large"><img src='/res/icons/scene.png'>New Scene</div>
+        <br><div id="btn-newscene" class="atonBTN atonBTN-green atonBTN-large"><img src='../../res/icons/scene.png'>New Scene</div>
 
     </div>
     

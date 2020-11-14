@@ -40,7 +40,7 @@ let requestSceneCreation = ()=>{
 
     console.log(o);
 
-    SHU.postJSON("/api/new/scene", o, handleServerResponse);
+    SHU.postJSON( PATH_RESTAPI+"new/scene", o, handleServerResponse);
 };
 
 let handleServerResponse = (r)=>{
@@ -174,7 +174,7 @@ window.addEventListener( 'load', ()=>{
 <body class="atonDefaultBody">
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
-    <div style="text-align:center; margin-top: 50px;">
+    <div class='shuMainContainer'>
         <div class="atonTitle">New Scene</div>
 
         <div class="atonBlockRound">
@@ -207,8 +207,8 @@ window.addEventListener( 'load', ()=>{
                     <select id='mpath'><option value=''>Choose a 3D model or Folder to add...</option></select><div class='selectArrow'></div>
                 </div><br>
 
-                <div id='btn-addmodel' class='atonBTN atonBTN-green' style="width:150px;"><img src='/res/icons/add.png'></div>
-                <div id='btn-clearmodels' class='atonBTN atonBTN-red' style="width:150px;"><img src='/res/icons/trash.png'></div>
+                <div id='btn-addmodel' class='atonBTN atonBTN-green' style="width:150px;"><img src='../../res/icons/add.png'></div>
+                <div id='btn-clearmodels' class='atonBTN atonBTN-red' style="width:150px;"><img src='../../res/icons/trash.png'></div>
 
                 <br><div id="idmlist"></div>
 
@@ -252,7 +252,7 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <div id="btn-createscene" class="atonBTN atonBTN-green atonBTN-large" onclick="requestSceneCreation()"><img src='/res/icons/scene.png'>Create Scene</div>
+        <div id="btn-createscene" class="atonBTN atonBTN-green atonBTN-large" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
     </div>
     
     </body>

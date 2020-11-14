@@ -31,6 +31,18 @@
   }
 }
 
+@keyframes pulseRec {
+    0% {
+        background-color: rgba(80,0,0, 0.25);
+    }
+    50% {
+        background-color: rgba(255,127,0, 0.5);
+    }
+    100% {
+        background-color: rgba(80,0,0, 0.25);
+    }
+}
+
 html {
     --scrollbarBG: #333333;
     --thumbBG: #ffffff;
@@ -156,6 +168,7 @@ canvas {
   overflow: hidden;
 
   margin: 0;
+  padding: 5px;
 
   color: #FFF;
   text-align: center;
@@ -256,13 +269,17 @@ canvas {
     border: 0px;
     display: inline-block;
     cursor: pointer;
-
+/*
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+*/
     color: #FFF;
 
     min-width: 36px;
     min-height: 36px;
 
-    line-height: 30px;
+    line-height: 34px;
     
     text-align: center;
     vertical-align: middle;
@@ -333,10 +350,30 @@ canvas {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
+.atonBTN-rec {
+    animation-name: pulseRec;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
 .switchedON {
     background-color: rgba(255, 255, 255, 0.5);
+    /*
     box-shadow: 0 0px 5px rgba(255, 255, 255, 1.0);
     border: 2px solid white;
+    */
+
+    -webkit-box-shadow:inset 0px 0px 0px 2px white;
+    -moz-box-shadow:inset 0px 0px 0px 2px white;
+    box-shadow:inset 0px 0px 0px 2px white;
+}
+
+.switchedON:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+
+    -webkit-box-shadow:inset 0px 0px 0px 2px white;
+    -moz-box-shadow:inset 0px 0px 0px 2px white;
+    box-shadow:inset 0px 0px 0px 2px white;
 }
 
 .atonMenu {
@@ -883,6 +920,11 @@ input[type="number"]:hover {
 
 label {
     font-size: smaller;
+}
+
+.shuMainContainer {
+    text-align:center;
+    margin-top: 60px;
 }
 
 .atonTitle {

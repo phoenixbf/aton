@@ -100,8 +100,8 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
 
     $("#"+idcontainer).append(htmlcode);
 
-    $("#btn-t-user").click(()=>{ window.location.href = "/shu/auth/"; });
-    $("#btn-t-scenes").click(()=>{ window.location.href = "/shu/scenes/"; });
+    $("#btn-t-user").click(()=>{ window.location.href = "../../shu/auth/"; });
+    $("#btn-t-scenes").click(()=>{ window.location.href = "../../shu/scenes/"; });
 
     SHU.checkAuth((data)=>{
         if (data.username) $("#btn-t-user").html("<img src='"+PATH_RES+"icons/user.png'>"+data.username);

@@ -301,6 +301,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("Your ID is " + data);
         VRoadcast.uid = data;
 
+        VRoadcast.avaGroup.show();
+
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your ID is #"+data+"</i><br>");
 
         ATON.fireEvent("VRC_IDassigned", data);

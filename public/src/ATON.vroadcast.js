@@ -374,8 +374,9 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         let audioURL = data.audio;
         let A = VRoadcast.touchAvatar(uid);
-/*
-        A.setTalkVolume(data.vol);
+
+        //A.setTalkVolume(data.vol);
+        A.setTalkVolume(5.0);
 
         //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
         //let audioURL = window.URL.createObjectURL(newblob);
@@ -384,17 +385,21 @@ VRoadcast._registerSocketHandlers = ()=>{
             A._auTalk = new Audio();
             //A._auTalk.type = ATON.MediaRec.auType;
         }
-        else A._auTalk.pause();
+        else {
+            //A._auTalk.pause();
+            A._auTalk.currentTime = 0;    
+        }
 
         A._auTalk.src = audioURL;
         A._auTalk.play();
-*/  
+  
 
+/*
         A._auChunks.push({
             data: audioURL,
             volume: data.vol
         });
-
+*/
     });
 };
 

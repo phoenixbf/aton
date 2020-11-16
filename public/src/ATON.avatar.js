@@ -220,10 +220,10 @@ update(){
     this.userlabelnode.orientToCamera(); //quaternion.copy( ATON.Nav._qOri );
 
     // Talk UI
-    this._handleTalk();
+    //this._handleTalk();
 
     let avol = this.userauinode.scale.x;
-    avol *= 0.97; // shrinking rate
+    avol *= 0.99; // shrinking rate
 
     if (avol > 0.01) this.userauinode.scale.set(avol, avol, avol);
     else this.userauinode.visible = false;

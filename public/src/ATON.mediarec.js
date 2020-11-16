@@ -16,7 +16,7 @@ MediaRec.auExt  = ".wav";
 //MediaRec.auExt  = ".webm";
 
 MediaRec.auBitsPerSecond  = 9000; //9000;
-MediaRec.auStreamInterval = 500; //400;
+MediaRec.auStreamInterval = 1000; //500;
 MediaRec.auMinVol = 1;
 
 
@@ -121,9 +121,10 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
     }
 
     MediaRec.recorder.stopRecording(()=>{
+/*
         let rblob = MediaRec.recorder.getBlob();
 
-        if (!rblob || rblob.size < 5 || !ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined /*|| MediaRec._auAVGvolume <= MediaRec.auMinVol*/){
+        if (!rblob || rblob.size < 5 || !ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined){ // || MediaRec._auAVGvolume <= MediaRec.auMinVol
             if (onFinish) onFinish();
             return;
         }
@@ -134,6 +135,13 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
             let b64 = reader.result;
             //let b64 = reader.result.split(',')[1];
             //b64 = "data:audio/wav;base64," + b64;
+*/
+        MediaRec.recorder.getDataURL((b64)=>{
+
+            if (!ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined){ // || MediaRec._auAVGvolume <= MediaRec.auMinVol
+                if (onFinish) onFinish();
+                return;
+            }
 
             ATON.VRoadcast.socket.compress(false).binary(true).emit("UTALK", {
                 audio: b64,
@@ -142,7 +150,7 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
             });              
             
             if (onFinish) onFinish();
-        }
+        });
 /*
         console.log("sending blob..."+rblob.size);
 

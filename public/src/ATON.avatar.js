@@ -254,7 +254,8 @@ _handleTalk(){
         //console.log("finished playing chunk");
     };
 
-    this.setTalkVolume(d.volume);
+    //this.setTalkVolume(d.volume);
+    this.setTalkVolume(5.0);
 }
 
 

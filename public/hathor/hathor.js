@@ -60,7 +60,9 @@ HATHOR.uiSetup = ()=>{
     
     // Bottom toolbar
     ATON.FE.uiAddButtonHome("idBottomToolbar");
-    //ATON.FE.uiAddButtonTalk("idBottomToolbar");
+    ATON.FE.uiAddButtonTalk("idBottomToolbar");
+
+    $("#btn-talk").hide();
 
     if (HATHOR.paramFPS){
         $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
@@ -141,6 +143,13 @@ HATHOR.setupVRCEventHandlers = ()=>{
 
     ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
         ATON.SceneHub.parseScene(d);
+    });
+
+    ATON.on("VRC_IDassigned", (uid)=>{
+        $("#btn-talk").show();
+    });
+    ATON.on("VRC_Disconnected", ()=>{
+        $("#btn-talk").hide();
     });
 
     HATHOR._bVRCsetup = true;
@@ -316,7 +325,7 @@ HATHOR.setupEventHandlers = ()=>{
 
         //if (k==='y') ATON.XR.switchHands();
 
-        if (k==='.') ATON.MediaRec.startMediaStreaming();
+        //if (k==='.') ATON.MediaRec.startMediaStreaming();
         if (k==='r') ATON.MediaRec.startRecording();
     });
 

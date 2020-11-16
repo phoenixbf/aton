@@ -214,7 +214,9 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
-        $("#btn-vrc").addClass("atonVRCu"+(uid%6));
+        let i = (uid%6);
+        $("#btn-vrc").addClass("atonVRCu"+i);
+        //$("#"+idcontainer).addClass("atonVRCu"+i+"-bg");
         FE.checkAuth((data)=>{
             if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
         });

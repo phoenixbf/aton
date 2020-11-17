@@ -70,17 +70,17 @@ ATON.NTYPES.SEM    = 4;
 ATON.NTYPES.UI     = 5;
 
 // Folders
-ATON.PATH_RESTAPI       = "../api/"; //window.location.origin + "/api/";
+ATON.PATH_RESTAPI       = window.location.origin + "/api/"; // "../api/";
 ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
-ATON.PATH_MODS          = "../mods/"; //window.location.origin + "/mods/";
+ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
 ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
-ATON.PATH_COLLECTION = "../collection/"; //window.location.origin + "/collection/";
+ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
 ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
-ATON.PATH_SCENES     = "../scenes/"; //window.location.origin + "/scenes/";
-ATON.PATH_RES        = "../res/"; //window.location.origin + "/res/";
+ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
+ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0;

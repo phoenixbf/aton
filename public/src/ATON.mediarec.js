@@ -28,85 +28,87 @@ MediaRec.init = ()=>{
 };
 
 MediaRec.realizeAudioRecorder = ( onComplete )=>{
-    if (MediaRec.recorder){
+    if (MediaRec.recorder !== undefined){
+        MediaRec.recorder.reset();
         if (onComplete) onComplete();
-        return;
     }
 
     // First time
-    if (!ATON.Utils.isConnectionSecure()) return;
-    if (!navigator.mediaDevices) return;
+    else {
+        if (!ATON.Utils.isConnectionSecure()) return;
+        if (!navigator.mediaDevices) return;
 
-    MediaRec._ds = setInterval( MediaRec._streamChunk, MediaRec.auStreamInterval);
+        if (MediaRec._ds === undefined) MediaRec._ds = setInterval( MediaRec._streamChunk, MediaRec.auStreamInterval);
 
-    let UM = navigator.mediaDevices.getUserMedia({ 
-        video: false, 
-        audio: true, 
-        channelCount: 1,
-        echoCancellation: true,
-    });
-
-    UM.then(async function(stream){
-        MediaRec.recorder = RecordRTC(stream, { 
-            type: 'audio',
-            mimeType: MediaRec.auType,
-            
-            bitsPerSecond: MediaRec.auBitsPerSecond,
-            audioBitsPerSecond: MediaRec.auBitsPerSecond,
-
-            sampleRate: 22050,
-            desiredSampRate: 22050,
-            
-            disableLogs: true,
-            
-            //recorderType: MediaStreamRecorder,
-            numberOfAudioChannels: 1,
-            //bufferSize: 16384,
-
-            //timeSlice: MediaRec.auStreamInterval,
-            //ondataavailable: MediaRec._onAuBlob,
+        let UM = navigator.mediaDevices.getUserMedia({ 
+            video: false, 
+            audio: true, 
+            channelCount: 1,
+            echoCancellation: true,
         });
 
-        // Audio analyser
-/*
-        MediaRec._auAVGvolume = 0;
+        UM.then(async function(stream){
+            MediaRec.recorder = RecordRTC(stream, { 
+                type: 'audio',
+                mimeType: MediaRec.auType,
+                
+                bitsPerSecond: MediaRec.auBitsPerSecond,
+                audioBitsPerSecond: MediaRec.auBitsPerSecond,
 
-        MediaRec._auCTX = new AudioContext();
-        const input = MediaRec._auCTX.createMediaStreamSource(stream);
-        const analyser = MediaRec._auCTX.createAnalyser();
-        const scriptProcessor = MediaRec._auCTX.createScriptProcessor();
+                sampleRate: 22050,
+                desiredSampRate: 22050,
+                
+                disableLogs: true,
+                
+                //recorderType: MediaStreamRecorder,
+                numberOfAudioChannels: 1,
+                //bufferSize: 16384,
 
-        // Some analyser setup
-        analyser.smoothingTimeConstant = 0.3;
-        analyser.fftSize = 1024;
-        
-        input.connect(analyser);
-        analyser.connect(scriptProcessor);
-        scriptProcessor.connect(MediaRec._auCTX.destination);
+                //timeSlice: MediaRec.auStreamInterval,
+                //ondataavailable: MediaRec._onAuBlob,
+            });
 
-        const getAverageVolume = array => {
-            const L = array.length;
-            if (L <= 0) return 0; 
+            // Audio analyser
+    /*
+            MediaRec._auAVGvolume = 0;
+
+            MediaRec._auCTX = new AudioContext();
+            const input = MediaRec._auCTX.createMediaStreamSource(stream);
+            const analyser = MediaRec._auCTX.createAnalyser();
+            const scriptProcessor = MediaRec._auCTX.createScriptProcessor();
+
+            // Some analyser setup
+            analyser.smoothingTimeConstant = 0.3;
+            analyser.fftSize = 1024;
             
-            let values = 0;
-            for (let i=0; i<L; i++) values += array[i];
+            input.connect(analyser);
+            analyser.connect(scriptProcessor);
+            scriptProcessor.connect(MediaRec._auCTX.destination);
 
-            return values / L;
-        };
+            const getAverageVolume = array => {
+                const L = array.length;
+                if (L <= 0) return 0; 
+                
+                let values = 0;
+                for (let i=0; i<L; i++) values += array[i];
 
-        scriptProcessor.onaudioprocess = audioProcessingEvent => {
-            if (!MediaRec._bAudioRecording) return;
+                return values / L;
+            };
 
-            const tempArray = new Uint8Array(analyser.frequencyBinCount);
+            scriptProcessor.onaudioprocess = audioProcessingEvent => {
+                if (!MediaRec._bAudioRecording) return;
 
-            analyser.getByteFrequencyData(tempArray);
-            MediaRec._auAVGvolume = parseInt(getAverageVolume(tempArray));
-            
-            //console.log(MediaRec._auAVGvolume);
-        };
-*/
-        if (onComplete) onComplete();
-    });
+                const tempArray = new Uint8Array(analyser.frequencyBinCount);
+
+                analyser.getByteFrequencyData(tempArray);
+                MediaRec._auAVGvolume = parseInt(getAverageVolume(tempArray));
+                
+                //console.log(MediaRec._auAVGvolume);
+            };
+    */
+            if (onComplete) onComplete();
+        });
+    }
 };
 
 MediaRec.isAudioRecording = ()=>{

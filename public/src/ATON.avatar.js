@@ -273,7 +273,13 @@ handleStateTransition(){
 
 update(){
     this.handleStateTransition();
-    if (this.userfpnode.visible) this.handleFocusTransition();
+    if (this.userfpnode.visible){
+        this.handleFocusTransition();
+
+        let s = this.userfpnode.scale.x;
+        if (s>0.001) this.userfpnode.scale.set(s*0.99,s*0.99,s*0.99);
+        else this.userfpnode.visible = false;
+    }
 
     let cam  = ATON.Nav._camera;
     let eye = ATON.Nav._currPOV.pos;

@@ -489,6 +489,7 @@ FE.popupUser = ()=>{
                     console.log(r);
                     ATON.SceneHub.setEditMode(false);
                     ATON.fireEvent("Logout");
+                    $("#btn-user").removeClass("switchedON");
                 });
 
                 ATON.FE.popupClose();
@@ -523,6 +524,7 @@ FE.popupUser = ()=>{
                         console.log(r);
                         if (r){
                             ATON.fireEvent("Login", r);
+                            $("#btn-user").addClass("switchedON");
                             ATON.FE.popupClose();
                         }
                     }

@@ -345,6 +345,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         
         let A = VRoadcast.avatarList[uid];
         if (A) A.hide();
+        // TODO: hide also focus
 
         console.log("User #" +uid+" left the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" left the scene</i><br>");

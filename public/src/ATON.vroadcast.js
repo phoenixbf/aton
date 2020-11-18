@@ -38,12 +38,17 @@ VRoadcast.init = ()=>{
     VRoadcast._username = undefined;
 
     VRoadcast.uid = undefined; // my userID (0,1,....)
+    VRoadcast._bFocus = false; // send focal point
     VRoadcast._numUsers = 0;
 
     VRoadcast.avatarList = [];
 
     VRoadcast.avaGroup = ATON.createUINode("avatars"); // holds all avatars representations
     VRoadcast.avaGroup.attachToRoot();
+
+    VRoadcast.focGroup = ATON.createUINode("focus"); // holds all avatars focal points
+    VRoadcast.focGroup.attachTo(VRoadcast.avaGroup);
+    VRoadcast._focNodes = [];
 
     // send own state with given freq
     window.setInterval( VRoadcast.sendState, VRoadcast.USER_STATE_FREQ*1000.0 );
@@ -121,6 +126,22 @@ VRoadcast.initMaterials = ()=>{
         smat.sizeAttenuation = true;
 
         VRoadcast.uspritemats.push(smat);
+    }
+
+    // Focal points
+    VRoadcast.ufocmats = [];
+
+    let texFocP = new THREE.TextureLoader().load( ATON.PATH_RES+"focus.png" );
+    for (let c=0; c<VRoadcast.ucolors.length; c++){
+        let smat = new THREE.SpriteMaterial({ 
+            map: texFocP,
+            depthWrite: false,
+            depthTest: false,
+            color: VRoadcast.ucolors[c] // multiply
+        });
+        smat.sizeAttenuation = true;
+
+        VRoadcast.ufocmats.push(smat);
     }
 };
 
@@ -340,6 +361,16 @@ VRoadcast._registerSocketHandlers = ()=>{
         //A.position.copy(S.position);
         //A.quaternion.copy(S.quaternion);
         A.requestStateTransition(S);
+        A.hideFocalPoint();
+    });
+
+    VRoadcast.socket.on('UFOCUS', (data)=>{
+        let uid = data.uid;
+        let fp  = data.fp;
+
+        let A = VRoadcast.touchAvatar(uid);
+
+        A.requestFocus(fp);
     });
 
     VRoadcast.socket.on('UNAME', (data)=>{
@@ -460,7 +491,7 @@ VRoadcast.update = ()=>{
     for (let a=0; a<VRoadcast.avatarList.length; a++){
         let A = VRoadcast.avatarList[a];
         if (A && A.visible){
-            A._tStateDur = VRoadcast.USER_STATE_FREQ;
+            //A._tStateDur = VRoadcast.USER_STATE_FREQ;
             A.update();
         }
     }
@@ -472,9 +503,21 @@ VRoadcast.sendState = ()=>{
     
     let cpov = ATON.Nav._currPOV;
     if (!cpov) return;
-
     //console.log(cpov);
 
+    // Focal point
+    let fp = ATON.getSceneQueriedPoint();
+    if (VRoadcast._bFocus && fp !== undefined){
+        //let F = new THREE.Vector3();
+        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(3);
+        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(3);
+        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(3);
+        let r  = ATON.SUI.getSelectorRadius().toPrecision(3);
+        
+        VRoadcast.socket.emit("UFOCUS", [fx,fy,fz,r]);
+    }
+
+    // Compose state
     let S = {};
     S.position = new THREE.Vector3();
     S.quaternion = new THREE.Quaternion();

@@ -23,8 +23,13 @@ constructor(uid){
     this._auChunks = [];
 
     this._tStateCall = -1.0;
-    this._tStateDur  = 0.1;
+    //this._tStateDur  = 0.1;
     this._tProgress  = 0.0;
+
+    // Focal point
+    this._tFocCall = -1.0;
+    this._currFocusPos = new THREE.Vector3();
+    this._tgtFocusPos  = undefined;
 
     this._currState  = {};
     this._currState.position   = new THREE.Vector3();
@@ -66,6 +71,11 @@ realize(){
     this.userauinode.position.set(0,0,0);
     this.userauinode.visible = false;
 
+    // Focus
+    this.userfpnode = new THREE.Sprite( ATON.VRoadcast.ufocmats[this.userid % ATON.VRoadcast.ufocmats.length] );
+    this.userfpnode.position.set(0,0,0);
+    //this.userfpnode.scale.set(10,10,10);
+    this.userfpnode.visible = false;
 
     // Build Label
     this.userlabelnode = ATON.createUINode();
@@ -110,6 +120,14 @@ realize(){
     this.add(this.usermeshnode);
     this.add(this.userlabelnode);
     this.add(this.userauinode);
+
+    //this.add(this.userfpnode);
+    
+    // Focus is centralized for better location accuracy
+    if (ATON.VRoadcast._focNodes[this.userid] === undefined){
+        ATON.VRoadcast._focNodes[this.userid] = this.userfpnode;
+        ATON.VRoadcast.focGroup.add( this.userfpnode );
+    }
 };
 
 // Loads custom avatar representation (3D model)
@@ -165,6 +183,54 @@ setTalkVolume(vol){
     else this.userauinode.visible = false;
 }
 
+hideFocalPoint(){
+    this.userfpnode.visible = false;
+}
+
+requestFocus(fp){
+    if (this._tFocCall >= 0.0) return; // already requested
+
+    this._tFocCall = ATON._clock.elapsedTime;
+
+    this._currFocusPos.copy(this.userfpnode.position);
+
+    this._tgtFocusPos = new THREE.Vector3( parseFloat(fp[0]), parseFloat(fp[1]), parseFloat(fp[2]));
+    this._tgtFocusRad = parseFloat(fp[3])*2.0;
+
+    this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
+
+    this.userfpnode.visible = true;
+}
+
+handleFocusTransition(){
+    if (this._tFocCall < 0.0) return;
+
+    let D = ATON.VRoadcast.USER_STATE_FREQ; //this._tStateDur;
+
+    let t = (ATON._clock.elapsedTime - this._tFocCall) / D;
+
+    // End
+    if (t >= 1.0){
+        this._tFocCall = -1.0;
+
+        this.userfpnode.position.copy(this._tgtFocusPos);
+        this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
+        //this.userfpnode.visible = true;
+
+        //console.log(this.userfpnode.position);
+
+        return;
+    }
+
+    this.userfpnode.position.lerpVectors(this._currFocusPos, this._tgtFocusPos, t);
+
+    //let s = this._tgtFocusRad;
+    //this.userfpnode.scale.set(s,s,s);
+    //this.userfpnode.visible = true;
+
+    //console.log(this.userfpnode.position);
+}
+
 requestStateTransition(S){
     if (this._tStateCall >= 0.0) return; // already requested
 
@@ -181,7 +247,7 @@ requestStateTransition(S){
 handleStateTransition(){
     if (this._tStateCall < 0.0) return;
 
-    let D = this._tStateDur; //(this._sDistance * this._tStateDur);
+    let D = ATON.VRoadcast.USER_STATE_FREQ; //this._tStateDur;
 
     if (D <= 0.0) this._tProgress = 1.0;
     else this._tProgress = (ATON._clock.elapsedTime - this._tStateCall) / D;
@@ -207,6 +273,7 @@ handleStateTransition(){
 
 update(){
     this.handleStateTransition();
+    if (this.userfpnode.visible) this.handleFocusTransition();
 
     let cam  = ATON.Nav._camera;
     let eye = ATON.Nav._currPOV.pos;

@@ -326,7 +326,9 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='y') ATON.XR.switchHands();
 
         //if (k==='.') ATON.MediaRec.startMediaStreaming();
-        if (k==='r') ATON.MediaRec.startRecording();
+        //if (k==='r') ATON.MediaRec.startRecording();
+
+        if (k==='f') ATON.VRoadcast._bFocus = true;
     });
 
     ATON.on("KeyUp",(k)=>{
@@ -334,8 +336,10 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.Nav.stop();
         }
 
-        if (k==='.') ATON.MediaRec.stopMediaStreaming();
-        if (k==='r') ATON.MediaRec.stopRecording();
+        //if (k==='.') ATON.MediaRec.stopMediaStreaming();
+        //if (k==='r') ATON.MediaRec.stopRecording();
+
+        if (k==='f') ATON.VRoadcast._bFocus = false;
     });
 
     ATON.on("Login", (d)=>{

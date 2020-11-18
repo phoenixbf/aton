@@ -18,12 +18,17 @@ VRoadcast.user = class {
         this.ipaddress = undefined;
 
         this.binState = undefined;
+        this.focpoint = undefined;
     }
 
     setEncodedState(binState){
         this.binState = binState;
     }
-
+/*
+    setFocalPoint(fp){
+        this.focpoint = fp;
+    }
+*/
     sendSnapshot(socket){
         if (this.name !== undefined)     socket.emit("UNAME", { uid: this.uid, name: this.name });
         if (this.message !== undefined)  socket.emit("UMSG", { uid: this.uid, msg: this.message });
@@ -169,6 +174,12 @@ VRoadcast.onNewConnection = (socket)=>{
         if (user) user.setEncodedState(data);
         // Broadcast to other users in scene
         socket.broadcast.to(sid).emit("USTATE", data );
+    });
+
+    socket.on('UFOCUS', (data)=>{
+        //if (user) user.setFocalPoint(data);
+        // Broadcast to other users in scene
+        socket.broadcast.to(sid).emit("UFOCUS", { uid: uid, fp: data });
     });
 
     socket.on('UNAME', (data)=>{

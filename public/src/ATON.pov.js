@@ -20,8 +20,6 @@ constructor(id){
     this.up     = ATON.STD_UPVECTOR;
     this.fov    = ATON.Nav.STD_FOV;
 
-    this.kwords = undefined;
-
     this.nextPOV = undefined;
     this.prevPOV = undefined;
 
@@ -79,21 +77,30 @@ setFOV(f){
 }
 
 /**
-Add a keyword to this viewpoint
-@param {string} kw - the keyword
+Add keyword(s) to this viewpoint
+@param {string} kw - the keyword or comma-separated list of keywords
 @example
 new ATON.POV("myView").addKeyword("heritage")
 */
-addKeyword(kw){
-    if (this.kwords === undefined) this.kwords = [];
-    this.kwords.push(kw);
+addKeywords(kw){
+    let K = kw.split(",");
+
+    if (this.kwords === undefined) this.kwords = {};
+    for (let k in K) this.kwords[ K[k] ] = true;
 
     return this;
 }
 
-setKeywords(kwarray){
-    this.kwords = kwarray;
-    return this;
+/**
+Returns true if this viewpoint has specific keyword
+@param {string} kw - the keyword
+@returns {boolean}
+@example
+if (myPOV.hasKeyword("heritage")){ ... }
+*/
+hasKeyword(kw){
+    if (this.kwords === undefined) return;
+    return (this.kwords[kw] !== undefined);
 }
 
 /**

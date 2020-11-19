@@ -30,6 +30,13 @@ Utils.init = ()=>{
     Utils.textureLoader = new THREE.TextureLoader();
 };
 
+Utils.generateID = (prefix)=>{
+    if (prefix === undefined) prefix = "id";
+    //let currDate = new Date();
+    //let ts = currDate.getYear()+":"+currDate.getMonth()+":"+currDate.getDay()+":"+currDate.getHours()+":"+currDate.getMinutes() +":"+ currDate.getSeconds();
+    return prefix+'-' + Math.random().toString(36).substr(2,9);
+};
+
 /**
 If current connection is secure
 @returns {boolean}

@@ -51,6 +51,7 @@
 											<li><a href="EventHub.html">EventHub</a></li>
 											<li><a href="FE.html">FE</a></li>
 											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="MediaRec.html">MediaRec</a></li>
 											<li><a href="Nav.html">Nav</a></li>
 											<li><a href="SceneHub.html">SceneHub</a></li>
 											<li><a href="SemFactory.html">SemFactory</a></li>
@@ -99,12 +100,20 @@ ATON Front-end routines
 */
 let FE = {};
 
+// Semantic-shapes types
+FE.SEMSHAPE_SPHERE = 0;
+FE.SEMSHAPE_CONVEX = 1;
+
 
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup = false;     // showing popup
     FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+    FE._userAuth = {};
+
+    FE._auSemNode = undefined;
+    FE._auSemNodePlaying = false;
 
     FE._bReqHome = false;   // auto-compute home
 
@@ -119,7 +128,7 @@ FE.realize = ()=>{
     if (ddens &amp;&amp; ddens>0.0) ATON.setDefaultPixelDensity(ddens);
 };
 
-// Add basic spinning loader
+// Add basic front-end events
 FE.addBasicLoaderEvents = ()=>{
     ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
@@ -132,12 +141,14 @@ FE.addBasicLoaderEvents = ()=>{
         if (ATON.Nav.homePOV === undefined){
             ATON.Nav.computeAndRequestDefaultHome(0.5);
         }
-        else {
-            ATON.Nav.requestHome(0.5);
-        }
-
+        
         FE._bReqHome = true;
     });
+
+    ATON.on("SceneJSONLoaded",()=>{
+        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.5);
+    });
+
 };
 
 FE.useMouseWheelToScaleSelector = (f)=>{
@@ -201,7 +212,7 @@ FE.uiAddButton = (idcontainer, icon, onPress)=>{
         iconid  = icon;
     }
 
-    let htmlcode = "&lt;button id='btn-"+iconid+"' type='button' class='atonBTN'>&lt;img src='"+iconurl+"'>&lt;/button>";
+    let htmlcode = "&lt;div id='btn-"+iconid+"' class='atonBTN'>&lt;img src='"+iconurl+"'>&lt;/div>";
     $("#"+idcontainer).append(htmlcode);
 
     if (onPress) $("#btn-"+iconid).click( onPress );
@@ -230,8 +241,11 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
         }
     });
 };
+
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
+    //if (!ATON.Utils.isWebXRsupported()) return; //Not showing on mobile
+
     FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
 };
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
@@ -246,6 +260,23 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
         else {
             ATON.Nav.setDeviceOrientationControl();
             FE.uiSwitchButton("devori",true);
+        }
+    });
+};
+
+FE.uiAddButtonTalk = (idcontainer)=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+
+    FE.uiAddButton(idcontainer, "talk", ()=>{
+        if (ATON.MediaRec.isAudioRecording()){
+            ATON.MediaRec.stopMediaStreaming();
+            //FE.uiSwitchButton("talk",false);
+            $("#btn-talk").removeClass("atonBTN-rec");
+        }
+        else {
+            ATON.MediaRec.startMediaStreaming();
+            //FE.uiSwitchButton("talk",true);
+            $("#btn-talk").addClass("atonBTN-rec");
         }
     });
 };
@@ -272,11 +303,37 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
-        $("#btn-vrc").addClass("atonVRCu"+(uid%6));
+        let i = (uid%6);
+        $("#btn-vrc").addClass("atonVRCu"+i);
+        //$("#"+idcontainer).addClass("atonVRCu"+i+"-bg");
+        FE.checkAuth((data)=>{
+            if (data.username!==undefined /*&amp;&amp; ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
+        });
     });
 
     ATON.on("VRC_Disconnected", ()=>{
         $("#btn-vrc").attr("class","atonBTN");
+    });
+};
+
+FE.uiAddButtonUser = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "user", ()=>{
+        FE.popupUser();
+    });
+};
+
+FE.uiAddButtonEditMode = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "edit", ()=>{
+        FE.checkAuth((data)=>{
+            if (data.username !== undefined){
+                ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
+                FE.uiSwitchButton("edit",ATON.SceneHub._bEdit);
+            }
+
+            else {
+                FE.popupUser();  
+            }
+        });
     });
 };
 
@@ -297,13 +354,41 @@ FE.setupBasicUISounds = ()=>{
     FE.auLib.switch.loop = false;
 };
 
+FE.playAudioFromSemanticNode = (semid)=>{
+    //if (FE._auSemNodePlaying) return;
+    if (semid === undefined) return;
+
+    let S = ATON.getSemanticNode(semid);
+    if (S === undefined) return;
+
+    let au = S.getAudio();
+    if (au === undefined) return;
+
+    if (FE._auSemNode === undefined) FE._auSemNode = new Audio();
+    
+    FE._auSemNodePlaying = true;
+    FE._auSemNode.src = au;
+    //FE._auSemNode.type = ATON.MediaRec.auType;
+    FE._auSemNode.play();
+
+    FE._auSemNode.onended = ()=>{
+        FE._auSemNodePlaying = false;
+    };
+};
+
 
 // Popups
 //===================================================================
-FE.popupShow = (htmlcontent)=>{
+FE.popupShow = (htmlcontent, cssClasses)=>{
     if (FE._bPopup) return false;
 
-    $('#idPopup').html("&lt;div class='atonPopup' id='idPopupContent'>"+htmlcontent+"&lt;/div>");
+    let clstr = "atonPopup ";
+    if (cssClasses) clstr += cssClasses;
+
+    let htcont = "&lt;div id='idPopupContent' class='"+clstr+"'>";
+    htcont += htmlcontent+"&lt;/div>"
+
+    $('#idPopup').html(htcont);
     $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
     $('#idPopup').fadeIn();
 
@@ -350,16 +435,76 @@ FE.popupQR = ()=>{
     new QRCode(document.getElementById("idQRcode"), url);
 };
 
+FE.popupScreenShot = ()=>{
+    let cover = ATON.Utils.takeScreenshot(200);
+
+    FE.checkAuth((r)=>{
+
+        let htmlcontent = "&lt;h1>Screenshot&lt;/h1>";
+        htmlcontent += "This is a preview of what your screenshot will look like:&lt;br>&lt;br>";
+        htmlcontent += "&lt;img src='"+cover.src+"'>&lt;br>";
+        htmlcontent += "Resolution: &lt;input id='isShotSize' type='number' min='100' max='4000' value='200'>px&lt;br>";
+
+        htmlcontent += "&lt;div class='atonBTN atonBTN-green' id='btnScreenShot' style='width:90%'>&lt;img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT&lt;/div>";
+
+        if (r.username !== undefined){
+            htmlcontent += "&lt;div class='atonBTN atonBTN-green' id='btnSetCover' style='width:90%'>Set as Cover&lt;/div>";
+            /*
+            htmlcontent += "&lt;div class='atonBTN' id='btnSetCover' style='width:220px; height:220px; padding:5px'>";
+            htmlcontent += "&lt;img src='"+cover.src+"'>&lt;br>";
+            htmlcontent += "Set as Cover&lt;/div>";
+            */
+        }
+
+        if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+        $("#btnScreenShot").click(()=>{
+            ATON.FE.popupClose();
+
+            let s = parseInt( $('#isShotSize').val() );
+            let img = ATON.Utils.takeScreenshot(s,"shot.png");
+        });
+
+        $("#btnSetCover").click(()=>{
+            ATON.FE.popupClose();
+
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"setcover/", {sid: ATON.SceneHub.currID, img: cover.src }, (r)=>{
+                console.log(r);
+            });
+
+        });
+    });
+};
+
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    //htmlcontent += "&lt;h1>VRoadcast&lt;/h1>";
+    htmlcontent += "&lt;h1>Collaborative Session&lt;/h1>";
+
+    // Username
+    htmlcontent += "&lt;input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
+    htmlcontent += "&lt;div id='idVRCusernameBTN' class='atonBTN' style='width:200px; display:none'>"+ATON.VRoadcast._username+"&lt;/div>";
+
     htmlcontent += "&lt;div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'>&lt;/div>";
 
-    htmlcontent += "&lt;input id='idVRCusername' type='text' size='10' placeholder='username...'>";
-    htmlcontent += "&lt;input id='idVRCmsg' type='text' placeholder='message...'>";
-    htmlcontent += "&lt;button type='button' class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:100%'>DISCONNECT&lt;/div>";
+    //htmlcontent += "&lt;div style='text-align:left'>";
+    htmlcontent += "&lt;input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
+    //htmlcontent += "&lt;/div>";
 
-    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+    htmlcontent += "&lt;div class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:90%'>LEAVE&lt;/div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+
+    if (ATON.VRoadcast._username === undefined){
+        $('#idVRCusername').show();
+        $('#idVRCusernameBTN').hide();
+    }
+    else {
+        $('#idVRCusername').val(ATON.VRoadcast._username);
+        $('#idVRCusername').hide();
+        $('#idVRCusernameBTN').show();
+    }
+
+    if (ATON.VRoadcast.uid !== undefined) $('#idVRCusernameBTN').addClass("atonVRCu"+(ATON.VRoadcast.uid % 6));
 
     $("#idChatBox").append(ATON.VRoadcast._elChat);
 
@@ -378,8 +523,16 @@ FE.popupVRC = ()=>{
         if(keycode == '13'){
             let str = $("#idVRCusername").val();
             ATON.VRoadcast.setUsername( str );
-            //$("#idVRCusername").hide();
+            
+            $('#idVRCusername').hide();
+            $('#idVRCusernameBTN').html(ATON.VRoadcast._username);
+            $('#idVRCusernameBTN').show();
         }
+    });
+
+    $("#idVRCusernameBTN").click(()=>{
+        $('#idVRCusername').show();
+        $('#idVRCusernameBTN').hide();
     });
 
     $("#idVRCdisconnect").click(()=>{
@@ -389,6 +542,114 @@ FE.popupVRC = ()=>{
 
 };
 
+// User auth
+FE.checkAuth = (onReceive)=>{
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{
+            FE._userAuth = data;
+            //console.log(FE._userAuth);
+
+            if (data.username !== undefined){
+                $("#btn-user").addClass("switchedON");
+                if (ATON.VRoadcast._username === undefined) ATON.VRoadcast.setUsername(data.username);
+            }
+            else {
+                $("#btn-user").removeClass("switchedON");
+            }
+
+            onReceive(data);
+        }
+    });
+};
+
+FE.popupUser = ()=>{
+
+    FE.checkAuth((r)=>{
+        // We are already logged
+        if (r.username !== undefined){
+            let htmlcontent = "&lt;img src='"+FE.PATH_RES_ICONS+"user.png'>&lt;br>";
+            htmlcontent += "You are logged in as &lt;b>'"+r.username+"'&lt;/b>&lt;br>&lt;br>";
+
+            htmlcontent += "&lt;div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT&lt;/div>";
+
+            if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+            $("#idLogoutBTN").click(()=>{
+                $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
+                    console.log(r);
+                    ATON.SceneHub.setEditMode(false);
+                    ATON.fireEvent("Logout");
+                    $("#btn-user").removeClass("switchedON");
+                });
+
+                ATON.FE.popupClose();
+            });
+
+        }
+
+        // Not logged in
+        else {
+            let htmlcontent = "&lt;img src='"+FE.PATH_RES_ICONS+"user.png'>&lt;br>";
+            htmlcontent += "username:&lt;input id='idUsername' type='text' maxlength='15' size='15' >&lt;br>";
+            htmlcontent += "password:&lt;input id='idPassword' type='password' maxlength='15' size='15' >&lt;br>";
+
+            htmlcontent += "&lt;div class='atonBTN atonBTN-green' id='idLoginBTN' style='width:90%'>LOGIN&lt;/div>";
+
+            if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+            $("#idLoginBTN").click(()=>{
+                let jstr = JSON.stringify({
+                    username: $("#idUsername").val(),
+                    password: $("#idPassword").val()
+                });
+
+                $.ajax({
+                    url: ATON.PATH_RESTAPI+"login",
+                    type:"POST",
+                    data: jstr,
+                    contentType:"application/json; charset=utf-8",
+                    dataType:"json",
+
+                    success: (r)=>{
+                        console.log(r);
+                        if (r){
+                            ATON.fireEvent("Login", r);
+                            $("#btn-user").addClass("switchedON");
+                            ATON.FE.popupClose();
+                        }
+                    }
+
+                }).fail((err)=>{
+                    //console.log(err);
+                    $("#idLoginBTN").html("LOGIN FAILED");
+                    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
+                });
+            });
+        }
+    });
+};
+
+/*
+FE.popupPOV = ()=>{
+    let htmlcontent = "&lt;h1>Viewpoint&lt;/h1>";
+
+    htmlcontent += "&lt;div class='select' style='width:200px;'>&lt;select id='idPOVmode'>";
+    htmlcontent += "&lt;option value='0'>Set as Home viewpoint&lt;/option>";
+    htmlcontent += "&lt;option value='1'>Add viewpoint&lt;/option>";
+    htmlcontent += "&lt;/select>&lt;div class='selectArrow'>&lt;/div>&lt;/div>";
+
+    htmlcontent += "&lt;div class='atonBTN atonBTN-green' id='btnPOV' style='width:90%'>OK&lt;/div>"; // &lt;img src='"+FE.PATH_RES_ICONS+"pov.png'>
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    let mode = $("#idPOVmode").val();
+};
+*/
 
 export default FE;</code></pre>
 		</section>
@@ -397,7 +658,7 @@ export default FE;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 11th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 19th Nov 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

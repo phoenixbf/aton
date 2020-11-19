@@ -214,7 +214,6 @@ SceneHub.initBaseParsers = ()=>{
                     .setPosition(pov.position[0],pov.position[1],pov.position[2])
                     .setTarget(pov.target[0],pov.target[1],pov.target[2])
                     .setFOV(pov.fov)
-                    .setKeywords(pov.keywords)
                 );
             }
             else {
@@ -222,7 +221,7 @@ SceneHub.initBaseParsers = ()=>{
                 .setPosition(pov.position)
                 .setTarget(pov.target)
                 .setFOV(pov.fov)
-                .setKeywords(pov.keywords);
+                //.setKeywords(pov.keywords);
             }
         }
     };

@@ -463,9 +463,15 @@ FE.checkAuth = (onReceive)=>{
 
         success: (data)=>{
             FE._userAuth = data;
-            console.log(FE._userAuth);
+            //console.log(FE._userAuth);
 
-            if (data.username!==undefined && ATON.VRoadcast._username===undefined) ATON.VRoadcast.setUsername(data.username);
+            if (data.username !== undefined){
+                $("#btn-user").addClass("switchedON");
+                if (ATON.VRoadcast._username === undefined) ATON.VRoadcast.setUsername(data.username);
+            }
+            else {
+                $("#btn-user").removeClass("switchedON");
+            }
 
             onReceive(data);
         }
@@ -539,5 +545,21 @@ FE.popupUser = ()=>{
     });
 };
 
+/*
+FE.popupPOV = ()=>{
+    let htmlcontent = "<h1>Viewpoint</h1>";
+
+    htmlcontent += "<div class='select' style='width:200px;'><select id='idPOVmode'>";
+    htmlcontent += "<option value='0'>Set as Home viewpoint</option>";
+    htmlcontent += "<option value='1'>Add viewpoint</option>";
+    htmlcontent += "</select><div class='selectArrow'></div></div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnPOV' style='width:90%'>OK</div>"; // <img src='"+FE.PATH_RES_ICONS+"pov.png'>
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    let mode = $("#idPOVmode").val();
+};
+*/
 
 export default FE;

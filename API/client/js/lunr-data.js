@@ -181,13 +181,25 @@ window.lunrData = {
           "setfov",
           "view"
         ],
-        "POV.html#addKeyword": [
+        "POV.html#addKeywords": [
           "add",
           "addkeyword",
           "function",
-          "keyword",
+          "keyword(",
           "kw",
           "pov#addkeyword",
+          "viewpoint"
+        ],
+        "POV.html#hasKeyword": [
+          "boolean",
+          "function",
+          "haskeyword",
+          "keyword",
+          "kw",
+          "pov#haskeyword",
+          "return",
+          "specif",
+          "true",
           "viewpoint"
         ],
         "POV.html#setNextPOV": [
@@ -593,6 +605,13 @@ window.lunrData = {
           "namespac",
           "routin"
         ],
+        "MediaRec.html": [
+          "aton",
+          "media",
+          "mediarec",
+          "namespac",
+          "record"
+        ],
         "SemFactory.html": [
           "aton",
           "factori",
@@ -750,6 +769,17 @@ window.lunrData = {
           "tablet",
           "utils.ismobil"
         ],
+        "Utils.html#.isWebXRsupported": [
+          "boolean",
+          "current",
+          "devic",
+          "function",
+          "iswebxrsupport",
+          "lt;static&gt",
+          "support",
+          "utils.iswebxrsupport",
+          "webxr"
+        ],
         "Nav.html": [
           "aton",
           "namespac",
@@ -855,6 +885,16 @@ window.lunrData = {
           "return",
           "system",
           "true"
+        ],
+        "Nav.html#.setNavMode": [
+          "function",
+          "lt;static&gt",
+          "mode",
+          "nav.setnavmod",
+          "navig",
+          "navmod",
+          "set",
+          "setnavmod"
         ],
         "Nav.html#.setOrbitControl": [
           "default",
@@ -1121,6 +1161,16 @@ window.lunrData = {
           "true",
           "vroadcast",
           "vroadcast.isconnect"
+        ],
+        "VRoadcast.html#.log": [
+          "d",
+          "function",
+          "log",
+          "lt;static&gt",
+          "server",
+          "side",
+          "util",
+          "vroadcast.log"
         ],
         "VRoadcast.html#.requestSceneEnter": [
           "enter",
@@ -1455,7 +1505,7 @@ window.lunrData = {
           "visibl"
         ]
       },
-      "length": 124
+      "length": 129
     },
     "tokenStore": {
       "root": {
@@ -1566,8 +1616,8 @@ window.lunrData = {
             },
             "d": {
               "docs": {
-                "POV.html#addKeyword": {
-                  "ref": "POV.html#addKeyword",
+                "POV.html#addKeywords": {
+                  "ref": "POV.html#addKeywords",
                   "tf": 16.666666666666664
                 },
                 "Node.html#addKeywords": {
@@ -1593,8 +1643,8 @@ window.lunrData = {
                           "docs": {},
                           "d": {
                             "docs": {
-                              "POV.html#addKeyword": {
-                                "ref": "POV.html#addKeyword",
+                              "POV.html#addKeywords": {
+                                "ref": "POV.html#addKeywords",
                                 "tf": 700
                               },
                               "Node.html#addKeywords": {
@@ -1735,6 +1785,10 @@ window.lunrData = {
                   "FE.html": {
                     "ref": "FE.html",
                     "tf": 12.5
+                  },
+                  "MediaRec.html": {
+                    "ref": "MediaRec.html",
+                    "tf": 16.666666666666664
                   },
                   "SemFactory.html": {
                     "ref": "SemFactory.html",
@@ -3773,6 +3827,10 @@ window.lunrData = {
                           "ref": "Utils.html#.isMobile",
                           "tf": 6.25
                         },
+                        "Utils.html#.isWebXRsupported": {
+                          "ref": "Utils.html#.isWebXRsupported",
+                          "tf": 12.5
+                        },
                         "Nav.html#.getCurrentEyeLocation": {
                           "ref": "Nav.html#.getCurrentEyeLocation",
                           "tf": 5.555555555555555
@@ -3814,7 +3872,12 @@ window.lunrData = {
           }
         },
         "d": {
-          "docs": {},
+          "docs": {
+            "VRoadcast.html#.log": {
+              "ref": "VRoadcast.html#.log",
+              "tf": 33.33333333333333
+            }
+          },
           "e": {
             "docs": {},
             "p": {
@@ -3967,6 +4030,10 @@ window.lunrData = {
                     "Utils.html#.isMobile": {
                       "ref": "Utils.html#.isMobile",
                       "tf": 6.25
+                    },
+                    "Utils.html#.isWebXRsupported": {
+                      "ref": "Utils.html#.isWebXRsupported",
+                      "tf": 12.5
                     },
                     "Nav.html#.isDevOri": {
                       "ref": "Nav.html#.isDevOri",
@@ -4821,8 +4888,12 @@ window.lunrData = {
                             "ref": "POV.html#setFOV",
                             "tf": 110
                           },
-                          "POV.html#addKeyword": {
-                            "ref": "POV.html#addKeyword",
+                          "POV.html#addKeywords": {
+                            "ref": "POV.html#addKeywords",
+                            "tf": 110
+                          },
+                          "POV.html#hasKeyword": {
+                            "ref": "POV.html#hasKeyword",
                             "tf": 110
                           },
                           "POV.html#setNextPOV": {
@@ -4989,6 +5060,10 @@ window.lunrData = {
                             "ref": "Utils.html#.isMobile",
                             "tf": 110
                           },
+                          "Utils.html#.isWebXRsupported": {
+                            "ref": "Utils.html#.isWebXRsupported",
+                            "tf": 110
+                          },
                           "Nav.html#.getCurrentEyeLocation": {
                             "ref": "Nav.html#.getCurrentEyeLocation",
                             "tf": 110
@@ -5015,6 +5090,10 @@ window.lunrData = {
                           },
                           "Nav.html#.isDevOri": {
                             "ref": "Nav.html#.isDevOri",
+                            "tf": 110
+                          },
+                          "Nav.html#.setNavMode": {
+                            "ref": "Nav.html#.setNavMode",
                             "tf": 110
                           },
                           "Nav.html#.setOrbitControl": {
@@ -5103,6 +5182,10 @@ window.lunrData = {
                           },
                           "VRoadcast.html#.isConnected": {
                             "ref": "VRoadcast.html#.isConnected",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.log": {
+                            "ref": "VRoadcast.html#.log",
                             "tf": 110
                           },
                           "VRoadcast.html#.requestSceneEnter": {
@@ -6383,6 +6466,47 @@ window.lunrData = {
                 }
               }
             },
+            "w": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "b": {
+                  "docs": {},
+                  "x": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "p": {
+                            "docs": {},
+                            "p": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {
+                                      "Utils.html#.isWebXRsupported": {
+                                        "ref": "Utils.html#.isWebXRsupported",
+                                        "tf": 683.3333333333334
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "t": {
               "docs": {},
               "r": {
@@ -6558,6 +6682,10 @@ window.lunrData = {
                   "Nav.html#.isDevOri": {
                     "ref": "Nav.html#.isDevOri",
                     "tf": 7.142857142857142
+                  },
+                  "Nav.html#.setNavMode": {
+                    "ref": "Nav.html#.setNavMode",
+                    "tf": 16.666666666666664
                   },
                   "Nav.html#.setOrbitControl": {
                     "ref": "Nav.html#.setOrbitControl",
@@ -6746,6 +6874,37 @@ window.lunrData = {
                     "Node.html#load": {
                       "ref": "Node.html#load",
                       "tf": 2.1739130434782608
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "e": {
+            "docs": {},
+            "d": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "a": {
+                  "docs": {
+                    "MediaRec.html": {
+                      "ref": "MediaRec.html",
+                      "tf": 16.666666666666664
+                    }
+                  },
+                  "r": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "c": {
+                        "docs": {
+                          "MediaRec.html": {
+                            "ref": "MediaRec.html",
+                            "tf": 1900
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -7306,8 +7465,43 @@ window.lunrData = {
                                   "docs": {},
                                   "d": {
                                     "docs": {
-                                      "POV.html#addKeyword": {
-                                        "ref": "POV.html#addKeyword",
+                                      "POV.html#addKeywords": {
+                                        "ref": "POV.html#addKeywords",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "h": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "k": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "y": {
+                            "docs": {},
+                            "w": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "POV.html#hasKeyword": {
+                                        "ref": "POV.html#hasKeyword",
                                         "tf": 1150
                                       }
                                     }
@@ -7770,49 +7964,6 @@ window.lunrData = {
                 }
               }
             },
-            ")": {
-              "docs": {},
-              "a": {
-                "docs": {},
-                "s": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "i": {
-                      "docs": {},
-                      "g": {
-                        "docs": {},
-                        "n": {
-                          "docs": {
-                            "Node.html#as": {
-                              "ref": "Node.html#as",
-                              "tf": 16.666666666666664
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "c": {
-              "docs": {},
-              "u": {
-                "docs": {},
-                "r": {
-                  "docs": {},
-                  "s": {
-                    "docs": {
-                      "Node.html#addKeywords": {
-                        "ref": "Node.html#addKeywords",
-                        "tf": 6.25
-                      }
-                    }
-                  }
-                }
-              }
-            },
             "t": {
               "docs": {},
               "u": {
@@ -7821,6 +7972,10 @@ window.lunrData = {
                   "docs": {},
                   "n": {
                     "docs": {
+                      "POV.html#hasKeyword": {
+                        "ref": "POV.html#hasKeyword",
+                        "tf": 10
+                      },
                       "Node.html#hasKeyword": {
                         "ref": "Node.html#hasKeyword",
                         "tf": 10
@@ -7868,6 +8023,63 @@ window.lunrData = {
                       "ATON.html#.getSceneQueriedNormal": {
                         "ref": "ATON.html#.getSceneQueriedNormal",
                         "tf": 5.555555555555555
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            ")": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "g": {
+                        "docs": {},
+                        "n": {
+                          "docs": {
+                            "Node.html#as": {
+                              "ref": "Node.html#as",
+                              "tf": 16.666666666666664
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "s": {
+                    "docs": {
+                      "Node.html#addKeywords": {
+                        "ref": "Node.html#addKeywords",
+                        "tf": 6.25
+                      }
+                    }
+                  }
+                }
+              },
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "d": {
+                    "docs": {
+                      "MediaRec.html": {
+                        "ref": "MediaRec.html",
+                        "tf": 16.666666666666664
                       }
                     }
                   }
@@ -8615,6 +8827,10 @@ window.lunrData = {
                   "ref": "XR.html#.setRefSpaceLocation",
                   "tf": 3.125
                 },
+                "Nav.html#.setNavMode": {
+                  "ref": "Nav.html#.setNavMode",
+                  "tf": 16.666666666666664
+                },
                 "Nav.html#.setOrbitControl": {
                   "ref": "Nav.html#.setOrbitControl",
                   "tf": 10
@@ -8908,6 +9124,26 @@ window.lunrData = {
                                 "ref": "POV.html#setNextPOV",
                                 "tf": 700
                               }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "a": {
+                  "docs": {},
+                  "v": {
+                    "docs": {},
+                    "m": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "d": {
+                          "docs": {
+                            "Nav.html#.setNavMode": {
+                              "ref": "Nav.html#.setNavMode",
+                              "tf": 683.3333333333334
                             }
                           }
                         }
@@ -9645,6 +9881,10 @@ window.lunrData = {
                       "SceneHub.html#.setEditMode": {
                         "ref": "SceneHub.html#.setEditMode",
                         "tf": 5
+                      },
+                      "VRoadcast.html#.log": {
+                        "ref": "VRoadcast.html#.log",
+                        "tf": 12.5
                       }
                     }
                   }
@@ -9796,6 +10036,10 @@ window.lunrData = {
                   "docs": {},
                   "f": {
                     "docs": {
+                      "POV.html#hasKeyword": {
+                        "ref": "POV.html#hasKeyword",
+                        "tf": 10
+                      },
                       "Node.html#hasKeyword": {
                         "ref": "Node.html#hasKeyword",
                         "tf": 10
@@ -9870,6 +10114,26 @@ window.lunrData = {
                             "ref": "VRoadcast.html#.on",
                             "tf": 7.142857142857142
                           }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "p": {
+              "docs": {},
+              "p": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Utils.html#.isWebXRsupported": {
+                          "ref": "Utils.html#.isWebXRsupported",
+                          "tf": 12.5
                         }
                       }
                     }
@@ -10189,6 +10453,14 @@ window.lunrData = {
                   "ref": "SceneHub.html#.load",
                   "tf": 20
                 }
+              },
+              "e": {
+                "docs": {
+                  "VRoadcast.html#.log": {
+                    "ref": "VRoadcast.html#.log",
+                    "tf": 12.5
+                  }
+                }
               }
             }
           },
@@ -10403,6 +10675,10 @@ window.lunrData = {
               "docs": {},
               "e": {
                 "docs": {
+                  "POV.html#hasKeyword": {
+                    "ref": "POV.html#hasKeyword",
+                    "tf": 10
+                  },
                   "Node.html#hasKeyword": {
                     "ref": "Node.html#hasKeyword",
                     "tf": 10
@@ -10890,6 +11166,10 @@ window.lunrData = {
                   "Utils.html": {
                     "ref": "Utils.html",
                     "tf": 1925
+                  },
+                  "VRoadcast.html#.log": {
+                    "ref": "VRoadcast.html#.log",
+                    "tf": 12.5
                   }
                 },
                 "s": {
@@ -10963,6 +11243,47 @@ window.lunrData = {
                                     "Utils.html#.isMobile": {
                                       "ref": "Utils.html#.isMobile",
                                       "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "w": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "b": {
+                              "docs": {},
+                              "x": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "s": {
+                                    "docs": {},
+                                    "u": {
+                                      "docs": {},
+                                      "p": {
+                                        "docs": {},
+                                        "p": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {
+                                                  "Utils.html#.isWebXRsupported": {
+                                                    "ref": "Utils.html#.isWebXRsupported",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
                                     }
                                   }
                                 }
@@ -11101,6 +11422,20 @@ window.lunrData = {
                                 }
                               }
                             },
+                            "l": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "g": {
+                                  "docs": {
+                                    "VRoadcast.html#.log": {
+                                      "ref": "VRoadcast.html#.log",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            },
                             "r": {
                               "docs": {},
                               "e": {
@@ -11223,9 +11558,13 @@ window.lunrData = {
                               "ref": "POV.html",
                               "tf": 2.5
                             },
-                            "POV.html#addKeyword": {
-                              "ref": "POV.html#addKeyword",
+                            "POV.html#addKeywords": {
+                              "ref": "POV.html#addKeywords",
                               "tf": 16.666666666666664
+                            },
+                            "POV.html#hasKeyword": {
+                              "ref": "POV.html#hasKeyword",
+                              "tf": 10
                             },
                             "Nav.html#.requestPOV": {
                               "ref": "Nav.html#.requestPOV",
@@ -11403,6 +11742,17 @@ window.lunrData = {
                 "index.html": {
                   "ref": "index.html",
                   "tf": 1.9444444444444444
+                }
+              },
+              "x": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "Utils.html#.isWebXRsupported": {
+                      "ref": "Utils.html#.isWebXRsupported",
+                      "tf": 12.5
+                    }
+                  }
                 }
               }
             }
@@ -11784,6 +12134,14 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "g": {
+              "docs": {
+                "VRoadcast.html#.log": {
+                  "ref": "VRoadcast.html#.log",
+                  "tf": 695.8333333333334
+                }
+              }
             }
           },
           "t": {
@@ -11860,6 +12218,10 @@ window.lunrData = {
                                     "ref": "Utils.html#.isMobile",
                                     "tf": 33.33333333333333
                                   },
+                                  "Utils.html#.isWebXRsupported": {
+                                    "ref": "Utils.html#.isWebXRsupported",
+                                    "tf": 33.33333333333333
+                                  },
                                   "Nav.html#.getCurrentEyeLocation": {
                                     "ref": "Nav.html#.getCurrentEyeLocation",
                                     "tf": 33.33333333333333
@@ -11886,6 +12248,10 @@ window.lunrData = {
                                   },
                                   "Nav.html#.isDevOri": {
                                     "ref": "Nav.html#.isDevOri",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.setNavMode": {
+                                    "ref": "Nav.html#.setNavMode",
                                     "tf": 33.33333333333333
                                   },
                                   "Nav.html#.setOrbitControl": {
@@ -11974,6 +12340,10 @@ window.lunrData = {
                                   },
                                   "VRoadcast.html#.isConnected": {
                                     "ref": "VRoadcast.html#.isConnected",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "VRoadcast.html#.log": {
+                                    "ref": "VRoadcast.html#.log",
                                     "tf": 33.33333333333333
                                   },
                                   "VRoadcast.html#.requestSceneEnter": {
@@ -12138,6 +12508,10 @@ window.lunrData = {
                             "ref": "FE.html",
                             "tf": 110
                           },
+                          "MediaRec.html": {
+                            "ref": "MediaRec.html",
+                            "tf": 110
+                          },
                           "SemFactory.html": {
                             "ref": "SemFactory.html",
                             "tf": 110
@@ -12211,6 +12585,10 @@ window.lunrData = {
                     "Nav.html#.isDevOri": {
                       "ref": "Nav.html#.isDevOri",
                       "tf": 7.142857142857142
+                    },
+                    "Nav.html#.setNavMode": {
+                      "ref": "Nav.html#.setNavMode",
+                      "tf": 16.666666666666664
                     },
                     "Nav.html#.setOrbitControl": {
                       "ref": "Nav.html#.setOrbitControl",
@@ -12535,6 +12913,29 @@ window.lunrData = {
                     "docs": {},
                     "t": {
                       "docs": {},
+                      "n": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "v": {
+                            "docs": {},
+                            "m": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "d": {
+                                  "docs": {
+                                    "Nav.html#.setNavMode": {
+                                      "ref": "Nav.html#.setNavMode",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
                       "o": {
                         "docs": {},
                         "r": {
@@ -12895,6 +13296,20 @@ window.lunrData = {
                             }
                           }
                         }
+                      }
+                    }
+                  }
+                }
+              },
+              "m": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "d": {
+                    "docs": {
+                      "Nav.html#.setNavMode": {
+                        "ref": "Nav.html#.setNavMode",
+                        "tf": 33.33333333333333
                       }
                     }
                   }
@@ -13931,9 +14346,9 @@ window.lunrData = {
                     "docs": {},
                     "d": {
                       "docs": {
-                        "POV.html#addKeyword": {
-                          "ref": "POV.html#addKeyword",
-                          "tf": 16.666666666666664
+                        "POV.html#hasKeyword": {
+                          "ref": "POV.html#hasKeyword",
+                          "tf": 10
                         },
                         "Node.html#addKeywords": {
                           "ref": "Node.html#addKeywords",
@@ -13946,6 +14361,10 @@ window.lunrData = {
                       },
                       "(": {
                         "docs": {
+                          "POV.html#addKeywords": {
+                            "ref": "POV.html#addKeywords",
+                            "tf": 16.666666666666664
+                          },
                           "Node.html#addKeywords": {
                             "ref": "Node.html#addKeywords",
                             "tf": 6.25
@@ -13960,9 +14379,13 @@ window.lunrData = {
           },
           "w": {
             "docs": {
-              "POV.html#addKeyword": {
-                "ref": "POV.html#addKeyword",
+              "POV.html#addKeywords": {
+                "ref": "POV.html#addKeywords",
                 "tf": 50
+              },
+              "POV.html#hasKeyword": {
+                "ref": "POV.html#hasKeyword",
+                "tf": 33.33333333333333
               },
               "Node.html#addKeywords": {
                 "ref": "Node.html#addKeywords",
@@ -13998,6 +14421,10 @@ window.lunrData = {
                     "docs": {},
                     "n": {
                       "docs": {
+                        "POV.html#hasKeyword": {
+                          "ref": "POV.html#hasKeyword",
+                          "tf": 33.33333333333333
+                        },
                         "Node.html#hasKeyword": {
                           "ref": "Node.html#hasKeyword",
                           "tf": 33.33333333333333
@@ -14012,6 +14439,10 @@ window.lunrData = {
                         },
                         "Utils.html#.isMobile": {
                           "ref": "Utils.html#.isMobile",
+                          "tf": 33.33333333333333
+                        },
+                        "Utils.html#.isWebXRsupported": {
+                          "ref": "Utils.html#.isWebXRsupported",
                           "tf": 33.33333333333333
                         },
                         "Nav.html#.isTransitioning": {
@@ -14423,6 +14854,10 @@ window.lunrData = {
                           "docs": {},
                           "d": {
                             "docs": {
+                              "POV.html#hasKeyword": {
+                                "ref": "POV.html#hasKeyword",
+                                "tf": 683.3333333333334
+                              },
                               "Node.html#hasKeyword": {
                                 "ref": "Node.html#hasKeyword",
                                 "tf": 683.3333333333334
@@ -14649,7 +15084,7 @@ window.lunrData = {
           }
         }
       },
-      "length": 1167
+      "length": 1207
     },
     "corpusTokens": [
       "1.0",
@@ -14762,6 +15197,7 @@ window.lunrData = {
       "createuinod",
       "current",
       "custom",
+      "d",
       "data",
       "default",
       "degre",
@@ -14869,6 +15305,7 @@ window.lunrData = {
       "isorbit",
       "ispres",
       "istransit",
+      "iswebxrsupport",
       "json",
       "keyword",
       "keyword(",
@@ -14884,6 +15321,7 @@ window.lunrData = {
       "local",
       "locat",
       "locomot",
+      "log",
       "lp",
       "lt;static&gt",
       "m",
@@ -14892,6 +15330,8 @@ window.lunrData = {
       "mandatori",
       "materi",
       "mathub",
+      "media",
+      "mediarec",
       "mobil",
       "mode",
       "model",
@@ -14920,9 +15360,11 @@ window.lunrData = {
       "nav.sethomepov",
       "nav.setmotionamount",
       "nav.setmotiondirect",
+      "nav.setnavmod",
       "nav.setorbitcontrol",
       "nav.stop",
       "navig",
+      "navmod",
       "network",
       "next",
       "node",
@@ -14975,6 +15417,7 @@ window.lunrData = {
       "posit",
       "pov",
       "pov#addkeyword",
+      "pov#haskeyword",
       "pov#setfov",
       "pov#setnextpov",
       "pov#setposit",
@@ -14996,6 +15439,7 @@ window.lunrData = {
       "re)assign",
       "readm",
       "realiz",
+      "record",
       "recurs",
       "refer",
       "removechildren",
@@ -15055,6 +15499,7 @@ window.lunrData = {
       "setmateri",
       "setmotionamount",
       "setmotiondirect",
+      "setnavmod",
       "setnextpov",
       "setorbitcontrol",
       "setpathcollect",
@@ -15071,6 +15516,7 @@ window.lunrData = {
       "settext",
       "show",
       "sid",
+      "side",
       "smartphon",
       "space",
       "spatial",
@@ -15090,6 +15536,7 @@ window.lunrData = {
       "sui.getselectorradiu",
       "sui.setselectormodel",
       "sui.setselectorradiu",
+      "support",
       "switch",
       "system",
       "tablet",
@@ -15126,6 +15573,7 @@ window.lunrData = {
       "util",
       "utils.isconnectionsecur",
       "utils.ismobil",
+      "utils.iswebxrsupport",
       "v",
       "vector",
       "veget",
@@ -15141,11 +15589,13 @@ window.lunrData = {
       "vroadcast.fireev",
       "vroadcast.init",
       "vroadcast.isconnect",
+      "vroadcast.log",
       "vroadcast.on",
       "vroadcast.requestsceneent",
       "wast",
       "web",
       "web3d",
+      "webxr",
       "whenev",
       "within",
       "without",
@@ -15280,15 +15730,25 @@ window.lunrData = {
       "summary": "",
       "description": "Set field of view (FOV) in degrees"
     },
-    "POV.html#addKeyword": {
-      "id": "POV.html#addKeyword",
+    "POV.html#addKeywords": {
+      "id": "POV.html#addKeywords",
       "kind": "function",
-      "title": "addKeyword( kw )",
-      "longname": "POV#addKeyword",
-      "name": "addKeyword",
-      "tags": "POV#addKeyword addKeyword",
+      "title": "addKeywords( kw )",
+      "longname": "POV#addKeywords",
+      "name": "addKeywords",
+      "tags": "POV#addKeywords addKeywords",
       "summary": "",
-      "description": "Add a keyword to this viewpoint"
+      "description": "Add keyword(s) to this viewpoint"
+    },
+    "POV.html#hasKeyword": {
+      "id": "POV.html#hasKeyword",
+      "kind": "function",
+      "title": "hasKeyword( kw ) → {boolean}",
+      "longname": "POV#hasKeyword",
+      "name": "hasKeyword",
+      "tags": "POV#hasKeyword hasKeyword",
+      "summary": "",
+      "description": "Returns true if this viewpoint has specific keyword"
     },
     "POV.html#setNextPOV": {
       "id": "POV.html#setNextPOV",
@@ -15644,6 +16104,17 @@ window.lunrData = {
       "description": "ATON Front-end routines",
       "body": ""
     },
+    "MediaRec.html": {
+      "id": "MediaRec.html",
+      "kind": "namespace",
+      "title": "MediaRec",
+      "longname": "MediaRec",
+      "name": "MediaRec",
+      "tags": "MediaRec",
+      "summary": "",
+      "description": "ATON Media Recorder",
+      "body": ""
+    },
     "SemFactory.html": {
       "id": "SemFactory.html",
       "kind": "namespace",
@@ -15799,6 +16270,16 @@ window.lunrData = {
       "summary": "",
       "description": "If current device is mobile (e.g. smartphone, tablet, Oculus Quest)"
     },
+    "Utils.html#.isWebXRsupported": {
+      "id": "Utils.html#.isWebXRsupported",
+      "kind": "function",
+      "title": "&lt;static&gt; isWebXRsupported() → {boolean}",
+      "longname": "Utils.isWebXRsupported",
+      "name": "isWebXRsupported",
+      "tags": "Utils.isWebXRsupported isWebXRsupported",
+      "summary": "",
+      "description": "If current device supports WebXR"
+    },
     "Nav.html": {
       "id": "Nav.html",
       "kind": "namespace",
@@ -15879,6 +16360,16 @@ window.lunrData = {
       "tags": "Nav.isDevOri isDevOri",
       "summary": "",
       "description": "Return true if the navigation system is in Device-orientation mode"
+    },
+    "Nav.html#.setNavMode": {
+      "id": "Nav.html#.setNavMode",
+      "kind": "function",
+      "title": "&lt;static&gt; setNavMode( navmode )",
+      "longname": "Nav.setNavMode",
+      "name": "setNavMode",
+      "tags": "Nav.setNavMode setNavMode",
+      "summary": "",
+      "description": "Set Navigation mode"
     },
     "Nav.html#.setOrbitControl": {
       "id": "Nav.html#.setOrbitControl",
@@ -16121,6 +16612,16 @@ window.lunrData = {
       "tags": "VRoadcast.isConnected isConnected",
       "summary": "",
       "description": "Return true if VRoadcast is connected to the service"
+    },
+    "VRoadcast.html#.log": {
+      "id": "VRoadcast.html#.log",
+      "kind": "function",
+      "title": "&lt;static&gt; log( d )",
+      "longname": "VRoadcast.log",
+      "name": "log",
+      "tags": "VRoadcast.log log",
+      "summary": "",
+      "description": "Utility for server-side logging"
     },
     "VRoadcast.html#.requestSceneEnter": {
       "id": "VRoadcast.html#.requestSceneEnter",

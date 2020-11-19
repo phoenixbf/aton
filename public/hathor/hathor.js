@@ -57,6 +57,7 @@ HATHOR.uiSetup = ()=>{
 
     $('#idTopToolbar').append("<span id='idAuthTools'></span>");
     ATON.FE.uiAddButtonEditMode("idAuthTools");
+    ATON.FE.uiAddButton("idAuthTools", "pov", HATHOR.popupPOV );
     
     // Bottom toolbar
     ATON.FE.uiAddButtonHome("idBottomToolbar");
@@ -225,7 +226,7 @@ HATHOR.setupEventHandlers = ()=>{
 
                 ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
 
-                if (HATHOR.paramVRC === undefined) return;
+                //if (HATHOR.paramVRC === undefined) return;
                 ATON.VRoadcast.fireEvent("AFE_DeleteNode", {t: ATON.NTYPES.SEM, nid: ATON._hoveredSemNode });
             }
         }
@@ -300,10 +301,10 @@ HATHOR.setupEventHandlers = ()=>{
         }
 
         if (k==='v'){
-            let v = ATON.Nav.copyCurrentPOV();
-            console.log(v);
+            HATHOR.popupPOV();
         }
 
+/*
         if (k==='h'){
             let hp = ATON.Nav.copyCurrentPOV();
 
@@ -322,7 +323,7 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
-
+*/
         //if (k==='y') ATON.XR.switchHands();
 
         //if (k==='.') ATON.MediaRec.startMediaStreaming();
@@ -396,7 +397,9 @@ HATHOR._createPopupStdSem = ()=>{
 
 HATHOR.createSemanticTextEditor = (idtextarea)=>{
     let txtarea = document.getElementById(idtextarea);
-    sceditor.create(txtarea, {
+    //sceditor.create(txtarea, {
+    let SCE = $("#"+idtextarea).sceditor({
+        id: "idSCEditor",
         //format: 'bbcode',
         //bbcodeTrim: true,
         width: "100%",
@@ -407,7 +410,10 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
         autoUpdate: true,
         style: 'vendors/sceditor/minified/themes/content/default.min.css',
         toolbar: "bold,italic,underline,link,unlink|left,center,right,justify|bulletlist,orderedlist,table|image,youtube"
-    });
+    }).sceditor('instance');
+
+    //console.log(SCE);
+    return SCE;
 };
 
 // Add/Finalize semantic shape
@@ -422,21 +428,30 @@ HATHOR.popupAddSemantic = (semtype)=>{
     ATON.FE.uiAttachInputFilterID("semid");
     //$("#semid").val("");
 
-    HATHOR.createSemanticTextEditor("idSemDescription");
+    let SCE = HATHOR.createSemanticTextEditor("idSemDescription");
 
     //console.log(sceditor);
-/*
+
     $("#semid").on("input", ()=>{
         let semid  = $("#semid").val();
 
         let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
         if (descr !== undefined){
-            $("#idSemDescription").val(descr);
+            //$("#idSemDescription").val(descr);
+            //console.log(SCE.getBody());
             //sceditor.instance.val(descr);
-            console.log(descr);
+            //let C = $("#idPopupContent").find("body[contenteditable='true']");
+            //let C = $("body[contenteditable='true']");
+            //let C = $("#idSCEditor iframe").first();
+            //console.log(C);
+            
+            //C.html(descr);
+            SCE.setWysiwygEditorValue(descr);
+
+            //console.log(descr);
         }
     });
-*/
+
     let vocnote = undefined;
     let bRecVN  = false;
     ATON.on("AudioRecordCompleted", (au64)=>{
@@ -574,5 +589,84 @@ HATHOR.popupExportSemShapes = ()=>{
         }
 
 
+    });
+};
+
+HATHOR.popupPOV = ()=>{
+    let pov = ATON.Nav.copyCurrentPOV();
+    console.log(pov);
+
+    let htmlcontent = "<h1>Viewpoint</h1>";
+
+    htmlcontent += "<div style='text-align:left;'>";
+    htmlcontent += "<strong>Position</strong>: "+pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3)+"<br>";
+    htmlcontent += "<strong>Target</strong>: "+pov.target.x.toPrecision(3)+","+pov.target.y.toPrecision(3)+","+pov.target.z.toPrecision(3)+"<br>";
+    htmlcontent += "<strong>FoV</strong>: "+pov.fov+"<br>";
+    htmlcontent += "</div>";
+    htmlcontent += "<br>";
+
+    htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='text-align:center; vertical-align:middle;'>&nbsp;";
+    htmlcontent += "<div class='select' style='width:300px;'><select id='idPOVmode'>";
+    htmlcontent += "<option value='h'>Set current viewpoint as Home</option>";
+    htmlcontent += "<option value='v'>Add current viewpoint</option>";
+    htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
+
+    htmlcontent += "<div id='idPOVmodeHome'>";
+    htmlcontent += "";
+    htmlcontent += "</div>";
+
+    htmlcontent += "<div id='idPOVmodeAdd' style='display:none'>";
+    htmlcontent += "<label for='idPOVkword'>keywords (comma-separated)</label><br><input id='idPOVkwords' type='text'>";
+    htmlcontent += "</div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnPOV' style='width:90%'>OK</div>"; // <img src='"+FE.PATH_RES_ICONS+"pov.png'>
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#idPOVmode").on("change",()=>{
+        let mode = $("#idPOVmode").val();
+        
+        if (mode === 'h'){
+            $("#idPOVmodeIcon").attr("src",ATON.FE.PATH_RES_ICONS+"home.png");
+            $("#idPOVmodeHome").show();
+            $("#idPOVmodeAdd").hide();
+        }
+        else {
+            $("#idPOVmodeIcon").attr("src",ATON.FE.PATH_RES_ICONS+"pov.png");
+            $("#idPOVmodeHome").hide();
+            $("#idPOVmodeAdd").show();
+        }
+    });
+
+    $("#btnPOV").click(()=>{
+        let mode = $("#idPOVmode").val();
+        let povid = "home";
+
+        // Home
+        if (mode === 'h'){
+            ATON.Nav.setHomePOV( pov );
+        }
+        // New viewpoint
+        else {
+            povid = ATON.Utils.generateID("pov");
+            pov.as(povid);
+
+            let kwords = $("#idPOVkwords").val();
+            if (kwords.length>1) pov.addKeywords(kwords);
+        }
+
+        ATON.FE.popupClose();
+
+        let E = {};
+        E.viewpoints = {};
+        E.viewpoints[povid] = {};
+        E.viewpoints[povid].position = [pov.pos.x, pov.pos.y, pov.pos.z];
+        E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
+        E.viewpoints[povid].fov      = pov.fov;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+
+        console.log(pov);
     });
 };

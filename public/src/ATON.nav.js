@@ -103,6 +103,13 @@ Nav.copyCurrentPOV = ()=>{
     return pov;
 };
 
+Nav.addPOV = (pov, id)=>{
+    if (pov === undefined) return;
+
+    pov.as(id);
+    return pov;
+};
+
 /**
 Return true if the navigation system is currently performing a transition
 @returns {boolean}

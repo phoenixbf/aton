@@ -51,6 +51,7 @@
 											<li><a href="EventHub.html">EventHub</a></li>
 											<li><a href="FE.html">FE</a></li>
 											<li><a href="MatHub.html">MatHub</a></li>
+											<li><a href="MediaRec.html">MediaRec</a></li>
 											<li><a href="Nav.html">Nav</a></li>
 											<li><a href="SceneHub.html">SceneHub</a></li>
 											<li><a href="SemFactory.html">SemFactory</a></li>
@@ -108,12 +109,21 @@ Utils.init = ()=>{
     Utils.geomUnitSphere = new THREE.SphereBufferGeometry( 1.0, 16, 16 );
 
     // Export/Download utils
-    Utils.exporter = new THREE.GLTFExporter();
+    Utils.exporterGLTF = undefined;
+    Utils.exporterOBJ  = undefined;
+
     Utils._dlink = document.createElement('a');
     Utils._dlink.style.display = 'none';
     document.body.appendChild( Utils._dlink ); // Firefox workaround, see #6594
 
     Utils.textureLoader = new THREE.TextureLoader();
+};
+
+Utils.generateID = (prefix)=>{
+    if (prefix === undefined) prefix = "id";
+    //let currDate = new Date();
+    //let ts = currDate.getYear()+":"+currDate.getMonth()+":"+currDate.getDay()+":"+currDate.getHours()+":"+currDate.getMinutes() +":"+ currDate.getSeconds();
+    return prefix+'-' + Math.random().toString(36).substr(2,9);
 };
 
 /**
@@ -124,13 +134,6 @@ Utils.isConnectionSecure = ()=>{
     return window.isSecureContext;
 }
 
-/**
-If current device is mobile (e.g. smartphone, tablet, Oculus Quest)
-@returns {boolean}
-*/
-Utils.isMobile = ()=>{
-    return ATON.device.isMobile;
-}
 
 // Profile device capabilities
 Utils.profileDevice = ()=>{
@@ -164,17 +167,59 @@ Utils.profileDevice = ()=>{
     }
 };
 
+/**
+If current device is mobile (e.g. smartphone, tablet, Oculus Quest)
+@returns {boolean}
+*/
+Utils.isMobile = ()=>{
+    return ATON.device.isMobile;
+}
+
+/**
+If current device supports WebXR
+@returns {boolean}
+*/
+Utils.isWebXRsupported = ()=>{
+    return ATON.device.isXRsupported;
+}
+
+
 // Path utils
 Utils.getFileExtension = ( filepath )=>{
 	return filepath.substr(filepath.lastIndexOf('.')+1).toLowerCase();
 };
 
 Utils.getBaseFolder = ( filepath )=>{
-    var index  = filepath.lastIndexOf( '/' );
-    if ( index !== -1 ) return filepath.substring( 0, index + 1 );
+    var index = filepath.lastIndexOf('/');
+    if (index !== -1) return filepath.substring( 0, index + 1 );
     
     return '';
 };
+
+Utils.isResourceURL = (s)=>{
+    if (s.startsWith("http://"))  return true;
+    if (s.startsWith("https://")) return true;
+    return false;
+};
+
+Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
+    $.ajax({
+        url: endpoint,
+        type:"POST",
+        xhrFields: { withCredentials: true },
+        data: JSON.stringify(obj),
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
+
+        success: (data)=>{
+            if (onReceive) onReceive(data);
+        }
+    }).fail((err)=>{
+        console.log(err);
+        if (onFail) onFail();
+    });
+};
+
 
 Utils.mergeObject = ( object )=>{
     object.updateMatrixWorld( true );
@@ -286,29 +331,67 @@ Utils.downloadArrayBuffer = ( buffer, filename )=>{
     Utils.downloadBlob( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
 };
 
-// Export ATON node (gltf or glb)
+// Export ATON node
 Utils.exportNode = (node, filename)=>{
     let ext = Utils.getFileExtension(filename);
     if (ext.length &lt; 1) return;
 
-    let bBin = (ext === "glb")? true : false;
+    // GLTF
+    if (ext === "glb" || ext === "gltf"){
+        let bBin = (ext === "glb")? true : false;
 
-    let opts = {
-        //trs: true, // Export position, rotation and scale instead of matrix per node. Default is false
-        binary: bBin, // Export in binary (.glb) format, returning an ArrayBuffer. Default is false
-        //onlyVisible: false,
-        //truncateDrawRange: true
-    };
+        let opts = {
+            //trs: true, // Export position, rotation and scale instead of matrix per node. Default is false
+            binary: bBin, // Export in binary (.glb) format, returning an ArrayBuffer. Default is false
+            //onlyVisible: false,
+            //truncateDrawRange: true
+        };
 
-    Utils.exporter.parse( node, ( output )=>{
-        if ( output instanceof ArrayBuffer ){
-            Utils.downloadArrayBuffer( output, filename);
-        }
-        else {
-            console.log( output );
-            Utils.downloadJSONobj(output, filename);
-        }
-    }, opts);
+        if (Utils.exporterGLTF === undefined) Utils.exporterGLTF = new THREE.GLTFExporter();
+
+        Utils.exporterGLTF.parse( node, ( output )=>{
+            if ( output instanceof ArrayBuffer ){
+                Utils.downloadArrayBuffer( output, filename);
+            }
+            else {
+                console.log( output );
+                Utils.downloadJSONobj(output, filename);
+            }
+        }, opts);
+    }
+
+    // OBJ format
+    if (ext === "obj"){
+        if (Utils.exporterOBJ === undefined) Utils.exporterOBJ = new THREE.OBJExporter();
+
+        let output = Utils.exporterOBJ.parse(node);
+        //console.log(output);
+        Utils.downloadText(output, filename);
+    }
+};
+
+Utils.takeScreenshot = (size, filename)=>{
+    let img = new Image();
+
+    console.log("Screenshot with size:"+size);
+
+    ATON.Nav._camera.aspect = 1.0;
+    ATON.Nav._camera.updateProjectionMatrix();
+    
+    ATON._renderer.setSize(size,size);
+    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+
+    let b64img = ATON._renderer.domElement.toDataURL();
+    img.src = b64img;
+
+    if (filename){
+        Utils._dlink.href = b64img.replace("image/png", "image/octet-stream");
+        Utils._dlink.download = filename;
+        Utils._dlink.click();
+    }
+
+    ATON._onResize();
+    return img;
 };
 
 Utils.assignLightProbeToMesh = (LP, mesh)=>{
@@ -407,7 +490,7 @@ export default Utils;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 11th Oct 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 19th Nov 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

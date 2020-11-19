@@ -11,7 +11,7 @@
     "deploy": "pm2 start ecosystem.config.js",
     "build-three": "parcel build ./tool-three.bundle.js -d ../public/dist/ --out-file THREE.bundle.js",
     "build-aton": "parcel build ../public/src/ATON.js -d ../public/dist/ --out-file ATON.min.js",
-    "build-apidoc": "jsdoc -c jsdoc-config.json"
+    "build-apidoc": "jsdoc -c config-jsdoc.json"
   },
   "author": "Bruno Fanini",
   "license": "GPLv3",

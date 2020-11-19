@@ -116,6 +116,12 @@ constructor(id){
     this.as(id);
 }
 
+/**
+(Re)assign POV ID
+@param {string} id - the new ID
+@example
+mypov.as("newID")
+*/
 as(id){
     if (id === undefined) return;
 
@@ -167,15 +173,18 @@ setFOV(f){
 
 /**
 Add keyword(s) to this viewpoint
-@param {string} kw - the keyword or comma-separated list of keywords
+@param {string} kw - a keyword or comma-separated list of keywords
 @example
-new ATON.POV("myView").addKeyword("heritage")
+mypov.addKeywords("heritage,architecture")
 */
 addKeywords(kw){
     let K = kw.split(",");
 
     if (this.kwords === undefined) this.kwords = {};
-    for (let k in K) this.kwords[ K[k] ] = true;
+    for (let k in K){
+        let kw = K[k].trim();
+        if (kw.length > 0) this.kwords[kw] = true;
+    }
 
     return this;
 }

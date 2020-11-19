@@ -183,6 +183,7 @@ Return true if VRoadcast is connected to the service
 @returns {boolean}
 */
 VRoadcast.isConnected = ()=>{
+    if (VRoadcast.socket === undefined) return false;
     return VRoadcast._connected;
 };
 
@@ -198,7 +199,8 @@ VRoadcast.log = (d)=>{
 };
 
 /**
-Request enter in a given scene
+Request enter in a given scene. 
+Note: this routine does not load the scene itself, instead it tells the VRoadcast service we want to connect to the given scene.
 @param {string} sceneid - the scene id (sid)
 @example
 ATON.VRoadcast.requestSceneEnter("testscene");

@@ -290,7 +290,7 @@ Main ATON initialization, it will take care of all sub-components initialization
 ATON.realize()
 */
 ATON.realize = ()=>{
-    console.log("realize");
+    console.log("Initialize ATON...");
 
     ATON.Utils.init();
     ATON.Utils.profileDevice();
@@ -314,7 +314,7 @@ ATON.realize = ()=>{
 
     ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );
-    console.log(ATON._stdpxd);
+    //console.log(ATON._stdpxd);
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
     //console.log(ATON._renderer.getPixelRatio());

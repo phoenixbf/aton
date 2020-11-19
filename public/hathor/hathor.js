@@ -4,6 +4,11 @@
     Author: B. Fanini
 
 ===========================================================================*/
+
+/**
+Hathor front-end (official ATON front-end)
+@namespace HATHOR
+*/
 let HATHOR = {};
 window.HATHOR = HATHOR;
 

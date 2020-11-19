@@ -154,6 +154,13 @@
           "viewpoint",
           "xr"
         ],
+        "POV.html#as": [
+          "function",
+          "id",
+          "pov",
+          "pov#a",
+          "re)assign"
+        ],
         "POV.html#setPosition": [
           "ey",
           "function",
@@ -598,12 +605,101 @@
           "option"
         ],
         "FE.html": [
+          "app",
           "aton",
+          "base",
+          "blueprint",
+          "creation",
           "end",
+          "facilit",
           "fe",
           "front",
+          "gener",
           "namespac",
-          "routin"
+          "routin",
+          "set",
+          "support",
+          "web"
+        ],
+        "FE.html#.realize": [
+          "end",
+          "fe.real",
+          "front",
+          "function",
+          "initi",
+          "lt;static&gt",
+          "realiz"
+        ],
+        "FE.html#.addBasicLoaderEvents": [
+          "add",
+          "addbasicloaderev",
+          "asset",
+          "basic",
+          "end",
+          "event",
+          "fe.addbasicloaderev",
+          "front",
+          "function",
+          "home",
+          "load",
+          "lt;static&gt",
+          "setup",
+          "show",
+          "spinner",
+          "such",
+          "viewpoint"
+        ],
+        "FE.html#.loadSceneID": [
+          "addit",
+          "aton.on(\"scenejsonload",
+          "fe.loadsceneid",
+          "fulli",
+          "function",
+          "json",
+          "load",
+          "loadsceneid",
+          "lt;static&gt",
+          "perform",
+          "scene",
+          "sid",
+          "task",
+          "us"
+        ],
+        "FE.html#.uiAddButton": [
+          "add",
+          "button",
+          "contain",
+          "div",
+          "fe.uiaddbutton",
+          "function",
+          "gener",
+          "icon",
+          "idcontain",
+          "insid",
+          "lt;static&gt",
+          "onpress",
+          "specif",
+          "uiaddbutton"
+        ],
+        "FE.html#.popupShow": [
+          "cssclass",
+          "fe.popupshow",
+          "function",
+          "htmlcontent",
+          "lt;static&gt",
+          "modal",
+          "popup",
+          "popupshow",
+          "show"
+        ],
+        "FE.html#.popupClose": [
+          "close",
+          "current",
+          "fe.popupclos",
+          "function",
+          "lt;static&gt",
+          "popup",
+          "popupclos"
         ],
         "MediaRec.html": [
           "aton",
@@ -1173,15 +1269,25 @@
           "vroadcast.log"
         ],
         "VRoadcast.html#.requestSceneEnter": [
+          "connect",
           "enter",
           "function",
           "given",
+          "instead",
+          "itself",
+          "load",
           "lt;static&gt",
+          "note",
           "request",
           "requestsceneent",
+          "routin",
           "scene",
           "sceneid",
-          "vroadcast.requestsceneent"
+          "servic",
+          "tell",
+          "vroadcast",
+          "vroadcast.requestsceneent",
+          "want"
         ],
         "VRoadcast.html#.connect": [
           "address",
@@ -1505,7 +1611,7 @@
           "visibl"
         ]
       },
-      "length": 129
+      "length": 136
     },
     "tokenStore": {
       "root": {
@@ -1624,6 +1730,14 @@
                   "ref": "Node.html#addKeywords",
                   "tf": 6.25
                 },
+                "FE.html#.addBasicLoaderEvents": {
+                  "ref": "FE.html#.addBasicLoaderEvents",
+                  "tf": 3.8461538461538463
+                },
+                "FE.html#.uiAddButton": {
+                  "ref": "FE.html#.uiAddButton",
+                  "tf": 6.25
+                },
                 "ATON.html#.addLightProbe": {
                   "ref": "ATON.html#.addLightProbe",
                   "tf": 16.666666666666664
@@ -1655,6 +1769,61 @@
                           }
                         }
                       }
+                    }
+                  }
+                }
+              },
+              "b": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "d": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "v": {
+                                        "docs": {
+                                          "FE.html#.addBasicLoaderEvents": {
+                                            "ref": "FE.html#.addBasicLoaderEvents",
+                                            "tf": 700
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "i": {
+                "docs": {},
+                "t": {
+                  "docs": {
+                    "FE.html#.loadSceneID": {
+                      "ref": "FE.html#.loadSceneID",
+                      "tf": 4.545454545454546
                     }
                   }
                 }
@@ -1725,6 +1894,10 @@
                 "index.html": {
                   "ref": "index.html",
                   "tf": 1.9444444444444444
+                },
+                "FE.html": {
+                  "ref": "FE.html",
+                  "tf": 3.3333333333333335
                 }
               },
               "l": {
@@ -1784,7 +1957,7 @@
                   },
                   "FE.html": {
                     "ref": "FE.html",
-                    "tf": 12.5
+                    "tf": 3.3333333333333335
                   },
                   "MediaRec.html": {
                     "ref": "MediaRec.html",
@@ -1844,6 +2017,56 @@
                         "EventHub.html#.on": {
                           "ref": "EventHub.html#.on",
                           "tf": 5
+                        }
+                      },
+                      "(": {
+                        "docs": {},
+                        "\"": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "j": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "n": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "a": {
+                                                  "docs": {},
+                                                  "d": {
+                                                    "docs": {
+                                                      "FE.html#.loadSceneID": {
+                                                        "ref": "FE.html#.loadSceneID",
+                                                        "tf": 4.545454545454546
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -2952,6 +3175,10 @@
                 "docs": {},
                 "t": {
                   "docs": {
+                    "FE.html#.addBasicLoaderEvents": {
+                      "ref": "FE.html#.addBasicLoaderEvents",
+                      "tf": 3.8461538461538463
+                    },
                     "Nav.html#.computeDefaultHome": {
                       "ref": "Nav.html#.computeDefaultHome",
                       "tf": 4.545454545454546
@@ -3195,6 +3422,20 @@
                       "tf": 12.5
                     }
                   },
+                  "i": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "n": {
+                        "docs": {
+                          "FE.html": {
+                            "ref": "FE.html",
+                            "tf": 3.3333333333333335
+                          }
+                        }
+                      }
+                    }
+                  },
                   "e": {
                     "docs": {},
                     "t": {
@@ -3392,6 +3633,20 @@
                   }
                 }
               }
+            },
+            "o": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "e": {
+                  "docs": {
+                    "FE.html#.popupClose": {
+                      "ref": "FE.html#.popupClose",
+                      "tf": 16.666666666666664
+                    }
+                  }
+                }
+              }
             }
           },
           "a": {
@@ -3574,6 +3829,20 @@
               },
               "t": {
                 "docs": {},
+                "a": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "FE.html#.uiAddButton": {
+                          "ref": "FE.html#.uiAddButton",
+                          "tf": 6.25
+                        }
+                      }
+                    }
+                  }
+                },
                 "r": {
                   "docs": {},
                   "o": {
@@ -3608,6 +3877,10 @@
                         "VRoadcast.html#.isConnected": {
                           "ref": "VRoadcast.html#.isConnected",
                           "tf": 10
+                        },
+                        "VRoadcast.html#.requestSceneEnter": {
+                          "ref": "VRoadcast.html#.requestSceneEnter",
+                          "tf": 2.941176470588235
                         },
                         "VRoadcast.html#.connect": {
                           "ref": "VRoadcast.html#.connect",
@@ -3819,6 +4092,10 @@
                           "ref": "Node.html#orientToCamera",
                           "tf": 12.5
                         },
+                        "FE.html#.popupClose": {
+                          "ref": "FE.html#.popupClose",
+                          "tf": 16.666666666666664
+                        },
                         "Utils.html#.isConnectionSecure": {
                           "ref": "Utils.html#.isConnectionSecure",
                           "tf": 16.666666666666664
@@ -3862,6 +4139,32 @@
                         "ATON.html#.getSceneQueriedPoint": {
                           "ref": "ATON.html#.getSceneQueriedPoint",
                           "tf": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "s": {
+            "docs": {},
+            "s": {
+              "docs": {},
+              "c": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "s": {
+                        "docs": {
+                          "FE.html#.popupShow": {
+                            "ref": "FE.html#.popupShow",
+                            "tf": 25
+                          }
                         }
                       }
                     }
@@ -4251,6 +4554,14 @@
                 }
               }
             },
+            "v": {
+              "docs": {
+                "FE.html#.uiAddButton": {
+                  "ref": "FE.html#.uiAddButton",
+                  "tf": 6.25
+                }
+              }
+            },
             "r": {
               "docs": {},
               "e": {
@@ -4362,7 +4673,15 @@
                 },
                 "FE.html": {
                   "ref": "FE.html",
-                  "tf": 12.5
+                  "tf": 6.666666666666667
+                },
+                "FE.html#.realize": {
+                  "ref": "FE.html#.realize",
+                  "tf": 16.666666666666664
+                },
+                "FE.html#.addBasicLoaderEvents": {
+                  "ref": "FE.html#.addBasicLoaderEvents",
+                  "tf": 3.8461538461538463
                 }
               }
             },
@@ -4428,7 +4747,7 @@
                   "docs": {
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
-                      "tf": 12.5
+                      "tf": 2.941176470588235
                     }
                   }
                 }
@@ -4501,6 +4820,10 @@
                     "EventHub.html#.fireEvent": {
                       "ref": "EventHub.html#.fireEvent",
                       "tf": 6.25
+                    },
+                    "FE.html#.addBasicLoaderEvents": {
+                      "ref": "FE.html#.addBasicLoaderEvents",
+                      "tf": 3.8461538461538463
                     },
                     "VRoadcast.html#.fireEvent": {
                       "ref": "VRoadcast.html#.fireEvent",
@@ -4847,7 +5170,15 @@
                     },
                     "FE.html": {
                       "ref": "FE.html",
-                      "tf": 12.5
+                      "tf": 6.666666666666667
+                    },
+                    "FE.html#.realize": {
+                      "ref": "FE.html#.realize",
+                      "tf": 16.666666666666664
+                    },
+                    "FE.html#.addBasicLoaderEvents": {
+                      "ref": "FE.html#.addBasicLoaderEvents",
+                      "tf": 3.8461538461538463
                     }
                   }
                 }
@@ -4874,6 +5205,10 @@
                           },
                           "LightProbe.html#update": {
                             "ref": "LightProbe.html#update",
+                            "tf": 110
+                          },
+                          "POV.html#as": {
+                            "ref": "POV.html#as",
                             "tf": 110
                           },
                           "POV.html#setPosition": {
@@ -5018,6 +5353,30 @@
                           },
                           "EventHub.html#.fireEvent": {
                             "ref": "EventHub.html#.fireEvent",
+                            "tf": 110
+                          },
+                          "FE.html#.realize": {
+                            "ref": "FE.html#.realize",
+                            "tf": 110
+                          },
+                          "FE.html#.addBasicLoaderEvents": {
+                            "ref": "FE.html#.addBasicLoaderEvents",
+                            "tf": 110
+                          },
+                          "FE.html#.loadSceneID": {
+                            "ref": "FE.html#.loadSceneID",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButton": {
+                            "ref": "FE.html#.uiAddButton",
+                            "tf": 110
+                          },
+                          "FE.html#.popupShow": {
+                            "ref": "FE.html#.popupShow",
+                            "tf": 110
+                          },
+                          "FE.html#.popupClose": {
+                            "ref": "FE.html#.popupClose",
                             "tf": 110
                           },
                           "XR.html#.isPresenting": {
@@ -5315,6 +5674,14 @@
               "docs": {},
               "l": {
                 "docs": {},
+                "i": {
+                  "docs": {
+                    "FE.html#.loadSceneID": {
+                      "ref": "FE.html#.loadSceneID",
+                      "tf": 4.545454545454546
+                    }
+                  }
+                },
                 "s": {
                   "docs": {},
                   "c": {
@@ -5360,18 +5727,27 @@
               }
             }
           },
-          "e": {
-            "docs": {
-              "FE.html": {
-                "ref": "FE.html",
-                "tf": 1900
-              }
-            }
-          },
           "a": {
             "docs": {},
             "c": {
               "docs": {},
+              "i": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "FE.html": {
+                          "ref": "FE.html",
+                          "tf": 3.3333333333333335
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "t": {
                 "docs": {},
                 "o": {
@@ -5383,6 +5759,212 @@
                         "SemFactory.html": {
                           "ref": "SemFactory.html",
                           "tf": 16.666666666666664
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "e": {
+            "docs": {
+              "FE.html": {
+                "ref": "FE.html",
+                "tf": 1900
+              }
+            },
+            ".": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "FE.html#.realize": {
+                          "ref": "FE.html#.realize",
+                          "tf": 1150
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "a": {
+                "docs": {},
+                "d": {
+                  "docs": {},
+                  "d": {
+                    "docs": {},
+                    "b": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "l": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "v": {
+                                              "docs": {
+                                                "FE.html#.addBasicLoaderEvents": {
+                                                  "ref": "FE.html#.addBasicLoaderEvents",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "l": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "c": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "FE.html#.loadSceneID": {
+                                        "ref": "FE.html#.loadSceneID",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "u": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "d": {
+                        "docs": {},
+                        "b": {
+                          "docs": {},
+                          "u": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {
+                                      "FE.html#.uiAddButton": {
+                                        "ref": "FE.html#.uiAddButton",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "p": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "p": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "h": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "w": {
+                                "docs": {
+                                  "FE.html#.popupShow": {
+                                    "ref": "FE.html#.popupShow",
+                                    "tf": 1150
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "c": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "s": {
+                                "docs": {
+                                  "FE.html#.popupClose": {
+                                    "ref": "FE.html#.popupClose",
+                                    "tf": 1150
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -6096,6 +6678,24 @@
                   }
                 }
               }
+            },
+            "n": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "FE.html": {
+                      "ref": "FE.html",
+                      "tf": 3.3333333333333335
+                    },
+                    "FE.html#.uiAddButton": {
+                      "ref": "FE.html#.uiAddButton",
+                      "tf": 6.25
+                    }
+                  }
+                }
+              }
             }
           },
           "i": {
@@ -6124,7 +6724,7 @@
                     },
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
-                      "tf": 12.5
+                      "tf": 5.88235294117647
                     }
                   }
                 }
@@ -6219,6 +6819,31 @@
                       }
                     }
                   }
+                },
+                "e": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "d": {
+                      "docs": {
+                        "VRoadcast.html#.requestSceneEnter": {
+                          "ref": "VRoadcast.html#.requestSceneEnter",
+                          "tf": 2.941176470588235
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "i": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "FE.html#.uiAddButton": {
+                      "ref": "FE.html#.uiAddButton",
+                      "tf": 6.25
+                    }
+                  }
                 }
               }
             },
@@ -6278,6 +6903,10 @@
                 },
                 "i": {
                   "docs": {
+                    "FE.html#.realize": {
+                      "ref": "FE.html#.realize",
+                      "tf": 16.666666666666664
+                    },
                     "SceneHub.html#.init": {
                       "ref": "SceneHub.html#.init",
                       "tf": 25
@@ -6311,6 +6940,10 @@
               "POV.html": {
                 "ref": "POV.html",
                 "tf": 2.5
+              },
+              "POV.html#as": {
+                "ref": "POV.html#as",
+                "tf": 116.66666666666666
               },
               "Node.html#as": {
                 "ref": "Node.html#as",
@@ -6356,6 +6989,32 @@
                 "ref": "ATON.html#.getUINode",
                 "tf": 25
               }
+            },
+            "c": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "n": {
+                          "docs": {
+                            "FE.html#.uiAddButton": {
+                              "ref": "FE.html#.uiAddButton",
+                              "tf": 20
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "c": {
@@ -6367,6 +7026,10 @@
                   "Button.html#setIcon": {
                     "ref": "Button.html#setIcon",
                     "tf": 16.666666666666664
+                  },
+                  "FE.html#.uiAddButton": {
+                    "ref": "FE.html#.uiAddButton",
+                    "tf": 26.25
                   }
                 }
               }
@@ -6622,6 +7285,26 @@
                 "tf": 5
               }
             }
+          },
+          "t": {
+            "docs": {},
+            "s": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "f": {
+                    "docs": {
+                      "VRoadcast.html#.requestSceneEnter": {
+                        "ref": "VRoadcast.html#.requestSceneEnter",
+                        "tf": 2.941176470588235
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "m": {
@@ -6717,6 +7400,17 @@
                     "ATON.html#.setPathCollection": {
                       "ref": "ATON.html#.setPathCollection",
                       "tf": 7.142857142857142
+                    }
+                  }
+                }
+              },
+              "a": {
+                "docs": {},
+                "l": {
+                  "docs": {
+                    "FE.html#.popupShow": {
+                      "ref": "FE.html#.popupShow",
+                      "tf": 16.666666666666664
                     }
                   }
                 }
@@ -7000,6 +7694,26 @@
                       "Button.html#switch": {
                         "ref": "Button.html#switch",
                         "tf": 16.666666666666664
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "p": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "s": {
+                      "docs": {
+                        "FE.html#.uiAddButton": {
+                          "ref": "FE.html#.uiAddButton",
+                          "tf": 20
+                        }
                       }
                     }
                   }
@@ -7307,6 +8021,10 @@
                   "ref": "POV.html",
                   "tf": 1905
                 },
+                "POV.html#as": {
+                  "ref": "POV.html#as",
+                  "tf": 16.666666666666664
+                },
                 "POV.html#setNextPOV": {
                   "ref": "POV.html#setNextPOV",
                   "tf": 62.5
@@ -7330,6 +8048,46 @@
               },
               "#": {
                 "docs": {},
+                "a": {
+                  "docs": {
+                    "POV.html#as": {
+                      "ref": "POV.html#as",
+                      "tf": 1300
+                    }
+                  },
+                  "d": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "k": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "y": {
+                            "docs": {},
+                            "w": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {
+                                      "POV.html#addKeywords": {
+                                        "ref": "POV.html#addKeywords",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "s": {
                   "docs": {},
                   "e": {
@@ -7445,41 +8203,6 @@
                     }
                   }
                 },
-                "a": {
-                  "docs": {},
-                  "d": {
-                    "docs": {},
-                    "d": {
-                      "docs": {},
-                      "k": {
-                        "docs": {},
-                        "e": {
-                          "docs": {},
-                          "y": {
-                            "docs": {},
-                            "w": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "d": {
-                                    "docs": {
-                                      "POV.html#addKeywords": {
-                                        "ref": "POV.html#addKeywords",
-                                        "tf": 1150
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
                 "h": {
                   "docs": {},
                   "a": {
@@ -7508,6 +8231,58 @@
                                   }
                                 }
                               }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "p": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "p": {
+                  "docs": {
+                    "FE.html#.popupShow": {
+                      "ref": "FE.html#.popupShow",
+                      "tf": 16.666666666666664
+                    },
+                    "FE.html#.popupClose": {
+                      "ref": "FE.html#.popupClose",
+                      "tf": 16.666666666666664
+                    }
+                  },
+                  "s": {
+                    "docs": {},
+                    "h": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "w": {
+                          "docs": {
+                            "FE.html#.popupShow": {
+                              "ref": "FE.html#.popupShow",
+                              "tf": 675
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "c": {
+                    "docs": {},
+                    "l": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "s": {
+                          "docs": {
+                            "FE.html#.popupClose": {
+                              "ref": "FE.html#.popupClose",
+                              "tf": 700
                             }
                           }
                         }
@@ -7683,6 +8458,27 @@
             "docs": {},
             "r": {
               "docs": {},
+              "f": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "m": {
+                      "docs": {
+                        "FE.html#.loadSceneID": {
+                          "ref": "FE.html#.loadSceneID",
+                          "tf": 4.545454545454546
+                        },
+                        "Nav.html#.isTransitioning": {
+                          "ref": "Nav.html#.isTransitioning",
+                          "tf": 7.142857142857142
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "s": {
                 "docs": {},
                 "i": {
@@ -7710,23 +8506,6 @@
                       "Nav.html#.setFirstPersonControl": {
                         "ref": "Nav.html#.setFirstPersonControl",
                         "tf": 10
-                      }
-                    }
-                  }
-                }
-              },
-              "f": {
-                "docs": {},
-                "o": {
-                  "docs": {},
-                  "r": {
-                    "docs": {},
-                    "m": {
-                      "docs": {
-                        "Nav.html#.isTransitioning": {
-                          "ref": "Nav.html#.isTransitioning",
-                          "tf": 7.142857142857142
-                        }
                       }
                     }
                   }
@@ -7767,6 +8546,10 @@
                   "docs": {},
                   "z": {
                     "docs": {
+                      "FE.html#.realize": {
+                        "ref": "FE.html#.realize",
+                        "tf": 700
+                      },
                       "ATON.html#.realize": {
                         "ref": "ATON.html#.realize",
                         "tf": 700
@@ -7819,7 +8602,7 @@
                         },
                         "VRoadcast.html#.requestSceneEnter": {
                           "ref": "VRoadcast.html#.requestSceneEnter",
-                          "tf": 12.5
+                          "tf": 2.941176470588235
                         }
                       },
                       "p": {
@@ -7964,6 +8747,36 @@
                 }
               }
             },
+            ")": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "g": {
+                        "docs": {},
+                        "n": {
+                          "docs": {
+                            "POV.html#as": {
+                              "ref": "POV.html#as",
+                              "tf": 16.666666666666664
+                            },
+                            "Node.html#as": {
+                              "ref": "Node.html#as",
+                              "tf": 16.666666666666664
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "t": {
               "docs": {},
               "u": {
@@ -8023,32 +8836,6 @@
                       "ATON.html#.getSceneQueriedNormal": {
                         "ref": "ATON.html#.getSceneQueriedNormal",
                         "tf": 5.555555555555555
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            ")": {
-              "docs": {},
-              "a": {
-                "docs": {},
-                "s": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "i": {
-                      "docs": {},
-                      "g": {
-                        "docs": {},
-                        "n": {
-                          "docs": {
-                            "Node.html#as": {
-                              "ref": "Node.html#as",
-                              "tf": 16.666666666666664
-                            }
-                          }
-                        }
                       }
                     }
                   }
@@ -8415,7 +9202,11 @@
                     "docs": {
                       "FE.html": {
                         "ref": "FE.html",
-                        "tf": 12.5
+                        "tf": 3.3333333333333335
+                      },
+                      "VRoadcast.html#.requestSceneEnter": {
+                        "ref": "VRoadcast.html#.requestSceneEnter",
+                        "tf": 2.941176470588235
                       }
                     }
                   }
@@ -8481,6 +9272,10 @@
                       "ref": "Node.html#attachToRoot",
                       "tf": 4.3478260869565215
                     },
+                    "FE.html#.loadSceneID": {
+                      "ref": "FE.html#.loadSceneID",
+                      "tf": 9.090909090909092
+                    },
                     "SceneHub.html": {
                       "ref": "SceneHub.html",
                       "tf": 16.666666666666664
@@ -8499,7 +9294,7 @@
                     },
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
-                      "tf": 12.5
+                      "tf": 8.823529411764707
                     },
                     "ATON.html#.setPathScenes": {
                       "ref": "ATON.html#.setPathScenes",
@@ -8822,6 +9617,10 @@
                 "Button.html#setIcon": {
                   "ref": "Button.html#setIcon",
                   "tf": 16.666666666666664
+                },
+                "FE.html": {
+                  "ref": "FE.html",
+                  "tf": 3.3333333333333335
                 },
                 "XR.html#.setRefSpaceLocation": {
                   "ref": "XR.html#.setRefSpaceLocation",
@@ -9681,6 +10480,17 @@
                   }
                 }
               },
+              "u": {
+                "docs": {},
+                "p": {
+                  "docs": {
+                    "FE.html#.addBasicLoaderEvents": {
+                      "ref": "FE.html#.addBasicLoaderEvents",
+                      "tf": 3.8461538461538463
+                    }
+                  }
+                }
+              },
               "e": {
                 "docs": {},
                 "d": {
@@ -9897,6 +10707,10 @@
                         "ref": "VRoadcast.html#.isConnected",
                         "tf": 10
                       },
+                      "VRoadcast.html#.requestSceneEnter": {
+                        "ref": "VRoadcast.html#.requestSceneEnter",
+                        "tf": 2.941176470588235
+                      },
                       "VRoadcast.html#.connect": {
                         "ref": "VRoadcast.html#.connect",
                         "tf": 16.666666666666664
@@ -10044,6 +10858,10 @@
                         "ref": "Node.html#hasKeyword",
                         "tf": 10
                       },
+                      "FE.html#.uiAddButton": {
+                        "ref": "FE.html#.uiAddButton",
+                        "tf": 6.25
+                      },
                       "Nav.html#.requestPOVbyNode": {
                         "ref": "Nav.html#.requestPOVbyNode",
                         "tf": 10
@@ -10068,6 +10886,26 @@
                       "Nav.html#.computeDefaultHome": {
                         "ref": "Nav.html#.computeDefaultHome",
                         "tf": 4.545454545454546
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "i": {
+              "docs": {},
+              "n": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "FE.html#.addBasicLoaderEvents": {
+                          "ref": "FE.html#.addBasicLoaderEvents",
+                          "tf": 3.8461538461538463
+                        }
                       }
                     }
                   }
@@ -10131,12 +10969,27 @@
                     "docs": {},
                     "t": {
                       "docs": {
+                        "FE.html": {
+                          "ref": "FE.html",
+                          "tf": 3.3333333333333335
+                        },
                         "Utils.html#.isWebXRsupported": {
                           "ref": "Utils.html#.isWebXRsupported",
                           "tf": 12.5
                         }
                       }
                     }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "h": {
+                "docs": {
+                  "FE.html#.addBasicLoaderEvents": {
+                    "ref": "FE.html#.addBasicLoaderEvents",
+                    "tf": 3.8461538461538463
                   }
                 }
               }
@@ -10362,6 +11215,14 @@
                   "Node.html#show": {
                     "ref": "Node.html#show",
                     "tf": 755
+                  },
+                  "FE.html#.addBasicLoaderEvents": {
+                    "ref": "FE.html#.addBasicLoaderEvents",
+                    "tf": 3.8461538461538463
+                  },
+                  "FE.html#.popupShow": {
+                    "ref": "FE.html#.popupShow",
+                    "tf": 16.666666666666664
                   }
                 }
               }
@@ -10449,6 +11310,10 @@
             "docs": {},
             "d": {
               "docs": {
+                "FE.html#.loadSceneID": {
+                  "ref": "FE.html#.loadSceneID",
+                  "tf": 33.33333333333333
+                },
                 "SceneHub.html#.load": {
                   "ref": "SceneHub.html#.load",
                   "tf": 20
@@ -10647,6 +11512,17 @@
                   "ATON.html#.realize": {
                     "ref": "ATON.html#.realize",
                     "tf": 4.166666666666666
+                  }
+                }
+              }
+            },
+            "s": {
+              "docs": {},
+              "k": {
+                "docs": {
+                  "FE.html#.loadSceneID": {
+                    "ref": "FE.html#.loadSceneID",
+                    "tf": 4.545454545454546
                   }
                 }
               }
@@ -10923,6 +11799,17 @@
                   }
                 }
               }
+            },
+            "l": {
+              "docs": {},
+              "l": {
+                "docs": {
+                  "VRoadcast.html#.requestSceneEnter": {
+                    "ref": "VRoadcast.html#.requestSceneEnter",
+                    "tf": 2.941176470588235
+                  }
+                }
+              }
             }
           }
         },
@@ -10937,6 +11824,10 @@
               "Node.html#disablePicking": {
                 "ref": "Node.html#disablePicking",
                 "tf": 5
+              },
+              "FE.html#.loadSceneID": {
+                "ref": "FE.html#.loadSceneID",
+                "tf": 4.545454545454546
               },
               "XR.html#.setRefSpaceLocation": {
                 "ref": "XR.html#.setRefSpaceLocation",
@@ -11140,6 +12031,38 @@
                   }
                 }
               }
+            },
+            "a": {
+              "docs": {},
+              "d": {
+                "docs": {},
+                "d": {
+                  "docs": {},
+                  "b": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "n": {
+                              "docs": {
+                                "FE.html#.uiAddButton": {
+                                  "ref": "FE.html#.uiAddButton",
+                                  "tf": 670
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "r": {
@@ -11334,6 +12257,10 @@
                             "VRoadcast.html#.isConnected": {
                               "ref": "VRoadcast.html#.isConnected",
                               "tf": 10
+                            },
+                            "VRoadcast.html#.requestSceneEnter": {
+                              "ref": "VRoadcast.html#.requestSceneEnter",
+                              "tf": 2.941176470588235
                             },
                             "VRoadcast.html#.connect": {
                               "ref": "VRoadcast.html#.connect",
@@ -11566,6 +12493,10 @@
                               "ref": "POV.html#hasKeyword",
                               "tf": 10
                             },
+                            "FE.html#.addBasicLoaderEvents": {
+                              "ref": "FE.html#.addBasicLoaderEvents",
+                              "tf": 3.8461538461538463
+                            },
                             "Nav.html#.requestPOV": {
                               "ref": "Nav.html#.requestPOV",
                               "tf": 12.5
@@ -11742,6 +12673,10 @@
                 "index.html": {
                   "ref": "index.html",
                   "tf": 1.9444444444444444
+                },
+                "FE.html": {
+                  "ref": "FE.html",
+                  "tf": 3.3333333333333335
                 }
               },
               "x": {
@@ -11824,6 +12759,17 @@
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
+                  }
+                }
+              }
+            },
+            "n": {
+              "docs": {},
+              "t": {
+                "docs": {
+                  "VRoadcast.html#.requestSceneEnter": {
+                    "ref": "VRoadcast.html#.requestSceneEnter",
+                    "tf": 2.941176470588235
                   }
                 }
               }
@@ -12057,6 +13003,14 @@
                     "ref": "Node.html#load",
                     "tf": 687.6811594202899
                   },
+                  "FE.html#.addBasicLoaderEvents": {
+                    "ref": "FE.html#.addBasicLoaderEvents",
+                    "tf": 3.8461538461538463
+                  },
+                  "FE.html#.loadSceneID": {
+                    "ref": "FE.html#.loadSceneID",
+                    "tf": 9.090909090909092
+                  },
                   "SceneHub.html#.load": {
                     "ref": "SceneHub.html#.load",
                     "tf": 680
@@ -12064,6 +13018,36 @@
                   "Nav.html#.computeDefaultHome": {
                     "ref": "Nav.html#.computeDefaultHome",
                     "tf": 4.545454545454546
+                  },
+                  "VRoadcast.html#.requestSceneEnter": {
+                    "ref": "VRoadcast.html#.requestSceneEnter",
+                    "tf": 2.941176470588235
+                  }
+                },
+                "s": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "d": {
+                              "docs": {
+                                "FE.html#.loadSceneID": {
+                                  "ref": "FE.html#.loadSceneID",
+                                  "tf": 683.3333333333334
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -12177,6 +13161,30 @@
                                   "EventHub.html#.fireEvent": {
                                     "ref": "EventHub.html#.fireEvent",
                                     "tf": 20
+                                  },
+                                  "FE.html#.realize": {
+                                    "ref": "FE.html#.realize",
+                                    "tf": 50
+                                  },
+                                  "FE.html#.addBasicLoaderEvents": {
+                                    "ref": "FE.html#.addBasicLoaderEvents",
+                                    "tf": 50
+                                  },
+                                  "FE.html#.loadSceneID": {
+                                    "ref": "FE.html#.loadSceneID",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButton": {
+                                    "ref": "FE.html#.uiAddButton",
+                                    "tf": 20
+                                  },
+                                  "FE.html#.popupShow": {
+                                    "ref": "FE.html#.popupShow",
+                                    "tf": 25
+                                  },
+                                  "FE.html#.popupClose": {
+                                    "ref": "FE.html#.popupClose",
+                                    "tf": 50
                                   },
                                   "XR.html#.isPresenting": {
                                     "ref": "XR.html#.isPresenting",
@@ -14070,6 +15078,10 @@
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
+                  },
+                  "VRoadcast.html#.requestSceneEnter": {
+                    "ref": "VRoadcast.html#.requestSceneEnter",
+                    "tf": 2.941176470588235
                   }
                 }
               }
@@ -14579,6 +15591,21 @@
                   "Button.html#setBaseColor": {
                     "ref": "Button.html#setBaseColor",
                     "tf": 12.5
+                  },
+                  "FE.html": {
+                    "ref": "FE.html",
+                    "tf": 3.3333333333333335
+                  }
+                }
+              },
+              "i": {
+                "docs": {},
+                "c": {
+                  "docs": {
+                    "FE.html#.addBasicLoaderEvents": {
+                      "ref": "FE.html#.addBasicLoaderEvents",
+                      "tf": 3.8461538461538463
+                    }
                   }
                 }
               }
@@ -14617,6 +15644,10 @@
                       "Button.html#setIcon": {
                         "ref": "Button.html#setIcon",
                         "tf": 16.666666666666664
+                      },
+                      "FE.html#.uiAddButton": {
+                        "ref": "FE.html#.uiAddButton",
+                        "tf": 6.25
                       },
                       "SUI.html#.createToolbar": {
                         "ref": "SUI.html#.createToolbar",
@@ -14832,6 +15863,35 @@
                 }
               }
             }
+          },
+          "l": {
+            "docs": {},
+            "u": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "p": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "t": {
+                          "docs": {
+                            "FE.html": {
+                              "ref": "FE.html",
+                              "tf": 3.3333333333333335
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "h": {
@@ -14977,23 +16037,16 @@
               }
             }
           },
-          "m": {
-            "docs": {},
-            "d": {
-              "docs": {
-                "XR.html#.setRefSpaceLocation": {
-                  "ref": "XR.html#.setRefSpaceLocation",
-                  "tf": 3.125
-                }
-              }
-            }
-          },
           "o": {
             "docs": {},
             "m": {
               "docs": {},
               "e": {
                 "docs": {
+                  "FE.html#.addBasicLoaderEvents": {
+                    "ref": "FE.html#.addBasicLoaderEvents",
+                    "tf": 3.8461538461538463
+                  },
                   "Nav.html#.computeDefaultHome": {
                     "ref": "Nav.html#.computeDefaultHome",
                     "tf": 4.545454545454546
@@ -15006,6 +16059,52 @@
                     "ref": "Nav.html#.requestHome",
                     "tf": 16.666666666666664
                   }
+                }
+              }
+            }
+          },
+          "t": {
+            "docs": {},
+            "m": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "c": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "FE.html#.popupShow": {
+                                  "ref": "FE.html#.popupShow",
+                                  "tf": 25
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "m": {
+            "docs": {},
+            "d": {
+              "docs": {
+                "XR.html#.setRefSpaceLocation": {
+                  "ref": "XR.html#.setRefSpaceLocation",
+                  "tf": 3.125
                 }
               }
             }
@@ -15074,6 +16173,10 @@
               "docs": {},
               "n": {
                 "docs": {
+                  "FE.html#.loadSceneID": {
+                    "ref": "FE.html#.loadSceneID",
+                    "tf": 4.545454545454546
+                  },
                   "SceneHub.html#.load": {
                     "ref": "SceneHub.html#.load",
                     "tf": 10
@@ -15084,7 +16187,7 @@
           }
         }
       },
-      "length": 1207
+      "length": 1299
     },
     "corpusTokens": [
       "1.0",
@@ -15098,6 +16201,8 @@
       "ad",
       "adapt",
       "add",
+      "addbasicloaderev",
+      "addit",
       "addkeyword",
       "addlightprob",
       "address",
@@ -15131,6 +16236,7 @@
       "aton.getsemanticnod",
       "aton.getuinod",
       "aton.on",
+      "aton.on(\"scenejsonload",
       "aton.r",
       "aton.renderpaus",
       "aton.renderresum",
@@ -15153,7 +16259,9 @@
       "background",
       "bandwidth",
       "base",
+      "basic",
       "becom",
+      "blueprint",
       "boolean",
       "bound",
       "breplic",
@@ -15179,6 +16287,7 @@
       "class",
       "clear",
       "cleareventhandl",
+      "close",
       "collect",
       "color",
       "compon",
@@ -15187,6 +16296,7 @@
       "connect",
       "consist",
       "constructor",
+      "contain",
       "control",
       "copi",
       "copycurrentpov",
@@ -15195,6 +16305,8 @@
       "createsemanticnod",
       "createtoolbar",
       "createuinod",
+      "creation",
+      "cssclass",
       "current",
       "custom",
       "d",
@@ -15216,6 +16328,7 @@
       "disabl",
       "disablepick",
       "distanc",
+      "div",
       "document",
       "duplic",
       "durat",
@@ -15239,8 +16352,15 @@
       "evtnam",
       "ey",
       "f",
+      "facilit",
       "factori",
       "fe",
+      "fe.addbasicloaderev",
+      "fe.loadsceneid",
+      "fe.popupclos",
+      "fe.popupshow",
+      "fe.real",
+      "fe.uiaddbutton",
       "field",
       "final",
       "fire",
@@ -15249,9 +16369,11 @@
       "fov",
       "framework",
       "front",
+      "fulli",
       "fullscreen",
       "function",
       "game",
+      "gener",
       "getbound",
       "getcontrollerworlddirect",
       "getcontrollerworldloc",
@@ -15284,17 +16406,21 @@
       "hide",
       "hmd",
       "home",
+      "htmlcontent",
       "hub",
       "i.",
       "icon",
       "id",
+      "idcontain",
       "immers",
       "index",
       "info",
       "init",
       "initi",
+      "insid",
       "instal",
       "instanc",
+      "instead",
       "interact",
       "invis",
       "isconnect",
@@ -15306,6 +16432,7 @@
       "ispres",
       "istransit",
       "iswebxrsupport",
+      "itself",
       "json",
       "keyword",
       "keyword(",
@@ -15318,6 +16445,7 @@
       "list:class",
       "list:namespac",
       "load",
+      "loadsceneid",
       "local",
       "locat",
       "locomot",
@@ -15333,6 +16461,7 @@
       "media",
       "mediarec",
       "mobil",
+      "modal",
       "mode",
       "model",
       "more",
@@ -15397,6 +16526,7 @@
       "on/off",
       "onc",
       "oncomplet",
+      "onpress",
       "option",
       "orbit",
       "order",
@@ -15414,8 +16544,12 @@
       "pickabl",
       "pixel",
       "point",
+      "popup",
+      "popupclos",
+      "popupshow",
       "posit",
       "pov",
+      "pov#a",
       "pov#addkeyword",
       "pov#haskeyword",
       "pov#setfov",
@@ -15514,6 +16648,7 @@
       "setswitchcolor",
       "settarget",
       "settext",
+      "setup",
       "show",
       "sid",
       "side",
@@ -15523,6 +16658,7 @@
       "spatialui",
       "specif",
       "sphere",
+      "spinner",
       "standard",
       "static",
       "still",
@@ -15530,6 +16666,7 @@
       "string",
       "sub",
       "subscrib",
+      "such",
       "sui",
       "sui.createtoolbar",
       "sui.getinfonod",
@@ -15542,7 +16679,9 @@
       "tablet",
       "take",
       "target",
+      "task",
       "techniqu",
+      "tell",
       "text",
       "those",
       "three.materi",
@@ -15559,6 +16698,7 @@
       "type",
       "typic",
       "ui",
+      "uiaddbutton",
       "uiid",
       "undefin",
       "under",
@@ -15592,6 +16732,7 @@
       "vroadcast.log",
       "vroadcast.on",
       "vroadcast.requestsceneent",
+      "want",
       "wast",
       "web",
       "web3d",
@@ -15699,6 +16840,16 @@
       "summary": "",
       "description": "Class representing a Viewpoint (POV) in the 3D space, abstracting from device used (mobile, desktop or immersive XR). Constructor allows to assign the POV a unique ID (string)",
       "body": ""
+    },
+    "POV.html#as": {
+      "id": "POV.html#as",
+      "kind": "function",
+      "title": "as( id )",
+      "longname": "POV#as",
+      "name": "as",
+      "tags": "POV#as as",
+      "summary": "",
+      "description": "(Re)assign POV ID"
     },
     "POV.html#setPosition": {
       "id": "POV.html#setPosition",
@@ -16101,8 +17252,68 @@
       "name": "FE",
       "tags": "FE",
       "summary": "",
-      "description": "ATON Front-end routines",
+      "description": "Generic front-end routines for ATON-based web-apps. A set of blueprints to facilitate or support creation of a front-end",
       "body": ""
+    },
+    "FE.html#.realize": {
+      "id": "FE.html#.realize",
+      "kind": "function",
+      "title": "&lt;static&gt; realize()",
+      "longname": "FE.realize",
+      "name": "realize",
+      "tags": "FE.realize realize",
+      "summary": "",
+      "description": "Initialize Front-end"
+    },
+    "FE.html#.addBasicLoaderEvents": {
+      "id": "FE.html#.addBasicLoaderEvents",
+      "kind": "function",
+      "title": "&lt;static&gt; addBasicLoaderEvents()",
+      "longname": "FE.addBasicLoaderEvents",
+      "name": "addBasicLoaderEvents",
+      "tags": "FE.addBasicLoaderEvents addBasicLoaderEvents",
+      "summary": "",
+      "description": "Add basic front-end events such as showing spinner while loading assets and home viewpoint setup"
+    },
+    "FE.html#.loadSceneID": {
+      "id": "FE.html#.loadSceneID",
+      "kind": "function",
+      "title": "&lt;static&gt; loadSceneID( sid )",
+      "longname": "FE.loadSceneID",
+      "name": "loadSceneID",
+      "tags": "FE.loadSceneID loadSceneID",
+      "summary": "",
+      "description": "Load a scene. You can use ATON.on(\"SceneJSONLoaded\", ...) to perform additional tasks when the scene JSON is fully loaded"
+    },
+    "FE.html#.uiAddButton": {
+      "id": "FE.html#.uiAddButton",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButton( idcontainer, icon, onPress )",
+      "longname": "FE.uiAddButton",
+      "name": "uiAddButton",
+      "tags": "FE.uiAddButton uiAddButton",
+      "summary": "",
+      "description": "Add generic icon button inside a specific div container"
+    },
+    "FE.html#.popupShow": {
+      "id": "FE.html#.popupShow",
+      "kind": "function",
+      "title": "&lt;static&gt; popupShow( htmlcontent, cssClasses )",
+      "longname": "FE.popupShow",
+      "name": "popupShow",
+      "tags": "FE.popupShow popupShow",
+      "summary": "",
+      "description": "Show a modal popup."
+    },
+    "FE.html#.popupClose": {
+      "id": "FE.html#.popupClose",
+      "kind": "function",
+      "title": "&lt;static&gt; popupClose()",
+      "longname": "FE.popupClose",
+      "name": "popupClose",
+      "tags": "FE.popupClose popupClose",
+      "summary": "",
+      "description": "Close current popup"
     },
     "MediaRec.html": {
       "id": "MediaRec.html",
@@ -16631,7 +17842,7 @@
       "name": "requestSceneEnter",
       "tags": "VRoadcast.requestSceneEnter requestSceneEnter",
       "summary": "",
-      "description": "Request enter in a given scene"
+      "description": "Request enter in a given scene. Note: this routine does not load the scene itself, instead it tells the VRoadcast service we want to connect to the given scene."
     },
     "VRoadcast.html#.connect": {
       "id": "VRoadcast.html#.connect",

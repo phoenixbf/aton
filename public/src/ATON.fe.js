@@ -6,7 +6,8 @@
 ===========================================================*/
 
 /**
-ATON Front-end routines
+Generic front-end routines for ATON-based web-apps. 
+A set of blueprints to facilitate or support creation of a front-end
 @namespace FE
 */
 let FE = {};
@@ -15,7 +16,9 @@ let FE = {};
 FE.SEMSHAPE_SPHERE = 0;
 FE.SEMSHAPE_CONVEX = 1;
 
-
+/**
+Initialize Front-end
+*/
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
@@ -39,7 +42,9 @@ FE.realize = ()=>{
     if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
 };
 
-// Add basic front-end events
+/**
+Add basic front-end events such as showing spinner while loading assets and home viewpoint setup
+*/
 FE.addBasicLoaderEvents = ()=>{
     ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
@@ -82,6 +87,11 @@ FE.useMouseWheelToScaleSelector = (f)=>{
     });
 };
 
+/**
+Load a scene. 
+You can use ATON.on("SceneJSONLoaded", ...) to perform additional tasks when the scene JSON is fully loaded
+@param {string} sid - the scene ID (e.g.: 'sample/venus')
+*/
 FE.loadSceneID = (sid)=>{
     if (sid === undefined) return;
 
@@ -109,7 +119,12 @@ FE._uiSetupBase = ()=>{
     $("#idLoader").html("<img src='"+ATON.PATH_RES+"loader.png'>");
 };
 
-// Add Generic button to a specific div container
+/**
+Add generic icon button inside a specific div container
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+@param {string} icon - the icon. Can be shortname for default icons in /res/icons/ or URL to .png image
+@param {function} onPress - function triggered when pressing the button
+*/
 FE.uiAddButton = (idcontainer, icon, onPress)=>{
     let iconurl;
     let iconid;
@@ -290,6 +305,12 @@ FE.playAudioFromSemanticNode = (semid)=>{
 
 // Popups
 //===================================================================
+
+/**
+Show a modal popup.
+@param {string} htmlcontent - The HTML5 content for the popup
+@param {string} cssClasses - (optional) css classes for the popup
+*/
 FE.popupShow = (htmlcontent, cssClasses)=>{
     if (FE._bPopup) return false;
 
@@ -319,6 +340,9 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
     return true;
 };
 
+/**
+Close current popup
+*/
 FE.popupClose = ()=>{
     FE._bPopup = false;
 

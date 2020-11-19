@@ -184,7 +184,10 @@ addKeywords(kw){
     let K = kw.split(",");
 
     if (this.kwords === undefined) this.kwords = {};
-    for (let k in K) this.kwords[ K[k] ] = true;
+    for (let k in K){
+        let kw = K[k].trim();
+        if (kw.length > 0) this.kwords[kw] = true;
+    }
 
     // recurse into ATON nodes
     for (let c in this.children){

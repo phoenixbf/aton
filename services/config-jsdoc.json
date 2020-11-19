@@ -23,8 +23,7 @@
     },
 
     "opts": {
-        "template": "templates/default",  // same as -t templates/default
-        "destination": "../API/client/",          // same as -d ./out/
+        "destination": "../API/client/",
         "template": "node_modules/foodoc/template"
     }
 }

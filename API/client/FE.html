@@ -96,11 +96,154 @@
 </dt>
 <dd class="symbol-details namespace  collapsible-symbol expanded" style="max-height: 9999px;">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>ATON Front-end routines</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Generic front-end routines for ATON-based web-apps.
+			A set of blueprints to facilitate or support creation of a front-end</p></div>
 			</div>	</div>
 </dd>
 							</dl>
 							<article class="secondary">
+									<h3>Methods</h3>
+									<dl class="symbol">
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".realize" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">realize</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Initialize Front-end</p></div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".addBasicLoaderEvents" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">addBasicLoaderEvents</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Add basic front-end events such as showing spinner while loading assets and home viewpoint setup</p></div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".loadSceneID" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">loadSceneID</span><span class="signature-params">( <span class="signature-param">sid</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Load a scene.
+			You can use ATON.on(&quot;SceneJSONLoaded&quot;, ...) to perform additional tasks when the scene JSON is fully loaded</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>sid</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the scene ID (e.g.: 'sample/venus')</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".uiAddButton" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">uiAddButton</span><span class="signature-params">( <span class="signature-param">idcontainer</span>, <span class="signature-param">icon</span>, <span class="signature-param">onPress</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Add generic icon button inside a specific div container</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>idcontainer</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the id of html container (e.g.: &quot;idTopToolbar&quot;)</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>icon</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>the icon. Can be shortname for default icons in /res/icons/ or URL to .png image</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>onPress</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>function triggered when pressing the button</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".popupShow" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">popupShow</span><span class="signature-params">( <span class="signature-param">htmlcontent</span>, <span class="signature-param">cssClasses</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Show a modal popup.</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>htmlcontent</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>The HTML5 content for the popup</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>cssClasses</code></td>
+							<td><span class="param-type">string</span></td>
+							<td class="last">
+									<p>(optional) css classes for the popup</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".popupClose" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">popupClose</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Close current popup</p></div>
+			</div>	</div>
+</dd>
+									</dl>
 							</article>
 					</section>
 			</div>

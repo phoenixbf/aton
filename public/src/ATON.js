@@ -26,6 +26,7 @@ import EventHub from "./ATON.eventhub.js";
 import MatHub from "./ATON.mathub.js";
 import Utils from "./ATON.utils.js";
 import SceneHub from "./ATON.scenehub.js";
+import AudioHub from "./ATON.audiohub.js";
 import Nav from "./ATON.nav.js";
 import XR from "./ATON.xr.js";
 import SUI from "./ATON.sui.js";
@@ -46,6 +47,7 @@ ATON.Utils      = Utils;
 ATON.SceneHub   = SceneHub;
 ATON.MatHub     = MatHub;
 ATON.Nav        = Nav;
+ATON.AudioHub   = AudioHub;
 ATON.XR         = XR;
 ATON.SUI        = SUI;
 ATON.VRoadcast  = VRoadcast;
@@ -360,6 +362,9 @@ ATON.realize = ()=>{
 
     ATON.initGraphs();
     ATON.SceneHub.init();
+
+    // Init audio hub
+    ATON.AudioHub.init();
 
     // Init nav system
     ATON.Nav.init();

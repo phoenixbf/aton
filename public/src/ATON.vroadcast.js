@@ -412,6 +412,19 @@ VRoadcast._registerSocketHandlers = ()=>{
         //A.setTalkVolume(data.vol);
         A.setTalkVolume(5.0);
 
+        if (A._auTalk === undefined || A._auTalk === null) A._auTalk = new THREE.Audio( ATON.AudioHub._listener );
+        else A._auTalk.stop();
+
+        ATON.AudioHub._loader.load( audioURL, (buffer)=>{
+            A._auTalk.setBuffer( buffer );
+            A._auTalk.setLoop( false );
+            //A._auTalk.setVolume( 0.5 );
+            //A._auTalk.setPlaybackRate(0.9);
+            A._auTalk.play();
+        });
+        
+
+/*
         //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
         //let audioURL = window.URL.createObjectURL(newblob);
         
@@ -426,7 +439,7 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         A._auTalk.src = audioURL;
         A._auTalk.play();
-  
+*/
 
 /*
         A._auChunks.push({

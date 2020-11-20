@@ -290,6 +290,18 @@ FE.playAudioFromSemanticNode = (semid)=>{
     let au = S.getAudio();
     if (au === undefined) return;
 
+    if (FE._auSemNode === undefined || FE._auSemNode === null) FE._auSemNode = new THREE.Audio( ATON.AudioHub._listener );
+    else FE._auSemNode.stop();
+
+    ATON.AudioHub._loader.load( au, (buffer)=>{
+        FE._auSemNode.setBuffer( buffer );
+        FE._auSemNode.setLoop( false );
+        //FE._auSemNode.setVolume( 0.5 );
+        //FE._auSemNode.setPlaybackRate(0.9);
+        FE._auSemNode.play();
+    });
+
+/*
     if (FE._auSemNode === undefined) FE._auSemNode = new Audio();
     
     FE._auSemNodePlaying = true;
@@ -300,6 +312,7 @@ FE.playAudioFromSemanticNode = (semid)=>{
     FE._auSemNode.onended = ()=>{
         FE._auSemNodePlaying = false;
     };
+*/
 };
 
 

@@ -211,7 +211,7 @@ VRoadcast.onNewConnection = (socket)=>{
     });
 
     socket.on('UTALK', (data)=>{
-        socket.to(sid).compress(false).binary(true).emit('UTALK', data);
+        socket.to(sid).compress(false).emit('UTALK', data); // .binary(true)
         //console.log(data.audio);
     });
 };

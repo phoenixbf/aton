@@ -353,6 +353,13 @@ canvas {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
+.atonBTN-gray {
+    background-color: rgba(127, 127, 127, 0.5) !important;
+}
+.atonBTN-gray:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+}
+
 .atonBTN-rec {
     animation-name: pulseRec;
     animation-duration: 2s;

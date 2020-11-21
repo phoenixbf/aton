@@ -37,6 +37,10 @@ Utils.generateID = (prefix)=>{
     return prefix+'-' + Math.random().toString(36).substr(2,9);
 };
 
+Utils.goToURL = (url)=>{
+    window.location.href = url;
+};
+
 /**
 If current connection is secure
 @returns {boolean}

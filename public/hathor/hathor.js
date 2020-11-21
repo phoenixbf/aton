@@ -259,26 +259,26 @@ HATHOR.setupEventHandlers = ()=>{
         }
         if (k==='u') ATON.FE.popupUser();
 
-        if (k==='w'){
-            if (ATON.Nav._mode === ATON.Nav.MODE_FP) ATON.Nav.setMotionAmount(0.5);
-        }
+        //if (k==='w'){
+        //    if (ATON.Nav._mode === ATON.Nav.MODE_FP) ATON.Nav.setMotionAmount(0.5);
+        //}
 
         if (k==='a'){
             ATON.SemFactory.stopCurrentConvex();
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
         }
-
         if (k==='s'){
             ATON.SemFactory.addSurfaceConvexPoint();
         }
-
         if (k==='S'){
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
-
-        if (k==='c'){
-            ATON.FE.popupScreenShot();
+        if (k==='e'){
+            let esemid = ATON._hoveredSemNode;
+            if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
         }
+
+        if (k==='c') ATON.FE.popupScreenShot();
 
         if (k==='#'){
             let bShadows = !ATON._renderer.shadowMap.enabled;
@@ -372,19 +372,24 @@ HATHOR.setupEventHandlers = ()=>{
 
 // Popups
 //=======================================
-HATHOR._createPopupStdSem = ()=>{
-    let htmlcontent = "<h1>Annotation</h1>";
-
-    htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
-    htmlcontent += "<label for='psemid'>child of:</label>";
-    htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
-    htmlcontent += "<option value='.'>root</option>";
-    for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
-    htmlcontent += "</select><div class='selectArrow'></div></div>";
+HATHOR._createPopupStdSem = (esemid)=>{
+    let htmlcontent = "";
     
-    htmlcontent += "<datalist id='semlist'>";
-    for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
-    htmlcontent += "</datalist>";
+    if (esemid === undefined) htmlcontent = "<h1>New Annotation</h1>";
+    else htmlcontent += "<h1>Modify '"+esemid+"'</h1>";
+
+    if (esemid === undefined){
+        htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
+        htmlcontent += "<label for='psemid'>child of:</label>";
+        htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
+        htmlcontent += "<option value='.'>root</option>";
+        for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
+        htmlcontent += "</select><div class='selectArrow'></div></div>";
+        
+        htmlcontent += "<datalist id='semlist'>";
+        for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
+        htmlcontent += "</datalist>";
+    }
 
     //htmlcontent += "<br>";
     //htmlcontent += "<div id='btnRichContent' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
@@ -392,10 +397,12 @@ HATHOR._createPopupStdSem = ()=>{
     htmlcontent += "<textarea id='idSemDescription' style='width:100%'></textarea><br>";
 
     if (ATON.Utils.isConnectionSecure()){
-        htmlcontent += "<div id='btnVocalNote' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
-    htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
+
+    if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
+    else htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>DONE</div>";
 
     return htmlcontent;
 };
@@ -421,41 +428,48 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
     return SCE;
 };
 
-// Add/Finalize semantic shape
-HATHOR.popupAddSemantic = (semtype)=>{
-    let htmlcontent = HATHOR._createPopupStdSem();
+// Add/Edit/Finalize semantic shape
+HATHOR.popupAddSemantic = (semtype, esemid)=>{
+    let htmlcontent = HATHOR._createPopupStdSem(esemid);
 
     if (semtype === undefined) semtype = ATON.FE.SEMSHAPE_SPHERE;
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
-    //$("#semid").focus();
-    ATON.FE.uiAttachInputFilterID("semid");
-    //$("#semid").val("");
-
     let SCE = HATHOR.createSemanticTextEditor("idSemDescription");
 
-    //console.log(sceditor);
+    if (esemid === undefined){
+        //$("#semid").focus();
+        //$("#semid").val("");
+        ATON.FE.uiAttachInputFilterID("semid");
 
-    $("#semid").on("input", ()=>{
-        let semid  = $("#semid").val();
+        $("#semid").on("input", ()=>{
+            let semid  = $("#semid").val();
 
-        let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
+            let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
+            if (descr !== undefined){
+                //$("#idSemDescription").val(descr);
+                //console.log(SCE.getBody());
+                //sceditor.instance.val(descr);
+                //let C = $("#idPopupContent").find("body[contenteditable='true']");
+                //let C = $("body[contenteditable='true']");
+                //let C = $("#idSCEditor iframe").first();
+                //console.log(C);
+                
+                //C.html(descr);
+                SCE.setWysiwygEditorValue(descr);
+
+                //console.log(descr);
+            }
+        });
+    }
+    else {
+        let descr = HATHOR.getHTMLDescriptionFromSemNode(esemid);
         if (descr !== undefined){
-            //$("#idSemDescription").val(descr);
-            //console.log(SCE.getBody());
-            //sceditor.instance.val(descr);
-            //let C = $("#idPopupContent").find("body[contenteditable='true']");
-            //let C = $("body[contenteditable='true']");
-            //let C = $("#idSCEditor iframe").first();
-            //console.log(C);
-            
-            //C.html(descr);
             SCE.setWysiwygEditorValue(descr);
-
-            //console.log(descr);
         }
-    });
+    }
+
 
     let vocnote = undefined;
     let bRecVN  = false;
@@ -498,33 +512,40 @@ HATHOR.popupAddSemantic = (semtype)=>{
         let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
         //console.log(xxtmldescr);
 
-        if (semid.length<1) return;
-
         ATON.FE.popupClose();
 
-        if (semid === undefined || semid.length<2 || semid === ATON.ROOT_NID) return;
-        if (semid === psemid) return;
+        let S = undefined;
+        if (esemid === undefined){
+            if (semid === undefined || semid.length<2 || semid === ATON.ROOT_NID) return;
+            if (semid === psemid) return;
 
-        let S;
-        if (semtype === ATON.FE.SEMSHAPE_SPHERE) S = ATON.SemFactory.createSurfaceSphere(semid);
-        if (semtype === ATON.FE.SEMSHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(semid);
-        if (S === undefined) return;
+            if (semtype === ATON.FE.SEMSHAPE_SPHERE) S = ATON.SemFactory.createSurfaceSphere(semid);
+            if (semtype === ATON.FE.SEMSHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(semid);
+            if (S === undefined) return;
+
+            let parS = ATON.getSemanticNode(psemid);
+
+            if (parS) parS.add(S); 
+            else ATON.getRootSemantics().add(S);
+        }
+        else {
+            S = ATON.getSemanticNode(esemid);
+            if (S === undefined) return;
+        }
 
         if (xxtmldescr && xxtmldescr.length>2) S.setDescription( xxtmldescr );
         if (vocnote) S.setAudio(vocnote);
         
-        let parS = ATON.getSemanticNode(psemid);
-
-        if (parS) parS.add(S); 
-        else ATON.getRootSemantics().add(S);
 
         let E = {};
         E.semanticgraph = {};
         E.semanticgraph.nodes = {};
         E.semanticgraph.nodes[S.nid] = {};
 
-        if (semtype === ATON.FE.SEMSHAPE_SPHERE) E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
-        if (semtype === ATON.FE.SEMSHAPE_CONVEX) E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
+        if (esemid === undefined){
+            if (semtype === ATON.FE.SEMSHAPE_SPHERE) E.semanticgraph.nodes[S.nid].spheres = ATON.SceneHub.getJSONsemanticSpheresList(semid);
+            if (semtype === ATON.FE.SEMSHAPE_CONVEX) E.semanticgraph.nodes[S.nid].convexshapes = ATON.SceneHub.getJSONsemanticConvexShapes(semid);
+        }
         
         if (S.getDescription()) E.semanticgraph.nodes[S.nid].description = S.getDescription();
         if (S.getAudio()) E.semanticgraph.nodes[S.nid].audio = S.getAudio();

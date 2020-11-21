@@ -117,7 +117,7 @@ MediaRec.isAudioRecording = ()=>{
 
 // helper routines
 MediaRec._stopRecAndSend = ( onFinish )=>{
-    if (!MediaRec.recorder){
+    if (MediaRec.recorder === undefined){
         if (onFinish) onFinish();
         return;
     }
@@ -145,18 +145,19 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
                 return;
             }
 
-            ATON.VRoadcast.socket.compress(false).binary(true).emit("UTALK", {
+            ATON.VRoadcast.socket.compress(false).emit("UTALK", {
                 audio: b64,
                 uid: ATON.VRoadcast.uid,
                 //vol: MediaRec._auAVGvolume
             });              
             
             if (onFinish) onFinish();
+            return;
         });
 /*
         console.log("sending blob..."+rblob.size);
 
-        ATON.VRoadcast.socket.compress(false).binary(true).emit("UTALK", {
+        ATON.VRoadcast.socket.compress(false).emit("UTALK", {
             blob: rblob,
             uid: ATON.VRoadcast.uid,
             vol: MediaRec._auAVGvolume
@@ -164,6 +165,7 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
 
         if (onFinish) onFinish();
 */
+        //if (onFinish) onFinish();
     });
 };
 
@@ -254,9 +256,12 @@ MediaRec.stopMediaStreaming = ()=>{
     console.log("Stop MediaStreaming");
 
     MediaRec._stopRecAndSend(()=>{
-        MediaRec._bStreaming = false;
-        MediaRec._bAudioRecording = false;
+        //MediaRec._bStreaming = false;
+        //MediaRec._bAudioRecording = false;
     });
+
+    MediaRec._bStreaming = false;
+    MediaRec._bAudioRecording = false;
 
 /*
     MediaRec._stopRecAndSend(()=>{

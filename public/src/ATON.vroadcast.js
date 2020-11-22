@@ -38,7 +38,7 @@ VRoadcast.init = ()=>{
     VRoadcast._username = undefined;
 
     VRoadcast.uid = undefined; // my userID (0,1,....)
-    VRoadcast._bFocus = false; // send focal point
+    VRoadcast._bStreamFocus = false; // stream focal point
     VRoadcast._numUsers = 0;
 
     VRoadcast.avatarList = [];
@@ -363,8 +363,9 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         //A.position.copy(S.position);
         //A.quaternion.copy(S.quaternion);
+        
         A.requestStateTransition(S);
-        A.hideFocalPoint();
+        //A.hideFocalPoint();
     });
 
     VRoadcast.socket.on('UFOCUS', (data)=>{
@@ -513,6 +514,32 @@ VRoadcast.update = ()=>{
     }
 };
 
+VRoadcast.setFocusStreaming = (b)=>{
+    if (b === undefined) return;
+
+    if (b){
+        if (!VRoadcast._bStreamFocus){
+
+            ATON.fireEvent("VRC_FocusStreamingStarted");
+        }
+
+        VRoadcast._bStreamFocus = true;
+        return;
+    }
+    else {
+        if (VRoadcast._bStreamFocus){
+
+            ATON.fireEvent("VRC_FocusStreamingStopped");
+        }
+
+        // Restore selector radius
+        let r = ATON.SUI._selectorRad;
+        ATON.SUI.mainSelector.scale.set(r,r,r);
+
+        VRoadcast._bStreamFocus = false;
+    }
+};
+
 VRoadcast.sendState = ()=>{
     if (VRoadcast.uid === undefined) return;
     if (!VRoadcast.socket || !VRoadcast._connected) return;
@@ -521,9 +548,9 @@ VRoadcast.sendState = ()=>{
     if (!cpov) return;
     //console.log(cpov);
 
-    // Focal point
+    // Focus streaming
     let fp = ATON.getSceneQueriedPoint();
-    if (VRoadcast._bFocus && fp !== undefined){
+    if (VRoadcast._bStreamFocus && fp !== undefined){
         //let F = new THREE.Vector3();
         let fx = (fp.x /*- cpov.pos.x*/).toPrecision(3);
         let fy = (fp.y /*- cpov.pos.y*/).toPrecision(3);

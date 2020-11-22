@@ -215,7 +215,8 @@ handleFocusTransition(){
 
         this.userfpnode.position.copy(this._tgtFocusPos);
         this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
-        //this.userfpnode.visible = true;
+        
+        this.userfpnode.visible = true;
 
         //console.log(this.userfpnode.position);
 
@@ -226,7 +227,7 @@ handleFocusTransition(){
 
     //let s = this._tgtFocusRad;
     //this.userfpnode.scale.set(s,s,s);
-    //this.userfpnode.visible = true;
+    this.userfpnode.visible = true;
 
     //console.log(this.userfpnode.position);
 }

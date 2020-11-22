@@ -60,6 +60,7 @@ Set selector radius
 @param {number} r - the radius
 */
 SUI.setSelectorRadius = (r)=>{
+    SUI._selectorRad = r;
     SUI.mainSelector.scale.set(r,r,r);
 };
 
@@ -68,7 +69,8 @@ Get selector current radius
 @returns {number}
 */
 SUI.getSelectorRadius = ()=>{
-    return SUI.mainSelector.scale.x;
+    //return SUI.mainSelector.scale.x;
+    return SUI._selectorRad;
 };
 
 /**
@@ -196,10 +198,16 @@ SUI.update = ()=>{
         SUI.infoNode.orientToCamera();
 
         if (SUI.bShowInfo) SUI.infoNode.visible = true;
-        SUI.mainSelector.visible = false;
+        
+        if (!ATON.VRoadcast._bStreamFocus) SUI.mainSelector.visible = false;
     }
     else {
         SUI.infoNode.visible = false;
+    }
+
+    if (SUI.mainSelector.visible && ATON.VRoadcast._bStreamFocus){
+        let ss = SUI._selectorRad * (1.0 + (Math.cos(ATON._clock.elapsedTime*10.0) * 0.2) );
+        SUI.mainSelector.scale.set(ss,ss,ss);
     }
 
 };

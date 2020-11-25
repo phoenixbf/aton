@@ -230,6 +230,8 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     ATON._updateScreenMove(e);
     ATON._handleQueryScene();
 
+    if (!ATON.Nav._bControl) return;
+
     let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
 
     // When first-person mode, teleport (non immersive)

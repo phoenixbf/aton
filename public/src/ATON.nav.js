@@ -40,6 +40,8 @@ Nav.init = ()=>{
     Nav._rotSpeedFP    = -0.2;
     Nav._inertia       = 0.0; // 0.0 = disabled
 
+    Nav._bControl = true; // user control
+
     // Setup controls
     //Nav._camera = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
     //Nav._camera.layers.enableAll();
@@ -120,6 +122,34 @@ Nav.isTransitioning = ()=>{
 };
 
 /**
+Enable/disable user navigation control
+@param {boolean} b - false to lock controls, true to unlock
+*/
+Nav.setUserControl = (b)=>{
+    Nav._bControl = b;
+
+    if (Nav._controls !== undefined) Nav._controls.enabled = b;
+
+    if (Nav._cOrbit) Nav._cOrbit.enabled = b;
+    if (Nav._cFirstPerson) Nav._cFirstPerson.enabled = b;
+};
+
+/**
+Toggle user control
+*/
+Nav.toggleUserControl = ()=>{
+    Nav.setUserControl(!Nav._bControl);
+};
+
+/**
+Return true if navigation controls are enabled (i.e. the user can control the camera)
+@returns {boolean}
+*/
+Nav.isUserControlEnabled = ()=>{
+    return Nav._bControl;
+};
+
+/**
 Return true if the navigation system is in Orbit mode
 @returns {boolean}
 */
@@ -180,6 +210,8 @@ Nav.setOrbitControl = ()=>{
         C.minDistance = 0.03;
         C.maxDistance = 1000.0;
 
+        if (!Nav._bControl) C.enabled = false;
+
         C.addEventListener("change", () => { Nav._bControlChange = true; });
     }
 
@@ -223,6 +255,8 @@ Nav.setFirstPersonControl = ()=>{
 
         C.minDistance = 0.05;
         C.maxDistance = 0.05;
+
+        if (!Nav._bControl) C.enabled = false;
     }
 
     Nav._controls = Nav._cFirstPerson;

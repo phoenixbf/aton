@@ -187,6 +187,13 @@ XR.onSessionStarted = ( session )=>{
 	ATON._renderer.xr.setSession( session );
 	XR.currSession = session;
 
+    // get xrRefSpace
+    /*
+    session.requestReferenceSpace('local').then((refSpace) => {
+        xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
+    });
+    */
+
     let C0 = ATON._renderer.xr.getController(0);
     let C1 = ATON._renderer.xr.getController(1);
 

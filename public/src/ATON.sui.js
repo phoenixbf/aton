@@ -5,7 +5,7 @@
 
 ===========================================================*/
 import Button from "./ATON.sui.button.js";
-
+import Label from "./ATON.sui.label.js";
 
 /**
 ATON Spatial UI
@@ -16,11 +16,12 @@ let SUI = {};
 SUI.STD_BTN_SIZE = 0.1;
 
 SUI.Button = Button;
+SUI.Label  = Label;
 
 
 //Initializes Spatial UI module
 SUI.init = ()=>{
-    SUI.mainSelector   = ATON.createUINode();
+    SUI.mainSelector = ATON.createUINode();
     //SUI.secondSelector = ATON.createUINode();
 
     //SUI._uiSelGeom = new THREE.SphereGeometry( 0.1, 16, 16 );
@@ -29,9 +30,26 @@ SUI.init = ()=>{
 
     SUI.setSelectorRadius(0.05);
     SUI.mainSelector.visible = false;
-
     ATON._rootUI.add(SUI.mainSelector);
 
+    // Main Font
+    //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
+    //SUI.PATH_FONT_TEX  = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.png"; // ATON.PATH_RES+"fonts/custom.png"
+    SUI.PATH_FONT_JSON = ATON.PATH_RES+"fonts/custom-msdf.json"
+    SUI.PATH_FONT_TEX  = ATON.PATH_RES+"fonts/custom.png"
+/*
+    ThreeMeshUI.FontLibrary.addFont("mainFont", 
+        SUI.PATH_FONT_JSON, 
+        new THREE.TextureLoader().load(SUI.PATH_FONT_TEX)
+    );
+*/
+    // Measurements
+    SUI.gMeasures = ATON.createUINode();
+    SUI._prevMPoint = undefined;
+    SUI._measLabels = [];
+    ATON._rootUI.add(SUI.gMeasures);
+
+    // Sem convex-shapes edit points 
     SUI.gPoints = ATON.createUINode();
     ATON._rootUI.add(SUI.gPoints);
 
@@ -99,8 +117,10 @@ SUI.buildInfoNode = ()=>{
         //backgroundColor: ATON.MatHub.colors.darksem,
         //backgroundOpacity: 0.2,
 
-        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
-        fontTexture: ATON.PATH_RES+"fonts/custom.png", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
+        fontFamily: SUI.PATH_FONT_JSON,
+        fontTexture: SUI.PATH_FONT_TEX,
+        //fontFamily: "mainFont",
+        //fontTexture: "mainFont",
 
         alignContent: 'center', // could be 'center' or 'left'
         justifyContent: 'center', // could be 'center' or 'start'
@@ -145,8 +165,8 @@ SUI.createToolbar = (buttonlist, color)=>{
         backgroundColor: color? color : ATON.MatHub.colors.black,
         backgroundOpacity: 0.3,
 
-        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json",
-        fontTexture: ATON.PATH_RES+"fonts/custom.png",
+        fontFamily: SUI.PATH_FONT_JSON,
+        fontTexture: SUI.PATH_FONT_TEX,
 
         alignContent: 'center', // could be 'center' or 'left'
         justifyContent: 'center', // could be 'center' or 'start'
@@ -166,6 +186,73 @@ SUI.createToolbar = (buttonlist, color)=>{
     return T;
 };
 
+// Measurements
+
+SUI.addMeasurementPoint = (P)=>{
+    if (P === undefined) return undefined;
+
+    let s = 0.01;
+    let linetick = 0.001;
+
+    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
+    M.position.copy(P);
+    M.scale.set(s,s,s);
+    SUI.gMeasures.add(M);
+
+    // First time
+    if (SUI._prevMPoint === undefined){
+        SUI._prevMPoint = P;
+        return undefined;
+    }
+
+    // Second point
+    let d = SUI._prevMPoint.distanceTo(P);
+    console.log(d);
+    
+    let mstr = " m";
+    let scale = Math.max(d*1.5, 1.0);
+    if (d < 0.5){ d *= 100.0; mstr= " cm"; }
+    if (d < 0.05){ d *= 1000.0; mstr= " mm"; }
+    if (d > 1000.0){ d * 0.001; mstr=" km"; }
+
+    //let gLine = new THREE.CylinderBufferGeometry( linetick,linetick, d, 4 );
+    let gLine = new THREE.BufferGeometry().setFromPoints([SUI._prevMPoint,P]);
+    
+    SUI.gMeasures.add( new THREE.Line( gLine, ATON.MatHub.getMaterial("measurement")) );
+
+    let L = new SUI.Label();
+    L.setBaseColor(ATON.MatHub.colors.white).setTextColor(ATON.MatHub.colors.black);
+
+    L.setPosition(
+        (SUI._prevMPoint.x + P.x)*0.5,
+        (SUI._prevMPoint.y + P.y)*0.5,
+        (SUI._prevMPoint.z + P.z)*0.5,
+    );
+
+    L.setScale(scale).setText(d.toPrecision(3)+mstr); // setScale(d*2.0)
+
+    SUI.gMeasures.add(L);
+
+    SUI._measLabels.push(L);
+
+    // return obj
+    let R = {};
+    R.A = SUI._prevMPoint.clone();
+    R.B = P.clone();
+
+    SUI._prevMPoint = undefined;
+
+    return R;   
+};
+
+SUI._updateMeasurements = ()=>{
+    if (SUI._measLabels.length <= 0) return;
+
+    for (let ml in SUI._measLabels){
+        SUI._measLabels[ml].orientToCamera();
+    }
+};
+
 // Main update routine
 SUI.update = ()=>{
     if (ATON.Nav.isTransitioning() || ATON._bPauseQuery){
@@ -182,6 +269,9 @@ SUI.update = ()=>{
     else {
         SUI.mainSelector.visible = false;
     }
+
+    // Measures
+    SUI._updateMeasurements();
 
     // InfoNode (semantics)
     if (ATON._queryDataSem){

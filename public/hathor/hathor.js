@@ -311,6 +311,30 @@ HATHOR.setupEventHandlers = ()=>{
             if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
         }
 
+        if (k==='m'){
+            let P = ATON.getSceneQueriedPoint();
+            let M = ATON.SUI.addMeasurementPoint( P );
+
+            if (M === undefined) return;
+
+            let mid = ATON.Utils.generateID("meas");
+
+            let E = {};
+            E.measurements = {};
+            E.measurements[mid] = {};
+            E.measurements[mid].points = [
+                parseFloat(M.A.x.toPrecision(6)),
+                parseFloat(M.A.y.toPrecision(6)),
+                parseFloat(M.A.z.toPrecision(6)),
+                parseFloat(M.B.x.toPrecision(6)),
+                parseFloat(M.B.y.toPrecision(6)),
+                parseFloat(M.B.z.toPrecision(6))
+            ];
+
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        }
+
         if (k==='c') ATON.FE.popupScreenShot();
 
         if (k==='#'){

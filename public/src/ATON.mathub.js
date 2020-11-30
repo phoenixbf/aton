@@ -60,6 +60,17 @@ MatHub.addDefaults = ()=>{
         flatShading: true
     });
 
+    // Measurements
+    MatHub.materials.measurement = new THREE.MeshBasicMaterial({
+        color: MatHub.colors.white,
+        //linewidth: 5,
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.5, 
+        depthTest: false,
+        flatShading: true
+    });
+
     // Semantic shapes
     MatHub.materials.semanticShape = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.sem, 

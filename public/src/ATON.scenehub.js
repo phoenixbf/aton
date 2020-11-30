@@ -201,6 +201,30 @@ SceneHub.initBaseParsers = ()=>{
         ATON.Nav.setNavMode(navmode);
     };
 
+    // Measurements
+    SceneHub._jsonParsers.measurements = (M)=>{
+        if (M === undefined) return;
+
+        for (let m in M){
+            let measure = M[m];
+
+            if (measure.points && measure.points.length === 6){
+                let A = new THREE.Vector3(
+                    parseFloat(measure.points[0]),
+                    parseFloat(measure.points[1]),
+                    parseFloat(measure.points[2])
+                );
+                let B = new THREE.Vector3(
+                    parseFloat(measure.points[3]),
+                    parseFloat(measure.points[4]),
+                    parseFloat(measure.points[5])
+                );
+                ATON.SUI.addMeasurementPoint(A);
+                ATON.SUI.addMeasurementPoint(B);
+            }
+        }
+    };
+
     // Viewpoints
     SceneHub._jsonParsers.viewpoints = (povs)=>{
         if (povs === undefined) return;

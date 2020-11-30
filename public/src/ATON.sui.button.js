@@ -32,8 +32,8 @@ constructor(uiid){
         backgroundColor: this.baseColor,
         backgroundOpacity: 0.5,
 
-        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json",
-        fontTexture: ATON.PATH_RES+"fonts/custom.png",
+        fontFamily: ATON.SUI.PATH_FONT_JSON,
+        fontTexture: ATON.SUI.PATH_FONT_TEX,
 
         justifyContent: 'center',
         alignContent: 'center'

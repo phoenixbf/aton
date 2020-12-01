@@ -22,9 +22,9 @@ constructor(uiid){
     this.baseColor = ATON.MatHub.colors.black;
 
     this.container = new ThreeMeshUI.Block({
-        width: 0.15,
+        width: 0.2,
         height: 0.05,
-        padding: 0.002,
+        padding: 0.001,
         borderRadius: 0.01,
         backgroundColor: this.baseColor,
         backgroundOpacity: 0.5,
@@ -40,7 +40,7 @@ constructor(uiid){
 
     this.uiText = new ThreeMeshUI.Text({ 
         content: "Label",
-        fontSize: 0.02,
+        fontSize: 0.03,
         fontColor: ATON.MatHub.colors.white
     });
     this.container.add(this.uiText);

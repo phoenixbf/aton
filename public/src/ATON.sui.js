@@ -262,7 +262,7 @@ SUI.update = ()=>{
 
     ThreeMeshUI.update();
 
-    if (ATON._queryDataScene){
+    if (ATON._queryDataScene && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
         SUI.mainSelector.position.copy(ATON._queryDataScene.p);    
     }

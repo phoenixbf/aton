@@ -38,9 +38,11 @@ Nav.init = ()=>{
 
     Nav._rotSpeedOrbit = 0.4;
     Nav._rotSpeedFP    = -0.2;
-    Nav._inertia       = 0.0; // 0.0 = disabled
+    Nav._inertia       = 0.0; //0.05; // 0.0 = disabled
 
     Nav._bControl = true; // user control
+
+    Nav._bInteracting = false;
 
     // Setup controls
     //Nav._camera = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
@@ -186,6 +188,7 @@ Nav.setOrbitControl = ()=>{
     if (ATON.XR.isPresenting()) return;
 
     Nav._mode = Nav.MODE_ORBIT;
+    Nav._bInteracting = false;
 
     // One-time setup
     if (Nav._cOrbit === undefined){
@@ -201,7 +204,7 @@ Nav.setOrbitControl = ()=>{
         
         if (Nav._inertia > 0.0){
             C.enableDamping = true;
-            C.dampingFactor = 0.1;
+            C.dampingFactor = Nav._inertia;
         }
         
         C.screenSpacePanning = true;
@@ -212,7 +215,14 @@ Nav.setOrbitControl = ()=>{
 
         if (!Nav._bControl) C.enabled = false;
 
-        C.addEventListener("change", () => { Nav._bControlChange = true; });
+        //C.addEventListener("change", () => { Nav._bChanged = true; });
+        C.addEventListener("start",()=>{
+            Nav._bInteracting = true;
+        });
+        C.addEventListener("end",()=>{
+            Nav._bInteracting = false;
+        });
+
     }
 
     Nav._controls = Nav._cOrbit;
@@ -230,6 +240,7 @@ Nav.setFirstPersonControl = ()=>{
     if (ATON.XR.isPresenting()) return;
 
     Nav._mode = Nav.MODE_FP;
+    Nav._bInteracting = false;
 
     // One-time setup
     if (Nav._cFirstPerson === undefined){
@@ -246,7 +257,7 @@ Nav.setFirstPersonControl = ()=>{
         
         if (Nav._inertia > 0.0){
             C.enableDamping = true;
-            C.dampingFactor = 0.1;
+            C.dampingFactor = Nav._inertia;
         }
         
         //C.screenSpacePanning = true;
@@ -288,6 +299,7 @@ Nav.setDeviceOrientationControl = ()=>{
     if (!ATON.Utils.isMobile()) return;
 
     Nav._mode = Nav.MODE_DEVORI;
+    Nav._bInteracting = false;
     ATON._screenPointerCoords.set(0.0,0.0);
 
     // One-time setup

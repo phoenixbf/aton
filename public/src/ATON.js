@@ -979,6 +979,7 @@ ATON._registerRCS = ()=>{
 
 ATON._handleQueries = ()=>{
     if (ATON._bPauseQuery) return;
+    if (ATON.Nav._bInteracting) return;
     if (ATON._numReqLoad > 0) return;
     if (ATON.Nav.isTransitioning()) return; // do not query during POV transitions
     //if (ATON.device.isMobile || !ATON.XR.isPresenting()) return; 

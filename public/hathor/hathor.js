@@ -26,6 +26,12 @@ window.addEventListener( 'load', ()=>{
     HATHOR.paramVRC   = ATON.FE.urlParams.get('vrc');
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');
     HATHOR.paramFPS   = ATON.FE.urlParams.get('fps');
+    HATHOR.paramRLOG  = ATON.FE.urlParams.get('rlog');
+
+    if (HATHOR.paramRLOG){
+        console.log   = ATON.VRoadcast.log;
+        console.error = ATON.VRoadcast.log;
+    }
     
     HATHOR._bVRCsetup = false;
 

@@ -305,7 +305,7 @@ ATON.realize = ()=>{
     ATON._clock = new THREE.Clock(true);
 
     let wglopts = {
-        //canvas: document.getElementById("idView"),
+        //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
         //pecision: "mediump"
@@ -336,10 +336,11 @@ ATON.realize = ()=>{
     document.body.appendChild( ATON._renderer.domElement );
     //console.log(ATON._renderer);
     
-    //let canvas = ATON._renderer.domElement;
+    let canvas = ATON._renderer.domElement;
+    canvas.style.outline = "none";
+    canvas.style.border  = "none";
     //canvas.style.padding = "0px";
     //canvas.style.margin  = "0px";
-    //canvas.style.border  = "none";
     //canvas.style.width   = "100%";
     //canvas.style.height  = "100%";
 

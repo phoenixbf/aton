@@ -88,7 +88,9 @@ canvas {
 
     margin: 0px;
     padding: 0px;
+
     border: none;
+    outline: none;
 
     -moz-user-select: none;
     -khtml-user-select: none;

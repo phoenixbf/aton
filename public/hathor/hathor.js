@@ -466,7 +466,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
     //htmlcontent += "<div id='idSemDescCont'><textarea id='idSemDescription' style='width:100%'></textarea></div><br>";
     htmlcontent += "<textarea id='idSemDescription' style='width:100%'></textarea><br>";
 
-    if (ATON.Utils.isConnectionSecure()){
+    if (ATON.Utils.isConnectionSecure() && !ATON.MediaRec.isAudioRecording()){
         htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
@@ -568,13 +568,14 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
             $('#btnVocalNote').html("<img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note");
             ATON.MediaRec.stopRecording();
             $('#ctrlVocalNote').show();
+            bRecVN  = false;
         }
     });
 
     //$('#btnRichContent').click(()=>{ $('#idSemDescCont').toggle(); });
 
     $("#idAnnOK").click(()=>{
-        if (ATON.MediaRec.isAudioRecording()) return;
+        //if (ATON.MediaRec.isAudioRecording()) return;
         if (bRecVN && vocnote===undefined) return;
 
         $("#semid").blur();

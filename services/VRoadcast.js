@@ -1,4 +1,12 @@
+/*!
+    @preserve
 
+ 	ATON VRoadcast
+
+ 	@author Bruno Fanini
+	VHLab, CNR ISPC
+
+==================================================================================*/
 VRoadcast = {};
 
 VRoadcast.MAX_CLIENTS_PER_SCENE = 50;

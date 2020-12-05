@@ -158,7 +158,8 @@ FE.uiAddButtonHome = (idcontainer)=>{
 FE.uiAddButtonFirstPerson = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "fp", ()=>{
         if (ATON.Nav.isFirstPerson()){
-            ATON.Nav.setOrbitControl();
+            //ATON.Nav.setOrbitControl();
+            ATON.Nav.restorePreviousNavMode();
             FE.uiSwitchButton("fp",false);
         }
         else {
@@ -180,7 +181,8 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
 
     FE.uiAddButton(idcontainer,"devori", ()=>{
         if (ATON.Nav.isDevOri()){
-            ATON.Nav.setOrbitControl();
+            //ATON.Nav.setOrbitControl();
+            ATON.Nav.restorePreviousNavMode();
             FE.uiSwitchButton("devori",false);
         }
         else {

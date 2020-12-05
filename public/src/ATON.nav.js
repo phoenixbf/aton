@@ -48,6 +48,8 @@ Nav.init = ()=>{
     //Nav._camera = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
     //Nav._camera.layers.enableAll();
     //Nav._controls = new THREE.OrbitControls( Nav._camera, ATON._renderer.domElement);
+
+    Nav._prevMode = undefined;
     Nav.setOrbitControl();
 
     // POV data
@@ -182,10 +184,22 @@ Nav.setNavMode = (navmode)=>{
 };
 
 /**
+Restore previously used navigation mode.
+If no previous nav mode is found, defaults to Orbit Control
+*/
+Nav.restorePreviousNavMode = ()=>{
+    if (Nav._prevMode === undefined) Nav.setOrbitControl();
+
+    Nav.setNavMode(Nav._prevMode);
+};
+
+/**
 Set Orbit navigation mode (default)
 */
 Nav.setOrbitControl = ()=>{
     if (ATON.XR.isPresenting()) return;
+
+    Nav._prevMode = Nav._mode; // store previous nav mode
 
     Nav._mode = Nav.MODE_ORBIT;
     Nav._bInteracting = false;
@@ -238,6 +252,8 @@ Set First-Person navigation mode
 */
 Nav.setFirstPersonControl = ()=>{
     if (ATON.XR.isPresenting()) return;
+
+    Nav._prevMode = Nav._mode; // store previous nav mode
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
@@ -297,6 +313,8 @@ Set device-orientation navigation mode
 */
 Nav.setDeviceOrientationControl = ()=>{
     if (!ATON.Utils.isMobile()) return;
+
+    Nav._prevMode = Nav._mode; // store previous nav mode
 
     Nav._mode = Nav.MODE_DEVORI;
     Nav._bInteracting = false;

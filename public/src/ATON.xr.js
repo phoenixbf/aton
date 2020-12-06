@@ -86,17 +86,24 @@ XR.isPresenting = ()=>{
 };
 
 
+XR.teleportOnQueriedPoint = ()=>{
+    if (ATON._queryDataScene === undefined) return false;
+
+    let P = ATON._queryDataScene.p;
+    let N = ATON._queryDataScene.n;
+
+    // Surface validation
+    if (N.y <= 0.7) return false;
+
+    // FIXME: height offset needed for "local", fill this automatically
+    ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
+
+    return true;
+};
+
 XR.defaultSelectHandler = (c)=>{
 
-    if (ATON._queryDataScene){
-        let P = ATON._queryDataScene.p;
-        let N = ATON._queryDataScene.n;
-
-        //P.y += 0.8; // with 'local': half user height
-
-        // FIXME: height offset needed for "local", fill this automatically
-        if (N.y > 0.7) ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
-    }
+    XR.teleportOnQueriedPoint();
 
     ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
     
@@ -184,6 +191,9 @@ XR._setupControllerL = (C)=>{
 XR.onSessionStarted = ( session )=>{
 	session.addEventListener( 'end', XR.onSessionEnded );
 
+    // If any streaming is ongoing, terminate it
+    ATON.MediaRec.stopMediaStreaming();
+
 	ATON._renderer.xr.setSession( session );
 	XR.currSession = session;
 
@@ -205,7 +215,13 @@ XR.onSessionStarted = ( session )=>{
         C0.visible = false;
 
         C0.addEventListener( 'connected', (e) => {
-            C0.gamepad = e.data.gamepad;
+
+            //console.log( e.data.handedness );
+
+            if (e.data.handedness === "left") XR._setupControllerL(C0);
+            else XR._setupControllerR(C0);
+
+            //C0.gamepad = e.data.gamepad;
             //console.log(XR.controller0.gamepad);
 
             //ATON.VRoadcast.log(JSON.stringify(e));
@@ -213,13 +229,6 @@ XR.onSessionStarted = ( session )=>{
             //let gp = C0.gamepad;
             //if (gp.pose && gp.pose.hasPosition) C0.visible = true;
 
-/*          FIXME:
-            let h = gp.hand;
-            console.log(gp);
-            if (h === "right" || h === undefined) XR._setupControllerR(C0);
-            else if (h === "left") XR._setupControllerL(C0);
-*/
-            XR._setupControllerR(C0);
         });
     }
 
@@ -228,16 +237,16 @@ XR.onSessionStarted = ( session )=>{
         C1.visible = false;
 
         C1.addEventListener( 'connected', (e) => {
-            C1.gamepad = e.data.gamepad;
+            //console.log( e.data.handedness );
+
+            if (e.data.handedness === "left") XR._setupControllerL(C1);
+            else XR._setupControllerR(C1);
+
+            //C1.gamepad = e.data.gamepad;
             
             //let gp = C1.gamepad;
             //if (gp.pose && gp.pose.hasPosition) C1.visible = true;
 
-/*          FIXME:
-            if (gp.hand === "right" || gp.hand === undefined) XR._setupControllerR(C1);
-            else if (gp.hand === "left") XR._setupControllerL(C1);
-*/
-            XR._setupControllerL(C1);
         });
 
     }
@@ -264,6 +273,9 @@ XR.onSessionEnded = ( /*event*/ )=>{
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
 
     ATON.fireEvent("XRmode", false);
+
+    // If any streaming is ongoing, terminate it
+    ATON.MediaRec.stopMediaStreaming();
 
     console.log("Quit XR");
 };

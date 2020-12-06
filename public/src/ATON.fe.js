@@ -158,8 +158,8 @@ FE.uiAddButtonHome = (idcontainer)=>{
 FE.uiAddButtonFirstPerson = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "fp", ()=>{
         if (ATON.Nav.isFirstPerson()){
-            //ATON.Nav.setOrbitControl();
-            ATON.Nav.restorePreviousNavMode();
+            ATON.Nav.setOrbitControl();
+            //ATON.Nav.restorePreviousNavMode();
             FE.uiSwitchButton("fp",false);
         }
         else {

@@ -553,6 +553,37 @@
           "seticon",
           "url"
         ],
+        "Label.html": [
+          "button",
+          "class",
+          "constructor",
+          "id",
+          "label",
+          "node",
+          "repres",
+          "requir",
+          "spatialui",
+          "ui",
+          "uiid"
+        ],
+        "Label.html#setBaseColor": [
+          "base",
+          "c",
+          "color",
+          "function",
+          "label",
+          "label#setbasecolor",
+          "set",
+          "setbasecolor"
+        ],
+        "Label.html#setText": [
+          "button",
+          "function",
+          "label#settext",
+          "set",
+          "settext",
+          "text"
+        ],
         "EventHub.html": [
           "aton",
           "event",
@@ -721,6 +752,15 @@
           "namespac",
           "xr"
         ],
+        "XR.html#.setSessionType": [
+          "function",
+          "lt;static&gt",
+          "session",
+          "set",
+          "setsessiontyp",
+          "type",
+          "xr.setsessiontyp"
+        ],
         "XR.html#.isPresenting": [
           "boolean",
           "function",
@@ -782,6 +822,13 @@
           "three.vector3",
           "world",
           "xr.getcontrollerworlddirect"
+        ],
+        "AudioHub.html": [
+          "aton",
+          "audio",
+          "audiohub",
+          "hub",
+          "namespac"
         ],
         "MatHub.html": [
           "aton",
@@ -865,15 +912,32 @@
           "tablet",
           "utils.ismobil"
         ],
-        "Utils.html#.isWebXRsupported": [
+        "Utils.html#.isVRsupported": [
           "boolean",
           "current",
           "devic",
           "function",
-          "iswebxrsupport",
+          "immers",
+          "isvrsupport",
           "lt;static&gt",
+          "session",
           "support",
-          "utils.iswebxrsupport",
+          "utils.isvrsupport",
+          "vr",
+          "webxr"
+        ],
+        "Utils.html#.isARsupported": [
+          "ar",
+          "boolean",
+          "current",
+          "devic",
+          "function",
+          "immers",
+          "isarsupport",
+          "lt;static&gt",
+          "session",
+          "support",
+          "utils.isarsupport",
           "webxr"
         ],
         "Nav.html": [
@@ -941,6 +1005,41 @@
           "transit",
           "true"
         ],
+        "Nav.html#.setUserControl": [
+          "b",
+          "control",
+          "enable/dis",
+          "function",
+          "lt;static&gt",
+          "nav.setusercontrol",
+          "navig",
+          "setusercontrol",
+          "user"
+        ],
+        "Nav.html#.toggleUserControl": [
+          "control",
+          "function",
+          "lt;static&gt",
+          "nav.toggleusercontrol",
+          "toggl",
+          "toggleusercontrol",
+          "user"
+        ],
+        "Nav.html#.isUserControlEnabled": [
+          "boolean",
+          "camera",
+          "control",
+          "enabl",
+          "function",
+          "i.",
+          "isusercontrolen",
+          "lt;static&gt",
+          "nav.isusercontrolen",
+          "navig",
+          "return",
+          "true",
+          "user"
+        ],
         "Nav.html#.isOrbit": [
           "boolean",
           "function",
@@ -991,6 +1090,23 @@
           "navmod",
           "set",
           "setnavmod"
+        ],
+        "Nav.html#.restorePreviousNavMode": [
+          "control",
+          "default",
+          "found",
+          "function",
+          "lt;static&gt",
+          "mode",
+          "nav",
+          "nav.restorepreviousnavmod",
+          "navig",
+          "orbit",
+          "previou",
+          "previous",
+          "restor",
+          "restorepreviousnavmod",
+          "us"
         ],
         "Nav.html#.setOrbitControl": [
           "default",
@@ -1611,7 +1727,7 @@
           "visibl"
         ]
       },
-      "length": 136
+      "length": 146
     },
     "tokenStore": {
       "root": {
@@ -1969,6 +2085,10 @@
                   },
                   "XR.html": {
                     "ref": "XR.html",
+                    "tf": 16.666666666666664
+                  },
+                  "AudioHub.html": {
+                    "ref": "AudioHub.html",
                     "tf": 16.666666666666664
                   },
                   "MatHub.html": {
@@ -3052,9 +3172,27 @@
                 "docs": {},
                 "o": {
                   "docs": {
+                    "AudioHub.html": {
+                      "ref": "AudioHub.html",
+                      "tf": 16.666666666666664
+                    },
                     "ATON.html#.setPathCollection": {
                       "ref": "ATON.html#.setPathCollection",
                       "tf": 7.142857142857142
+                    }
+                  },
+                  "h": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "b": {
+                        "docs": {
+                          "AudioHub.html": {
+                            "ref": "AudioHub.html",
+                            "tf": 1900
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -3062,7 +3200,12 @@
             }
           },
           "r": {
-            "docs": {},
+            "docs": {
+              "Utils.html#.isARsupported": {
+                "ref": "Utils.html#.isARsupported",
+                "tf": 7.142857142857142
+              }
+            },
             "r": {
               "docs": {},
               "a": {
@@ -3313,6 +3456,10 @@
             },
             "Button.html#setSwitchColor": {
               "ref": "Button.html#setSwitchColor",
+              "tf": 50
+            },
+            "Label.html#setBaseColor": {
+              "ref": "Label.html#setBaseColor",
               "tf": 50
             }
           },
@@ -3580,6 +3727,10 @@
                     "Button.html": {
                       "ref": "Button.html",
                       "tf": 115
+                    },
+                    "Label.html": {
+                      "ref": "Label.html",
+                      "tf": 115
                     }
                   }
                 }
@@ -3746,6 +3897,10 @@
                       "XR.html#.setRefSpaceLocation": {
                         "ref": "XR.html#.setRefSpaceLocation",
                         "tf": 3.125
+                      },
+                      "Nav.html#.isUserControlEnabled": {
+                        "ref": "Nav.html#.isUserControlEnabled",
+                        "tf": 5.555555555555555
                       }
                     }
                   }
@@ -3798,6 +3953,10 @@
                                 },
                                 "Button.html": {
                                   "ref": "Button.html",
+                                  "tf": 5
+                                },
+                                "Label.html": {
+                                  "ref": "Label.html",
                                   "tf": 5
                                 }
                               }
@@ -3856,6 +4015,22 @@
                         "XR.html#.getControllerWorldDirection": {
                           "ref": "XR.html#.getControllerWorldDirection",
                           "tf": 16.666666666666664
+                        },
+                        "Nav.html#.setUserControl": {
+                          "ref": "Nav.html#.setUserControl",
+                          "tf": 12.5
+                        },
+                        "Nav.html#.toggleUserControl": {
+                          "ref": "Nav.html#.toggleUserControl",
+                          "tf": 16.666666666666664
+                        },
+                        "Nav.html#.isUserControlEnabled": {
+                          "ref": "Nav.html#.isUserControlEnabled",
+                          "tf": 11.11111111111111
+                        },
+                        "Nav.html#.restorePreviousNavMode": {
+                          "ref": "Nav.html#.restorePreviousNavMode",
+                          "tf": 4.166666666666666
                         }
                       }
                     }
@@ -3905,6 +4080,10 @@
                     "Button.html#setSwitchColor": {
                       "ref": "Button.html#setSwitchColor",
                       "tf": 10
+                    },
+                    "Label.html#setBaseColor": {
+                      "ref": "Label.html#setBaseColor",
+                      "tf": 12.5
                     },
                     "SUI.html#.createToolbar": {
                       "ref": "SUI.html#.createToolbar",
@@ -4104,9 +4283,13 @@
                           "ref": "Utils.html#.isMobile",
                           "tf": 6.25
                         },
-                        "Utils.html#.isWebXRsupported": {
-                          "ref": "Utils.html#.isWebXRsupported",
-                          "tf": 12.5
+                        "Utils.html#.isVRsupported": {
+                          "ref": "Utils.html#.isVRsupported",
+                          "tf": 7.142857142857142
+                        },
+                        "Utils.html#.isARsupported": {
+                          "ref": "Utils.html#.isARsupported",
+                          "tf": 7.142857142857142
                         },
                         "Nav.html#.getCurrentEyeLocation": {
                           "ref": "Nav.html#.getCurrentEyeLocation",
@@ -4334,9 +4517,13 @@
                       "ref": "Utils.html#.isMobile",
                       "tf": 6.25
                     },
-                    "Utils.html#.isWebXRsupported": {
-                      "ref": "Utils.html#.isWebXRsupported",
-                      "tf": 12.5
+                    "Utils.html#.isVRsupported": {
+                      "ref": "Utils.html#.isVRsupported",
+                      "tf": 7.142857142857142
+                    },
+                    "Utils.html#.isARsupported": {
+                      "ref": "Utils.html#.isARsupported",
+                      "tf": 7.142857142857142
                     },
                     "Nav.html#.isDevOri": {
                       "ref": "Nav.html#.isDevOri",
@@ -4400,6 +4587,10 @@
                     "docs": {},
                     "t": {
                       "docs": {
+                        "Nav.html#.restorePreviousNavMode": {
+                          "ref": "Nav.html#.restorePreviousNavMode",
+                          "tf": 4.166666666666666
+                        },
                         "Nav.html#.setOrbitControl": {
                           "ref": "Nav.html#.setOrbitControl",
                           "tf": 10
@@ -4694,6 +4885,10 @@
                     "Node.html#enablePicking": {
                       "ref": "Node.html#enablePicking",
                       "tf": 8.333333333333332
+                    },
+                    "Nav.html#.isUserControlEnabled": {
+                      "ref": "Nav.html#.isUserControlEnabled",
+                      "tf": 5.555555555555555
                     }
                   },
                   "e": {
@@ -4729,6 +4924,23 @@
                                   "ref": "SceneHub.html#.setEditMode",
                                   "tf": 5
                                 }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "/": {
+                      "docs": {},
+                      "d": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "s": {
+                            "docs": {
+                              "Nav.html#.setUserControl": {
+                                "ref": "Nav.html#.setUserControl",
+                                "tf": 12.5
                               }
                             }
                           }
@@ -5343,6 +5555,14 @@
                             "ref": "Button.html#setIcon",
                             "tf": 110
                           },
+                          "Label.html#setBaseColor": {
+                            "ref": "Label.html#setBaseColor",
+                            "tf": 110
+                          },
+                          "Label.html#setText": {
+                            "ref": "Label.html#setText",
+                            "tf": 110
+                          },
                           "EventHub.html#.clearEventHandlers": {
                             "ref": "EventHub.html#.clearEventHandlers",
                             "tf": 110
@@ -5377,6 +5597,10 @@
                           },
                           "FE.html#.popupClose": {
                             "ref": "FE.html#.popupClose",
+                            "tf": 110
+                          },
+                          "XR.html#.setSessionType": {
+                            "ref": "XR.html#.setSessionType",
                             "tf": 110
                           },
                           "XR.html#.isPresenting": {
@@ -5419,8 +5643,12 @@
                             "ref": "Utils.html#.isMobile",
                             "tf": 110
                           },
-                          "Utils.html#.isWebXRsupported": {
-                            "ref": "Utils.html#.isWebXRsupported",
+                          "Utils.html#.isVRsupported": {
+                            "ref": "Utils.html#.isVRsupported",
+                            "tf": 110
+                          },
+                          "Utils.html#.isARsupported": {
+                            "ref": "Utils.html#.isARsupported",
                             "tf": 110
                           },
                           "Nav.html#.getCurrentEyeLocation": {
@@ -5439,6 +5667,18 @@
                             "ref": "Nav.html#.isTransitioning",
                             "tf": 110
                           },
+                          "Nav.html#.setUserControl": {
+                            "ref": "Nav.html#.setUserControl",
+                            "tf": 110
+                          },
+                          "Nav.html#.toggleUserControl": {
+                            "ref": "Nav.html#.toggleUserControl",
+                            "tf": 110
+                          },
+                          "Nav.html#.isUserControlEnabled": {
+                            "ref": "Nav.html#.isUserControlEnabled",
+                            "tf": 110
+                          },
                           "Nav.html#.isOrbit": {
                             "ref": "Nav.html#.isOrbit",
                             "tf": 110
@@ -5453,6 +5693,10 @@
                           },
                           "Nav.html#.setNavMode": {
                             "ref": "Nav.html#.setNavMode",
+                            "tf": 110
+                          },
+                          "Nav.html#.restorePreviousNavMode": {
+                            "ref": "Nav.html#.restorePreviousNavMode",
                             "tf": 110
                           },
                           "Nav.html#.setOrbitControl": {
@@ -5723,6 +5967,20 @@
                 "Nav.html#.getFOV": {
                   "ref": "Nav.html#.getFOV",
                   "tf": 10
+                }
+              }
+            },
+            "u": {
+              "docs": {},
+              "n": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "Nav.html#.restorePreviousNavMode": {
+                      "ref": "Nav.html#.restorePreviousNavMode",
+                      "tf": 4.166666666666666
+                    }
+                  }
                 }
               }
             }
@@ -6764,6 +7022,14 @@
                         "ref": "XR.html#.toggle",
                         "tf": 16.666666666666664
                       },
+                      "Utils.html#.isVRsupported": {
+                        "ref": "Utils.html#.isVRsupported",
+                        "tf": 7.142857142857142
+                      },
+                      "Utils.html#.isARsupported": {
+                        "ref": "Utils.html#.isARsupported",
+                        "tf": 7.142857142857142
+                      },
                       "Nav.html#.getCurrentEyeLocation": {
                         "ref": "Nav.html#.getCurrentEyeLocation",
                         "tf": 5.555555555555555
@@ -6957,6 +7223,10 @@
                 "ref": "Button.html",
                 "tf": 5
               },
+              "Label.html": {
+                "ref": "Label.html",
+                "tf": 5
+              },
               "ATON.html#.createSceneNode": {
                 "ref": "ATON.html#.createSceneNode",
                 "tf": 25
@@ -7129,36 +7399,59 @@
                 }
               }
             },
-            "w": {
+            "v": {
               "docs": {},
-              "e": {
+              "r": {
                 "docs": {},
-                "b": {
+                "s": {
                   "docs": {},
-                  "x": {
+                  "u": {
                     "docs": {},
-                    "r": {
+                    "p": {
                       "docs": {},
-                      "s": {
+                      "p": {
                         "docs": {},
-                        "u": {
+                        "o": {
                           "docs": {},
-                          "p": {
+                          "r": {
                             "docs": {},
-                            "p": {
-                              "docs": {},
-                              "o": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "t": {
-                                    "docs": {
-                                      "Utils.html#.isWebXRsupported": {
-                                        "ref": "Utils.html#.isWebXRsupported",
-                                        "tf": 683.3333333333334
-                                      }
-                                    }
-                                  }
+                            "t": {
+                              "docs": {
+                                "Utils.html#.isVRsupported": {
+                                  "ref": "Utils.html#.isVRsupported",
+                                  "tf": 683.3333333333334
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "a": {
+              "docs": {},
+              "r": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "u": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "t": {
+                              "docs": {
+                                "Utils.html#.isARsupported": {
+                                  "ref": "Utils.html#.isARsupported",
+                                  "tf": 683.3333333333334
                                 }
                               }
                             }
@@ -7187,6 +7480,50 @@
                             "Nav.html#.isTransitioning": {
                               "ref": "Nav.html#.isTransitioning",
                               "tf": 683.3333333333334
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "u": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "r": {
+                    "docs": {},
+                    "c": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {
+                                        "Nav.html#.isUserControlEnabled": {
+                                          "ref": "Nav.html#.isUserControlEnabled",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
                         }
@@ -7283,6 +7620,10 @@
               "SceneHub.html#.setEditMode": {
                 "ref": "SceneHub.html#.setEditMode",
                 "tf": 5
+              },
+              "Nav.html#.isUserControlEnabled": {
+                "ref": "Nav.html#.isUserControlEnabled",
+                "tf": 5.555555555555555
               }
             }
           },
@@ -7369,6 +7710,10 @@
                   "Nav.html#.setNavMode": {
                     "ref": "Nav.html#.setNavMode",
                     "tf": 16.666666666666664
+                  },
+                  "Nav.html#.restorePreviousNavMode": {
+                    "ref": "Nav.html#.restorePreviousNavMode",
+                    "tf": 8.333333333333332
                   },
                   "Nav.html#.setOrbitControl": {
                     "ref": "Nav.html#.setOrbitControl",
@@ -7837,6 +8182,10 @@
                       "ref": "Nav.html#.isOrbit",
                       "tf": 8.333333333333332
                     },
+                    "Nav.html#.restorePreviousNavMode": {
+                      "ref": "Nav.html#.restorePreviousNavMode",
+                      "tf": 4.166666666666666
+                    },
                     "Nav.html#.setOrbitControl": {
                       "ref": "Nav.html#.setOrbitControl",
                       "tf": 10
@@ -7907,10 +8256,18 @@
                         "POV.html#setPrevPOV": {
                           "ref": "POV.html#setPrevPOV",
                           "tf": 12.5
+                        },
+                        "Nav.html#.restorePreviousNavMode": {
+                          "ref": "Nav.html#.restorePreviousNavMode",
+                          "tf": 4.166666666666666
                         }
                       },
                       "s": {
                         "docs": {
+                          "Nav.html#.restorePreviousNavMode": {
+                            "ref": "Nav.html#.restorePreviousNavMode",
+                            "tf": 4.166666666666666
+                          },
                           "ATON.html#.getSceneNode": {
                             "ref": "ATON.html#.getSceneNode",
                             "tf": 7.142857142857142
@@ -8574,6 +8931,10 @@
                       "Button.html": {
                         "ref": "Button.html",
                         "tf": 5
+                      },
+                      "Label.html": {
+                        "ref": "Label.html",
+                        "tf": 5
                       }
                     }
                   }
@@ -8727,6 +9088,10 @@
                       "Button.html": {
                         "ref": "Button.html",
                         "tf": 5
+                      },
+                      "Label.html": {
+                        "ref": "Label.html",
+                        "tf": 5
                       }
                     }
                   }
@@ -8808,6 +9173,10 @@
                       "Nav.html#.isTransitioning": {
                         "ref": "Nav.html#.isTransitioning",
                         "tf": 7.142857142857142
+                      },
+                      "Nav.html#.isUserControlEnabled": {
+                        "ref": "Nav.html#.isUserControlEnabled",
+                        "tf": 5.555555555555555
                       },
                       "Nav.html#.isOrbit": {
                         "ref": "Nav.html#.isOrbit",
@@ -8927,6 +9296,70 @@
                         "Node.html#load": {
                           "ref": "Node.html#load",
                           "tf": 4.3478260869565215
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Nav.html#.restorePreviousNavMode": {
+                        "ref": "Nav.html#.restorePreviousNavMode",
+                        "tf": 4.166666666666666
+                      }
+                    },
+                    "e": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "v": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "u": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "v": {
+                                            "docs": {},
+                                            "m": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "d": {
+                                                  "docs": {
+                                                    "Nav.html#.restorePreviousNavMode": {
+                                                      "ref": "Nav.html#.restorePreviousNavMode",
+                                                      "tf": 700
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -9618,9 +10051,21 @@
                   "ref": "Button.html#setIcon",
                   "tf": 16.666666666666664
                 },
+                "Label.html#setBaseColor": {
+                  "ref": "Label.html#setBaseColor",
+                  "tf": 12.5
+                },
+                "Label.html#setText": {
+                  "ref": "Label.html#setText",
+                  "tf": 16.666666666666664
+                },
                 "FE.html": {
                   "ref": "FE.html",
                   "tf": 3.3333333333333335
+                },
+                "XR.html#.setSessionType": {
+                  "ref": "XR.html#.setSessionType",
+                  "tf": 16.666666666666664
                 },
                 "XR.html#.setRefSpaceLocation": {
                   "ref": "XR.html#.setRefSpaceLocation",
@@ -9824,6 +10269,10 @@
                       "docs": {
                         "Button.html#setText": {
                           "ref": "Button.html#setText",
+                          "tf": 700
+                        },
+                        "Label.html#setText": {
+                          "ref": "Label.html#setText",
                           "tf": 700
                         }
                       }
@@ -10322,6 +10771,35 @@
                 },
                 "e": {
                   "docs": {},
+                  "s": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "i": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "y": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {
+                                    "XR.html#.setSessionType": {
+                                      "ref": "XR.html#.setSessionType",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
                   "l": {
                     "docs": {},
                     "e": {
@@ -10452,6 +10930,10 @@
                                   "Button.html#setBaseColor": {
                                     "ref": "Button.html#setBaseColor",
                                     "tf": 700
+                                  },
+                                  "Label.html#setBaseColor": {
+                                    "ref": "Label.html#setBaseColor",
+                                    "tf": 700
                                   }
                                 }
                               }
@@ -10487,6 +10969,41 @@
                     "FE.html#.addBasicLoaderEvents": {
                       "ref": "FE.html#.addBasicLoaderEvents",
                       "tf": 3.8461538461538463
+                    }
+                  }
+                },
+                "s": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {
+                                      "Nav.html#.setUserControl": {
+                                        "ref": "Nav.html#.setUserControl",
+                                        "tf": 683.3333333333334
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -10680,6 +11197,42 @@
                 }
               }
             },
+            "s": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "XR.html#.setSessionType": {
+                          "ref": "XR.html#.setSessionType",
+                          "tf": 16.666666666666664
+                        },
+                        "Utils.html#.isVRsupported": {
+                          "ref": "Utils.html#.isVRsupported",
+                          "tf": 7.142857142857142
+                        },
+                        "Utils.html#.isARsupported": {
+                          "ref": "Utils.html#.isARsupported",
+                          "tf": 7.142857142857142
+                        },
+                        "Nav.html#.getCurrentEyeLocation": {
+                          "ref": "Nav.html#.getCurrentEyeLocation",
+                          "tf": 5.555555555555555
+                        },
+                        "Nav.html#.getCurrentDirection": {
+                          "ref": "Nav.html#.getCurrentDirection",
+                          "tf": 5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "r": {
               "docs": {},
               "v": {
@@ -10729,30 +11282,6 @@
                     "Utils.html#.isConnectionSecure": {
                       "ref": "Utils.html#.isConnectionSecure",
                       "tf": 16.666666666666664
-                    }
-                  }
-                }
-              }
-            },
-            "s": {
-              "docs": {},
-              "s": {
-                "docs": {},
-                "i": {
-                  "docs": {},
-                  "o": {
-                    "docs": {},
-                    "n": {
-                      "docs": {
-                        "Nav.html#.getCurrentEyeLocation": {
-                          "ref": "Nav.html#.getCurrentEyeLocation",
-                          "tf": 5.555555555555555
-                        },
-                        "Nav.html#.getCurrentDirection": {
-                          "ref": "Nav.html#.getCurrentDirection",
-                          "tf": 5
-                        }
-                      }
                     }
                   }
                 }
@@ -10828,6 +11357,10 @@
                           "docs": {
                             "Button.html": {
                               "ref": "Button.html",
+                              "tf": 5
+                            },
+                            "Label.html": {
+                              "ref": "Label.html",
                               "tf": 5
                             },
                             "SUI.html#.createToolbar": {
@@ -10973,9 +11506,13 @@
                           "ref": "FE.html",
                           "tf": 3.3333333333333335
                         },
-                        "Utils.html#.isWebXRsupported": {
-                          "ref": "Utils.html#.isWebXRsupported",
-                          "tf": 12.5
+                        "Utils.html#.isVRsupported": {
+                          "ref": "Utils.html#.isVRsupported",
+                          "tf": 7.142857142857142
+                        },
+                        "Utils.html#.isARsupported": {
+                          "ref": "Utils.html#.isARsupported",
+                          "tf": 7.142857142857142
                         }
                       }
                     }
@@ -11402,6 +11939,10 @@
                       "ref": "XR.html#.toggle",
                       "tf": 716.6666666666666
                     },
+                    "Nav.html#.toggleUserControl": {
+                      "ref": "Nav.html#.toggleUserControl",
+                      "tf": 16.666666666666664
+                    },
                     "ATON.html#.toggleFullScreen": {
                       "ref": "ATON.html#.toggleFullScreen",
                       "tf": 25
@@ -11409,6 +11950,44 @@
                   },
                   "e": {
                     "docs": {},
+                    "u": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {
+                                            "Nav.html#.toggleUserControl": {
+                                              "ref": "Nav.html#.toggleUserControl",
+                                              "tf": 700
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "f": {
                       "docs": {},
                       "u": {
@@ -11477,6 +12056,10 @@
                   "Node.html#attachToRoot": {
                     "ref": "Node.html#attachToRoot",
                     "tf": 2.1739130434782608
+                  },
+                  "XR.html#.setSessionType": {
+                    "ref": "XR.html#.setSessionType",
+                    "tf": 49.99999999999999
                   }
                 }
               }
@@ -11566,6 +12149,10 @@
                   "Nav.html#.isTransitioning": {
                     "ref": "Nav.html#.isTransitioning",
                     "tf": 7.142857142857142
+                  },
+                  "Nav.html#.isUserControlEnabled": {
+                    "ref": "Nav.html#.isUserControlEnabled",
+                    "tf": 5.555555555555555
                   },
                   "Nav.html#.isOrbit": {
                     "ref": "Nav.html#.isOrbit",
@@ -11773,6 +12360,10 @@
                   "Button.html#setText": {
                     "ref": "Button.html#setText",
                     "tf": 66.66666666666666
+                  },
+                  "Label.html#setText": {
+                    "ref": "Label.html#setText",
+                    "tf": 66.66666666666666
                   }
                 }
               }
@@ -11832,6 +12423,10 @@
               "XR.html#.setRefSpaceLocation": {
                 "ref": "XR.html#.setRefSpaceLocation",
                 "tf": 3.125
+              },
+              "Nav.html#.restorePreviousNavMode": {
+                "ref": "Nav.html#.restorePreviousNavMode",
+                "tf": 4.166666666666666
               }
             },
             "e": {
@@ -11845,6 +12440,18 @@
                   "XR.html#.setRefSpaceLocation": {
                     "ref": "XR.html#.setRefSpaceLocation",
                     "tf": 3.125
+                  },
+                  "Nav.html#.setUserControl": {
+                    "ref": "Nav.html#.setUserControl",
+                    "tf": 12.5
+                  },
+                  "Nav.html#.toggleUserControl": {
+                    "ref": "Nav.html#.toggleUserControl",
+                    "tf": 16.666666666666664
+                  },
+                  "Nav.html#.isUserControlEnabled": {
+                    "ref": "Nav.html#.isUserControlEnabled",
+                    "tf": 5.555555555555555
                   }
                 }
               }
@@ -11996,6 +12603,10 @@
                 "ref": "Button.html",
                 "tf": 5
               },
+              "Label.html": {
+                "ref": "Label.html",
+                "tf": 5
+              },
               "SUI.html": {
                 "ref": "SUI.html",
                 "tf": 16.666666666666664
@@ -12027,6 +12638,10 @@
                 "docs": {
                   "Button.html": {
                     "ref": "Button.html",
+                    "tf": 5
+                  },
+                  "Label.html": {
+                    "ref": "Label.html",
                     "tf": 5
                   }
                 }
@@ -12173,36 +12788,59 @@
                             }
                           }
                         },
-                        "w": {
+                        "v": {
                           "docs": {},
-                          "e": {
+                          "r": {
                             "docs": {},
-                            "b": {
+                            "s": {
                               "docs": {},
-                              "x": {
+                              "u": {
                                 "docs": {},
-                                "r": {
+                                "p": {
                                   "docs": {},
-                                  "s": {
+                                  "p": {
                                     "docs": {},
-                                    "u": {
+                                    "o": {
                                       "docs": {},
-                                      "p": {
+                                      "r": {
                                         "docs": {},
-                                        "p": {
-                                          "docs": {},
-                                          "o": {
-                                            "docs": {},
-                                            "r": {
-                                              "docs": {},
-                                              "t": {
-                                                "docs": {
-                                                  "Utils.html#.isWebXRsupported": {
-                                                    "ref": "Utils.html#.isWebXRsupported",
-                                                    "tf": 1150
-                                                  }
-                                                }
-                                              }
+                                        "t": {
+                                          "docs": {
+                                            "Utils.html#.isVRsupported": {
+                                              "ref": "Utils.html#.isVRsupported",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "a": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "u": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {},
+                                  "p": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {
+                                            "Utils.html#.isARsupported": {
+                                              "ref": "Utils.html#.isARsupported",
+                                              "tf": 1150
                                             }
                                           }
                                         }
@@ -12234,6 +12872,10 @@
               "index.html": {
                 "ref": "index.html",
                 "tf": 1.9444444444444444
+              },
+              "Utils.html#.isVRsupported": {
+                "ref": "Utils.html#.isVRsupported",
+                "tf": 7.142857142857142
               }
             },
             "o": {
@@ -12683,9 +13325,13 @@
                 "docs": {},
                 "r": {
                   "docs": {
-                    "Utils.html#.isWebXRsupported": {
-                      "ref": "Utils.html#.isWebXRsupported",
-                      "tf": 12.5
+                    "Utils.html#.isVRsupported": {
+                      "ref": "Utils.html#.isVRsupported",
+                      "tf": 7.142857142857142
+                    },
+                    "Utils.html#.isARsupported": {
+                      "ref": "Utils.html#.isARsupported",
+                      "tf": 7.142857142857142
                     }
                   }
                 }
@@ -13128,6 +13774,88 @@
               }
             }
           },
+          "a": {
+            "docs": {},
+            "b": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "l": {
+                  "docs": {
+                    "Label.html": {
+                      "ref": "Label.html",
+                      "tf": 1900
+                    },
+                    "Label.html#setBaseColor": {
+                      "ref": "Label.html#setBaseColor",
+                      "tf": 12.5
+                    }
+                  },
+                  "#": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "b": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "l": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {
+                                              "Label.html#setBaseColor": {
+                                                "ref": "Label.html#setBaseColor",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "t": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "x": {
+                                "docs": {},
+                                "t": {
+                                  "docs": {
+                                    "Label.html#setText": {
+                                      "ref": "Label.html#setText",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "t": {
             "docs": {},
             ";": {
@@ -13186,6 +13914,10 @@
                                     "ref": "FE.html#.popupClose",
                                     "tf": 50
                                   },
+                                  "XR.html#.setSessionType": {
+                                    "ref": "XR.html#.setSessionType",
+                                    "tf": 33.33333333333333
+                                  },
                                   "XR.html#.isPresenting": {
                                     "ref": "XR.html#.isPresenting",
                                     "tf": 33.33333333333333
@@ -13226,8 +13958,12 @@
                                     "ref": "Utils.html#.isMobile",
                                     "tf": 33.33333333333333
                                   },
-                                  "Utils.html#.isWebXRsupported": {
-                                    "ref": "Utils.html#.isWebXRsupported",
+                                  "Utils.html#.isVRsupported": {
+                                    "ref": "Utils.html#.isVRsupported",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Utils.html#.isARsupported": {
+                                    "ref": "Utils.html#.isARsupported",
                                     "tf": 33.33333333333333
                                   },
                                   "Nav.html#.getCurrentEyeLocation": {
@@ -13246,6 +13982,18 @@
                                     "ref": "Nav.html#.isTransitioning",
                                     "tf": 33.33333333333333
                                   },
+                                  "Nav.html#.setUserControl": {
+                                    "ref": "Nav.html#.setUserControl",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.toggleUserControl": {
+                                    "ref": "Nav.html#.toggleUserControl",
+                                    "tf": 50
+                                  },
+                                  "Nav.html#.isUserControlEnabled": {
+                                    "ref": "Nav.html#.isUserControlEnabled",
+                                    "tf": 33.33333333333333
+                                  },
                                   "Nav.html#.isOrbit": {
                                     "ref": "Nav.html#.isOrbit",
                                     "tf": 33.33333333333333
@@ -13261,6 +14009,10 @@
                                   "Nav.html#.setNavMode": {
                                     "ref": "Nav.html#.setNavMode",
                                     "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.restorePreviousNavMode": {
+                                    "ref": "Nav.html#.restorePreviousNavMode",
+                                    "tf": 50
                                   },
                                   "Nav.html#.setOrbitControl": {
                                     "ref": "Nav.html#.setOrbitControl",
@@ -13528,6 +14280,10 @@
                             "ref": "XR.html",
                             "tf": 110
                           },
+                          "AudioHub.html": {
+                            "ref": "AudioHub.html",
+                            "tf": 110
+                          },
                           "MatHub.html": {
                             "ref": "MatHub.html",
                             "tf": 110
@@ -13568,6 +14324,10 @@
                 "Nav.html": {
                   "ref": "Nav.html",
                   "tf": 1900
+                },
+                "Nav.html#.restorePreviousNavMode": {
+                  "ref": "Nav.html#.restorePreviousNavMode",
+                  "tf": 4.166666666666666
                 }
               },
               "i": {
@@ -13581,6 +14341,14 @@
                     "Nav.html#.isTransitioning": {
                       "ref": "Nav.html#.isTransitioning",
                       "tf": 7.142857142857142
+                    },
+                    "Nav.html#.setUserControl": {
+                      "ref": "Nav.html#.setUserControl",
+                      "tf": 12.5
+                    },
+                    "Nav.html#.isUserControlEnabled": {
+                      "ref": "Nav.html#.isUserControlEnabled",
+                      "tf": 5.555555555555555
                     },
                     "Nav.html#.isOrbit": {
                       "ref": "Nav.html#.isOrbit",
@@ -13597,6 +14365,10 @@
                     "Nav.html#.setNavMode": {
                       "ref": "Nav.html#.setNavMode",
                       "tf": 16.666666666666664
+                    },
+                    "Nav.html#.restorePreviousNavMode": {
+                      "ref": "Nav.html#.restorePreviousNavMode",
+                      "tf": 4.166666666666666
                     },
                     "Nav.html#.setOrbitControl": {
                       "ref": "Nav.html#.setOrbitControl",
@@ -13832,6 +14604,50 @@
                         }
                       }
                     },
+                    "u": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "n": {
+                                              "docs": {
+                                                "Nav.html#.isUserControlEnabled": {
+                                                  "ref": "Nav.html#.isUserControlEnabled",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "o": {
                       "docs": {},
                       "r": {
@@ -13921,6 +14737,44 @@
                     "docs": {},
                     "t": {
                       "docs": {},
+                      "u": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "l": {
+                                            "docs": {
+                                              "Nav.html#.setUserControl": {
+                                                "ref": "Nav.html#.setUserControl",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
                       "n": {
                         "docs": {},
                         "a": {
@@ -14239,10 +15093,128 @@
                     }
                   }
                 },
+                "t": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "g": {
+                      "docs": {},
+                      "g": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "u": {
+                              "docs": {},
+                              "s": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "n": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {
+                                                    "Nav.html#.toggleUserControl": {
+                                                      "ref": "Nav.html#.toggleUserControl",
+                                                      "tf": 1150
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "r": {
                   "docs": {},
                   "e": {
                     "docs": {},
+                    "s": {
+                      "docs": {},
+                      "t": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "v": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "u": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "n": {
+                                                "docs": {},
+                                                "a": {
+                                                  "docs": {},
+                                                  "v": {
+                                                    "docs": {},
+                                                    "m": {
+                                                      "docs": {},
+                                                      "o": {
+                                                        "docs": {},
+                                                        "d": {
+                                                          "docs": {
+                                                            "Nav.html#.restorePreviousNavMode": {
+                                                              "ref": "Nav.html#.restorePreviousNavMode",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "q": {
                       "docs": {},
                       "u": {
@@ -14463,6 +15435,10 @@
                   },
                   "Button.html": {
                     "ref": "Button.html",
+                    "tf": 5
+                  },
+                  "Label.html": {
+                    "ref": "Label.html",
                     "tf": 5
                   },
                   "Nav.html#.requestPOVbyNode": {
@@ -15160,35 +16136,47 @@
             },
             ".": {
               "docs": {},
-              "i": {
-                "docs": {},
-                "s": {
-                  "docs": {},
-                  "p": {
-                    "docs": {},
-                    "r": {
-                      "docs": {},
-                      "e": {
-                        "docs": {},
-                        "s": {
-                          "docs": {
-                            "XR.html#.isPresenting": {
-                              "ref": "XR.html#.isPresenting",
-                              "tf": 1150
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              },
               "s": {
                 "docs": {},
                 "e": {
                   "docs": {},
                   "t": {
                     "docs": {},
+                    "s": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "y": {
+                                      "docs": {},
+                                      "p": {
+                                        "docs": {
+                                          "XR.html#.setSessionType": {
+                                            "ref": "XR.html#.setSessionType",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
                     "r": {
                       "docs": {},
                       "e": {
@@ -15222,6 +16210,29 @@
                                   }
                                 }
                               }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "i": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  "p": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "s": {
+                          "docs": {
+                            "XR.html#.isPresenting": {
+                              "ref": "XR.html#.isPresenting",
+                              "tf": 1150
                             }
                           }
                         }
@@ -15419,6 +16430,10 @@
             "SceneHub.html#.setEditMode": {
               "ref": "SceneHub.html#.setEditMode",
               "tf": 33.33333333333333
+            },
+            "Nav.html#.setUserControl": {
+              "ref": "Nav.html#.setUserControl",
+              "tf": 33.33333333333333
             }
           },
           "o": {
@@ -15453,12 +16468,20 @@
                           "ref": "Utils.html#.isMobile",
                           "tf": 33.33333333333333
                         },
-                        "Utils.html#.isWebXRsupported": {
-                          "ref": "Utils.html#.isWebXRsupported",
+                        "Utils.html#.isVRsupported": {
+                          "ref": "Utils.html#.isVRsupported",
+                          "tf": 33.33333333333333
+                        },
+                        "Utils.html#.isARsupported": {
+                          "ref": "Utils.html#.isARsupported",
                           "tf": 33.33333333333333
                         },
                         "Nav.html#.isTransitioning": {
                           "ref": "Nav.html#.isTransitioning",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.isUserControlEnabled": {
+                          "ref": "Nav.html#.isUserControlEnabled",
                           "tf": 33.33333333333333
                         },
                         "Nav.html#.isOrbit": {
@@ -15592,6 +16615,10 @@
                     "ref": "Button.html#setBaseColor",
                     "tf": 12.5
                   },
+                  "Label.html#setBaseColor": {
+                    "ref": "Label.html#setBaseColor",
+                    "tf": 12.5
+                  },
                   "FE.html": {
                     "ref": "FE.html",
                     "tf": 3.3333333333333335
@@ -15643,6 +16670,14 @@
                       },
                       "Button.html#setIcon": {
                         "ref": "Button.html#setIcon",
+                        "tf": 16.666666666666664
+                      },
+                      "Label.html": {
+                        "ref": "Label.html",
+                        "tf": 5
+                      },
+                      "Label.html#setText": {
+                        "ref": "Label.html#setText",
                         "tf": 16.666666666666664
                       },
                       "FE.html#.uiAddButton": {
@@ -16026,6 +17061,10 @@
                   "ref": "EventHub.html",
                   "tf": 16.666666666666664
                 },
+                "AudioHub.html": {
+                  "ref": "AudioHub.html",
+                  "tf": 16.666666666666664
+                },
                 "MatHub.html": {
                   "ref": "MatHub.html",
                   "tf": 16.666666666666664
@@ -16187,7 +17226,7 @@
           }
         }
       },
-      "length": 1299
+      "length": 1395
     },
     "corpusTokens": [
       "1.0",
@@ -16214,6 +17253,7 @@
       "app",
       "appli",
       "approach",
+      "ar",
       "around",
       "arrang",
       "asset",
@@ -16253,6 +17293,7 @@
       "attachto",
       "attachtoroot",
       "audio",
+      "audiohub",
       "automat",
       "avoid",
       "b",
@@ -16336,6 +17377,7 @@
       "e.g",
       "edit",
       "enabl",
+      "enable/dis",
       "enablepick",
       "enables/dis",
       "end",
@@ -16366,6 +17408,7 @@
       "fire",
       "fireev",
       "first",
+      "found",
       "fov",
       "framework",
       "front",
@@ -16423,6 +17466,7 @@
       "instead",
       "interact",
       "invis",
+      "isarsupport",
       "isconnect",
       "isconnectionsecur",
       "isdevori",
@@ -16431,12 +17475,16 @@
       "isorbit",
       "ispres",
       "istransit",
-      "iswebxrsupport",
+      "isusercontrolen",
+      "isvrsupport",
       "itself",
       "json",
       "keyword",
       "keyword(",
       "kw",
+      "label",
+      "label#setbasecolor",
+      "label#settext",
       "light",
       "lightprob",
       "lightprobe#setposit",
@@ -16480,9 +17528,11 @@
       "nav.isfirstperson",
       "nav.isorbit",
       "nav.istransit",
+      "nav.isusercontrolen",
       "nav.requesthom",
       "nav.requestpov",
       "nav.requestpovbynod",
+      "nav.restorepreviousnavmod",
       "nav.setdeviceorientationcontrol",
       "nav.setfirstpersoncontrol",
       "nav.setfov",
@@ -16491,7 +17541,9 @@
       "nav.setmotiondirect",
       "nav.setnavmod",
       "nav.setorbitcontrol",
+      "nav.setusercontrol",
       "nav.stop",
+      "nav.toggleusercontrol",
       "navig",
       "navmod",
       "network",
@@ -16592,6 +17644,8 @@
       "reset",
       "resetpixeldens",
       "resourc",
+      "restor",
+      "restorepreviousnavmod",
       "resum",
       "return",
       "root",
@@ -16645,10 +17699,12 @@
       "setscal",
       "setselectormodel",
       "setselectorradiu",
+      "setsessiontyp",
       "setswitchcolor",
       "settarget",
       "settext",
       "setup",
+      "setusercontrol",
       "show",
       "sid",
       "side",
@@ -16690,6 +17746,7 @@
       "through",
       "toggl",
       "togglefullscreen",
+      "toggleusercontrol",
       "tool",
       "toolbar",
       "transit",
@@ -16711,9 +17768,10 @@
       "user",
       "usual",
       "util",
+      "utils.isarsupport",
       "utils.isconnectionsecur",
       "utils.ismobil",
-      "utils.iswebxrsupport",
+      "utils.isvrsupport",
       "v",
       "vector",
       "veget",
@@ -16746,6 +17804,7 @@
       "xr.getcontrollerworldloc",
       "xr.ispres",
       "xr.setrefspaceloc",
+      "xr.setsessiontyp",
       "xr.toggl"
     ],
     "pipeline": [
@@ -17203,6 +18262,37 @@
       "summary": "",
       "description": "Set button icon"
     },
+    "Label.html": {
+      "id": "Label.html",
+      "kind": "class",
+      "title": "Label",
+      "longname": "Label",
+      "name": "Label",
+      "tags": "Label",
+      "summary": "",
+      "description": "Class representing a SpatialUI Button. Constructor requires a uiid (UI Node ID)",
+      "body": ""
+    },
+    "Label.html#setBaseColor": {
+      "id": "Label.html#setBaseColor",
+      "kind": "function",
+      "title": "setBaseColor( c )",
+      "longname": "Label#setBaseColor",
+      "name": "setBaseColor",
+      "tags": "Label#setBaseColor setBaseColor",
+      "summary": "",
+      "description": "Set base color of the label"
+    },
+    "Label.html#setText": {
+      "id": "Label.html#setText",
+      "kind": "function",
+      "title": "setText( text )",
+      "longname": "Label#setText",
+      "name": "setText",
+      "tags": "Label#setText setText",
+      "summary": "",
+      "description": "Set button text"
+    },
     "EventHub.html": {
       "id": "EventHub.html",
       "kind": "namespace",
@@ -17348,6 +18438,16 @@
       "description": "ATON Immersive XR",
       "body": ""
     },
+    "XR.html#.setSessionType": {
+      "id": "XR.html#.setSessionType",
+      "kind": "function",
+      "title": "&lt;static&gt; setSessionType( type )",
+      "longname": "XR.setSessionType",
+      "name": "setSessionType",
+      "tags": "XR.setSessionType setSessionType",
+      "summary": "",
+      "description": "Set session type"
+    },
     "XR.html#.isPresenting": {
       "id": "XR.html#.isPresenting",
       "kind": "function",
@@ -17397,6 +18497,17 @@
       "tags": "XR.getControllerWorldDirection getControllerWorldDirection",
       "summary": "",
       "description": "Get controller world direction"
+    },
+    "AudioHub.html": {
+      "id": "AudioHub.html",
+      "kind": "namespace",
+      "title": "AudioHub",
+      "longname": "AudioHub",
+      "name": "AudioHub",
+      "tags": "AudioHub",
+      "summary": "",
+      "description": "ATON Audio Hub",
+      "body": ""
     },
     "MatHub.html": {
       "id": "MatHub.html",
@@ -17481,15 +18592,25 @@
       "summary": "",
       "description": "If current device is mobile (e.g. smartphone, tablet, Oculus Quest)"
     },
-    "Utils.html#.isWebXRsupported": {
-      "id": "Utils.html#.isWebXRsupported",
+    "Utils.html#.isVRsupported": {
+      "id": "Utils.html#.isVRsupported",
       "kind": "function",
-      "title": "&lt;static&gt; isWebXRsupported() → {boolean}",
-      "longname": "Utils.isWebXRsupported",
-      "name": "isWebXRsupported",
-      "tags": "Utils.isWebXRsupported isWebXRsupported",
+      "title": "&lt;static&gt; isVRsupported() → {boolean}",
+      "longname": "Utils.isVRsupported",
+      "name": "isVRsupported",
+      "tags": "Utils.isVRsupported isVRsupported",
       "summary": "",
-      "description": "If current device supports WebXR"
+      "description": "If current device supports WebXR immersive VR sessions"
+    },
+    "Utils.html#.isARsupported": {
+      "id": "Utils.html#.isARsupported",
+      "kind": "function",
+      "title": "&lt;static&gt; isARsupported() → {boolean}",
+      "longname": "Utils.isARsupported",
+      "name": "isARsupported",
+      "tags": "Utils.isARsupported isARsupported",
+      "summary": "",
+      "description": "If current device supports WebXR immersive AR sessions"
     },
     "Nav.html": {
       "id": "Nav.html",
@@ -17542,6 +18663,36 @@
       "summary": "",
       "description": "Return true if the navigation system is currently performing a transition"
     },
+    "Nav.html#.setUserControl": {
+      "id": "Nav.html#.setUserControl",
+      "kind": "function",
+      "title": "&lt;static&gt; setUserControl( b )",
+      "longname": "Nav.setUserControl",
+      "name": "setUserControl",
+      "tags": "Nav.setUserControl setUserControl",
+      "summary": "",
+      "description": "Enable/disable user navigation control"
+    },
+    "Nav.html#.toggleUserControl": {
+      "id": "Nav.html#.toggleUserControl",
+      "kind": "function",
+      "title": "&lt;static&gt; toggleUserControl()",
+      "longname": "Nav.toggleUserControl",
+      "name": "toggleUserControl",
+      "tags": "Nav.toggleUserControl toggleUserControl",
+      "summary": "",
+      "description": "Toggle user control"
+    },
+    "Nav.html#.isUserControlEnabled": {
+      "id": "Nav.html#.isUserControlEnabled",
+      "kind": "function",
+      "title": "&lt;static&gt; isUserControlEnabled() → {boolean}",
+      "longname": "Nav.isUserControlEnabled",
+      "name": "isUserControlEnabled",
+      "tags": "Nav.isUserControlEnabled isUserControlEnabled",
+      "summary": "",
+      "description": "Return true if navigation controls are enabled (i.e. the user can control the camera)"
+    },
     "Nav.html#.isOrbit": {
       "id": "Nav.html#.isOrbit",
       "kind": "function",
@@ -17581,6 +18732,16 @@
       "tags": "Nav.setNavMode setNavMode",
       "summary": "",
       "description": "Set Navigation mode"
+    },
+    "Nav.html#.restorePreviousNavMode": {
+      "id": "Nav.html#.restorePreviousNavMode",
+      "kind": "function",
+      "title": "&lt;static&gt; restorePreviousNavMode()",
+      "longname": "Nav.restorePreviousNavMode",
+      "name": "restorePreviousNavMode",
+      "tags": "Nav.restorePreviousNavMode restorePreviousNavMode",
+      "summary": "",
+      "description": "Restore previously used navigation mode. If no previous nav mode is found, defaults to Orbit Control"
     },
     "Nav.html#.setOrbitControl": {
       "id": "Nav.html#.setOrbitControl",

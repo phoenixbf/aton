@@ -13,9 +13,10 @@ let HATHOR = {};
 window.HATHOR = HATHOR;
 
 
-HATHOR.TAPACTION_STD = 0;
-HATHOR.TAPACTION_ADDSPHERESHAPE = 1;
-HATHOR.TAPACTION_ADDCONVEXPOINT = 2;
+HATHOR.SELACTION_STD = 0;
+HATHOR.SELACTION_ADDSPHERESHAPE = 1;
+HATHOR.SELACTION_ADDCONVEXPOINT = 2;
+HATHOR.SELACTION_MEASURE = 3;
 
 
 window.addEventListener( 'load', ()=>{
@@ -35,7 +36,7 @@ window.addEventListener( 'load', ()=>{
     
     HATHOR._bVRCsetup = false;
 
-    HATHOR._tapMode = HATHOR.TAPACTION_STD;
+    HATHOR._selMode = HATHOR.SELACTION_STD;
 
     //if (HATHOR.paramEdit) ATON.SceneHub.setEditMode(HATHOR.paramEdit);
     //else ATON.SceneHub.setEditMode(false);
@@ -62,6 +63,32 @@ window.addEventListener( 'load', ()=>{
 
 // Front-end UI
 //=======================
+
+HATHOR.resetSelectionMode = ()=>{
+    HATHOR._selMode = HATHOR.SELACTION_STD;
+    $("#btn-shapeconvex").removeClass("atonBTN-rec");
+
+    ATON.getUINode("sui_measure").switch(false);
+    return;
+};
+
+HATHOR.setSelectionMode = (m)=>{
+    if (m === undefined){
+        HATHOR.resetSelectionMode();
+        return;
+    }
+
+    HATHOR._selMode = m;
+
+    if (m === HATHOR.SELACTION_ADDCONVEXPOINT){
+        $("#btn-shapeconvex").addClass("atonBTN-rec");
+    }
+
+    if (m === HATHOR.SELACTION_MEASURE){
+        ATON.getUINode("sui_measure").switch(true);
+    }
+};
+
 HATHOR.uiSetup = ()=>{
 
     // Top toolbar
@@ -78,13 +105,10 @@ HATHOR.uiSetup = ()=>{
         ATON.Nav.toggleUserControl();
 
         if (!ATON.Nav.isUserControlEnabled()){
-            HATHOR._tapMode = HATHOR.TAPACTION_ADDCONVEXPOINT;
-            $("#btn-shapeconvex").addClass("atonBTN-rec");
+            HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
         }
         else {
-            HATHOR._tapMode = HATHOR.TAPACTION_STD;
-            $("#btn-shapeconvex").removeClass("atonBTN-rec");
-
+            HATHOR.resetSelectionMode();
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
 
@@ -117,11 +141,25 @@ HATHOR.suiSetup = ()=>{
     
     let buttons = [];
 
+    buttons.push( new ATON.SUI.Button("sui_measure") );
     buttons.push( new ATON.SUI.Button("sui_talk") );
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
 
+    let btnMeasure = ATON.getUINode("sui_measure");
+    btnMeasure.setIcon(ATON.FE.PATH_RES_ICONS+"measure.png")
+        .setText("")
+        .onSelect = ()=>{
+            if (HATHOR._selMode !== HATHOR.SELACTION_MEASURE){
+                HATHOR.setSelectionMode(HATHOR.SELACTION_MEASURE);
+            }
+            else {
+                HATHOR.resetSelectionMode();
+            }
+        };
+
     let btnTalk = ATON.getUINode("sui_talk");
     btnTalk.setIcon(ATON.FE.PATH_RES_ICONS+"talk.png")
+        .setText("")
         .setSwitchColor(ATON.MatHub.colors.green)
         .onSelect = ()=>{
             if (ATON.MediaRec.isAudioRecording()){
@@ -194,6 +232,21 @@ HATHOR.setupVRCEventHandlers = ()=>{
 
 HATHOR.setupEventHandlers = ()=>{
 
+    // XR
+    ATON.on("XRmode",(b)=>{
+        HATHOR._selMode === HATHOR.SELACTION_STD; // reset select mode
+    });
+
+    ATON.EventHub.clearEventHandlers("XRselectStart");
+    ATON.on("XRselectStart", (c)=>{
+        if (c === ATON.XR.HAND_R){
+            if (HATHOR._selMode === HATHOR.SELACTION_STD) ATON.XR.teleportOnQueriedPoint();
+            if (HATHOR._selMode === HATHOR.SELACTION_MEASURE) HATHOR.measure();
+
+            ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
+        }
+    });
+
     // VRC
     ATON.on("VRC_Connected", ()=>{
         HATHOR.setupVRCEventHandlers();
@@ -242,7 +295,7 @@ HATHOR.setupEventHandlers = ()=>{
     });
 
     ATON.on("Tap", (e)=>{
-        if (HATHOR._tapMode === HATHOR.TAPACTION_ADDCONVEXPOINT){
+        if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT){
             //console.log("xxx");
             ATON.SemFactory.addSurfaceConvexPoint();
         }
@@ -317,29 +370,7 @@ HATHOR.setupEventHandlers = ()=>{
             if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
         }
 
-        if (k==='m'){
-            let P = ATON.getSceneQueriedPoint();
-            let M = ATON.SUI.addMeasurementPoint( P );
-
-            if (M === undefined) return;
-
-            let mid = ATON.Utils.generateID("meas");
-
-            let E = {};
-            E.measurements = {};
-            E.measurements[mid] = {};
-            E.measurements[mid].points = [
-                parseFloat(M.A.x.toPrecision(6)),
-                parseFloat(M.A.y.toPrecision(6)),
-                parseFloat(M.A.z.toPrecision(6)),
-                parseFloat(M.B.x.toPrecision(6)),
-                parseFloat(M.B.y.toPrecision(6)),
-                parseFloat(M.B.z.toPrecision(6))
-            ];
-
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
-        }
+        if (k==='m') HATHOR.measure();
 
         if (k==='c') ATON.FE.popupScreenShot();
 
@@ -374,7 +405,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='n'){
             ATON.Nav.toggleUserControl();
 
-            HATHOR._tapMode = HATHOR.TAPACTION_ADDCONVEXPOINT;
+            HATHOR._selMode = HATHOR.SELACTION_ADDCONVEXPOINT;
         }
 */
         //if (k==='^') ATON.Nav.setFirstPersonControl();
@@ -439,6 +470,34 @@ HATHOR.setupEventHandlers = ()=>{
     });
 */
 };
+
+// Tools
+//=======================================
+HATHOR.measure = ()=>{
+    let P = ATON.getSceneQueriedPoint();
+    let M = ATON.SUI.addMeasurementPoint( P );
+
+    if (M === undefined) return;
+
+    let mid = ATON.Utils.generateID("meas");
+
+    let E = {};
+    E.measurements = {};
+    E.measurements[mid] = {};
+    E.measurements[mid].points = [
+        parseFloat(M.A.x.toPrecision(6)),
+        parseFloat(M.A.y.toPrecision(6)),
+        parseFloat(M.A.z.toPrecision(6)),
+        parseFloat(M.B.x.toPrecision(6)),
+        parseFloat(M.B.y.toPrecision(6)),
+        parseFloat(M.B.z.toPrecision(6))
+    ];
+
+    ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+    ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+};
+
+
 
 // Popups
 //=======================================

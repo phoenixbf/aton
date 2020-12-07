@@ -25,6 +25,7 @@ XR.init = ()=>{
 
     XR._bPresenting = false;
     XR.currSession = null;
+    XR._sessionType = "immersive-vr";
 
     XR.rig = new THREE.Group();
     //XR.rig.position.set(0,0,0);
@@ -75,6 +76,17 @@ XR.init = ()=>{
         if (lh) lh.setMaterial(am);
         if (rh) rh.setMaterial(am);
     });
+};
+
+/**
+Set session type
+@param {string} type - Can be "immersive-vr" or "immersive-ar"
+*/
+XR.setSessionType = (type)=>{
+    if (type === undefined) return;
+
+    XR._sessionType = type;
+    console.log("Session type: "+type);
 };
 
 /**
@@ -284,7 +296,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
 Toggle immersive mode
 */
 XR.toggle = ()=>{
-    if (!ATON.device.isXRsupported) return;
+    //if (!ATON.device.isXRsupported) return;
+    if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
     if (XR.currSession === null){
@@ -295,7 +308,7 @@ XR.toggle = ()=>{
                 ///"bounded-floor"
             ]
         };
-        navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( XR.onSessionStarted );
+        navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);
     }
     // Exit XR

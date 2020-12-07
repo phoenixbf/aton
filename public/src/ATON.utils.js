@@ -66,18 +66,24 @@ Utils.profileDevice = ()=>{
 
     ATON.device.isMobile = detectMobile();
 
-    // XR
-    ATON.device.isXRsupported = false;
+    // XR profiling
+    ATON.device.xrSupported = {};
+    ATON.device.xrSupported['immersive-vr'] = false;
+    ATON.device.xrSupported['immersive-ar'] = false;
+
     if ( 'xr' in navigator ){
 	    navigator.xr.isSessionSupported( 'immersive-vr' ).then( function ( b ){
-            if (b){
-                ATON.device.isXRsupported = true;
-                console.log("WebXR supported");
-                }
-            else {
-                ATON.device.isXRsupported = false;
-                console.log("WebXR NOT supported");
-                }
+            if (b) ATON.device.xrSupported['immersive-vr'] = true;
+            else   ATON.device.xrSupported['immersive-vr'] = false;
+
+            console.log("WebXR VR session support: "+ATON.device.xrSupported['immersive-vr']);
+		});
+
+	    navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( b ){
+            if (b) ATON.device.xrSupported['immersive-ar'] = true;
+            else   ATON.device.xrSupported['immersive-ar'] = false;
+
+            console.log("WebXR AR session support: "+ATON.device.xrSupported['immersive-ar']);
 		});
     }
 };
@@ -91,11 +97,19 @@ Utils.isMobile = ()=>{
 }
 
 /**
-If current device supports WebXR
+If current device supports WebXR immersive VR sessions
 @returns {boolean}
 */
-Utils.isWebXRsupported = ()=>{
-    return ATON.device.isXRsupported;
+Utils.isVRsupported = ()=>{
+    return ATON.device.xrSupported['immersive-vr'];
+}
+
+/**
+If current device supports WebXR immersive AR sessions
+@returns {boolean}
+*/
+Utils.isARsupported = ()=>{
+    return ATON.device.xrSupported['immersive-ar'];
 }
 
 

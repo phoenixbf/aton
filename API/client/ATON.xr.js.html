@@ -39,6 +39,7 @@
 									<a href="list_class.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 									<ul class="dropdown-menu">
 											<li><a href="Button.html">Button</a></li>
+											<li><a href="Label.html">Label</a></li>
 											<li><a href="LightProbe.html">LightProbe</a></li>
 											<li><a href="Node.html">Node</a></li>
 											<li><a href="POV.html">POV</a></li>
@@ -48,6 +49,7 @@
 									<a href="list_namespace.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
 									<ul class="dropdown-menu">
 											<li><a href="ATON.html">ATON</a></li>
+											<li><a href="AudioHub.html">AudioHub</a></li>
 											<li><a href="EventHub.html">EventHub</a></li>
 											<li><a href="FE.html">FE</a></li>
 											<li><a href="MatHub.html">MatHub</a></li>
@@ -114,6 +116,7 @@ XR.init = ()=>{
 
     XR._bPresenting = false;
     XR.currSession = null;
+    XR._sessionType = "immersive-vr";
 
     XR.rig = new THREE.Group();
     //XR.rig.position.set(0,0,0);
@@ -167,6 +170,17 @@ XR.init = ()=>{
 };
 
 /**
+Set session type
+@param {string} type - Can be "immersive-vr" or "immersive-ar"
+*/
+XR.setSessionType = (type)=>{
+    if (type === undefined) return;
+
+    XR._sessionType = type;
+    console.log("Session type: "+type);
+};
+
+/**
 Return true if we are presenting (immersive mode)
 @returns {boolean}
 */
@@ -175,17 +189,24 @@ XR.isPresenting = ()=>{
 };
 
 
+XR.teleportOnQueriedPoint = ()=>{
+    if (ATON._queryDataScene === undefined) return false;
+
+    let P = ATON._queryDataScene.p;
+    let N = ATON._queryDataScene.n;
+
+    // Surface validation
+    if (N.y &lt;= 0.7) return false;
+
+    // FIXME: height offset needed for "local", fill this automatically
+    ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
+
+    return true;
+};
+
 XR.defaultSelectHandler = (c)=>{
 
-    if (ATON._queryDataScene){
-        let P = ATON._queryDataScene.p;
-        let N = ATON._queryDataScene.n;
-
-        //P.y += 0.8; // with 'local': half user height
-
-        // FIXME: height offset needed for "local", fill this automatically
-        if (N.y > 0.7) ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
-    }
+    XR.teleportOnQueriedPoint();
 
     ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
     
@@ -273,8 +294,18 @@ XR._setupControllerL = (C)=>{
 XR.onSessionStarted = ( session )=>{
 	session.addEventListener( 'end', XR.onSessionEnded );
 
+    // If any streaming is ongoing, terminate it
+    ATON.MediaRec.stopMediaStreaming();
+
 	ATON._renderer.xr.setSession( session );
 	XR.currSession = session;
+
+    // get xrRefSpace
+    /*
+    session.requestReferenceSpace('local').then((refSpace) => {
+        xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
+    });
+    */
 
     let C0 = ATON._renderer.xr.getController(0);
     let C1 = ATON._renderer.xr.getController(1);
@@ -287,7 +318,13 @@ XR.onSessionStarted = ( session )=>{
         C0.visible = false;
 
         C0.addEventListener( 'connected', (e) => {
-            C0.gamepad = e.data.gamepad;
+
+            //console.log( e.data.handedness );
+
+            if (e.data.handedness === "left") XR._setupControllerL(C0);
+            else XR._setupControllerR(C0);
+
+            //C0.gamepad = e.data.gamepad;
             //console.log(XR.controller0.gamepad);
 
             //ATON.VRoadcast.log(JSON.stringify(e));
@@ -295,13 +332,6 @@ XR.onSessionStarted = ( session )=>{
             //let gp = C0.gamepad;
             //if (gp.pose &amp;&amp; gp.pose.hasPosition) C0.visible = true;
 
-/*          FIXME:
-            let h = gp.hand;
-            console.log(gp);
-            if (h === "right" || h === undefined) XR._setupControllerR(C0);
-            else if (h === "left") XR._setupControllerL(C0);
-*/
-            XR._setupControllerR(C0);
         });
     }
 
@@ -310,16 +340,16 @@ XR.onSessionStarted = ( session )=>{
         C1.visible = false;
 
         C1.addEventListener( 'connected', (e) => {
-            C1.gamepad = e.data.gamepad;
+            //console.log( e.data.handedness );
+
+            if (e.data.handedness === "left") XR._setupControllerL(C1);
+            else XR._setupControllerR(C1);
+
+            //C1.gamepad = e.data.gamepad;
             
             //let gp = C1.gamepad;
             //if (gp.pose &amp;&amp; gp.pose.hasPosition) C1.visible = true;
 
-/*          FIXME:
-            if (gp.hand === "right" || gp.hand === undefined) XR._setupControllerR(C1);
-            else if (gp.hand === "left") XR._setupControllerL(C1);
-*/
-            XR._setupControllerL(C1);
         });
 
     }
@@ -347,6 +377,9 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     ATON.fireEvent("XRmode", false);
 
+    // If any streaming is ongoing, terminate it
+    ATON.MediaRec.stopMediaStreaming();
+
     console.log("Quit XR");
 };
 
@@ -354,7 +387,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
 Toggle immersive mode
 */
 XR.toggle = ()=>{
-    if (!ATON.device.isXRsupported) return;
+    //if (!ATON.device.isXRsupported) return;
+    if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
     if (XR.currSession === null){
@@ -365,7 +399,7 @@ XR.toggle = ()=>{
                 ///"bounded-floor"
             ]
         };
-        navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( XR.onSessionStarted );
+        navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);
     }
     // Exit XR
@@ -599,7 +633,7 @@ export default XR;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 19th Nov 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Dec 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

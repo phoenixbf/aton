@@ -41,6 +41,9 @@ XR.init = ()=>{
 
     XR.gControllers = undefined;
 
+    XR.controller0 = undefined;
+    XR.controller1 = undefined;
+
     XR.controller0pos = new THREE.Vector3();
     XR.controller1pos = new THREE.Vector3();
     XR.controller0dir = new THREE.Vector3();
@@ -90,7 +93,7 @@ XR.setSessionType = (type)=>{
 };
 
 /**
-Return true if we are presenting (immersive mode)
+Return true if we are presenting (immersive VR or AR)
 @returns {boolean}
 */
 XR.isPresenting = ()=>{
@@ -115,7 +118,7 @@ XR.teleportOnQueriedPoint = ()=>{
 
 XR.defaultSelectHandler = (c)=>{
 
-    XR.teleportOnQueriedPoint();
+    if (XR._sessionType === "immersive-vr") XR.teleportOnQueriedPoint();
 
     ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
     
@@ -131,6 +134,17 @@ XR._handleUISelection = ()=>{
     return true;
 }
 
+// Helper routine to setup a ray-caster
+XR.setupQueryRay = (rc)=>{
+    if (rc === undefined) return;
+
+    // We have at least one 6DOF controller
+    if (XR.controller0) rc.set( XR.controller0pos, XR.controller0dir );
+
+    // else use HMD-aligned query
+    else rc.set( ATON.Nav.getCurrentEyeLocation(), ATON.Nav.getCurrentDirection() );
+};
+
 
 /**
 Set reference-space location (not the actual HMD camera location).
@@ -141,8 +155,9 @@ XR.setRefSpaceLocation = (p)=>{
     XR.rig.position.copy(p);
 };
 
+
 // Right
-XR._setupControllerR = (C)=>{
+XR._setupControllerR = (C, bAddRep)=>{
     if (XR.controller0) return;
 
     XR.controller0 = C;
@@ -166,12 +181,13 @@ XR._setupControllerR = (C)=>{
         ATON.fireEvent("XRsqueezeEnd", XR.HAND_R);
     });
 
-    XR.setupControllerUI(XR.HAND_R);
+    XR.setupControllerUI(XR.HAND_R, bAddRep);
+
     ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
 };
 
 // Left
-XR._setupControllerL = (C)=>{
+XR._setupControllerL = (C, bAddRep)=>{
     if (XR.controller1) return;
 
     XR.controller1 = C;
@@ -194,7 +210,8 @@ XR._setupControllerL = (C)=>{
         ATON.fireEvent("XRsqueezeEnd", XR.HAND_L);
     });
 
-    XR.setupControllerUI(XR.HAND_L);
+    XR.setupControllerUI(XR.HAND_L, bAddRep);
+    
     ATON.fireEvent("XRcontrollerConnected", XR.HAND_L);
 };
 
@@ -203,11 +220,18 @@ XR._setupControllerL = (C)=>{
 XR.onSessionStarted = ( session )=>{
 	session.addEventListener( 'end', XR.onSessionEnded );
 
+    console.log(XR._sessionType + " session started.");
+
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
 	ATON._renderer.xr.setSession( session );
 	XR.currSession = session;
+
+    if (XR._sessionType === "immersive-ar"){
+        ATON._mainRoot.background = null;
+        if (ATON._mMainPano) ATON._mMainPano.visible = false;
+    }
 
     // get xrRefSpace
     /*
@@ -216,6 +240,47 @@ XR.onSessionStarted = ( session )=>{
     });
     */
 
+    for (let c = 0; c < 2; c++){
+        const C = ATON._renderer.xr.getController(c);
+
+        if (C !== undefined){
+            console.log(C);
+
+            C.visible = false;
+
+            C.addEventListener( 'connected', (e) => {
+                //console.log( e.data.handedness );
+                let hand = e.data.handedness;
+                
+                console.log(e.data);
+                console.log("Hand "+hand);
+
+                if (hand === "left")  XR._setupControllerL(C, true);
+                else {
+                    if (hand === "right") XR._setupControllerR(C, true);
+                    else { // FIXME:
+
+                        //XR._setupControllerR(C, false);
+                        
+                        C.addEventListener('selectstart', ()=>{
+                            if (XR._handleUISelection()) return;
+                            ATON.fireEvent("XRselectStart", XR.HAND_R);
+                            
+                            console.log("Head-aligned select");
+                        });
+                        C.addEventListener('selectend', ()=>{ 
+                            ATON.fireEvent("XRselectEnd", XR.HAND_R);
+                        });
+
+                        ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
+                    }
+                }
+            });
+        }
+        
+    }
+
+/*
     let C0 = ATON._renderer.xr.getController(0);
     let C1 = ATON._renderer.xr.getController(1);
 
@@ -260,8 +325,8 @@ XR.onSessionStarted = ( session )=>{
             //if (gp.pose && gp.pose.hasPosition) C1.visible = true;
 
         });
-
     }
+*/
 
     XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
 
@@ -296,7 +361,6 @@ XR.onSessionEnded = ( /*event*/ )=>{
 Toggle immersive mode
 */
 XR.toggle = ()=>{
-    //if (!ATON.device.isXRsupported) return;
     if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
@@ -317,7 +381,7 @@ XR.toggle = ()=>{
     }
 };
 
-XR.setupControllerUI = (h)=>{
+XR.setupControllerUI = (h, bAddRep)=>{
     let raytick = 0.003;
     let raylen  = 5.0;
 
@@ -337,27 +401,30 @@ XR.setupControllerUI = (h)=>{
     if (h === XR.HAND_L){
         XR.gControllers.add( XR.controller1 );
 
-        lhand = ATON.createUINode("Lhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
-        XR.controller1.add(lhand);
+        if (bAddRep){
+            lhand = ATON.createUINode("Lhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay).setScale(-1,1,1);
+            XR.controller1.add(lhand);
+        }
     }
     // Right
     else {
-        var geometry = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
-        geometry.rotateX( -Math.PI / 2 );
-        geometry.translate(0,0,-(raylen*0.5));
-
-        var mesh = new THREE.Mesh( geometry, ATON.MatHub.materials.controllerRay );
-
-        XR.controller0.add( mesh.clone() );
         XR.gControllers.add( XR.controller0 );
 
-        rhand = ATON.createUINode("Rhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay);
+        if (bAddRep){
+            var geometry = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
+            geometry.rotateX( -Math.PI / 2 );
+            geometry.translate(0,0,-(raylen*0.5));
 
-        XR.controller0.add(rhand);
+            var mesh = new THREE.Mesh( geometry, ATON.MatHub.materials.controllerRay );
+            XR.controller0.add( mesh.clone() );
+        
+            rhand = ATON.createUINode("Rhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay);
+            XR.controller0.add(rhand);
+        }
     }
 
     // We are connected to VRoadcast
-    if (ATON.VRoadcast.uid){
+    if (ATON.VRoadcast.uid && bAddRep){
         let avMats = ATON.MatHub.materials.avatars;
         let am = avMats[ATON.VRoadcast.uid % avMats.length];
         if (h === XR.HAND_L) lhand.setMaterial(am);

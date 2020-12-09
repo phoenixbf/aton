@@ -53,7 +53,7 @@
     "socket.io": "^2.3.0",
     "three": "^0.120",
     "three-mesh-bvh": "^0.2.0",
-    "three-mesh-ui": "^4.4.3",
+    "three-mesh-ui": "^4.4.9",
     "webdav": "^3.6.1",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

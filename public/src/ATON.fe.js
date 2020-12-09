@@ -173,6 +173,8 @@ FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     //if (!ATON.Utils.isWebXRsupported()) return; //Not showing on mobile
 
+    //ATON.XR.setSessionType("immersive-ar");
+
     FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
 };
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{

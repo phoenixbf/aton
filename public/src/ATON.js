@@ -997,7 +997,7 @@ ATON._handleQueries = ()=>{
 // Ray casting visible scenegraph
 ATON._handleQueryScene = ()=>{
     if (ATON.XR.isPresenting()){
-        ATON._rcScene.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+        ATON.XR.setupQueryRay(ATON._rcScene);
     }
     else 
         ATON._rcScene.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
@@ -1073,7 +1073,7 @@ ATON.getSceneQueriedNormal = ()=>{
 // Ray casting semantic-graph
 ATON._handleQuerySemantics = ()=>{
     if (ATON.XR.isPresenting()){
-        ATON._rcSemantics.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+        ATON.XR.setupQueryRay(ATON._rcSemantics);
     }
     else 
         ATON._rcSemantics.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
@@ -1149,8 +1149,8 @@ ATON._handleQuerySemantics = ()=>{
 };
 
 ATON._handleQueryUI = ()=>{
-    if (ATON.XR.isPresenting() && ATON.XR.controller0){
-        ATON._rcUI.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+    if (ATON.XR.isPresenting()){
+        ATON.XR.setupQueryRay(ATON._rcUI);
     }
     else 
         ATON._rcUI.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );

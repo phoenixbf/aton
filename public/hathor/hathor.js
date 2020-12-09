@@ -240,7 +240,9 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.EventHub.clearEventHandlers("XRselectStart");
     ATON.on("XRselectStart", (c)=>{
         if (c === ATON.XR.HAND_R){
-            if (HATHOR._selMode === HATHOR.SELACTION_STD) ATON.XR.teleportOnQueriedPoint();
+            if (HATHOR._selMode === HATHOR.SELACTION_STD){
+                if (XR._sessionType === "immersive-vr") ATON.XR.teleportOnQueriedPoint();
+            }
             if (HATHOR._selMode === HATHOR.SELACTION_MEASURE) HATHOR.measure();
 
             ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);

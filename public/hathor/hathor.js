@@ -241,7 +241,7 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.on("XRselectStart", (c)=>{
         if (c === ATON.XR.HAND_R){
             if (HATHOR._selMode === HATHOR.SELACTION_STD){
-                if (XR._sessionType === "immersive-vr") ATON.XR.teleportOnQueriedPoint();
+                if (ATON.XR._sessionType === "immersive-vr") ATON.XR.teleportOnQueriedPoint();
             }
             if (HATHOR._selMode === HATHOR.SELACTION_MEASURE) HATHOR.measure();
 

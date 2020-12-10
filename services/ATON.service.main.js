@@ -13,7 +13,7 @@ const express     = require('express');
 const http        = require('http');
 const https       = require('https');
 const url         = require('url');
-const compression = require('compression');
+//const compression = require('compression');
 const path        = require('path');
 const cors        = require('cors');
 
@@ -51,7 +51,7 @@ let app = express();
 
 //app.set('trust proxy', 1); 	// trust first proxy
 
-app.use(compression());
+//app.use(compression());
 app.use(cors({credentials: true, origin: true}));
 
 /*

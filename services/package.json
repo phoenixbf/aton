@@ -51,7 +51,7 @@
     "replace": "^1.2.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^2.3.0",
-    "three": "^0.120",
+    "three": "^0.122",
     "three-mesh-bvh": "^0.2.0",
     "three-mesh-ui": "^4.4.9",
     "webdav": "^3.6.1",

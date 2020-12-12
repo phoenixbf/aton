@@ -1,5 +1,7 @@
 # ATON 3.0 framework
 
+[![Join the chat at https://gitter.im/phoenixbf/ATON](https://badges.gitter.im/phoenixbf/ATON.svg)](https://gitter.im/phoenixbf/ATON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![Header](./public/res/aton-header.jpg)
 
 ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:

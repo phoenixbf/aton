@@ -33,7 +33,7 @@
     "fs": "0.0.1-security",
     "fs-extra": "^9.0.1",
     "glob": "^7.1.6",
-    "gltf-pipeline": "^2.1.10",
+    "gltf-pipeline": "^3.0.2",
     "http": "0.0.0",
     "http-proxy-middleware": "^1.0.6",
     "https": "^1.0.0",

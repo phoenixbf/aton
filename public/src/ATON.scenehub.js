@@ -19,7 +19,7 @@ SceneHub.MODE_DEL = 1;
 Initializes the component
 */
 SceneHub.init = ()=>{
-    SceneHub.currID   = undefined; // Scene ID (sid)
+    SceneHub.currID   = undefined; // Scene ID (sid) - FIXME: rename to "SID"
     SceneHub.currData = undefined; // holds compact object describing our ATON scene
     SceneHub._bEdit   = false;     // edit mode (client can modify json on the server)
 

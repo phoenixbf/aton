@@ -527,8 +527,8 @@ FE.popupUser = ()=>{
             let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
             htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br><br>";
 
-            htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUscenes'><img src='"+FE.PATH_RES_ICONS+"scene.png'>Your scenes</div>";
+            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
+            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUscenes'><img src='"+FE.PATH_RES_ICONS+"scene.png'>Your scenes</div>";
 
             htmlcontent += "<div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT</div>";
 

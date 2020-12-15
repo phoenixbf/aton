@@ -634,7 +634,7 @@ Nav.requestPOVbyBound = (bs, duration)=>{
 
     T.copy(bs.center);
     
-    let r = bs.radius * 2.5;
+    let r = bs.radius * 3.0;
     E.x = T.x - (r * Nav._vDir.x);
     E.y = T.y - (r * Nav._vDir.y);
     E.z = T.z - (r * Nav._vDir.z);

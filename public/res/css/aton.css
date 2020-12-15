@@ -376,7 +376,7 @@ canvas {
 }
 
 .switchedON {
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(255, 255, 255, 0.4);
     /*
     box-shadow: 0 0px 5px rgba(255, 255, 255, 1.0);
     border: 2px solid white;
@@ -387,9 +387,8 @@ canvas {
     box-shadow:inset 0px 0px 0px 2px white;
 }
 
-.switchedON:hover {
-    background-color: rgba(255, 255, 255, 0.1);
 
+.switchedON:hover {
     -webkit-box-shadow:inset 0px 0px 0px 2px white;
     -moz-box-shadow:inset 0px 0px 0px 2px white;
     box-shadow:inset 0px 0px 0px 2px white;

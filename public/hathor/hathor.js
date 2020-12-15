@@ -94,13 +94,16 @@ HATHOR.uiSetup = ()=>{
     // Top toolbar
     ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
-    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+    ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene );
 
     ATON.FE.uiAddButtonVR("idTopToolbar");
     ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
-    ATON.FE.uiAddButtonQR("idTopToolbar");
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+    ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp );
 
+    //ATON.FE.uiAddButtonQR("idTopToolbar");
+/*
     ATON.FE.uiAddButton("idTopToolbar", "shapeconvex", ()=>{
         ATON.Nav.toggleUserControl();
 
@@ -113,12 +116,13 @@ HATHOR.uiSetup = ()=>{
         }
 
     });
+*/
 
     // Auth icons
     $('#idTopToolbar').append("<span id='idAuthTools'></span>");
-    ATON.FE.uiAddButtonEditMode("idAuthTools");
-    ATON.FE.uiAddButton("idAuthTools", "pov", HATHOR.popupPOV );
-    
+    //ATON.FE.uiAddButtonEditMode("idAuthTools");
+    //ATON.FE.uiAddButton("idAuthTools", "pov", HATHOR.popupPOV );
+  
     // Bottom toolbar
     ATON.FE.uiAddButtonHome("idBottomToolbar");
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
@@ -830,4 +834,132 @@ HATHOR.popupPOV = ()=>{
 
         console.log(pov);
     });
+};
+
+HATHOR.popupScene = ()=>{
+    //let htmlcontent = "<h1>Scene</h1>";
+    let htmlcontent = "<h1>"+ATON.SceneHub.currID+"</h1>";
+
+    htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
+
+    ATON.FE.checkAuth((r)=>{
+
+        // Authenticated
+        if (r.username !== undefined){
+            htmlcontent += "Editing: ";
+            htmlcontent += "<div class='select' style='width:200px;'><select id='idEditMode'>";
+            htmlcontent += "<option value='0'>Temporary</option>";
+            htmlcontent += "<option value='1'>Persistent</option>";
+            htmlcontent += "</select><div class='selectArrow'></div></div><br>";
+
+            htmlcontent += "<br>";
+
+            //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
+
+            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+ATON.FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-green' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+        }
+
+        if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+        // Build QR
+        let url = window.location.href;
+        new QRCode(document.getElementById("idQRcode"), url);
+
+        //
+        if (ATON.SceneHub._bEdit) $('#idEditMode').val('1');
+        else $('#idEditMode').val('0');
+
+        $("#idEditMode").on("change",()=>{
+            let emode = $("#idEditMode").val();
+            
+            if (emode === '0'){
+                ATON.SceneHub._bEdit = false;
+                ATON.FE.uiSwitchButton("scene",false);
+                console.log("Scene edits are now temporary");
+            }
+            else {
+                ATON.SceneHub._bEdit = true;
+                ATON.FE.uiSwitchButton("scene",true);
+                console.log("Scene edits are now persistent");
+            }
+
+            ATON.FE.popupClose();
+        });
+
+        $("#idPopSShot").click(()=>{
+            ATON.FE.popupClose();
+
+            ATON.FE.popupScreenShot();
+        });
+
+        $("#idSHUscenes").click(()=>{
+            ATON.Utils.goToURL("/shu/scenes/");
+        });
+    });
+};
+
+HATHOR.popupHelp = ()=>{
+    let htmlcontent = "<h1>Hathor help</h1>";
+    htmlcontent += "<img src='hathor-logo.png' style='width:50px; height:auto'>";
+
+    htmlcontent += "<div style='text-align:left;'>";
+
+    htmlcontent += "<h3>Navigation</h3>";
+    htmlcontent += "<ul>";
+    if (ATON.Utils.isMobile()){
+        htmlcontent += "<li><b>pinch</b>: dolly / zoom</li>";
+        htmlcontent += "<li><b>double-tap</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
+    }
+    else {
+        htmlcontent += "<li><b>double-click</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
+        htmlcontent += "<li><b>'+'/'-'</b>: increase/decrease field-of-view</li>";
+        htmlcontent += "<li><b>'v'</b>: viewpoint</li>";
+    }
+    htmlcontent += "</ul>";
+
+    htmlcontent += "<h3>3D Selector</h3>";
+    htmlcontent += "<ul>";
+    if (ATON.Utils.isMobile()){
+        htmlcontent += "<li><b>Tap</b>: move location of selector</li>";
+    }
+    else {
+        htmlcontent += "<li><b>'SHIFT + mouse wheel'</b>: increase/decrease radius of selector</li>";
+    }
+    htmlcontent += "</ul>";
+
+    // Semantics
+    if (ATON.Utils.isMobile()){
+
+    }
+    else {
+        htmlcontent += "<h3>Semantic annotations</h3>";
+        htmlcontent += "<ul>";
+        htmlcontent += "<li><b>'a'</b>: add basic annotation (sphere)</li>";
+        htmlcontent += "<li><b>'s'</b>: initiate convex shape annotation (add surface point)</li>";
+        htmlcontent += "<li><b>'S'</b>: finalize convex shape annotation</li>";
+        htmlcontent += "<li><b>'ESC'</b>: cancel/stop current convex shape annotation</li>";
+        htmlcontent += "<li><b>'e'</b>: edit hovered annotation</li>";
+        htmlcontent += "<li><b>'CANC'</b>: delete hovered annotation</li>";
+        htmlcontent += "<li><b>'x'</b>: export semantic shapes</li>";
+        htmlcontent += "</ul>";
+    }
+
+    // Other
+    if (ATON.Utils.isMobile()){
+
+    }
+    else {
+        htmlcontent += "<h3>Other</h3>";
+        htmlcontent += "<ul>";
+        htmlcontent += "<li><b>'c'</b>: screenshot/capture</li>";
+        htmlcontent += "</ul>";
+    }
+
+
+
+    htmlcontent += "</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
 };

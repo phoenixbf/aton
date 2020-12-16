@@ -841,24 +841,25 @@ HATHOR.popupScene = ()=>{
     let htmlcontent = "<h1>"+ATON.SceneHub.currID+"</h1>";
 
     htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
+    //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";
 
     ATON.FE.checkAuth((r)=>{
 
         // Authenticated
         if (r.username !== undefined){
-            htmlcontent += "Editing: ";
-            htmlcontent += "<div class='select' style='width:200px;'><select id='idEditMode'>";
+            htmlcontent += "Scene changes: ";
+            htmlcontent += "<div class='select' style='width:150px;'><select id='idEditMode'>";
             htmlcontent += "<option value='0'>Temporary</option>";
             htmlcontent += "<option value='1'>Persistent</option>";
             htmlcontent += "</select><div class='selectArrow'></div></div><br>";
 
             htmlcontent += "<br>";
 
-            //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
-            htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
+            ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
+            //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
 
             //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+ATON.FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
-            htmlcontent += "<div class='atonBTN atonBTN-green' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Your scenes</div>";
         }
 
         if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -890,19 +891,24 @@ HATHOR.popupScene = ()=>{
 
         $("#idPopSShot").click(()=>{
             ATON.FE.popupClose();
-
             ATON.FE.popupScreenShot();
         });
-
+/*
+        $("#idPopQR").click(()=>{
+            ATON.FE.popupClose();
+            ATON.FE.popupQR();
+        });
+*/
         $("#idSHUscenes").click(()=>{
-            ATON.Utils.goToURL("/shu/scenes/");
+            //ATON.Utils.goToURL("/shu/scenes/");
+            window.open("/shu/scenes/"/*, "_self"*/);
         });
     });
 };
 
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<h1>Hathor help</h1>";
-    htmlcontent += "<img src='hathor-logo.png' style='width:50px; height:auto'>";
+    htmlcontent += "<img src='hathor.png'>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
@@ -919,6 +925,7 @@ HATHOR.popupHelp = ()=>{
     }
     htmlcontent += "</ul>";
 
+    // 3D selector
     htmlcontent += "<h3>3D Selector</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
@@ -926,16 +933,6 @@ HATHOR.popupHelp = ()=>{
     }
     else {
         htmlcontent += "<li><b>'SHIFT + mouse wheel'</b>: increase/decrease radius of selector</li>";
-    }
-    htmlcontent += "</ul>";
-
-    // Semantics
-    if (ATON.Utils.isMobile()){
-
-    }
-    else {
-        htmlcontent += "<h3>Semantic annotations</h3>";
-        htmlcontent += "<ul>";
         htmlcontent += "<li><b>'a'</b>: add basic annotation (sphere)</li>";
         htmlcontent += "<li><b>'s'</b>: initiate convex shape annotation (add surface point)</li>";
         htmlcontent += "<li><b>'S'</b>: finalize convex shape annotation</li>";
@@ -943,8 +940,9 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>'e'</b>: edit hovered annotation</li>";
         htmlcontent += "<li><b>'CANC'</b>: delete hovered annotation</li>";
         htmlcontent += "<li><b>'x'</b>: export semantic shapes</li>";
-        htmlcontent += "</ul>";
+        htmlcontent += "<li><b>'m'</b>: add measurement point</li>";
     }
+    htmlcontent += "</ul>";
 
     // Other
     if (ATON.Utils.isMobile()){

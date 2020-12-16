@@ -424,7 +424,7 @@ XR.setupControllerUI = (h, bAddRep)=>{
     }
 
     // We are connected to VRoadcast
-    if (ATON.VRoadcast.uid && bAddRep){
+    if (ATON.VRoadcast.uid !== undefined && bAddRep){
         let avMats = ATON.MatHub.materials.avatars;
         let am = avMats[ATON.VRoadcast.uid % avMats.length];
         if (h === XR.HAND_L) lhand.setMaterial(am);

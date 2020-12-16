@@ -271,7 +271,7 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
 FE.uiAttachInputFilterID = (inputid)=>{
     $("#"+inputid).on('keyup change input', ()=>{
         let value = $("#"+inputid).val();
-        let regReplace = new RegExp('[^A-Za-z-_]', 'ig');
+        let regReplace = new RegExp('[^A-Za-z0-9-_]', 'ig');
         $("#"+inputid).val( value.replace(regReplace, '') );
 
     });

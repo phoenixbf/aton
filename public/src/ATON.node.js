@@ -156,9 +156,10 @@ Hide this node (and sub-graph), also invisible to queries (ray casting, picking)
 @example
 myNode.hide()
 */
-hide(){ 
+hide(){
     this.visible = false;
     this.traverse((o) => { o.layers.disable(this.type); });
+    return this;
 }
 
 /**
@@ -166,8 +167,9 @@ Show this node (and sub-graph). If pickable, becomes sensible to queries (ray ca
 @example
 myNode.show()
 */
-show(){ 
+show(){
     this.visible = true;
+
     if (this.bPickable) this.traverse((o) => { o.layers.enable(this.type); });
     return this;
 }

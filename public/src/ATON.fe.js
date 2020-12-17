@@ -16,6 +16,8 @@ let FE = {};
 FE.SEMSHAPE_SPHERE = 0;
 FE.SEMSHAPE_CONVEX = 1;
 
+FE.POPUP_DELAY = 300;
+
 /**
 Initialize Front-end
 */
@@ -277,6 +279,37 @@ FE.uiAttachInputFilterID = (inputid)=>{
     });
 };
 
+// Utility to switch a node in a graph
+FE.switchNode = (nid, value, type)=>{
+    let N = undefined;
+    
+    if (type === ATON.NTYPES.SEM) N = ATON.getSemanticNode(nid);
+    else N = ATON.getSceneNode(nid);
+
+    if (N === undefined) return;
+
+    N.toggle(value);
+
+    ATON.fireEvent("FE_NodeSwitch", {nid: nid, t: type, v: value});
+    //console.log("XXX");
+};
+
+// Graphs
+FE.uiCreateGraph = (type)=>{
+    let nodes = ATON.snodes;
+    if (type === ATON.NTYPES.SEM) nodes = ATON.semnodes;
+
+    let htmlcontent = "";
+    for (let nid in nodes){
+        let N = nodes[nid];
+        
+        let chk = N.visible? "checked" : "";
+        if (nid !== ".") htmlcontent += "<input type='checkbox' "+chk+" onchange=\"ATON.FE.switchNode('"+nid+"',this.checked,"+type+");\">"+nid+"<br>";
+    }
+
+    return htmlcontent;
+};
+
 FE.setupBasicUISounds = ()=>{
     FE.auLib = {};
 
@@ -339,7 +372,7 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     $('#idPopup').html(htcont);
     $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
-    $('#idPopup').fadeIn();
+    $('#idPopup').fadeIn(FE.POPUP_DELAY);
 
     FE._bPopup = true;
 
@@ -360,13 +393,14 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 /**
 Close current popup
 */
-FE.popupClose = ()=>{
+FE.popupClose = (bNoAnim)=>{
     FE._bPopup = false;
 
     //ATON.renderResume();
     if (FE.bPopupBlurBG > 0.0) ATON.resetPixelDensity();
 
-    $("#idPopup").fadeOut();
+    if (bNoAnim === true) $("#idPopup").hide();
+    else $("#idPopup").fadeOut(FE.POPUP_DELAY);
     //$("#idPopup").empty();
 
     ATON._bPauseQuery = false;

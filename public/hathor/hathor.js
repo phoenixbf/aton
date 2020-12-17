@@ -222,6 +222,20 @@ HATHOR.setupVRCEventHandlers = ()=>{
 
     ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
         ATON.SceneHub.parseScene(d);
+        //console.log(d);
+    });
+
+    ATON.VRoadcast.on("AFE_NodeSwitch", (d)=>{
+        let nid = d.nid;
+        if (nid === undefined) return;
+
+        let N = undefined;
+        if (d.t === ATON.NTYPES.SEM) N = ATON.getSemanticNode(nid);
+        else N = ATON.getSceneNode(nid);
+        
+        if (N === undefined) return;
+
+        N.toggle(d.v);
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
@@ -287,6 +301,22 @@ HATHOR.setupEventHandlers = ()=>{
         // }
     });
 
+    ATON.on("FE_NodeSwitch", (N)=>{
+
+        let E = {};
+        E.scenegraph = {};
+        E.scenegraph.nodes = {};
+        E.scenegraph.nodes[N.nid] = {};
+        E.scenegraph.nodes[N.nid].show = N.v;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        //ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E); // FIXME: check why this is not working
+        ATON.VRoadcast.fireEvent("AFE_NodeSwitch", {nid: N.nid, v: N.v, t: N.t});
+        
+        //console.log(E);
+    });
+
+    // Semantic
     ATON.on("SemanticNodeLeave", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S) S.restoreDefaultMaterial();
@@ -295,11 +325,11 @@ HATHOR.setupEventHandlers = ()=>{
         let S = ATON.getSemanticNode(semid);
         if (S) S.highlight();
     });
-
+/*
     ATON.on("MouseRightButton", ()=>{
         if (ATON._hoveredSemNode) HATHOR.popupSemDescription(ATON._hoveredSemNode);
     });
-
+*/
     ATON.on("Tap", (e)=>{
         if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT){
             //console.log("xxx");
@@ -351,6 +381,8 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k === 'y'){
         }
+
+        if (k === 'g') HATHOR.popupGraphs();
 
         if (k==='x'){
             HATHOR.popupExportSemShapes();
@@ -836,33 +868,84 @@ HATHOR.popupPOV = ()=>{
     });
 };
 
+HATHOR.popupGraphs = ()=>{
+    let htmlcontent= "<h1>Layers</h1>";
+
+    htmlcontent += "<div>";
+    
+    let dBlock = "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; min-width:150px;'>";
+
+    // Scene
+    htmlcontent += dBlock;
+    htmlcontent += "<div style='text-align:center'><b>VISIBLE</b></div><br>";
+    htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SCENE);
+    htmlcontent += "</div>";
+
+    // Semantics
+    if (Object.keys(ATON.semnodes).length > 1){
+        htmlcontent += dBlock;
+        htmlcontent += "<div style='text-align:center'><b>SEMANTIC</b></div><br>";
+        htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SEM);
+        htmlcontent += "</div>";
+    }
+
+    // Measurements
+    if (ATON.SUI.gMeasures.children.length > 0){
+        let chk = ATON.SUI.gMeasures.visible? "checked" : "";
+        htmlcontent += dBlock;
+        htmlcontent += "<div style='text-align:center'><b>MEASUREMENTS</b></div><br>";
+        htmlcontent += "<div class='atonBTN atonBTN-red' style='width:100%' id='btnClearMeas'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete all</div>";
+        htmlcontent += "<input type='checkbox' "+chk+" onchange=\"ATON.SUI.gMeasures.toggle(this.checked);\">Show<br>";
+        htmlcontent += "</div>";
+    }
+
+    if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
+
+    $("#btnClearMeas").click(()=>{
+        ATON.SUI.clearMeasurements();
+    });
+
+};
+
 HATHOR.popupScene = ()=>{
     //let htmlcontent = "<h1>Scene</h1>";
     let htmlcontent = "<h1>"+ATON.SceneHub.currID+"</h1>";
 
-    htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
+    htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:250px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
     //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";
 
     ATON.FE.checkAuth((r)=>{
+        let authUser = r.username;
+
+        htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top;'>";
 
         // Authenticated
-        if (r.username !== undefined){
+        if (authUser){
             htmlcontent += "Scene changes: ";
             htmlcontent += "<div class='select' style='width:150px;'><select id='idEditMode'>";
             htmlcontent += "<option value='0'>Temporary</option>";
             htmlcontent += "<option value='1'>Persistent</option>";
             htmlcontent += "</select><div class='selectArrow'></div></div><br>";
 
-            htmlcontent += "<br>";
+            //htmlcontent += "<div class='atonBTN atonBTN-red' onclick='ATON.SUI.clearMeasurements'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Clear measurements</div>";
 
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
-
-            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+ATON.FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Your scenes</div>";
+            htmlcontent += "<br>";
         }
 
-        if ( !ATON.FE.popupShow(htmlcontent) ) return;
+        // Ops
+        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
+
+        htmlcontent += "</div>";
+
+        if (authUser){
+            htmlcontent += "<br><br>";
+            htmlcontent += "<div class='atonBTN atonBTN-blue' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+        }
+
+        if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
 
         // Build QR
         let url = window.location.href;
@@ -889,10 +972,16 @@ HATHOR.popupScene = ()=>{
             ATON.FE.popupClose();
         });
 
-        $("#idPopSShot").click(()=>{
+        $("#btnPopPOV").click(()=>{
             ATON.FE.popupClose();
-            ATON.FE.popupScreenShot();
+            setTimeout(() => { HATHOR.popupPOV(); }, ATON.FE.POPUP_DELAY);
         });
+
+        $("#btnPopGraphs").click(()=>{
+            ATON.FE.popupClose();
+            setTimeout(() => { HATHOR.popupGraphs(); }, ATON.FE.POPUP_DELAY);
+        });
+
 /*
         $("#idPopQR").click(()=>{
             ATON.FE.popupClose();

@@ -281,6 +281,12 @@ canvas {
     border: 0px;
     display: inline-block;
     cursor: pointer;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 /*
     box-sizing: border-box;
     -moz-box-sizing: border-box;

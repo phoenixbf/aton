@@ -293,6 +293,12 @@ SceneHub.initBaseParsers = ()=>{
                 if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
                 if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
             }
+/*
+            if (N.show !== undefined){
+                if (N.show){ G.show(); console.log("show "+nid); }
+                else { G.hide(); console.log("hide "+nid); }
+            }
+*/
         }
 
         // Build graph through relationships
@@ -309,6 +315,22 @@ SceneHub.initBaseParsers = ()=>{
                 }
             }
         }
+
+        // Node switching
+        for (let nid in nodes){
+            let N = nodes[nid]; // JSON node
+            let G = ATON.getSceneNode(nid);
+
+            if (G && N.show !== undefined){
+                //console.log(N.show);
+
+                if (N.show){ G.show(); console.log("show "+nid); }
+                else { G.hide(); console.log("hide "+nid); }
+
+                //console.log(ATON.getSceneNode(nid));
+            }
+        }
+
 /*
         for (let e = 0; e < edges.length; e++){
             let E = edges[e];

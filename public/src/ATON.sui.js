@@ -245,6 +245,11 @@ SUI.addMeasurementPoint = (P)=>{
     return R;   
 };
 
+SUI.clearMeasurements = ()=>{
+    SUI.gMeasures.removeChildren();
+    SUI._measLabels = [];
+};
+
 SUI._updateMeasurements = ()=>{
     if (SUI._measLabels.length <= 0) return;
 

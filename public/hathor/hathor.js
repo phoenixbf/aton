@@ -92,7 +92,7 @@ HATHOR.setSelectionMode = (m)=>{
 HATHOR.uiSetup = ()=>{
 
     // Top toolbar
-    ATON.FE.uiAddButtonVRC("idTopToolbar");
+    if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
     ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene );
 
@@ -997,28 +997,43 @@ HATHOR.popupScene = ()=>{
 
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<h1>Hathor help</h1>";
-    htmlcontent += "<img src='hathor.png'>";
+    //htmlcontent += "<img src='hathor.png'>";
 
     htmlcontent += "<div style='text-align:left;'>";
+
+    // Toolbar
+    let sp = "<br>";
+    htmlcontent += "<h3>Toolbars</h3>";
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='vertical-align:middle'> Home viewpoint"+sp;
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' style='vertical-align:middle'> User authentication"+sp;
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' style='vertical-align:middle'> Current scene"+sp;
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' style='vertical-align:middle'> Immersive VR mode"+sp;
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode"+sp;
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' style='vertical-align:middle'> Fullscreen mode"+sp;
+
+    if (ATON.Utils.isMobile()){
+
+    }
 
     htmlcontent += "<h3>Navigation</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
-        htmlcontent += "<li><b>pinch</b>: dolly / zoom</li>";
-        htmlcontent += "<li><b>double-tap</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
+        htmlcontent += "<li><b>Pinch</b>: dolly / zoom</li>";
+        htmlcontent += "<li><b>Double-tap</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
     }
     else {
-        htmlcontent += "<li><b>double-click</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
+        htmlcontent += "<li><b>Double-click</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
         htmlcontent += "<li><b>'+'/'-'</b>: increase/decrease field-of-view</li>";
         htmlcontent += "<li><b>'v'</b>: viewpoint</li>";
     }
     htmlcontent += "</ul>";
 
     // 3D selector
-    htmlcontent += "<h3>3D Selector</h3>";
+    htmlcontent += "<h3>3D Query</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
-        htmlcontent += "<li><b>Tap</b>: move location of selector</li>";
+        htmlcontent += "<li><b>Tap</b>: move location of 3D selector</li>";
+        htmlcontent += "<li><b>Double-tap on annotation</b>: open associated content</li>";
     }
     else {
         htmlcontent += "<li><b>'SHIFT + mouse wheel'</b>: increase/decrease radius of selector</li>";

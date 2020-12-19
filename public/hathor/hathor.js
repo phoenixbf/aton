@@ -542,7 +542,7 @@ HATHOR.measure = ()=>{
 HATHOR._createPopupStdSem = (esemid)=>{
     let htmlcontent = "";
     
-    if (esemid === undefined) htmlcontent = "<h1>New Annotation</h1>";
+    if (esemid === undefined) htmlcontent = "<div class='atonPopupTitle'>New Annotation</div>";
     else htmlcontent += "<h1>Modify '"+esemid+"'</h1>";
 
     if (esemid === undefined){
@@ -746,14 +746,14 @@ HATHOR.popupSemDescription = (semid)=>{
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (descr === undefined) return;
 
-    let htmlcontent = "<h1>"+semid+"</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>"+semid+"</div>";
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
 
     ATON.FE.popupShow(htmlcontent);
 };
 
 HATHOR.popupExportSemShapes = ()=>{
-    let htmlcontent = "<h1>Export</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>Export</div>";
 
     htmlcontent += "<label for='semid'>Semantic Node ID:</label><br>";
     htmlcontent += "<div class='select' style='width:250px;'><select id='semid'>";
@@ -793,7 +793,7 @@ HATHOR.popupPOV = ()=>{
     let pov = ATON.Nav.copyCurrentPOV();
     console.log(pov);
 
-    let htmlcontent = "<h1>Viewpoint</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>Viewpoint</div>";
 
     htmlcontent += "<div style='text-align:left;'>";
     htmlcontent += "<strong>Position</strong>: "+pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3)+"<br>";
@@ -869,7 +869,7 @@ HATHOR.popupPOV = ()=>{
 };
 
 HATHOR.popupGraphs = ()=>{
-    let htmlcontent= "<h1>Layers</h1>";
+    let htmlcontent= "<div class='atonPopupTitle'>Layers</div>";
 
     htmlcontent += "<div>";
     
@@ -909,7 +909,7 @@ HATHOR.popupGraphs = ()=>{
 
 HATHOR.popupScene = ()=>{
     //let htmlcontent = "<h1>Scene</h1>";
-    let htmlcontent = "<h1>"+ATON.SceneHub.currID+"</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>"+ATON.SceneHub.currID+"</div>";
 
     htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:250px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
     //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";
@@ -996,20 +996,21 @@ HATHOR.popupScene = ()=>{
 };
 
 HATHOR.popupHelp = ()=>{
-    let htmlcontent = "<h1>Hathor help</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>Hathor help</div>";
     //htmlcontent += "<img src='hathor.png'>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
     // Toolbar
-    let sp = "<br>";
+    //let sp = "<br>";
+    let iblock = "<div style='width:250px; display:inline-block; margin:5px;'>";
     htmlcontent += "<h3>Toolbars</h3>";
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='vertical-align:middle'> Home viewpoint"+sp;
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' style='vertical-align:middle'> User authentication"+sp;
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' style='vertical-align:middle'> Current scene"+sp;
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' style='vertical-align:middle'> Immersive VR mode"+sp;
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode"+sp;
-    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' style='vertical-align:middle'> Fullscreen mode"+sp;
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='vertical-align:middle'> Home viewpoint</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' style='vertical-align:middle'> User authentication</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' style='vertical-align:middle'> Current scene</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' style='vertical-align:middle'> Immersive VR mode</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' style='vertical-align:middle'> Fullscreen mode</div>";
 
     if (ATON.Utils.isMobile()){
 

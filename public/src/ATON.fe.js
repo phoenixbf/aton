@@ -412,7 +412,7 @@ FE.popupClose = (bNoAnim)=>{
 };
 
 FE.popupQR = ()=>{
-    let htmlcontent = "<h1>Share</h1>";
+    let htmlcontent = "<div class='atonPopupTitle'>Share</div>";
     htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -426,7 +426,7 @@ FE.popupScreenShot = ()=>{
 
     FE.checkAuth((r)=>{
 
-        let htmlcontent = "<h1>Screenshot</h1>";
+        let htmlcontent = "<div class='atonPopupTitle'>Screenshot</div>";
         htmlcontent += "This is a preview of what your screenshot will look like:<br><br>";
         htmlcontent += "<img src='"+cover.src+"'><br>";
         htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='200'>px<br>";
@@ -464,7 +464,7 @@ FE.popupScreenShot = ()=>{
 
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    htmlcontent += "<h1>Collaborative Session</h1>";
+    htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
 
     // Username
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";

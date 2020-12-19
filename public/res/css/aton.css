@@ -621,7 +621,7 @@ canvas {
         .atonPopupLarge {
             width: 90%;
         }
-    }
+}
 
 .atonQRcontainer {
     display: inline-block;
@@ -647,6 +647,21 @@ canvas {
     width: 100%;
 
     margin: 5px;
+}
+
+.atonPopupTitle {
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+
+    /*border-bottom: 1px solid white;*/
+    padding: 10px;
+    margin-bottom: 10px;
+    left:5px;
+    right: 5px;
+
+    border-radius: 10px;
+    background-color: black;
 }
 
 

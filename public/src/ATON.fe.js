@@ -101,6 +101,8 @@ FE.loadSceneID = (sid)=>{
     if (ATON.SceneHub._bEdit) reqstr += ",edit";
 
     ATON.SceneHub.load(reqstr, sid);
+    $('meta[property=og\\:image]').attr('content', ATON.PATH_SCENES+sid+'/cover.png');
+
     console.log(reqstr);
 };
 

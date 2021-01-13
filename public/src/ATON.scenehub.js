@@ -25,6 +25,10 @@ SceneHub.init = ()=>{
 
     SceneHub._bLoading = false;
 
+    // Current scene title & description
+    SceneHub._title = undefined;
+    SceneHub._descr = undefined;
+
     SceneHub.initBaseParsers();
 };
 
@@ -165,6 +169,19 @@ SceneHub.getJSONsemanticConvexShapes = (semid)=>{
 // Top-level scene-JSON parsers
 SceneHub.initBaseParsers = ()=>{
     SceneHub._jsonParsers = {};
+
+    // Scene Title & Description
+    SceneHub._jsonParsers.title = (title)=>{
+        if (title === undefined) return;
+
+        SceneHub.setTitle(title);
+    };
+
+    SceneHub._jsonParsers.description = (descr)=>{
+        if (descr === undefined) return;
+
+        SceneHub.setDescription(descr);
+    };
 
     // Environment
     SceneHub._jsonParsers.environment = (env)=>{
@@ -439,9 +456,9 @@ SceneHub.initBaseParsers = ()=>{
 };
 
 // Adds custom scene parser to extend JSON scene
-// parser(k){ ... }
-SceneHub.addSceneParser = (k, parser)=>{
-    SceneHub._jsonParsers[k] = parser;
+// parser(key){ ... }
+SceneHub.addSceneParser = (key, parser)=>{
+    SceneHub._jsonParsers[key] = parser;
 };
 
 // [C] Sends JSON edit to server node
@@ -479,6 +496,20 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
             if (onComplete) onComplete();
         }
     });
+};
+
+SceneHub.setTitle = (title)=>{
+    SceneHub._title = title;
+};
+SceneHub.getTitle = ()=>{
+    return SceneHub._title;
+}
+
+SceneHub.setDescription = (descr)=>{
+    SceneHub._descr = descr;
+};
+SceneHub.getDescription = ()=>{
+    return SceneHub._descr;
 };
 
 

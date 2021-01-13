@@ -65,6 +65,7 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.5);
+        if (ATON.SceneHub.getDescription()) $("#btn-info").show();
     });
 
 };
@@ -101,7 +102,7 @@ FE.loadSceneID = (sid)=>{
     if (ATON.SceneHub._bEdit) reqstr += ",edit";
 
     ATON.SceneHub.load(reqstr, sid);
-    $('meta[property=og\\:image]').attr('content', ATON.PATH_SCENES+sid+'/cover.png');
+    //$('meta[property=og\\:image]').attr('content', ATON.PATH_SCENES+sid+'/cover.png');
 
     console.log(reqstr);
 };
@@ -217,6 +218,11 @@ FE.uiAddButtonTalk = (idcontainer)=>{
 
 FE.uiAddButtonQR = (idcontainer)=>{
     FE.uiAddButton(idcontainer,"qr", FE.popupQR );
+};
+
+FE.uiAddButtonInfo = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "info", ATON.FE.popupSceneInfo);
+    $("#btn-info").hide();
 };
 
 FE.uiAddButtonFullScreen = (idcontainer)=>{
@@ -388,6 +394,7 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     $("#idTopToolbar").hide();
     $("#idBottomToolbar").hide();
+    $("#idBottomRToolbar").hide();
 
     return true;
 };
@@ -409,6 +416,7 @@ FE.popupClose = (bNoAnim)=>{
 
     $("#idTopToolbar").show();
     $("#idBottomToolbar").show();
+    $("#idBottomRToolbar").show();
 
     ATON.focusOn3DView();
 };
@@ -648,5 +656,17 @@ FE.popupPOV = ()=>{
     let mode = $("#idPOVmode").val();
 };
 */
+
+FE.popupSceneInfo = ()=>{
+    let head = ATON.SceneHub.getTitle();
+    if (head === undefined) head = ATON.SceneHub.currID;
+
+    let descr = ATON.SceneHub.getDescription();
+
+    let htmlcontent = "<div class='atonPopupTitle'>"+head+"</div>";
+    if (descr) htmlcontent += JSON.parse(descr);
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+};
 
 export default FE;

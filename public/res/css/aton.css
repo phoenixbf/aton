@@ -46,6 +46,26 @@
     }
 }
 
+@keyframes slideFromRight {
+    0% {
+        transform: translateX(100%);
+        }
+    100% {
+        transform: translateX(0%);
+        }
+}
+
+@keyframes slideFromBottom {
+    0% {
+        transform: translateY(100%);
+        }
+    100% {
+        transform: translateY(0%);
+        }
+}
+
+/*=========================================================*/
+
 html {
     --scrollbarBG: #333333;
     --thumbBG: #ffffff;
@@ -135,7 +155,7 @@ canvas {
 }
 
 
-
+/*
 .infoContainer {
     position: absolute;
     top: 0;
@@ -149,8 +169,6 @@ canvas {
     z-index: 2;
     margin: 0px 0px 0px 0px;
 
-    /*pointer-events: none;*/
-
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -159,6 +177,7 @@ canvas {
 
     overflow: hidden;
 }
+*/
 
 /*
     Toolbars
@@ -194,7 +213,7 @@ canvas {
     top: 0px;
     right: 0px;
     
-    width: 100%;
+    /*width: 100%;*/
     text-align: right;
 }
 
@@ -202,7 +221,7 @@ canvas {
     top: 0px;
     left: 0px;
     
-    width: 100%;
+    /*width: 100%;*/
     text-align: left;
 }
 
@@ -218,6 +237,13 @@ canvas {
     text-align: left;
 }
 
+.atonToolbar-bottom-right {
+    bottom: 0%;
+    right: 0px;
+    /*width:100%;*/
+    text-align: right;
+}
+
 .scrollableX {
     overflow-x: auto;
     overflow-y: hidden;
@@ -231,6 +257,53 @@ canvas {
     white-space: nowrap;
 
     -webkit-overflow-scrolling: touch;
+}
+
+.infoContainer {
+    z-index: 8;
+	position: absolute;
+
+    height: 100%;
+ 
+    width: 40%;
+    min-width: 400px;
+
+    margin: 0px;
+    padding: 10px;
+    
+    padding-right: 45px;
+    padding-top: 45px;
+
+    background-color: rgba(0,0,0, 0.5);
+    box-shadow: 0px 0px 20px rgba(0,0,0, 1);
+
+    top: 0%;
+    right: 0%;
+
+    animation: 0.5s ease-out 0s 1 slideFromRight;
+}
+
+@media screen and (orientation: portrait) {
+    .infoContainer {
+        left: 0%;
+
+        width: 100%;
+        height: 40%;
+
+        padding-top: 10px;
+
+        top: 60%;
+        bottom: 0px;
+
+        animation: 0.5s ease-out 0s 1 slideFromBottom;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .infoContainer {
+        width: 100%;
+        left: 0%;
+    }
 }
 
 .atonCenterLoader {

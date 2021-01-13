@@ -33,7 +33,7 @@ if (!args.cloudCollection){
 
 
 let linkUserCollection = (username)=>{
-    console.log("Linking user: "+username);
+    console.log("Linking user collection: "+username);
 
     if (username === undefined) return;
 
@@ -61,6 +61,15 @@ let linkUserCollection = (username)=>{
             console.log("Created "+slink);
         }
     }
+};
+
+let linkUserScenes = (username)=>{
+    console.log("Linking user scenes: "+username);
+
+    if (username === undefined) return;
+
+    let cloudscenes = path.join(args.cloudCollection, username+"-scenes/");
+    if (!fs.existsSync(cloudscenes)) return; 
 };
 
 

@@ -127,6 +127,8 @@ HATHOR.uiSetup = ()=>{
     ATON.FE.uiAddButtonHome("idBottomToolbar");
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
+    ATON.FE.uiAddButtonInfo("idBottomRToolbar");
+
     $("#btn-talk").hide();
 
     if (HATHOR.paramFPS){
@@ -588,7 +590,7 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
         emoticonsEnabled: false,
         autoUpdate: true,
         style: 'vendors/sceditor/minified/themes/content/default.min.css',
-        toolbar: "bold,italic,underline,link,unlink|left,center,right,justify|bulletlist,orderedlist,table|image,youtube"
+        toolbar: "bold,italic,underline,link,unlink,font,size,color,removeformat|left,center,right,justify|bulletlist,orderedlist,table,code|image,youtube|source"
     }).sceditor('instance');
 
     //console.log(SCE);
@@ -907,6 +909,12 @@ HATHOR.popupGraphs = ()=>{
 
 };
 
+HATHOR.popupEnvironment = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Environment</div>";
+
+    //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
+};
+
 HATHOR.popupScene = ()=>{
     //let htmlcontent = "<h1>Scene</h1>";
     let htmlcontent = "<div class='atonPopupTitle'>"+ATON.SceneHub.currID+"</div>";
@@ -921,16 +929,22 @@ HATHOR.popupScene = ()=>{
 
         // Authenticated
         if (authUser){
+            let pe = (ATON.SceneHub._bEdit)? "checked" : "";
+            htmlcontent += "<input type='checkbox' id='idSchanges' "+pe+">Persistent scene changes<br>";
+/*
             htmlcontent += "Scene changes: ";
             htmlcontent += "<div class='select' style='width:150px;'><select id='idEditMode'>";
             htmlcontent += "<option value='0'>Temporary</option>";
             htmlcontent += "<option value='1'>Persistent</option>";
             htmlcontent += "</select><div class='selectArrow'></div></div><br>";
-
+*/
             //htmlcontent += "<div class='atonBTN atonBTN-red' onclick='ATON.SUI.clearMeasurements'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Clear measurements</div>";
 
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
+
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Title & Description</div>";
+
             htmlcontent += "<br>";
         }
 
@@ -952,6 +966,21 @@ HATHOR.popupScene = ()=>{
         new QRCode(document.getElementById("idQRcode"), url);
 
         //
+        $("#idSchanges").on("change",()=>{
+            let b = $("#idSchanges").is(':checked');
+            if (b){
+                ATON.SceneHub._bEdit = true;
+                ATON.FE.uiSwitchButton("scene",true);
+                console.log("Scene edits are now persistent");
+            }
+            else {
+                ATON.SceneHub._bEdit = false;
+                ATON.FE.uiSwitchButton("scene",false);
+                console.log("Scene edits are now temporary");
+            }
+        });
+
+/*
         if (ATON.SceneHub._bEdit) $('#idEditMode').val('1');
         else $('#idEditMode').val('0');
 
@@ -971,6 +1000,7 @@ HATHOR.popupScene = ()=>{
 
             ATON.FE.popupClose();
         });
+*/
 
         $("#btnPopPOV").click(()=>{
             ATON.FE.popupClose();
@@ -980,6 +1010,11 @@ HATHOR.popupScene = ()=>{
         $("#btnPopGraphs").click(()=>{
             ATON.FE.popupClose();
             setTimeout(() => { HATHOR.popupGraphs(); }, ATON.FE.POPUP_DELAY);
+        });
+
+        $("#btnInfo").click(()=>{
+            ATON.FE.popupClose();
+            setTimeout(() => { HATHOR.popupEditSceneInfo(); }, ATON.FE.POPUP_DELAY);
         });
 
 /*
@@ -994,6 +1029,50 @@ HATHOR.popupScene = ()=>{
         });
     });
 };
+
+HATHOR.popupEditSceneInfo = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Scene Title & Description</div>";
+    
+    htmlcontent += "Title: <input id='idSceneTitle' type='text' maxlength='30' size='30' ><br>";
+    htmlcontent += "<textarea id='idSummaryEditor' style='width:100%'></textarea><br>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='idSceneSummaryOK' style='width:80%'>DONE</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+    
+    let SCE = HATHOR.createSemanticTextEditor("idSummaryEditor");
+
+    let D = ATON.SceneHub.getDescription();
+    if (D) SCE.setWysiwygEditorValue(JSON.parse(D));
+
+    let T = ATON.SceneHub.getTitle();
+    if (T) $("#idSceneTitle").val(T);
+
+    $('#idSceneSummaryOK').click(()=>{
+        let xxtmldescr = JSON.stringify( $("#idSummaryEditor").val() );
+        let title = $("#idSceneTitle").val();
+
+        ATON.FE.popupClose();
+
+        let E = {};
+
+        if (xxtmldescr && xxtmldescr.length>2){
+            ATON.SceneHub.setDescription( xxtmldescr );
+            E.description = xxtmldescr;
+        }
+        if (title && title.length>0){
+            ATON.SceneHub.setTitle( title );
+            E.title = title;
+        }
+
+        if (E.title || E.description){
+            console.log(E);
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        }
+    });
+};
+
 
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Hathor help</div>";
@@ -1066,3 +1145,9 @@ HATHOR.popupHelp = ()=>{
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 };
+
+/*
+HATHOR.toggleSceneInfo = ()=>{
+
+};
+*/

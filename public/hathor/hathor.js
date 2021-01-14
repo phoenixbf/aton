@@ -276,6 +276,7 @@ HATHOR.setupEventHandlers = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC) ATON.VRoadcast.connect(); // maybe not needed
+        if (ATON.SceneHub.getDescription()) ATON.FE.popupSceneInfo();
     });
 
     ATON.on("NodeRequestFired", ()=>{ 
@@ -943,7 +944,7 @@ HATHOR.popupScene = ()=>{
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
 
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Title & Description</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit scene info</div>";
 
             htmlcontent += "<br>";
         }
@@ -1082,7 +1083,7 @@ HATHOR.popupHelp = ()=>{
 
     // Toolbar
     //let sp = "<br>";
-    let iblock = "<div style='width:250px; display:inline-block; margin:5px;'>";
+    let iblock = "<div style='width:210px; display:inline-block; margin:5px;'>";
     htmlcontent += "<h3>Toolbars</h3>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='vertical-align:middle'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' style='vertical-align:middle'> User authentication</div>";
@@ -1090,6 +1091,7 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' style='vertical-align:middle'> Immersive VR mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' style='vertical-align:middle'> Fullscreen mode</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"info.png' style='vertical-align:middle'> Scene information</div>";
 
     if (ATON.Utils.isMobile()){
 

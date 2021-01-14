@@ -221,7 +221,7 @@ canvas {
     top: 0px;
     left: 0px;
     
-    /*width: 100%;*/
+    width: 100%;
     text-align: left;
 }
 
@@ -266,14 +266,16 @@ canvas {
     height: 100%;
  
     width: 40%;
-    min-width: 400px;
+    /*min-width: 400px;*/
 
     margin: 0px;
     padding: 10px;
-    
+/*
     padding-right: 45px;
-    padding-top: 45px;
+    padding-bottom: 45px;
 
+    padding-top: 45px;
+*/
     background-color: rgba(0,0,0, 0.5);
     box-shadow: 0px 0px 20px rgba(0,0,0, 1);
 
@@ -290,8 +292,6 @@ canvas {
         width: 100%;
         height: 40%;
 
-        padding-top: 10px;
-
         top: 60%;
         bottom: 0px;
 
@@ -301,10 +301,33 @@ canvas {
 
 @media screen and (max-width: 500px) {
     .infoContainer {
-        width: 100%;
-        left: 0%;
+        width: 90%;
+        margin: auto;
     }
 }
+
+.infoTitle {
+    text-align: right;
+    font-size: larger;
+    font-weight: bold;
+}
+
+@media screen and (orientation: portrait) {
+    .infoTitle {
+        text-align: center;
+    }
+}
+
+.infoContent {
+    padding: 10px;
+
+    width: 100%;
+    height: 100%;
+
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 
 .atonCenterLoader {
     position: fixed;
@@ -659,7 +682,7 @@ canvas {
     margin: auto;
 
     max-width: 70%;
-    max-height: 80%;
+    max-height: 70%;
     
     top: 50%;
     transform: translate(0%,-50%);

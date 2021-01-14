@@ -25,7 +25,7 @@ FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup = false;     // showing popup
-    FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+    FE.bPopupBlurBG = 0.5; // blur 3D content on popup show, 0.0 to disable
     FE._userAuth = {};
 
     FE._auSemNode = undefined;
@@ -666,7 +666,13 @@ FE.popupSceneInfo = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>"+head+"</div>";
     if (descr) htmlcontent += JSON.parse(descr);
 
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
+
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#btnOK").click(()=>{
+        ATON.FE.popupClose();
+    });
 };
 
 export default FE;

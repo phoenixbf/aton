@@ -395,6 +395,7 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
     $("#idTopToolbar").hide();
     $("#idBottomToolbar").hide();
     $("#idBottomRToolbar").hide();
+    $("#idPoweredBy").hide();
 
     return true;
 };
@@ -417,6 +418,7 @@ FE.popupClose = (bNoAnim)=>{
     $("#idTopToolbar").show();
     $("#idBottomToolbar").show();
     $("#idBottomRToolbar").show();
+    $("#idPoweredBy").show();
 
     ATON.focusOn3DView();
 };

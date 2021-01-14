@@ -2,7 +2,7 @@
 
 ![Header](./public/res/aton-header.jpg)
 
-ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) exploiting modern web standards, without any installation required for the final user. ATON offers:
+ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for the final user. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
 * Real-time collaborative multi-user features (*VRoadcast* module)
 * Immersive VR (WebXR) for 3DOF and 6DOF devices
@@ -44,6 +44,7 @@ npm start
 # Publications
 Here is a list of publications where ATON (including previous versions) was employed:
 
+* Luigini, A., Fanini, B., Basso, A., & Basso, D. (2020). Heritage education through serious games. A web-based proposal for primary schools to cope with distance learning. VITRUVIO-International Journal of Architectural Technology and Sustainability, 5(2), 73-85.
 * B. Fanini, L. Cinque (2020). Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue "Emerging Artificial Intelligence (AI) Technologies for Learning"
 * B. Fanini (2020). Applications of a compact session encoding for immersive WebVR/XR analytics. Chapter 6 in Digital & Documentation – Digital strategies for Cultural Heritage. Vol. 2
 * M. Lo Turco, P. Piumatti, M. Calvano, E. C. Giovannini, N. Mafrici, A. Tomalini, B. Fanini (2020). Interactive Digital Environments for Cultural Heritage and Museums. Building a digital ecosystem to display hidden collections. DISEGNARECON – ISSN 1828 5961

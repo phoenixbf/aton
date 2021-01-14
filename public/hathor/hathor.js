@@ -957,7 +957,8 @@ HATHOR.popupScene = ()=>{
 
         if (authUser){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-blue' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+            htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
         }
 
         if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
@@ -1026,7 +1027,12 @@ HATHOR.popupScene = ()=>{
 */
         $("#idSHUscenes").click(()=>{
             //ATON.Utils.goToURL("/shu/scenes/");
-            window.open("/shu/scenes/"/*, "_self"*/);
+            window.open("/shu/scenes/", "_self");
+        });
+
+        $("#idDelScene").click(()=>{
+            ATON.FE.popupClose();
+            setTimeout(() => { HATHOR.popupSceneDelete(); }, ATON.FE.POPUP_DELAY);
         });
     });
 };
@@ -1060,6 +1066,7 @@ HATHOR.popupEditSceneInfo = ()=>{
         if (xxtmldescr && xxtmldescr.length>2){
             ATON.SceneHub.setDescription( xxtmldescr );
             E.description = xxtmldescr;
+            $("#btn-info").show();
         }
         if (title && title.length>0){
             ATON.SceneHub.setTitle( title );
@@ -1146,6 +1153,28 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += "</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
+};
+
+HATHOR.popupSceneDelete = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>DELETE this scene?</div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-red' id='btnDELyes'>YES</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnDELno'>NO</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $('#btnDELyes').click(()=>{
+        let sid = ATON.SceneHub.currID;
+        if (sid === undefined) return;
+
+        ATON.Utils.postJSON(ATON.PATH_RESTAPI+"del/scene", {sid: sid}, (b)=>{
+            if (b) window.open("/shu/scenes/", "_self");
+        });
+    });
+
+    $('#btnDELno').click(()=>{
+        ATON.FE.popupClose();
+    });
 };
 
 /*

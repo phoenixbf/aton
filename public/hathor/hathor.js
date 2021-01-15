@@ -307,10 +307,18 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.on("FE_NodeSwitch", (N)=>{
 
         let E = {};
-        E.scenegraph = {};
-        E.scenegraph.nodes = {};
-        E.scenegraph.nodes[N.nid] = {};
-        E.scenegraph.nodes[N.nid].show = N.v;
+        if (N.t === ATON.NTYPES.SEM){
+            E.semanticgraph = {};
+            E.semanticgraph.nodes = {};
+            E.semanticgraph.nodes[N.nid] = {};
+            E.semanticgraph.nodes[N.nid].show = N.v; 
+        }
+        else {
+            E.scenegraph = {};
+            E.scenegraph.nodes = {};
+            E.scenegraph.nodes[N.nid] = {};
+            E.scenegraph.nodes[N.nid].show = N.v;
+        }
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         //ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E); // FIXME: check why this is not working
@@ -1099,21 +1107,24 @@ HATHOR.popupHelp = ()=>{
 
     // Toolbar
     //let sp = "<br>";
-    let iblock = "<div style='width:210px; display:inline-block; margin:5px;'>";
+    let iblock = "<div style='width:210px; display:inline-block; margin:5px; vertical-align:top;'>";
     htmlcontent += "<h3>Toolbars</h3>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' style='vertical-align:middle'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' style='vertical-align:middle'> User authentication</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' style='vertical-align:middle'> Current scene</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' style='vertical-align:middle'> Immersive VR mode</div>";
-    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' style='vertical-align:middle'> Fullscreen mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"info.png' style='vertical-align:middle'> Scene information</div>";
 
     if (ATON.Utils.isMobile()){
-
+        htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' style='vertical-align:middle'> Device orientation mode</div>";
     }
 
-    htmlcontent += "<h3>Navigation</h3>";
+    htmlcontent +="<br><br>";
+
+    let blblock = "<div style='width:300px; display:inline-block; margin:5px; vertical-align:top;'>";
+
+    htmlcontent += blblock+"<h3>Navigation</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
         htmlcontent += "<li><b>Pinch</b>: dolly / zoom</li>";
@@ -1124,10 +1135,10 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>'+'/'-'</b>: increase/decrease field-of-view</li>";
         htmlcontent += "<li><b>'v'</b>: viewpoint</li>";
     }
-    htmlcontent += "</ul>";
+    htmlcontent += "</ul></div>";
 
     // 3D selector
-    htmlcontent += "<h3>3D Query</h3>";
+    htmlcontent += blblock+"<h3>3D Query</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
         htmlcontent += "<li><b>Tap</b>: move location of 3D selector</li>";
@@ -1144,17 +1155,17 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>'x'</b>: export semantic shapes</li>";
         htmlcontent += "<li><b>'m'</b>: add measurement point</li>";
     }
-    htmlcontent += "</ul>";
+    htmlcontent += "</ul></div>";
 
     // Other
     if (ATON.Utils.isMobile()){
 
     }
     else {
-        htmlcontent += "<h3>Other</h3>";
+        htmlcontent += blblock+"<h3>Other</h3>";
         htmlcontent += "<ul>";
         htmlcontent += "<li><b>'c'</b>: screenshot/capture</li>";
-        htmlcontent += "</ul>";
+        htmlcontent += "</ul></div>";
     }
 
 

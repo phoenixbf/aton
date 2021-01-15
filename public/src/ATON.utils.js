@@ -200,7 +200,7 @@ Utils.modelVisitor = (parentNode, model)=>{
                 // Build accelerated ray casting
                 if (o.geometry){
                     o.geometry.computeBoundsTree();
-                    console.log("Computed BVH");
+                    console.log("Computed visible BVH");
                 }
 
                 // Ensure mipmapping is correct
@@ -218,6 +218,12 @@ Utils.modelVisitor = (parentNode, model)=>{
 
             if (type === ATON.NTYPES.SEM){
                 o.material = ATON.MatHub.materials.semanticShape;
+
+                // Build accelerated ray casting
+                if (o.geometry){
+                    o.geometry.computeBoundsTree();
+                    console.log("Computed semantic BVH");
+                }
             }
 
             // Cascading material
@@ -225,7 +231,15 @@ Utils.modelVisitor = (parentNode, model)=>{
                 o.material = N.userData.cMat;
                 //o.material.needsUpdate = true;
             }
+
         }
+/*
+        if (N.userData.cMat){
+            o.material = N.userData.cMat;
+            //o.cMat = N.userData.cMat;
+            //o.material.needsUpdate = true;
+        }
+*/
     });
 };
 

@@ -300,6 +300,21 @@ SceneHub.initBaseParsers = ()=>{
 
             if (N.toYup) G.setYup();
 
+            //if (N.nopicking){ G.disablePicking(); } // FIXME: not working
+/*
+            if (N.color){
+                let C = ATON.MatHub.colors[N.color];
+
+                G.setMaterial( new THREE.MeshBasicMaterial({ 
+                    color: C, 
+                    transparent: true,
+                    depthWrite: false, 
+                    opacity: 0.1,
+                }));
+
+                console.log(G);
+            }
+*/
             // Keywords
             if (N.keywords) G.kwords = N.keywords;
 
@@ -333,18 +348,26 @@ SceneHub.initBaseParsers = ()=>{
             }
         }
 
-        // Node switching
+        // After connection
         for (let nid in nodes){
             let N = nodes[nid]; // JSON node
             let G = ATON.getSceneNode(nid);
 
-            if (G && N.show !== undefined){
-                //console.log(N.show);
+            if (G !== undefined){ 
+                if (N.show !== undefined){
+                    //console.log(N.show);
 
-                if (N.show){ G.show(); console.log("show "+nid); }
-                else { G.hide(); console.log("hide "+nid); }
+                    if (N.show){ G.show(); console.log("show "+nid); }
+                    else { G.hide(); console.log("hide "+nid); }
+                    //console.log(ATON.getSceneNode(nid));
+                }
 
-                //console.log(ATON.getSceneNode(nid));
+                if (N.nopicking){ G.disablePicking(); }
+
+                if (N.material){
+                    let mat = new THREE.MeshStandardMaterial(N.material);
+                    G.setMaterial( mat );
+                }
             }
         }
 
@@ -438,6 +461,30 @@ SceneHub.initBaseParsers = ()=>{
                 }
             }
         }
+
+        // After connection
+        for (let nid in nodes){
+            let N = nodes[nid]; // JSON node
+            let G = ATON.getSemanticNode(nid);
+
+            if (G !== undefined){
+                if (N.show !== undefined){
+                    //console.log(N.show);
+
+                    if (N.show){ G.show(); console.log("show "+nid); }
+                    else { G.hide(); console.log("hide "+nid); }
+                    //console.log(ATON.getSemanticNode(nid));
+                }
+
+                if (N.nopicking){ G.disablePicking(); }
+
+                if (N.material){
+                    let mat = new THREE.MeshStandardMaterial(N.material);
+                    G.setMaterial( mat );
+                }
+            }
+        }
+
 /*
         for (let e = 0; e < edges.length; e++){
             let E = edges[e];

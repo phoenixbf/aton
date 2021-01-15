@@ -197,6 +197,13 @@ myNode.load("somevegetation.gltf").disablePicking()
 disablePicking(){
     this.bPickable = false;
     this.traverse((o) => { o.layers.disable(this.type); });
+
+    // children
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.disablePicking) C.disablePicking();
+    }
+
     return this;  
 }
 
@@ -208,6 +215,13 @@ myNode.enablePicking()
 enablePicking(){
     this.bPickable = true;
     this.traverse((o) => { o.layers.enable(this.type); });
+
+    // children
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.enablePicking) C.enablePicking();
+    }
+
     return this;
 }
 
@@ -229,11 +243,19 @@ setMaterial(M){
 
     this.traverse((o) => {
         if (o.isMesh){
-            this.userData.cMat = M;
             o.material = M;
-            //o.material.needsUpdate = true;
-            }
+            ///o.material.needsUpdate = true;
+            //console.log(o);
+        }
+
+        if (o.type) this.userData.cMat = M;
     });
+
+    // children
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.setMaterial) C.setMaterial(M);
+    }
 
     return this;
 }
@@ -427,8 +449,10 @@ attachTo(node){
     let N = (typeof node === 'string')? this._nodes[node] : node;
     if (N){
         N.add(this);
-        if (N.userData.cMat) this.userData.cMat = N.userData.cMat;
-        }
+        if (N.userData.cMat) this.userData.cMat = N.userData.cMat; // this.setMaterial(N.userData.cMat);
+        if (N.bPickable) this.bPickable = N.bPickable;
+    }
+    
     return N;
 }
 
@@ -441,6 +465,8 @@ myNode.attachToRoot()
 attachToRoot(){
     this._rootG.add(this);
     if (this._rootG.userData.cMat) this.userData.cMat = this._rootG.userData.cMat;
+    if (this._rootG.bPickable) this.bPickable = this._rootG.bPickable;
+    
     return this._rootG;
 }
 

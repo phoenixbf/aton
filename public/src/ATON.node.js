@@ -159,6 +159,7 @@ myNode.hide()
 hide(){
     this.visible = false;
     this.traverse((o) => { o.layers.disable(this.type); });
+
     return this;
 }
 
@@ -171,6 +172,7 @@ show(){
     this.visible = true;
 
     if (this.bPickable) this.traverse((o) => { o.layers.enable(this.type); });
+
     return this;
 }
 

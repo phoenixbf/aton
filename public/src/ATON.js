@@ -828,7 +828,7 @@ ATON.setMainLightDirection = (v)=>{
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
         ATON._dMainL.target = ATON._dMainLtgt;
 
-        ATON.setNeutralAmbientLight(0.1);
+        ATON.toggleMainLight(true);
 
         ATON._rootVisibleGlobal.add(ATON._dMainL);
         ATON._dMainLpos = new THREE.Vector3();
@@ -837,6 +837,25 @@ ATON.setMainLightDirection = (v)=>{
     ATON._dMainLdir = d;
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
+};
+
+ATON.getMainLightDirection = ()=>{
+    return ATON._dMainLdir;
+};
+
+ATON.toggleMainLight = (b)=>{
+    if (ATON._dMainL === undefined) return;
+    ATON._dMainL.visible = b;
+    
+    if (b) ATON.setNeutralAmbientLight(0.1);
+    else ATON.setNeutralAmbientLight(1.0);
+};
+
+ATON.isMainLightEnabled = ()=>{
+    if (ATON._dMainL === undefined) return false;
+    if (!ATON._dMainL.visible) return false;
+
+    return true;
 };
 
 ATON.toggleShadows = (b)=>{

@@ -28,6 +28,8 @@ FE.realize = ()=>{
     FE.bPopupBlurBG = 0.5; // blur 3D content on popup show, 0.0 to disable
     FE._userAuth = {};
 
+    FE._bControlLight = false;
+
     FE._auSemNode = undefined;
     FE._auSemNodePlaying = false;
 
@@ -68,6 +70,13 @@ FE.addBasicLoaderEvents = ()=>{
         if (ATON.SceneHub.getDescription()) $("#btn-info").show();
     });
 
+    ATON.on("frame", FE._update);
+};
+
+FE.controlLight = (b)=>{
+    FE._bControlLight = b;
+
+    ATON.Nav.setUserControl(!b);
 };
 
 FE.useMouseWheelToScaleSelector = (f)=>{
@@ -107,6 +116,23 @@ FE.loadSceneID = (sid)=>{
     console.log(reqstr);
 };
 
+FE._update = ()=>{
+    if (FE._bControlLight){
+        let sx = ATON._screenPointerCoords.x;
+        let sy = ATON._screenPointerCoords.y;
+        console.log(sx,sy);
+
+        let D = new THREE.Vector3();
+        D.x = -Math.cos(sx * Math.PI * 2.0);
+        D.y = -sy;
+        D.z = -Math.sin(sx * Math.PI * 2.0);
+
+        D.normalize();
+
+        ATON.setMainLightDirection(D);
+        ATON.updateDirShadows();
+    }
+};
 
 
 // HTML UI

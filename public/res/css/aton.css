@@ -390,10 +390,10 @@ canvas {
 */
     color: #FFF;
 
-    min-width: 36px;
-    min-height: 36px;
+    min-width: 35px;
+    min-height: 35px;
 
-    line-height: 34px;
+    line-height: 35px;
     
     text-align: center;
     vertical-align: middle;
@@ -401,19 +401,35 @@ canvas {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
 
-    padding: 4px;
-    margin: 4px;
+    padding: 2px;
+    margin: 2px;
 
     outline: none;
+}
+
+@media screen and (min-width: 600px) {
+    .atonBTN {
+        margin: 4px;
+        padding: 3px;
+    }
 }
 
 .atonBTN img {
     position: relative;
     vertical-align: middle;
+
+    height: 32px;
+    width: 32px;
 /*
     top: 50%;
     transform: translateY(-50%);
     */
+}
+
+.atonDefIcon {
+    height: 32px;
+    width: 32px;
+    vertical-align: middle;
 }
 
 .atonBTN-large {
@@ -442,6 +458,13 @@ canvas {
 }
 .atonBTN-yellow:hover {
     box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0);
+}
+
+.atonBTN-orange {
+    background-color: rgba(127, 64, 0, 0.5);
+}
+.atonBTN-orange:hover {
+    box-shadow: 0 0px 10px rgba(255, 127, 0, 1.0);
 }
 
 .atonBTN-green {
@@ -895,6 +918,7 @@ input[type="checkbox"]:checked {
 }
 input[type="checkbox"]:hover {
     border: 2px solid white;
+    /*background: #CCFFCC;*/
 }
 
 input[type="radio"] {

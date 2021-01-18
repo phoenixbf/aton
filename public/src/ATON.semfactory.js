@@ -11,6 +11,9 @@ ATON Semantic Factory
 */
 let SemFactory = {};
 
+SemFactory.FLOAT_PREC = 5;
+
+
 SemFactory.init = ()=>{
     SemFactory.bConvexBuilding = false;
     SemFactory.convexPoints = [];
@@ -75,7 +78,8 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
         for (let i=0; i<numPoints; i++){
             //semesh.userData._convexPoints.push( ATON.Utils.setVectorPrecision(SemFactory.convexPoints[i],3) );
 
-            ATON.Utils.setVectorPrecision(SemFactory.convexPoints[i],4);
+            ATON.Utils.setVectorPrecision(SemFactory.convexPoints[i], SemFactory.FLOAT_PREC);
+            
             semesh.userData._convexPoints.push(SemFactory.convexPoints[i].x);
             semesh.userData._convexPoints.push(SemFactory.convexPoints[i].y);
             semesh.userData._convexPoints.push(SemFactory.convexPoints[i].z);

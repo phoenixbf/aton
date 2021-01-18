@@ -1,5 +1,6 @@
 /*===========================================================================
-    ATON official front-end ("Hathor")
+
+    "Hathor": ATON official front-end
 
     Author: B. Fanini
 
@@ -554,12 +555,12 @@ HATHOR.measure = ()=>{
     E.measurements = {};
     E.measurements[mid] = {};
     E.measurements[mid].points = [
-        parseFloat(M.A.x.toPrecision(6)),
-        parseFloat(M.A.y.toPrecision(6)),
-        parseFloat(M.A.z.toPrecision(6)),
-        parseFloat(M.B.x.toPrecision(6)),
-        parseFloat(M.B.y.toPrecision(6)),
-        parseFloat(M.B.z.toPrecision(6))
+        parseFloat(M.A.x.toPrecision(ATON.SceneHub.FLOAT_PREC)),
+        parseFloat(M.A.y.toPrecision(ATON.SceneHub.FLOAT_PREC)),
+        parseFloat(M.A.z.toPrecision(ATON.SceneHub.FLOAT_PREC)),
+        parseFloat(M.B.x.toPrecision(ATON.SceneHub.FLOAT_PREC)),
+        parseFloat(M.B.y.toPrecision(ATON.SceneHub.FLOAT_PREC)),
+        parseFloat(M.B.z.toPrecision(ATON.SceneHub.FLOAT_PREC))
     ];
 
     ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);

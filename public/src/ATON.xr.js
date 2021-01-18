@@ -112,6 +112,7 @@ XR.teleportOnQueriedPoint = ()=>{
 
     // FIXME: height offset needed for "local", fill this automatically
     ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
+    //ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y, P.z), XR.STD_TELEP_DURATION );
 
     return true;
 };
@@ -222,12 +223,15 @@ XR.onSessionStarted = ( session )=>{
 
     console.log(XR._sessionType + " session started.");
 
+    //console.log(session);
+
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
 	ATON._renderer.xr.setSession( session );
 	XR.currSession = session;
 
+    // Disable panorama on AR sessions
     if (XR._sessionType === "immersive-ar"){
         ATON._mainRoot.background = null;
         if (ATON._mMainPano) ATON._mMainPano.visible = false;

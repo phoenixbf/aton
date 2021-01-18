@@ -15,6 +15,8 @@ let SceneHub = {};
 SceneHub.MODE_ADD = 0;
 SceneHub.MODE_DEL = 1;
 
+SceneHub.FLOAT_PREC = 5;
+
 /**
 Initializes the component
 */
@@ -137,10 +139,10 @@ SceneHub.getJSONsemanticSpheresList = (semid)=>{
         let sphere = S.children[s];
         if (sphere.type){
             SL.push([
-                parseFloat(sphere.position.x.toPrecision(3)), 
-                parseFloat(sphere.position.y.toPrecision(3)), 
-                parseFloat(sphere.position.z.toPrecision(3)), 
-                parseFloat(sphere.scale.x.toPrecision(3))
+                parseFloat(sphere.position.x.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.position.y.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.position.z.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.scale.x.toPrecision(SceneHub.FLOAT_PREC))
             ]);
         }
     }
@@ -426,7 +428,8 @@ SceneHub.initBaseParsers = ()=>{
             if (Array.isArray(spheres)){
                 for (let s in spheres){
                     let S = spheres[s];
-                    ATON.SemFactory.createSphere(nid, new THREE.Vector3(S[0],S[1],S[2]), S[3]);
+                    let loc = new THREE.Vector3(parseFloat(S[0]),parseFloat(S[1]),parseFloat(S[2]));
+                    ATON.SemFactory.createSphere(nid, loc, parseFloat(S[3]));
                 }
             }
 

@@ -120,7 +120,7 @@ FE._update = ()=>{
     if (FE._bControlLight){
         let sx = ATON._screenPointerCoords.x;
         let sy = ATON._screenPointerCoords.y;
-        console.log(sx,sy);
+        //console.log(sx,sy);
 
         let D = new THREE.Vector3();
         D.x = -Math.cos(sx * Math.PI * 2.0);

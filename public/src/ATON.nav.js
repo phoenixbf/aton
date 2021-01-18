@@ -27,18 +27,14 @@ Nav.MODE_FP     = 1;
 Nav.MODE_DEVORI = 2;
 
 
-Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
-
-
-
-
 //Initialize nav system
 Nav.init = ()=>{
     Nav._mode = undefined;
+    Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
 
     Nav._rotSpeedOrbit = 0.4;
     Nav._rotSpeedFP    = -0.2;
-    Nav._inertia       = 0.0; //0.05; // 0.0 = disabled
+    Nav._inertia       = 0.08; // 0.0 = disabled
 
     Nav._bControl = true; // user control
 

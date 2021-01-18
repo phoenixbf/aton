@@ -26,7 +26,7 @@ SemFactory.init = ()=>{
     SemFactory.currSemNode.disablePicking();
     SemFactory.currSemNode.attachToRoot();
 
-    SemFactory.currMaterial = ATON.MatHub.getMaterial("semanticShape"); // current sem material we are using
+    SemFactory.resetMaterial();
 
     SemFactory._numShapes = 0; // counter of shapes produced
 };
@@ -34,7 +34,7 @@ SemFactory.init = ()=>{
 
 // Current material
 SemFactory.resetMaterial = ()=>{
-    SemFactory.currMaterial = ATON.MatHub.getMaterial("semanticShape");
+    SemFactory.currMaterial = ATON.MatHub.getMaterial("semanticShapeHL"); // current sem material we are using. Was "semanticShape"
 };
 
 SemFactory.setMaterial = (m)=>{
@@ -131,8 +131,8 @@ SemFactory.completeConvexShape = (semid)=>{
     let S = ATON.getSemanticNode(semid) || ATON.createSemanticNode(semid);
     
     S.add(SemFactory.currSemNode.children[0]);
-    S.setMaterial( SemFactory.currMaterial );
-    S.setDefaultAndHighlightMaterials(SemFactory.currMaterial, ATON.MatHub.materials.semanticShapeHL);
+    S.setMaterial( /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape);
+    S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ ATON.MatHub.materials.semanticShape, /*ATON.MatHub.materials.semanticShapeHL*/SemFactory.currMaterial);
     S.enablePicking();
 
     SemFactory.currSemNode.removeChildren();
@@ -160,7 +160,7 @@ SemFactory.completeConvexShape = (semid)=>{
 
 SemFactory.createConvexShape = (semid, points)=>{
     let geom   = new THREE.ConvexBufferGeometry( points );
-    let semesh = new THREE.Mesh( geom, SemFactory.currMaterial );
+    let semesh = new THREE.Mesh( geom, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
 
     semesh.userData._convexPoints = [];
     for (let i=0; i<points.length; i++){
@@ -174,7 +174,7 @@ SemFactory.createConvexShape = (semid, points)=>{
 
     let S = ATON.getOrCreateSemanticNode(semid);
     S.add(semesh);
-    S.setDefaultAndHighlightMaterials(SemFactory.currMaterial, ATON.MatHub.materials.semanticShapeHL);
+    S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape, SemFactory.currMaterial /*ATON.MatHub.materials.semanticShapeHL*/);
 
     S.enablePicking();
 
@@ -218,7 +218,7 @@ SemFactory.createSphere = (semid, location, radius)=>{
     let S = ATON.getOrCreateSemanticNode(semid);
 
     //let g = new THREE.SphereGeometry( 1.0, 16, 16 );
-    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, SemFactory.currMaterial );
+    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
     
     // Note: we add multiple spheres to the same <semid> node
     let sphere = new THREE.Object3D();
@@ -228,7 +228,7 @@ SemFactory.createSphere = (semid, location, radius)=>{
 
     S.add( sphere );
     S.enablePicking();
-    S.setDefaultAndHighlightMaterials(SemFactory.currMaterial, ATON.MatHub.materials.semanticShapeHL);
+    S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape, SemFactory.currMaterial/*ATON.MatHub.materials.semanticShapeHL*/);
 
     //SemFactory.currParent.add( S );
 

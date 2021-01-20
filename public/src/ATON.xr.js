@@ -15,13 +15,17 @@ XR.STD_TELEP_DURATION = 0.03;
 XR.HAND_R = 0;
 XR.HAND_L = 1;
 
+XR.MOBILE_DENSITY_F = 0.5;
+
 
 //Initializes XR component
 XR.init = ()=>{
     ATON._renderer.xr.enabled = true;
     ATON._renderer.xr.setReferenceSpaceType( 'local' );
     
-    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(0.5); // WebXR density
+    // WebXR density
+    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * XR.MOBILE_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
 
     XR._bPresenting = false;
     XR.currSession = null;
@@ -80,6 +84,7 @@ XR.init = ()=>{
         if (rh) rh.setMaterial(am);
     });
 };
+
 
 /**
 Set session type

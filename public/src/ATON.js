@@ -89,6 +89,8 @@ ATON.SHADOWS_FAR  = 50.0;
 ATON.SHADOWS_SIZE = 15.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
+ATON.AMB_L = 0.1; // Ambient when using direct lighting
+
 /**
 Set path collection (3D models, audio, panoramas, ...)
 @param {string} path - path
@@ -321,6 +323,9 @@ ATON.realize = ()=>{
     //console.log(ATON._stdpxd);
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
+    ATON._renderer.toneMapping = THREE.LinearToneMapping;
+    ATON._renderer.toneMappingExposure = 1.0;
+
     //console.log(ATON._renderer.getPixelRatio());
 
     ATON._renderer.setAnimationLoop( ATON._onFrame );
@@ -473,6 +478,12 @@ ATON.setDefaultPixelDensity(0.5)
 ATON.setDefaultPixelDensity = (d)=>{
     ATON._stdpxd = d;
     ATON._renderer.setPixelRatio( d );
+
+    // WebXR density
+    if (ATON._renderer.xr === undefined) return;
+
+    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.MOBILE_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
 };
 
 /**
@@ -706,7 +717,9 @@ Add a LightProbe to the scene
 @param {LightProbe} LP - the light probe being added 
 */
 ATON.addLightProbe = (LP)=>{
-    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(0.1);
+    if (LP === undefined) return;
+
+    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
 
     ATON._lps.push(LP);
 };
@@ -815,6 +828,7 @@ ATON.setMainLightDirection( new THREE.Vector(0.1,-1.0,0.0) );
 ATON.setMainLightDirection = (v)=>{
 
     let d = v.clone();
+    d.normalize();
 
     d.x *= ATON.SHADOWS_FAR * 0.5;
     d.y *= ATON.SHADOWS_FAR * 0.5;
@@ -840,14 +854,18 @@ ATON.setMainLightDirection = (v)=>{
 };
 
 ATON.getMainLightDirection = ()=>{
-    return ATON._dMainLdir;
+    if (ATON._dMainLdir === undefined) return undefined;
+
+    let ld = ATON._dMainLdir.clone();
+    ld.normalize();
+    return ld;
 };
 
 ATON.toggleMainLight = (b)=>{
     if (ATON._dMainL === undefined) return;
     ATON._dMainL.visible = b;
     
-    if (b) ATON.setNeutralAmbientLight(0.1);
+    if (b) ATON.setNeutralAmbientLight(ATON.AMB_L);
     else ATON.setNeutralAmbientLight(1.0);
 };
 
@@ -856,6 +874,13 @@ ATON.isMainLightEnabled = ()=>{
     if (!ATON._dMainL.visible) return false;
 
     return true;
+};
+
+ATON.setExposure = (d)=>{
+    ATON._renderer.toneMappingExposure = d;
+};
+ATON.getExposure = ()=>{
+    return ATON._renderer.toneMappingExposure;
 };
 
 ATON.toggleShadows = (b)=>{

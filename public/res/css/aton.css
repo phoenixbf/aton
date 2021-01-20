@@ -213,7 +213,7 @@ canvas {
     top: 0px;
     right: 0px;
     
-    /*width: 100%;*/
+    width: 100%;
     text-align: right;
 }
 
@@ -227,7 +227,7 @@ canvas {
 
 .atonToolbar-bottom {
     bottom: 0%;
-    width:100%;
+    width: 100%;
 }
 
 .atonToolbar-bottom-left {
@@ -254,7 +254,7 @@ canvas {
 .scrollableY {
     overflow-x: hidden;
     overflow-y: auto;
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 
     -webkit-overflow-scrolling: touch;
 }
@@ -398,7 +398,7 @@ canvas {
     text-align: center;
     vertical-align: middle;
 
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     border-radius: 5px;
 
     padding: 2px;
@@ -501,7 +501,8 @@ canvas {
 }
 
 .switchedON {
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(127, 127, 127, 0.5);
+
     /*
     box-shadow: 0 0px 5px rgba(255, 255, 255, 1.0);
     border: 2px solid white;
@@ -686,7 +687,7 @@ canvas {
     width: 100%;
     height: 100%;
 
-    background-color: rgba(0,0,0,0.7);
+    /*background-color: rgba(0,0,0,0.7);*/
 
     margin: 0px;
     padding: 0px;
@@ -715,7 +716,8 @@ canvas {
 	border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0,0,0, 1);
     
-    background-color: rgba(0,0,0,0.5);
+    /*background-color: rgba(0,0,0,0.5);*/
+    background-color: rgba(0,0,0,0.7);
     
     overflow-y: auto;
     overflow-x: hidden;
@@ -742,6 +744,28 @@ canvas {
         }
 }
 
+.atonPopupDescriptionContainer {
+    text-align: initial;
+    width: 100%;
+
+    margin: 5px;
+}
+
+.atonPopupTitle {
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+
+    /*border-bottom: 1px solid white;*/
+    padding: 10px;
+    margin-bottom: 10px;
+    left: 0px;
+    right: 0px;
+
+    border-radius: 10px;
+    background-color: black;
+}
+
 .atonQRcontainer {
     display: inline-block;
 
@@ -759,28 +783,6 @@ canvas {
 .atonQRcontainer img {
     width: 100%;
     height: auto;
-}
-
-.atonPopupDescriptionContainer {
-    text-align: initial;
-    width: 100%;
-
-    margin: 5px;
-}
-
-.atonPopupTitle {
-    font-weight: bold;
-    font-size: larger;
-    text-align: center;
-
-    /*border-bottom: 1px solid white;*/
-    padding: 10px;
-    margin-bottom: 10px;
-    left:5px;
-    right: 5px;
-
-    border-radius: 10px;
-    background-color: black;
 }
 
 
@@ -1156,6 +1158,17 @@ label {
     /*border: 2px solid black;*/
 }
 
+.atonOptionBlockShort {
+    display: inline-block;
+    
+    max-width: 200px;
+    
+    margin: 8px; 
+    padding: 4px; 
+    
+    vertical-align: top;
+}
+
 .atonOptionBlock {
     display: inline-block;
     vertical-align: top;
@@ -1200,6 +1213,21 @@ label {
 
     margin: 1px;
     padding: 8px;
+}
+
+.atonBlockScene {
+    display: inline-block;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: auto;
+
+    border-radius: 10px;
+
+    margin: 3px;
+    padding: 1px;
+
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .atonProcessBTN {

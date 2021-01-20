@@ -31,14 +31,16 @@ let renderForm = ()=>{
             let scene = data[i];
             let sid = scene.sid;
 
+            let urlCover = (scene.cover)? DIR_SCENES+sid+"/cover.png" : PATH_RES+"scenecover.png";
+
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonBlockRound' style='width:230px;'>";
+            shtml += "<div id='s"+i+"' class='atonBlockScene' style='width:230px;'>";
             shtml += "<a href='/s/"+sid+"'><div class='atonBlockTitle' style='font-size:small;'>"+sid+"</div></a><br>";
             //shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
             
+
             shtml += "<a class='atonCover' href='/s/"+sid+"'>";
-            if (scene.cover) shtml += "<img src='"+DIR_SCENES+sid+"/cover.png'>";
-            else shtml += "<img src='"+PATH_RES+"scenecover.png'>";
+            shtml += "<img src='"+urlCover+"'>";
             shtml += "</a>";
 
             shtml += "<br>";

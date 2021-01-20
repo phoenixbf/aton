@@ -120,11 +120,12 @@ HATHOR.uiSetup = ()=>{
 */
 
     // Auth icons
-    $('#idTopToolbar').append("<span id='idAuthTools'></span>");
+    //$('#idTopToolbar').append("<span id='idAuthTools'></span>");
     //ATON.FE.uiAddButtonEditMode("idAuthTools");
     //ATON.FE.uiAddButton("idAuthTools", "pov", HATHOR.popupPOV );
   
     // Bottom toolbar
+    //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
     ATON.FE.uiAddButtonHome("idBottomToolbar");
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
@@ -947,23 +948,52 @@ HATHOR.popupEnvironment = ()=>{
     let bMainLight = ATON.isMainLightEnabled();
     let bShadows = ATON._renderer.shadowMap.enabled;
 
+    htmlcontent += "<div style='text-align:center;'>Exposure (<span id='idExpVal'></span>)<br>";
+    htmlcontent += "<input id='idExposure' type='range' min='0.1' max='3.0' step='0.1' >";
+    htmlcontent += "</div><br>";
+
     let str = (bMainLight)? "checked" : "";
-    htmlcontent += "<input type='checkbox' id='idDirLight' "+str+">Direct light<br>";
+    htmlcontent += "<div id='idOptLight' class='atonOptionBlockShort' >";
+    htmlcontent += "<input type='checkbox' id='idDirLight' "+str+"><b>Direct light</b><br>";
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"light.png' class='atonDefIcon' style='float:left'>you can enable a main directional light (you can control it by pressing 'l' key)</div>";
 
     str = (bShadows)? "checked" : "";
-    htmlcontent += "<input type='checkbox' id='idShadows' "+str+">Shadows<br>";
+    htmlcontent += "<div id='idOptShadows' class='atonOptionBlockShort' >";
+    htmlcontent += "<input type='checkbox' id='idShadows' "+str+"><b>Shadows</b><br>";
+    htmlcontent += "you can enable real-time shadows (warning, this may impact performances)</div>";
+
+    str = (ATON._bAutoLP)? "checked" : "";
+    htmlcontent += "<div id='idOptAutoLP' class='atonOptionBlockShort' >";
+    htmlcontent += "<input type='checkbox' id='idAutoLP' "+str+"><b>Auto Light-Probe</b><br>";
+    htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"lp.png' class='atonDefIcon' style='float:left'>this option estimates location and radius of a light-probe</div>";
 
     htmlcontent += "</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
+    let ex = ATON.getExposure();
+    $("#idExposure").val(ex);
+    $("#idExpVal").html(ex);
+
+    $("#idExposure").on("input change",()=>{
+        let e = parseFloat( $("#idExposure").val() );
+        ATON.setExposure(e);
+        $("#idExpVal").html(e);
+    });
+
     $("#idDirLight").on("change",()=>{
         let b = $("#idDirLight").is(':checked');
         if (b){
+            let ld = ATON.getMainLightDirection();
+            if (ld) ATON.setMainLightDirection( ld );
+            else ATON.setMainLightDirection( new THREE.Vector3(0,-1.0,1.0) );
+            
             ATON.updateDirShadows();
+            $("#idOptShadows").show();
         }
         else {
-            //TODO:
+            ATON.toggleMainLight(false);
+            $("#idOptShadows").hide();
         }
 
         ATON.toggleMainLight(b);
@@ -973,6 +1003,12 @@ HATHOR.popupEnvironment = ()=>{
         let b = $("#idShadows").is(':checked');
         ATON.toggleShadows(b);
         if (b) ATON.updateDirShadows();
+    });
+
+    $("#idAutoLP").on("change",()=>{
+        let b = $("#idAutoLP").is(':checked');
+        ATON.setAutoLP(b);
+        ATON.updateLightProbes();
     });
 };
 
@@ -1014,7 +1050,7 @@ HATHOR.popupScene = ()=>{
         // Common scene options
         htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
         htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
-        //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEnv'><img src='"+ATON.FE.PATH_RES_ICONS+"light.png'>Environment</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEnv'><img src='"+ATON.FE.PATH_RES_ICONS+"light.png'>Environment</div>";
         htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEmbed'><img src='"+ATON.FE.PATH_RES_ICONS+"embed.png'>Embed</div>";
         htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot</div>";
 

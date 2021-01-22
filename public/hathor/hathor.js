@@ -242,6 +242,10 @@ HATHOR.setupVRCEventHandlers = ()=>{
         N.toggle(d.v);
     });
 
+    ATON.VRoadcast.on("AFE_LightSwitch", (b)=>{
+        ATON.toggleMainLight(b);
+    });
+
     ATON.on("VRC_IDassigned", (uid)=>{
         $("#btn-talk").show();
     });
@@ -513,7 +517,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment = {};
             E.environment.mainlight = {};
             E.environment.mainlight.direction = [D.x,D.y,D.z];
-            E.environment.mainlight.shadows = ATON._dMainL.castShadow;
+            E.environment.mainlight.shadows = ATON._renderer.shadowMap.enabled;
 
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
@@ -971,6 +975,9 @@ HATHOR.popupEnvironment = ()=>{
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
+    let E = {};
+    E.environment = {};
+
     let ex = ATON.getExposure();
     $("#idExposure").val(ex);
     $("#idExpVal").html(ex);
@@ -979,22 +986,38 @@ HATHOR.popupEnvironment = ()=>{
         let e = parseFloat( $("#idExposure").val() );
         ATON.setExposure(e);
         $("#idExpVal").html(e);
+
+        E.environment.exposure = e;
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idDirLight").on("change",()=>{
         let b = $("#idDirLight").is(':checked');
         if (b){
             let ld = ATON.getMainLightDirection();
-            if (ld) ATON.setMainLightDirection( ld );
-            else ATON.setMainLightDirection( new THREE.Vector3(0,-1.0,1.0) );
+            if (ld === undefined) ld = new THREE.Vector3(0,-1.0,1.0);
+            ATON.setMainLightDirection( ld );
             
-            ATON.updateDirShadows();
+            //ATON.updateDirShadows();
             $("#idOptShadows").show();
+
+            E.environment.mainlight = {};
+            E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
         else {
-            ATON.toggleMainLight(false);
             $("#idOptShadows").hide();
+
+            //ATON.SceneHub.sendEdit( { environment:{ mainlight:{} } }, ATON.SceneHub.MODE_ADD);
+            //ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            E.environment.mainlight = {};
+            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+            ATON.VRoadcast.fireEvent("AFE_LightSwitch", false);
         }
+
+        console.log(E);
 
         ATON.toggleMainLight(b);
     });
@@ -1002,13 +1025,28 @@ HATHOR.popupEnvironment = ()=>{
     $("#idShadows").on("change",()=>{
         let b = $("#idShadows").is(':checked');
         ATON.toggleShadows(b);
-        if (b) ATON.updateDirShadows();
+        //if (b) ATON.updateDirShadows();
+
+        let ld = ATON.getMainLightDirection();
+
+        if (!ATON.isMainLightEnabled()) return;
+
+        E.environment.mainlight = {};
+        E.environment.mainlight.shadows = b;
+        //if (ld) E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idAutoLP").on("change",()=>{
         let b = $("#idAutoLP").is(':checked');
         ATON.setAutoLP(b);
         ATON.updateLightProbes();
+
+        E.environment.lightprobes = {};
+        E.environment.lightprobes.auto = b;
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
     });
 };
 

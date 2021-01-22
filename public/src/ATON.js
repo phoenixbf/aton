@@ -842,8 +842,6 @@ ATON.setMainLightDirection = (v)=>{
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
         ATON._dMainL.target = ATON._dMainLtgt;
 
-        ATON.toggleMainLight(true);
-
         ATON._rootVisibleGlobal.add(ATON._dMainL);
         ATON._dMainLpos = new THREE.Vector3();
     }
@@ -851,6 +849,8 @@ ATON.setMainLightDirection = (v)=>{
     ATON._dMainLdir = d;
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
+
+    ATON.toggleMainLight(true);
 };
 
 ATON.getMainLightDirection = ()=>{
@@ -865,7 +865,10 @@ ATON.toggleMainLight = (b)=>{
     if (ATON._dMainL === undefined) return;
     ATON._dMainL.visible = b;
     
-    if (b) ATON.setNeutralAmbientLight(ATON.AMB_L);
+    if (b){
+        ATON.setNeutralAmbientLight(ATON.AMB_L);
+        ATON.updateDirShadows();
+    }
     else ATON.setNeutralAmbientLight(1.0);
 };
 
@@ -892,14 +895,14 @@ ATON.toggleShadows = (b)=>{
 
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
         //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;
-        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // bleeding
+        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
         //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
         ATON._dMainL.shadow.mapSize.width  = ATON.SHADOWS_RES;
         ATON._dMainL.shadow.mapSize.height = ATON.SHADOWS_RES;
         ATON._dMainL.shadow.camera.near    = ATON.SHADOWS_NEAR;
         ATON._dMainL.shadow.camera.far     = ATON.SHADOWS_FAR;
-        //ATON._dMainL.shadow.bias = 0.0001;
+        //ATON._dMainL.shadow.bias           = 0.0001;
 
         ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
         ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
@@ -917,6 +920,7 @@ ATON.toggleShadows = (b)=>{
             let c = ATON._rootVisible.getBound().center;
             ATON.updateDirShadows(c);
         }
+        else ATON.updateDirShadows();
 
         console.log("Shadows ON");
     }

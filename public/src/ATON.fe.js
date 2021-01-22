@@ -123,14 +123,14 @@ FE._update = ()=>{
         //console.log(sx,sy);
 
         let D = new THREE.Vector3();
-        D.x = -Math.cos(sx * Math.PI * 2.0);
-        D.y = -sy;
-        D.z = -Math.sin(sx * Math.PI * 2.0);
+        D.x = -Math.cos(sx * Math.PI);
+        D.y = -sy * 2.0;
+        D.z = -Math.sin(sx * Math.PI);
 
         D.normalize();
 
         ATON.setMainLightDirection(D);
-        ATON.updateDirShadows();
+        //ATON.updateDirShadows();
     }
 };
 

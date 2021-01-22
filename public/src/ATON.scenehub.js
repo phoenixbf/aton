@@ -202,14 +202,25 @@ SceneHub.initBaseParsers = ()=>{
                 if (L.color)     ATON._dMainL.color = new THREE.Color(L.color[0],L.color[1],L.color[2]);
                 if (L.intensity) ATON._dMainL.intensity = L.intensity;
 
-                if (L.shadows) ATON.toggleShadows(L.shadows);
+                if (L.shadows !== undefined) ATON.toggleShadows(L.shadows);
+                else ATON.toggleShadows(false);
             }
+            else {
+                //ATON.toggleShadows(false);
+                ATON.toggleMainLight(false);
+            }
+        }
+        else {
+            //ATON.toggleShadows(false);
+            ATON.toggleMainLight(false);
         }
 
         let lps = env.lightprobes;
         if (lps){
             if (lps.auto) ATON.setAutoLP(true);
         }
+
+        if (env.exposure) ATON.setExposure(env.exposure);
 
     };
 

@@ -5,7 +5,7 @@
         "nodes": {
             "main": {
                 "urls": [
-                    "models/samples/throne/throne.gltf"
+                    "samples/models/throne/throne.gltf"
                 ]
             }
         },

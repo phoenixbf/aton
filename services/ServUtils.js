@@ -22,8 +22,8 @@ ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
 ServUtils.DIR_FE           = path.join(ServUtils.DIR_PUBLIC,"hathor/");
 ServUtils.DIR_BE           = path.join(ServUtils.DIR_PUBLIC,"shu/");
 ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
-ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
-ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
+//ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
+//ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
 ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
 ServUtils.DIR_EXAMPLES     = path.join(ServUtils.DIR_PUBLIC,"examples/");
 ServUtils.STD_SCENEFILE    = "scene.json";
@@ -521,10 +521,11 @@ ServUtils.realizeBaseAPI = (app)=>{
 		}
 
 		let uname   = req.user.username;
-		let relpath = "models/"+uname+"/";
+		//let relpath = "models/"+uname+"/";
+		let relpath = uname+"/models/";
 
 		let O = {};
-		O.cwd = ServUtils.DIR_MODELS+uname;
+		O.cwd = ServUtils.DIR_COLLECTION+relpath; //ServUtils.DIR_MODELS+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{gltf,glb}", O);
@@ -545,10 +546,11 @@ ServUtils.realizeBaseAPI = (app)=>{
 		}
 
 		let uname   = req.user.username;
-		let relpath = "pano/"+uname+"/";
+		//let relpath = "pano/"+uname+"/";
+		let relpath = uname+"/pano/";
 
 		let O = {};
-		O.cwd = ServUtils.DIR_PANO+uname;
+		O.cwd = ServUtils.DIR_COLLECTION+relpath; //ServUtils.DIR_PANO+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{jpg,hdr}", O);

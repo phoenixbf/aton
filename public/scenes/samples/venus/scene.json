@@ -2,7 +2,7 @@
     "scenegraph": {
         "nodes": {
             "main": {
-                "urls": "models/samples/venus/venus.gltf",
+                "urls": "samples/models/venus/venus.gltf",
                 "transform": {
                     "scale": [
                         0.1,

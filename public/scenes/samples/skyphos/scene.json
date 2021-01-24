@@ -3,7 +3,7 @@
 
 	"environment":{
 		"mainpano":{
-			"url": "pano/samples/defsky-grass.jpg",
+			"url": "samples/pano/defsky-grass.jpg",
 			"rotation": 0.0
         },
 
@@ -22,7 +22,7 @@
         "nodes": {
             "main": {
                 "urls": [
-                    "models/samples/skyphos/skyphos.gltf"
+                    "samples/models/skyphos/skyphos.gltf"
                 ]
             }
         },

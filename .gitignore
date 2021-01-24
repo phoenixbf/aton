@@ -76,14 +76,8 @@ _prv
 !/public/scenes/samples/
 
 # Collection
-/public/collection/audio/*
-!/public/collection/audio/samples/
-
-/public/collection/models/*
-!/public/collection/models/samples/
-
-/public/collection/pano/*
-!/public/collection/pano/samples/
+/public/collection/*
+!/public/collection/samples/
 
 # wapps
 /public/wapps/*

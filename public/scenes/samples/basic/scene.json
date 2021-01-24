@@ -3,7 +3,7 @@
 
 	"environment":{
 		"mainpano":{
-			"url": "pano/samples/defsky-grass.jpg",
+			"url": "samples/pano/defsky-grass.jpg",
 			"rotation": 0.0
         },
 
@@ -16,13 +16,13 @@
     "scenegraph": {
         "nodes": {
             "ground": {
-                "urls": "models/samples/basic/ground.gltf",
+                "urls": "samples/models/basic/ground.gltf",
                 "transform":{
                     "scale": [10,10,10]
                 }
             },
             "atoncube":{
-                "urls": "models/samples/atoncube-pbr.glb",
+                "urls": "samples/models/atoncube-pbr.glb",
                 "transform":{
                     "position": [-4.0,0.5,4.0]
                 }

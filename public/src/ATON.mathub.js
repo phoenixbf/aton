@@ -73,7 +73,7 @@ MatHub.addDefaults = ()=>{
 
     // Semantic shapes
     MatHub.materials.semanticShape = new THREE.MeshBasicMaterial({ 
-        //color: MatHub.colors.sem, 
+        //color: MatHub.colors.white, 
         transparent: true,
         depthWrite: false, 
         opacity: 0.0,

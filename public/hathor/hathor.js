@@ -67,7 +67,7 @@ window.addEventListener( 'load', ()=>{
 
 HATHOR.resetSelectionMode = ()=>{
     HATHOR._selMode = HATHOR.SELACTION_STD;
-    $("#btn-shapeconvex").removeClass("atonBTN-rec");
+    $("#btn-shape-convex").removeClass("atonBTN-rec");
 
     ATON.getUINode("sui_measure").switch(false);
     return;
@@ -82,7 +82,7 @@ HATHOR.setSelectionMode = (m)=>{
     HATHOR._selMode = m;
 
     if (m === HATHOR.SELACTION_ADDCONVEXPOINT){
-        $("#btn-shapeconvex").addClass("atonBTN-rec");
+        $("#btn-shape-convex").addClass("atonBTN-rec");
     }
 
     if (m === HATHOR.SELACTION_MEASURE){
@@ -105,11 +105,12 @@ HATHOR.uiSetup = ()=>{
 
     //ATON.FE.uiAddButtonQR("idTopToolbar");
 /*
-    ATON.FE.uiAddButton("idTopToolbar", "shapeconvex", ()=>{
+    ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
         ATON.Nav.toggleUserControl();
 
         if (!ATON.Nav.isUserControlEnabled()){
             HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
+            console.log(".");
         }
         else {
             HATHOR.resetSelectionMode();
@@ -129,9 +130,10 @@ HATHOR.uiSetup = ()=>{
     ATON.FE.uiAddButtonHome("idBottomToolbar");
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
-    ATON.FE.uiAddButtonInfo("idBottomRToolbar");
+    ATON.FE.uiAddButton("idBottomRToolbar", "info", HATHOR.popupSceneInfo );
 
     $("#btn-talk").hide();
+    $("#btn-info").hide();
 
     if (HATHOR.paramFPS){
         $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
@@ -282,7 +284,7 @@ HATHOR.setupEventHandlers = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC) ATON.VRoadcast.connect(); // maybe not needed
-        if (ATON.SceneHub.getDescription()) ATON.FE.popupSceneInfo();
+        if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
     });
 
     ATON.on("NodeRequestFired", ()=>{ 
@@ -579,8 +581,9 @@ HATHOR.measure = ()=>{
 HATHOR._createPopupStdSem = (esemid)=>{
     let htmlcontent = "";
     
-    if (esemid === undefined) htmlcontent = "<div class='atonPopupTitle'>New Annotation</div>";
-    else htmlcontent += "<h1>Modify '"+esemid+"'</h1>";
+    htmlcontent = "<div class='atonPopupTitle'>";
+    if (esemid === undefined) htmlcontent = "New Annotation</div>";
+    else htmlcontent += "Modify '"+esemid+"'</div>";
 
     if (esemid === undefined){
         htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
@@ -778,15 +781,33 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 };
 
 HATHOR.popupSemDescription = (semid)=>{
+    if (semid === undefined) return;
+
     ATON.FE.playAudioFromSemanticNode(semid);
 
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (descr === undefined) return;
 
-    let htmlcontent = "<div class='atonPopupTitle'>"+semid+"</div>";
+    let htmlcontent = "<div class='atonPopupTitle'>";
+    htmlcontent += "<div class='atonBTN' id='btnEditSem' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    htmlcontent += semid+"</div>";
+
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
 
-    ATON.FE.popupShow(htmlcontent);
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    ATON.FE.checkAuth((r)=>{
+        let authUser = r.username;
+
+        if (authUser){
+            $("#btnEditSem").show();
+            $("#btnEditSem").click(()=>{
+                ATON.FE.subPopup( ()=>{ 
+                    HATHOR.popupAddSemantic(undefined, semid);
+                });
+            });
+        }
+    });
 };
 
 HATHOR.popupExportSemShapes = ()=>{
@@ -823,6 +844,43 @@ HATHOR.popupExportSemShapes = ()=>{
         }
 
 
+    });
+};
+
+// General scene info
+HATHOR.popupSceneInfo = ()=>{
+    let head = ATON.SceneHub.getTitle();
+    if (head === undefined) head = ATON.SceneHub.currID;
+
+    let descr = ATON.SceneHub.getDescription();
+
+    let htmlcontent = "";
+
+    htmlcontent += "<div class='atonPopupTitle'>";
+    htmlcontent += "<div class='atonBTN' id='btnEditInfo' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    htmlcontent += head+"</div>";
+
+    //htmlcontent += "<div class='atonBTN atonBTN-gray' id='btnEditInfo' style='display:none; float:left'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    //htmlcontent += "<div class='atonPopupTitle'>"+head+"</div>";
+    if (descr) htmlcontent += "<div class='atonPopupDescriptionContainer'>" + JSON.parse(descr) + "</div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#btnOK").click(()=>{
+        ATON.FE.popupClose();
+    });
+
+    ATON.FE.checkAuth((r)=>{
+        let authUser = r.username;
+
+        if (authUser){
+            $("#btnEditInfo").show();
+            $("#btnEditInfo").click(()=>{
+                ATON.FE.subPopup( HATHOR.popupEditSceneInfo );
+            });
+        }
     });
 };
 
@@ -982,6 +1040,9 @@ HATHOR.popupEnvironment = ()=>{
     $("#idExposure").val(ex);
     $("#idExpVal").html(ex);
 
+    if (bMainLight) $("#idOptShadows").show();
+    else $("#idOptShadows").hide();
+
     $("#idExposure").on("input change",()=>{
         let e = parseFloat( $("#idExposure").val() );
         ATON.setExposure(e);
@@ -1068,7 +1129,7 @@ HATHOR.popupScene = ()=>{
         // Authenticated
         if (authUser){
             if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN switchedON' style='width:80%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes</div>";
-            else htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:250px' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
+            else htmlcontent += "<div class='atonBTN' style='width:250px' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
 
             htmlcontent += "<br><br>";
 /*
@@ -1080,7 +1141,7 @@ HATHOR.popupScene = ()=>{
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
 
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
+            //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
 
             //htmlcontent += "<br>";
         }
@@ -1146,34 +1207,28 @@ HATHOR.popupScene = ()=>{
 */
 
         $("#btnPopPOV").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupPOV(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupPOV );
         });
 
         $("#btnPopEnv").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupEnvironment(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupEnvironment );
         });
 
         $("#btnPopGraphs").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupGraphs(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupGraphs );
         });
 
-        $("#btnInfo").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupEditSceneInfo(); }, ATON.FE.POPUP_DELAY);
-        });
+//        $("#btnInfo").click(()=>{
+//            ATON.FE.subPopup( HATHOR.popupEditSceneInfo );
+//        });
 
         $("#btnSShot").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { ATON.FE.popupScreenShot(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupScreenShot );
         });   
 
 /*
         $("#idPopQR").click(()=>{
-            ATON.FE.popupClose();
-            ATON.FE.popupQR();
+
         });
 */
         $("#idSHUscenes").click(()=>{
@@ -1182,13 +1237,11 @@ HATHOR.popupScene = ()=>{
         });
 
         $("#btnPopEmbed").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupEmbed(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupEmbed );
         });
 
         $("#idDelScene").click(()=>{
-            ATON.FE.popupClose();
-            setTimeout(() => { HATHOR.popupSceneDelete(); }, ATON.FE.POPUP_DELAY);
+            ATON.FE.subPopup( HATHOR.popupSceneDelete );
         });
     });
 };

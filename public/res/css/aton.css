@@ -491,7 +491,7 @@ canvas {
     background-color: rgba(127, 127, 127, 0.5) !important;
 }
 .atonBTN-gray:hover {
-    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+    box-shadow: 0 0px 10px rgba(127, 127, 127, 1.0);
 }
 
 .atonBTN-rec {
@@ -508,9 +508,9 @@ canvas {
     border: 2px solid white;
     */
 
-    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
-    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
-    box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white, inset 0 0px 10px white;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white, inset 0 0px 10px white;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white, inset 0 0px 10px white;
 }
 .switchedON:hover {
     -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
@@ -604,42 +604,42 @@ canvas {
 
 .atonVRCu0 {
     background-color: rgba(127, 0, 0, 0.5);
-    box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0);
+    box-shadow: 0 0px 10px rgba(255, 0, 0, 1.0), inset 0 0px 8px rgba(255, 0, 0, 0.5);
 }
 .atonVRCu0:hover {
     box-shadow: 0 0px 10px rgba(255,0,0, 1.0);
 }
 .atonVRCu1 {
     background-color: rgba(127, 127, 0, 0.5);
-    box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0);
+    box-shadow: 0 0px 10px rgba(255, 255, 0, 1.0), inset 0 0px 8px rgba(255, 255, 0, 0.5);
 }
 .atonVRCu1:hover {
     box-shadow: 0 0px 10px rgba(255,255,0, 1.0);
 }
 .atonVRCu2 {
     background-color: rgba(0, 127, 0, 0.5);
-    box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0);
+    box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0), inset 0 0px 8px rgba(0, 255, 0, 0.5);
 }
 .atonVRCu2:hover {
     box-shadow: 0 0px 10px rgba(0,255,0, 1.0);
 }
 .atonVRCu3 {
     background-color: rgba(0, 127, 127, 0.5);
-    box-shadow: 0 0px 10px rgba(0, 255, 255, 1.0);
+    box-shadow: 0 0px 10px rgba(0, 255, 255, 1.0), inset 0 0px 8px rgba(0, 255, 255, 0.5);
 }
 .atonVRCu3:hover {
     box-shadow: 0 0px 10px rgba(0,255,255, 1.0);
 }
 .atonVRCu4 {
     background-color: rgba(0, 0, 127, 0.5);
-    box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
+    box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0), inset 0 0px 8px rgba(0, 0, 255, 0.5);
 }
 .atonVRCu4:hover {
     box-shadow: 0 0px 10px rgba(0,0,255, 1.0);
 }
 .atonVRCu5 {
     background-color: rgba(127, 0, 127, 0.5);
-    box-shadow: 0 0px 10px rgba(255, 0, 255, 1.0);
+    box-shadow: 0 0px 10px rgba(255, 0, 255, 1.0), inset 0 0px 8px rgba(255, 0, 255, 0.5);
 }
 .atonVRCu5:hover {
     box-shadow: 0 0px 10px rgba(255,0,255, 1.0);
@@ -726,15 +726,22 @@ canvas {
 }
 
 .atonPopupTitle {
+    display: block;
     font-weight: bold;
     font-size: larger;
+
     text-align: center;
 
     /*border-bottom: 1px solid white;*/
-    padding: 10px;
+    padding: 0px;
+    padding-right: 10px;
+    padding-left: 10px;
     
     margin: 0px;
     margin-bottom: 10px;
+
+    min-height: 40px;
+    line-height: 40px;
     
     left: 0px;
     right: 0px;

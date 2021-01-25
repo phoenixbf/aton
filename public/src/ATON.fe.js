@@ -449,6 +449,11 @@ FE.popupClose = (bNoAnim)=>{
     ATON.focusOn3DView();
 };
 
+FE.subPopup = ( popupFunc )=>{
+    ATON.FE.popupClose();
+    setTimeout( popupFunc, ATON.FE.POPUP_DELAY);
+};
+
 FE.popupQR = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Share</div>";
     htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
@@ -505,8 +510,9 @@ FE.popupVRC = ()=>{
     htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
 
     // Username
+    //htmlcontent += "Your username in this collaborative session is:<br>";
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
-    htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:200px; display:none'>"+ATON.VRoadcast._username+"</div>";
+    htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:150px; display:none'>"+ATON.VRoadcast._username+"</div>";
 
     htmlcontent += "<div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'></div>";
 
@@ -514,7 +520,7 @@ FE.popupVRC = ()=>{
     htmlcontent += "<input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
     //htmlcontent += "</div>";
 
-    htmlcontent += "<div class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:90%'>LEAVE</div>";
+    htmlcontent += "<div class='atonBTN' id='idVRCdisconnect' style='width:90%'>LEAVE</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
@@ -534,7 +540,7 @@ FE.popupVRC = ()=>{
 
     $("#idVRCmsg").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
-        if(keycode == '13'){
+        if (keycode == '13'){
             let str = $("#idVRCmsg").val();
             ATON.VRoadcast.setMessage( str );
             $("#idVRCmsg").val("");
@@ -544,7 +550,7 @@ FE.popupVRC = ()=>{
 
     $("#idVRCusername").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
-        if(keycode == '13'){
+        if (keycode == '13'){
             let str = $("#idVRCusername").val();
             ATON.VRoadcast.setUsername( str );
             
@@ -594,13 +600,16 @@ FE.checkAuth = (onReceive)=>{
 FE.popupUser = ()=>{
 
     FE.checkAuth((r)=>{
+        
         // We are already logged
         if (r.username !== undefined){
             let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
             htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br><br>";
 
-            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUuser'><img src='"+FE.PATH_RES_ICONS+"user.png'>Your profile</div>";
-            //htmlcontent += "<div class='atonBTN atonBTN-gray' id='idSHUscenes'><img src='"+FE.PATH_RES_ICONS+"scene.png'>Your scenes</div>";
+            htmlcontent += "UI Profile:<br><div class='select' style='width:150px;'><select id='idUIProfile'>";
+            htmlcontent += "<option value='def'>Default</option>";
+            //htmlcontent += "<option value='teach'>...</option>";
+            htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
 
             htmlcontent += "<div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT</div>";
 

@@ -47,12 +47,12 @@ window.addEventListener( 'load', ()=>{
 	ATON.SUI.setSelectorRadius(0.01);
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"pano/samples/defsky-grass.jpg");
+	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
 
 	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
 
     ATON.createSceneNode("skyphos")
-        .load(ATON.PATH_MODELS+"samples/skyphos/skyphos.gltf")
+        .load(ATON.PATH_COLLECTION+"samples/models/skyphos/skyphos.gltf")
         .attachToRoot();
 });
 

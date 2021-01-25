@@ -508,17 +508,16 @@ canvas {
     border: 2px solid white;
     */
 
-    -webkit-box-shadow:inset 0px 0px 0px 2px white;
-    -moz-box-shadow:inset 0px 0px 0px 2px white;
-    box-shadow:inset 0px 0px 0px 2px white;
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
 }
-
-
 .switchedON:hover {
-    -webkit-box-shadow:inset 0px 0px 0px 2px white;
-    -moz-box-shadow:inset 0px 0px 0px 2px white;
-    box-shadow:inset 0px 0px 0px 2px white;
+    -webkit-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
+    -moz-box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
+    box-shadow:inset 0px 0px 0px 2px white, 0 0px 10px white;
 }
+
 
 .atonMenu {
     background-color: rgba(0, 0, 0, 1.0);
@@ -711,7 +710,7 @@ canvas {
     top: 50%;
     transform: translate(0%,-50%);
 
-    padding: 10px;
+    padding: 12px;
 
 	border-radius: 10px;
     box-shadow: 0px 0px 20px rgba(0,0,0, 1);
@@ -724,6 +723,24 @@ canvas {
     
     transform-origin: center;
     animation: 0.2s ease-out 0s 1 popupAnimation;
+}
+
+.atonPopupTitle {
+    font-weight: bold;
+    font-size: larger;
+    text-align: center;
+
+    /*border-bottom: 1px solid white;*/
+    padding: 10px;
+    
+    margin: 0px;
+    margin-bottom: 10px;
+    
+    left: 0px;
+    right: 0px;
+
+    border-radius: 10px;
+    background-color: black;
 }
 
 @media screen and (orientation: portrait){
@@ -744,26 +761,42 @@ canvas {
         }
 }
 
+/* Popup description container */
 .atonPopupDescriptionContainer {
     text-align: initial;
     width: 100%;
 
+    margin: auto;
+}
+
+.atonPopupDescriptionContainer p {
+    text-align: justify;
     margin: 5px;
 }
 
-.atonPopupTitle {
-    font-weight: bold;
-    font-size: larger;
-    text-align: center;
+.atonPopupDescriptionContainer img {
+    display: inline-block;
 
-    /*border-bottom: 1px solid white;*/
-    padding: 10px;
-    margin-bottom: 10px;
-    left: 0px;
-    right: 0px;
+    max-width: 100%;
+    height: auto;
 
-    border-radius: 10px;
-    background-color: black;
+    margin: 5px;
+}
+
+@media screen and (max-width: 500px){
+    .atonPopupDescriptionContainer img {
+        display: block;
+        max-width: 100%;
+    }
+}
+
+.atonPopupDescriptionContainer iframe {
+    display: inline;
+    border: 0px;
+
+    max-width: 100%;
+
+    margin: 5px;
 }
 
 .atonQRcontainer {
@@ -804,7 +837,7 @@ canvas {
 }
 ::-webkit-scrollbar-thumb:hover {
     background-color: #FFF;
-    box-shadow: 0px 0px 50px rgba(255,255,255, 0.9);
+    box-shadow: 0px 0px 10px rgba(255,255,255, 0.9);
 }
 
 

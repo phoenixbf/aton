@@ -80,7 +80,7 @@ ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
-ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
+//ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 
@@ -97,7 +97,7 @@ Set path collection (3D models, audio, panoramas, ...)
 */
 ATON.setPathCollection = (path)=>{
     ATON.PATH_COLLECTION = /*window.location.origin + */path;
-    ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
+    //ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
 };
 
 /**

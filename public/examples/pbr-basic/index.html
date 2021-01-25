@@ -45,17 +45,17 @@ window.addEventListener( 'load', ()=>{
     // Sample scene
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"pano/samples/defsky-grass.jpg");
+	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
 
 	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
 
     ATON.createSceneNode("ground")
-        .load(ATON.PATH_MODELS+"samples/basic/ground.gltf")
+        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")
         .setScale(10.0)
         .attachToRoot();
 
     ATON.createSceneNode("venus")
-        .load(ATON.PATH_MODELS+"samples/venus/venus.gltf")
+        .load(ATON.PATH_COLLECTION+"samples/models/venus/venus.gltf")
         .setScale(0.3)
 		.rotateY(Math.PI * 0.5)
 		.setPosition(-2,-0.5,1.0)

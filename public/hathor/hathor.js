@@ -1067,8 +1067,8 @@ HATHOR.popupScene = ()=>{
 
         // Authenticated
         if (authUser){
-            if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN atonBTN-green' style='width:100%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes</div>";
-            else htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:100%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
+            if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN switchedON' style='width:80%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes</div>";
+            else htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:250px' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
 
             htmlcontent += "<br><br>";
 /*
@@ -1106,33 +1106,18 @@ HATHOR.popupScene = ()=>{
         let url = window.location.href;
         new QRCode(document.getElementById("idQRcode"), url);
 
-        /*
-        $("#idSchanges").on("change",()=>{
-            let b = $("#idSchanges").is(':checked');
-            if (b){
-                ATON.SceneHub._bEdit = true;
-                ATON.FE.uiSwitchButton("scene",true);
-                console.log("Scene edits are now persistent");
-            }
-            else {
-                ATON.SceneHub._bEdit = false;
-                ATON.FE.uiSwitchButton("scene",false);
-                console.log("Scene edits are now temporary");
-            }
-        });
-*/
     $('#btnSchanges').click(()=>{
         ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
 
         if (ATON.SceneHub._bEdit){
             $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes");
-            $('#btnSchanges').attr("class","atonBTN atonBTN-green");
+            $('#btnSchanges').attr("class","atonBTN switchedON");
             ATON.FE.uiSwitchButton("scene",true);
             console.log("Scene edits are now persistent");
         }
         else {
             $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes");
-            $('#btnSchanges').attr("class","atonBTN atonBTN-gray");
+            $('#btnSchanges').attr("class","atonBTN");
             ATON.FE.uiSwitchButton("scene",false);
             console.log("Scene edits are now temporary"); 
         }

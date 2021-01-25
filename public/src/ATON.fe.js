@@ -692,7 +692,7 @@ FE.popupSceneInfo = ()=>{
     let descr = ATON.SceneHub.getDescription();
 
     let htmlcontent = "<div class='atonPopupTitle'>"+head+"</div>";
-    if (descr) htmlcontent += JSON.parse(descr);
+    if (descr) htmlcontent += "<div class='atonPopupDescriptionContainer'>" + JSON.parse(descr) + "</div>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
 

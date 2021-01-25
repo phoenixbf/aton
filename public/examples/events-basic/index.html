@@ -45,17 +45,17 @@ window.addEventListener( 'load', ()=>{
 
 
     // Sample scene with chaining
-    ATON.createSceneNode("ground")                              // create our scene node with ID 'ground'
-        .load(ATON.PATH_MODELS+"samples/basic/ground.gltf")     // load a sample GLTF
-        .setScale(10.0)                                         // scale the node 10x
-        .attachToRoot();                                        // attach this node to main root
+    ATON.createSceneNode("ground")                                      // create our scene node with ID 'ground'
+        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")  // load a sample GLTF
+        .setScale(10.0)                                                 // scale "ground" node 10x
+        .attachToRoot();                                       // attach this node to main root
 
 	// Create sample shape ("ATON cube") and assign it ID 'atoncube'
 	// then position it somewhere and attach to main root
 	ATON.Utils.createATONCube("atoncube").setPosition(-4.0,0.5,4.0).attachToRoot();
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"pano/samples/defsky-grass.jpg");
+	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
 });
 
 </script>

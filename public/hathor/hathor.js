@@ -582,7 +582,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
     let htmlcontent = "";
     
     htmlcontent = "<div class='atonPopupTitle'>";
-    if (esemid === undefined) htmlcontent = "New Annotation</div>";
+    if (esemid === undefined) htmlcontent += "New Annotation</div>";
     else htmlcontent += "Modify '"+esemid+"'</div>";
 
     if (esemid === undefined){
@@ -789,7 +789,7 @@ HATHOR.popupSemDescription = (semid)=>{
     if (descr === undefined) return;
 
     let htmlcontent = "<div class='atonPopupTitle'>";
-    htmlcontent += "<div class='atonBTN' id='btnEditSem' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN' id='btnEditSem' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
     htmlcontent += semid+"</div>";
 
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
@@ -857,7 +857,7 @@ HATHOR.popupSceneInfo = ()=>{
     let htmlcontent = "";
 
     htmlcontent += "<div class='atonPopupTitle'>";
-    htmlcontent += "<div class='atonBTN' id='btnEditInfo' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN' id='btnEditInfo' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
     htmlcontent += head+"</div>";
 
     //htmlcontent += "<div class='atonBTN atonBTN-gray' id='btnEditInfo' style='display:none; float:left'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";

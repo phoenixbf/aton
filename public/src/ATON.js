@@ -260,12 +260,12 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // In orbit mode, focus on selected SemNode...
     let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
     if (ATON._queryDataSem && hsn){
-        ATON.Nav.requestPOVbyNode( hsn, 0.3);
+        ATON.Nav.requestPOVbyNode( hsn, 0.5);
         return;
     }
     // ...or perform standard retarget on picket surface point
     if (ATON._queryDataScene){
-        ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.3);
+        ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.5);
     }
 
     // TODO: go POV in sight if any (panorama only mode)

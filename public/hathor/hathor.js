@@ -360,7 +360,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (ATON._hoveredSemNode) HATHOR.popupSemDescription(ATON._hoveredSemNode);
     });
 
-    ATON.FE.useMouseWheelToScaleSelector(0.0001);
+    //ATON.FE.useMouseWheelToScaleSelector(0.0001);
 
     ATON.on("KeyPress", (k)=>{
         if (k === 'Delete'){
@@ -463,13 +463,9 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='v') HATHOR.popupPOV();
 
-/*
-        if (k==='n'){
-            ATON.Nav.toggleUserControl();
 
-            HATHOR._selMode = HATHOR.SELACTION_ADDCONVEXPOINT;
-        }
-*/
+        if (k==='n') HATHOR.popupNav();
+
         //if (k==='^') ATON.Nav.setFirstPersonControl();
 
 /*
@@ -498,6 +494,8 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='r') ATON.MediaRec.startRecording();
 
         if (k==='f') ATON.VRoadcast.setFocusStreaming(true);
+
+        if (k==='.') ATON.FE.controlSelectorScale(true);
     });
 
     ATON.on("KeyUp",(k)=>{
@@ -524,6 +522,8 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
             ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
         }
+
+        if (k==='.') ATON.FE.controlSelectorScale(false);
     });
 
     ATON.on("Login", (d)=>{
@@ -973,6 +973,7 @@ HATHOR.popupGraphs = ()=>{
     // Scene
     htmlcontent += dBlock;
     htmlcontent += "<div style='text-align:center'><b>VISIBLE</b></div><br>";
+    //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnAddNode' style='width:100%'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div>";
     htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SCENE);
     htmlcontent += "</div>";
 
@@ -980,6 +981,7 @@ HATHOR.popupGraphs = ()=>{
     if (Object.keys(ATON.semnodes).length > 1){
         htmlcontent += dBlock;
         htmlcontent += "<div style='text-align:center'><b>SEMANTIC</b></div><br>";
+        //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnAddSemNode' style='width:100%'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div>";
         htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SEM);
         htmlcontent += "</div>";
     }
@@ -1223,7 +1225,7 @@ HATHOR.popupScene = ()=>{
 //        });
 
         $("#btnSShot").click(()=>{
-            ATON.FE.subPopup( HATHOR.popupScreenShot );
+            ATON.FE.subPopup( ATON.FE.popupScreenShot );
         });   
 
 /*
@@ -1330,21 +1332,30 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += "</ul></div>";
 
     // 3D selector
-    htmlcontent += blblock+"<h3>3D Query</h3>";
+    htmlcontent += blblock+"<h3>3D Selector</h3>";
     htmlcontent += "<ul>";
     if (ATON.Utils.isMobile()){
         htmlcontent += "<li><b>Tap</b>: move location of 3D selector</li>";
-        htmlcontent += "<li><b>Double-tap on annotation</b>: open associated content</li>";
     }
     else {
         htmlcontent += "<li><b>'SHIFT + mouse wheel'</b>: increase/decrease radius of selector</li>";
+    }
+    htmlcontent += "</ul></div>";
+
+    // Annotation
+    htmlcontent += blblock+"<h3>Annotation</h3>";
+    htmlcontent += "<ul>";
+    if (ATON.Utils.isMobile()){
+        htmlcontent += "<li><b>Double-tap on annotation</b>: open associated content</li>";
+    }
+    else {
         htmlcontent += "<li><b>'a'</b>: add basic annotation (sphere)</li>";
         htmlcontent += "<li><b>'s'</b>: initiate convex shape annotation (add surface point)</li>";
         htmlcontent += "<li><b>'S'</b>: finalize convex shape annotation</li>";
         htmlcontent += "<li><b>'ESC'</b>: cancel/stop current convex shape annotation</li>";
         htmlcontent += "<li><b>'e'</b>: edit hovered annotation</li>";
         htmlcontent += "<li><b>'CANC'</b>: delete hovered annotation</li>";
-        htmlcontent += "<li><b>'x'</b>: export semantic shapes</li>";
+        htmlcontent += "<li><b>'x'</b>: export (download) semantic shapes</li>";
         htmlcontent += "<li><b>'m'</b>: add measurement point</li>";
     }
     htmlcontent += "</ul></div>";
@@ -1387,6 +1398,20 @@ HATHOR.popupSceneDelete = ()=>{
     $('#btnDELno').click(()=>{
         ATON.FE.popupClose();
     });
+};
+
+HATHOR.popupNav = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Navigation</div>";
+
+    htmlcontent += "<div id='idNavModes'></div>";
+    //htmlcontent += "<div class='atonBTN' id='btnFP'><img src='"+ATON.FE.PATH_RES_ICONS+"fp.png'></div>";
+    //htmlcontent += "<div class='atonBTN' id='btnOrb'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'></div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    ATON.FE.uiAddButtonFirstPerson("idNavModes");
+    ATON.FE.uiAddButtonDeviceOrientation("idNavModes");
+    ATON.FE.uiAddButtonVR("idNavModes");
 };
 
 HATHOR.popupEmbed = ()=>{

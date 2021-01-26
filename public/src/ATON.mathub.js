@@ -60,6 +60,19 @@ MatHub.addDefaults = ()=>{
         flatShading: true
     });
 
+    // Teleport locator
+    MatHub.materials.teleportLoc = new THREE.MeshBasicMaterial({ 
+        transparent: true, 
+        opacity: 1.0,
+        depthWrite: false,
+        flatShading: true,
+        side: THREE.DoubleSide
+    });
+
+    ATON.Utils.textureLoader.load(ATON.PATH_RES+"grad.png", (texture) => {
+        MatHub.materials.teleportLoc.map = texture;
+    });
+
     // Measurements
     MatHub.materials.measurement = new THREE.MeshBasicMaterial({
         color: MatHub.colors.white,

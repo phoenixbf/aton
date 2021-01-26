@@ -171,7 +171,7 @@ ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
-ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
+//ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 
@@ -180,13 +180,15 @@ ATON.SHADOWS_FAR  = 50.0;
 ATON.SHADOWS_SIZE = 15.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
+ATON.AMB_L = 0.1; // Ambient when using direct lighting
+
 /**
 Set path collection (3D models, audio, panoramas, ...)
 @param {string} path - path
 */
 ATON.setPathCollection = (path)=>{
     ATON.PATH_COLLECTION = /*window.location.origin + */path;
-    ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
+    //ATON.PATH_MODELS     = ATON.PATH_COLLECTION+"models/";
 };
 
 /**
@@ -326,11 +328,12 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
 
     // When first-person mode, teleport (non immersive)
-    if (ATON._queryDataScene &amp;&amp; bFPtrans){
+    if (/*ATON._queryDataScene &amp;&amp; */bFPtrans){        
+        //if (N.y > 0.7){
+        if (ATON.Nav.currentQueryValidForLocomotion()){
         let P = ATON._queryDataScene.p;
         let N = ATON._queryDataScene.n;
-        
-        if (N.y > 0.7){
+
             let currDir = ATON.Nav._vDir;
             let feye = new THREE.Vector3(P.x, P.y+ATON.userHeight, P.z);
             let ftgt = new THREE.Vector3(
@@ -349,12 +352,12 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // In orbit mode, focus on selected SemNode...
     let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
     if (ATON._queryDataSem &amp;&amp; hsn){
-        ATON.Nav.requestPOVbyNode( hsn, 0.3);
+        ATON.Nav.requestPOVbyNode( hsn, 0.5);
         return;
     }
     // ...or perform standard retarget on picket surface point
     if (ATON._queryDataScene){
-        ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.3);
+        ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.5);
     }
 
     // TODO: go POV in sight if any (panorama only mode)
@@ -412,6 +415,9 @@ ATON.realize = ()=>{
     //console.log(ATON._stdpxd);
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
+    ATON._renderer.toneMapping = THREE.LinearToneMapping;
+    ATON._renderer.toneMappingExposure = 1.0;
+
     //console.log(ATON._renderer.getPixelRatio());
 
     ATON._renderer.setAnimationLoop( ATON._onFrame );
@@ -564,6 +570,12 @@ ATON.setDefaultPixelDensity(0.5)
 ATON.setDefaultPixelDensity = (d)=>{
     ATON._stdpxd = d;
     ATON._renderer.setPixelRatio( d );
+
+    // WebXR density
+    if (ATON._renderer.xr === undefined) return;
+
+    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.MOBILE_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
 };
 
 /**
@@ -797,7 +809,9 @@ Add a LightProbe to the scene
 @param {LightProbe} LP - the light probe being added 
 */
 ATON.addLightProbe = (LP)=>{
-    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(0.1);
+    if (LP === undefined) return;
+
+    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
 
     ATON._lps.push(LP);
 };
@@ -906,6 +920,7 @@ ATON.setMainLightDirection( new THREE.Vector(0.1,-1.0,0.0) );
 ATON.setMainLightDirection = (v)=>{
 
     let d = v.clone();
+    d.normalize();
 
     d.x *= ATON.SHADOWS_FAR * 0.5;
     d.y *= ATON.SHADOWS_FAR * 0.5;
@@ -919,8 +934,6 @@ ATON.setMainLightDirection = (v)=>{
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
         ATON._dMainL.target = ATON._dMainLtgt;
 
-        ATON.setNeutralAmbientLight(0.1);
-
         ATON._rootVisibleGlobal.add(ATON._dMainL);
         ATON._dMainLpos = new THREE.Vector3();
     }
@@ -928,6 +941,41 @@ ATON.setMainLightDirection = (v)=>{
     ATON._dMainLdir = d;
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
+
+    ATON.toggleMainLight(true);
+};
+
+ATON.getMainLightDirection = ()=>{
+    if (ATON._dMainLdir === undefined) return undefined;
+
+    let ld = ATON._dMainLdir.clone();
+    ld.normalize();
+    return ld;
+};
+
+ATON.toggleMainLight = (b)=>{
+    if (ATON._dMainL === undefined) return;
+    ATON._dMainL.visible = b;
+    
+    if (b){
+        ATON.setNeutralAmbientLight(ATON.AMB_L);
+        ATON.updateDirShadows();
+    }
+    else ATON.setNeutralAmbientLight(1.0);
+};
+
+ATON.isMainLightEnabled = ()=>{
+    if (ATON._dMainL === undefined) return false;
+    if (!ATON._dMainL.visible) return false;
+
+    return true;
+};
+
+ATON.setExposure = (d)=>{
+    ATON._renderer.toneMappingExposure = d;
+};
+ATON.getExposure = ()=>{
+    return ATON._renderer.toneMappingExposure;
 };
 
 ATON.toggleShadows = (b)=>{
@@ -939,14 +987,14 @@ ATON.toggleShadows = (b)=>{
 
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
         //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;
-        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; // bleeding
+        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
         //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
         ATON._dMainL.shadow.mapSize.width  = ATON.SHADOWS_RES;
         ATON._dMainL.shadow.mapSize.height = ATON.SHADOWS_RES;
         ATON._dMainL.shadow.camera.near    = ATON.SHADOWS_NEAR;
         ATON._dMainL.shadow.camera.far     = ATON.SHADOWS_FAR;
-        //ATON._dMainL.shadow.bias = 0.0001;
+        //ATON._dMainL.shadow.bias           = 0.0001;
 
         ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
         ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
@@ -964,6 +1012,7 @@ ATON.toggleShadows = (b)=>{
             let c = ATON._rootVisible.getBound().center;
             ATON.updateDirShadows(c);
         }
+        else ATON.updateDirShadows();
 
         console.log("Shadows ON");
     }
@@ -1083,12 +1132,14 @@ ATON._handleQueries = ()=>{
     ATON._handleQueryScene();
     ATON._handleQuerySemantics();
     ATON._handleQueryUI();
+
+    ATON.Nav.locomotionValidator();
 };
 
 // Ray casting visible scenegraph
 ATON._handleQueryScene = ()=>{
     if (ATON.XR.isPresenting()){
-        ATON._rcScene.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+        ATON.XR.setupQueryRay(ATON._rcScene);
     }
     else 
         ATON._rcScene.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
@@ -1164,7 +1215,7 @@ ATON.getSceneQueriedNormal = ()=>{
 // Ray casting semantic-graph
 ATON._handleQuerySemantics = ()=>{
     if (ATON.XR.isPresenting()){
-        ATON._rcSemantics.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+        ATON.XR.setupQueryRay(ATON._rcSemantics);
     }
     else 
         ATON._rcSemantics.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
@@ -1240,8 +1291,8 @@ ATON._handleQuerySemantics = ()=>{
 };
 
 ATON._handleQueryUI = ()=>{
-    if (ATON.XR.isPresenting() &amp;&amp; ATON.XR.controller0){
-        ATON._rcUI.set( ATON.XR.getControllerWorldLocation(0), ATON.XR.getControllerWorldDirection(0) );
+    if (ATON.XR.isPresenting()){
+        ATON.XR.setupQueryRay(ATON._rcUI);
     }
     else 
         ATON._rcUI.setFromCamera( ATON._screenPointerCoords, ATON.Nav._camera );
@@ -1325,7 +1376,7 @@ export default ATON;
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Dec 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 26th Jan 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

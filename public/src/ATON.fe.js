@@ -25,10 +25,11 @@ FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup = false;     // showing popup
-    FE.bPopupBlurBG = 0.5; // blur 3D content on popup show, 0.0 to disable
+    FE.popupBlurBG = 0.5;   // blur 3D content on popup show, 0.0 to disable
     FE._userAuth = {};
 
     FE._bControlLight = false;
+    FE._bControlSelScale = false;
 
     FE._auSemNode = undefined;
     FE._auSemNodePlaying = false;
@@ -75,7 +76,12 @@ FE.addBasicLoaderEvents = ()=>{
 
 FE.controlLight = (b)=>{
     FE._bControlLight = b;
+    ATON.Nav.setUserControl(!b);
+};
 
+FE.controlSelectorScale = (b)=>{
+    FE._bControlSelScale = b;
+    ATON._bPauseQuery = b;
     ATON.Nav.setUserControl(!b);
 };
 
@@ -98,6 +104,7 @@ FE.useMouseWheelToScaleSelector = (f)=>{
         }
     });
 };
+
 
 /**
 Load a scene. 
@@ -131,6 +138,15 @@ FE._update = ()=>{
 
         ATON.setMainLightDirection(D);
         //ATON.updateDirShadows();
+    }
+
+    if (FE._bControlSelScale){
+        //let sx = ATON._screenPointerCoords.x;
+        let f = ATON._screenPointerCoords.y;
+
+        let r = ATON.SUI.mainSelector.scale.x;
+        r += f;
+        if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
     }
 };
 
@@ -303,6 +319,12 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
     });
 };
 
+FE.attachHandlerToButton = (idbutton, h)=>{
+    if (h === undefined) return;
+
+    $("#"+idbutton).click(()=>{ h(); });
+};
+
 // Attach ID validator to given input field
 FE.uiAttachInputFilterID = (inputid)=>{
     $("#"+inputid).on('keyup change input', ()=>{
@@ -410,8 +432,8 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     FE._bPopup = true;
 
-    if (FE.bPopupBlurBG > 0.0){
-        ATON._renderer.setPixelRatio( FE.bPopupBlurBG );
+    if (FE.popupBlurBG > 0.0){
+        ATON._renderer.setPixelRatio( FE.popupBlurBG );
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
     }
 
@@ -433,7 +455,7 @@ FE.popupClose = (bNoAnim)=>{
     FE._bPopup = false;
 
     //ATON.renderResume();
-    if (FE.bPopupBlurBG > 0.0) ATON.resetPixelDensity();
+    if (FE.popupBlurBG > 0.0) ATON.resetPixelDensity();
 
     if (bNoAnim === true) $("#idPopup").hide();
     else $("#idPopup").fadeOut(FE.POPUP_DELAY);

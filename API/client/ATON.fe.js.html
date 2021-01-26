@@ -107,6 +107,8 @@ let FE = {};
 FE.SEMSHAPE_SPHERE = 0;
 FE.SEMSHAPE_CONVEX = 1;
 
+FE.POPUP_DELAY = 300;
+
 /**
 Initialize Front-end
 */
@@ -114,8 +116,11 @@ FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup = false;     // showing popup
-    FE.bPopupBlurBG = 0.25; // blur 3D content on popup show, 0.0 to disable
+    FE.popupBlurBG = 0.5;   // blur 3D content on popup show, 0.0 to disable
     FE._userAuth = {};
+
+    FE._bControlLight = false;
+    FE._bControlSelScale = false;
 
     FE._auSemNode = undefined;
     FE._auSemNodePlaying = false;
@@ -154,8 +159,21 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.5);
+        if (ATON.SceneHub.getDescription()) $("#btn-info").show();
     });
 
+    ATON.on("frame", FE._update);
+};
+
+FE.controlLight = (b)=>{
+    FE._bControlLight = b;
+    ATON.Nav.setUserControl(!b);
+};
+
+FE.controlSelectorScale = (b)=>{
+    FE._bControlSelScale = b;
+    ATON._bPauseQuery = b;
+    ATON.Nav.setUserControl(!b);
 };
 
 FE.useMouseWheelToScaleSelector = (f)=>{
@@ -178,6 +196,7 @@ FE.useMouseWheelToScaleSelector = (f)=>{
     });
 };
 
+
 /**
 Load a scene. 
 You can use ATON.on("SceneJSONLoaded", ...) to perform additional tasks when the scene JSON is fully loaded
@@ -190,9 +209,37 @@ FE.loadSceneID = (sid)=>{
     if (ATON.SceneHub._bEdit) reqstr += ",edit";
 
     ATON.SceneHub.load(reqstr, sid);
+    //$('meta[property=og\\:image]').attr('content', ATON.PATH_SCENES+sid+'/cover.png');
+
     console.log(reqstr);
 };
 
+FE._update = ()=>{
+    if (FE._bControlLight){
+        let sx = ATON._screenPointerCoords.x;
+        let sy = ATON._screenPointerCoords.y;
+        //console.log(sx,sy);
+
+        let D = new THREE.Vector3();
+        D.x = -Math.cos(sx * Math.PI);
+        D.y = -sy * 2.0;
+        D.z = -Math.sin(sx * Math.PI);
+
+        D.normalize();
+
+        ATON.setMainLightDirection(D);
+        //ATON.updateDirShadows();
+    }
+
+    if (FE._bControlSelScale){
+        //let sx = ATON._screenPointerCoords.x;
+        let f = ATON._screenPointerCoords.y;
+
+        let r = ATON.SUI.mainSelector.scale.x;
+        r += f;
+        if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
+    }
+};
 
 
 // HTML UI
@@ -264,6 +311,8 @@ FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     //if (!ATON.Utils.isWebXRsupported()) return; //Not showing on mobile
 
+    //ATON.XR.setSessionType("immersive-ar");
+
     FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
 };
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
@@ -302,6 +351,11 @@ FE.uiAddButtonTalk = (idcontainer)=>{
 
 FE.uiAddButtonQR = (idcontainer)=>{
     FE.uiAddButton(idcontainer,"qr", FE.popupQR );
+};
+
+FE.uiAddButtonInfo = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "info", ATON.FE.popupSceneInfo);
+    $("#btn-info").hide();
 };
 
 FE.uiAddButtonFullScreen = (idcontainer)=>{
@@ -356,14 +410,51 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
     });
 };
 
+FE.attachHandlerToButton = (idbutton, h)=>{
+    if (h === undefined) return;
+
+    $("#"+idbutton).click(()=>{ h(); });
+};
+
 // Attach ID validator to given input field
 FE.uiAttachInputFilterID = (inputid)=>{
     $("#"+inputid).on('keyup change input', ()=>{
         let value = $("#"+inputid).val();
-        let regReplace = new RegExp('[^A-Za-z-_]', 'ig');
+        let regReplace = new RegExp('[^A-Za-z0-9-_]', 'ig');
         $("#"+inputid).val( value.replace(regReplace, '') );
 
     });
+};
+
+// Utility to switch a node in a graph
+FE.switchNode = (nid, value, type)=>{
+    let N = undefined;
+    
+    if (type === ATON.NTYPES.SEM) N = ATON.getSemanticNode(nid);
+    else N = ATON.getSceneNode(nid);
+
+    if (N === undefined) return;
+
+    N.toggle(value);
+
+    ATON.fireEvent("FE_NodeSwitch", {nid: nid, t: type, v: value});
+    //console.log("XXX");
+};
+
+// Graphs
+FE.uiCreateGraph = (type)=>{
+    let nodes = ATON.snodes;
+    if (type === ATON.NTYPES.SEM) nodes = ATON.semnodes;
+
+    let htmlcontent = "";
+    for (let nid in nodes){
+        let N = nodes[nid];
+        
+        let chk = N.visible? "checked" : "";
+        if (nid !== ".") htmlcontent += "&lt;input type='checkbox' "+chk+" onchange=\"ATON.FE.switchNode('"+nid+"',this.checked,"+type+");\">"+nid+"&lt;br>";
+    }
+
+    return htmlcontent;
 };
 
 FE.setupBasicUISounds = ()=>{
@@ -428,12 +519,12 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     $('#idPopup').html(htcont);
     $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
-    $('#idPopup').fadeIn();
+    $('#idPopup').fadeIn(FE.POPUP_DELAY);
 
     FE._bPopup = true;
 
-    if (FE.bPopupBlurBG > 0.0){
-        ATON._renderer.setPixelRatio( FE.bPopupBlurBG );
+    if (FE.popupBlurBG > 0.0){
+        ATON._renderer.setPixelRatio( FE.popupBlurBG );
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
     }
 
@@ -442,6 +533,8 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     $("#idTopToolbar").hide();
     $("#idBottomToolbar").hide();
+    $("#idBottomRToolbar").hide();
+    $("#idPoweredBy").hide();
 
     return true;
 };
@@ -449,25 +542,33 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 /**
 Close current popup
 */
-FE.popupClose = ()=>{
+FE.popupClose = (bNoAnim)=>{
     FE._bPopup = false;
 
     //ATON.renderResume();
-    if (FE.bPopupBlurBG > 0.0) ATON.resetPixelDensity();
+    if (FE.popupBlurBG > 0.0) ATON.resetPixelDensity();
 
-    $("#idPopup").fadeOut();
+    if (bNoAnim === true) $("#idPopup").hide();
+    else $("#idPopup").fadeOut(FE.POPUP_DELAY);
     //$("#idPopup").empty();
 
     ATON._bPauseQuery = false;
 
     $("#idTopToolbar").show();
     $("#idBottomToolbar").show();
+    $("#idBottomRToolbar").show();
+    $("#idPoweredBy").show();
 
     ATON.focusOn3DView();
 };
 
+FE.subPopup = ( popupFunc )=>{
+    ATON.FE.popupClose();
+    setTimeout( popupFunc, ATON.FE.POPUP_DELAY);
+};
+
 FE.popupQR = ()=>{
-    let htmlcontent = "&lt;h1>Share&lt;/h1>";
+    let htmlcontent = "&lt;div class='atonPopupTitle'>Share&lt;/div>";
     htmlcontent += "&lt;div class='atonQRcontainer' id='idQRcode'>&lt;/div>&lt;br>&lt;br>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -481,7 +582,7 @@ FE.popupScreenShot = ()=>{
 
     FE.checkAuth((r)=>{
 
-        let htmlcontent = "&lt;h1>Screenshot&lt;/h1>";
+        let htmlcontent = "&lt;div class='atonPopupTitle'>Screenshot&lt;/div>";
         htmlcontent += "This is a preview of what your screenshot will look like:&lt;br>&lt;br>";
         htmlcontent += "&lt;img src='"+cover.src+"'>&lt;br>";
         htmlcontent += "Resolution: &lt;input id='isShotSize' type='number' min='100' max='4000' value='200'>px&lt;br>";
@@ -519,11 +620,12 @@ FE.popupScreenShot = ()=>{
 
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    htmlcontent += "&lt;h1>Collaborative Session&lt;/h1>";
+    htmlcontent += "&lt;div class='atonPopupTitle'>Collaborative Session&lt;/div>";
 
     // Username
+    //htmlcontent += "Your username in this collaborative session is:&lt;br>";
     htmlcontent += "&lt;input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
-    htmlcontent += "&lt;div id='idVRCusernameBTN' class='atonBTN' style='width:200px; display:none'>"+ATON.VRoadcast._username+"&lt;/div>";
+    htmlcontent += "&lt;div id='idVRCusernameBTN' class='atonBTN' style='width:150px; display:none'>"+ATON.VRoadcast._username+"&lt;/div>";
 
     htmlcontent += "&lt;div id='idChatBox' style='width:100%; height:150px; text-align:left;' class='scrollableY'>&lt;/div>";
 
@@ -531,7 +633,7 @@ FE.popupVRC = ()=>{
     htmlcontent += "&lt;input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
     //htmlcontent += "&lt;/div>";
 
-    htmlcontent += "&lt;div class='atonBTN atonBTN-red' id='idVRCdisconnect' style='width:90%'>LEAVE&lt;/div>";
+    htmlcontent += "&lt;div class='atonBTN' id='idVRCdisconnect' style='width:90%'>LEAVE&lt;/div>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
@@ -551,7 +653,7 @@ FE.popupVRC = ()=>{
 
     $("#idVRCmsg").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
-        if(keycode == '13'){
+        if (keycode == '13'){
             let str = $("#idVRCmsg").val();
             ATON.VRoadcast.setMessage( str );
             $("#idVRCmsg").val("");
@@ -561,7 +663,7 @@ FE.popupVRC = ()=>{
 
     $("#idVRCusername").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
-        if(keycode == '13'){
+        if (keycode == '13'){
             let str = $("#idVRCusername").val();
             ATON.VRoadcast.setUsername( str );
             
@@ -611,13 +713,16 @@ FE.checkAuth = (onReceive)=>{
 FE.popupUser = ()=>{
 
     FE.checkAuth((r)=>{
+        
         // We are already logged
         if (r.username !== undefined){
             let htmlcontent = "&lt;img src='"+FE.PATH_RES_ICONS+"user.png'>&lt;br>";
             htmlcontent += "You are logged in as &lt;b>'"+r.username+"'&lt;/b>&lt;br>&lt;br>";
 
-            htmlcontent += "&lt;div class='atonBTN atonBTN-gray' id='idSHUuser'>&lt;img src='"+FE.PATH_RES_ICONS+"user.png'>Your profile&lt;/div>";
-            htmlcontent += "&lt;div class='atonBTN atonBTN-gray' id='idSHUscenes'>&lt;img src='"+FE.PATH_RES_ICONS+"scene.png'>Your scenes&lt;/div>";
+            htmlcontent += "UI Profile:&lt;br>&lt;div class='select' style='width:150px;'>&lt;select id='idUIProfile'>";
+            htmlcontent += "&lt;option value='def'>Default&lt;/option>";
+            //htmlcontent += "&lt;option value='teach'>...&lt;/option>";
+            htmlcontent += "&lt;/select>&lt;div class='selectArrow'>&lt;/div>&lt;/div>&lt;br>&lt;br>";
 
             htmlcontent += "&lt;div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT&lt;/div>";
 
@@ -702,6 +807,24 @@ FE.popupPOV = ()=>{
 };
 */
 
+FE.popupSceneInfo = ()=>{
+    let head = ATON.SceneHub.getTitle();
+    if (head === undefined) head = ATON.SceneHub.currID;
+
+    let descr = ATON.SceneHub.getDescription();
+
+    let htmlcontent = "&lt;div class='atonPopupTitle'>"+head+"&lt;/div>";
+    if (descr) htmlcontent += "&lt;div class='atonPopupDescriptionContainer'>" + JSON.parse(descr) + "&lt;/div>";
+
+    htmlcontent += "&lt;div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK&lt;/div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    $("#btnOK").click(()=>{
+        ATON.FE.popupClose();
+    });
+};
+
 export default FE;</code></pre>
 		</section>
 			</div>
@@ -709,7 +832,7 @@ export default FE;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Dec 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 26th Jan 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

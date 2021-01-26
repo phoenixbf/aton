@@ -106,15 +106,21 @@ let SceneHub = {};
 SceneHub.MODE_ADD = 0;
 SceneHub.MODE_DEL = 1;
 
+SceneHub.FLOAT_PREC = 5;
+
 /**
 Initializes the component
 */
 SceneHub.init = ()=>{
-    SceneHub.currID   = undefined; // Scene ID (sid)
+    SceneHub.currID   = undefined; // Scene ID (sid) - FIXME: rename to "SID"
     SceneHub.currData = undefined; // holds compact object describing our ATON scene
     SceneHub._bEdit   = false;     // edit mode (client can modify json on the server)
 
     SceneHub._bLoading = false;
+
+    // Current scene title &amp; description
+    SceneHub._title = undefined;
+    SceneHub._descr = undefined;
 
     SceneHub.initBaseParsers();
 };
@@ -224,10 +230,10 @@ SceneHub.getJSONsemanticSpheresList = (semid)=>{
         let sphere = S.children[s];
         if (sphere.type){
             SL.push([
-                parseFloat(sphere.position.x.toPrecision(3)), 
-                parseFloat(sphere.position.y.toPrecision(3)), 
-                parseFloat(sphere.position.z.toPrecision(3)), 
-                parseFloat(sphere.scale.x.toPrecision(3))
+                parseFloat(sphere.position.x.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.position.y.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.position.z.toPrecision(SceneHub.FLOAT_PREC)), 
+                parseFloat(sphere.scale.x.toPrecision(SceneHub.FLOAT_PREC))
             ]);
         }
     }
@@ -257,6 +263,19 @@ SceneHub.getJSONsemanticConvexShapes = (semid)=>{
 SceneHub.initBaseParsers = ()=>{
     SceneHub._jsonParsers = {};
 
+    // Scene Title &amp; Description
+    SceneHub._jsonParsers.title = (title)=>{
+        if (title === undefined) return;
+
+        SceneHub.setTitle(title);
+    };
+
+    SceneHub._jsonParsers.description = (descr)=>{
+        if (descr === undefined) return;
+
+        SceneHub.setDescription(descr);
+    };
+
     // Environment
     SceneHub._jsonParsers.environment = (env)=>{
 
@@ -274,14 +293,25 @@ SceneHub.initBaseParsers = ()=>{
                 if (L.color)     ATON._dMainL.color = new THREE.Color(L.color[0],L.color[1],L.color[2]);
                 if (L.intensity) ATON._dMainL.intensity = L.intensity;
 
-                if (L.shadows) ATON.toggleShadows(L.shadows);
+                if (L.shadows !== undefined) ATON.toggleShadows(L.shadows);
+                else ATON.toggleShadows(false);
             }
+            else {
+                //ATON.toggleShadows(false);
+                ATON.toggleMainLight(false);
+            }
+        }
+        else {
+            //ATON.toggleShadows(false);
+            ATON.toggleMainLight(false);
         }
 
         let lps = env.lightprobes;
         if (lps){
             if (lps.auto) ATON.setAutoLP(true);
         }
+
+        if (env.exposure) ATON.setExposure(env.exposure);
 
     };
 
@@ -374,6 +404,21 @@ SceneHub.initBaseParsers = ()=>{
 
             if (N.toYup) G.setYup();
 
+            //if (N.nopicking){ G.disablePicking(); } // FIXME: not working
+/*
+            if (N.color){
+                let C = ATON.MatHub.colors[N.color];
+
+                G.setMaterial( new THREE.MeshBasicMaterial({ 
+                    color: C, 
+                    transparent: true,
+                    depthWrite: false, 
+                    opacity: 0.1,
+                }));
+
+                console.log(G);
+            }
+*/
             // Keywords
             if (N.keywords) G.kwords = N.keywords;
 
@@ -384,6 +429,12 @@ SceneHub.initBaseParsers = ()=>{
                 if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
                 if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
             }
+/*
+            if (N.show !== undefined){
+                if (N.show){ G.show(); console.log("show "+nid); }
+                else { G.hide(); console.log("hide "+nid); }
+            }
+*/
         }
 
         // Build graph through relationships
@@ -400,6 +451,30 @@ SceneHub.initBaseParsers = ()=>{
                 }
             }
         }
+
+        // After connection
+        for (let nid in nodes){
+            let N = nodes[nid]; // JSON node
+            let G = ATON.getSceneNode(nid);
+
+            if (G !== undefined){ 
+                if (N.show !== undefined){
+                    //console.log(N.show);
+
+                    if (N.show){ G.show(); console.log("show "+nid); }
+                    else { G.hide(); console.log("hide "+nid); }
+                    //console.log(ATON.getSceneNode(nid));
+                }
+
+                if (N.nopicking){ G.disablePicking(); }
+
+                if (N.material){
+                    let mat = new THREE.MeshStandardMaterial(N.material);
+                    G.setMaterial( mat );
+                }
+            }
+        }
+
 /*
         for (let e = 0; e &lt; edges.length; e++){
             let E = edges[e];
@@ -455,7 +530,8 @@ SceneHub.initBaseParsers = ()=>{
             if (Array.isArray(spheres)){
                 for (let s in spheres){
                     let S = spheres[s];
-                    ATON.SemFactory.createSphere(nid, new THREE.Vector3(S[0],S[1],S[2]), S[3]);
+                    let loc = new THREE.Vector3(parseFloat(S[0]),parseFloat(S[1]),parseFloat(S[2]));
+                    ATON.SemFactory.createSphere(nid, loc, parseFloat(S[3]));
                 }
             }
 
@@ -490,6 +566,30 @@ SceneHub.initBaseParsers = ()=>{
                 }
             }
         }
+
+        // After connection
+        for (let nid in nodes){
+            let N = nodes[nid]; // JSON node
+            let G = ATON.getSemanticNode(nid);
+
+            if (G !== undefined){
+                if (N.show !== undefined){
+                    //console.log(N.show);
+
+                    if (N.show){ G.show(); console.log("show "+nid); }
+                    else { G.hide(); console.log("hide "+nid); }
+                    //console.log(ATON.getSemanticNode(nid));
+                }
+
+                if (N.nopicking){ G.disablePicking(); }
+
+                if (N.material){
+                    let mat = new THREE.MeshStandardMaterial(N.material);
+                    G.setMaterial( mat );
+                }
+            }
+        }
+
 /*
         for (let e = 0; e &lt; edges.length; e++){
             let E = edges[e];
@@ -508,9 +608,9 @@ SceneHub.initBaseParsers = ()=>{
 };
 
 // Adds custom scene parser to extend JSON scene
-// parser(k){ ... }
-SceneHub.addSceneParser = (k, parser)=>{
-    SceneHub._jsonParsers[k] = parser;
+// parser(key){ ... }
+SceneHub.addSceneParser = (key, parser)=>{
+    SceneHub._jsonParsers[key] = parser;
 };
 
 // [C] Sends JSON edit to server node
@@ -550,6 +650,20 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
     });
 };
 
+SceneHub.setTitle = (title)=>{
+    SceneHub._title = title;
+};
+SceneHub.getTitle = ()=>{
+    return SceneHub._title;
+}
+
+SceneHub.setDescription = (descr)=>{
+    SceneHub._descr = descr;
+};
+SceneHub.getDescription = ()=>{
+    return SceneHub._descr;
+};
+
 
 export default SceneHub;</code></pre>
 		</section>
@@ -558,7 +672,7 @@ export default SceneHub;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Dec 2020 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 26th Jan 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

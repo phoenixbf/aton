@@ -22,15 +22,19 @@ SUI.Label  = Label;
 //Initializes Spatial UI module
 SUI.init = ()=>{
     SUI.mainSelector = ATON.createUINode();
-    //SUI.secondSelector = ATON.createUINode();
-
-    //SUI._uiSelGeom = new THREE.SphereGeometry( 0.1, 16, 16 );
     SUI.mainSelector.add( new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") ));
     SUI.mainSelector.disablePicking();
 
     SUI.setSelectorRadius(0.05);
     SUI.mainSelector.visible = false;
     ATON._rootUI.add(SUI.mainSelector);
+
+    SUI.fpTeleport = ATON.createUINode();
+    let gTeleport = new THREE.CylinderBufferGeometry(0.4,0.4, 0.3, 32,1, true);
+    SUI.fpTeleport.add( new THREE.Mesh( gTeleport, ATON.MatHub.getMaterial("teleportLoc") ));
+    SUI.fpTeleport.disablePicking();
+    SUI.fpTeleport.visible = false;
+    ATON._rootUI.add(SUI.fpTeleport);
 
     // Main Font
     //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
@@ -207,7 +211,7 @@ SUI.addMeasurementPoint = (P)=>{
 
     // Second point
     let d = SUI._prevMPoint.distanceTo(P);
-    console.log(d);
+    //console.log(d);
     
     let mstr = " m";
     let scale = Math.max(d*1.5, 1.0);
@@ -269,11 +273,19 @@ SUI.update = ()=>{
 
     if (ATON._queryDataScene && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
-        SUI.mainSelector.position.copy(ATON._queryDataScene.p);    
+        SUI.mainSelector.position.copy(ATON._queryDataScene.p);
     }
     else {
         SUI.mainSelector.visible = false;
+        //SUI.fpTeleport.visible = false;
     }
+
+    
+    if ((!ATON.Nav.isOrbit() || ATON.XR._bPresenting) && ATON.Nav.currentQueryValidForLocomotion()){
+        SUI.fpTeleport.visible = true;
+        SUI.fpTeleport.position.copy(ATON._queryDataScene.p);
+    }
+    else SUI.fpTeleport.visible = false;
 
     // Measures
     SUI._updateMeasurements();

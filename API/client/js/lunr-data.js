@@ -762,15 +762,16 @@ window.lunrData = {
           "xr.setsessiontyp"
         ],
         "XR.html#.isPresenting": [
+          "ar",
           "boolean",
           "function",
           "immers",
           "ispres",
           "lt;static&gt",
-          "mode",
           "present",
           "return",
           "true",
+          "vr",
           "xr.ispres"
         ],
         "XR.html#.setRefSpaceLocation": [
@@ -1004,6 +1005,40 @@ window.lunrData = {
           "system",
           "transit",
           "true"
+        ],
+        "Nav.html#.currentQueryValidForLocomotion": [
+          "boolean",
+          "current",
+          "currentqueryvalidforlocomot",
+          "function",
+          "locat",
+          "locomot",
+          "lt;static&gt",
+          "nav.currentqueryvalidforlocomot",
+          "queri",
+          "return",
+          "scene",
+          "true",
+          "valid"
+        ],
+        "Nav.html#.locomotionValidator": [
+          "current",
+          "default",
+          "determin",
+          "exploit",
+          "function",
+          "locat",
+          "locomot",
+          "locomotionvalid",
+          "lt;static&gt",
+          "move",
+          "nav.locomotionvalid",
+          "normal",
+          "queri",
+          "replac",
+          "surfac",
+          "us",
+          "valid"
         ],
         "Nav.html#.setUserControl": [
           "b",
@@ -1727,7 +1762,7 @@ window.lunrData = {
           "visibl"
         ]
       },
-      "length": 146
+      "length": 148
     },
     "tokenStore": {
       "root": {
@@ -3201,6 +3236,10 @@ window.lunrData = {
           },
           "r": {
             "docs": {
+              "XR.html#.isPresenting": {
+                "ref": "XR.html#.isPresenting",
+                "tf": 8.333333333333332
+              },
               "Utils.html#.isARsupported": {
                 "ref": "Utils.html#.isARsupported",
                 "tf": 7.142857142857142
@@ -4307,6 +4346,14 @@ window.lunrData = {
                           "ref": "Nav.html#.isTransitioning",
                           "tf": 7.142857142857142
                         },
+                        "Nav.html#.currentQueryValidForLocomotion": {
+                          "ref": "Nav.html#.currentQueryValidForLocomotion",
+                          "tf": 6.25
+                        },
+                        "Nav.html#.locomotionValidator": {
+                          "ref": "Nav.html#.locomotionValidator",
+                          "tf": 3.125
+                        },
                         "Nav.html#.stop": {
                           "ref": "Nav.html#.stop",
                           "tf": 16.666666666666664
@@ -4322,6 +4369,71 @@ window.lunrData = {
                         "ATON.html#.getSceneQueriedPoint": {
                           "ref": "ATON.html#.getSceneQueriedPoint",
                           "tf": 5
+                        }
+                      },
+                      "q": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "y": {
+                                "docs": {},
+                                "v": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "d": {
+                                          "docs": {},
+                                          "f": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "r": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {},
+                                                  "o": {
+                                                    "docs": {},
+                                                    "c": {
+                                                      "docs": {},
+                                                      "o": {
+                                                        "docs": {},
+                                                        "m": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "t": {
+                                                              "docs": {
+                                                                "Nav.html#.currentQueryValidForLocomotion": {
+                                                                  "ref": "Nav.html#.currentQueryValidForLocomotion",
+                                                                  "tf": 683.3333333333334
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -4587,6 +4699,10 @@ window.lunrData = {
                     "docs": {},
                     "t": {
                       "docs": {
+                        "Nav.html#.locomotionValidator": {
+                          "ref": "Nav.html#.locomotionValidator",
+                          "tf": 3.125
+                        },
                         "Nav.html#.restorePreviousNavMode": {
                           "ref": "Nav.html#.restorePreviousNavMode",
                           "tf": 4.166666666666666
@@ -4606,6 +4722,29 @@ window.lunrData = {
                         "ATON.html#.resetPixelDensity": {
                           "ref": "ATON.html#.resetPixelDensity",
                           "tf": 12.5
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "m": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "n": {
+                        "docs": {
+                          "Nav.html#.locomotionValidator": {
+                            "ref": "Nav.html#.locomotionValidator",
+                            "tf": 3.125
+                          }
                         }
                       }
                     }
@@ -5237,6 +5376,29 @@ window.lunrData = {
                 }
               }
             }
+          },
+          "x": {
+            "docs": {},
+            "p": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "Nav.html#.locomotionValidator": {
+                          "ref": "Nav.html#.locomotionValidator",
+                          "tf": 3.125
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "f": {
@@ -5666,6 +5828,14 @@ window.lunrData = {
                           "Nav.html#.isTransitioning": {
                             "ref": "Nav.html#.isTransitioning",
                             "tf": 110
+                          },
+                          "Nav.html#.currentQueryValidForLocomotion": {
+                            "ref": "Nav.html#.currentQueryValidForLocomotion",
+                            "tf": 110
+                          },
+                          "Nav.html#.locomotionValidator": {
+                            "ref": "Nav.html#.locomotionValidator",
+                            "tf": 113.125
                           },
                           "Nav.html#.setUserControl": {
                             "ref": "Nav.html#.setUserControl",
@@ -7016,7 +7186,7 @@ window.lunrData = {
                       },
                       "XR.html#.isPresenting": {
                         "ref": "XR.html#.isPresenting",
-                        "tf": 10
+                        "tf": 8.333333333333332
                       },
                       "XR.html#.toggle": {
                         "ref": "XR.html#.toggle",
@@ -7683,10 +7853,6 @@ window.lunrData = {
               "docs": {},
               "e": {
                 "docs": {
-                  "XR.html#.isPresenting": {
-                    "ref": "XR.html#.isPresenting",
-                    "tf": 10
-                  },
                   "XR.html#.toggle": {
                     "ref": "XR.html#.toggle",
                     "tf": 16.666666666666664
@@ -7767,6 +7933,10 @@ window.lunrData = {
                 "docs": {
                   "XR.html#.setRefSpaceLocation": {
                     "ref": "XR.html#.setRefSpaceLocation",
+                    "tf": 3.125
+                  },
+                  "Nav.html#.locomotionValidator": {
+                    "ref": "Nav.html#.locomotionValidator",
                     "tf": 3.125
                   }
                 }
@@ -8238,7 +8408,7 @@ window.lunrData = {
                         },
                         "XR.html#.isPresenting": {
                           "ref": "XR.html#.isPresenting",
-                          "tf": 10
+                          "tf": 8.333333333333332
                         }
                       }
                     }
@@ -9099,6 +9269,17 @@ window.lunrData = {
               },
               "l": {
                 "docs": {},
+                "a": {
+                  "docs": {},
+                  "c": {
+                    "docs": {
+                      "Nav.html#.locomotionValidator": {
+                        "ref": "Nav.html#.locomotionValidator",
+                        "tf": 3.125
+                      }
+                    }
+                  }
+                },
                 "i": {
                   "docs": {},
                   "c": {
@@ -9164,7 +9345,7 @@ window.lunrData = {
                       },
                       "XR.html#.isPresenting": {
                         "ref": "XR.html#.isPresenting",
-                        "tf": 10
+                        "tf": 8.333333333333332
                       },
                       "Nav.html#.copyCurrentPOV": {
                         "ref": "Nav.html#.copyCurrentPOV",
@@ -9173,6 +9354,10 @@ window.lunrData = {
                       "Nav.html#.isTransitioning": {
                         "ref": "Nav.html#.isTransitioning",
                         "tf": 7.142857142857142
+                      },
+                      "Nav.html#.currentQueryValidForLocomotion": {
+                        "ref": "Nav.html#.currentQueryValidForLocomotion",
+                        "tf": 6.25
                       },
                       "Nav.html#.isUserControlEnabled": {
                         "ref": "Nav.html#.isUserControlEnabled",
@@ -9720,6 +9905,10 @@ window.lunrData = {
                     "SceneHub.html#.load": {
                       "ref": "SceneHub.html#.load",
                       "tf": 10
+                    },
+                    "Nav.html#.currentQueryValidForLocomotion": {
+                      "ref": "Nav.html#.currentQueryValidForLocomotion",
+                      "tf": 6.25
                     },
                     "SUI.html#.createToolbar": {
                       "ref": "SUI.html#.createToolbar",
@@ -11531,6 +11720,23 @@ window.lunrData = {
                 }
               }
             },
+            "r": {
+              "docs": {},
+              "f": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "c": {
+                    "docs": {
+                      "Nav.html#.locomotionValidator": {
+                        "ref": "Nav.html#.locomotionValidator",
+                        "tf": 3.125
+                      }
+                    }
+                  }
+                }
+              }
+            },
             "i": {
               "docs": {
                 "SUI.html": {
@@ -12144,11 +12350,15 @@ window.lunrData = {
                   },
                   "XR.html#.isPresenting": {
                     "ref": "XR.html#.isPresenting",
-                    "tf": 10
+                    "tf": 8.333333333333332
                   },
                   "Nav.html#.isTransitioning": {
                     "ref": "Nav.html#.isTransitioning",
                     "tf": 7.142857142857142
+                  },
+                  "Nav.html#.currentQueryValidForLocomotion": {
+                    "ref": "Nav.html#.currentQueryValidForLocomotion",
+                    "tf": 6.25
                   },
                   "Nav.html#.isUserControlEnabled": {
                     "ref": "Nav.html#.isUserControlEnabled",
@@ -12422,6 +12632,10 @@ window.lunrData = {
               },
               "XR.html#.setRefSpaceLocation": {
                 "ref": "XR.html#.setRefSpaceLocation",
+                "tf": 3.125
+              },
+              "Nav.html#.locomotionValidator": {
+                "ref": "Nav.html#.locomotionValidator",
                 "tf": 3.125
               },
               "Nav.html#.restorePreviousNavMode": {
@@ -12873,6 +13087,10 @@ window.lunrData = {
                 "ref": "index.html",
                 "tf": 1.9444444444444444
               },
+              "XR.html#.isPresenting": {
+                "ref": "XR.html#.isPresenting",
+                "tf": 8.333333333333332
+              },
               "Utils.html#.isVRsupported": {
                 "ref": "Utils.html#.isVRsupported",
                 "tf": 7.142857142857142
@@ -13288,6 +13506,27 @@ window.lunrData = {
                         "ref": "ATON.html#.setMainPanoramaRotation",
                         "tf": 6.25
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "a": {
+            "docs": {},
+            "l": {
+              "docs": {},
+              "i": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "Nav.html#.currentQueryValidForLocomotion": {
+                      "ref": "Nav.html#.currentQueryValidForLocomotion",
+                      "tf": 6.25
+                    },
+                    "Nav.html#.locomotionValidator": {
+                      "ref": "Nav.html#.locomotionValidator",
+                      "tf": 6.25
                     }
                   }
                 }
@@ -13720,6 +13959,14 @@ window.lunrData = {
                       "ref": "Nav.html#.getCurrentEyeLocation",
                       "tf": 5.555555555555555
                     },
+                    "Nav.html#.currentQueryValidForLocomotion": {
+                      "ref": "Nav.html#.currentQueryValidForLocomotion",
+                      "tf": 6.25
+                    },
+                    "Nav.html#.locomotionValidator": {
+                      "ref": "Nav.html#.locomotionValidator",
+                      "tf": 3.125
+                    },
                     "ATON.html#.getSceneQueriedPoint": {
                       "ref": "ATON.html#.getSceneQueriedPoint",
                       "tf": 5
@@ -13758,6 +14005,43 @@ window.lunrData = {
                         "XR.html#.setRefSpaceLocation": {
                           "ref": "XR.html#.setRefSpaceLocation",
                           "tf": 3.125
+                        },
+                        "Nav.html#.currentQueryValidForLocomotion": {
+                          "ref": "Nav.html#.currentQueryValidForLocomotion",
+                          "tf": 6.25
+                        },
+                        "Nav.html#.locomotionValidator": {
+                          "ref": "Nav.html#.locomotionValidator",
+                          "tf": 6.25
+                        }
+                      },
+                      "i": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "v": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {
+                                        "Nav.html#.locomotionValidator": {
+                                          "ref": "Nav.html#.locomotionValidator",
+                                          "tf": 700
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
                         }
                       }
                     }
@@ -13981,6 +14265,14 @@ window.lunrData = {
                                   "Nav.html#.isTransitioning": {
                                     "ref": "Nav.html#.isTransitioning",
                                     "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.currentQueryValidForLocomotion": {
+                                    "ref": "Nav.html#.currentQueryValidForLocomotion",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "Nav.html#.locomotionValidator": {
+                                    "ref": "Nav.html#.locomotionValidator",
+                                    "tf": 50
                                   },
                                   "Nav.html#.setUserControl": {
                                     "ref": "Nav.html#.setUserControl",
@@ -14572,6 +14864,89 @@ window.lunrData = {
                         }
                       }
                     }
+                  },
+                  "u": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "n": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "q": {
+                                "docs": {},
+                                "u": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "y": {
+                                        "docs": {},
+                                        "v": {
+                                          "docs": {},
+                                          "a": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {},
+                                              "i": {
+                                                "docs": {},
+                                                "d": {
+                                                  "docs": {},
+                                                  "f": {
+                                                    "docs": {},
+                                                    "o": {
+                                                      "docs": {},
+                                                      "r": {
+                                                        "docs": {},
+                                                        "l": {
+                                                          "docs": {},
+                                                          "o": {
+                                                            "docs": {},
+                                                            "c": {
+                                                              "docs": {},
+                                                              "o": {
+                                                                "docs": {},
+                                                                "m": {
+                                                                  "docs": {},
+                                                                  "o": {
+                                                                    "docs": {},
+                                                                    "t": {
+                                                                      "docs": {
+                                                                        "Nav.html#.currentQueryValidForLocomotion": {
+                                                                          "ref": "Nav.html#.currentQueryValidForLocomotion",
+                                                                          "tf": 1150
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 "i": {
@@ -14721,6 +15096,56 @@ window.lunrData = {
                                   "Nav.html#.isDevOri": {
                                     "ref": "Nav.html#.isDevOri",
                                     "tf": 1150
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "l": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "c": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "m": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "i": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "v": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "d": {
+                                              "docs": {
+                                                "Nav.html#.locomotionValidator": {
+                                                  "ref": "Nav.html#.locomotionValidator",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -16074,6 +16499,10 @@ window.lunrData = {
                         "ref": "Nav.html#.getCurrentDirection",
                         "tf": 5
                       },
+                      "Nav.html#.locomotionValidator": {
+                        "ref": "Nav.html#.locomotionValidator",
+                        "tf": 3.125
+                      },
                       "ATON.html#.getSceneQueriedNormal": {
                         "ref": "ATON.html#.getSceneQueriedNormal",
                         "tf": 5.555555555555555
@@ -16478,6 +16907,10 @@ window.lunrData = {
                         },
                         "Nav.html#.isTransitioning": {
                           "ref": "Nav.html#.isTransitioning",
+                          "tf": 33.33333333333333
+                        },
+                        "Nav.html#.currentQueryValidForLocomotion": {
+                          "ref": "Nav.html#.currentQueryValidForLocomotion",
                           "tf": 33.33333333333333
                         },
                         "Nav.html#.isUserControlEnabled": {
@@ -17175,6 +17608,14 @@ window.lunrData = {
                       "ref": "Node.html#enablePicking",
                       "tf": 8.333333333333332
                     },
+                    "Nav.html#.currentQueryValidForLocomotion": {
+                      "ref": "Nav.html#.currentQueryValidForLocomotion",
+                      "tf": 6.25
+                    },
+                    "Nav.html#.locomotionValidator": {
+                      "ref": "Nav.html#.locomotionValidator",
+                      "tf": 3.125
+                    },
                     "ATON.html#.getSceneQueriedPoint": {
                       "ref": "ATON.html#.getSceneQueriedPoint",
                       "tf": 10
@@ -17226,7 +17667,7 @@ window.lunrData = {
           }
         }
       },
-      "length": 1395
+      "length": 1426
     },
     "corpusTokens": [
       "1.0",
@@ -17349,6 +17790,7 @@ window.lunrData = {
       "creation",
       "cssclass",
       "current",
+      "currentqueryvalidforlocomot",
       "custom",
       "d",
       "data",
@@ -17362,6 +17804,7 @@ window.lunrData = {
       "descript",
       "desktop",
       "desktop/kiosk",
+      "determin",
       "develop",
       "devic",
       "differ",
@@ -17392,6 +17835,7 @@ window.lunrData = {
       "eventhub.on",
       "everywher",
       "evtnam",
+      "exploit",
       "ey",
       "f",
       "facilit",
@@ -17497,6 +17941,7 @@ window.lunrData = {
       "local",
       "locat",
       "locomot",
+      "locomotionvalid",
       "log",
       "lp",
       "lt;static&gt",
@@ -17521,6 +17966,7 @@ window.lunrData = {
       "nav",
       "nav.computedefaulthom",
       "nav.copycurrentpov",
+      "nav.currentqueryvalidforlocomot",
       "nav.getcurrentdirect",
       "nav.getcurrenteyeloc",
       "nav.getfov",
@@ -17529,6 +17975,7 @@ window.lunrData = {
       "nav.isorbit",
       "nav.istransit",
       "nav.isusercontrolen",
+      "nav.locomotionvalid",
       "nav.requesthom",
       "nav.requestpov",
       "nav.requestpovbynod",
@@ -17632,6 +18079,7 @@ window.lunrData = {
       "render",
       "renderpaus",
       "renderresum",
+      "replac",
       "replic",
       "repres",
       "reqpath",
@@ -17730,6 +18178,7 @@ window.lunrData = {
       "sui.setselectormodel",
       "sui.setselectorradiu",
       "support",
+      "surfac",
       "switch",
       "system",
       "tablet",
@@ -17773,6 +18222,7 @@ window.lunrData = {
       "utils.ismobil",
       "utils.isvrsupport",
       "v",
+      "valid",
       "vector",
       "veget",
       "viceversa",
@@ -18456,7 +18906,7 @@ window.lunrData = {
       "name": "isPresenting",
       "tags": "XR.isPresenting isPresenting",
       "summary": "",
-      "description": "Return true if we are presenting (immersive mode)"
+      "description": "Return true if we are presenting (immersive VR or AR)"
     },
     "XR.html#.setRefSpaceLocation": {
       "id": "XR.html#.setRefSpaceLocation",
@@ -18662,6 +19112,26 @@ window.lunrData = {
       "tags": "Nav.isTransitioning isTransitioning",
       "summary": "",
       "description": "Return true if the navigation system is currently performing a transition"
+    },
+    "Nav.html#.currentQueryValidForLocomotion": {
+      "id": "Nav.html#.currentQueryValidForLocomotion",
+      "kind": "function",
+      "title": "&lt;static&gt; currentQueryValidForLocomotion() → {boolean}",
+      "longname": "Nav.currentQueryValidForLocomotion",
+      "name": "currentQueryValidForLocomotion",
+      "tags": "Nav.currentQueryValidForLocomotion currentQueryValidForLocomotion",
+      "summary": "",
+      "description": "Return true if currently queried scene location is valid for locomotion"
+    },
+    "Nav.html#.locomotionValidator": {
+      "id": "Nav.html#.locomotionValidator",
+      "kind": "function",
+      "title": "&lt;static&gt; locomotionValidator()",
+      "longname": "Nav.locomotionValidator",
+      "name": "locomotionValidator",
+      "tags": "Nav.locomotionValidator locomotionValidator",
+      "summary": "",
+      "description": "This is used to validate current queried location for locomotion. By default, we exploit surface normal to determine if we can move there or not. You can replace this function with your own locomotion validator."
     },
     "Nav.html#.setUserControl": {
       "id": "Nav.html#.setUserControl",

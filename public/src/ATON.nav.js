@@ -68,6 +68,9 @@ Nav.init = ()=>{
     // Motion
     Nav._motionAmt = 0.0;
     Nav._motionDir = new THREE.Vector3(0,1,0);
+
+    // Queried scene location is valid for locomotion
+    Nav._bValidLocomotion = false;
 };
 
 /**
@@ -120,6 +123,36 @@ Nav.isTransitioning = ()=>{
     if (Nav._tPOVcall >= 0.0) return true;
     return false;
 };
+
+/**
+Return true if currently queried scene location is valid for locomotion
+@returns {boolean}
+*/
+Nav.currentQueryValidForLocomotion = ()=>{
+    return Nav._bValidLocomotion;
+};
+
+/**
+This is used to validate current queried location for locomotion.
+By default, we exploit surface normal to determine if we can move there or not.
+You can replace this function with your own locomotion validator.
+*/
+Nav.locomotionValidator = ()=>{
+    if (ATON._queryDataScene === undefined){
+        Nav._bValidLocomotion = false;
+        return;
+    }
+
+    let P = ATON._queryDataScene.p;
+    let N = ATON._queryDataScene.n;
+
+    if (N.y <= 0.7){
+        Nav._bValidLocomotion = false;
+        return;
+    }
+
+    Nav._bValidLocomotion = true;
+}
 
 /**
 Enable/disable user navigation control

@@ -107,13 +107,10 @@ XR.isPresenting = ()=>{
 
 
 XR.teleportOnQueriedPoint = ()=>{
-    if (ATON._queryDataScene === undefined) return false;
+    if (!ATON.Nav.currentQueryValidForLocomotion()) return false;
 
     let P = ATON._queryDataScene.p;
     let N = ATON._queryDataScene.n;
-
-    // Surface validation
-    if (N.y <= 0.7) return false;
 
     // FIXME: height offset needed for "local", fill this automatically
     ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
@@ -253,7 +250,7 @@ XR.onSessionStarted = ( session )=>{
         const C = ATON._renderer.xr.getController(c);
 
         if (C !== undefined){
-            console.log(C);
+            //console.log(C);
 
             C.visible = false;
 
@@ -261,7 +258,7 @@ XR.onSessionStarted = ( session )=>{
                 //console.log( e.data.handedness );
                 let hand = e.data.handedness;
                 
-                console.log(e.data);
+                //console.log(e.data);
                 console.log("Hand "+hand);
 
                 if (hand === "left")  XR._setupControllerL(C, true);

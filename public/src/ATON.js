@@ -237,11 +237,12 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
 
     // When first-person mode, teleport (non immersive)
-    if (ATON._queryDataScene && bFPtrans){
+    if (/*ATON._queryDataScene && */bFPtrans){        
+        //if (N.y > 0.7){
+        if (ATON.Nav.currentQueryValidForLocomotion()){
         let P = ATON._queryDataScene.p;
         let N = ATON._queryDataScene.n;
-        
-        if (N.y > 0.7){
+
             let currDir = ATON.Nav._vDir;
             let feye = new THREE.Vector3(P.x, P.y+ATON.userHeight, P.z);
             let ftgt = new THREE.Vector3(
@@ -1040,6 +1041,8 @@ ATON._handleQueries = ()=>{
     ATON._handleQueryScene();
     ATON._handleQuerySemantics();
     ATON._handleQueryUI();
+
+    ATON.Nav.locomotionValidator();
 };
 
 // Ray casting visible scenegraph

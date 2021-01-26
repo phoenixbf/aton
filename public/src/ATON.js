@@ -237,11 +237,10 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
 
     // When first-person mode, teleport (non immersive)
-    if (/*ATON._queryDataScene && */bFPtrans){        
-        //if (N.y > 0.7){
+    if (bFPtrans){
         if (ATON.Nav.currentQueryValidForLocomotion()){
-        let P = ATON._queryDataScene.p;
-        let N = ATON._queryDataScene.n;
+            let P = ATON._queryDataScene.p;
+            let N = ATON._queryDataScene.n;
 
             let currDir = ATON.Nav._vDir;
             let feye = new THREE.Vector3(P.x, P.y+ATON.userHeight, P.z);
@@ -251,7 +250,7 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
                 feye.z + currDir.z,
             );
 
-            let POV = new ATON.POV().setPosition(feye).setTarget(ftgt);
+            let POV = new ATON.POV().setPosition(feye).setTarget(ftgt).setFOV(ATON.Nav._currPOV.fov);
 
             ATON.Nav.requestPOV(POV, 0.5);
         }
@@ -264,7 +263,7 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
         ATON.Nav.requestPOVbyNode( hsn, 0.5);
         return;
     }
-    // ...or perform standard retarget on picket surface point
+    // ...or perform standard retarget on picked surface point
     if (ATON._queryDataScene){
         ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.5);
     }

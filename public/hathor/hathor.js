@@ -360,7 +360,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (ATON._hoveredSemNode) HATHOR.popupSemDescription(ATON._hoveredSemNode);
     });
 
-    //ATON.FE.useMouseWheelToScaleSelector(0.0001);
+    ATON.FE.useMouseWheelToScaleSelector();
 
     ATON.on("KeyPress", (k)=>{
         if (k === 'Delete'){
@@ -393,6 +393,9 @@ HATHOR.setupEventHandlers = ()=>{
         if (k === 'Enter'){
             
         }
+
+        if (k ==="Shift") ATON.Nav.setUserControl(false);
+        if (k==="Control") ATON.Nav.setUserControl(false);
 
         if (k === 'Escape'){
             ATON.SemFactory.stopCurrentConvex();
@@ -524,6 +527,9 @@ HATHOR.setupEventHandlers = ()=>{
         }
 
         if (k==='.') ATON.FE.controlSelectorScale(false);
+
+        if (k==="Shift") ATON.Nav.setUserControl(true);
+        if (k==="Control") ATON.Nav.setUserControl(true);
     });
 
     ATON.on("Login", (d)=>{
@@ -898,9 +904,9 @@ HATHOR.popupPOV = ()=>{
     htmlcontent += "<br>";
 
     htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'>&nbsp;";
-    htmlcontent += "<div class='select' style='width:300px;'><select id='idPOVmode'>";
-    htmlcontent += "<option value='h'>Set current viewpoint as Home</option>";
-    htmlcontent += "<option value='v'>Add current viewpoint</option>";
+    htmlcontent += "<div class='select' style='width:250px;'><select id='idPOVmode'>";
+    htmlcontent += "<option value='h'>Set viewpoint as Home</option>";
+    htmlcontent += "<option value='v'>Add viewpoint</option>";
     htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
 
     htmlcontent += "<div id='idPOVmodeHome'>";
@@ -1326,8 +1332,9 @@ HATHOR.popupHelp = ()=>{
     }
     else {
         htmlcontent += "<li><b>Double-click</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
-        htmlcontent += "<li><b>'+'/'-'</b>: increase/decrease field-of-view</li>";
+        htmlcontent += "<li><b>'CTRL' + mouse wheel</b>: increase/decrease field-of-view</li>";
         htmlcontent += "<li><b>'v'</b>: viewpoint</li>";
+        htmlcontent += "<li><b>'n'</b>: navigation modes</li>";
     }
     htmlcontent += "</ul></div>";
 
@@ -1338,7 +1345,7 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>Tap</b>: move location of 3D selector</li>";
     }
     else {
-        htmlcontent += "<li><b>'SHIFT + mouse wheel'</b>: increase/decrease radius of selector</li>";
+        htmlcontent += "<li><b>'SHIFT' + mouse wheel</b>: increase/decrease radius of selector</li>";
     }
     htmlcontent += "</ul></div>";
 

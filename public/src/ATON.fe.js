@@ -86,21 +86,28 @@ FE.controlSelectorScale = (b)=>{
 };
 
 FE.useMouseWheelToScaleSelector = (f)=>{
-
-    if (f === undefined) f = 0.001;
+    if (f === undefined) f = 0.9; 
 
     ATON.on("MouseWheel", (d)=>{
-        if (ATON.Nav._controls.enableZoom === undefined) return;
+
+        if (ATON._kModCtrl){
+            let ff = ATON.Nav.getFOV();
+            
+            if (d > 0.0) ff += 1.0;
+            else ff -= 1.0;
+
+            ATON.Nav.setFOV(ff);
+            return;
+        }
 
         if (ATON._kModShift){
-            ATON.Nav._controls.enableZoom = false;
-
             let r = ATON.SUI.mainSelector.scale.x;
-            r += (-d*f);
-            if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
-        }
-        else {
-            ATON.Nav._controls.enableZoom = true;
+
+            if (d > 0.0) r *= f;
+            else r /= f;
+
+            if (r > 0.001) ATON.SUI.setSelectorRadius(r);
+            return;
         }
     });
 };
@@ -438,6 +445,7 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
     }
 
     ATON._bPauseQuery = true;
+    
     //ATON.renderPause();
 
     $("#idTopToolbar").hide();
@@ -455,6 +463,7 @@ FE.popupClose = (bNoAnim)=>{
     FE._bPopup = false;
 
     //ATON.renderResume();
+    
     if (FE.popupBlurBG > 0.0) ATON.resetPixelDensity();
 
     if (bNoAnim === true) $("#idPopup").hide();

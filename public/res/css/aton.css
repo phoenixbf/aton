@@ -751,7 +751,7 @@ canvas {
 }
 
 @media screen and (orientation: portrait){
-/*@media screen and (max-width: 800px){*/
+/*@media screen and (max-width: 600px){*/
     .atonPopup {
         width: 90%;
         max-width: 90%;

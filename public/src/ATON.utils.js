@@ -251,6 +251,16 @@ Utils.setVectorPrecision = (v, prec)=>{
     return v;
 };
 
+Utils.getHumanReadableDistance = (d)=>{
+    let mstr = " m";
+    if (d < 0.5){ d *= 100.0; mstr= " cm"; }
+    if (d < 0.05){ d *= 1000.0; mstr= " mm"; }
+    if (d > 1000.0){ d * 0.001; mstr=" km"; }
+
+    mstr = d.toPrecision(3) + mstr;
+    return mstr;
+};
+
 // Export routines
 Utils.downloadBlob = (blob, filename)=>{
     if (filename === undefined) return;

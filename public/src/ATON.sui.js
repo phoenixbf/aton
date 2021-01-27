@@ -53,6 +53,12 @@ SUI.init = ()=>{
     SUI._measLabels = [];
     ATON._rootUI.add(SUI.gMeasures);
 
+    // runtime measurement-line indicator
+    let mLine = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
+    SUI._measLine = new THREE.Line( mLine, ATON.MatHub.getMaterial("measurement"));
+    SUI._measLine.visible = false;
+    ATON._rootUI.add(SUI._measLine);
+
     // Sem convex-shapes edit points 
     SUI.gPoints = ATON.createUINode();
     ATON._rootUI.add(SUI.gPoints);
@@ -191,33 +197,56 @@ SUI.createToolbar = (buttonlist, color)=>{
 };
 
 // Measurements
-
 SUI.addMeasurementPoint = (P)=>{
     if (P === undefined) return undefined;
 
     let s = 0.01;
     let linetick = 0.001;
-
+/*
     let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
     M.position.copy(P);
     M.scale.set(s,s,s);
     SUI.gMeasures.add(M);
+*/
 
     // First time
     if (SUI._prevMPoint === undefined){
         SUI._prevMPoint = P;
+        
+        let mlArr = SUI._measLine.geometry.attributes.position.array;
+        mlArr[0] = P.x;
+        mlArr[1] = P.y;
+        mlArr[2] = P.z;
+        //mlArr[3] = P.x;
+        //mlArr[4] = P.y;
+        //mlArr[5] = P.z;
+
+        //SUI._measLine.geometry.attributes.position.needsUpdate = true;
+
+        //SUI._measLine.visible = true;
         return undefined;
     }
+
+    SUI._measLine.visible = false;
 
     // Second point
     let d = SUI._prevMPoint.distanceTo(P);
     //console.log(d);
+
+    s *= d;
+    linetick *= d;
+
+    let A = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
+    A.position.copy(SUI._prevMPoint);
+    A.scale.set(s,s,s);
+    SUI.gMeasures.add(A);
+
+    let B = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
+    B.position.copy(P);
+    B.scale.set(s,s,s);
+    SUI.gMeasures.add(B);
     
-    let mstr = " m";
-    let scale = Math.max(d*1.5, 1.0);
-    if (d < 0.5){ d *= 100.0; mstr= " cm"; }
-    if (d < 0.05){ d *= 1000.0; mstr= " mm"; }
-    if (d > 1000.0){ d * 0.001; mstr=" km"; }
+    let scale = d * 2.0; //1.5; //Math.max(d*1.5, 1.0);
 
     //let gLine = new THREE.CylinderBufferGeometry( linetick,linetick, d, 4 );
     let gLine = new THREE.BufferGeometry().setFromPoints([SUI._prevMPoint,P]);
@@ -233,7 +262,7 @@ SUI.addMeasurementPoint = (P)=>{
         (SUI._prevMPoint.z + P.z)*0.5,
     );
 
-    L.setScale(scale).setText(d.toPrecision(3)+mstr); // setScale(d*2.0)
+    L.setScale(scale).setText( ATON.Utils.getHumanReadableDistance(d) ); // setScale(d*2.0)
 
     SUI.gMeasures.add(L);
 
@@ -270,6 +299,20 @@ SUI.update = ()=>{
     }
 
     ThreeMeshUI.update();
+
+    // Meas-line indicator
+    if (SUI._prevMPoint){
+        if (ATON._queryDataScene){
+            let mlArr = SUI._measLine.geometry.attributes.position.array;
+            mlArr[3] = ATON._queryDataScene.p.x;
+            mlArr[4] = ATON._queryDataScene.p.y;
+            mlArr[5] = ATON._queryDataScene.p.z;
+            SUI._measLine.geometry.attributes.position.needsUpdate = true;
+        }
+        
+        SUI._measLine.visible = true;
+    }
+    else SUI._measLine.visible = false;
 
     if (ATON._queryDataScene && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;

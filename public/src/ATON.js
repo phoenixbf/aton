@@ -323,7 +323,7 @@ ATON.realize = ()=>{
     //console.log(ATON._stdpxd);
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
-    ATON._renderer.toneMapping = THREE.LinearToneMapping;
+    ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
     ATON._renderer.toneMappingExposure = 1.0;
 
     //console.log(ATON._renderer.getPixelRatio());
@@ -765,9 +765,26 @@ Set the main panorama (360)
 ATON.setMainPanorama("my/pano.jpg");
 */
 ATON.setMainPanorama = (path)=>{
+    let tpano = undefined;
 
-    let tpano = new THREE.TextureLoader().load(path);
-    tpano.encoding = THREE.sRGBEncoding;
+    //const pmremGenerator = new THREE.PMREMGenerator( ATON._renderer );
+    //pmremGenerator.compileEquirectangularShader();
+/*
+    if (path.endsWith(".hdr")){
+        new THREE.RGBELoader().setDataType( THREE.UnsignedByteType ).load(path, (hdr)=>{
+            //const envMap = pmremGenerator.fromEquirectangular( hdr ).texture;
+            
+            tpano = hdr;
+            if (ATON._matMainPano) ATON._matMainPano.map = hdr;
+        });
+
+        //return;
+    }
+*/
+//    else {
+        tpano = new THREE.TextureLoader().load(path);
+        tpano.encoding = THREE.sRGBEncoding;
+//    }
 
     if (ATON._matMainPano !== undefined){
         ATON._matMainPano.map = tpano;

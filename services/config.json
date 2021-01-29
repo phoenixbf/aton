@@ -3,16 +3,17 @@
 		"main": {
 			"PORT": 8080,
 			"PORT_S": 8083,
-			"apidoc": true,
-			"perusercollection": true
-		},
-		"atonizer":{
-			"PORT": 8085,
-			"address": "http://localhost"
+            "pathCert": "",
+            "pathKey": "",
+			"apidoc": true
 		},
 		"vroadcast":{
 			"PORT": 8890,
 			"address": "ws://localhost"
+		},
+		"atonizer":{
+			"PORT": 8085,
+			"address": "http://localhost"
 		}
 	}
 }

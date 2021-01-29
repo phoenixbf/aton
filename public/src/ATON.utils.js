@@ -261,6 +261,13 @@ Utils.getHumanReadableDistance = (d)=>{
     return mstr;
 };
 
+// Extract clean text from HTML
+Utils.stripHTMLtagsFromString = (str)=>{
+    str = str.replace(/(<([^>]+)>)/gi, "");
+    return str;
+};
+
+
 // Export routines
 Utils.downloadBlob = (blob, filename)=>{
     if (filename === undefined) return;

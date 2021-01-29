@@ -1,3 +1,12 @@
+/*!
+    @preserve
+
+ 	ATON Core service routines
+
+ 	@author Bruno Fanini
+	VHLab, CNR ISPC
+
+==================================================================================*/
 const fs          = require('fs');
 const path        = require('path');
 const glob        = require("glob");
@@ -13,34 +22,44 @@ const session        = require('express-session');
 const FileStore      = require('session-file-store')(session);
 
 
-ServUtils = {};
+Core = {};
 
-ServUtils.DIR_PUBLIC       = path.join(__dirname,"/../public/");
-ServUtils.DIR_PRV          = path.join(__dirname, "_prv/");
-ServUtils.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
-ServUtils.DIR_APIDOC       = path.join(__dirname, "/../API/");
-ServUtils.DIR_FE           = path.join(ServUtils.DIR_PUBLIC,"hathor/");
-ServUtils.DIR_BE           = path.join(ServUtils.DIR_PUBLIC,"shu/");
-ServUtils.DIR_COLLECTION   = path.join(ServUtils.DIR_PUBLIC,"collection/");
-//ServUtils.DIR_MODELS       = path.join(ServUtils.DIR_COLLECTION,"models/");
-//ServUtils.DIR_PANO         = path.join(ServUtils.DIR_COLLECTION,"pano/");
-ServUtils.DIR_SCENES       = path.join(ServUtils.DIR_PUBLIC,"scenes/");
-ServUtils.DIR_EXAMPLES     = path.join(ServUtils.DIR_PUBLIC,"examples/");
-ServUtils.STD_SCENEFILE    = "scene.json";
-ServUtils.STD_PUBFILE      = "pub.txt";
-ServUtils.STD_COVERFILE    = "cover.png";
+Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
+Core.DIR_PRV          = path.join(__dirname, "_prv/");
+Core.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
+Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
+Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
+Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
+Core.DIR_COLLECTION   = path.join(Core.DIR_PUBLIC,"collection/");
+//Core.DIR_MODELS       = path.join(Core.DIR_COLLECTION,"models/");
+//Core.DIR_PANO         = path.join(Core.DIR_COLLECTION,"pano/");
+Core.DIR_SCENES       = path.join(Core.DIR_PUBLIC,"scenes/");
+Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
+Core.STD_SCENEFILE    = "scene.json";
+Core.STD_PUBFILE      = "pub.txt";
+Core.STD_COVERFILE    = "cover.png";
 
-ServUtils.STATUS_COMPLETE   = "complete";
-ServUtils.STATUS_PROCESSING = "processing";
+Core.STATUS_COMPLETE   = "complete";
+Core.STATUS_PROCESSING = "processing";
 
 
-// Users
-ServUtils.users = [];
+Core.config = undefined; // main config
+Core.users  = []; // users config
 
+
+// Main init routine
+Core.init = ()=>{
+	if (!fs.existsSync(Core.DIR_PRV)) makeDir.sync(Core.DIR_PRV);
+
+	Core.config = Core.loadConfigFile("config.json");
+	Core.users  = Core.loadConfigFile("config-users.json");
+
+	console.log("DB users: "+Core.users.length);
+};
 
 // Routine for loading custom -> default fallback config JSON files
-ServUtils.loadConfigFile = (jsonfile)=>{
-	let customconfig  = path.join(ServUtils.DIR_PRV + jsonfile);
+Core.loadConfigFile = (jsonfile)=>{
+	let customconfig  = path.join(Core.DIR_PRV + jsonfile);
 	let defaultconfig = path.join(__dirname, jsonfile);
 
 	if (fs.existsSync(customconfig)){
@@ -49,42 +68,52 @@ ServUtils.loadConfigFile = (jsonfile)=>{
 		return C;
 	}
 
+	// Custom config does not exist...
 	console.log(jsonfile+" not found in '_prv/', Loading default...");
 	let C = JSON.parse(fs.readFileSync(defaultconfig, 'utf8'));
+
+	// Create custom config from default
+	fs.writeFileSync(customconfig, JSON.stringify(C, null, 4));
 	return C;
 };
 
 // SSL certs
-ServUtils.getCertPath = ()=>{
-	return path.join(ServUtils.DIR_PRV,'server.crt');
+Core.getCertPath = ()=>{
+	let cpath = Core.config.services.main.pathCert;
+	
+	if (cpath && cpath.length>4) return cpath;
+	return path.join(Core.DIR_PRV,'server.crt');
 };
-ServUtils.getKeyPath = ()=>{
-	return path.join(ServUtils.DIR_PRV,'server.key');
+Core.getKeyPath = ()=>{
+	let cpath = Core.config.services.main.pathKey;
+
+	if (cpath && cpath.length>4) return cpath;
+	return path.join(Core.DIR_PRV,'server.key');
 };
 
 // Scene utils
-ServUtils.getSceneFolder = (sid)=>{
-	return path.join(ServUtils.DIR_SCENES,sid);
+Core.getSceneFolder = (sid)=>{
+	return path.join(Core.DIR_SCENES,sid);
 };
-ServUtils.getSceneJSONPath = (sid)=>{
-	let jsonfile = path.join( ServUtils.getSceneFolder(sid), ServUtils.STD_SCENEFILE);
+Core.getSceneJSONPath = (sid)=>{
+	let jsonfile = path.join( Core.getSceneFolder(sid), Core.STD_SCENEFILE);
 	return jsonfile;
 };
-ServUtils.getPubFilePath = (sid)=>{
-	let pubfile = path.join( ServUtils.getSceneFolder(sid), ServUtils.STD_PUBFILE);
+Core.getPubFilePath = (sid)=>{
+	let pubfile = path.join( Core.getSceneFolder(sid), Core.STD_PUBFILE);
 	return pubfile;
 };
 
 // Check if scene exists on disk
-ServUtils.existsScene = (sid)=>{;
-	let b = fs.existsSync(ServUtils.getSceneJSONPath(sid));
+Core.existsScene = (sid)=>{;
+	let b = fs.existsSync(Core.getSceneJSONPath(sid));
 	return b;
 };
 
-ServUtils.createBasicScene = ()=>{
+Core.createBasicScene = ()=>{
 	let sobj = {};
 
-	sobj.status = ServUtils.STATUS_COMPLETE;
+	sobj.status = Core.STATUS_COMPLETE;
 
 	sobj.scenegraph = {};
 	sobj.scenegraph.nodes = {};
@@ -100,22 +129,22 @@ ServUtils.createBasicScene = ()=>{
 };
 
 // Create sub-folder structure on disk
-ServUtils.touchSceneFolder = (sid)=>{
-	let D = ServUtils.getSceneFolder(sid);
+Core.touchSceneFolder = (sid)=>{
+	let D = Core.getSceneFolder(sid);
 	//if (!fs.existsSync(D)) fs.mkdirSync(D, { recursive: true }); // note: NodeJS > 12.0
 	if (!fs.existsSync(D)) makeDir.sync(D);
 };
 
 // Delete a scene folder
-ServUtils.deleteScene = (sid)=>{
-	let D = ServUtils.getSceneFolder(sid);
+Core.deleteScene = (sid)=>{
+	let D = Core.getSceneFolder(sid);
 	console.log("Deleting "+D);
 	//if (fs.existsSync(D)) fs.rmdirSync(D, { recursive: true }); // note: NodeJS > 12.0
 	if (fs.existsSync(D)) del(D, {force: true});
 };
 
-ServUtils.readSceneJSON = (sid)=>{
-	let jspath = ServUtils.getSceneJSONPath(sid);
+Core.readSceneJSON = (sid)=>{
+	let jspath = Core.getSceneJSONPath(sid);
 	if (!fs.existsSync(jspath)) return undefined;
 
 	let S = JSON.parse(fs.readFileSync(jspath, 'utf8'));
@@ -124,7 +153,7 @@ ServUtils.readSceneJSON = (sid)=>{
 
 
 // Apply partial edit to sobj
-ServUtils.addSceneEdit = (sobj, edit)=>{
+Core.addSceneEdit = (sobj, edit)=>{
 	//if (sobj === undefined) return undefined;
 
 	// object or array
@@ -142,7 +171,7 @@ ServUtils.addSceneEdit = (sobj, edit)=>{
 				sobj[k] = Array.isArray(E)? [] : {};
 			}
 
-			sobj[k] = ServUtils.addSceneEdit(sobj[k], E);
+			sobj[k] = Core.addSceneEdit(sobj[k], E);
 		}
 
 		return sobj;
@@ -153,7 +182,7 @@ ServUtils.addSceneEdit = (sobj, edit)=>{
 	return sobj;
 };
 
-ServUtils.deleteSceneEdit = (sobj, edit)=>{
+Core.deleteSceneEdit = (sobj, edit)=>{
 	if (sobj === undefined) return undefined;
 
 	// object or array
@@ -165,7 +194,7 @@ ServUtils.deleteSceneEdit = (sobj, edit)=>{
 
 			if (sobj[k] !== undefined){
 				if (Object.keys(E).length > 0){
-					sobj[k] = ServUtils.deleteSceneEdit(sobj[k], E);
+					sobj[k] = Core.deleteSceneEdit(sobj[k], E);
 				}
 				else {
 					//if (Array.isArray(sobj)) sobj = sobj.filter(e => e !== k);
@@ -182,18 +211,18 @@ ServUtils.deleteSceneEdit = (sobj, edit)=>{
 };
 
 // Apply incoming patch to sid JSON
-ServUtils.applySceneEdit = (sid, patch, mode)=>{
-	let sjpath = ServUtils.getSceneJSONPath(sid);
-	let S = ServUtils.readSceneJSON(sid);
+Core.applySceneEdit = (sid, patch, mode)=>{
+	let sjpath = Core.getSceneJSONPath(sid);
+	let S = Core.readSceneJSON(sid);
 
 	if (S === undefined) return; // scene does not exist
 
 	//jsonpatch.applyPatch(S, patch);
 
-	if (mode === "DEL") S = ServUtils.deleteSceneEdit(S, patch);
-	else S = ServUtils.addSceneEdit(S, patch);
+	if (mode === "DEL") S = Core.deleteSceneEdit(S, patch);
+	else S = Core.addSceneEdit(S, patch);
 
-	S = ServUtils.cleanScene(S);
+	S = Core.cleanScene(S);
 
 	fs.writeFileSync(sjpath, JSON.stringify(S)); // , null, 4
 
@@ -202,7 +231,7 @@ ServUtils.applySceneEdit = (sid, patch, mode)=>{
 };
 
 /*
-ServUtils.applySceneEdit = (M, sobj)=>{
+Core.applySceneEdit = (M, sobj)=>{
 	let sid  = M.sid;
 	let data = M.data;
 	let task = M.task;
@@ -210,13 +239,13 @@ ServUtils.applySceneEdit = (M, sobj)=>{
 	if (sid === undefined) return false;
 	if (task === undefined) return false;
 
-	let sjpath = ServUtils.getSceneJSONPath(sid);
-	let sobj = ServUtils.readSceneJSON(sid);
+	let sjpath = Core.getSceneJSONPath(sid);
+	let sobj = Core.readSceneJSON(sid);
 
 	if (sobj === undefined) return false; // scene does not exist
 
-	//if (task === "DEL") sobj = ServUtils.deleteSceneEdit(sobj, patch);
-	//if (task === "ADD") sobj = ServUtils.addSceneEdit(sobj, patch);
+	//if (task === "DEL") sobj = Core.deleteSceneEdit(sobj, patch);
+	//if (task === "ADD") sobj = Core.addSceneEdit(sobj, patch);
 
 	if (task === "UPD_SEM_NODE"){
 		let nid     = data.nid;
@@ -228,7 +257,7 @@ ServUtils.applySceneEdit = (M, sobj)=>{
 	}
 
 	// write
-	sobj = ServUtils.cleanScene(sobj);
+	sobj = Core.cleanScene(sobj);
 	fs.writeFileSync(sjpath, JSON.stringify(sobj)); // , null, 4
 
 	//console.log(sobj);
@@ -237,7 +266,7 @@ ServUtils.applySceneEdit = (M, sobj)=>{
 };
 */
 
-ServUtils.cleanScene = (sobj)=>{
+Core.cleanScene = (sobj)=>{
 	// semantic graph
 	if (sobj.semanticgraph && sobj.semanticgraph.edges){
 		for (let e in sobj.semanticgraph.edges){
@@ -277,18 +306,18 @@ ServUtils.cleanScene = (sobj)=>{
 
 
 // Write scene JSON from sid and data
-ServUtils.writeSceneJSON = (sid, data, pub)=>{
+Core.writeSceneJSON = (sid, data, pub)=>{
 	if (sid === undefined) return false;
 	if (data === undefined) return false;
 
-	ServUtils.touchSceneFolder(sid);
+	Core.touchSceneFolder(sid);
 
-	let sjpath = ServUtils.getSceneJSONPath(sid);
+	let sjpath = Core.getSceneJSONPath(sid);
 
 	// Use partial update (first level)
 /*
 	if (bPartial){
-		let S = ServUtils.readSceneJSON(sid);
+		let S = Core.readSceneJSON(sid);
 		//for (let k in data) S[k] = data[k];
 		Object.assign(S,data);
 
@@ -298,31 +327,34 @@ ServUtils.writeSceneJSON = (sid, data, pub)=>{
 */	
 	fs.writeFileSync(sjpath, JSON.stringify(data, null, 4));
 	if (pub){
-		let pubfile = ServUtils.getPubFilePath(sid);
+		let pubfile = Core.getPubFilePath(sid);
 		fs.writeFileSync(pubfile, "");
 	}
 
 	return true;
 };
 
-ServUtils.createClientUserAuthResponse = (req)=>{
+Core.createClientUserAuthResponse = (req)=>{
 	if (req.user === undefined) return {};
 
 	let U = {};
 	U.username = req.user.username;
+	U.admin    = req.user.admin;
 
 	return U;
 };
 
-ServUtils.initUsers = (configfile)=>{
-	ServUtils.users = ServUtils.loadConfigFile(configfile);
-	console.log("DB users: "+ServUtils.users.length);
+/*
+Core.initUsers = (configfile)=>{
+	Core.users = Core.loadConfigFile(configfile);
+	console.log("DB users: "+Core.users.length);
 };
+*/
 
-ServUtils.findByUsername = (username, cb)=>{
+Core.findByUsername = (username, cb)=>{
 	process.nextTick(function() {
-		for (let i = 0, len = ServUtils.users.length; i < len; i++){
-			let U = ServUtils.users[i];
+		for (let i = 0, len = Core.users.length; i < len; i++){
+			let U = Core.users[i];
 
 			if (U.username === username) return cb(null, U);
 		}
@@ -331,17 +363,17 @@ ServUtils.findByUsername = (username, cb)=>{
 	});
 };
 
-ServUtils.findById = (id, cb)=>{
+Core.findById = (id, cb)=>{
 	process.nextTick(()=>{
-		if (ServUtils.users[id]) cb(null, ServUtils.users[id]);
+		if (Core.users[id]) cb(null, Core.users[id]);
 		else cb( new Error('User ' + id + ' does not exist') );
 	});
 };
 
-ServUtils.setupPassport = ()=>{
+Core.setupPassport = ()=>{
 
     passport.use( new Strategy((username, password, cb)=>{
-        ServUtils.findByUsername(username, function(err, user) {
+        Core.findByUsername(username, function(err, user) {
             if (err) return cb(err);
             if (!user) return cb(null, false);
             if (user.password != password) return cb(null, false);
@@ -351,11 +383,11 @@ ServUtils.setupPassport = ()=>{
     }));
 
     passport.serializeUser((user, cb)=>{
-        cb(null, ServUtils.users.indexOf(user));
+        cb(null, Core.users.indexOf(user));
     });
 
     passport.deserializeUser(function(id, cb) {
-        ServUtils.findById(id, (err, user)=>{
+        Core.findById(id, (err, user)=>{
             if (err) return cb(err);
 
             cb(null, user);
@@ -364,7 +396,7 @@ ServUtils.setupPassport = ()=>{
 
 };
 
-ServUtils.realizeAuth = (app)=>{
+Core.realizeAuth = (app)=>{
 	let fileStoreOptions = {
 		fileExtension: ".ses"
 	};
@@ -396,7 +428,7 @@ ServUtils.realizeAuth = (app)=>{
 
 // API
 //================================================
-ServUtils.realizeBaseAPI = (app)=>{
+Core.realizeBaseAPI = (app)=>{
 
 	// Get ID
 	app.get("/api/getid/", function(req,res,next){
@@ -411,7 +443,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let bEdit = (args[1] && args[1] === "edit")? true : false; // Edit mode
 		let sid = args[0];
 
-		let sjsonpath = ServUtils.getSceneJSONPath(sid);
+		let sjsonpath = Core.getSceneJSONPath(sid);
 
 		if (fs.existsSync(sjsonpath)){
 			//console.log(sjsonpath);
@@ -419,20 +451,20 @@ ServUtils.realizeBaseAPI = (app)=>{
 		}
 
 		// look into models collection and build scene
-		let mfolder = path.join(ServUtils.DIR_COLLECTION,sid)+"/";
+		let mfolder = path.join(Core.DIR_COLLECTION,sid)+"/";
 		let O = {};
 		O.cwd = mfolder;
 
 		glob("*.{gltf,glb}", O, (err, files)=>{ // "**/*.gltf"
 
 			// build scene json
-			let sobj = ServUtils.createBasicScene();
+			let sobj = Core.createBasicScene();
 
 			if (sid.startsWith("models/")){
 				for (let f in files) sobj.scenegraph.nodes.main.urls.push(sid+"/"+files[f]);
 			}
 
-			if (bEdit) ServUtils.writeSceneJSON(sid, sobj);
+			if (bEdit) Core.writeSceneJSON(sid, sobj);
 
 			console.log(sobj);
 
@@ -446,26 +478,26 @@ ServUtils.realizeBaseAPI = (app)=>{
 /*
 	app.get("/be/newscene/", (req,res,next)=>{
 		if (req.user === undefined){
-			res.sendFile(path.join(ServUtils.DIR_BE, "auth/index.html"));
+			res.sendFile(path.join(Core.DIR_BE, "auth/index.html"));
 			return;
 		}
 
-		res.sendFile(path.join(ServUtils.DIR_BE,"newscene/index.html"));
+		res.sendFile(path.join(Core.DIR_BE,"newscene/index.html"));
 	});
 */
 	// List all published scenes
 	app.get("/api/scenes/", function(req,res,next){
 		let O = {};
-		O.cwd = ServUtils.DIR_SCENES;
+		O.cwd = Core.DIR_SCENES;
 		O.follow = true;
 		
-		let files = glob.sync("**/"+ServUtils.STD_SCENEFILE, O);
+		let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
 
 		let S = [];
 		for (let f in files){
 			let basepath  = path.dirname(files[f]);
-			let pubfile   = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
-			let coverfile = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_COVERFILE;
+			let pubfile   = Core.DIR_SCENES + basepath+"/" + Core.STD_PUBFILE;
+			let coverfile = Core.DIR_SCENES + basepath+"/" + Core.STD_COVERFILE;
 
 			if (fs.existsSync(pubfile))
 				S.push({
@@ -489,16 +521,16 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let uname = req.user.username;
 
 		let O = {};
-		O.cwd = ServUtils.DIR_SCENES+uname;
+		O.cwd = Core.DIR_SCENES+uname;
 		O.follow = true;
 		
-		let files = glob.sync("**/"+ServUtils.STD_SCENEFILE, O);
+		let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
 
 		let S = [];
 		for (let f in files){
 			let basepath  = uname+"/"+path.dirname(files[f]);
-			let pubfile   = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_PUBFILE;
-			let coverfile = ServUtils.DIR_SCENES + basepath+"/" + ServUtils.STD_COVERFILE;
+			let pubfile   = Core.DIR_SCENES + basepath+"/" + Core.STD_PUBFILE;
+			let coverfile = Core.DIR_SCENES + basepath+"/" + Core.STD_COVERFILE;
 
 			S.push({
 				sid: basepath,
@@ -525,7 +557,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let relpath = uname+"/models/";
 
 		let O = {};
-		O.cwd = ServUtils.DIR_COLLECTION+relpath; //ServUtils.DIR_MODELS+uname;
+		O.cwd = Core.DIR_COLLECTION+relpath; //Core.DIR_MODELS+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{gltf,glb}", O);
@@ -550,7 +582,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let relpath = uname+"/pano/";
 
 		let O = {};
-		O.cwd = ServUtils.DIR_COLLECTION+relpath; //ServUtils.DIR_PANO+uname;
+		O.cwd = Core.DIR_COLLECTION+relpath; //Core.DIR_PANO+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{jpg,hdr}", O);
@@ -568,7 +600,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 	// List examples
 	app.get("/api/examples/", function(req,res,next){
 		let O = {};
-		O.cwd = ServUtils.DIR_EXAMPLES;
+		O.cwd = Core.DIR_EXAMPLES;
 		//O.follow = true;
 		
 		let files = glob.sync("**/*.html", O);
@@ -605,12 +637,12 @@ ServUtils.realizeBaseAPI = (app)=>{
 			return;
 		}
 
-		ServUtils.deleteScene(sid);
+		Core.deleteScene(sid);
 		res.send(true);
 	});
 
 	// Set scene cover
-	app.post("/api/setcover/", (req,res,next)=>{
+	app.post("/api/cover/scene/", (req,res,next)=>{
 		let O = req.body;
 		let sid = O.sid;
 		let img = O.img;
@@ -628,7 +660,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		img = img.replace(/^data:image\/png;base64,/, "");
 
-		let coverfile = path.join(ServUtils.getSceneFolder(sid), "cover.png");
+		let coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
 		console.log(coverfile);
 
 		fs.writeFile(coverfile, img, 'base64', (err)=>{
@@ -645,7 +677,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		let mode  = O.mode;
 		let patch = O.data;
 
-		let J = ServUtils.applySceneEdit(sid, patch, mode);
+		let J = Core.applySceneEdit(sid, patch, mode);
 
 		res.json(J);
 	});
@@ -661,8 +693,8 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 		console.log(O);
 
-		//ServUtils.touchSceneFolder(sid);
-		let r = ServUtils.writeSceneJSON(sid, data, pub);
+		//Core.touchSceneFolder(sid);
+		let r = Core.writeSceneJSON(sid, data, pub);
 
 		res.json(r);
 	});
@@ -670,7 +702,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 	// Authenticate
 	app.post('/api/login', passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
 
-		let U = ServUtils.createClientUserAuthResponse(req);
+		let U = Core.createClientUserAuthResponse(req);
 
 		res.send(U);
 	});
@@ -717,7 +749,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 	app.get("/api/user", (req,res)=>{
 		console.log(req.session);
 
-		let U = ServUtils.createClientUserAuthResponse(req);
+		let U = Core.createClientUserAuthResponse(req);
 		res.send(U);
 	});
 
@@ -730,7 +762,7 @@ ServUtils.realizeBaseAPI = (app)=>{
 		}
 
 		let uu = [];
-		for (let u in ServUtils.users) uu.push(ServUtils.users[u].username);
+		for (let u in Core.users) uu.push(Core.users[u].username);
 
 		res.send(uu);
 	});
@@ -742,10 +774,12 @@ ServUtils.realizeBaseAPI = (app)=>{
 		}
 
 		let O = req.body;
-
 		console.log(O);
 
-		// TODO: add new entry into users json
+		// Add new entry into users json
+		Core.users.push(O);
+		let uconfig = path.join(Core.DIR_PRV + "config-users.json");
+		fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
 		res.send(true);
 	});
@@ -755,15 +789,15 @@ ServUtils.realizeBaseAPI = (app)=>{
 
 // Not used
 /*
-ServUtils.userLogin = (id)=>{
-	let sessionfile = ServUtils.DIR_PRV + "s-"+id+".json";
+Core.userLogin = (id)=>{
+	let sessionfile = Core.DIR_PRV + "s-"+id+".json";
 	if (!fs.existsSync(sessionfile)) fs.writeFileSync(sessionfile, "");
 };
 
-ServUtils.userLogout = (id)=>{
-	let sessionfile = ServUtils.DIR_PRV + "s-"+id+".json";
+Core.userLogout = (id)=>{
+	let sessionfile = Core.DIR_PRV + "s-"+id+".json";
 	if (!fs.existsSync(sessionfile)) fs.unlinkSync(sessionfile);
 };
 */
 
-module.exports = ServUtils;
+module.exports = Core;

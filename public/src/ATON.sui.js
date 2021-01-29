@@ -70,8 +70,7 @@ SUI.init = ()=>{
     SUI._labelScaleVR = 2.0;
 
     ATON.on( "SemanticNodeHover", (semid)=>{
-        if (!SUI.bShowInfo) return;
-        SUI.infoNodeText.set({ content: semid });
+        SUI.setInfoNodeText(semid);
     });
 /*
     ATON.on("UINodeHover", (uiid)=>{
@@ -81,6 +80,8 @@ SUI.init = ()=>{
         console.log("Leave UI node: "+uiid);
     });
 */
+
+    //SUI._sync = 0;
 };
 
 /**
@@ -152,6 +153,16 @@ Get main UI Info Node
 */
 SUI.getInfoNode = ()=>{
     return SUI.infoNode;
+};
+
+/**
+Set text for main info node
+@param {string} txt - the text
+*/
+SUI.setInfoNodeText = (txt)=>{
+    if (!SUI.bShowInfo) return;
+    SUI.infoNodeText.set({ content: txt });
+    //ThreeMeshUI.update();  
 };
 
 /**
@@ -298,6 +309,8 @@ SUI.update = ()=>{
         return;
     }
 
+    //SUI._sync = (SUI._sync+1) % 10;
+    //if (SUI._sync===0) ThreeMeshUI.update();
     ThreeMeshUI.update();
 
     // Meas-line indicator
@@ -337,9 +350,15 @@ SUI.update = ()=>{
     if (ATON._queryDataSem){
 
         if (ATON.XR._bPresenting){
-            SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
-            SUI.infoNode.position.y += 0.1;
-            SUI.infoNode.setScale(SUI._labelScaleVR);
+            if (ATON.XR.controller0){
+                SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
+                SUI.infoNode.position.y += 0.1;
+                SUI.infoNode.setScale(SUI._labelScaleVR);
+            }
+            else {
+                SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.5);
+                SUI.infoNode.setScale(ATON._queryDataSem.d * SUI._labelScaleVR);
+            }
         }
         else {
             SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.2);

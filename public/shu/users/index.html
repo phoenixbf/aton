@@ -25,13 +25,46 @@
 <script>
 
 let renderForm = ()=>{
+    let htmlcontent = "";
 
+    htmlcontent += "<div class='atonBlockRound'>";
+    htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
+    htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
+    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>New User</div>";
+    htmlcontent += "<br><div id='idResponse'></div>";
+    htmlcontent += "</div>";
+
+    $("#idAddUser").html(htmlcontent);
+
+    $("#idNewUser").click(()=>{
+        let o = {
+            username: $("#idUsername").val(), 
+            password: $("#idPassword").val()
+        };
+
+        SHU.postJSON(PATH_RESTAPI+"new/user/", o, 
+            (r)=>{ // success
+                console.log(r);
+                if (r){
+                    $("#idResponse").html("User "+o.username+" successfully created");
+                    $("#idUsername").val("");
+                    $("#idPassword").val("");
+                }
+                else $("#idResponse").html("Failed to create "+o.username);
+            }, 
+            ()=>{ // fail
+                $("#idResponse").html("Failed to create "+o.username);
+            }
+        );
+    });
 };
 
 window.addEventListener( 'load', ()=>{
 
+    SHU.uiAddMainToolbar("idTopToolbar");
+
     SHU.checkAuth((data)=>{
-        if (data.username){
+        if (data.username && data.admin){
             renderForm();
         }
         else {
@@ -49,11 +82,8 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
     <div class='shuMainContainer'>
-
-        <div id="btn-createscene" class="atonBTN atonBTN-green atonProcessBTN" onclick="requestSceneCreation()">
-        <h3>Create Scene</h3>
-        </div>
-
+        <div class="atonTitle">Users</div>
+        <div class="atonBlockGroup" id="idAddUser"></div>
     </div>
     
-    </body>
+</body>

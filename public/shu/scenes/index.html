@@ -34,7 +34,7 @@ let renderForm = ()=>{
             let urlCover = (scene.cover)? DIR_SCENES+sid+"/cover.png" : PATH_RES+"scenecover.png";
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonBlockScene' style='width:230px;'>";
+            shtml += "<div id='s"+i+"' class='atonBlockScene' style='width:230px;'>"; // background-image: url(\""+urlCover+"\");
             shtml += "<a href='/s/"+sid+"'><div class='atonBlockTitle' style='font-size:small;'>"+sid+"</div></a><br>";
             //shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
             
@@ -94,7 +94,6 @@ window.addEventListener( 'load', ()=>{
 
             $("#btn-newscene").click(()=>{
                 window.location.href = "/shu/newscene/";
-                console.log("X");
             });
         }
         else {

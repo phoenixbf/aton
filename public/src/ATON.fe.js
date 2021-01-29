@@ -528,7 +528,7 @@ FE.popupScreenShot = ()=>{
         $("#btnSetCover").click(()=>{
             ATON.FE.popupClose();
 
-            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"setcover/", {sid: ATON.SceneHub.currID, img: cover.src }, (r)=>{
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"cover/scene/", {sid: ATON.SceneHub.currID, img: cover.src }, (r)=>{
                 console.log(r);
             });
 

@@ -21,24 +21,23 @@ const glob   = require("glob");
 const nanoid = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const ServUtils = require('./ServUtils');
+const Core = require('./Core');
 
-// Loads config
-let aConfig = ServUtils.loadConfigFile("config.json");
-ServUtils.initUsers("config-users.json");
+// Initialize & load config files
+Core.init();
 
 
-const PORT            = aConfig.services.main.PORT || 8080;
-const PORT_SECURE     = aConfig.services.main.PORT_S || 8083;
-const PORT_ATONIZER   = aConfig.services.atonizer.PORT || 8085;
-const PORT_VRC        = aConfig.services.vroadcast.PORT || 8890;
-//const PORT_WEBDAV     = aConfig.services.webdav.PORT || 8891;
+const PORT            = Core.config.services.main.PORT || 8080;
+const PORT_SECURE     = Core.config.services.main.PORT_S || 8083;
+const PORT_ATONIZER   = Core.config.services.atonizer.PORT || 8085;
+const PORT_VRC        = Core.config.services.vroadcast.PORT || 8890;
+//const PORT_WEBDAV     = Core.config.services.webdav.PORT || 8891;
 
-const pathCert = ServUtils.getCertPath();
-const pathKey  = ServUtils.getKeyPath();
+const pathCert = Core.getCertPath();
+const pathKey  = Core.getKeyPath();
 
-let bExamples = aConfig.services.main.examples;
-let bAPIdoc   = aConfig.services.main.apidoc;
+let bExamples = Core.config.services.main.examples;
+let bAPIdoc   = Core.config.services.main.apidoc;
 
 // Debug on req received (client)
 let logger = function(req, res, next){
@@ -79,25 +78,25 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 	next();
 });
 
-app.use('/', express.static(ServUtils.DIR_PUBLIC));
-app.use('/mods', express.static(ServUtils.DIR_NODE_MODULES));
-app.use('/fe', express.static(ServUtils.DIR_FE));
-if (bAPIdoc) app.use('/apidoc', express.static(ServUtils.DIR_APIDOC));
+app.use('/', express.static(Core.DIR_PUBLIC));
+app.use('/mods', express.static(Core.DIR_NODE_MODULES));
+app.use('/fe', express.static(Core.DIR_FE));
+if (bAPIdoc) app.use('/apidoc', express.static(Core.DIR_APIDOC));
 
 
-ServUtils.setupPassport();
-ServUtils.realizeAuth(app);
+Core.setupPassport();
+Core.realizeAuth(app);
 
 
-// API
-ServUtils.realizeBaseAPI(app);
+// REST API
+Core.realizeBaseAPI(app);
 
 // Micro-services proxies
 //=================================================
 /*
 // Atonizer
 app.use('/atonizer', createProxyMiddleware({ 
-	target: aConfig.services.atonizer.address+":"+PORT_ATONIZER, 
+	target: Core.config.services.atonizer.address+":"+PORT_ATONIZER, 
 	pathRewrite: { '^/atonizer': ''},
 	//changeOrigin: true 
 }));
@@ -105,13 +104,13 @@ app.use('/atonizer', createProxyMiddleware({
 
 // VRoadcast
 app.use('/vrc', createProxyMiddleware({ 
-	target: aConfig.services.vroadcast.address+":"+PORT_VRC, 
+	target: Core.config.services.vroadcast.address+":"+PORT_VRC, 
 	ws: true, 
 	pathRewrite: { '^/vrc': ''},
 	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
-	target: aConfig.services.vroadcast.address+":"+PORT_VRC, 
+	target: Core.config.services.vroadcast.address+":"+PORT_VRC, 
 	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
@@ -120,7 +119,7 @@ app.use('/svrc', createProxyMiddleware({
 
 /*
 app.use('/webdav', createProxyMiddleware({ 
-	target: aConfig.services.webdav.address+":"+PORT_WEBDAV, 
+	target: Core.config.services.webdav.address+":"+PORT_WEBDAV, 
 	pathRewrite: { '^/webdav': ''}
 	//changeOrigin: true 
 }));

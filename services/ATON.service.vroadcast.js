@@ -3,11 +3,11 @@ const http = require('http');
 const app = require('express')();
 const socketio = require('socket.io');
 
-const ServUtils = require('./ServUtils.js');
+const Core = require('./Core');
 const VRoadcast = require('./VRoadcast.js');
 
 // Loads config
-let aConfig = ServUtils.loadConfigFile("config.json");
+let aConfig = Core.loadConfigFile("config.json");
 
 const PORT_VRC = aConfig.services.vroadcast.PORT || 8890;
 

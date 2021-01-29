@@ -72,14 +72,14 @@ Utils.profileDevice = ()=>{
     ATON.device.xrSupported['immersive-ar'] = false;
 
     if ( 'xr' in navigator ){
-	    navigator.xr.isSessionSupported( 'immersive-vr' ).then( function ( b ){
+	    navigator.xr.isSessionSupported( 'immersive-vr' ).then(( b )=>{
             if (b) ATON.device.xrSupported['immersive-vr'] = true;
             else   ATON.device.xrSupported['immersive-vr'] = false;
 
             console.log("WebXR VR session support: "+ATON.device.xrSupported['immersive-vr']);
 		});
 
-	    navigator.xr.isSessionSupported( 'immersive-ar' ).then( function ( b ){
+	    navigator.xr.isSessionSupported( 'immersive-ar' ).then(( b )=>{
             if (b) ATON.device.xrSupported['immersive-ar'] = true;
             else   ATON.device.xrSupported['immersive-ar'] = false;
 

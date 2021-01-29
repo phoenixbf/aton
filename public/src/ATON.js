@@ -157,7 +157,11 @@ ATON._setupBaseListeners = ()=>{
     ATON._kModShift = false;
     ATON._kModCtrl  = false;
 
-    el.addEventListener("keydown", (e)=>{
+    ATON._bListenKeyboardEvents = true; // FIXME: check if there's a better way
+
+    window.addEventListener("keydown", (e)=>{
+        if (!ATON._bListenKeyboardEvents) return;
+        
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
         
@@ -165,7 +169,9 @@ ATON._setupBaseListeners = ()=>{
         //ATON.fireEvent("KeyPress/"+e.key);
     }, false);
 
-    el.addEventListener("keyup", (e)=>{
+    window.addEventListener("keyup", (e)=>{
+        if (!ATON._bListenKeyboardEvents) return;
+
         if (e.key === "Shift")   ATON._kModShift = false;
         if (e.key === "Control") ATON._kModCtrl  = false;
 

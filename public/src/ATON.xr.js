@@ -371,12 +371,15 @@ XR.toggle = ()=>{
 
     // Enter XR
     if (XR.currSession === null){
-        let sessionInit = { 
+        let sessionInit = {
+            //optionalFeatures: [ 'local-floor', 'bounded-floor', 'hand-tracking' ]
+
             optionalFeatures: [
                 "local",
                 //"local-floor" 
                 ///"bounded-floor"
             ]
+
         };
         navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);

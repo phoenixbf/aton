@@ -16,7 +16,7 @@ MediaRec.auExt  = ".wav";
 //MediaRec.auExt  = ".webm";
 
 MediaRec.auBitsPerSecond  = 9000; //9000;
-MediaRec.auStreamInterval = 1000; //500;
+MediaRec.auStreamInterval = 1000;
 MediaRec.auMinVol = 1;
 
 

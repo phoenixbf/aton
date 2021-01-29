@@ -159,7 +159,7 @@ SemFactory.completeConvexShape = (semid)=>{
 };
 
 SemFactory.createConvexShape = (semid, points)=>{
-    let geom   = new THREE.ConvexBufferGeometry( points );
+    let geom   = new THREE.ConvexGeometry( points ); // CHECK: it was THREE.ConvexBufferGeometry( points );
     let semesh = new THREE.Mesh( geom, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
 
     semesh.userData._convexPoints = [];

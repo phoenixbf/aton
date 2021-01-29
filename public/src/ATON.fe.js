@@ -221,11 +221,14 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
             FE.uiSwitchButton("fp",true);
         }
     });
+
+    if (ATON.Nav.isFirstPerson()) FE.uiSwitchButton("fp",true);
+    else FE.uiSwitchButton("fp",false);
 };
 
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
-    //if (!ATON.Utils.isWebXRsupported()) return; //Not showing on mobile
+    //if (!ATON.Utils.isVRsupported()) return; //Not showing on mobile
 
     //ATON.XR.setSessionType("immersive-ar");
 
@@ -246,6 +249,9 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
             FE.uiSwitchButton("devori",true);
         }
     });
+
+    if (ATON.Nav.isDevOri()) FE.uiSwitchButton("devori",true);
+    else FE.uiSwitchButton("devori",false);
 };
 
 FE.uiAddButtonTalk = (idcontainer)=>{
@@ -439,6 +445,8 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     FE._bPopup = true;
 
+    ATON._bListenKeyboardEvents = false;
+
     if (FE.popupBlurBG > 0.0){
         ATON._renderer.setPixelRatio( FE.popupBlurBG );
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
@@ -463,6 +471,7 @@ FE.popupClose = (bNoAnim)=>{
     FE._bPopup = false;
 
     //ATON.renderResume();
+    ATON._bListenKeyboardEvents = true;
     
     if (FE.popupBlurBG > 0.0) ATON.resetPixelDensity();
 

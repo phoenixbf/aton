@@ -113,6 +113,8 @@ ATON._setupBaseListeners = ()=>{
     let el = ATON._renderer.domElement;
 
     window.addEventListener( 'resize', ATON._onResize, false );
+    window.onorientationchange = ATON._readDeviceOrientationMode;
+
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
@@ -438,6 +440,8 @@ ATON.realize = ()=>{
 
     ATON._setupBaseListeners();
 
+    if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
+
     ATON.focusOn3DView();
 };
 
@@ -497,6 +501,19 @@ Reset pixel density to default
 */
 ATON.resetPixelDensity = ()=>{
     ATON._renderer.setPixelRatio( ATON._stdpxd );
+};
+
+ATON._readDeviceOrientationMode = ()=>{
+    if (Math.abs(window.orientation) === 90){
+        console.log("Landscape Mode");
+        ATON.fireEvent("MobileLandscapeMode");
+    }
+    else {
+        console.log("Portrait Mode");
+        ATON.fireEvent("MobilePortraitMode");
+    }
+
+    setTimeout( ATON._onResize, 500);
 };
 
 

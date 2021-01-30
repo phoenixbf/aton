@@ -59,7 +59,7 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     if (numPoints < 4) return false;
 
     // lets build convex shape
-    let geom   = new THREE.ConvexBufferGeometry( SemFactory.convexPoints );
+    let geom   = new THREE.ConvexGeometry( SemFactory.convexPoints ); // new THREE.ConvexBufferGeometry( SemFactory.convexPoints );
     let semesh = new THREE.Mesh( geom, ATON.MatHub.getMaterial("semanticShapeEdit") );
 
     //let numMeshes = SemFactory.convexMeshes.length;

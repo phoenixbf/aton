@@ -360,6 +360,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
+    ATON.Nav.requestHome();
+
     console.log("Quit XR");
 };
 

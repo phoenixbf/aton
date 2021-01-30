@@ -6,11 +6,11 @@
             "url": "samples/pano/defsky-grass.jpg",
             "rotation": 1.0
         },
-        "lightprobes": {
+        "xlightprobes": {
             "auto": true
         },
         "mainlight": {
-            "shadows": true,
+            "xshadows": true,
             "direction": [
                 -0.303,
                 -0.868,

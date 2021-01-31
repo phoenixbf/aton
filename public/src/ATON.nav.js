@@ -159,12 +159,17 @@ Enable/disable user navigation control
 @param {boolean} b - false to lock controls, true to unlock
 */
 Nav.setUserControl = (b)=>{
+    if (b === undefined) return;
+    if (b === Nav._bControl) return;
+
     Nav._bControl = b;
 
     if (Nav._controls !== undefined) Nav._controls.enabled = b;
 
     if (Nav._cOrbit) Nav._cOrbit.enabled = b;
     if (Nav._cFirstPerson) Nav._cFirstPerson.enabled = b;
+
+    console.log("Nav controls: "+Nav._bControl);
 };
 
 /**
@@ -627,6 +632,7 @@ ATON.Nav.requestPOV( myTargetPOV );
 */
 Nav.requestPOV = (pov, duration)=>{
     if (ATON._tPOVcall >= 0.0) return; // already requested
+    if (pov === undefined) return;
 
     ATON.fireEvent("POVTransitionRequested", pov.id);
 

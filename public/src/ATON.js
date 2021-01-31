@@ -125,7 +125,26 @@ ATON._setupBaseListeners = ()=>{
 
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
 
-
+    // FIXME: Generic pointer
+/*
+    ATON._bPointerDown = false;
+    ATON._evPointer = undefined;
+    window.addEventListener('pointerdown', (e)=>{
+        ATON._bPointerDown = true;
+        //ATON._evPointer = undefined;
+        //console.log("X");
+    });
+    window.addEventListener('pointerup', (e)=>{
+        ATON._bPointerDown = false;
+        //ATON._evPointer = undefined;
+        //console.log("_");
+    });
+    window.addEventListener('pointermove', (e)=>{
+        if (!ATON._bPointerDown) return;
+        ATON._evPointer = e;
+        //console.log(e.clientX);
+    });
+*/
     // Touch events
     Hammer(el).on("doubletap", (e)=>{
         ATON.fireEvent("DoubleTap", e.srcEvent);
@@ -133,6 +152,8 @@ ATON._setupBaseListeners = ()=>{
     });
 
     Hammer(el).on("tap", (e)=>{
+        //ATON._evPointer = e.srcEvent;
+
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
 
@@ -150,10 +171,6 @@ ATON._setupBaseListeners = ()=>{
         ATON.defaultDoubleTapFromScreenCoords(e);
     });
 
-    //ATON.on("Tap", (e)=>{
-        //console.log(e);
-    //});
-
 
     // Keyboard
     ATON._kModShift = false;
@@ -162,20 +179,20 @@ ATON._setupBaseListeners = ()=>{
     ATON._bListenKeyboardEvents = true; // FIXME: check if there's a better way
 
     window.addEventListener("keydown", (e)=>{
-        if (!ATON._bListenKeyboardEvents) return;
-        
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
         
+        if (!ATON._bListenKeyboardEvents) return;
+
         ATON.fireEvent("KeyPress", e.key);
         //ATON.fireEvent("KeyPress/"+e.key);
     }, false);
 
     window.addEventListener("keyup", (e)=>{
-        if (!ATON._bListenKeyboardEvents) return;
-
         if (e.key === "Shift")   ATON._kModShift = false;
         if (e.key === "Control") ATON._kModCtrl  = false;
+
+        if (!ATON._bListenKeyboardEvents) return;
 
         ATON.fireEvent("KeyUp", e.key);
         //ATON.fireEvent("KeyUp/"+e.key);
@@ -1006,7 +1023,7 @@ ATON._onFrame = ()=>{
     ATON._fps = 1.0 / dt;
     ATON._dt  = dt;
     
-    ATON.Nav._bControlChange = false;
+    //ATON.Nav._bControlChange = false;
     ATON.Nav._controls.update(dt);
 
     ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );

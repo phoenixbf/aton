@@ -46,6 +46,12 @@ SemFactory.setMaterial = (m)=>{
 // Convex shapes
 // NOTE: if semid exists, add mesh under the same id
 SemFactory.addConvexPoint = (/*semid,*/ p)=>{
+    if (p === undefined) return false;
+
+    if (SemFactory.convexPoints.length>0){
+        let pp = SemFactory.convexPoints[SemFactory.convexPoints.length-1];
+        if (p.equals(pp)) return false;
+    }
 
     SemFactory.convexPoints.push(p);
     let numPoints = SemFactory.convexPoints.length;
@@ -115,7 +121,13 @@ SemFactory.stopCurrentConvex = ()=>{
 };
 
 SemFactory.getCurrentConvexShape = ()=>{
-    return SemFactory.currSemNode
+    return SemFactory.currSemNode;
+};
+
+SemFactory.isBuildingShape = ()=>{
+    if (SemFactory.convexPoints.length>0) return true;
+
+    return false;
 };
 
 SemFactory.completeConvexShape = (semid)=>{
@@ -182,7 +194,7 @@ SemFactory.createConvexShape = (semid, points)=>{
 };
 
 SemFactory.addSurfaceConvexPoint = (/*semid,*/ offset)=>{
-    if (!ATON._queryDataScene) return false;
+    if (ATON._queryDataScene === undefined) return false;
 
     if (offset === undefined) offset = 0.02;
 

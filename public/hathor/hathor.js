@@ -19,6 +19,10 @@ HATHOR.SELACTION_ADDSPHERESHAPE = 1;
 HATHOR.SELACTION_ADDCONVEXPOINT = 2;
 HATHOR.SELACTION_MEASURE = 3;
 
+HATHOR.UIP_PUBLIC  = 0;
+HATHOR.UIP_EDITOR  = 1;
+HATHOR.UIP_TEACHER = 2;
+
 
 window.addEventListener( 'load', ()=>{
     ATON.FE.realize();
@@ -68,6 +72,9 @@ window.addEventListener( 'load', ()=>{
 HATHOR.resetSelectionMode = ()=>{
     HATHOR._selMode = HATHOR.SELACTION_STD;
     $("#btn-shape-convex").removeClass("atonBTN-rec");
+    $("#btn-shape-sphere").removeClass("atonBTN-rec");
+
+    ATON.Nav.setUserControl(true);
 
     ATON.getUINode("sui_measure").switch(false);
     return;
@@ -81,8 +88,14 @@ HATHOR.setSelectionMode = (m)=>{
 
     HATHOR._selMode = m;
 
+    if (m === HATHOR.SELACTION_ADDSPHERESHAPE){
+        $("#btn-shape-sphere").addClass("atonBTN-rec");
+        $("#btn-shape-convex").removeClass("atonBTN-rec");
+    }
+
     if (m === HATHOR.SELACTION_ADDCONVEXPOINT){
         $("#btn-shape-convex").addClass("atonBTN-rec");
+        $("#btn-shape-sphere").removeClass("atonBTN-rec");
     }
 
     if (m === HATHOR.SELACTION_MEASURE){
@@ -90,40 +103,49 @@ HATHOR.setSelectionMode = (m)=>{
     }
 };
 
-HATHOR.uiSetup = ()=>{
+// Create UI depending on user profile
+HATHOR.uiProfile = (uip)=>{
+    if (uip === undefined) uip = HATHOR.UIP_PUBLIC;
 
-    // Top toolbar
+    $("#idTopToolbar").html(""); // clear
+
     if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
     ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene );
 
-    ATON.FE.uiAddButtonVR("idTopToolbar");
-    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+    if (uip === HATHOR.UIP_PUBLIC){
+        ATON.FE.uiAddButtonVR("idTopToolbar");
+        ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
-    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
-    ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp );
+        ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp );
+    }
 
-    //ATON.FE.uiAddButtonQR("idTopToolbar");
-/*
-    ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
-        ATON.Nav.toggleUserControl();
+    if (uip === HATHOR.UIP_EDITOR){
 
-        if (!ATON.Nav.isUserControlEnabled()){
-            HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
-            console.log(".");
-        }
-        else {
-            HATHOR.resetSelectionMode();
-            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
-        }
+        ATON.FE.uiAddButton("idTopToolbar", "shape-sphere", ()=>{
+            HATHOR.setSelectionMode(HATHOR.SELACTION_ADDSPHERESHAPE);
+        });
 
-    });
-*/
+        ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
+            if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
+                HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
+                ATON.Nav.setUserControl(false);
+            }
+            else {
+                HATHOR.resetSelectionMode();
+                HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
+            }
+        });
+    }
 
-    // Auth icons
-    //$('#idTopToolbar').append("<span id='idAuthTools'></span>");
-    //ATON.FE.uiAddButtonEditMode("idAuthTools");
-    //ATON.FE.uiAddButton("idAuthTools", "pov", HATHOR.popupPOV );
+};
+
+
+HATHOR.uiSetup = ()=>{
+
+    //HATHOR.uiProfile(HATHOR.UIP_EDITOR);
+    HATHOR.uiProfile(HATHOR.UIP_PUBLIC);
   
     // Bottom toolbar
     //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
@@ -351,8 +373,13 @@ HATHOR.setupEventHandlers = ()=>{
 */
     ATON.on("Tap", (e)=>{
         if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT){
-            //console.log("xxx");
             ATON.SemFactory.addSurfaceConvexPoint();
+        }
+
+        if (HATHOR._selMode === HATHOR.SELACTION_ADDSPHERESHAPE){
+            ATON.SemFactory.stopCurrentConvex();
+            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
+            HATHOR.resetSelectionMode();
         }
     });
 
@@ -389,26 +416,25 @@ HATHOR.setupEventHandlers = ()=>{
         if (k === 'Insert'){
             
         }
-
+        // Finalize current task
         if (k === 'Enter'){
-            
+            if (ATON.SemFactory.isBuildingShape()) HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
-
-        if (k ==="Shift") ATON.Nav.setUserControl(false);
-        if (k==="Control") ATON.Nav.setUserControl(false);
-
+        // Cancel current task
         if (k === 'Escape'){
-            ATON.SemFactory.stopCurrentConvex();
+            if (ATON.SemFactory.isBuildingShape()) ATON.SemFactory.stopCurrentConvex();
         }
+
+        // Modifiers
+        if (k ==="Shift")  ATON.Nav.setUserControl(false);
+        if (k==="Control") ATON.Nav.setUserControl(false);
 
         if (k === 'y'){
         }
 
         if (k === 'g') HATHOR.popupGraphs();
 
-        if (k==='x'){
-            HATHOR.popupExportSemShapes();
-        }
+        if (k==='x') HATHOR.popupExportSemShapes();
         if (k==='u') ATON.FE.popupUser();
 
         //if (k==='w'){
@@ -422,9 +448,11 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='s'){
             ATON.SemFactory.addSurfaceConvexPoint();
         }
+/*
         if (k==='S'){
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
+*/
         if (k==='e'){
             let esemid = ATON._hoveredSemNode;
             if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
@@ -538,21 +566,21 @@ HATHOR.setupEventHandlers = ()=>{
         ATON.VRoadcast.setUsername(d.username);
     });
 
-/*
-    ATON.on("AllNodeRequestsCompleted", ()=>{ 
-        $("#idLoader").hide();
-        console.log("All assets loaded!");
-
-        ATON.Nav.computeAndRequestDefaultHome(0.5);
-        //ATON.Nav.requestPOV( new ATON.POV().setPosition(0.0, 64.2, -0.5).setTarget(0.0, 64.2, 3.2) );
-
-        //console.log(ATON.EventHub.evLocal);
-
-        //ATON.Nav.setFirstPersonControl();
-        //ATON.Nav.setDeviceOrientationControl();
-    });
-*/
+    ///ATON.on("frame", HATHOR._update);
+    //setInterval(HATHOR._update, 100);
 };
+
+// TODO: Main HATHOR update routine
+HATHOR._update = ()=>{
+    if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown && ATON._evPointer){
+        ATON._updateScreenMove(ATON._evPointer);
+        ATON._handleQueries();
+
+        //console.log(ATON._evPointer);
+        //ATON.SemFactory.addSurfaceConvexPoint();
+    }
+};
+
 
 // Tools
 //=======================================
@@ -1358,7 +1386,7 @@ HATHOR.popupHelp = ()=>{
     else {
         htmlcontent += "<li><b>'a'</b>: add basic annotation (sphere)</li>";
         htmlcontent += "<li><b>'s'</b>: initiate convex shape annotation (add surface point)</li>";
-        htmlcontent += "<li><b>'S'</b>: finalize convex shape annotation</li>";
+        htmlcontent += "<li><b>'ENTER'</b>: finalize convex shape annotation</li>";
         htmlcontent += "<li><b>'ESC'</b>: cancel/stop current convex shape annotation</li>";
         htmlcontent += "<li><b>'e'</b>: edit hovered annotation</li>";
         htmlcontent += "<li><b>'CANC'</b>: delete hovered annotation</li>";

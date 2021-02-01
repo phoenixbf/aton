@@ -112,6 +112,20 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     return true;
 };
 
+SemFactory.undoConvexPoint = ()=>{
+    let numPoints = SemFactory.convexPoints.length;
+    if (numPoints === 0) return;
+
+    //if (!SemFactory.bConvexBuilding) return;
+
+    SemFactory.convexPoints.pop();
+
+    if (SemFactory.currConvexMesh){
+        let udMesh = SemFactory.currConvexMesh.userData;
+        if (udMesh._convexPoints) udMesh._convexPoints.pop();
+    }
+};
+
 SemFactory.stopCurrentConvex = ()=>{
     SemFactory.convexPoints = [];
     SemFactory.bConvexBuilding = false;

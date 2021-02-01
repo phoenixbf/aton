@@ -188,6 +188,15 @@ VRoadcast.isConnected = ()=>{
 };
 
 /**
+Return true if we have a VRoadcast ID assigned
+@returns {boolean}
+*/
+VRoadcast.hasID = ()=>{
+    if (VRoadcast.uid === undefined) return false;
+    return true;
+};
+
+/**
 Utility for server-side logging
 @param {string} d - string data to be logged
 */

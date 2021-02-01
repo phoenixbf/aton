@@ -126,33 +126,57 @@ ATON._setupBaseListeners = ()=>{
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
 
     // FIXME: Generic pointer
-/*
     ATON._bPointerDown = false;
-    ATON._evPointer = undefined;
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
-        //ATON._evPointer = undefined;
-        //console.log("X");
     });
     window.addEventListener('pointerup', (e)=>{
         ATON._bPointerDown = false;
-        //ATON._evPointer = undefined;
-        //console.log("_");
     });
     window.addEventListener('pointermove', (e)=>{
         if (!ATON._bPointerDown) return;
-        ATON._evPointer = e;
-        //console.log(e.clientX);
+
+        ATON._updateScreenMove(e);
+        ATON._handleQueries();
+    });
+
+    window.addEventListener('touchstart', (e)=>{
+        ATON._bPointerDown = true;
+    });
+    window.addEventListener('touchend', (e)=>{
+        ATON._bPointerDown = false;
+    });
+    window.addEventListener('touchmove', (e)=>{
+        if (!ATON._bPointerDown) return;
+
+        ATON._updateScreenMove(e.touches[0]);
+        ATON._handleQueries();
+    });
+
+/*
+    Hammer(el).on("press pressup", (ev)=>{
+
+        // Hold gesture start (press)
+        if (ev.type == "press") {
+            console.log("Hold active");
+        }
+
+        // Hold gesture stop (pressup)
+        if (ev.type == "pressup") {
+            console.log("Hold inactive");
+        }
     });
 */
     // Touch events
     Hammer(el).on("doubletap", (e)=>{
+        ATON._bPointerDown = false;
         ATON.fireEvent("DoubleTap", e.srcEvent);
         //console.log(e.srcEvent);
     });
 
     Hammer(el).on("tap", (e)=>{
         //ATON._evPointer = e.srcEvent;
+        ATON._bPointerDown = false;
 
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
@@ -1057,7 +1081,7 @@ ATON._onFrame = ()=>{
 };
 
 ATON._updateScreenMove = (e)=>{
-    e.preventDefault();
+    if (e.preventDefault) e.preventDefault();
 
     if (ATON.Nav._mode === ATON.Nav.MODE_DEVORI){
         ATON._screenPointerCoords.x = 0.0;

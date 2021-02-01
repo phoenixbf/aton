@@ -19,10 +19,6 @@ HATHOR.SELACTION_ADDSPHERESHAPE = 1;
 HATHOR.SELACTION_ADDCONVEXPOINT = 2;
 HATHOR.SELACTION_MEASURE = 3;
 
-HATHOR.UIP_PUBLIC  = 0;
-HATHOR.UIP_EDITOR  = 1;
-HATHOR.UIP_TEACHER = 2;
-
 
 window.addEventListener( 'load', ()=>{
     ATON.FE.realize();
@@ -68,7 +64,6 @@ window.addEventListener( 'load', ()=>{
 
 // Front-end UI
 //=======================
-
 HATHOR.resetSelectionMode = ()=>{
     HATHOR._selMode = HATHOR.SELACTION_STD;
     $("#btn-shape-convex").removeClass("atonBTN-rec");
@@ -103,25 +98,38 @@ HATHOR.setSelectionMode = (m)=>{
     }
 };
 
-// Create UI depending on user profile
-HATHOR.uiProfile = (uip)=>{
-    if (uip === undefined) uip = HATHOR.UIP_PUBLIC;
-
+// Hathor UI Profiles
+HATHOR.uiBase = ()=>{
     $("#idTopToolbar").html(""); // clear
 
     if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
-    ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene );
+    
+    ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
+    ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
+};
 
-    if (uip === HATHOR.UIP_PUBLIC){
+// Create UI Profiles
+HATHOR.buildUIProfiles = ()=>{
+
+    // Standard / public
+    ATON.FE.uiAddProfile("default", ()=>{
+        HATHOR.uiBase();
+
         ATON.FE.uiAddButtonVR("idTopToolbar");
         ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
-        ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp );
-    }
+        ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    });
 
-    if (uip === HATHOR.UIP_EDITOR){
+    // Editor
+    ATON.FE.uiAddProfile("editor", ()=>{
+        HATHOR.uiBase();
+
+        ATON.FE.uiAddButton("idTopToolbar", "selector", ()=>{
+            ATON.FE.popupSelector();
+        });
 
         ATON.FE.uiAddButton("idTopToolbar", "shape-sphere", ()=>{
             HATHOR.setSelectionMode(HATHOR.SELACTION_ADDSPHERESHAPE);
@@ -131,28 +139,36 @@ HATHOR.uiProfile = (uip)=>{
             if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
                 HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
                 ATON.Nav.setUserControl(false);
+                $("#btn-cancel").show();
             }
             else {
                 HATHOR.resetSelectionMode();
                 HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
             }
         });
-    }
 
+        ATON.FE.uiAddButton("idTopToolbar", "cancel", ()=>{
+            HATHOR.cancelCurrentTask();
+        });
+
+        $("#btn-cancel").hide();
+    });
 };
+
 
 
 HATHOR.uiSetup = ()=>{
 
-    //HATHOR.uiProfile(HATHOR.UIP_EDITOR);
-    HATHOR.uiProfile(HATHOR.UIP_PUBLIC);
+    HATHOR.buildUIProfiles();
+    ATON.FE.uiLoadProfile("default");
+    //ATON.FE.uiLoadProfile("editor");
   
     // Bottom toolbar
     //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
     ATON.FE.uiAddButtonHome("idBottomToolbar");
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
-    ATON.FE.uiAddButton("idBottomRToolbar", "info", HATHOR.popupSceneInfo );
+    ATON.FE.uiAddButton("idBottomRToolbar", "info", HATHOR.popupSceneInfo, "Scene information" );
 
     $("#btn-talk").hide();
     $("#btn-info").hide();
@@ -409,6 +425,8 @@ HATHOR.setupEventHandlers = ()=>{
                 ATON.VRoadcast.fireEvent("AFE_DeleteNode", {t: ATON.NTYPES.SEM, nid: ATON._hoveredSemNode });
             }
         }
+
+/*
         if (k === 'Backspace'){
             
         }
@@ -416,14 +434,14 @@ HATHOR.setupEventHandlers = ()=>{
         if (k === 'Insert'){
             
         }
-        // Finalize current task
-        if (k === 'Enter'){
-            if (ATON.SemFactory.isBuildingShape()) HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
-        }
-        // Cancel current task
-        if (k === 'Escape'){
-            if (ATON.SemFactory.isBuildingShape()) ATON.SemFactory.stopCurrentConvex();
-        }
+*/
+
+        // Space
+        if (k === ' ' || k === 'Space') ATON.FE.popupSelector();
+
+        // Current tasks
+        if (k === 'Enter')  HATHOR.finalizeCurrentTask();
+        if (k === 'Escape') HATHOR.cancelCurrentTask();
 
         // Modifiers
         if (k ==="Shift")  ATON.Nav.setUserControl(false);
@@ -526,7 +544,7 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='f') ATON.VRoadcast.setFocusStreaming(true);
 
-        if (k==='.') ATON.FE.controlSelectorScale(true);
+        //if (k==='.') ATON.FE.controlSelectorScale(true);
     });
 
     ATON.on("KeyUp",(k)=>{
@@ -566,19 +584,32 @@ HATHOR.setupEventHandlers = ()=>{
         ATON.VRoadcast.setUsername(d.username);
     });
 
-    ///ATON.on("frame", HATHOR._update);
-    //setInterval(HATHOR._update, 100);
+    //ATON.on("frame", HATHOR._update);
+    setInterval(HATHOR._update, 100);
 };
 
 // TODO: Main HATHOR update routine
 HATHOR._update = ()=>{
-    if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown && ATON._evPointer){
-        ATON._updateScreenMove(ATON._evPointer);
-        ATON._handleQueries();
-
-        //console.log(ATON._evPointer);
-        //ATON.SemFactory.addSurfaceConvexPoint();
+    if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown){
+        ATON.SemFactory.addSurfaceConvexPoint();
     }
+};
+
+// Tasks
+HATHOR.finalizeCurrentTask = ()=>{
+    if (ATON.SemFactory.isBuildingShape()){
+        HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
+        $("#btn-cancel").hide();
+    }
+};
+
+HATHOR.cancelCurrentTask = ()=>{
+    if (ATON.SemFactory.isBuildingShape()){
+        ATON.SemFactory.stopCurrentConvex();
+        $("#btn-cancel").hide();
+    }
+    
+    HATHOR.resetSelectionMode();
 };
 
 

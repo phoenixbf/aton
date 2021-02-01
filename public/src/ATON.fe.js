@@ -40,6 +40,10 @@ FE.realize = ()=>{
 
     FE._uiSetupBase();
 
+    // UI profiles
+    FE._uiProfiles    = {};
+    FE._uiCurrProfile = undefined;
+
     ATON.realize();
 
     // built-in base front-end parameters
@@ -178,8 +182,9 @@ Add generic icon button inside a specific div container
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 @param {string} icon - the icon. Can be shortname for default icons in /res/icons/ or URL to .png image
 @param {function} onPress - function triggered when pressing the button
+@param {string} tooltip - (optional) tooltip
 */
-FE.uiAddButton = (idcontainer, icon, onPress)=>{
+FE.uiAddButton = (idcontainer, icon, onPress, tooltip)=>{
     let iconurl;
     let iconid;
 
@@ -192,10 +197,12 @@ FE.uiAddButton = (idcontainer, icon, onPress)=>{
         iconid  = icon;
     }
 
-    let htmlcode = "<div id='btn-"+iconid+"' class='atonBTN'><img src='"+iconurl+"'></div>";
+    let htmlcode = "<div id='btn-"+iconid+"' class='atonBTN' ><img src='"+iconurl+"'></div>";
     $("#"+idcontainer).append(htmlcode);
 
     if (onPress) $("#btn-"+iconid).click( onPress );
+
+    if (tooltip) $("#btn-"+iconid).attr("title", tooltip);
 };
 
 FE.uiSwitchButton = (iconid, b)=>{
@@ -203,12 +210,20 @@ FE.uiSwitchButton = (iconid, b)=>{
     else $("#btn-"+iconid).removeClass("switchedON");
 };
 
+/**
+Add home button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonHome = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "home", ()=>{ 
         ATON.Nav.requestHome(0.3);
-    });
+    }, "Home viewpoint");
 };
 
+/**
+Add first-person button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonFirstPerson = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "fp", ()=>{
         if (ATON.Nav.isFirstPerson()){
@@ -220,20 +235,29 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
             ATON.Nav.setFirstPersonControl();
             FE.uiSwitchButton("fp",true);
         }
-    });
+    }, "First-person navigation mode");
 
     if (ATON.Nav.isFirstPerson()) FE.uiSwitchButton("fp",true);
     else FE.uiSwitchButton("fp",false);
 };
 
+/**
+Add immersive-VR button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     //if (!ATON.Utils.isVRsupported()) return; //Not showing on mobile
 
     //ATON.XR.setSessionType("immersive-ar");
 
-    FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle );
+    FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle, "Immersive VR mode" );
 };
+
+/**
+Add device-orientation button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     if (!ATON.Utils.isMobile()) return;
@@ -248,12 +272,16 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
             ATON.Nav.setDeviceOrientationControl();
             FE.uiSwitchButton("devori",true);
         }
-    });
+    }, "Device-orientation mode");
 
     if (ATON.Nav.isDevOri()) FE.uiSwitchButton("devori",true);
     else FE.uiSwitchButton("devori",false);
 };
 
+/**
+Add talk button (VRoadcast)
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonTalk = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
 
@@ -268,25 +296,50 @@ FE.uiAddButtonTalk = (idcontainer)=>{
             //FE.uiSwitchButton("talk",true);
             $("#btn-talk").addClass("atonBTN-rec");
         }
-    });
+    }, "Talk ON/OFF");
+
+    if (ATON.MediaRec.isAudioRecording()) $("#btn-talk").addClass("atonBTN-rec");
+    else $("#btn-talk").removeClass("atonBTN-rec");
 };
 
+/**
+Add QR-code button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonQR = (idcontainer)=>{
-    FE.uiAddButton(idcontainer,"qr", FE.popupQR );
+    FE.uiAddButton(idcontainer,"qr", FE.popupQR, "QR-code" );
 };
 
+/**
+Add scene information button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonInfo = (idcontainer)=>{
-    FE.uiAddButton(idcontainer, "info", ATON.FE.popupSceneInfo);
+    FE.uiAddButton(idcontainer, "info", ATON.FE.popupSceneInfo, "Scene information");
     $("#btn-info").hide();
 };
 
+/**
+Add fullscreen button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonFullScreen = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "fullscreen", ()=>{
         ATON.toggleFullScreen();
         screenfull.isFullscreen? FE.uiSwitchButton("fullscreen",false) : FE.uiSwitchButton("fullscreen",true);
-    });
+    }, "Fullscreen");
 };
 
+// Get css class from vrc ID
+FE.getVRCclassFromID = (uid)=>{
+    let i = (uid%6);
+    return "atonVRCu"+i;
+};
+
+/**
+Add VRoadcast button (to connect/disconnect from collaborative sessions)
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonVRC = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
         if (ATON.VRoadcast.isConnected()){
@@ -295,12 +348,10 @@ FE.uiAddButtonVRC = (idcontainer)=>{
         else {
             ATON.VRoadcast.connect();
         }
-    });
+    }, "VRoadcast (collaborative session)");
 
     ATON.on("VRC_IDassigned", (uid)=>{
-        let i = (uid%6);
-        $("#btn-vrc").addClass("atonVRCu"+i);
-        //$("#"+idcontainer).addClass("atonVRCu"+i+"-bg");
+        $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
         FE.checkAuth((data)=>{
             if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
         });
@@ -309,14 +360,30 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     ATON.on("VRC_Disconnected", ()=>{
         $("#btn-vrc").attr("class","atonBTN");
     });
+
+    if (ATON.VRoadcast.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.VRoadcast.uid) );
+    else $("#btn-vrc").attr("class","atonBTN");
 };
 
+/**
+Add user button (login/logout)
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonUser = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "user", ()=>{
         FE.popupUser();
+    }, "User");
+
+    FE.checkAuth((r)=>{
+        if (r.username !== undefined) $("#btn-user").addClass("switchedON");
+        else $("#btn-user").removeClass("switchedON");
     });
 };
 
+/**
+Add persistent editing mode button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
 FE.uiAddButtonEditMode = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "edit", ()=>{
         FE.checkAuth((data)=>{
@@ -330,6 +397,30 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
             }
         });
     });
+};
+
+/**
+Add UI Profile to the front-end
+@param {string} id - profile ID
+@param {function} uiFunction - function that creates UI (HTML or SUI elements) for that profile
+*/
+FE.uiAddProfile = (id, uiFunction)=>{
+    if (typeof uiFunction !== 'function') return;
+
+    FE._uiProfiles[id] = uiFunction;
+};
+
+/**
+Load specific UI Profile for the front-end
+@param {string} id - profile ID
+*/
+FE.uiLoadProfile = (id)=>{
+    let f = FE._uiProfiles[id];
+    if (f === undefined) return;
+
+    f();
+    FE._uiCurrProfile = id;
+    console.log("Loaded UI Profile: "+FE._uiCurrProfile);
 };
 
 FE.attachHandlerToButton = (idbutton, h)=>{
@@ -644,16 +735,25 @@ FE.popupUser = ()=>{
         // We are already logged
         if (r.username !== undefined){
             let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
-            htmlcontent += "You are logged in as <b>'"+r.username+"'</b><br><br>";
+            htmlcontent += "<b>'"+r.username+"'</b><br><br>";
 
-            htmlcontent += "UI Profile:<br><div class='select' style='width:150px;'><select id='idUIProfile'>";
-            htmlcontent += "<option value='def'>Default</option>";
-            //htmlcontent += "<option value='teach'>...</option>";
-            htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
+            if (Object.keys(FE._uiProfiles)){
+                htmlcontent += "UI Profile:<br><div class='select' style='width:150px;'><select id='idUIProfiles'>";
+
+                for (let uip in FE._uiProfiles){
+                    htmlcontent += "<option value='"+uip+"'>"+uip+"</option>";
+                }
+                htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
+            }
 
             htmlcontent += "<div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT</div>";
 
             if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+            if (FE._uiCurrProfile){
+                console.log(FE._uiCurrProfile);
+                $("#idUIProfiles").val(FE._uiCurrProfile);
+            }
 
             $("#idLogoutBTN").click(()=>{
                 $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
@@ -671,6 +771,12 @@ FE.popupUser = ()=>{
             });
             $("#idSHUuser").click(()=>{
                 ATON.Utils.goToURL("/shu/auth/");
+            });
+
+            $("#idUIProfiles").on("change", ()=>{
+                let uip = $("#idUIProfiles").val();
+                FE.uiLoadProfile(uip);
+                ATON.FE.popupClose();
             });
 
         }
@@ -749,6 +855,29 @@ FE.popupSceneInfo = ()=>{
 
     $("#btnOK").click(()=>{
         ATON.FE.popupClose();
+    });
+};
+
+FE.popupSelector = ()=>{
+    console.log("X");
+
+    let htmlcontent = "<div class='atonPopupTitle'>3D Selector</div>";
+
+    let rad = ATON.SUI.getSelectorRadius();
+    let hr = ATON.Utils.getHumanReadableDistance( rad );
+
+    htmlcontent += "Radius (<span id='idSelRadTxt'>"+hr+"</span>):<br>";
+    htmlcontent += "<input id='idSelRad' type='range' min='0.01' max='50.0' step='0.01' style='width:90%'>";
+
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+
+    $("#idSelRad").val(rad);
+
+    $("#idSelRad").on("input change",()=>{
+        let r = parseFloat( $("#idSelRad").val() );
+
+        ATON.SUI.setSelectorRadius(r);
+        $("#idSelRadTxt").html( ATON.Utils.getHumanReadableDistance(r) );
     });
 };
 

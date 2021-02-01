@@ -710,7 +710,156 @@ window.lunrData = {
           "lt;static&gt",
           "onpress",
           "specif",
+          "tooltip",
           "uiaddbutton"
+        ],
+        "FE.html#.uiAddButtonHome": [
+          "add",
+          "button",
+          "fe.uiaddbuttonhom",
+          "function",
+          "home",
+          "idcontain",
+          "lt;static&gt",
+          "uiaddbuttonhom"
+        ],
+        "FE.html#.uiAddButtonFirstPerson": [
+          "add",
+          "button",
+          "fe.uiaddbuttonfirstperson",
+          "first",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "person",
+          "uiaddbuttonfirstperson"
+        ],
+        "FE.html#.uiAddButtonVR": [
+          "add",
+          "button",
+          "fe.uiaddbuttonvr",
+          "function",
+          "idcontain",
+          "immers",
+          "lt;static&gt",
+          "uiaddbuttonvr",
+          "vr"
+        ],
+        "FE.html#.uiAddButtonDeviceOrientation": [
+          "add",
+          "button",
+          "devic",
+          "fe.uiaddbuttondeviceorient",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "orient",
+          "uiaddbuttondeviceorient"
+        ],
+        "FE.html#.uiAddButtonTalk": [
+          "add",
+          "button",
+          "fe.uiaddbuttontalk",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "talk",
+          "uiaddbuttontalk",
+          "vroadcast"
+        ],
+        "FE.html#.uiAddButtonQR": [
+          "add",
+          "button",
+          "code",
+          "fe.uiaddbuttonqr",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "qr",
+          "uiaddbuttonqr"
+        ],
+        "FE.html#.uiAddButtonInfo": [
+          "add",
+          "button",
+          "fe.uiaddbuttoninfo",
+          "function",
+          "idcontain",
+          "inform",
+          "lt;static&gt",
+          "scene",
+          "uiaddbuttoninfo"
+        ],
+        "FE.html#.uiAddButtonFullScreen": [
+          "add",
+          "button",
+          "fe.uiaddbuttonfullscreen",
+          "fullscreen",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "uiaddbuttonfullscreen"
+        ],
+        "FE.html#.uiAddButtonVRC": [
+          "add",
+          "button",
+          "collabor",
+          "connect/disconnect",
+          "fe.uiaddbuttonvrc",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "session",
+          "uiaddbuttonvrc",
+          "vroadcast"
+        ],
+        "FE.html#.uiAddButtonUser": [
+          "add",
+          "button",
+          "fe.uiaddbuttonus",
+          "function",
+          "idcontain",
+          "login/logout",
+          "lt;static&gt",
+          "uiaddbuttonus",
+          "user"
+        ],
+        "FE.html#.uiAddButtonEditMode": [
+          "add",
+          "button",
+          "edit",
+          "fe.uiaddbuttoneditmod",
+          "function",
+          "idcontain",
+          "lt;static&gt",
+          "mode",
+          "persist",
+          "uiaddbuttoneditmod"
+        ],
+        "FE.html#.uiAddProfile": [
+          "add",
+          "end",
+          "fe.uiaddprofil",
+          "front",
+          "function",
+          "id",
+          "lt;static&gt",
+          "profil",
+          "ui",
+          "uiaddprofil",
+          "uifunct"
+        ],
+        "FE.html#.uiLoadProfile": [
+          "end",
+          "fe.uiloadprofil",
+          "front",
+          "function",
+          "id",
+          "load",
+          "lt;static&gt",
+          "profil",
+          "specif",
+          "ui",
+          "uiloadprofil"
         ],
         "FE.html#.popupShow": [
           "cssclass",
@@ -1339,6 +1488,18 @@ window.lunrData = {
           "sui.getinfonod",
           "ui"
         ],
+        "SUI.html#.setInfoNodeText": [
+          "function",
+          "info",
+          "lt;static&gt",
+          "main",
+          "node",
+          "set",
+          "setinfonodetext",
+          "sui.setinfonodetext",
+          "text",
+          "txt"
+        ],
         "SUI.html#.createToolbar": [
           "anywher",
           "arrang",
@@ -1408,6 +1569,18 @@ window.lunrData = {
           "true",
           "vroadcast",
           "vroadcast.isconnect"
+        ],
+        "VRoadcast.html#.hasID": [
+          "assign",
+          "boolean",
+          "function",
+          "hasid",
+          "id",
+          "lt;static&gt",
+          "return",
+          "true",
+          "vroadcast",
+          "vroadcast.hasid"
         ],
         "VRoadcast.html#.log": [
           "d",
@@ -1762,7 +1935,7 @@ window.lunrData = {
           "visibl"
         ]
       },
-      "length": 148
+      "length": 163
     },
     "tokenStore": {
       "root": {
@@ -1888,6 +2061,54 @@ window.lunrData = {
                 "FE.html#.uiAddButton": {
                   "ref": "FE.html#.uiAddButton",
                   "tf": 6.25
+                },
+                "FE.html#.uiAddButtonHome": {
+                  "ref": "FE.html#.uiAddButtonHome",
+                  "tf": 16.666666666666664
+                },
+                "FE.html#.uiAddButtonFirstPerson": {
+                  "ref": "FE.html#.uiAddButtonFirstPerson",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonVR": {
+                  "ref": "FE.html#.uiAddButtonVR",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonDeviceOrientation": {
+                  "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonTalk": {
+                  "ref": "FE.html#.uiAddButtonTalk",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonQR": {
+                  "ref": "FE.html#.uiAddButtonQR",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonInfo": {
+                  "ref": "FE.html#.uiAddButtonInfo",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonFullScreen": {
+                  "ref": "FE.html#.uiAddButtonFullScreen",
+                  "tf": 16.666666666666664
+                },
+                "FE.html#.uiAddButtonVRC": {
+                  "ref": "FE.html#.uiAddButtonVRC",
+                  "tf": 8.333333333333332
+                },
+                "FE.html#.uiAddButtonUser": {
+                  "ref": "FE.html#.uiAddButtonUser",
+                  "tf": 12.5
+                },
+                "FE.html#.uiAddButtonEditMode": {
+                  "ref": "FE.html#.uiAddButtonEditMode",
+                  "tf": 10
+                },
+                "FE.html#.uiAddProfile": {
+                  "ref": "FE.html#.uiAddProfile",
+                  "tf": 10
                 },
                 "ATON.html#.addLightProbe": {
                   "ref": "ATON.html#.addLightProbe",
@@ -3348,6 +3569,10 @@ window.lunrData = {
                       "POV.html": {
                         "ref": "POV.html",
                         "tf": 2.5
+                      },
+                      "VRoadcast.html#.hasID": {
+                        "ref": "VRoadcast.html#.hasID",
+                        "tf": 10
                       }
                     }
                   }
@@ -4100,6 +4325,44 @@ window.lunrData = {
                           "ref": "VRoadcast.html#.connect",
                           "tf": 700
                         }
+                      },
+                      "/": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "n": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {
+                                              "FE.html#.uiAddButtonVRC": {
+                                                "ref": "FE.html#.uiAddButtonVRC",
+                                                "tf": 8.333333333333332
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -4133,6 +4396,23 @@ window.lunrData = {
               },
               "l": {
                 "docs": {},
+                "a": {
+                  "docs": {},
+                  "b": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {
+                          "FE.html#.uiAddButtonVRC": {
+                            "ref": "FE.html#.uiAddButtonVRC",
+                            "tf": 8.333333333333332
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "e": {
                   "docs": {},
                   "c": {
@@ -4145,6 +4425,17 @@ window.lunrData = {
                         }
                       }
                     }
+                  }
+                }
+              }
+            },
+            "d": {
+              "docs": {},
+              "e": {
+                "docs": {
+                  "FE.html#.uiAddButtonQR": {
+                    "ref": "FE.html#.uiAddButtonQR",
+                    "tf": 12.5
                   }
                 }
               }
@@ -4625,6 +4916,10 @@ window.lunrData = {
                       "ref": "POV.html",
                       "tf": 2.5
                     },
+                    "FE.html#.uiAddButtonDeviceOrientation": {
+                      "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                      "tf": 12.5
+                    },
                     "Utils.html#.isMobile": {
                       "ref": "Utils.html#.isMobile",
                       "tf": 6.25
@@ -5012,6 +5307,14 @@ window.lunrData = {
                 "FE.html#.addBasicLoaderEvents": {
                   "ref": "FE.html#.addBasicLoaderEvents",
                   "tf": 3.8461538461538463
+                },
+                "FE.html#.uiAddProfile": {
+                  "ref": "FE.html#.uiAddProfile",
+                  "tf": 10
+                },
+                "FE.html#.uiLoadProfile": {
+                  "ref": "FE.html#.uiLoadProfile",
+                  "tf": 8.333333333333332
                 }
               }
             },
@@ -5358,6 +5661,10 @@ window.lunrData = {
               "docs": {},
               "t": {
                 "docs": {
+                  "FE.html#.uiAddButtonEditMode": {
+                    "ref": "FE.html#.uiAddButtonEditMode",
+                    "tf": 10
+                  },
                   "SceneHub.html#.setEditMode": {
                     "ref": "SceneHub.html#.setEditMode",
                     "tf": 5
@@ -5491,6 +5798,10 @@ window.lunrData = {
                 "docs": {},
                 "t": {
                   "docs": {
+                    "FE.html#.uiAddButtonFirstPerson": {
+                      "ref": "FE.html#.uiAddButtonFirstPerson",
+                      "tf": 12.5
+                    },
                     "Nav.html#.isFirstPerson": {
                       "ref": "Nav.html#.isFirstPerson",
                       "tf": 7.142857142857142
@@ -5553,6 +5864,14 @@ window.lunrData = {
                     "FE.html#.addBasicLoaderEvents": {
                       "ref": "FE.html#.addBasicLoaderEvents",
                       "tf": 3.8461538461538463
+                    },
+                    "FE.html#.uiAddProfile": {
+                      "ref": "FE.html#.uiAddProfile",
+                      "tf": 10
+                    },
+                    "FE.html#.uiLoadProfile": {
+                      "ref": "FE.html#.uiLoadProfile",
+                      "tf": 8.333333333333332
                     }
                   }
                 }
@@ -5753,6 +6072,58 @@ window.lunrData = {
                             "ref": "FE.html#.uiAddButton",
                             "tf": 110
                           },
+                          "FE.html#.uiAddButtonHome": {
+                            "ref": "FE.html#.uiAddButtonHome",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonFirstPerson": {
+                            "ref": "FE.html#.uiAddButtonFirstPerson",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonVR": {
+                            "ref": "FE.html#.uiAddButtonVR",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonDeviceOrientation": {
+                            "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonTalk": {
+                            "ref": "FE.html#.uiAddButtonTalk",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonQR": {
+                            "ref": "FE.html#.uiAddButtonQR",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonInfo": {
+                            "ref": "FE.html#.uiAddButtonInfo",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonFullScreen": {
+                            "ref": "FE.html#.uiAddButtonFullScreen",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonVRC": {
+                            "ref": "FE.html#.uiAddButtonVRC",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonUser": {
+                            "ref": "FE.html#.uiAddButtonUser",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddButtonEditMode": {
+                            "ref": "FE.html#.uiAddButtonEditMode",
+                            "tf": 110
+                          },
+                          "FE.html#.uiAddProfile": {
+                            "ref": "FE.html#.uiAddProfile",
+                            "tf": 110
+                          },
+                          "FE.html#.uiLoadProfile": {
+                            "ref": "FE.html#.uiLoadProfile",
+                            "tf": 110
+                          },
                           "FE.html#.popupShow": {
                             "ref": "FE.html#.popupShow",
                             "tf": 110
@@ -5937,6 +6308,10 @@ window.lunrData = {
                             "ref": "SUI.html#.getInfoNode",
                             "tf": 110
                           },
+                          "SUI.html#.setInfoNodeText": {
+                            "ref": "SUI.html#.setInfoNodeText",
+                            "tf": 110
+                          },
                           "SUI.html#.createToolbar": {
                             "ref": "SUI.html#.createToolbar",
                             "tf": 110
@@ -5955,6 +6330,10 @@ window.lunrData = {
                           },
                           "VRoadcast.html#.isConnected": {
                             "ref": "VRoadcast.html#.isConnected",
+                            "tf": 110
+                          },
+                          "VRoadcast.html#.hasID": {
+                            "ref": "VRoadcast.html#.hasID",
                             "tf": 110
                           },
                           "VRoadcast.html#.log": {
@@ -6108,6 +6487,10 @@ window.lunrData = {
                           "docs": {},
                           "n": {
                             "docs": {
+                              "FE.html#.uiAddButtonFullScreen": {
+                                "ref": "FE.html#.uiAddButtonFullScreen",
+                                "tf": 16.666666666666664
+                              },
                               "ATON.html#.toggleFullScreen": {
                                 "ref": "ATON.html#.toggleFullScreen",
                                 "tf": 25
@@ -6337,6 +6720,290 @@ window.lunrData = {
                                       "FE.html#.uiAddButton": {
                                         "ref": "FE.html#.uiAddButton",
                                         "tf": 1150
+                                      }
+                                    },
+                                    "h": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "m": {
+                                          "docs": {
+                                            "FE.html#.uiAddButtonHome": {
+                                              "ref": "FE.html#.uiAddButtonHome",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "f": {
+                                      "docs": {},
+                                      "i": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "s": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {},
+                                              "p": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "r": {
+                                                    "docs": {},
+                                                    "s": {
+                                                      "docs": {},
+                                                      "o": {
+                                                        "docs": {},
+                                                        "n": {
+                                                          "docs": {
+                                                            "FE.html#.uiAddButtonFirstPerson": {
+                                                              "ref": "FE.html#.uiAddButtonFirstPerson",
+                                                              "tf": 1150
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "u": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "l": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "c": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "e": {
+                                                      "docs": {},
+                                                      "n": {
+                                                        "docs": {
+                                                          "FE.html#.uiAddButtonFullScreen": {
+                                                            "ref": "FE.html#.uiAddButtonFullScreen",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "v": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {
+                                          "FE.html#.uiAddButtonVR": {
+                                            "ref": "FE.html#.uiAddButtonVR",
+                                            "tf": 1150
+                                          }
+                                        },
+                                        "c": {
+                                          "docs": {
+                                            "FE.html#.uiAddButtonVRC": {
+                                              "ref": "FE.html#.uiAddButtonVRC",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "d": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "v": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "c": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "o": {
+                                                  "docs": {},
+                                                  "r": {
+                                                    "docs": {},
+                                                    "i": {
+                                                      "docs": {},
+                                                      "e": {
+                                                        "docs": {},
+                                                        "n": {
+                                                          "docs": {},
+                                                          "t": {
+                                                            "docs": {
+                                                              "FE.html#.uiAddButtonDeviceOrientation": {
+                                                                "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                                                                "tf": 1150
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "t": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "l": {
+                                          "docs": {},
+                                          "k": {
+                                            "docs": {
+                                              "FE.html#.uiAddButtonTalk": {
+                                                "ref": "FE.html#.uiAddButtonTalk",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "q": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {
+                                          "FE.html#.uiAddButtonQR": {
+                                            "ref": "FE.html#.uiAddButtonQR",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "i": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "f": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {
+                                              "FE.html#.uiAddButtonInfo": {
+                                                "ref": "FE.html#.uiAddButtonInfo",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "u": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {
+                                          "FE.html#.uiAddButtonUser": {
+                                            "ref": "FE.html#.uiAddButtonUser",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    },
+                                    "e": {
+                                      "docs": {},
+                                      "d": {
+                                        "docs": {},
+                                        "i": {
+                                          "docs": {},
+                                          "t": {
+                                            "docs": {},
+                                            "m": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "d": {
+                                                  "docs": {
+                                                    "FE.html#.uiAddButtonEditMode": {
+                                                      "ref": "FE.html#.uiAddButtonEditMode",
+                                                      "tf": 1150
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "p": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "f": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {
+                                      "FE.html#.uiAddProfile": {
+                                        "ref": "FE.html#.uiAddProfile",
+                                        "tf": 1150
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "l": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "p": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "f": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {
+                                        "FE.html#.uiLoadProfile": {
+                                          "ref": "FE.html#.uiLoadProfile",
+                                          "tf": 1150
+                                        }
                                       }
                                     }
                                   }
@@ -7180,6 +7847,10 @@ window.lunrData = {
                         "ref": "POV.html",
                         "tf": 2.5
                       },
+                      "FE.html#.uiAddButtonVR": {
+                        "ref": "FE.html#.uiAddButtonVR",
+                        "tf": 12.5
+                      },
                       "XR.html": {
                         "ref": "XR.html",
                         "tf": 16.666666666666664
@@ -7366,6 +8037,21 @@ window.lunrData = {
                   "SUI.html#.getInfoNode": {
                     "ref": "SUI.html#.getInfoNode",
                     "tf": 12.5
+                  },
+                  "SUI.html#.setInfoNodeText": {
+                    "ref": "SUI.html#.setInfoNodeText",
+                    "tf": 10
+                  }
+                },
+                "r": {
+                  "docs": {},
+                  "m": {
+                    "docs": {
+                      "FE.html#.uiAddButtonInfo": {
+                        "ref": "FE.html#.uiAddButtonInfo",
+                        "tf": 12.5
+                      }
+                    }
                   }
                 }
               }
@@ -7396,6 +8082,18 @@ window.lunrData = {
               "Label.html": {
                 "ref": "Label.html",
                 "tf": 5
+              },
+              "FE.html#.uiAddProfile": {
+                "ref": "FE.html#.uiAddProfile",
+                "tf": 25
+              },
+              "FE.html#.uiLoadProfile": {
+                "ref": "FE.html#.uiLoadProfile",
+                "tf": 33.33333333333333
+              },
+              "VRoadcast.html#.hasID": {
+                "ref": "VRoadcast.html#.hasID",
+                "tf": 10
               },
               "ATON.html#.createSceneNode": {
                 "ref": "ATON.html#.createSceneNode",
@@ -7446,7 +8144,51 @@ window.lunrData = {
                           "docs": {
                             "FE.html#.uiAddButton": {
                               "ref": "FE.html#.uiAddButton",
-                              "tf": 20
+                              "tf": 16.666666666666664
+                            },
+                            "FE.html#.uiAddButtonHome": {
+                              "ref": "FE.html#.uiAddButtonHome",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonFirstPerson": {
+                              "ref": "FE.html#.uiAddButtonFirstPerson",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonVR": {
+                              "ref": "FE.html#.uiAddButtonVR",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonDeviceOrientation": {
+                              "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonTalk": {
+                              "ref": "FE.html#.uiAddButtonTalk",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonQR": {
+                              "ref": "FE.html#.uiAddButtonQR",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonInfo": {
+                              "ref": "FE.html#.uiAddButtonInfo",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonFullScreen": {
+                              "ref": "FE.html#.uiAddButtonFullScreen",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonVRC": {
+                              "ref": "FE.html#.uiAddButtonVRC",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonUser": {
+                              "ref": "FE.html#.uiAddButtonUser",
+                              "tf": 33.33333333333333
+                            },
+                            "FE.html#.uiAddButtonEditMode": {
+                              "ref": "FE.html#.uiAddButtonEditMode",
+                              "tf": 33.33333333333333
                             }
                           }
                         }
@@ -7469,7 +8211,7 @@ window.lunrData = {
                   },
                   "FE.html#.uiAddButton": {
                     "ref": "FE.html#.uiAddButton",
-                    "tf": 26.25
+                    "tf": 22.916666666666664
                   }
                 }
               }
@@ -7853,6 +8595,10 @@ window.lunrData = {
               "docs": {},
               "e": {
                 "docs": {
+                  "FE.html#.uiAddButtonEditMode": {
+                    "ref": "FE.html#.uiAddButtonEditMode",
+                    "tf": 10
+                  },
                   "XR.html#.toggle": {
                     "ref": "XR.html#.toggle",
                     "tf": 16.666666666666664
@@ -8031,6 +8777,10 @@ window.lunrData = {
                   "SUI.html#.getInfoNode": {
                     "ref": "SUI.html#.getInfoNode",
                     "tf": 12.5
+                  },
+                  "SUI.html#.setInfoNodeText": {
+                    "ref": "SUI.html#.setInfoNodeText",
+                    "tf": 10
                   },
                   "ATON.html#.realize": {
                     "ref": "ATON.html#.realize",
@@ -8227,7 +8977,7 @@ window.lunrData = {
                       "docs": {
                         "FE.html#.uiAddButton": {
                           "ref": "FE.html#.uiAddButton",
-                          "tf": 20
+                          "tf": 16.666666666666664
                         }
                       }
                     }
@@ -8298,6 +9048,10 @@ window.lunrData = {
                     "docs": {
                       "Node.html#orientToCamera": {
                         "ref": "Node.html#orientToCamera",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonDeviceOrientation": {
+                        "ref": "FE.html#.uiAddButtonDeviceOrientation",
                         "tf": 12.5
                       },
                       "Nav.html#.isDevOri": {
@@ -8488,6 +9242,28 @@ window.lunrData = {
                   }
                 }
               },
+              "f": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "l": {
+                    "docs": {
+                      "FE.html#.uiAddProfile": {
+                        "ref": "FE.html#.uiAddProfile",
+                        "tf": 10
+                      },
+                      "FE.html#.uiLoadProfile": {
+                        "ref": "FE.html#.uiLoadProfile",
+                        "tf": 8.333333333333332
+                      },
+                      "ATON.html#.realize": {
+                        "ref": "ATON.html#.realize",
+                        "tf": 4.166666666666666
+                      }
+                    }
+                  }
+                }
+              },
               "p": {
                 "docs": {},
                 "e": {
@@ -8497,20 +9273,6 @@ window.lunrData = {
                       "XR.html#.setRefSpaceLocation": {
                         "ref": "XR.html#.setRefSpaceLocation",
                         "tf": 3.125
-                      }
-                    }
-                  }
-                }
-              },
-              "f": {
-                "docs": {},
-                "i": {
-                  "docs": {},
-                  "l": {
-                    "docs": {
-                      "ATON.html#.realize": {
-                        "ref": "ATON.html#.realize",
-                        "tf": 4.166666666666666
                       }
                     }
                   }
@@ -9008,24 +9770,14 @@ window.lunrData = {
               },
               "s": {
                 "docs": {},
-                "i": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "t": {
-                      "docs": {
-                        "SceneHub.html#.setEditMode": {
-                          "ref": "SceneHub.html#.setEditMode",
-                          "tf": 5
-                        }
-                      }
-                    }
-                  }
-                },
                 "o": {
                   "docs": {},
                   "n": {
                     "docs": {
+                      "FE.html#.uiAddButtonFirstPerson": {
+                        "ref": "FE.html#.uiAddButtonFirstPerson",
+                        "tf": 12.5
+                      },
                       "Nav.html#.isFirstPerson": {
                         "ref": "Nav.html#.isFirstPerson",
                         "tf": 7.142857142857142
@@ -9033,6 +9785,24 @@ window.lunrData = {
                       "Nav.html#.setFirstPersonControl": {
                         "ref": "Nav.html#.setFirstPersonControl",
                         "tf": 10
+                      }
+                    }
+                  }
+                },
+                "i": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "FE.html#.uiAddButtonEditMode": {
+                          "ref": "FE.html#.uiAddButtonEditMode",
+                          "tf": 10
+                        },
+                        "SceneHub.html#.setEditMode": {
+                          "ref": "SceneHub.html#.setEditMode",
+                          "tf": 5
+                        }
                       }
                     }
                   }
@@ -9377,6 +10147,10 @@ window.lunrData = {
                       },
                       "VRoadcast.html#.isConnected": {
                         "ref": "VRoadcast.html#.isConnected",
+                        "tf": 10
+                      },
+                      "VRoadcast.html#.hasID": {
+                        "ref": "VRoadcast.html#.hasID",
                         "tf": 10
                       },
                       "ATON.html#.getSceneQueriedPoint": {
@@ -9894,6 +10668,10 @@ window.lunrData = {
                       "ref": "FE.html#.loadSceneID",
                       "tf": 9.090909090909092
                     },
+                    "FE.html#.uiAddButtonInfo": {
+                      "ref": "FE.html#.uiAddButtonInfo",
+                      "tf": 12.5
+                    },
                     "SceneHub.html": {
                       "ref": "SceneHub.html",
                       "tf": 16.666666666666664
@@ -10299,6 +11077,10 @@ window.lunrData = {
                 "SUI.html#.setSelectorModel": {
                   "ref": "SUI.html#.setSelectorModel",
                   "tf": 12.5
+                },
+                "SUI.html#.setInfoNodeText": {
+                  "ref": "SUI.html#.setInfoNodeText",
+                  "tf": 10
                 },
                 "ATON.html#.setPathCollection": {
                   "ref": "ATON.html#.setPathCollection",
@@ -11149,6 +11931,44 @@ window.lunrData = {
                       }
                     }
                   }
+                },
+                "n": {
+                  "docs": {},
+                  "f": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "d": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "x": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {
+                                        "SUI.html#.setInfoNodeText": {
+                                          "ref": "SUI.html#.setInfoNodeText",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
               },
               "u": {
@@ -11396,6 +12216,10 @@ window.lunrData = {
                     "docs": {},
                     "n": {
                       "docs": {
+                        "FE.html#.uiAddButtonVRC": {
+                          "ref": "FE.html#.uiAddButtonVRC",
+                          "tf": 8.333333333333332
+                        },
                         "XR.html#.setSessionType": {
                           "ref": "XR.html#.setSessionType",
                           "tf": 16.666666666666664
@@ -11583,6 +12407,10 @@ window.lunrData = {
                       "FE.html#.uiAddButton": {
                         "ref": "FE.html#.uiAddButton",
                         "tf": 6.25
+                      },
+                      "FE.html#.uiLoadProfile": {
+                        "ref": "FE.html#.uiLoadProfile",
+                        "tf": 8.333333333333332
                       },
                       "Nav.html#.requestPOVbyNode": {
                         "ref": "Nav.html#.requestPOVbyNode",
@@ -11806,6 +12634,47 @@ window.lunrData = {
                                                     "ref": "SUI.html#.setSelectorModel",
                                                     "tf": 1150
                                                   }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "i": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "f": {
+                            "docs": {},
+                            "o": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "d": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "x": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {
+                                                "SUI.html#.setInfoNodeText": {
+                                                  "ref": "SUI.html#.setInfoNodeText",
+                                                  "tf": 1150
                                                 }
                                               }
                                             }
@@ -12115,6 +12984,20 @@ window.lunrData = {
                     "tf": 1.9444444444444444
                   }
                 },
+                "t": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "p": {
+                      "docs": {
+                        "FE.html#.uiAddButton": {
+                          "ref": "FE.html#.uiAddButton",
+                          "tf": 16.666666666666664
+                        }
+                      }
+                    }
+                  }
+                },
                 "b": {
                   "docs": {},
                   "a": {
@@ -12316,6 +13199,17 @@ window.lunrData = {
                 }
               }
             },
+            "l": {
+              "docs": {},
+              "k": {
+                "docs": {
+                  "FE.html#.uiAddButtonTalk": {
+                    "ref": "FE.html#.uiAddButtonTalk",
+                    "tf": 12.5
+                  }
+                }
+              }
+            },
             "b": {
               "docs": {},
               "l": {
@@ -12378,6 +13272,10 @@ window.lunrData = {
                   },
                   "VRoadcast.html#.isConnected": {
                     "ref": "VRoadcast.html#.isConnected",
+                    "tf": 10
+                  },
+                  "VRoadcast.html#.hasID": {
+                    "ref": "VRoadcast.html#.hasID",
                     "tf": 10
                   }
                 }
@@ -12574,6 +13472,10 @@ window.lunrData = {
                   "Label.html#setText": {
                     "ref": "Label.html#setText",
                     "tf": 66.66666666666666
+                  },
+                  "SUI.html#.setInfoNodeText": {
+                    "ref": "SUI.html#.setInfoNodeText",
+                    "tf": 10
                   }
                 }
               }
@@ -12609,6 +13511,17 @@ window.lunrData = {
                     "ref": "VRoadcast.html#.requestSceneEnter",
                     "tf": 2.941176470588235
                   }
+                }
+              }
+            }
+          },
+          "x": {
+            "docs": {},
+            "t": {
+              "docs": {
+                "SUI.html#.setInfoNodeText": {
+                  "ref": "SUI.html#.setInfoNodeText",
+                  "tf": 33.33333333333333
                 }
               }
             }
@@ -12650,6 +13563,10 @@ window.lunrData = {
                   "index.html": {
                     "ref": "index.html",
                     "tf": 1.9444444444444444
+                  },
+                  "FE.html#.uiAddButtonUser": {
+                    "ref": "FE.html#.uiAddButtonUser",
+                    "tf": 12.5
                   },
                   "XR.html#.setRefSpaceLocation": {
                     "ref": "XR.html#.setRefSpaceLocation",
@@ -12821,6 +13738,14 @@ window.lunrData = {
                 "ref": "Label.html",
                 "tf": 5
               },
+              "FE.html#.uiAddProfile": {
+                "ref": "FE.html#.uiAddProfile",
+                "tf": 10
+              },
+              "FE.html#.uiLoadProfile": {
+                "ref": "FE.html#.uiLoadProfile",
+                "tf": 8.333333333333332
+              },
               "SUI.html": {
                 "ref": "SUI.html",
                 "tf": 16.666666666666664
@@ -12881,7 +13806,311 @@ window.lunrData = {
                               "docs": {
                                 "FE.html#.uiAddButton": {
                                   "ref": "FE.html#.uiAddButton",
-                                  "tf": 670
+                                  "tf": 666.6666666666666
+                                }
+                              },
+                              "h": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "m": {
+                                    "docs": {
+                                      "FE.html#.uiAddButtonHome": {
+                                        "ref": "FE.html#.uiAddButtonHome",
+                                        "tf": 683.3333333333334
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "f": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "s": {
+                                      "docs": {},
+                                      "t": {
+                                        "docs": {},
+                                        "p": {
+                                          "docs": {},
+                                          "e": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "s": {
+                                                "docs": {},
+                                                "o": {
+                                                  "docs": {},
+                                                  "n": {
+                                                    "docs": {
+                                                      "FE.html#.uiAddButtonFirstPerson": {
+                                                        "ref": "FE.html#.uiAddButtonFirstPerson",
+                                                        "tf": 683.3333333333334
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                "u": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {},
+                                            "e": {
+                                              "docs": {},
+                                              "e": {
+                                                "docs": {},
+                                                "n": {
+                                                  "docs": {
+                                                    "FE.html#.uiAddButtonFullScreen": {
+                                                      "ref": "FE.html#.uiAddButtonFullScreen",
+                                                      "tf": 683.3333333333334
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "v": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {
+                                    "FE.html#.uiAddButtonVR": {
+                                      "ref": "FE.html#.uiAddButtonVR",
+                                      "tf": 683.3333333333334
+                                    }
+                                  },
+                                  "c": {
+                                    "docs": {
+                                      "FE.html#.uiAddButtonVRC": {
+                                        "ref": "FE.html#.uiAddButtonVRC",
+                                        "tf": 683.3333333333334
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "d": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "v": {
+                                    "docs": {},
+                                    "i": {
+                                      "docs": {},
+                                      "c": {
+                                        "docs": {},
+                                        "e": {
+                                          "docs": {},
+                                          "o": {
+                                            "docs": {},
+                                            "r": {
+                                              "docs": {},
+                                              "i": {
+                                                "docs": {},
+                                                "e": {
+                                                  "docs": {},
+                                                  "n": {
+                                                    "docs": {},
+                                                    "t": {
+                                                      "docs": {
+                                                        "FE.html#.uiAddButtonDeviceOrientation": {
+                                                          "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                                                          "tf": 683.3333333333334
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "t": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "l": {
+                                    "docs": {},
+                                    "k": {
+                                      "docs": {
+                                        "FE.html#.uiAddButtonTalk": {
+                                          "ref": "FE.html#.uiAddButtonTalk",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "q": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {
+                                    "FE.html#.uiAddButtonQR": {
+                                      "ref": "FE.html#.uiAddButtonQR",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              },
+                              "i": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "f": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {
+                                        "FE.html#.uiAddButtonInfo": {
+                                          "ref": "FE.html#.uiAddButtonInfo",
+                                          "tf": 683.3333333333334
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "u": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {
+                                    "FE.html#.uiAddButtonUser": {
+                                      "ref": "FE.html#.uiAddButtonUser",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              },
+                              "e": {
+                                "docs": {},
+                                "d": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "m": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {
+                                              "FE.html#.uiAddButtonEditMode": {
+                                                "ref": "FE.html#.uiAddButtonEditMode",
+                                                "tf": 683.3333333333334
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "p": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "i": {
+                            "docs": {},
+                            "l": {
+                              "docs": {
+                                "FE.html#.uiAddProfile": {
+                                  "ref": "FE.html#.uiAddProfile",
+                                  "tf": 675
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "f": {
+              "docs": {},
+              "u": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "c": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "FE.html#.uiAddProfile": {
+                          "ref": "FE.html#.uiAddProfile",
+                          "tf": 25
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "l": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "d": {
+                    "docs": {},
+                    "p": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "f": {
+                            "docs": {},
+                            "i": {
+                              "docs": {},
+                              "l": {
+                                "docs": {
+                                  "FE.html#.uiLoadProfile": {
+                                    "ref": "FE.html#.uiLoadProfile",
+                                    "tf": 683.3333333333334
+                                  }
                                 }
                               }
                             }
@@ -13087,6 +14316,10 @@ window.lunrData = {
                 "ref": "index.html",
                 "tf": 1.9444444444444444
               },
+              "FE.html#.uiAddButtonVR": {
+                "ref": "FE.html#.uiAddButtonVR",
+                "tf": 12.5
+              },
               "XR.html#.isPresenting": {
                 "ref": "XR.html#.isPresenting",
                 "tf": 8.333333333333332
@@ -13110,12 +14343,24 @@ window.lunrData = {
                         "docs": {},
                         "t": {
                           "docs": {
+                            "FE.html#.uiAddButtonTalk": {
+                              "ref": "FE.html#.uiAddButtonTalk",
+                              "tf": 12.5
+                            },
+                            "FE.html#.uiAddButtonVRC": {
+                              "ref": "FE.html#.uiAddButtonVRC",
+                              "tf": 8.333333333333332
+                            },
                             "VRoadcast.html": {
                               "ref": "VRoadcast.html",
                               "tf": 1916.6666666666667
                             },
                             "VRoadcast.html#.isConnected": {
                               "ref": "VRoadcast.html#.isConnected",
+                              "tf": 10
+                            },
+                            "VRoadcast.html#.hasID": {
+                              "ref": "VRoadcast.html#.hasID",
                               "tf": 10
                             },
                             "VRoadcast.html#.requestSceneEnter": {
@@ -13205,6 +14450,26 @@ window.lunrData = {
                                   "VRoadcast.html#.on": {
                                     "ref": "VRoadcast.html#.on",
                                     "tf": 1300
+                                  }
+                                }
+                              }
+                            },
+                            "h": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {
+                                        "VRoadcast.html#.hasID": {
+                                          "ref": "VRoadcast.html#.hasID",
+                                          "tf": 1150
+                                        }
+                                      }
+                                    }
                                   }
                                 }
                               }
@@ -13896,6 +15161,10 @@ window.lunrData = {
                     "ref": "FE.html#.loadSceneID",
                     "tf": 9.090909090909092
                   },
+                  "FE.html#.uiLoadProfile": {
+                    "ref": "FE.html#.uiLoadProfile",
+                    "tf": 8.333333333333332
+                  },
                   "SceneHub.html#.load": {
                     "ref": "SceneHub.html#.load",
                     "tf": 680
@@ -14055,6 +15324,38 @@ window.lunrData = {
                   "ref": "VRoadcast.html#.log",
                   "tf": 695.8333333333334
                 }
+              },
+              "i": {
+                "docs": {},
+                "n": {
+                  "docs": {},
+                  "/": {
+                    "docs": {},
+                    "l": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "g": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "u": {
+                              "docs": {},
+                              "t": {
+                                "docs": {
+                                  "FE.html#.uiAddButtonUser": {
+                                    "ref": "FE.html#.uiAddButtonUser",
+                                    "tf": 12.5
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           },
@@ -14188,7 +15489,59 @@ window.lunrData = {
                                   },
                                   "FE.html#.uiAddButton": {
                                     "ref": "FE.html#.uiAddButton",
-                                    "tf": 20
+                                    "tf": 16.666666666666664
+                                  },
+                                  "FE.html#.uiAddButtonHome": {
+                                    "ref": "FE.html#.uiAddButtonHome",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonFirstPerson": {
+                                    "ref": "FE.html#.uiAddButtonFirstPerson",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonVR": {
+                                    "ref": "FE.html#.uiAddButtonVR",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonDeviceOrientation": {
+                                    "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonTalk": {
+                                    "ref": "FE.html#.uiAddButtonTalk",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonQR": {
+                                    "ref": "FE.html#.uiAddButtonQR",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonInfo": {
+                                    "ref": "FE.html#.uiAddButtonInfo",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonFullScreen": {
+                                    "ref": "FE.html#.uiAddButtonFullScreen",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonVRC": {
+                                    "ref": "FE.html#.uiAddButtonVRC",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonUser": {
+                                    "ref": "FE.html#.uiAddButtonUser",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddButtonEditMode": {
+                                    "ref": "FE.html#.uiAddButtonEditMode",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "FE.html#.uiAddProfile": {
+                                    "ref": "FE.html#.uiAddProfile",
+                                    "tf": 25
+                                  },
+                                  "FE.html#.uiLoadProfile": {
+                                    "ref": "FE.html#.uiLoadProfile",
+                                    "tf": 33.33333333333333
                                   },
                                   "FE.html#.popupShow": {
                                     "ref": "FE.html#.popupShow",
@@ -14374,6 +15727,10 @@ window.lunrData = {
                                     "ref": "SUI.html#.getInfoNode",
                                     "tf": 33.33333333333333
                                   },
+                                  "SUI.html#.setInfoNodeText": {
+                                    "ref": "SUI.html#.setInfoNodeText",
+                                    "tf": 33.33333333333333
+                                  },
                                   "SUI.html#.createToolbar": {
                                     "ref": "SUI.html#.createToolbar",
                                     "tf": 20
@@ -14392,6 +15749,10 @@ window.lunrData = {
                                   },
                                   "VRoadcast.html#.isConnected": {
                                     "ref": "VRoadcast.html#.isConnected",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "VRoadcast.html#.hasID": {
+                                    "ref": "VRoadcast.html#.hasID",
                                     "tf": 33.33333333333333
                                   },
                                   "VRoadcast.html#.log": {
@@ -15874,6 +17235,10 @@ window.lunrData = {
                     "ref": "SUI.html#.getInfoNode",
                     "tf": 45.83333333333333
                   },
+                  "SUI.html#.setInfoNodeText": {
+                    "ref": "SUI.html#.setInfoNodeText",
+                    "tf": 10
+                  },
                   "SUI.html#.createToolbar": {
                     "ref": "SUI.html#.createToolbar",
                     "tf": 24.166666666666664
@@ -16932,6 +18297,10 @@ window.lunrData = {
                         "VRoadcast.html#.isConnected": {
                           "ref": "VRoadcast.html#.isConnected",
                           "tf": 33.33333333333333
+                        },
+                        "VRoadcast.html#.hasID": {
+                          "ref": "VRoadcast.html#.hasID",
+                          "tf": 33.33333333333333
                         }
                       }
                     }
@@ -17116,6 +18485,50 @@ window.lunrData = {
                       "FE.html#.uiAddButton": {
                         "ref": "FE.html#.uiAddButton",
                         "tf": 6.25
+                      },
+                      "FE.html#.uiAddButtonHome": {
+                        "ref": "FE.html#.uiAddButtonHome",
+                        "tf": 16.666666666666664
+                      },
+                      "FE.html#.uiAddButtonFirstPerson": {
+                        "ref": "FE.html#.uiAddButtonFirstPerson",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonVR": {
+                        "ref": "FE.html#.uiAddButtonVR",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonDeviceOrientation": {
+                        "ref": "FE.html#.uiAddButtonDeviceOrientation",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonTalk": {
+                        "ref": "FE.html#.uiAddButtonTalk",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonQR": {
+                        "ref": "FE.html#.uiAddButtonQR",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonInfo": {
+                        "ref": "FE.html#.uiAddButtonInfo",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonFullScreen": {
+                        "ref": "FE.html#.uiAddButtonFullScreen",
+                        "tf": 16.666666666666664
+                      },
+                      "FE.html#.uiAddButtonVRC": {
+                        "ref": "FE.html#.uiAddButtonVRC",
+                        "tf": 8.333333333333332
+                      },
+                      "FE.html#.uiAddButtonUser": {
+                        "ref": "FE.html#.uiAddButtonUser",
+                        "tf": 12.5
+                      },
+                      "FE.html#.uiAddButtonEditMode": {
+                        "ref": "FE.html#.uiAddButtonEditMode",
+                        "tf": 10
                       },
                       "SUI.html#.createToolbar": {
                         "ref": "SUI.html#.createToolbar",
@@ -17397,6 +18810,17 @@ window.lunrData = {
                     }
                   }
                 }
+              },
+              "i": {
+                "docs": {},
+                "d": {
+                  "docs": {
+                    "VRoadcast.html#.hasID": {
+                      "ref": "VRoadcast.html#.hasID",
+                      "tf": 683.3333333333334
+                    }
+                  }
+                }
               }
             },
             "n": {
@@ -17518,6 +18942,10 @@ window.lunrData = {
                   "FE.html#.addBasicLoaderEvents": {
                     "ref": "FE.html#.addBasicLoaderEvents",
                     "tf": 3.8461538461538463
+                  },
+                  "FE.html#.uiAddButtonHome": {
+                    "ref": "FE.html#.uiAddButtonHome",
+                    "tf": 16.666666666666664
                   },
                   "Nav.html#.computeDefaultHome": {
                     "ref": "Nav.html#.computeDefaultHome",
@@ -17643,6 +19071,14 @@ window.lunrData = {
                 }
               }
             }
+          },
+          "r": {
+            "docs": {
+              "FE.html#.uiAddButtonQR": {
+                "ref": "FE.html#.uiAddButtonQR",
+                "tf": 12.5
+              }
+            }
           }
         },
         "j": {
@@ -17667,7 +19103,7 @@ window.lunrData = {
           }
         }
       },
-      "length": 1426
+      "length": 1569
     },
     "corpusTokens": [
       "1.0",
@@ -17770,12 +19206,15 @@ window.lunrData = {
       "clear",
       "cleareventhandl",
       "close",
+      "code",
+      "collabor",
       "collect",
       "color",
       "compon",
       "comput",
       "computedefaulthom",
       "connect",
+      "connect/disconnect",
       "consist",
       "constructor",
       "contain",
@@ -17847,6 +19286,19 @@ window.lunrData = {
       "fe.popupshow",
       "fe.real",
       "fe.uiaddbutton",
+      "fe.uiaddbuttondeviceorient",
+      "fe.uiaddbuttoneditmod",
+      "fe.uiaddbuttonfirstperson",
+      "fe.uiaddbuttonfullscreen",
+      "fe.uiaddbuttonhom",
+      "fe.uiaddbuttoninfo",
+      "fe.uiaddbuttonqr",
+      "fe.uiaddbuttontalk",
+      "fe.uiaddbuttonus",
+      "fe.uiaddbuttonvr",
+      "fe.uiaddbuttonvrc",
+      "fe.uiaddprofil",
+      "fe.uiloadprofil",
       "field",
       "final",
       "fire",
@@ -17889,6 +19341,7 @@ window.lunrData = {
       "handler",
       "handlerloc",
       "handlernetwork",
+      "hasid",
       "haskeyword",
       "hide",
       "hmd",
@@ -17902,6 +19355,7 @@ window.lunrData = {
       "immers",
       "index",
       "info",
+      "inform",
       "init",
       "initi",
       "insid",
@@ -17943,6 +19397,7 @@ window.lunrData = {
       "locomot",
       "locomotionvalid",
       "log",
+      "login/logout",
       "lp",
       "lt;static&gt",
       "m",
@@ -18063,6 +19518,7 @@ window.lunrData = {
       "profil",
       "proper",
       "provid",
+      "qr",
       "queri",
       "quest",
       "r",
@@ -18129,6 +19585,7 @@ window.lunrData = {
       "setfov",
       "sethomepov",
       "seticon",
+      "setinfonodetext",
       "setmainlightdirect",
       "setmainpanorama",
       "setmainpanoramarot",
@@ -18175,6 +19632,7 @@ window.lunrData = {
       "sui.createtoolbar",
       "sui.getinfonod",
       "sui.getselectorradiu",
+      "sui.setinfonodetext",
       "sui.setselectormodel",
       "sui.setselectorradiu",
       "support",
@@ -18183,6 +19641,7 @@ window.lunrData = {
       "system",
       "tablet",
       "take",
+      "talk",
       "target",
       "task",
       "techniqu",
@@ -18198,14 +19657,30 @@ window.lunrData = {
       "toggleusercontrol",
       "tool",
       "toolbar",
+      "tooltip",
       "transit",
       "translat",
       "true",
+      "txt",
       "type",
       "typic",
       "ui",
       "uiaddbutton",
+      "uiaddbuttondeviceorient",
+      "uiaddbuttoneditmod",
+      "uiaddbuttonfirstperson",
+      "uiaddbuttonfullscreen",
+      "uiaddbuttonhom",
+      "uiaddbuttoninfo",
+      "uiaddbuttonqr",
+      "uiaddbuttontalk",
+      "uiaddbuttonus",
+      "uiaddbuttonvr",
+      "uiaddbuttonvrc",
+      "uiaddprofil",
+      "uifunct",
       "uiid",
+      "uiloadprofil",
       "undefin",
       "under",
       "uniqu",
@@ -18235,6 +19710,7 @@ window.lunrData = {
       "vroadcast",
       "vroadcast.connect",
       "vroadcast.fireev",
+      "vroadcast.hasid",
       "vroadcast.init",
       "vroadcast.isconnect",
       "vroadcast.log",
@@ -18828,12 +20304,142 @@ window.lunrData = {
     "FE.html#.uiAddButton": {
       "id": "FE.html#.uiAddButton",
       "kind": "function",
-      "title": "&lt;static&gt; uiAddButton( idcontainer, icon, onPress )",
+      "title": "&lt;static&gt; uiAddButton( idcontainer, icon, onPress, tooltip )",
       "longname": "FE.uiAddButton",
       "name": "uiAddButton",
       "tags": "FE.uiAddButton uiAddButton",
       "summary": "",
       "description": "Add generic icon button inside a specific div container"
+    },
+    "FE.html#.uiAddButtonHome": {
+      "id": "FE.html#.uiAddButtonHome",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonHome( idcontainer )",
+      "longname": "FE.uiAddButtonHome",
+      "name": "uiAddButtonHome",
+      "tags": "FE.uiAddButtonHome uiAddButtonHome",
+      "summary": "",
+      "description": "Add home button"
+    },
+    "FE.html#.uiAddButtonFirstPerson": {
+      "id": "FE.html#.uiAddButtonFirstPerson",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonFirstPerson( idcontainer )",
+      "longname": "FE.uiAddButtonFirstPerson",
+      "name": "uiAddButtonFirstPerson",
+      "tags": "FE.uiAddButtonFirstPerson uiAddButtonFirstPerson",
+      "summary": "",
+      "description": "Add first-person button"
+    },
+    "FE.html#.uiAddButtonVR": {
+      "id": "FE.html#.uiAddButtonVR",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonVR( idcontainer )",
+      "longname": "FE.uiAddButtonVR",
+      "name": "uiAddButtonVR",
+      "tags": "FE.uiAddButtonVR uiAddButtonVR",
+      "summary": "",
+      "description": "Add immersive-VR button"
+    },
+    "FE.html#.uiAddButtonDeviceOrientation": {
+      "id": "FE.html#.uiAddButtonDeviceOrientation",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonDeviceOrientation( idcontainer )",
+      "longname": "FE.uiAddButtonDeviceOrientation",
+      "name": "uiAddButtonDeviceOrientation",
+      "tags": "FE.uiAddButtonDeviceOrientation uiAddButtonDeviceOrientation",
+      "summary": "",
+      "description": "Add device-orientation button"
+    },
+    "FE.html#.uiAddButtonTalk": {
+      "id": "FE.html#.uiAddButtonTalk",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonTalk( idcontainer )",
+      "longname": "FE.uiAddButtonTalk",
+      "name": "uiAddButtonTalk",
+      "tags": "FE.uiAddButtonTalk uiAddButtonTalk",
+      "summary": "",
+      "description": "Add talk button (VRoadcast)"
+    },
+    "FE.html#.uiAddButtonQR": {
+      "id": "FE.html#.uiAddButtonQR",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonQR( idcontainer )",
+      "longname": "FE.uiAddButtonQR",
+      "name": "uiAddButtonQR",
+      "tags": "FE.uiAddButtonQR uiAddButtonQR",
+      "summary": "",
+      "description": "Add QR-code button"
+    },
+    "FE.html#.uiAddButtonInfo": {
+      "id": "FE.html#.uiAddButtonInfo",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonInfo( idcontainer )",
+      "longname": "FE.uiAddButtonInfo",
+      "name": "uiAddButtonInfo",
+      "tags": "FE.uiAddButtonInfo uiAddButtonInfo",
+      "summary": "",
+      "description": "Add scene information button"
+    },
+    "FE.html#.uiAddButtonFullScreen": {
+      "id": "FE.html#.uiAddButtonFullScreen",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonFullScreen( idcontainer )",
+      "longname": "FE.uiAddButtonFullScreen",
+      "name": "uiAddButtonFullScreen",
+      "tags": "FE.uiAddButtonFullScreen uiAddButtonFullScreen",
+      "summary": "",
+      "description": "Add fullscreen button"
+    },
+    "FE.html#.uiAddButtonVRC": {
+      "id": "FE.html#.uiAddButtonVRC",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonVRC( idcontainer )",
+      "longname": "FE.uiAddButtonVRC",
+      "name": "uiAddButtonVRC",
+      "tags": "FE.uiAddButtonVRC uiAddButtonVRC",
+      "summary": "",
+      "description": "Add VRoadcast button (to connect/disconnect from collaborative sessions)"
+    },
+    "FE.html#.uiAddButtonUser": {
+      "id": "FE.html#.uiAddButtonUser",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonUser( idcontainer )",
+      "longname": "FE.uiAddButtonUser",
+      "name": "uiAddButtonUser",
+      "tags": "FE.uiAddButtonUser uiAddButtonUser",
+      "summary": "",
+      "description": "Add user button (login/logout)"
+    },
+    "FE.html#.uiAddButtonEditMode": {
+      "id": "FE.html#.uiAddButtonEditMode",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddButtonEditMode( idcontainer )",
+      "longname": "FE.uiAddButtonEditMode",
+      "name": "uiAddButtonEditMode",
+      "tags": "FE.uiAddButtonEditMode uiAddButtonEditMode",
+      "summary": "",
+      "description": "Add persistent editing mode button"
+    },
+    "FE.html#.uiAddProfile": {
+      "id": "FE.html#.uiAddProfile",
+      "kind": "function",
+      "title": "&lt;static&gt; uiAddProfile( id, uiFunction )",
+      "longname": "FE.uiAddProfile",
+      "name": "uiAddProfile",
+      "tags": "FE.uiAddProfile uiAddProfile",
+      "summary": "",
+      "description": "Add UI Profile to the front-end"
+    },
+    "FE.html#.uiLoadProfile": {
+      "id": "FE.html#.uiLoadProfile",
+      "kind": "function",
+      "title": "&lt;static&gt; uiLoadProfile( id )",
+      "longname": "FE.uiLoadProfile",
+      "name": "uiLoadProfile",
+      "tags": "FE.uiLoadProfile uiLoadProfile",
+      "summary": "",
+      "description": "Load specific UI Profile for the front-end"
     },
     "FE.html#.popupShow": {
       "id": "FE.html#.popupShow",
@@ -19394,6 +21000,16 @@ window.lunrData = {
       "summary": "",
       "description": "Get main UI Info Node"
     },
+    "SUI.html#.setInfoNodeText": {
+      "id": "SUI.html#.setInfoNodeText",
+      "kind": "function",
+      "title": "&lt;static&gt; setInfoNodeText( txt )",
+      "longname": "SUI.setInfoNodeText",
+      "name": "setInfoNodeText",
+      "tags": "SUI.setInfoNodeText setInfoNodeText",
+      "summary": "",
+      "description": "Set text for main info node"
+    },
     "SUI.html#.createToolbar": {
       "id": "SUI.html#.createToolbar",
       "kind": "function",
@@ -19454,6 +21070,16 @@ window.lunrData = {
       "tags": "VRoadcast.isConnected isConnected",
       "summary": "",
       "description": "Return true if VRoadcast is connected to the service"
+    },
+    "VRoadcast.html#.hasID": {
+      "id": "VRoadcast.html#.hasID",
+      "kind": "function",
+      "title": "&lt;static&gt; hasID() → {boolean}",
+      "longname": "VRoadcast.hasID",
+      "name": "hasID",
+      "tags": "VRoadcast.hasID hasID",
+      "summary": "",
+      "description": "Return true if we have a VRoadcast ID assigned"
     },
     "VRoadcast.html#.log": {
       "id": "VRoadcast.html#.log",

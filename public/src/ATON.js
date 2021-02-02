@@ -85,7 +85,7 @@ ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 
 ATON.SHADOWS_NEAR = 0.1;
-ATON.SHADOWS_FAR  = 50.0;
+ATON.SHADOWS_FAR  = 50.0; //50.0;
 ATON.SHADOWS_SIZE = 15.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
@@ -125,7 +125,7 @@ ATON._setupBaseListeners = ()=>{
 
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
 
-    // FIXME: Generic pointer
+    // Generic pointer
     ATON._bPointerDown = false;
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
@@ -203,6 +203,8 @@ ATON._setupBaseListeners = ()=>{
     ATON._bListenKeyboardEvents = true; // FIXME: check if there's a better way
 
     window.addEventListener("keydown", (e)=>{
+        //e.preventDefault();
+
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
         
@@ -213,6 +215,8 @@ ATON._setupBaseListeners = ()=>{
     }, false);
 
     window.addEventListener("keyup", (e)=>{
+        //e.preventDefault();
+
         if (e.key === "Shift")   ATON._kModShift = false;
         if (e.key === "Control") ATON._kModCtrl  = false;
 
@@ -416,6 +420,11 @@ ATON.realize = ()=>{
     ATON._bAutoLP = false;
     //ATON._dirtyLPs = true;
     ATON._bShadowsFixedBound = false;
+
+    ATON._shadowsNear = ATON.SHADOWS_NEAR;
+    ATON._shadowsFar  = ATON.SHADOWS_FAR;
+    ATON._shadowsSize = ATON.SHADOWS_SIZE;
+    ATON._shadowsRes  = ATON.SHADOWS_RES;
 
     ATON.initGraphs();
     ATON.SceneHub.init();
@@ -700,7 +709,7 @@ ATON._assetReqComplete = (url)=>{
                 }
             });
 
-            ATON.adjustShadowsSizeFromSceneBounds();
+            ATON.adjustShadowsParamsFromSceneBounds();
 
             if (ATON._bShadowsFixedBound){
                 ATON.updateDirShadows(c);
@@ -962,23 +971,31 @@ ATON.getExposure = ()=>{
 };
 
 // Shadows
-// Smart adjustment of shadows size
-ATON.adjustShadowsSizeFromSceneBounds = ()=>{
-    ATON._bShadowsFixedBound = false;
-
+// Smart adjustment of shadows params
+ATON.adjustShadowsParamsFromSceneBounds = ()=>{
     let r = ATON._rootVisible.getBound().radius;
-    if (r <= 0.0) return;
-
-    if (r >= ATON.SHADOWS_SIZE) return;
-
-    ATON._bShadowsFixedBound = true;
+    let c = ATON._rootVisible.getBound().center;
     
-    ATON.SHADOWS_SIZE = r * 1.5;
+    if (r <= 0.0 || r >= ATON.SHADOWS_SIZE){
+        ATON._bShadowsFixedBound = false;
+        ATON._shadowsSize = ATON.SHADOWS_SIZE;
+    }
+    else {
+        ATON._bShadowsFixedBound = true;
+        ATON._shadowsSize = r * 1.5;
+        //console.log(ATON._shadowsSize);
+        //console.log(c);
+    }
 
-    ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
-    ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
-    ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
-    ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
+    ATON._dMainL.shadow.camera.left   = -ATON._shadowsSize;
+    ATON._dMainL.shadow.camera.right  = ATON._shadowsSize;
+    ATON._dMainL.shadow.camera.bottom = -ATON._shadowsSize;
+    ATON._dMainL.shadow.camera.top    = ATON._shadowsSize;
+
+    ATON._dMainL.shadow.mapSize.width  = ATON._shadowsRes;
+    ATON._dMainL.shadow.mapSize.height = ATON._shadowsRes;
+    ATON._dMainL.shadow.camera.near    = ATON._shadowsNear;
+    ATON._dMainL.shadow.camera.far     = ATON._shadowsFar;
 };
 
 
@@ -994,17 +1011,18 @@ ATON.toggleShadows = (b)=>{
         ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
         //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
-        ATON._dMainL.shadow.mapSize.width  = ATON.SHADOWS_RES;
-        ATON._dMainL.shadow.mapSize.height = ATON.SHADOWS_RES;
-        ATON._dMainL.shadow.camera.near    = ATON.SHADOWS_NEAR;
-        ATON._dMainL.shadow.camera.far     = ATON.SHADOWS_FAR;
-        //ATON._dMainL.shadow.bias           = 0.0001;
+        //ATON._dMainL.shadow.bias        = 0.0001;
+/*
+        ATON._dMainL.shadow.mapSize.width  = ATON._shadowsRes;
+        ATON._dMainL.shadow.mapSize.height = ATON._shadowsRes;
+        ATON._dMainL.shadow.camera.near    = ATON._shadowsNear;
+        ATON._dMainL.shadow.camera.far     = ATON._shadowsFar;
 
-        ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
-        ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
-        ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
-        ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
-
+        ATON._dMainL.shadow.camera.left   = -ATON._shadowsSize;
+        ATON._dMainL.shadow.camera.right  = ATON._shadowsSize;
+        ATON._dMainL.shadow.camera.bottom = -ATON._shadowsSize;
+        ATON._dMainL.shadow.camera.top    = ATON._shadowsSize;
+*/
         ATON._rootVisible.traverse((o) => {
             if (o.isMesh){
                 o.castShadow = true;
@@ -1012,7 +1030,7 @@ ATON.toggleShadows = (b)=>{
             }
         });
 
-        ATON.adjustShadowsSizeFromSceneBounds();
+        ATON.adjustShadowsParamsFromSceneBounds();
 
         if (ATON._bShadowsFixedBound){
             let c = ATON._rootVisible.getBound().center;
@@ -1032,17 +1050,25 @@ ATON.toggleShadows = (b)=>{
 ATON.updateDirShadows = (p)=>{
     if (ATON._dMainLdir === undefined) return;
 
-    if (p === undefined) p = ATON.Nav.getCurrentEyeLocation();
+    if (p === undefined){
+        p = ATON.Nav.getCurrentEyeLocation();
 
-    ATON._dMainLpos.x = p.x + (ATON.Nav._vDir.x * ATON.SHADOWS_SIZE);
-    ATON._dMainLpos.y = p.y + (ATON.Nav._vDir.y * ATON.SHADOWS_SIZE);
-    ATON._dMainLpos.z = p.z + (ATON.Nav._vDir.z * ATON.SHADOWS_SIZE);
+        ATON._dMainLpos.x = p.x + (ATON.Nav._vDir.x * ATON._shadowsSize);
+        ATON._dMainLpos.y = p.y + (ATON.Nav._vDir.y * ATON._shadowsSize);
+        ATON._dMainLpos.z = p.z + (ATON.Nav._vDir.z * ATON._shadowsSize);
+    }
+    else {
+        ATON._dMainLpos.x = p.x;
+        ATON._dMainLpos.y = p.y;
+        ATON._dMainLpos.z = p.z;
+    }
 
     ATON._dMainL.position.set(
         ATON._dMainLpos.x - ATON._dMainLdir.x, 
         ATON._dMainLpos.y - ATON._dMainLdir.y, 
         ATON._dMainLpos.z - ATON._dMainLdir.z
     );
+
     ATON._dMainLtgt.position.copy(ATON._dMainLpos);
 };
 

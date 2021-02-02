@@ -251,11 +251,29 @@ Utils.setVectorPrecision = (v, prec)=>{
     return v;
 };
 
+/**
+Get human-readable length (distances, measures, etc...)
+@param {number} d - the distance
+@returns {string}
+*/
 Utils.getHumanReadableDistance = (d)=>{
     let mstr = " m";
-    if (d < 0.5){ d *= 100.0; mstr= " cm"; }
-    if (d < 0.05){ d *= 1000.0; mstr= " mm"; }
-    if (d > 1000.0){ d * 0.001; mstr=" km"; }
+
+    if (d < 0.01){
+        d *= 1000.0; mstr= " mm";
+        mstr = d.toPrecision(3) + mstr;
+        return mstr;
+    }
+    if (d < 1.0){
+        d *= 100.0; mstr= " cm";
+        mstr = d.toPrecision(3) + mstr;
+        return mstr;
+    }
+    if (d > 1000.0){
+        d * 0.001; mstr=" km";
+        mstr = d.toPrecision(3) + mstr;
+        return mstr;
+    }
 
     mstr = d.toPrecision(3) + mstr;
     return mstr;

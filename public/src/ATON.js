@@ -700,15 +700,9 @@ ATON._assetReqComplete = (url)=>{
                 }
             });
 
-            // TODO: experimental
+            ATON.adjustShadowsSizeFromSceneBounds();
+
             if (ATON._bShadowsFixedBound){
-                ATON.SHADOWS_SIZE = r*1.5;
-
-                ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
-                ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
-                ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
-                ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
-
                 ATON.updateDirShadows(c);
             }
         }
@@ -967,6 +961,27 @@ ATON.getExposure = ()=>{
     return ATON._renderer.toneMappingExposure;
 };
 
+// Shadows
+// Smart adjustment of shadows size
+ATON.adjustShadowsSizeFromSceneBounds = ()=>{
+    ATON._bShadowsFixedBound = false;
+
+    let r = ATON._rootVisible.getBound().radius;
+    if (r <= 0.0) return;
+
+    if (r >= ATON.SHADOWS_SIZE) return;
+
+    ATON._bShadowsFixedBound = true;
+    
+    ATON.SHADOWS_SIZE = r * 1.5;
+
+    ATON._dMainL.shadow.camera.left   = -ATON.SHADOWS_SIZE;
+    ATON._dMainL.shadow.camera.right  = ATON.SHADOWS_SIZE;
+    ATON._dMainL.shadow.camera.bottom = -ATON.SHADOWS_SIZE;
+    ATON._dMainL.shadow.camera.top    = ATON.SHADOWS_SIZE;
+};
+
+
 ATON.toggleShadows = (b)=>{
     if (ATON._dMainL === undefined) return;
 
@@ -996,6 +1011,8 @@ ATON.toggleShadows = (b)=>{
                 o.receiveShadow = true;
             }
         });
+
+        ATON.adjustShadowsSizeFromSceneBounds();
 
         if (ATON._bShadowsFixedBound){
             let c = ATON._rootVisible.getBound().center;

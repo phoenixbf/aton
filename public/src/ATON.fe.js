@@ -44,6 +44,9 @@ FE.realize = ()=>{
     FE._uiProfiles    = {};
     FE._uiCurrProfile = undefined;
 
+    FE._selRanges    = [0.01, 50.0]; // 3D Selector ranges
+    FE._selRefRadius = 0.5;
+
     ATON.realize();
 
     // built-in base front-end parameters
@@ -59,7 +62,8 @@ FE.addBasicLoaderEvents = ()=>{
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
         
-        //console.log(ATON.Nav.homePOV);
+        FE.computeSelectorRanges();
+        ATON.SUI.setSelectorRadius( FE._selRefRadius );
 
         if (FE._bReqHome) return;
 
@@ -110,7 +114,10 @@ FE.useMouseWheelToScaleSelector = (f)=>{
             if (d > 0.0) r *= f;
             else r /= f;
 
-            if (r > 0.001) ATON.SUI.setSelectorRadius(r);
+            if (r < FE._selRanges[0]) r = FE._selRanges[0];
+            if (r > FE._selRanges[1]) r = FE._selRanges[1];
+
+            ATON.SUI.setSelectorRadius(r);
             return;
         }
     });
@@ -858,6 +865,19 @@ FE.popupSceneInfo = ()=>{
     });
 };
 
+FE.computeSelectorRanges = ()=>{
+    let sceneBS = ATON.getRootScene().getBound();
+    let r = sceneBS.radius;
+
+    if (r <= 0.0) return;
+
+    FE._selRanges[0] = r * 0.001;
+    FE._selRefRadius = r * 0.02;
+    FE._selRanges[1] = r * 0.5;
+
+    console.log("3D Selector ranges: "+FE._selRanges[0]+", "+FE._selRanges[1]);
+};
+
 FE.popupSelector = ()=>{
     console.log("X");
 
@@ -866,8 +886,10 @@ FE.popupSelector = ()=>{
     let rad = ATON.SUI.getSelectorRadius();
     let hr = ATON.Utils.getHumanReadableDistance( rad );
 
+    FE.computeSelectorRanges();
+
     htmlcontent += "Radius (<span id='idSelRadTxt'>"+hr+"</span>):<br>";
-    htmlcontent += "<input id='idSelRad' type='range' min='0.01' max='50.0' step='0.01' style='width:90%'>";
+    htmlcontent += "<input id='idSelRad' type='range' min='"+FE._selRanges[0]+"' max='"+FE._selRanges[1]+"' step='"+FE._selRanges[0]+"' style='width:90%'>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 

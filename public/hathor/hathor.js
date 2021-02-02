@@ -29,10 +29,12 @@ window.addEventListener( 'load', ()=>{
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');
     HATHOR.paramFPS   = ATON.FE.urlParams.get('fps');
     HATHOR.paramRLOG  = ATON.FE.urlParams.get('rlog');
+    HATHOR.paramUIP   = ATON.FE.urlParams.get('uip');
 
     if (HATHOR.paramRLOG){
         console.log   = ATON.VRoadcast.log;
         console.error = ATON.VRoadcast.log;
+        console.warn  = ATON.VRoadcast.log;
     }
     
     HATHOR._bVRCsetup = false;
@@ -160,8 +162,9 @@ HATHOR.buildUIProfiles = ()=>{
 HATHOR.uiSetup = ()=>{
 
     HATHOR.buildUIProfiles();
-    ATON.FE.uiLoadProfile("default");
-    //ATON.FE.uiLoadProfile("editor");
+
+    if (HATHOR.paramUIP) ATON.FE.uiLoadProfile(HATHOR.paramUIP);
+    else ATON.FE.uiLoadProfile("default");
   
     // Bottom toolbar
     //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
@@ -590,6 +593,8 @@ HATHOR.setupEventHandlers = ()=>{
 
 // TODO: Main HATHOR update routine
 HATHOR._update = ()=>{
+    if (ATON.FE._bPopup) return;
+
     if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown){
         ATON.SemFactory.addSurfaceConvexPoint();
     }
@@ -606,9 +611,9 @@ HATHOR.finalizeCurrentTask = ()=>{
 HATHOR.cancelCurrentTask = ()=>{
     if (ATON.SemFactory.isBuildingShape()){
         ATON.SemFactory.stopCurrentConvex();
-        $("#btn-cancel").hide();
     }
     
+    $("#btn-cancel").hide();
     HATHOR.resetSelectionMode();
 };
 

@@ -47,9 +47,6 @@ window.addEventListener( 'load', ()=>{
 	// Loads main panorama (equirectangular)
 	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
 
-	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
-	ATON.toggleShadows(true);
-
     ATON.createSceneNode("ground")
         .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")
         .setScale(10.0)
@@ -92,6 +89,9 @@ window.addEventListener( 'load', ()=>{
 	// we arrange them in correspondence of cube locations (consistent reflections)
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_A) );
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_B) );
+
+	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
+	ATON.toggleShadows(true);
 });
 
 </script>

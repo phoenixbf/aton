@@ -51,7 +51,7 @@ let app = express();
 //app.set('trust proxy', 1); 	// trust first proxy
 
 //app.use(compression());
-app.use(cors(/*{credentials: true, origin: true}*/));
+app.use(cors({credentials: true, origin: true}));
 
 /*
     app.use((req, res, next)=>{

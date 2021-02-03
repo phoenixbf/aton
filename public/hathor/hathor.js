@@ -324,7 +324,10 @@ HATHOR.setupEventHandlers = ()=>{
     });
 
     ATON.on("SceneJSONLoaded",()=>{
-        if (HATHOR.paramVRC) ATON.VRoadcast.connect(); // maybe not needed
+        if (HATHOR.paramVRC){
+            if (HATHOR.paramVRC.length > 4) ATON.FE._vrcAddr = HATHOR.paramVRC;
+            ATON.VRoadcast.connect(ATON.FE._vrcAddr);
+        }
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
     });
 

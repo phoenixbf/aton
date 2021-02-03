@@ -36,6 +36,8 @@ FE.realize = ()=>{
 
     FE._bReqHome = false;   // auto-compute home
 
+    FE._vrcAddr = undefined;
+
     FE.urlParams = new URLSearchParams(window.location.search);
 
     FE._uiSetupBase();
@@ -353,7 +355,7 @@ FE.uiAddButtonVRC = (idcontainer)=>{
             FE.popupVRC();
         }
         else {
-            ATON.VRoadcast.connect();
+            ATON.VRoadcast.connect(FE._vrcAddr);
         }
     }, "VRoadcast (collaborative session)");
 

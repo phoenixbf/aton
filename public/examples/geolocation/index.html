@@ -61,6 +61,12 @@ window.addEventListener( 'load', ()=>{
 		console.log("We left the POI "+o.id+". Distance: "+o.distance);
 	});
 
+	ATON.on("GeoLocation", function(pos){
+		let lat = parseFloat(pos.coords.latitude).toPrecision(6);
+		let lon = parseFloat(pos.coords.longitude).toPrecision(6);
+		$("#idGeoLoc").html("("+lat+","+lon+")<br>Acc: "+pos.coords.accuracy);
+	});
+
     // Sample scene
     ATON.createSceneNode("ground")
         .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")
@@ -84,7 +90,7 @@ window.addEventListener( 'load', ()=>{
 
 <body oncontextmenu="return false;">
     <!-- Top Toolbar -->
-    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-right"><span id='idGeoLoc'>-</span></div>
 
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>

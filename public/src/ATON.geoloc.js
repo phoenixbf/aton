@@ -76,6 +76,8 @@ GeoLoc._onPosition = (pos)=>{
     //console.log(pos.coords.latitude+","+pos.coords.longitude);
     console.log(pos);
 
+    ATON.fireEvent("GeoLocation", pos);
+
     GeoLoc._handlePOIs();
 };
 
@@ -155,7 +157,7 @@ You can handle enter/leave POI events using ATON.on("EnterPOI") and ATON.on("Lea
 */
 GeoLoc.addPOI = (P, r)=>{
     let POI = {};
-    POI.pos = P;
+    POI.pos = new THREE.Vector2(P.x,P.y);
     POI.radius = r;
 
     GeoLoc._POIs.push(POI);

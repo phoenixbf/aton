@@ -34,7 +34,7 @@ import VRoadcast from "./ATON.vroadcast.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaRec from "./ATON.mediarec.js";
-import GPS from "./ATON.gps.js";
+import GeoLoc from "./ATON.geoloc.js";
 
 // Classes
 ATON.Node       = Node;
@@ -55,7 +55,7 @@ ATON.VRoadcast  = VRoadcast;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaRec   = MediaRec;
-ATON.GPS        = GPS;
+ATON.GeoLoc     = GeoLoc;
 
 //==============================================================
 // Consts
@@ -458,8 +458,8 @@ ATON.realize = ()=>{
     // Semantic Factory
     ATON.SemFactory.init();
 
-    // GPS
-    ATON.GPS.init();
+    // GeoLoc
+    ATON.GeoLoc.init();
 
     // Query / picked data
     ATON._queryDataScene = undefined;

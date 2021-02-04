@@ -34,12 +34,12 @@ window.addEventListener( 'load', ()=>{
 	// When pressing this button, we store our current location
 	// and use it to create a POI with a radius of 20 m
 	ATON.FE.uiAddButton("idBottomToolbar", "geoloc", function(){
-		let location = ATON.GPS.getCurrentLocation();
-		ATON.GPS.addPOI(location, 20.0);
+		let location = ATON.GeoLoc.getCurrentLocation();
+		ATON.GeoLoc.addPOI(location, 40.0);
 	});
 
 	// Enable geolocation
-	ATON.GPS.enableTracking();
+	ATON.GeoLoc.enableTracking();
 
     // Our events
 	ATON.FE.addBasicLoaderEvents();
@@ -47,18 +47,18 @@ window.addEventListener( 'load', ()=>{
 	// We handle here POI proximity events
 	// When we enter the POI...
 	// ...we switch on the geolocation button and show the venus model
-	ATON.on("EnterPOI", function(i){
+	ATON.on("EnterPOI", function(o){
 		ATON.FE.uiSwitchButton("geoloc",true);
 		ATON.getSceneNode("venus").show();
-		console.log("We entered the POI "+i);
+		console.log("We entered the POI "+o.id+". Distance: "+o.distance);
 	});
 
 	// When we leave it...
 	// ...we switch off the geolocation button and hide the venus model
-	ATON.on("LeavePOI", function(i){
+	ATON.on("LeavePOI", function(o){
 		ATON.FE.uiSwitchButton("geoloc",false);
 		ATON.getSceneNode("venus").hide();
-		console.log("We left the POI "+i);
+		console.log("We left the POI "+o.id+". Distance: "+o.distance);
 	});
 
     // Sample scene

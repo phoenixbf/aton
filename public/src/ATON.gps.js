@@ -38,10 +38,8 @@ GPS.enableTracking = ()=>{
     if (!navigator.geolocation) return;
 
     GPS._wpid = navigator.geolocation.watchPosition(
-        GPS._handlePosition,
-        ()=>{
-            console.log("GPS error");
-        },
+        GPS._onPosition,
+        GPS._onError,
         {
             enableHighAccuracy: true,
             //maximumAge        : 30000,
@@ -64,18 +62,23 @@ GPS.disableTracking = ()=>{
     GPS._bActive = false;
 };
 
-GPS._handlePosition = (pos)=>{
+GPS._onError = ()=>{
+    console.log("GPS error");
+};
+
+GPS._onPosition = (pos)=>{
     if (!GPS._bActive) return;
 
     GPS._currPos.x = pos.coords.latitude;
     GPS._currPos.y = pos.coords.longitude;
 
-    console.log(pos.coords.latitude+","+pos.coords.longitude);
+    //console.log(pos.coords.latitude+","+pos.coords.longitude);
+    console.log(pos);
 
-    GPS.handlePOIs();
+    GPS._handlePOIs();
 };
 
-GPS.handlePOIs = ()=>{
+GPS._handlePOIs = ()=>{
     let numPOIs = GPS._POIs.length;
     if (numPOIs <= 0) return;
 
@@ -84,7 +87,7 @@ GPS.handlePOIs = ()=>{
 
         let d = GPS.distance(GPS._currPos, POI.pos);
 
-        console.log("Distance: "+d);
+        //console.log("Distance: "+d);
 
         if (d <= POI.radius && i !== GPS._currPOI){
             ATON.fireEvent("EnterPOI", i);
@@ -157,7 +160,7 @@ GPS.addPOI = (P, r)=>{
     //console.log("Added POI:");
     //console.log(POI);
 
-    GPS.handlePOIs();
+    GPS._handlePOIs();
 
     return (GPS._POIs.length - 1);
 };
@@ -171,7 +174,7 @@ GPS.getPOIbyIndex = (i)=>{
 GPS.update = ()=>{
     if (!GPS._bActive) return;
 
-    //navigator.geolocation.watchPosition(GPS._handlePosition);
+    //navigator.geolocation.watchPosition(GPS._onPosition);
 
     //let P = GPS.locationFromLatLon(42.06047573760282, 12.588698649224982);
     //console.log( GPS.distance(GPS._currPos, P) );

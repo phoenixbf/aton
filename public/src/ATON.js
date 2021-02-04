@@ -34,6 +34,7 @@ import VRoadcast from "./ATON.vroadcast.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaRec from "./ATON.mediarec.js";
+import GPS from "./ATON.gps.js";
 
 // Classes
 ATON.Node       = Node;
@@ -54,6 +55,7 @@ ATON.VRoadcast  = VRoadcast;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaRec   = MediaRec;
+ATON.GPS        = GPS;
 
 //==============================================================
 // Consts
@@ -374,6 +376,12 @@ ATON.realize = ()=>{
     ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );
     //console.log(ATON._stdpxd);
+
+    ATON._fps = 60.0;
+    ATON._dt  = 0.01;
+    ATON._avgFPScount = 0;
+    ATON._avgFPSaccum = 0;
+    ATON._avgFPS = 60;
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
     ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
@@ -450,6 +458,9 @@ ATON.realize = ()=>{
     // Semantic Factory
     ATON.SemFactory.init();
 
+    // GPS
+    ATON.GPS.init();
+
     // Query / picked data
     ATON._queryDataScene = undefined;
     ATON._queryDataSem   = undefined;
@@ -493,6 +504,29 @@ ATON.realize = ()=>{
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
     ATON.focusOn3DView();
+
+/*  dynamic px density
+    window.setInterval(() => {
+        if (ATON._avgFPScount <= 0) return;
+
+        ATON._avgFPS = ATON._avgFPSaccum / ATON._avgFPScount;
+        console.log(ATON._avgFPS);
+
+        let d = ATON._renderer.getPixelRatio();
+
+        if (ATON._avgFPS < 30.0){
+            d *= 0.75;
+            ATON._renderer.setPixelRatio( d );
+        } 
+        if (ATON._avgFPS > 50.0){
+            d *= 1.33;
+            if (d <= ATON._stdpxd) ATON._renderer.setPixelRatio( d );
+        } 
+
+        ATON._avgFPSaccum = 0.0;
+        ATON._avgFPScount = 0;
+    }, 2000);
+*/
 };
 
 /**
@@ -1089,6 +1123,10 @@ ATON._onFrame = ()=>{
 
     ATON._fps = 1.0 / dt;
     ATON._dt  = dt;
+
+    // avg fps
+    //ATON._avgFPScount++;
+    //ATON._avgFPSaccum += ATON._fps;
     
     //ATON.Nav._bControlChange = false;
     ATON.Nav._controls.update(dt);

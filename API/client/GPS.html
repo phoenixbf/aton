@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>Button</title>
+		<title>GPS</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -80,8 +80,8 @@
 	</header>
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
-				<span class="kind">class</span>
-				<h1><span class="name">Button</span></h1>
+				<span class="kind">namespace</span>
+				<h1><span class="name">GPS</span></h1>
 			</div>
 		</div>
 	<div class="container content">
@@ -89,21 +89,17 @@
 			<div class="col-md-9 main-content">
 						<ol class="breadcrumb">
 							<li><a href="index.html">Home</a></li>
-							<li><a href="list_class.html">Classes</a></li>
-							<li class="active">Button</li>
+							<li><a href="list_namespace.html">Namespaces</a></li>
+							<li class="active">GPS</li>
 						</ol>
 					<section>
 							<dl class="symbol primary">
-								<dt class="symbol-title class collapsible-symbol expanded">
-			<h2 class="class"><span class="signature-new">new&nbsp;</span><span class="name">Button</span><span class="signature-params">()</span><span class="signature-type"></span></h2>
+								<dt class="symbol-title namespace collapsible-symbol expanded">
+			<h2 class="namespace"><span class="name">GPS</span></h2>
 </dt>
-<dd class="symbol-details class  collapsible-symbol expanded" style="max-height: 9999px;">
+<dd class="symbol-details namespace  collapsible-symbol expanded" style="max-height: 9999px;">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Class representing a SpatialUI Button.
-			Constructor requires a uiid (UI Node ID)</p></div>
-			</div>			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
-						<pre class="prettyprint source language-javascript"><code class="language-javascript">new ATON.SUI.Button(&quot;myButton&quot;)</code></pre>
-					</div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Geolocation and outdoor tracking</p></div>
 			</div>	</div>
 </dd>
 							</dl>
@@ -112,100 +108,49 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="setBaseColor" class="function public"><span class="name">setBaseColor</span><span class="signature-params">( <span class="signature-param">c</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id=".enableTracking" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">enableTracking</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set base color of the button</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>c</code></td>
-							<td><span class="param-type">THREE.Color</span></td>
-							<td class="last">
-									<p>the color</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Enable GPS location tracking</p></div>
+			</div>	</div>
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="setSwitchColor" class="function public"><span class="name">setSwitchColor</span><span class="signature-params">( <span class="signature-param">c</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id=".disableTracking" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">disableTracking</span><span class="signature-params">()</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set button switch color (when activated)</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>c</code></td>
-							<td><span class="param-type">THREE.Color</span></td>
-							<td class="last">
-									<p>the color</p>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Disable GPS location tracking</p></div>
+			</div>	</div>
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="setText" class="function public"><span class="name">setText</span><span class="signature-params">( <span class="signature-param">text</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id=".getCurrentLocation" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getCurrentLocation</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{THREE.Vector2}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set button text</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
-						<tr>
-								<td><code>text</code></td>
-							<td><span class="param-type">string</span></td>
-							<td class="last">
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get current location</p></div>
+			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
+							<div class="form-group">
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">THREE.Vector2</span></label>
+								<div class="col-sm-9">
+									<div class="form-control-static returns-description"><ul>
+			<li>latitude and longitude</li>
+			</ul></div>
+								</div>
+							</div>
+					</form>
+			</div>	</div>
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="switch" class="function public"><span class="name">switch</span><span class="signature-params">( <span class="signature-param">b</span>&nbsp;)</span><span class="signature-type"></span></h4>
+			<h4 id=".addPOI" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">addPOI</span><span class="signature-params">( <span class="signature-param">P</span>, <span class="signature-param">r</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Switch the button (ON/OFF)</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Add a POI (point-of-interest) given location (lat,lon) and radius.
+			You can handle enter/leave POI events using ATON.on(&quot;EnterPOI&quot;) and ATON.on(&quot;LeavePOI&quot;)</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -218,39 +163,17 @@
 					</thead>
 					<tbody>
 						<tr>
-								<td><code>b</code></td>
-							<td><span class="param-type">boolean</span></td>
+								<td><code>P</code></td>
+							<td><span class="param-type">THREE.Vector2</span></td>
 							<td class="last">
+									<p>the (lat,lon) pair</p>
 							</td>
 						</tr>
-					</tbody>
-				</table>
-			</div>
-	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id="setIcon" class="function public"><span class="name">setIcon</span><span class="signature-params">( <span class="signature-param">url</span>&nbsp;)</span><span class="signature-type"></span></h4>
-		</dt>
-<dd class="symbol-details function public  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Set button icon</p></div>
-			</div>			<div class="callout callout-info">
-				<h5>Parameters</h5>
-				<table class="params table table-striped">
-					<thead>
-					<tr>
-							<th>Name</th>
-						<th>Type</th>
-						<th class="last">Description</th>
-					</tr>
-					</thead>
-					<tbody>
 						<tr>
-								<td><code>url</code></td>
-							<td><span class="param-type">string</span></td>
+								<td><code>r</code></td>
+							<td><span class="param-type">number</span></td>
 							<td class="last">
-									<p>the url to the icon (tipically a PNG file)</p>
+									<p>the radius (meters)</p>
 							</td>
 						</tr>
 					</tbody>

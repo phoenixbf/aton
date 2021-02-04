@@ -980,6 +980,64 @@ window.lunrData = {
           "hub",
           "namespac"
         ],
+        "GPS.html": [
+          "geoloc",
+          "gp",
+          "namespac",
+          "outdoor",
+          "track"
+        ],
+        "GPS.html#.enableTracking": [
+          "enabl",
+          "enabletrack",
+          "function",
+          "gp",
+          "gps.enabletrack",
+          "locat",
+          "lt;static&gt",
+          "track"
+        ],
+        "GPS.html#.disableTracking": [
+          "disabl",
+          "disabletrack",
+          "function",
+          "gp",
+          "gps.disabletrack",
+          "locat",
+          "lt;static&gt",
+          "track"
+        ],
+        "GPS.html#.getCurrentLocation": [
+          "current",
+          "function",
+          "getcurrentloc",
+          "gps.getcurrentloc",
+          "locat",
+          "lt;static&gt",
+          "three.vector2"
+        ],
+        "GPS.html#.addPOI": [
+          "add",
+          "addpoi",
+          "aton.on(\"enterpoi",
+          "aton.on(\"leavepoi",
+          "enter/leav",
+          "event",
+          "function",
+          "given",
+          "gps.addpoi",
+          "handl",
+          "interest",
+          "lat,lon",
+          "locat",
+          "lt;static&gt",
+          "p",
+          "poi",
+          "point",
+          "r",
+          "radiu",
+          "us"
+        ],
         "MatHub.html": [
           "aton",
           "hub",
@@ -1089,6 +1147,20 @@ window.lunrData = {
           "support",
           "utils.isarsupport",
           "webxr"
+        ],
+        "Utils.html#.getHumanReadableDistance": [
+          "d",
+          "distanc",
+          "etc",
+          "function",
+          "gethumanreadabledist",
+          "human",
+          "length",
+          "lt;static&gt",
+          "measur",
+          "readabl",
+          "string",
+          "utils.gethumanreadabledist"
         ],
         "Nav.html": [
           "aton",
@@ -1935,7 +2007,7 @@ window.lunrData = {
           "visibl"
         ]
       },
-      "length": 163
+      "length": 169
     },
     "tokenStore": {
       "root": {
@@ -2110,6 +2182,10 @@ window.lunrData = {
                   "ref": "FE.html#.uiAddProfile",
                   "tf": 10
                 },
+                "GPS.html#.addPOI": {
+                  "ref": "GPS.html#.addPOI",
+                  "tf": 3.3333333333333335
+                },
                 "ATON.html#.addLightProbe": {
                   "ref": "ATON.html#.addLightProbe",
                   "tf": 16.666666666666664
@@ -2196,6 +2272,20 @@ window.lunrData = {
                     "FE.html#.loadSceneID": {
                       "ref": "FE.html#.loadSceneID",
                       "tf": 4.545454545454546
+                    }
+                  }
+                }
+              },
+              "p": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "i": {
+                    "docs": {
+                      "GPS.html#.addPOI": {
+                        "ref": "GPS.html#.addPOI",
+                        "tf": 675
+                      }
                     }
                   }
                 }
@@ -2433,6 +2523,64 @@ window.lunrData = {
                                                   }
                                                 }
                                               }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "e": {
+                            "docs": {},
+                            "n": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "p": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "i": {
+                                          "docs": {
+                                            "GPS.html#.addPOI": {
+                                              "ref": "GPS.html#.addPOI",
+                                              "tf": 3.3333333333333335
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "v": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "p": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "i": {
+                                          "docs": {
+                                            "GPS.html#.addPOI": {
+                                              "ref": "GPS.html#.addPOI",
+                                              "tf": 3.3333333333333335
                                             }
                                           }
                                         }
@@ -4605,6 +4753,10 @@ window.lunrData = {
                           "ref": "FE.html#.popupClose",
                           "tf": 16.666666666666664
                         },
+                        "GPS.html#.getCurrentLocation": {
+                          "ref": "GPS.html#.getCurrentLocation",
+                          "tf": 25
+                        },
                         "Utils.html#.isConnectionSecure": {
                           "ref": "Utils.html#.isConnectionSecure",
                           "tf": 16.666666666666664
@@ -4762,6 +4914,10 @@ window.lunrData = {
         },
         "d": {
           "docs": {
+            "Utils.html#.getHumanReadableDistance": {
+              "ref": "Utils.html#.getHumanReadableDistance",
+              "tf": 25
+            },
             "VRoadcast.html#.log": {
               "ref": "VRoadcast.html#.log",
               "tf": 33.33333333333333
@@ -5136,6 +5292,10 @@ window.lunrData = {
                       "Node.html#disablePicking": {
                         "ref": "Node.html#disablePicking",
                         "tf": 5
+                      },
+                      "GPS.html#.disableTracking": {
+                        "ref": "GPS.html#.disableTracking",
+                        "tf": 12.5
                       }
                     },
                     "e": {
@@ -5156,6 +5316,26 @@ window.lunrData = {
                             }
                           }
                         }
+                      },
+                      "t": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "k": {
+                                "docs": {
+                                  "GPS.html#.disableTracking": {
+                                    "ref": "GPS.html#.disableTracking",
+                                    "tf": 700
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -5169,6 +5349,10 @@ window.lunrData = {
                     "docs": {},
                     "c": {
                       "docs": {
+                        "Utils.html#.getHumanReadableDistance": {
+                          "ref": "Utils.html#.getHumanReadableDistance",
+                          "tf": 8.333333333333332
+                        },
                         "ATON.html#.getSceneQueriedDistance": {
                           "ref": "ATON.html#.getSceneQueriedDistance",
                           "tf": 5.555555555555555
@@ -5328,6 +5512,10 @@ window.lunrData = {
                       "ref": "Node.html#enablePicking",
                       "tf": 8.333333333333332
                     },
+                    "GPS.html#.enableTracking": {
+                      "ref": "GPS.html#.enableTracking",
+                      "tf": 12.5
+                    },
                     "Nav.html#.isUserControlEnabled": {
                       "ref": "Nav.html#.isUserControlEnabled",
                       "tf": 5.555555555555555
@@ -5346,6 +5534,26 @@ window.lunrData = {
                               "Node.html#enablePicking": {
                                 "ref": "Node.html#enablePicking",
                                 "tf": 750
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "k": {
+                              "docs": {
+                                "GPS.html#.enableTracking": {
+                                  "ref": "GPS.html#.enableTracking",
+                                  "tf": 700
+                                }
                               }
                             }
                           }
@@ -5403,6 +5611,26 @@ window.lunrData = {
                       "ref": "VRoadcast.html#.requestSceneEnter",
                       "tf": 2.941176470588235
                     }
+                  },
+                  "/": {
+                    "docs": {},
+                    "l": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "v": {
+                            "docs": {
+                              "GPS.html#.addPOI": {
+                                "ref": "GPS.html#.addPOI",
+                                "tf": 3.3333333333333335
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -5419,6 +5647,10 @@ window.lunrData = {
                 "Node.html#disablePicking": {
                   "ref": "Node.html#disablePicking",
                   "tf": 5
+                },
+                "Utils.html#.getHumanReadableDistance": {
+                  "ref": "Utils.html#.getHumanReadableDistance",
+                  "tf": 8.333333333333332
                 }
               }
             }
@@ -5478,6 +5710,10 @@ window.lunrData = {
                     "FE.html#.addBasicLoaderEvents": {
                       "ref": "FE.html#.addBasicLoaderEvents",
                       "tf": 3.8461538461538463
+                    },
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
                     },
                     "VRoadcast.html#.fireEvent": {
                       "ref": "VRoadcast.html#.fireEvent",
@@ -6156,6 +6392,22 @@ window.lunrData = {
                             "ref": "XR.html#.getControllerWorldDirection",
                             "tf": 110
                           },
+                          "GPS.html#.enableTracking": {
+                            "ref": "GPS.html#.enableTracking",
+                            "tf": 110
+                          },
+                          "GPS.html#.disableTracking": {
+                            "ref": "GPS.html#.disableTracking",
+                            "tf": 110
+                          },
+                          "GPS.html#.getCurrentLocation": {
+                            "ref": "GPS.html#.getCurrentLocation",
+                            "tf": 110
+                          },
+                          "GPS.html#.addPOI": {
+                            "ref": "GPS.html#.addPOI",
+                            "tf": 110
+                          },
                           "SceneHub.html#.init": {
                             "ref": "SceneHub.html#.init",
                             "tf": 110
@@ -6182,6 +6434,10 @@ window.lunrData = {
                           },
                           "Utils.html#.isARsupported": {
                             "ref": "Utils.html#.isARsupported",
+                            "tf": 110
+                          },
+                          "Utils.html#.getHumanReadableDistance": {
+                            "ref": "Utils.html#.getHumanReadableDistance",
                             "tf": 110
                           },
                           "Nav.html#.getCurrentEyeLocation": {
@@ -7335,6 +7591,20 @@ window.lunrData = {
                           "docs": {},
                           "t": {
                             "docs": {},
+                            "l": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "c": {
+                                  "docs": {
+                                    "GPS.html#.getCurrentLocation": {
+                                      "ref": "GPS.html#.getCurrentLocation",
+                                      "tf": 683.3333333333334
+                                    }
+                                  }
+                                }
+                              }
+                            },
                             "e": {
                               "docs": {},
                               "y": {
@@ -7373,6 +7643,62 @@ window.lunrData = {
                                           "Nav.html#.getCurrentDirection": {
                                             "ref": "Nav.html#.getCurrentDirection",
                                             "tf": 683.3333333333334
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "h": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "m": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "d": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "b": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "d": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {
+                                                  "Utils.html#.getHumanReadableDistance": {
+                                                    "ref": "Utils.html#.getHumanReadableDistance",
+                                                    "tf": 675
+                                                  }
+                                                }
+                                              }
+                                            }
                                           }
                                         }
                                       }
@@ -7791,6 +8117,23 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "o": {
+              "docs": {},
+              "l": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "c": {
+                    "docs": {
+                      "GPS.html": {
+                        "ref": "GPS.html",
+                        "tf": 16.666666666666664
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "i": {
@@ -7813,6 +8156,10 @@ window.lunrData = {
                       "ref": "XR.html#.setRefSpaceLocation",
                       "tf": 3.125
                     },
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
+                    },
                     "VRoadcast.html#.on": {
                       "ref": "VRoadcast.html#.on",
                       "tf": 14.285714285714285
@@ -7820,6 +8167,174 @@ window.lunrData = {
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
                       "tf": 5.88235294117647
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "p": {
+            "docs": {
+              "GPS.html": {
+                "ref": "GPS.html",
+                "tf": 1900
+              },
+              "GPS.html#.enableTracking": {
+                "ref": "GPS.html#.enableTracking",
+                "tf": 12.5
+              },
+              "GPS.html#.disableTracking": {
+                "ref": "GPS.html#.disableTracking",
+                "tf": 12.5
+              }
+            },
+            "s": {
+              "docs": {},
+              ".": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "b": {
+                        "docs": {},
+                        "l": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "r": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "c": {
+                                    "docs": {},
+                                    "k": {
+                                      "docs": {
+                                        "GPS.html#.enableTracking": {
+                                          "ref": "GPS.html#.enableTracking",
+                                          "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "d": {
+                  "docs": {},
+                  "i": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "b": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "a": {
+                                    "docs": {},
+                                    "c": {
+                                      "docs": {},
+                                      "k": {
+                                        "docs": {
+                                          "GPS.html#.disableTracking": {
+                                            "ref": "GPS.html#.disableTracking",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "g": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "c": {
+                        "docs": {},
+                        "u": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "e": {
+                                "docs": {},
+                                "n": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {
+                                            "GPS.html#.getCurrentLocation": {
+                                              "ref": "GPS.html#.getCurrentLocation",
+                                              "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "a": {
+                  "docs": {},
+                  "d": {
+                    "docs": {},
+                    "d": {
+                      "docs": {},
+                      "p": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "i": {
+                            "docs": {
+                              "GPS.html#.addPOI": {
+                                "ref": "GPS.html#.addPOI",
+                                "tf": 1150
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -7969,6 +8484,20 @@ window.lunrData = {
                           "index.html": {
                             "ref": "index.html",
                             "tf": 1.9444444444444444
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "e": {
+                    "docs": {},
+                    "s": {
+                      "docs": {},
+                      "t": {
+                        "docs": {
+                          "GPS.html#.addPOI": {
+                            "ref": "GPS.html#.addPOI",
+                            "tf": 3.3333333333333335
                           }
                         }
                       }
@@ -8868,6 +9397,23 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "a": {
+              "docs": {},
+              "s": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "r": {
+                    "docs": {
+                      "Utils.html#.getHumanReadableDistance": {
+                        "ref": "Utils.html#.getHumanReadableDistance",
+                        "tf": 8.333333333333332
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "u": {
@@ -9119,6 +9665,29 @@ window.lunrData = {
               }
             }
           },
+          "u": {
+            "docs": {},
+            "t": {
+              "docs": {},
+              "d": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "GPS.html": {
+                          "ref": "GPS.html",
+                          "tf": 16.666666666666664
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
           "c": {
             "docs": {},
             "u": {
@@ -9142,6 +9711,10 @@ window.lunrData = {
             "XR.html#.setRefSpaceLocation": {
               "ref": "XR.html#.setRefSpaceLocation",
               "tf": 33.33333333333333
+            },
+            "GPS.html#.addPOI": {
+              "ref": "GPS.html#.addPOI",
+              "tf": 25
             }
           },
           "r": {
@@ -9582,11 +10155,20 @@ window.lunrData = {
               }
             },
             "i": {
-              "docs": {},
+              "docs": {
+                "GPS.html#.addPOI": {
+                  "ref": "GPS.html#.addPOI",
+                  "tf": 6.666666666666667
+                }
+              },
               "n": {
                 "docs": {},
                 "t": {
                   "docs": {
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
+                    },
                     "ATON.html#.getSceneQueriedPoint": {
                       "ref": "ATON.html#.getSceneQueriedPoint",
                       "tf": 10
@@ -9813,6 +10395,10 @@ window.lunrData = {
         },
         "r": {
           "docs": {
+            "GPS.html#.addPOI": {
+              "ref": "GPS.html#.addPOI",
+              "tf": 25
+            },
             "SUI.html#.setSelectorRadius": {
               "ref": "SUI.html#.setSelectorRadius",
               "tf": 33.33333333333333
@@ -9833,6 +10419,20 @@ window.lunrData = {
                     "index.html": {
                       "ref": "index.html",
                       "tf": 110
+                    }
+                  }
+                },
+                "a": {
+                  "docs": {},
+                  "b": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "Utils.html#.getHumanReadableDistance": {
+                          "ref": "Utils.html#.getHumanReadableDistance",
+                          "tf": 8.333333333333332
+                        }
+                      }
                     }
                   }
                 }
@@ -10528,6 +11128,10 @@ window.lunrData = {
                 },
                 "u": {
                   "docs": {
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
+                    },
                     "SUI.html#.setSelectorRadius": {
                       "ref": "SUI.html#.setSelectorRadius",
                       "tf": 16.666666666666664
@@ -10922,6 +11526,10 @@ window.lunrData = {
                       "Node.html#attachTo": {
                         "ref": "Node.html#attachTo",
                         "tf": 6.25
+                      },
+                      "Utils.html#.getHumanReadableDistance": {
+                        "ref": "Utils.html#.getHumanReadableDistance",
+                        "tf": 25
                       }
                     }
                   }
@@ -13321,6 +13929,25 @@ window.lunrData = {
                     }
                   }
                 }
+              },
+              "c": {
+                "docs": {},
+                "k": {
+                  "docs": {
+                    "GPS.html": {
+                      "ref": "GPS.html",
+                      "tf": 16.666666666666664
+                    },
+                    "GPS.html#.enableTracking": {
+                      "ref": "GPS.html#.enableTracking",
+                      "tf": 12.5
+                    },
+                    "GPS.html#.disableTracking": {
+                      "ref": "GPS.html#.disableTracking",
+                      "tf": 12.5
+                    }
+                  }
+                }
               }
             }
           },
@@ -13402,6 +14029,14 @@ window.lunrData = {
                             "o": {
                               "docs": {},
                               "r": {
+                                "2": {
+                                  "docs": {
+                                    "GPS.html#.getCurrentLocation": {
+                                      "ref": "GPS.html#.getCurrentLocation",
+                                      "tf": 33.33333333333333
+                                    }
+                                  }
+                                },
                                 "3": {
                                   "docs": {
                                     "XR.html#.getControllerWorldLocation": {
@@ -13546,6 +14181,10 @@ window.lunrData = {
               "XR.html#.setRefSpaceLocation": {
                 "ref": "XR.html#.setRefSpaceLocation",
                 "tf": 3.125
+              },
+              "GPS.html#.addPOI": {
+                "ref": "GPS.html#.addPOI",
+                "tf": 3.3333333333333335
               },
               "Nav.html#.locomotionValidator": {
                 "ref": "Nav.html#.locomotionValidator",
@@ -14284,6 +14923,71 @@ window.lunrData = {
                                             "Utils.html#.isARsupported": {
                                               "ref": "Utils.html#.isARsupported",
                                               "tf": 1150
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "g": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "t": {
+                          "docs": {},
+                          "h": {
+                            "docs": {},
+                            "u": {
+                              "docs": {},
+                              "m": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "n": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "d": {
+                                            "docs": {},
+                                            "a": {
+                                              "docs": {},
+                                              "b": {
+                                                "docs": {},
+                                                "l": {
+                                                  "docs": {},
+                                                  "e": {
+                                                    "docs": {},
+                                                    "d": {
+                                                      "docs": {},
+                                                      "i": {
+                                                        "docs": {},
+                                                        "s": {
+                                                          "docs": {},
+                                                          "t": {
+                                                            "docs": {
+                                                              "Utils.html#.getHumanReadableDistance": {
+                                                                "ref": "Utils.html#.getHumanReadableDistance",
+                                                                "tf": 1150
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
                                             }
                                           }
                                         }
@@ -15224,6 +15928,22 @@ window.lunrData = {
                       "ref": "XR.html#.getControllerWorldLocation",
                       "tf": 16.666666666666664
                     },
+                    "GPS.html#.enableTracking": {
+                      "ref": "GPS.html#.enableTracking",
+                      "tf": 12.5
+                    },
+                    "GPS.html#.disableTracking": {
+                      "ref": "GPS.html#.disableTracking",
+                      "tf": 12.5
+                    },
+                    "GPS.html#.getCurrentLocation": {
+                      "ref": "GPS.html#.getCurrentLocation",
+                      "tf": 25
+                    },
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
+                    },
                     "Nav.html#.getCurrentEyeLocation": {
                       "ref": "Nav.html#.getCurrentEyeLocation",
                       "tf": 5.555555555555555
@@ -15439,6 +16159,26 @@ window.lunrData = {
                   }
                 }
               }
+            },
+            "t": {
+              "docs": {},
+              ",": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "GPS.html#.addPOI": {
+                          "ref": "GPS.html#.addPOI",
+                          "tf": 3.3333333333333335
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "t": {
@@ -15575,6 +16315,22 @@ window.lunrData = {
                                     "ref": "XR.html#.getControllerWorldDirection",
                                     "tf": 33.33333333333333
                                   },
+                                  "GPS.html#.enableTracking": {
+                                    "ref": "GPS.html#.enableTracking",
+                                    "tf": 50
+                                  },
+                                  "GPS.html#.disableTracking": {
+                                    "ref": "GPS.html#.disableTracking",
+                                    "tf": 50
+                                  },
+                                  "GPS.html#.getCurrentLocation": {
+                                    "ref": "GPS.html#.getCurrentLocation",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "GPS.html#.addPOI": {
+                                    "ref": "GPS.html#.addPOI",
+                                    "tf": 25
+                                  },
                                   "SceneHub.html#.init": {
                                     "ref": "SceneHub.html#.init",
                                     "tf": 50
@@ -15602,6 +16358,10 @@ window.lunrData = {
                                   "Utils.html#.isARsupported": {
                                     "ref": "Utils.html#.isARsupported",
                                     "tf": 33.33333333333333
+                                  },
+                                  "Utils.html#.getHumanReadableDistance": {
+                                    "ref": "Utils.html#.getHumanReadableDistance",
+                                    "tf": 25
                                   },
                                   "Nav.html#.getCurrentEyeLocation": {
                                     "ref": "Nav.html#.getCurrentEyeLocation",
@@ -15886,6 +16646,26 @@ window.lunrData = {
                 }
               }
             }
+          },
+          "e": {
+            "docs": {},
+            "n": {
+              "docs": {},
+              "g": {
+                "docs": {},
+                "t": {
+                  "docs": {},
+                  "h": {
+                    "docs": {
+                      "Utils.html#.getHumanReadableDistance": {
+                        "ref": "Utils.html#.getHumanReadableDistance",
+                        "tf": 8.333333333333332
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "n": {
@@ -15935,6 +16715,10 @@ window.lunrData = {
                           },
                           "AudioHub.html": {
                             "ref": "AudioHub.html",
+                            "tf": 110
+                          },
+                          "GPS.html": {
+                            "ref": "GPS.html",
                             "tf": 110
                           },
                           "MatHub.html": {
@@ -18828,7 +19612,12 @@ window.lunrData = {
               "d": {
                 "docs": {},
                 "l": {
-                  "docs": {},
+                  "docs": {
+                    "GPS.html#.addPOI": {
+                      "ref": "GPS.html#.addPOI",
+                      "tf": 3.3333333333333335
+                    }
+                  },
                   "e": {
                     "docs": {},
                     "r": {
@@ -18929,6 +19718,20 @@ window.lunrData = {
                 "SceneHub.html": {
                   "ref": "SceneHub.html",
                   "tf": 16.666666666666664
+                }
+              }
+            },
+            "m": {
+              "docs": {},
+              "a": {
+                "docs": {},
+                "n": {
+                  "docs": {
+                    "Utils.html#.getHumanReadableDistance": {
+                      "ref": "Utils.html#.getHumanReadableDistance",
+                      "tf": 8.333333333333332
+                    }
+                  }
                 }
               }
             }
@@ -19103,7 +19906,7 @@ window.lunrData = {
           }
         }
       },
-      "length": 1569
+      "length": 1629
     },
     "corpusTokens": [
       "1.0",
@@ -19121,6 +19924,7 @@ window.lunrData = {
       "addit",
       "addkeyword",
       "addlightprob",
+      "addpoi",
       "address",
       "adopt",
       "allow",
@@ -19153,6 +19957,8 @@ window.lunrData = {
       "aton.getsemanticnod",
       "aton.getuinod",
       "aton.on",
+      "aton.on(\"enterpoi",
+      "aton.on(\"leavepoi",
       "aton.on(\"scenejsonload",
       "aton.r",
       "aton.renderpaus",
@@ -19250,6 +20056,7 @@ window.lunrData = {
       "direct",
       "disabl",
       "disablepick",
+      "disabletrack",
       "distanc",
       "div",
       "document",
@@ -19262,8 +20069,10 @@ window.lunrData = {
       "enable/dis",
       "enablepick",
       "enables/dis",
+      "enabletrack",
       "end",
       "enter",
+      "enter/leav",
       "etc",
       "euler",
       "even",
@@ -19313,13 +20122,16 @@ window.lunrData = {
       "function",
       "game",
       "gener",
+      "geoloc",
       "getbound",
       "getcontrollerworlddirect",
       "getcontrollerworldloc",
       "getcurrentdirect",
       "getcurrenteyeloc",
+      "getcurrentloc",
       "getdescript",
       "getfov",
+      "gethumanreadabledist",
       "getinfonod",
       "getmateri",
       "getorcreatescenenod",
@@ -19336,8 +20148,14 @@ window.lunrData = {
       "getuinod",
       "given",
       "global",
+      "gp",
+      "gps.addpoi",
+      "gps.disabletrack",
+      "gps.enabletrack",
+      "gps.getcurrentloc",
       "grab",
       "graph",
+      "handl",
       "handler",
       "handlerloc",
       "handlernetwork",
@@ -19348,6 +20166,7 @@ window.lunrData = {
       "home",
       "htmlcontent",
       "hub",
+      "human",
       "i.",
       "icon",
       "id",
@@ -19363,6 +20182,7 @@ window.lunrData = {
       "instanc",
       "instead",
       "interact",
+      "interest",
       "invis",
       "isarsupport",
       "isconnect",
@@ -19383,6 +20203,8 @@ window.lunrData = {
       "label",
       "label#setbasecolor",
       "label#settext",
+      "lat,lon",
+      "length",
       "light",
       "lightprob",
       "lightprobe#setposit",
@@ -19406,6 +20228,7 @@ window.lunrData = {
       "mandatori",
       "materi",
       "mathub",
+      "measur",
       "media",
       "mediarec",
       "mobil",
@@ -19486,6 +20309,7 @@ window.lunrData = {
       "order",
       "orient",
       "orienttocamera",
+      "outdoor",
       "p",
       "panorama",
       "parent",
@@ -19497,6 +20321,7 @@ window.lunrData = {
       "pick",
       "pickabl",
       "pixel",
+      "poi",
       "point",
       "popup",
       "popupclos",
@@ -19526,6 +20351,7 @@ window.lunrData = {
       "radiu",
       "ray",
       "re)assign",
+      "readabl",
       "readm",
       "realiz",
       "record",
@@ -19650,6 +20476,7 @@ window.lunrData = {
       "those",
       "three.materi",
       "three.spher",
+      "three.vector2",
       "three.vector3",
       "through",
       "toggl",
@@ -19658,6 +20485,7 @@ window.lunrData = {
       "tool",
       "toolbar",
       "tooltip",
+      "track",
       "transit",
       "translat",
       "true",
@@ -19692,6 +20520,7 @@ window.lunrData = {
       "user",
       "usual",
       "util",
+      "utils.gethumanreadabledist",
       "utils.isarsupport",
       "utils.isconnectionsecur",
       "utils.ismobil",
@@ -20565,6 +21394,57 @@ window.lunrData = {
       "description": "ATON Audio Hub",
       "body": ""
     },
+    "GPS.html": {
+      "id": "GPS.html",
+      "kind": "namespace",
+      "title": "GPS",
+      "longname": "GPS",
+      "name": "GPS",
+      "tags": "GPS",
+      "summary": "",
+      "description": "Geolocation and outdoor tracking",
+      "body": ""
+    },
+    "GPS.html#.enableTracking": {
+      "id": "GPS.html#.enableTracking",
+      "kind": "function",
+      "title": "&lt;static&gt; enableTracking()",
+      "longname": "GPS.enableTracking",
+      "name": "enableTracking",
+      "tags": "GPS.enableTracking enableTracking",
+      "summary": "",
+      "description": "Enable GPS location tracking"
+    },
+    "GPS.html#.disableTracking": {
+      "id": "GPS.html#.disableTracking",
+      "kind": "function",
+      "title": "&lt;static&gt; disableTracking()",
+      "longname": "GPS.disableTracking",
+      "name": "disableTracking",
+      "tags": "GPS.disableTracking disableTracking",
+      "summary": "",
+      "description": "Disable GPS location tracking"
+    },
+    "GPS.html#.getCurrentLocation": {
+      "id": "GPS.html#.getCurrentLocation",
+      "kind": "function",
+      "title": "&lt;static&gt; getCurrentLocation() → {THREE.Vector2}",
+      "longname": "GPS.getCurrentLocation",
+      "name": "getCurrentLocation",
+      "tags": "GPS.getCurrentLocation getCurrentLocation",
+      "summary": "",
+      "description": "Get current location"
+    },
+    "GPS.html#.addPOI": {
+      "id": "GPS.html#.addPOI",
+      "kind": "function",
+      "title": "&lt;static&gt; addPOI( P, r )",
+      "longname": "GPS.addPOI",
+      "name": "addPOI",
+      "tags": "GPS.addPOI addPOI",
+      "summary": "",
+      "description": "Add a POI (point-of-interest) given location (lat,lon) and radius. You can handle enter/leave POI events using ATON.on(\"EnterPOI\") and ATON.on(\"LeavePOI\")"
+    },
     "MatHub.html": {
       "id": "MatHub.html",
       "kind": "namespace",
@@ -20667,6 +21547,16 @@ window.lunrData = {
       "tags": "Utils.isARsupported isARsupported",
       "summary": "",
       "description": "If current device supports WebXR immersive AR sessions"
+    },
+    "Utils.html#.getHumanReadableDistance": {
+      "id": "Utils.html#.getHumanReadableDistance",
+      "kind": "function",
+      "title": "&lt;static&gt; getHumanReadableDistance( d ) → {string}",
+      "longname": "Utils.getHumanReadableDistance",
+      "name": "getHumanReadableDistance",
+      "tags": "Utils.getHumanReadableDistance getHumanReadableDistance",
+      "summary": "",
+      "description": "Get human-readable length (distances, measures, etc...)"
     },
     "Nav.html": {
       "id": "Nav.html",

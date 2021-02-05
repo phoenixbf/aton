@@ -980,64 +980,6 @@
           "hub",
           "namespac"
         ],
-        "GPS.html": [
-          "geoloc",
-          "gp",
-          "namespac",
-          "outdoor",
-          "track"
-        ],
-        "GPS.html#.enableTracking": [
-          "enabl",
-          "enabletrack",
-          "function",
-          "gp",
-          "gps.enabletrack",
-          "locat",
-          "lt;static&gt",
-          "track"
-        ],
-        "GPS.html#.disableTracking": [
-          "disabl",
-          "disabletrack",
-          "function",
-          "gp",
-          "gps.disabletrack",
-          "locat",
-          "lt;static&gt",
-          "track"
-        ],
-        "GPS.html#.getCurrentLocation": [
-          "current",
-          "function",
-          "getcurrentloc",
-          "gps.getcurrentloc",
-          "locat",
-          "lt;static&gt",
-          "three.vector2"
-        ],
-        "GPS.html#.addPOI": [
-          "add",
-          "addpoi",
-          "aton.on(\"enterpoi",
-          "aton.on(\"leavepoi",
-          "enter/leav",
-          "event",
-          "function",
-          "given",
-          "gps.addpoi",
-          "handl",
-          "interest",
-          "lat,lon",
-          "locat",
-          "lt;static&gt",
-          "p",
-          "poi",
-          "point",
-          "r",
-          "radiu",
-          "us"
-        ],
         "MatHub.html": [
           "aton",
           "hub",
@@ -1161,6 +1103,78 @@
           "readabl",
           "string",
           "utils.gethumanreadabledist"
+        ],
+        "GeoLoc.html": [
+          "geo",
+          "geoloc",
+          "handl",
+          "namespac",
+          "outdoor",
+          "poi",
+          "track"
+        ],
+        "GeoLoc.html#.enableTracking": [
+          "enabl",
+          "enabletrack",
+          "function",
+          "geoloc",
+          "geoloc.enabletrack",
+          "lt;static&gt",
+          "track"
+        ],
+        "GeoLoc.html#.disableTracking": [
+          "disabl",
+          "disabletrack",
+          "function",
+          "geoloc",
+          "geoloc.disabletrack",
+          "lt;static&gt",
+          "track"
+        ],
+        "GeoLoc.html#.setMaxError": [
+          "allow",
+          "error",
+          "function",
+          "geoloc.setmaxerror",
+          "locat",
+          "lt;static&gt",
+          "max",
+          "r",
+          "set",
+          "setmaxerror",
+          "track"
+        ],
+        "GeoLoc.html#.getCurrentLocation": [
+          "current",
+          "function",
+          "geoloc.getcurrentloc",
+          "getcurrentloc",
+          "locat",
+          "lt;static&gt",
+          "three.vector2"
+        ],
+        "GeoLoc.html#.addPOI": [
+          "add",
+          "addpoi",
+          "aton.on(\"enterpoi",
+          "aton.on(\"leavepoi",
+          "enter/leav",
+          "event",
+          "function",
+          "geo",
+          "geoloc.addpoi",
+          "given",
+          "handl",
+          "interest",
+          "lat,lon",
+          "locat",
+          "lt;static&gt",
+          "p",
+          "poi",
+          "point",
+          "r",
+          "radiu",
+          "us"
         ],
         "Nav.html": [
           "aton",
@@ -2007,7 +2021,7 @@
           "visibl"
         ]
       },
-      "length": 169
+      "length": 170
     },
     "tokenStore": {
       "root": {
@@ -2182,9 +2196,9 @@
                   "ref": "FE.html#.uiAddProfile",
                   "tf": 10
                 },
-                "GPS.html#.addPOI": {
-                  "ref": "GPS.html#.addPOI",
-                  "tf": 3.3333333333333335
+                "GeoLoc.html#.addPOI": {
+                  "ref": "GeoLoc.html#.addPOI",
+                  "tf": 3.125
                 },
                 "ATON.html#.addLightProbe": {
                   "ref": "ATON.html#.addLightProbe",
@@ -2282,8 +2296,8 @@
                   "docs": {},
                   "i": {
                     "docs": {
-                      "GPS.html#.addPOI": {
-                        "ref": "GPS.html#.addPOI",
+                      "GeoLoc.html#.addPOI": {
+                        "ref": "GeoLoc.html#.addPOI",
                         "tf": 675
                       }
                     }
@@ -2549,9 +2563,9 @@
                                         "docs": {},
                                         "i": {
                                           "docs": {
-                                            "GPS.html#.addPOI": {
-                                              "ref": "GPS.html#.addPOI",
-                                              "tf": 3.3333333333333335
+                                            "GeoLoc.html#.addPOI": {
+                                              "ref": "GeoLoc.html#.addPOI",
+                                              "tf": 3.125
                                             }
                                           }
                                         }
@@ -2578,9 +2592,9 @@
                                         "docs": {},
                                         "i": {
                                           "docs": {
-                                            "GPS.html#.addPOI": {
-                                              "ref": "GPS.html#.addPOI",
-                                              "tf": 3.3333333333333335
+                                            "GeoLoc.html#.addPOI": {
+                                              "ref": "GeoLoc.html#.addPOI",
+                                              "tf": 3.125
                                             }
                                           }
                                         }
@@ -3698,6 +3712,10 @@
                     "Node.html": {
                       "ref": "Node.html",
                       "tf": 3.3333333333333335
+                    },
+                    "GeoLoc.html#.setMaxError": {
+                      "ref": "GeoLoc.html#.setMaxError",
+                      "tf": 8.333333333333332
                     }
                   }
                 }
@@ -4753,10 +4771,6 @@
                           "ref": "FE.html#.popupClose",
                           "tf": 16.666666666666664
                         },
-                        "GPS.html#.getCurrentLocation": {
-                          "ref": "GPS.html#.getCurrentLocation",
-                          "tf": 25
-                        },
                         "Utils.html#.isConnectionSecure": {
                           "ref": "Utils.html#.isConnectionSecure",
                           "tf": 16.666666666666664
@@ -4772,6 +4786,10 @@
                         "Utils.html#.isARsupported": {
                           "ref": "Utils.html#.isARsupported",
                           "tf": 7.142857142857142
+                        },
+                        "GeoLoc.html#.getCurrentLocation": {
+                          "ref": "GeoLoc.html#.getCurrentLocation",
+                          "tf": 25
                         },
                         "Nav.html#.getCurrentEyeLocation": {
                           "ref": "Nav.html#.getCurrentEyeLocation",
@@ -5293,9 +5311,9 @@
                         "ref": "Node.html#disablePicking",
                         "tf": 5
                       },
-                      "GPS.html#.disableTracking": {
-                        "ref": "GPS.html#.disableTracking",
-                        "tf": 12.5
+                      "GeoLoc.html#.disableTracking": {
+                        "ref": "GeoLoc.html#.disableTracking",
+                        "tf": 16.666666666666664
                       }
                     },
                     "e": {
@@ -5327,8 +5345,8 @@
                               "docs": {},
                               "k": {
                                 "docs": {
-                                  "GPS.html#.disableTracking": {
-                                    "ref": "GPS.html#.disableTracking",
+                                  "GeoLoc.html#.disableTracking": {
+                                    "ref": "GeoLoc.html#.disableTracking",
                                     "tf": 700
                                   }
                                 }
@@ -5512,9 +5530,9 @@
                       "ref": "Node.html#enablePicking",
                       "tf": 8.333333333333332
                     },
-                    "GPS.html#.enableTracking": {
-                      "ref": "GPS.html#.enableTracking",
-                      "tf": 12.5
+                    "GeoLoc.html#.enableTracking": {
+                      "ref": "GeoLoc.html#.enableTracking",
+                      "tf": 16.666666666666664
                     },
                     "Nav.html#.isUserControlEnabled": {
                       "ref": "Nav.html#.isUserControlEnabled",
@@ -5540,26 +5558,6 @@
                         }
                       }
                     },
-                    "t": {
-                      "docs": {},
-                      "r": {
-                        "docs": {},
-                        "a": {
-                          "docs": {},
-                          "c": {
-                            "docs": {},
-                            "k": {
-                              "docs": {
-                                "GPS.html#.enableTracking": {
-                                  "ref": "GPS.html#.enableTracking",
-                                  "tf": 700
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
                     "s": {
                       "docs": {},
                       "/": {
@@ -5573,6 +5571,26 @@
                                 "SceneHub.html#.setEditMode": {
                                   "ref": "SceneHub.html#.setEditMode",
                                   "tf": 5
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "t": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "a": {
+                          "docs": {},
+                          "c": {
+                            "docs": {},
+                            "k": {
+                              "docs": {
+                                "GeoLoc.html#.enableTracking": {
+                                  "ref": "GeoLoc.html#.enableTracking",
+                                  "tf": 700
                                 }
                               }
                             }
@@ -5622,9 +5640,9 @@
                           "docs": {},
                           "v": {
                             "docs": {
-                              "GPS.html#.addPOI": {
-                                "ref": "GPS.html#.addPOI",
-                                "tf": 3.3333333333333335
+                              "GeoLoc.html#.addPOI": {
+                                "ref": "GeoLoc.html#.addPOI",
+                                "tf": 3.125
                               }
                             }
                           }
@@ -5711,9 +5729,9 @@
                       "ref": "FE.html#.addBasicLoaderEvents",
                       "tf": 3.8461538461538463
                     },
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     },
                     "VRoadcast.html#.fireEvent": {
                       "ref": "VRoadcast.html#.fireEvent",
@@ -5916,6 +5934,23 @@
                 "Utils.html#.isMobile": {
                   "ref": "Utils.html#.isMobile",
                   "tf": 6.25
+                }
+              }
+            }
+          },
+          "r": {
+            "docs": {},
+            "r": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "GeoLoc.html#.setMaxError": {
+                      "ref": "GeoLoc.html#.setMaxError",
+                      "tf": 8.333333333333332
+                    }
+                  }
                 }
               }
             }
@@ -6392,22 +6427,6 @@
                             "ref": "XR.html#.getControllerWorldDirection",
                             "tf": 110
                           },
-                          "GPS.html#.enableTracking": {
-                            "ref": "GPS.html#.enableTracking",
-                            "tf": 110
-                          },
-                          "GPS.html#.disableTracking": {
-                            "ref": "GPS.html#.disableTracking",
-                            "tf": 110
-                          },
-                          "GPS.html#.getCurrentLocation": {
-                            "ref": "GPS.html#.getCurrentLocation",
-                            "tf": 110
-                          },
-                          "GPS.html#.addPOI": {
-                            "ref": "GPS.html#.addPOI",
-                            "tf": 110
-                          },
                           "SceneHub.html#.init": {
                             "ref": "SceneHub.html#.init",
                             "tf": 110
@@ -6438,6 +6457,26 @@
                           },
                           "Utils.html#.getHumanReadableDistance": {
                             "ref": "Utils.html#.getHumanReadableDistance",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.enableTracking": {
+                            "ref": "GeoLoc.html#.enableTracking",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.disableTracking": {
+                            "ref": "GeoLoc.html#.disableTracking",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.setMaxError": {
+                            "ref": "GeoLoc.html#.setMaxError",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.getCurrentLocation": {
+                            "ref": "GeoLoc.html#.getCurrentLocation",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.addPOI": {
+                            "ref": "GeoLoc.html#.addPOI",
                             "tf": 110
                           },
                           "Nav.html#.getCurrentEyeLocation": {
@@ -7597,8 +7636,8 @@
                                 "docs": {},
                                 "c": {
                                   "docs": {
-                                    "GPS.html#.getCurrentLocation": {
-                                      "ref": "GPS.html#.getCurrentLocation",
+                                    "GeoLoc.html#.getCurrentLocation": {
+                                      "ref": "GeoLoc.html#.getCurrentLocation",
                                       "tf": 683.3333333333334
                                     }
                                   }
@@ -8119,16 +8158,220 @@
               }
             },
             "o": {
-              "docs": {},
+              "docs": {
+                "GeoLoc.html": {
+                  "ref": "GeoLoc.html",
+                  "tf": 8.333333333333332
+                },
+                "GeoLoc.html#.addPOI": {
+                  "ref": "GeoLoc.html#.addPOI",
+                  "tf": 3.125
+                }
+              },
               "l": {
                 "docs": {},
                 "o": {
                   "docs": {},
                   "c": {
                     "docs": {
-                      "GPS.html": {
-                        "ref": "GPS.html",
+                      "GeoLoc.html": {
+                        "ref": "GeoLoc.html",
+                        "tf": 1908.3333333333333
+                      },
+                      "GeoLoc.html#.enableTracking": {
+                        "ref": "GeoLoc.html#.enableTracking",
                         "tf": 16.666666666666664
+                      },
+                      "GeoLoc.html#.disableTracking": {
+                        "ref": "GeoLoc.html#.disableTracking",
+                        "tf": 16.666666666666664
+                      }
+                    },
+                    ".": {
+                      "docs": {},
+                      "e": {
+                        "docs": {},
+                        "n": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "b": {
+                              "docs": {},
+                              "l": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "a": {
+                                        "docs": {},
+                                        "c": {
+                                          "docs": {},
+                                          "k": {
+                                            "docs": {
+                                              "GeoLoc.html#.enableTracking": {
+                                                "ref": "GeoLoc.html#.enableTracking",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "d": {
+                        "docs": {},
+                        "i": {
+                          "docs": {},
+                          "s": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "b": {
+                                "docs": {},
+                                "l": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "t": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "c": {
+                                            "docs": {},
+                                            "k": {
+                                              "docs": {
+                                                "GeoLoc.html#.disableTracking": {
+                                                  "ref": "GeoLoc.html#.disableTracking",
+                                                  "tf": 1150
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "s": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "m": {
+                              "docs": {},
+                              "a": {
+                                "docs": {},
+                                "x": {
+                                  "docs": {},
+                                  "e": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "o": {
+                                          "docs": {},
+                                          "r": {
+                                            "docs": {
+                                              "GeoLoc.html#.setMaxError": {
+                                                "ref": "GeoLoc.html#.setMaxError",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "g": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "c": {
+                              "docs": {},
+                              "u": {
+                                "docs": {},
+                                "r": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "n": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "l": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "c": {
+                                                "docs": {
+                                                  "GeoLoc.html#.getCurrentLocation": {
+                                                    "ref": "GeoLoc.html#.getCurrentLocation",
+                                                    "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "a": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "d": {
+                            "docs": {},
+                            "p": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "i": {
+                                  "docs": {
+                                    "GeoLoc.html#.addPOI": {
+                                      "ref": "GeoLoc.html#.addPOI",
+                                      "tf": 1150
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
                       }
                     }
                   }
@@ -8156,9 +8399,9 @@
                       "ref": "XR.html#.setRefSpaceLocation",
                       "tf": 3.125
                     },
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     },
                     "VRoadcast.html#.on": {
                       "ref": "VRoadcast.html#.on",
@@ -8167,174 +8410,6 @@
                     "VRoadcast.html#.requestSceneEnter": {
                       "ref": "VRoadcast.html#.requestSceneEnter",
                       "tf": 5.88235294117647
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "p": {
-            "docs": {
-              "GPS.html": {
-                "ref": "GPS.html",
-                "tf": 1900
-              },
-              "GPS.html#.enableTracking": {
-                "ref": "GPS.html#.enableTracking",
-                "tf": 12.5
-              },
-              "GPS.html#.disableTracking": {
-                "ref": "GPS.html#.disableTracking",
-                "tf": 12.5
-              }
-            },
-            "s": {
-              "docs": {},
-              ".": {
-                "docs": {},
-                "e": {
-                  "docs": {},
-                  "n": {
-                    "docs": {},
-                    "a": {
-                      "docs": {},
-                      "b": {
-                        "docs": {},
-                        "l": {
-                          "docs": {},
-                          "e": {
-                            "docs": {},
-                            "t": {
-                              "docs": {},
-                              "r": {
-                                "docs": {},
-                                "a": {
-                                  "docs": {},
-                                  "c": {
-                                    "docs": {},
-                                    "k": {
-                                      "docs": {
-                                        "GPS.html#.enableTracking": {
-                                          "ref": "GPS.html#.enableTracking",
-                                          "tf": 1150
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "d": {
-                  "docs": {},
-                  "i": {
-                    "docs": {},
-                    "s": {
-                      "docs": {},
-                      "a": {
-                        "docs": {},
-                        "b": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "t": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "a": {
-                                    "docs": {},
-                                    "c": {
-                                      "docs": {},
-                                      "k": {
-                                        "docs": {
-                                          "GPS.html#.disableTracking": {
-                                            "ref": "GPS.html#.disableTracking",
-                                            "tf": 1150
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "g": {
-                  "docs": {},
-                  "e": {
-                    "docs": {},
-                    "t": {
-                      "docs": {},
-                      "c": {
-                        "docs": {},
-                        "u": {
-                          "docs": {},
-                          "r": {
-                            "docs": {},
-                            "r": {
-                              "docs": {},
-                              "e": {
-                                "docs": {},
-                                "n": {
-                                  "docs": {},
-                                  "t": {
-                                    "docs": {},
-                                    "l": {
-                                      "docs": {},
-                                      "o": {
-                                        "docs": {},
-                                        "c": {
-                                          "docs": {
-                                            "GPS.html#.getCurrentLocation": {
-                                              "ref": "GPS.html#.getCurrentLocation",
-                                              "tf": 1150
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "a": {
-                  "docs": {},
-                  "d": {
-                    "docs": {},
-                    "d": {
-                      "docs": {},
-                      "p": {
-                        "docs": {},
-                        "o": {
-                          "docs": {},
-                          "i": {
-                            "docs": {
-                              "GPS.html#.addPOI": {
-                                "ref": "GPS.html#.addPOI",
-                                "tf": 1150
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -8495,9 +8570,9 @@
                       "docs": {},
                       "t": {
                         "docs": {
-                          "GPS.html#.addPOI": {
-                            "ref": "GPS.html#.addPOI",
-                            "tf": 3.3333333333333335
+                          "GeoLoc.html#.addPOI": {
+                            "ref": "GeoLoc.html#.addPOI",
+                            "tf": 3.125
                           }
                         }
                       }
@@ -9366,6 +9441,14 @@
                   }
                 }
               }
+            },
+            "x": {
+              "docs": {
+                "GeoLoc.html#.setMaxError": {
+                  "ref": "GeoLoc.html#.setMaxError",
+                  "tf": 8.333333333333332
+                }
+              }
             }
           },
           "e": {
@@ -9665,29 +9748,6 @@
               }
             }
           },
-          "u": {
-            "docs": {},
-            "t": {
-              "docs": {},
-              "d": {
-                "docs": {},
-                "o": {
-                  "docs": {},
-                  "o": {
-                    "docs": {},
-                    "r": {
-                      "docs": {
-                        "GPS.html": {
-                          "ref": "GPS.html",
-                          "tf": 16.666666666666664
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
           "c": {
             "docs": {},
             "u": {
@@ -9704,6 +9764,29 @@
                 }
               }
             }
+          },
+          "u": {
+            "docs": {},
+            "t": {
+              "docs": {},
+              "d": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {
+                        "GeoLoc.html": {
+                          "ref": "GeoLoc.html",
+                          "tf": 8.333333333333332
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "p": {
@@ -9712,8 +9795,8 @@
               "ref": "XR.html#.setRefSpaceLocation",
               "tf": 33.33333333333333
             },
-            "GPS.html#.addPOI": {
-              "ref": "GPS.html#.addPOI",
+            "GeoLoc.html#.addPOI": {
+              "ref": "GeoLoc.html#.addPOI",
               "tf": 25
             }
           },
@@ -10156,18 +10239,22 @@
             },
             "i": {
               "docs": {
-                "GPS.html#.addPOI": {
-                  "ref": "GPS.html#.addPOI",
-                  "tf": 6.666666666666667
+                "GeoLoc.html": {
+                  "ref": "GeoLoc.html",
+                  "tf": 8.333333333333332
+                },
+                "GeoLoc.html#.addPOI": {
+                  "ref": "GeoLoc.html#.addPOI",
+                  "tf": 6.25
                 }
               },
               "n": {
                 "docs": {},
                 "t": {
                   "docs": {
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     },
                     "ATON.html#.getSceneQueriedPoint": {
                       "ref": "ATON.html#.getSceneQueriedPoint",
@@ -10395,8 +10482,12 @@
         },
         "r": {
           "docs": {
-            "GPS.html#.addPOI": {
-              "ref": "GPS.html#.addPOI",
+            "GeoLoc.html#.setMaxError": {
+              "ref": "GeoLoc.html#.setMaxError",
+              "tf": 33.33333333333333
+            },
+            "GeoLoc.html#.addPOI": {
+              "ref": "GeoLoc.html#.addPOI",
               "tf": 25
             },
             "SUI.html#.setSelectorRadius": {
@@ -11128,9 +11219,9 @@
                 },
                 "u": {
                   "docs": {
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     },
                     "SUI.html#.setSelectorRadius": {
                       "ref": "SUI.html#.setSelectorRadius",
@@ -11646,6 +11737,10 @@
                   "ref": "XR.html#.setRefSpaceLocation",
                   "tf": 3.125
                 },
+                "GeoLoc.html#.setMaxError": {
+                  "ref": "GeoLoc.html#.setMaxError",
+                  "tf": 8.333333333333332
+                },
                 "Nav.html#.setNavMode": {
                   "ref": "Nav.html#.setNavMode",
                   "tf": 16.666666666666664
@@ -12141,6 +12236,29 @@
                             "Node.html#setMaterial": {
                               "ref": "Node.html#setMaterial",
                               "tf": 700
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "x": {
+                    "docs": {},
+                    "e": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {
+                                "GeoLoc.html#.setMaxError": {
+                                  "ref": "GeoLoc.html#.setMaxError",
+                                  "tf": 683.3333333333334
+                                }
+                              }
                             }
                           }
                         }
@@ -13934,17 +14052,21 @@
                 "docs": {},
                 "k": {
                   "docs": {
-                    "GPS.html": {
-                      "ref": "GPS.html",
+                    "GeoLoc.html": {
+                      "ref": "GeoLoc.html",
+                      "tf": 8.333333333333332
+                    },
+                    "GeoLoc.html#.enableTracking": {
+                      "ref": "GeoLoc.html#.enableTracking",
                       "tf": 16.666666666666664
                     },
-                    "GPS.html#.enableTracking": {
-                      "ref": "GPS.html#.enableTracking",
-                      "tf": 12.5
+                    "GeoLoc.html#.disableTracking": {
+                      "ref": "GeoLoc.html#.disableTracking",
+                      "tf": 16.666666666666664
                     },
-                    "GPS.html#.disableTracking": {
-                      "ref": "GPS.html#.disableTracking",
-                      "tf": 12.5
+                    "GeoLoc.html#.setMaxError": {
+                      "ref": "GeoLoc.html#.setMaxError",
+                      "tf": 8.333333333333332
                     }
                   }
                 }
@@ -14031,8 +14153,8 @@
                               "r": {
                                 "2": {
                                   "docs": {
-                                    "GPS.html#.getCurrentLocation": {
-                                      "ref": "GPS.html#.getCurrentLocation",
+                                    "GeoLoc.html#.getCurrentLocation": {
+                                      "ref": "GeoLoc.html#.getCurrentLocation",
                                       "tf": 33.33333333333333
                                     }
                                   }
@@ -14182,9 +14304,9 @@
                 "ref": "XR.html#.setRefSpaceLocation",
                 "tf": 3.125
               },
-              "GPS.html#.addPOI": {
-                "ref": "GPS.html#.addPOI",
-                "tf": 3.3333333333333335
+              "GeoLoc.html#.addPOI": {
+                "ref": "GeoLoc.html#.addPOI",
+                "tf": 3.125
               },
               "Nav.html#.locomotionValidator": {
                 "ref": "Nav.html#.locomotionValidator",
@@ -15928,21 +16050,17 @@
                       "ref": "XR.html#.getControllerWorldLocation",
                       "tf": 16.666666666666664
                     },
-                    "GPS.html#.enableTracking": {
-                      "ref": "GPS.html#.enableTracking",
-                      "tf": 12.5
+                    "GeoLoc.html#.setMaxError": {
+                      "ref": "GeoLoc.html#.setMaxError",
+                      "tf": 8.333333333333332
                     },
-                    "GPS.html#.disableTracking": {
-                      "ref": "GPS.html#.disableTracking",
-                      "tf": 12.5
-                    },
-                    "GPS.html#.getCurrentLocation": {
-                      "ref": "GPS.html#.getCurrentLocation",
+                    "GeoLoc.html#.getCurrentLocation": {
+                      "ref": "GeoLoc.html#.getCurrentLocation",
                       "tf": 25
                     },
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     },
                     "Nav.html#.getCurrentEyeLocation": {
                       "ref": "Nav.html#.getCurrentEyeLocation",
@@ -16170,9 +16288,9 @@
                     "docs": {},
                     "n": {
                       "docs": {
-                        "GPS.html#.addPOI": {
-                          "ref": "GPS.html#.addPOI",
-                          "tf": 3.3333333333333335
+                        "GeoLoc.html#.addPOI": {
+                          "ref": "GeoLoc.html#.addPOI",
+                          "tf": 3.125
                         }
                       }
                     }
@@ -16315,22 +16433,6 @@
                                     "ref": "XR.html#.getControllerWorldDirection",
                                     "tf": 33.33333333333333
                                   },
-                                  "GPS.html#.enableTracking": {
-                                    "ref": "GPS.html#.enableTracking",
-                                    "tf": 50
-                                  },
-                                  "GPS.html#.disableTracking": {
-                                    "ref": "GPS.html#.disableTracking",
-                                    "tf": 50
-                                  },
-                                  "GPS.html#.getCurrentLocation": {
-                                    "ref": "GPS.html#.getCurrentLocation",
-                                    "tf": 33.33333333333333
-                                  },
-                                  "GPS.html#.addPOI": {
-                                    "ref": "GPS.html#.addPOI",
-                                    "tf": 25
-                                  },
                                   "SceneHub.html#.init": {
                                     "ref": "SceneHub.html#.init",
                                     "tf": 50
@@ -16361,6 +16463,26 @@
                                   },
                                   "Utils.html#.getHumanReadableDistance": {
                                     "ref": "Utils.html#.getHumanReadableDistance",
+                                    "tf": 25
+                                  },
+                                  "GeoLoc.html#.enableTracking": {
+                                    "ref": "GeoLoc.html#.enableTracking",
+                                    "tf": 50
+                                  },
+                                  "GeoLoc.html#.disableTracking": {
+                                    "ref": "GeoLoc.html#.disableTracking",
+                                    "tf": 50
+                                  },
+                                  "GeoLoc.html#.setMaxError": {
+                                    "ref": "GeoLoc.html#.setMaxError",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "GeoLoc.html#.getCurrentLocation": {
+                                    "ref": "GeoLoc.html#.getCurrentLocation",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "GeoLoc.html#.addPOI": {
+                                    "ref": "GeoLoc.html#.addPOI",
                                     "tf": 25
                                   },
                                   "Nav.html#.getCurrentEyeLocation": {
@@ -16717,10 +16839,6 @@
                             "ref": "AudioHub.html",
                             "tf": 110
                           },
-                          "GPS.html": {
-                            "ref": "GPS.html",
-                            "tf": 110
-                          },
                           "MatHub.html": {
                             "ref": "MatHub.html",
                             "tf": 110
@@ -16731,6 +16849,10 @@
                           },
                           "Utils.html": {
                             "ref": "Utils.html",
+                            "tf": 110
+                          },
+                          "GeoLoc.html": {
+                            "ref": "GeoLoc.html",
                             "tf": 110
                           },
                           "Nav.html": {
@@ -19613,9 +19735,13 @@
                 "docs": {},
                 "l": {
                   "docs": {
-                    "GPS.html#.addPOI": {
-                      "ref": "GPS.html#.addPOI",
-                      "tf": 3.3333333333333335
+                    "GeoLoc.html": {
+                      "ref": "GeoLoc.html",
+                      "tf": 8.333333333333332
+                    },
+                    "GeoLoc.html#.addPOI": {
+                      "ref": "GeoLoc.html#.addPOI",
+                      "tf": 3.125
                     }
                   },
                   "e": {
@@ -19906,7 +20032,7 @@
           }
         }
       },
-      "length": 1629
+      "length": 1641
     },
     "corpusTokens": [
       "1.0",
@@ -20073,6 +20199,7 @@
       "end",
       "enter",
       "enter/leav",
+      "error",
       "etc",
       "euler",
       "even",
@@ -20122,7 +20249,13 @@
       "function",
       "game",
       "gener",
+      "geo",
       "geoloc",
+      "geoloc.addpoi",
+      "geoloc.disabletrack",
+      "geoloc.enabletrack",
+      "geoloc.getcurrentloc",
+      "geoloc.setmaxerror",
       "getbound",
       "getcontrollerworlddirect",
       "getcontrollerworldloc",
@@ -20148,11 +20281,6 @@
       "getuinod",
       "given",
       "global",
-      "gp",
-      "gps.addpoi",
-      "gps.disabletrack",
-      "gps.enabletrack",
-      "gps.getcurrentloc",
       "grab",
       "graph",
       "handl",
@@ -20228,6 +20356,7 @@
       "mandatori",
       "materi",
       "mathub",
+      "max",
       "measur",
       "media",
       "mediarec",
@@ -20416,6 +20545,7 @@
       "setmainpanorama",
       "setmainpanoramarot",
       "setmateri",
+      "setmaxerror",
       "setmotionamount",
       "setmotiondirect",
       "setnavmod",
@@ -21394,57 +21524,6 @@
       "description": "ATON Audio Hub",
       "body": ""
     },
-    "GPS.html": {
-      "id": "GPS.html",
-      "kind": "namespace",
-      "title": "GPS",
-      "longname": "GPS",
-      "name": "GPS",
-      "tags": "GPS",
-      "summary": "",
-      "description": "Geolocation and outdoor tracking",
-      "body": ""
-    },
-    "GPS.html#.enableTracking": {
-      "id": "GPS.html#.enableTracking",
-      "kind": "function",
-      "title": "&lt;static&gt; enableTracking()",
-      "longname": "GPS.enableTracking",
-      "name": "enableTracking",
-      "tags": "GPS.enableTracking enableTracking",
-      "summary": "",
-      "description": "Enable GPS location tracking"
-    },
-    "GPS.html#.disableTracking": {
-      "id": "GPS.html#.disableTracking",
-      "kind": "function",
-      "title": "&lt;static&gt; disableTracking()",
-      "longname": "GPS.disableTracking",
-      "name": "disableTracking",
-      "tags": "GPS.disableTracking disableTracking",
-      "summary": "",
-      "description": "Disable GPS location tracking"
-    },
-    "GPS.html#.getCurrentLocation": {
-      "id": "GPS.html#.getCurrentLocation",
-      "kind": "function",
-      "title": "&lt;static&gt; getCurrentLocation() → {THREE.Vector2}",
-      "longname": "GPS.getCurrentLocation",
-      "name": "getCurrentLocation",
-      "tags": "GPS.getCurrentLocation getCurrentLocation",
-      "summary": "",
-      "description": "Get current location"
-    },
-    "GPS.html#.addPOI": {
-      "id": "GPS.html#.addPOI",
-      "kind": "function",
-      "title": "&lt;static&gt; addPOI( P, r )",
-      "longname": "GPS.addPOI",
-      "name": "addPOI",
-      "tags": "GPS.addPOI addPOI",
-      "summary": "",
-      "description": "Add a POI (point-of-interest) given location (lat,lon) and radius. You can handle enter/leave POI events using ATON.on(\"EnterPOI\") and ATON.on(\"LeavePOI\")"
-    },
     "MatHub.html": {
       "id": "MatHub.html",
       "kind": "namespace",
@@ -21557,6 +21636,67 @@
       "tags": "Utils.getHumanReadableDistance getHumanReadableDistance",
       "summary": "",
       "description": "Get human-readable length (distances, measures, etc...)"
+    },
+    "GeoLoc.html": {
+      "id": "GeoLoc.html",
+      "kind": "namespace",
+      "title": "GeoLoc",
+      "longname": "GeoLoc",
+      "name": "GeoLoc",
+      "tags": "GeoLoc",
+      "summary": "",
+      "description": "Outdoor geolocation tracking and Geo-POI handling",
+      "body": ""
+    },
+    "GeoLoc.html#.enableTracking": {
+      "id": "GeoLoc.html#.enableTracking",
+      "kind": "function",
+      "title": "&lt;static&gt; enableTracking()",
+      "longname": "GeoLoc.enableTracking",
+      "name": "enableTracking",
+      "tags": "GeoLoc.enableTracking enableTracking",
+      "summary": "",
+      "description": "Enable geolocation tracking"
+    },
+    "GeoLoc.html#.disableTracking": {
+      "id": "GeoLoc.html#.disableTracking",
+      "kind": "function",
+      "title": "&lt;static&gt; disableTracking()",
+      "longname": "GeoLoc.disableTracking",
+      "name": "disableTracking",
+      "tags": "GeoLoc.disableTracking disableTracking",
+      "summary": "",
+      "description": "Disable geolocation tracking"
+    },
+    "GeoLoc.html#.setMaxError": {
+      "id": "GeoLoc.html#.setMaxError",
+      "kind": "function",
+      "title": "&lt;static&gt; setMaxError( r )",
+      "longname": "GeoLoc.setMaxError",
+      "name": "setMaxError",
+      "tags": "GeoLoc.setMaxError setMaxError",
+      "summary": "",
+      "description": "Set max error allowed for location tracking"
+    },
+    "GeoLoc.html#.getCurrentLocation": {
+      "id": "GeoLoc.html#.getCurrentLocation",
+      "kind": "function",
+      "title": "&lt;static&gt; getCurrentLocation() → {THREE.Vector2}",
+      "longname": "GeoLoc.getCurrentLocation",
+      "name": "getCurrentLocation",
+      "tags": "GeoLoc.getCurrentLocation getCurrentLocation",
+      "summary": "",
+      "description": "Get current location"
+    },
+    "GeoLoc.html#.addPOI": {
+      "id": "GeoLoc.html#.addPOI",
+      "kind": "function",
+      "title": "&lt;static&gt; addPOI( P, r )",
+      "longname": "GeoLoc.addPOI",
+      "name": "addPOI",
+      "tags": "GeoLoc.addPOI addPOI",
+      "summary": "",
+      "description": "Add a Geo-POI (point-of-interest) in given location (lat,lon) and radius. You can handle enter/leave POI events using ATON.on(\"EnterPOI\") and ATON.on(\"LeavePOI\")"
     },
     "Nav.html": {
       "id": "Nav.html",

@@ -1,6 +1,6 @@
 /*
     ATON GeoLoc
-    Outdoor physical location tracking and POI handling
+    Outdoor geolocation tracking and Geo-POI handling
     TODO: rename
 
     author: bruno.fanini_AT_gmail.com
@@ -8,7 +8,7 @@
 ===========================================================*/
 
 /**
-Geolocation and outdoor tracking
+Outdoor geolocation tracking and Geo-POI handling
 @namespace GeoLoc
 */
 let GeoLoc = {};
@@ -27,10 +27,12 @@ GeoLoc.init = ()=>{
     // POIs
     GeoLoc._POIs = [];
     GeoLoc._currPOI = undefined;
+
+    GeoLoc._maxError = 40.0; // max accuracy error allowed
 };
 
 /**
-Enable GPS location tracking
+Enable geolocation tracking
 */
 GeoLoc.enableTracking = ()=>{
     if (GeoLoc._bActive) return;
@@ -53,7 +55,7 @@ GeoLoc.enableTracking = ()=>{
 };
 
 /**
-Disable GPS location tracking
+Disable geolocation tracking
 */
 GeoLoc.disableTracking = ()=>{
     if (!GeoLoc._bActive) return;
@@ -62,19 +64,32 @@ GeoLoc.disableTracking = ()=>{
     GeoLoc._bActive = false;
 };
 
+/**
+Set max error allowed for location tracking
+@param {number} - the error (meters)
+*/
+GeoLoc.setMaxError = (r)=>{
+    if (r > 0.0) GeoLoc._maxError = r;
+};
+
 GeoLoc._onError = ()=>{
-    console.log("GPS error");
+    console.log("Geolocation error");
 };
 
 GeoLoc._onPosition = (pos)=>{
     if (!GeoLoc._bActive) return;
     if (!pos.coords) return;
 
+    // filter locations
+    let acc = pos.coords.accuracy;
+    if (acc && acc > GeoLoc._maxError) return;
+
+    // update current location
     GeoLoc._currPos.x = pos.coords.latitude;
     GeoLoc._currPos.y = pos.coords.longitude;
 
     //console.log(pos.coords.latitude+","+pos.coords.longitude);
-    console.log(pos);
+    //console.log(pos);
 
     ATON.fireEvent("GeoLocation", pos);
 
@@ -150,7 +165,7 @@ GeoLoc.distance = (latlonA, latlonB)=>{
 };
 
 /**
-Add a POI (point-of-interest) given location (lat,lon) and radius.
+Add a Geo-POI (point-of-interest) in given location (lat,lon) and radius.
 You can handle enter/leave POI events using ATON.on("EnterPOI") and ATON.on("LeavePOI")
 @param {THREE.Vector2} P - the (lat,lon) pair
 @param {number} r - the radius (meters)
@@ -162,7 +177,7 @@ GeoLoc.addPOI = (P, r)=>{
 
     GeoLoc._POIs.push(POI);
 
-    if (!GeoLoc._bActive) GeoLoc.enable();
+    if (!GeoLoc._bActive) GeoLoc.enableTracking();
 
     //console.log("Added POI:");
     //console.log(POI);

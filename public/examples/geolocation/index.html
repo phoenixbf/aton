@@ -35,7 +35,7 @@ window.addEventListener( 'load', ()=>{
 	// and use it to create a POI with a radius of 20 m
 	ATON.FE.uiAddButton("idBottomToolbar", "geoloc", function(){
 		let location = ATON.GeoLoc.getCurrentLocation();
-		ATON.GeoLoc.addPOI(location, 40.0);
+		ATON.GeoLoc.addPOI(location, 30.0);
 	});
 
 	// Enable geolocation
@@ -44,7 +44,7 @@ window.addEventListener( 'load', ()=>{
     // Our events
 	ATON.FE.addBasicLoaderEvents();
 
-	// We handle here POI proximity events
+	// We handle here GeoPOI proximity events
 	// When we enter the POI...
 	// ...we switch on the geolocation button and show the venus model
 	ATON.on("EnterPOI", function(o){
@@ -64,6 +64,7 @@ window.addEventListener( 'load', ()=>{
 	ATON.on("GeoLocation", function(pos){
 		let lat = parseFloat(pos.coords.latitude).toPrecision(6);
 		let lon = parseFloat(pos.coords.longitude).toPrecision(6);
+		let acc = parseFloat(pos.coords.accuracy).toPrecision(4);
 		$("#idGeoLoc").html("("+lat+","+lon+")<br>Acc: "+pos.coords.accuracy);
 	});
 

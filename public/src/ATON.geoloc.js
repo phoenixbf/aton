@@ -26,7 +26,8 @@ GeoLoc.init = ()=>{
 
     // POIs
     GeoLoc._POIs = [];
-    GeoLoc._currPOI = undefined;
+    GeoLoc._currPOI = undefined;    // POI we are inside if any
+    GeoLoc._closestPOI = undefined; // closest POI
 
     GeoLoc._maxError = 40.0; // max accuracy error allowed
 };
@@ -100,10 +101,18 @@ GeoLoc._handlePOIs = ()=>{
     let numPOIs = GeoLoc._POIs.length;
     if (numPOIs <= 0) return;
 
+    GeoLoc._closestPOIdist = undefined;
+    GeoLoc._closestPOI = undefined;
+
     for (let i=0; i<numPOIs; i++){
         let POI = GeoLoc._POIs[i];
 
         let d = GeoLoc.distance(GeoLoc._currPos, POI.pos);
+
+        if (GeoLoc._closestPOIdist === undefined || d < GeoLoc._closestPOIdist){
+            GeoLoc._closestPOIdist = d;
+            GeoLoc._closestPOI     = i;
+        }
 
         //console.log("Distance: "+d);
 
@@ -152,8 +161,13 @@ GeoLoc.distance_orig = (latlonA, latlonB)=>{
     return d * 1000.0;
 };
 
-// Optimized distance between two locations (in meters)
-// from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+/**
+Get distance (meters) between two geo-locations
+re-adapted from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula
+@param {THREE.Vector2} latlonA - location A (lat,lon)
+@param {THREE.Vector2} latlonB - location B (lat,lon)
+@returns {number} - distance (meters)
+*/
 GeoLoc.distance = (latlonA, latlonB)=>{
     let a = 0.5 - Math.cos((latlonB.x - latlonA.x) * ATON.DEG2RAD)/2.0 + 
         Math.cos(latlonA.x * ATON.DEG2RAD) * Math.cos(latlonB.x * ATON.DEG2RAD) * 
@@ -190,6 +204,23 @@ GeoLoc.addPOI = (P, r)=>{
 GeoLoc.getPOIbyIndex = (i)=>{
     return GeoLoc._POIs[i];
 };
+
+/**
+Get index of closest Geo-POI
+@returns {number} - index
+*/
+GeoLoc.getClosestPOI = ()=>{
+    return GeoLoc._closestPOI;
+};
+
+/**
+Get distance (meters) to the closest Geo-POI
+@returns {number} - distance (meters)
+*/
+GeoLoc.getClosestPOIdistance = ()=>{
+    return GeoLoc._closestPOIdist;
+};
+
 
 // Main update routine
 /*

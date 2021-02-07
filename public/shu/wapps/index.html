@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="../appicon.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="New Scene">
+<link rel="apple-touch-icon" href="../appicon.png">
+<meta name="description" content="Web-Apps">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>Web-Apps</title>
+<link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
+<script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
+
+<script>
+
+let renderForm = ()=>{
+    let htmlcontent = "";
+
+    // Hathor
+    htmlcontent += "<a href='/fe/' style='display:inline-block; width:256px; height:256px'>";
+    htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'><br>";
+    htmlcontent += "<div class='atonBlockTitle' style='font-size:small;'>hathor</div>";
+    htmlcontent += "</a>";
+
+    $.getJSON( PATH_RESTAPI+"wapps/", (data)=>{
+        for (let i in data){
+            let A = data[i];
+            let wappid = A.wappid;
+            let appicon = (A.icon)? DIR_WAPPS+wappid+"/appicon.png" : PATH_RES+"appicon.png";
+
+            htmlcontent += "<a href='"+DIR_WAPPS+wappid+"' style='display:inline-block; width:256px; height:256px'>";
+            htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'><br>";
+            htmlcontent += "<div class='atonBlockTitle' style='font-size:small;'>"+wappid+"</div>";
+            htmlcontent += "</a>";
+        }
+
+        $("#idWApps").html(htmlcontent);
+    });
+
+/*
+    htmlcontent += "<div class='atonBlockRound'>";
+    htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
+    htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
+    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>New User</div>";
+    htmlcontent += "<br><div id='idResponse'></div>";
+    htmlcontent += "</div>";
+*/
+
+
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.uiAddMainToolbar("idTopToolbar");
+
+    SHU.checkAuth((data)=>{
+        if (data.username && data.admin){
+            renderForm();
+        }
+        else {
+            window.location.href = "/shu/auth/?url="+window.location.href;
+        }
+    });
+
+
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
+
+    <div class='shuMainContainer'>
+        <div class="atonTitle">Web-Apps</div>
+        <div class="atonBlockGroup" id="idWApps"></div>
+    </div>
+    
+</body>

@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" href="../../res/aton-logo.png" sizes="512x512" type="image/png">
+<link rel="icon" href="../appicon.png" sizes="512x512" type="image/png">
 
 <!-- Add iOS meta tags and icons -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Login">
-<link rel="apple-touch-icon" href="../../res/aton-logo.png">
+<link rel="apple-touch-icon" href="../appicon.png">
 <meta name="description" content="Login">
 <!-- Add meta theme-color -->
 <meta name="theme-color" content="#000000" />
@@ -52,10 +52,12 @@ let renderAuthForm = (data)=>{
 
     if (data.username){
         htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
-        htmlcontent += "<h3>You are logged in as: '"+data.username+"'</h3><br>";
         htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-large' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 
+        let strTitle = "'"+data.username+"'";
+        if (data.admin) strTitle += " (Admin)";
+        $("#idUserTitle").html(strTitle);
         $("#idAuth").html(htmlcontent);
 
         $("#idLogoutBTN").click(()=>{
@@ -74,6 +76,7 @@ let renderAuthForm = (data)=>{
         htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-large' id='idLoginBTN'>LOGIN</div>";
         htmlcontent += "</div>";
 
+        $("#idUserTitle").html("User Authentication");
         $("#idAuth").html(htmlcontent);
 
         $("#idLoginBTN").click(()=>{
@@ -103,7 +106,7 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
 
     <div class='shuMainContainer'>
-        <div class="atonTitle">User Authentication</div>
+        <div class="atonTitle" id='idUserTitle'></div>
         <div class="atonBlockGroup" id="idAuth"></div>
     </div>
     

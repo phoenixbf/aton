@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>Utils</title>
+		<title>AppHub</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -82,7 +82,7 @@
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
 				<span class="kind">namespace</span>
-				<h1><span class="name">Utils</span></h1>
+				<h1><span class="name">AppHub</span></h1>
 			</div>
 		</div>
 	<div class="container content">
@@ -91,16 +91,16 @@
 						<ol class="breadcrumb">
 							<li><a href="index.html">Home</a></li>
 							<li><a href="list_namespace.html">Namespaces</a></li>
-							<li class="active">Utils</li>
+							<li class="active">AppHub</li>
 						</ol>
 					<section>
 							<dl class="symbol primary">
 								<dt class="symbol-title namespace collapsible-symbol expanded">
-			<h2 class="namespace"><span class="name">Utils</span></h2>
+			<h2 class="namespace"><span class="name">AppHub</span></h2>
 </dt>
 <dd class="symbol-details namespace  collapsible-symbol expanded" style="max-height: 9999px;">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>ATON Utils</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>ATON App Hub</p></div>
 			</div>	</div>
 </dd>
 							</dl>
@@ -109,16 +109,18 @@
 									<dl class="symbol">
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".isConnectionSecure" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isConnectionSecure</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+			<h4 id=".getAppID" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getAppID</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current connection is secure</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get current web-app ID</p></div>
 			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
 							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
+								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
 								<div class="col-sm-9">
-									<div class="form-control-static returns-description"></div>
+									<div class="form-control-static returns-description"><ul>
+			<li>web-app ID</li>
+			</ul></div>
 								</div>
 							</div>
 					</form>
@@ -126,62 +128,11 @@
 </dd>
 											<hr/>
 											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".isMobile" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isMobile</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
+			<h4 id=".addToStorage" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">addToStorage</span><span class="signature-params">( <span class="signature-param">patch</span>, <span class="signature-param">onComplete</span>&nbsp;)</span><span class="signature-type"></span></h4>
 		</dt>
 <dd class="symbol-details function public  collapsible-symbol">
 	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current device is mobile (e.g. smartphone, tablet, Oculus Quest)</p></div>
-			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
-							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
-								<div class="col-sm-9">
-									<div class="form-control-static returns-description"></div>
-								</div>
-							</div>
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".isVRsupported" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isVRsupported</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
-		</dt>
-<dd class="symbol-details function public  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current device supports WebXR immersive VR sessions</p></div>
-			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
-							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
-								<div class="col-sm-9">
-									<div class="form-control-static returns-description"></div>
-								</div>
-							</div>
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".isARsupported" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">isARsupported</span><span class="signature-params">()</span><span class="signature-type"> &rarr;&nbsp;{boolean}</span></h4>
-		</dt>
-<dd class="symbol-details function public  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>If current device supports WebXR immersive AR sessions</p></div>
-			</div>			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
-							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">boolean</span></label>
-								<div class="col-sm-9">
-									<div class="form-control-static returns-description"></div>
-								</div>
-							</div>
-					</form>
-			</div>	</div>
-</dd>
-											<hr/>
-											<dt class="symbol-title function public collapsible-symbol">
-			<h4 id=".getHumanReadableDistance" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getHumanReadableDistance</span><span class="signature-params">( <span class="signature-param">d</span>&nbsp;)</span><span class="signature-type"> &rarr;&nbsp;{string}</span></h4>
-		</dt>
-<dd class="symbol-details function public  collapsible-symbol">
-	<div class="symbol-details-inner">
-			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get human-readable length (distances, measures, etc...)</p></div>
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Add data to persistent, server-side storage of current web-app</p></div>
 			</div>			<div class="callout callout-info">
 				<h5>Parameters</h5>
 				<table class="params table table-striped">
@@ -194,23 +145,98 @@
 					</thead>
 					<tbody>
 						<tr>
-								<td><code>d</code></td>
-							<td><span class="param-type">number</span></td>
+								<td><code>patch</code></td>
+							<td><span class="param-type">object</span></td>
 							<td class="last">
-									<p>the distance</p>
+									<p>a javascript object patch</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>onComplete</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>on data stored</p>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 			</div>
-			<div class="callout callout-success"><h5>Returns</h5>		<form class="form-horizontal returns">
-							<div class="form-group">
-								<label class="col-sm-3 control-label returns-type"><span class="param-type">string</span></label>
-								<div class="col-sm-9">
-									<div class="form-control-static returns-description"></div>
-								</div>
-							</div>
-					</form>
+			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.AppHub.addToStorage({score: 20)</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".deleteFromStorage" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">deleteFromStorage</span><span class="signature-params">( <span class="signature-param">patch</span>, <span class="signature-param">onComplete</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Delete data from server-side storage of current web-app</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>patch</code></td>
+							<td><span class="param-type">object</span></td>
+							<td class="last">
+									<p>a javascript object patch</p>
+							</td>
+						</tr>
+						<tr>
+								<td><code>onComplete</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>on data stored</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.AppHub.deleteFromStorage({score: {}})</code></pre>
+					</div>
+			</div>	</div>
+</dd>
+											<hr/>
+											<dt class="symbol-title function public collapsible-symbol">
+			<h4 id=".getStorage" class="function public"><span class="signature-attribs">&lt;static> </span><span class="name">getStorage</span><span class="signature-params">( <span class="signature-param">onComplete</span>&nbsp;)</span><span class="signature-type"></span></h4>
+		</dt>
+<dd class="symbol-details function public  collapsible-symbol">
+	<div class="symbol-details-inner">
+			<div class="callout callout-primary"><h5>Description</h5>		<div class="description"><p>Get content of server-side storage for current web-app</p></div>
+			</div>			<div class="callout callout-info">
+				<h5>Parameters</h5>
+				<table class="params table table-striped">
+					<thead>
+					<tr>
+							<th>Name</th>
+						<th>Type</th>
+						<th class="last">Description</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+								<td><code>onComplete</code></td>
+							<td><span class="param-type">function</span></td>
+							<td class="last">
+									<p>on data received</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="callout callout-example"><h5>Examples</h5>		<div class="example-code">
+						<pre class="prettyprint source language-javascript"><code class="language-javascript">ATON.AppHub.getStorage((data)&#x3D;&gt;{ console.log(data); })</code></pre>
+					</div>
 			</div>	</div>
 </dd>
 									</dl>

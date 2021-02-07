@@ -6,13 +6,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" href="../../res/aton-logo.png" sizes="512x512" type="image/png">
+<link rel="icon" href="../appicon.png" sizes="512x512" type="image/png">
 
 <!-- Add iOS meta tags and icons -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="New Scene">
-<link rel="apple-touch-icon" href="../../res/aton-logo.png">
+<link rel="apple-touch-icon" href="../appicon.png.png">
 <meta name="description" content="Users">
 <!-- Add meta theme-color -->
 <meta name="theme-color" content="#000000" />
@@ -27,35 +27,47 @@
 let renderForm = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<div class='atonBlockRound'>";
-    htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
-    htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
-    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>New User</div>";
-    htmlcontent += "<br><div id='idResponse'></div>";
-    htmlcontent += "</div>";
+    $.getJSON( PATH_RESTAPI+"users/", (data)=>{
 
-    $("#idAddUser").html(htmlcontent);
+        htmlcontent += "<div class='atonBlockRound'>";
+        htmlcontent += "username:<input id='idNewUsername' type='text' maxlength='15' size='15' ><br>";
+        htmlcontent += "password:<input id='idNewPassword' type='password' maxlength='15' size='15' ><br>";
+        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>Add User</div>";
+        htmlcontent += "<br><div id='idResponse'></div>";
+        htmlcontent += "</div><br><br>";
 
-    $("#idNewUser").click(()=>{
-        let o = {
-            username: $("#idUsername").val(), 
-            password: $("#idPassword").val()
-        };
+        for (let u in data){
+            let username = data[u];
 
-        SHU.postJSON(PATH_RESTAPI+"new/user/", o, 
-            (r)=>{ // success
-                console.log(r);
-                if (r){
-                    $("#idResponse").html("User "+o.username+" successfully created");
-                    $("#idUsername").val("");
-                    $("#idPassword").val("");
+            htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+PATH_RES+"icons/user.png'>"+username+"</div><br>";
+        }
+
+
+        $("#idAddUser").html(htmlcontent);
+
+        $("#idNewUser").click(()=>{
+            let o = {
+                username: $("#idNewUsername").val(), 
+                password: $("#idNewPassword").val()
+            };
+
+            SHU.postJSON(PATH_RESTAPI+"new/user/", o, 
+                (r)=>{ // success
+                    console.log(r);
+                    if (r){
+                        $("#idResponse").html("User "+o.username+" successfully created");
+                        $("#idNewUsername").val("");
+                        $("#idNewPassword").val("");
+
+                        location.reload();
+                    }
+                    else $("#idResponse").html("Failed to create "+o.username);
+                }, 
+                ()=>{ // fail
+                    $("#idResponse").html("Failed to create "+o.username);
                 }
-                else $("#idResponse").html("Failed to create "+o.username);
-            }, 
-            ()=>{ // fail
-                $("#idResponse").html("Failed to create "+o.username);
-            }
-        );
+            );
+        });
     });
 };
 

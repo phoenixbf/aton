@@ -1,5 +1,6 @@
 const DIR_COLLECTION = "../../collection/";
 const DIR_SCENES     = "../../scenes/";
+const DIR_WAPPS      = "../../wapps/";
 const PATH_FE        = "../../fe/";
 const PATH_RESTAPI   = "../../api/";
 const PATH_RES       = "../../res/";
@@ -95,17 +96,23 @@ SHU.getScenesInputList = (idlist)=>{
 
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
-    htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'></div>";
-    htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+PATH_RES+"icons/scene.png'>Scenes</div>";
-
-    $("#"+idcontainer).append(htmlcode);
-
-    $("#btn-t-user").click(()=>{ window.location.href = "../../shu/auth/"; });
-    $("#btn-t-scenes").click(()=>{ window.location.href = "../../shu/scenes/"; });
-
     SHU.checkAuth((data)=>{
-        if (data.username) $("#btn-t-user").html("<img src='"+PATH_RES+"icons/user.png'>"+data.username);
-        else $("#btn-t-user").html("<img src='"+PATH_RES+"icons/user.png'>User");
+        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>"+data.username+"</div>";
+        else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>User</div>";
+
+        htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+PATH_RES+"icons/scene.png'>Scenes</div>";
+
+        if (data.username && data.admin){
+            htmlcode += "<div id='btn-t-users' class='atonBTN'><img src='"+PATH_RES+"icons/users.png'>Users</div>";
+            htmlcode += "<div id='btn-t-wapps' class='atonBTN'><img src='"+PATH_RES+"icons/app.png'>Apps</div>";
+        }
+
+        $("#"+idcontainer).append(htmlcode);
+
+        $("#btn-t-user").click(()=>{ window.location.href = "../../shu/auth/"; });
+        $("#btn-t-scenes").click(()=>{ window.location.href = "../../shu/scenes/"; });
+        $("#btn-t-users").click(()=>{ window.location.href = "../../shu/users/"; });
+        $("#btn-t-wapps").click(()=>{ window.location.href = "../../shu/wapps/"; });
     });
 };
 

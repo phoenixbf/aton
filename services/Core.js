@@ -13,6 +13,8 @@ const glob        = require("glob");
 const jsonpatch   = require('fast-json-patch');
 const del         = require('del');
 const makeDir     = require('make-dir');
+const nanoid      = require('nanoid');
+const fsx         = require('fs-extra');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -34,6 +36,7 @@ Core.DIR_COLLECTION   = path.join(Core.DIR_PUBLIC,"collection/");
 //Core.DIR_MODELS       = path.join(Core.DIR_COLLECTION,"models/");
 //Core.DIR_PANO         = path.join(Core.DIR_COLLECTION,"pano/");
 Core.DIR_SCENES       = path.join(Core.DIR_PUBLIC,"scenes/");
+Core.DIR_WAPPS        = path.join(Core.DIR_PUBLIC,"wapps/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
 Core.STD_SCENEFILE    = "scene.json";
 Core.STD_PUBFILE      = "pub.txt";
@@ -91,7 +94,9 @@ Core.getKeyPath = ()=>{
 	return path.join(Core.DIR_PRV,'server.key');
 };
 
-// Scene utils
+
+// Scenes
+//=======================================
 Core.getSceneFolder = (sid)=>{
 	return path.join(Core.DIR_SCENES,sid);
 };
@@ -153,7 +158,7 @@ Core.readSceneJSON = (sid)=>{
 
 
 // Apply partial edit to sobj
-Core.addSceneEdit = (sobj, edit)=>{
+Core.addOBJEdit = (sobj, edit)=>{
 	//if (sobj === undefined) return undefined;
 
 	// object or array
@@ -171,7 +176,7 @@ Core.addSceneEdit = (sobj, edit)=>{
 				sobj[k] = Array.isArray(E)? [] : {};
 			}
 
-			sobj[k] = Core.addSceneEdit(sobj[k], E);
+			sobj[k] = Core.addOBJEdit(sobj[k], E);
 		}
 
 		return sobj;
@@ -182,7 +187,7 @@ Core.addSceneEdit = (sobj, edit)=>{
 	return sobj;
 };
 
-Core.deleteSceneEdit = (sobj, edit)=>{
+Core.deleteOBJEdit = (sobj, edit)=>{
 	if (sobj === undefined) return undefined;
 
 	// object or array
@@ -194,7 +199,7 @@ Core.deleteSceneEdit = (sobj, edit)=>{
 
 			if (sobj[k] !== undefined){
 				if (Object.keys(E).length > 0){
-					sobj[k] = Core.deleteSceneEdit(sobj[k], E);
+					sobj[k] = Core.deleteOBJEdit(sobj[k], E);
 				}
 				else {
 					//if (Array.isArray(sobj)) sobj = sobj.filter(e => e !== k);
@@ -210,6 +215,7 @@ Core.deleteSceneEdit = (sobj, edit)=>{
 	return undefined;
 };
 
+
 // Apply incoming patch to sid JSON
 Core.applySceneEdit = (sid, patch, mode)=>{
 	let sjpath = Core.getSceneJSONPath(sid);
@@ -219,8 +225,8 @@ Core.applySceneEdit = (sid, patch, mode)=>{
 
 	//jsonpatch.applyPatch(S, patch);
 
-	if (mode === "DEL") S = Core.deleteSceneEdit(S, patch);
-	else S = Core.addSceneEdit(S, patch);
+	if (mode === "DEL") S = Core.deleteOBJEdit(S, patch);
+	else S = Core.addOBJEdit(S, patch);
 
 	S = Core.cleanScene(S);
 
@@ -244,8 +250,8 @@ Core.applySceneEdit = (M, sobj)=>{
 
 	if (sobj === undefined) return false; // scene does not exist
 
-	//if (task === "DEL") sobj = Core.deleteSceneEdit(sobj, patch);
-	//if (task === "ADD") sobj = Core.addSceneEdit(sobj, patch);
+	//if (task === "DEL") sobj = Core.deleteOBJEdit(sobj, patch);
+	//if (task === "ADD") sobj = Core.addOBJEdit(sobj, patch);
 
 	if (task === "UPD_SEM_NODE"){
 		let nid     = data.nid;
@@ -302,9 +308,6 @@ Core.cleanScene = (sobj)=>{
 	return sobj;
 };
 
-
-
-
 // Write scene JSON from sid and data
 Core.writeSceneJSON = (sid, data, pub)=>{
 	if (sid === undefined) return false;
@@ -333,6 +336,39 @@ Core.writeSceneJSON = (sid, data, pub)=>{
 
 	return true;
 };
+
+// Web-Apps
+//=======================================
+Core.getWAppJSONPath = (wappid)=>{
+	let jsonfile = path.join( Core.DIR_WAPPS, wappid + "/data.json");
+	return jsonfile;
+};
+
+Core.readWAppJSONData = (wappid)=>{
+	let jsonfile = Core.getWAppJSONPath(wappid);
+	if (!fs.existsSync(jsonfile)) return undefined;
+
+	let S = JSON.parse(fs.readFileSync(jsonfile, 'utf8'));
+	return S;
+};
+
+Core.wappDataEdit = (wappid, patch, mode)=>{
+	let jdpath = Core.getWAppJSONPath(wappid);
+	let D = Core.readWAppJSONData(wappid);
+
+	if (D === undefined) return undefined; // data does not exist
+
+	//jsonpatch.applyPatch(D, patch);
+
+	if (mode === "DEL") D = Core.deleteOBJEdit(D, patch);
+	else D = Core.addOBJEdit(D, patch);
+
+	fs.writeFileSync(jdpath, JSON.stringify(D, null, 4));
+
+	//console.log(D);
+	return D;
+};
+
 
 Core.createClientUserAuthResponse = (req)=>{
 	if (req.user === undefined) return {};
@@ -595,6 +631,46 @@ Core.realizeBaseAPI = (app)=>{
 		//glob("**/*.{jpg,hdr}", O, (err, files)=>{ });
 
 		//next();
+	});
+
+	// Web-apps
+	app.get("/api/wapps/", (req,res,next)=>{
+		let O = {};
+		O.cwd = Core.DIR_WAPPS;
+		O.follow = true;
+
+		let wapps = [];
+
+		let files = glob.sync("**/*.html", O);
+		for (let f in files){
+			let wid = path.dirname(files[f]);
+			let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
+
+			wapps.push({
+				wappid: wid,
+				icon: fs.existsSync(appicon)? true : false
+			});
+		}
+
+		res.send(wapps);
+	});
+
+	app.post('/api/patch/wapp', (req, res) => {
+		let O = req.body;
+		let wappid = O.wappid;
+		let patch  = O.data;
+		let mode   = O.mode;
+
+		let J = Core.wappDataEdit(wappid, patch, mode);
+
+		res.json(J);
+	});
+
+	app.post('/api/new/wapp', (req, res) => {
+		let O = req.body;
+		let wappid = O.wappid;
+		
+		// TODO:
 	});
 
 	// List examples

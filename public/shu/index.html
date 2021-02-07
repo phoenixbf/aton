@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="appicon.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Login">
+<link rel="apple-touch-icon" href="appicon.png">
+<meta name="description" content="Shu">
+
+<!-- PWA manifest -->
+<link rel="manifest" href="app.webmanifest">
+
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>SHU</title>
+<link rel="stylesheet" type="text/css" href="../res/css/aton.css">
+<script type="text/javascript" src="../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="shu.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    SHU.uiAddMainToolbar("idTopToolbar");
+
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
+
+    <div class='shuMainContainer'>
+        <div class="atonTitle">Welcome on SHU</div>
+        <img src='appicon.png' style='width:256px; height:auto'>
+    </div>
+    
+</body>

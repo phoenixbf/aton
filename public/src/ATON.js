@@ -35,6 +35,7 @@ import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaRec from "./ATON.mediarec.js";
 import GeoLoc from "./ATON.geoloc.js";
+import AppHub from "./ATON.apphub.js";
 
 // Classes
 ATON.Node       = Node;
@@ -56,6 +57,7 @@ ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaRec   = MediaRec;
 ATON.GeoLoc     = GeoLoc;
+ATON.AppHub     = AppHub;
 
 //==============================================================
 // Consts
@@ -65,6 +67,9 @@ ATON.ROOT_NID = "."; // reserved node ID for graph-roots
 
 ATON.RAD2DEG = (180.0 / Math.PI);
 ATON.DEG2RAD = (Math.PI / 180.0);
+
+ATON.PATCH_ADD = 0;
+ATON.PATCH_DEL = 1;
 
 // Node types
 ATON.NTYPES = {};
@@ -76,6 +81,7 @@ ATON.NTYPES.UI     = 5;
 // Folders
 ATON.PATH_RESTAPI       = window.location.origin + "/api/"; // "../api/";
 ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
+ATON.PATH_WAPPS         = window.location.origin + "/wapps/";
 ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
 ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
@@ -458,6 +464,9 @@ ATON.realize = ()=>{
     // Semantic Factory
     ATON.SemFactory.init();
 
+    // App Hub
+    ATON.AppHub.init();
+
     // GeoLoc
     ATON.GeoLoc.init();
 
@@ -502,6 +511,8 @@ ATON.realize = ()=>{
     ATON._setupBaseListeners();
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
+
+    ATON._wappID = undefined;
 
     ATON.focusOn3DView();
 

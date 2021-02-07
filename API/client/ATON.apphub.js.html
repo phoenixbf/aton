@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-		<title>ATON.lightprobe.js</title>
+		<title>ATON.apphub.js</title>
 		<!--[if lt IE 9]>
 		<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -83,7 +83,7 @@
 	<!-- end:navbar.hbs -->		<div class="page-header">
 			<div class="container">
 				<span class="kind">source</span>
-				<h1><span class="name">ATON.lightprobe.js</span></h1>
+				<h1><span class="name">ATON.apphub.js</span></h1>
 			</div>
 		</div>
 	<div class="container content">
@@ -92,171 +92,109 @@
 		<section class="source-section">
 			<article></article>
 			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
-    ATON Light Probe Class
+    ATON App Hub
+    Web-Apps
 
     author: bruno.fanini_AT_gmail.com
 
 ===========================================================*/
 
 /**
-Class representing a light probe (LP), can be static or updated at runtime
-@class LightProbe
-@param {number} res - Resolution in pixel of lightprobe (default 64)
-@param {number} near - Capture near (default 1m)
-@param {number} far - Capture far (default 1Km)
-@example 
-let LP = new ATON.LightProbe()
+ATON App Hub
+@namespace AppHub
 */
-class LightProbe {
+let AppHub = {};
 
-constructor(res, near, far){
-    this.pos = new THREE.Vector3(0,0,0);
+// Realize the hub
+AppHub.init = ()=>{
+    AppHub._appid = undefined;
+    AppHub._appdata = {};
+};
 
-    this._res  = (res !== undefined)?  res  : 64;
-    this._near = (near !== undefined)? near : 1.0;
-    this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
-/*
-    this._LPtarget0 = undefined;
-    this._LPtarget1 = undefined;
+// Send JSON patch
+// TODO: https://tools.ietf.org/html/rfc6902
+AppHub._sendDataPatch = (patch, mode, onComplete)=>{
+    if (patch === undefined) return;
+    if (mode === undefined) mode = ATON.PATCH_ADD;
 
-    this._LP0 = undefined;
-    this._LP1 = undefined;
+    // First time
+    if (AppHub._appid === undefined){
+        let appid = $("meta[name='title']").attr("content");
+        if (appid === undefined || appid === null || appid.length &lt; 2) return;
+        AppHub._appid = appid;
+    }
 
-    this._flipLP = false;
-*/
-    this._envtex = undefined;
-    this._prevCCtarget = undefined;
+    let O = {};
+    O.wappid = AppHub._appid;
+    O.data   = patch;
+    O.mode   = (mode === ATON.PATCH_DEL)? "DEL" : "ADD";
 
-    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+    let jstr = JSON.stringify(O);
+    console.log(jstr);
 
-    //this.realize();
-}
+    $.ajax({
+        url: ATON.PATH_RESTAPI+"patch/wapp",
+        type:"POST",
+        data: jstr,
+        contentType:"application/json; charset=utf-8",
+        dataType:"json",
 
-/*
-realize(){
-    this._LPtarget0 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
+        success: (r)=>{
+            if (r === undefined) return;
+
+            AppHub._appdata = r;
+            if (onComplete) onComplete();
+        }
     });
-
-    this._LPtarget1 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    this._LP0 = new THREE.CubeCamera( this._near, this._far, this._LPtarget0 );
-    this._LP1 = new THREE.CubeCamera( this._near, this._far, this._LPtarget1 );
-
-    return this;
-}
-*/
+};
 
 /**
-Set LP position
-@example
-LP.setPosition(2.0,6.0,1.5)
-@example
-LP.setPosition( new THREE.Vector3(2.0,6.0,1.5) )
+Get current web-app ID
+@returns {string} - web-app ID
 */
-setPosition(x,y,z){
-    if (x instanceof THREE.Vector3) this.pos.copy(x);
-    else this.pos.set(x,y,z);
-
-    //if (this._LP0) this._LP0.position.copy(this.pos);
-    //if (this._LP1) this._LP1.position.copy(this.pos);
-
-    return this;
-}
-
-setNear(near){
-    this._near = near;
-    return this;
-}
-setFar(far){ 
-    this._far = far;
-    return this;
-}
+AppHub.getAppID = ()=>{
+    return AppHub._appid;
+};
 
 /**
-Update LP capture. Typically called when all 3D models are loaded and arranged into the scene.
-Can be called at runtime or whenever there is some change in the 3D scene
+Add data to persistent, server-side storage of current web-app
+@param {object} patch - a javascript object patch
+@param {function} onComplete - on data stored
 @example
-LP.update()
+ATON.AppHub.addToStorage({score: 20)
 */
-update(){
-    if (this._envtex) this._envtex.dispose();
-    if (this._prevCCtarget) this._prevCCtarget.dispose();
+AppHub.addToStorage = (patch, onComplete)=>{
+    AppHub._sendDataPatch(patch, ATON.PATCH_ADD, onComplete);
+};
 
-    let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBEFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
+/**
+Delete data from server-side storage of current web-app
+@param {object} patch - a javascript object patch
+@param {function} onComplete - on data stored
+@example
+ATON.AppHub.deleteFromStorage({score: {}})
+*/
+AppHub.deleteFromStorage = (patch, onComplete)=>{
+    AppHub._sendDataPatch(patch, ATON.PATCH_DEL, onComplete);
+};
+
+/**
+Get content of server-side storage for current web-app
+@param {function} onComplete - on data received
+@example
+ATON.AppHub.getStorage((data)=>{ console.log(data); })
+*/
+AppHub.getStorage = (onComplete)=>{
+    if (AppHub._appid === undefined) return;
+
+    return $.getJSON( ATON.PATH_WAPPS+AppHub._appid+"/data.json", ( data )=>{
+        AppHub._appdata = data;
+        if (onComplete) onComplete(data);
     });
-
-    let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
-    CC.position.copy(this.pos);
-
-    CC.update( ATON._renderer, ATON._rootVisibleGlobal );
-
-    this._envtex = CCtarget.texture;
-    
-/*
-    console.log(CC);
-    console.log(CCtarget);
-
-    let CCtargetX = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        //generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    let CCX = new THREE.CubeCamera( this._near, this._far, CCtargetX );
-    CCX.position.copy(this.pos);
-
-    CCX.update( ATON._renderer, ATON._rootVisible );
-    this._envtex = this._pmremGenerator.fromCubemap(CCtargetX.texture).texture;
-*/
-
-    this._prevCCtarget = CCtarget;
+};
 
 
-/*
-    if (this._LP0 === undefined || this._LP1 === undefined) return this;
-
-    this._flipLP = !this._flipLP;
-    //ATON._flipLP = !ATON._flipLP;
-
-    if (this._flipLP){
-        this._LP0.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget0.texture;
-    }
-    else {
-        this._LP1.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget1.texture;
-    }
-*/
-    return this;
-}
-
-
-getEnvTex(){
-    return this._envtex;
-}
-
-assignToNode(N){
-    if (N === undefined) return;
-    //TODO:
-}
-
-}
-
-export default LightProbe;</code></pre>
+export default AppHub;</code></pre>
 		</section>
 			</div>
 		</div>

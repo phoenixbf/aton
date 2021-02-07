@@ -973,6 +973,71 @@
           "world",
           "xr.getcontrollerworlddirect"
         ],
+        "AppHub.html": [
+          "app",
+          "apphub",
+          "aton",
+          "hub",
+          "namespac"
+        ],
+        "AppHub.html#.getAppID": [
+          "app",
+          "apphub.getappid",
+          "current",
+          "function",
+          "getappid",
+          "id",
+          "lt;static&gt",
+          "string",
+          "web"
+        ],
+        "AppHub.html#.addToStorage": [
+          "add",
+          "addtostorag",
+          "app",
+          "apphub.addtostorag",
+          "current",
+          "data",
+          "function",
+          "lt;static&gt",
+          "oncomplet",
+          "patch",
+          "persist",
+          "server",
+          "side",
+          "storag",
+          "web"
+        ],
+        "AppHub.html#.deleteFromStorage": [
+          "app",
+          "apphub.deletefromstorag",
+          "current",
+          "data",
+          "delet",
+          "deletefromstorag",
+          "function",
+          "lt;static&gt",
+          "oncomplet",
+          "patch",
+          "server",
+          "side",
+          "storag",
+          "web"
+        ],
+        "AppHub.html#.getStorage": [
+          "app",
+          "apphub.getstorag",
+          "content",
+          "current",
+          "function",
+          "getstorag",
+          "lt;static&gt",
+          "oncomplet",
+          "server",
+          "side",
+          "storag",
+          "web"
+        ],
         "AudioHub.html": [
           "aton",
           "audio",
@@ -1153,6 +1218,28 @@
           "lt;static&gt",
           "three.vector2"
         ],
+        "GeoLoc.html#.distance": [
+          "adapt",
+          "between",
+          "distanc",
+          "formula",
+          "function",
+          "geo",
+          "geoloc.dist",
+          "haversin",
+          "https://stackoverflow.com/questions/27928/calcul",
+          "latitud",
+          "latlona",
+          "latlonb",
+          "locat",
+          "longitud",
+          "lt;static&gt",
+          "meter",
+          "number",
+          "point",
+          "re",
+          "two"
+        ],
         "GeoLoc.html#.addPOI": [
           "add",
           "addpoi",
@@ -1175,6 +1262,29 @@
           "r",
           "radiu",
           "us"
+        ],
+        "GeoLoc.html#.getClosestPOI": [
+          "closest",
+          "function",
+          "geo",
+          "geoloc.getclosestpoi",
+          "getclosestpoi",
+          "index",
+          "lt;static&gt",
+          "number",
+          "poi"
+        ],
+        "GeoLoc.html#.getClosestPOIdistance": [
+          "closest",
+          "distanc",
+          "function",
+          "geo",
+          "geoloc.getclosestpoidist",
+          "getclosestpoidist",
+          "lt;static&gt",
+          "meter",
+          "number",
+          "poi"
         ],
         "Nav.html": [
           "aton",
@@ -2021,7 +2131,7 @@
           "visibl"
         ]
       },
-      "length": 170
+      "length": 178
     },
     "tokenStore": {
       "root": {
@@ -2111,6 +2221,10 @@
                     "index.html": {
                       "ref": "index.html",
                       "tf": 1.9444444444444444
+                    },
+                    "GeoLoc.html#.distance": {
+                      "ref": "GeoLoc.html#.distance",
+                      "tf": 2.941176470588235
                     }
                   }
                 }
@@ -2195,6 +2309,10 @@
                 "FE.html#.uiAddProfile": {
                   "ref": "FE.html#.uiAddProfile",
                   "tf": 10
+                },
+                "AppHub.html#.addToStorage": {
+                  "ref": "AppHub.html#.addToStorage",
+                  "tf": 5.555555555555555
                 },
                 "GeoLoc.html#.addPOI": {
                   "ref": "GeoLoc.html#.addPOI",
@@ -2290,6 +2408,35 @@
                   }
                 }
               },
+              "t": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "g": {
+                              "docs": {
+                                "AppHub.html#.addToStorage": {
+                                  "ref": "AppHub.html#.addToStorage",
+                                  "tf": 675
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "p": {
                 "docs": {},
                 "o": {
@@ -2374,6 +2521,26 @@
                 "FE.html": {
                   "ref": "FE.html",
                   "tf": 3.3333333333333335
+                },
+                "AppHub.html": {
+                  "ref": "AppHub.html",
+                  "tf": 16.666666666666664
+                },
+                "AppHub.html#.getAppID": {
+                  "ref": "AppHub.html#.getAppID",
+                  "tf": 12.5
+                },
+                "AppHub.html#.addToStorage": {
+                  "ref": "AppHub.html#.addToStorage",
+                  "tf": 5.555555555555555
+                },
+                "AppHub.html#.deleteFromStorage": {
+                  "ref": "AppHub.html#.deleteFromStorage",
+                  "tf": 6.25
+                },
+                "AppHub.html#.getStorage": {
+                  "ref": "AppHub.html#.getStorage",
+                  "tf": 7.142857142857142
                 }
               },
               "l": {
@@ -2404,6 +2571,166 @@
                           "index.html": {
                             "ref": "index.html",
                             "tf": 1.9444444444444444
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "h": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "b": {
+                    "docs": {
+                      "AppHub.html": {
+                        "ref": "AppHub.html",
+                        "tf": 1900
+                      }
+                    },
+                    ".": {
+                      "docs": {},
+                      "g": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "p": {
+                                "docs": {},
+                                "p": {
+                                  "docs": {},
+                                  "i": {
+                                    "docs": {},
+                                    "d": {
+                                      "docs": {
+                                        "AppHub.html#.getAppID": {
+                                          "ref": "AppHub.html#.getAppID",
+                                          "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "s": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "g": {
+                                        "docs": {
+                                          "AppHub.html#.getStorage": {
+                                            "ref": "AppHub.html#.getStorage",
+                                            "tf": 1150
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "a": {
+                        "docs": {},
+                        "d": {
+                          "docs": {},
+                          "d": {
+                            "docs": {},
+                            "t": {
+                              "docs": {},
+                              "o": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "t": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "a": {
+                                          "docs": {},
+                                          "g": {
+                                            "docs": {
+                                              "AppHub.html#.addToStorage": {
+                                                "ref": "AppHub.html#.addToStorage",
+                                                "tf": 1150
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "d": {
+                        "docs": {},
+                        "e": {
+                          "docs": {},
+                          "l": {
+                            "docs": {},
+                            "e": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "e": {
+                                  "docs": {},
+                                  "f": {
+                                    "docs": {},
+                                    "r": {
+                                      "docs": {},
+                                      "o": {
+                                        "docs": {},
+                                        "m": {
+                                          "docs": {},
+                                          "s": {
+                                            "docs": {},
+                                            "t": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "r": {
+                                                  "docs": {},
+                                                  "a": {
+                                                    "docs": {},
+                                                    "g": {
+                                                      "docs": {
+                                                        "AppHub.html#.deleteFromStorage": {
+                                                          "ref": "AppHub.html#.deleteFromStorage",
+                                                          "tf": 1150
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -2445,6 +2772,10 @@
                   },
                   "XR.html": {
                     "ref": "XR.html",
+                    "tf": 16.666666666666664
+                  },
+                  "AppHub.html": {
+                    "ref": "AppHub.html",
                     "tf": 16.666666666666664
                   },
                   "AudioHub.html": {
@@ -4225,6 +4556,21 @@
                       "ref": "FE.html#.popupClose",
                       "tf": 16.666666666666664
                     }
+                  },
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "GeoLoc.html#.getClosestPOI": {
+                          "ref": "GeoLoc.html#.getClosestPOI",
+                          "tf": 12.5
+                        },
+                        "GeoLoc.html#.getClosestPOIdistance": {
+                          "ref": "GeoLoc.html#.getClosestPOIdistance",
+                          "tf": 10
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -4461,6 +4807,20 @@
                         "Nav.html#.restorePreviousNavMode": {
                           "ref": "Nav.html#.restorePreviousNavMode",
                           "tf": 4.166666666666666
+                        }
+                      }
+                    }
+                  }
+                },
+                "e": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "t": {
+                      "docs": {
+                        "AppHub.html#.getStorage": {
+                          "ref": "AppHub.html#.getStorage",
+                          "tf": 7.142857142857142
                         }
                       }
                     }
@@ -4770,6 +5130,22 @@
                         "FE.html#.popupClose": {
                           "ref": "FE.html#.popupClose",
                           "tf": 16.666666666666664
+                        },
+                        "AppHub.html#.getAppID": {
+                          "ref": "AppHub.html#.getAppID",
+                          "tf": 12.5
+                        },
+                        "AppHub.html#.addToStorage": {
+                          "ref": "AppHub.html#.addToStorage",
+                          "tf": 5.555555555555555
+                        },
+                        "AppHub.html#.deleteFromStorage": {
+                          "ref": "AppHub.html#.deleteFromStorage",
+                          "tf": 6.25
+                        },
+                        "AppHub.html#.getStorage": {
+                          "ref": "AppHub.html#.getStorage",
+                          "tf": 7.142857142857142
                         },
                         "Utils.html#.isConnectionSecure": {
                           "ref": "Utils.html#.isConnectionSecure",
@@ -5153,6 +5529,48 @@
                     "Node.html#removeChildren": {
                       "ref": "Node.html#removeChildren",
                       "tf": 16.666666666666664
+                    },
+                    "AppHub.html#.deleteFromStorage": {
+                      "ref": "AppHub.html#.deleteFromStorage",
+                      "tf": 6.25
+                    }
+                  },
+                  "e": {
+                    "docs": {},
+                    "f": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "o": {
+                          "docs": {},
+                          "m": {
+                            "docs": {},
+                            "s": {
+                              "docs": {},
+                              "t": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "r": {
+                                    "docs": {},
+                                    "a": {
+                                      "docs": {},
+                                      "g": {
+                                        "docs": {
+                                          "AppHub.html#.deleteFromStorage": {
+                                            "ref": "AppHub.html#.deleteFromStorage",
+                                            "tf": 675
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -5371,6 +5789,14 @@
                           "ref": "Utils.html#.getHumanReadableDistance",
                           "tf": 8.333333333333332
                         },
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 675.8823529411765
+                        },
+                        "GeoLoc.html#.getClosestPOIdistance": {
+                          "ref": "GeoLoc.html#.getClosestPOIdistance",
+                          "tf": 10
+                        },
                         "ATON.html#.getSceneQueriedDistance": {
                           "ref": "ATON.html#.getSceneQueriedDistance",
                           "tf": 5.555555555555555
@@ -5470,6 +5896,14 @@
                   "EventHub.html#.fireEvent": {
                     "ref": "EventHub.html#.fireEvent",
                     "tf": 26.25
+                  },
+                  "AppHub.html#.addToStorage": {
+                    "ref": "AppHub.html#.addToStorage",
+                    "tf": 5.555555555555555
+                  },
+                  "AppHub.html#.deleteFromStorage": {
+                    "ref": "AppHub.html#.deleteFromStorage",
+                    "tf": 6.25
                   },
                   "VRoadcast.html#.fireEvent": {
                     "ref": "VRoadcast.html#.fireEvent",
@@ -6427,6 +6861,22 @@
                             "ref": "XR.html#.getControllerWorldDirection",
                             "tf": 110
                           },
+                          "AppHub.html#.getAppID": {
+                            "ref": "AppHub.html#.getAppID",
+                            "tf": 110
+                          },
+                          "AppHub.html#.addToStorage": {
+                            "ref": "AppHub.html#.addToStorage",
+                            "tf": 110
+                          },
+                          "AppHub.html#.deleteFromStorage": {
+                            "ref": "AppHub.html#.deleteFromStorage",
+                            "tf": 110
+                          },
+                          "AppHub.html#.getStorage": {
+                            "ref": "AppHub.html#.getStorage",
+                            "tf": 110
+                          },
                           "SceneHub.html#.init": {
                             "ref": "SceneHub.html#.init",
                             "tf": 110
@@ -6475,8 +6925,20 @@
                             "ref": "GeoLoc.html#.getCurrentLocation",
                             "tf": 110
                           },
+                          "GeoLoc.html#.distance": {
+                            "ref": "GeoLoc.html#.distance",
+                            "tf": 110
+                          },
                           "GeoLoc.html#.addPOI": {
                             "ref": "GeoLoc.html#.addPOI",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.getClosestPOI": {
+                            "ref": "GeoLoc.html#.getClosestPOI",
+                            "tf": 110
+                          },
+                          "GeoLoc.html#.getClosestPOIdistance": {
+                            "ref": "GeoLoc.html#.getClosestPOIdistance",
                             "tf": 110
                           },
                           "Nav.html#.getCurrentEyeLocation": {
@@ -6815,6 +7277,26 @@
                 "Nav.html#.getFOV": {
                   "ref": "Nav.html#.getFOV",
                   "tf": 10
+                }
+              }
+            },
+            "r": {
+              "docs": {},
+              "m": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "l": {
+                    "docs": {},
+                    "a": {
+                      "docs": {
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 2.941176470588235
+                        }
+                      }
+                    }
+                  }
                 }
               }
             },
@@ -7695,48 +8177,41 @@
                       }
                     }
                   }
-                }
-              },
-              "h": {
-                "docs": {},
-                "u": {
+                },
+                "l": {
                   "docs": {},
-                  "m": {
+                  "o": {
                     "docs": {},
-                    "a": {
+                    "s": {
                       "docs": {},
-                      "n": {
+                      "e": {
                         "docs": {},
-                        "r": {
+                        "s": {
                           "docs": {},
-                          "e": {
+                          "t": {
                             "docs": {},
-                            "a": {
+                            "p": {
                               "docs": {},
-                              "d": {
+                              "o": {
                                 "docs": {},
-                                "a": {
-                                  "docs": {},
-                                  "b": {
+                                "i": {
+                                  "docs": {
+                                    "GeoLoc.html#.getClosestPOI": {
+                                      "ref": "GeoLoc.html#.getClosestPOI",
+                                      "tf": 683.3333333333334
+                                    }
+                                  },
+                                  "d": {
                                     "docs": {},
-                                    "l": {
+                                    "i": {
                                       "docs": {},
-                                      "e": {
+                                      "s": {
                                         "docs": {},
-                                        "d": {
-                                          "docs": {},
-                                          "i": {
-                                            "docs": {},
-                                            "s": {
-                                              "docs": {},
-                                              "t": {
-                                                "docs": {
-                                                  "Utils.html#.getHumanReadableDistance": {
-                                                    "ref": "Utils.html#.getHumanReadableDistance",
-                                                    "tf": 675
-                                                  }
-                                                }
-                                              }
+                                        "t": {
+                                          "docs": {
+                                            "GeoLoc.html#.getClosestPOIdistance": {
+                                              "ref": "GeoLoc.html#.getClosestPOIdistance",
+                                              "tf": 683.3333333333334
                                             }
                                           }
                                         }
@@ -7753,15 +8228,21 @@
                   }
                 }
               },
-              "f": {
+              "a": {
                 "docs": {},
-                "o": {
+                "p": {
                   "docs": {},
-                  "v": {
-                    "docs": {
-                      "Nav.html#.getFOV": {
-                        "ref": "Nav.html#.getFOV",
-                        "tf": 683.3333333333334
+                  "p": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "d": {
+                        "docs": {
+                          "AppHub.html#.getAppID": {
+                            "ref": "AppHub.html#.getAppID",
+                            "tf": 683.3333333333334
+                          }
+                        }
                       }
                     }
                   }
@@ -7769,6 +8250,26 @@
               },
               "s": {
                 "docs": {},
+                "t": {
+                  "docs": {},
+                  "o": {
+                    "docs": {},
+                    "r": {
+                      "docs": {},
+                      "a": {
+                        "docs": {},
+                        "g": {
+                          "docs": {
+                            "AppHub.html#.getStorage": {
+                              "ref": "AppHub.html#.getStorage",
+                              "tf": 683.3333333333334
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
                 "e": {
                   "docs": {},
                   "l": {
@@ -7939,6 +8440,76 @@
                             }
                           }
                         }
+                      }
+                    }
+                  }
+                }
+              },
+              "h": {
+                "docs": {},
+                "u": {
+                  "docs": {},
+                  "m": {
+                    "docs": {},
+                    "a": {
+                      "docs": {},
+                      "n": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "e": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "d": {
+                                "docs": {},
+                                "a": {
+                                  "docs": {},
+                                  "b": {
+                                    "docs": {},
+                                    "l": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "d": {
+                                          "docs": {},
+                                          "i": {
+                                            "docs": {},
+                                            "s": {
+                                              "docs": {},
+                                              "t": {
+                                                "docs": {
+                                                  "Utils.html#.getHumanReadableDistance": {
+                                                    "ref": "Utils.html#.getHumanReadableDistance",
+                                                    "tf": 675
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "f": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "v": {
+                    "docs": {
+                      "Nav.html#.getFOV": {
+                        "ref": "Nav.html#.getFOV",
+                        "tf": 683.3333333333334
                       }
                     }
                   }
@@ -8163,9 +8734,21 @@
                   "ref": "GeoLoc.html",
                   "tf": 8.333333333333332
                 },
+                "GeoLoc.html#.distance": {
+                  "ref": "GeoLoc.html#.distance",
+                  "tf": 2.941176470588235
+                },
                 "GeoLoc.html#.addPOI": {
                   "ref": "GeoLoc.html#.addPOI",
                   "tf": 3.125
+                },
+                "GeoLoc.html#.getClosestPOI": {
+                  "ref": "GeoLoc.html#.getClosestPOI",
+                  "tf": 12.5
+                },
+                "GeoLoc.html#.getClosestPOIdistance": {
+                  "ref": "GeoLoc.html#.getClosestPOIdistance",
+                  "tf": 10
                 }
               },
               "l": {
@@ -8264,6 +8847,14 @@
                                   }
                                 }
                               }
+                            },
+                            "t": {
+                              "docs": {
+                                "GeoLoc.html#.distance": {
+                                  "ref": "GeoLoc.html#.distance",
+                                  "tf": 1150
+                                }
+                              }
                             }
                           }
                         }
@@ -8335,6 +8926,55 @@
                                                   "GeoLoc.html#.getCurrentLocation": {
                                                     "ref": "GeoLoc.html#.getCurrentLocation",
                                                     "tf": 1150
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "l": {
+                                "docs": {},
+                                "o": {
+                                  "docs": {},
+                                  "s": {
+                                    "docs": {},
+                                    "e": {
+                                      "docs": {},
+                                      "s": {
+                                        "docs": {},
+                                        "t": {
+                                          "docs": {},
+                                          "p": {
+                                            "docs": {},
+                                            "o": {
+                                              "docs": {},
+                                              "i": {
+                                                "docs": {
+                                                  "GeoLoc.html#.getClosestPOI": {
+                                                    "ref": "GeoLoc.html#.getClosestPOI",
+                                                    "tf": 1150
+                                                  }
+                                                },
+                                                "d": {
+                                                  "docs": {},
+                                                  "i": {
+                                                    "docs": {},
+                                                    "s": {
+                                                      "docs": {},
+                                                      "t": {
+                                                        "docs": {
+                                                          "GeoLoc.html#.getClosestPOIdistance": {
+                                                            "ref": "GeoLoc.html#.getClosestPOIdistance",
+                                                            "tf": 1150
+                                                          }
+                                                        }
+                                                      }
+                                                    }
                                                   }
                                                 }
                                               }
@@ -8486,6 +9126,10 @@
                     "index.html": {
                       "ref": "index.html",
                       "tf": 1300
+                    },
+                    "GeoLoc.html#.getClosestPOI": {
+                      "ref": "GeoLoc.html#.getClosestPOI",
+                      "tf": 12.5
                     }
                   }
                 }
@@ -8694,6 +9338,10 @@
               "FE.html#.uiLoadProfile": {
                 "ref": "FE.html#.uiLoadProfile",
                 "tf": 33.33333333333333
+              },
+              "AppHub.html#.getAppID": {
+                "ref": "AppHub.html#.getAppID",
+                "tf": 12.5
               },
               "VRoadcast.html#.hasID": {
                 "ref": "VRoadcast.html#.hasID",
@@ -9497,6 +10145,24 @@
                   }
                 }
               }
+            },
+            "t": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "GeoLoc.html#.distance": {
+                      "ref": "GeoLoc.html#.distance",
+                      "tf": 2.941176470588235
+                    },
+                    "GeoLoc.html#.getClosestPOIdistance": {
+                      "ref": "GeoLoc.html#.getClosestPOIdistance",
+                      "tf": 10
+                    }
+                  }
+                }
+              }
             }
           },
           "u": {
@@ -9564,6 +10230,18 @@
                             "Node.html#load": {
                               "ref": "Node.html#load",
                               "tf": 35.50724637681159
+                            },
+                            "AppHub.html#.addToStorage": {
+                              "ref": "AppHub.html#.addToStorage",
+                              "tf": 25
+                            },
+                            "AppHub.html#.deleteFromStorage": {
+                              "ref": "AppHub.html#.deleteFromStorage",
+                              "tf": 25
+                            },
+                            "AppHub.html#.getStorage": {
+                              "ref": "AppHub.html#.getStorage",
+                              "tf": 33.33333333333333
                             },
                             "SceneHub.html#.load": {
                               "ref": "SceneHub.html#.load",
@@ -10246,12 +10924,24 @@
                 "GeoLoc.html#.addPOI": {
                   "ref": "GeoLoc.html#.addPOI",
                   "tf": 6.25
+                },
+                "GeoLoc.html#.getClosestPOI": {
+                  "ref": "GeoLoc.html#.getClosestPOI",
+                  "tf": 12.5
+                },
+                "GeoLoc.html#.getClosestPOIdistance": {
+                  "ref": "GeoLoc.html#.getClosestPOIdistance",
+                  "tf": 10
                 }
               },
               "n": {
                 "docs": {},
                 "t": {
                   "docs": {
+                    "GeoLoc.html#.distance": {
+                      "ref": "GeoLoc.html#.distance",
+                      "tf": 2.941176470588235
+                    },
                     "GeoLoc.html#.addPOI": {
                       "ref": "GeoLoc.html#.addPOI",
                       "tf": 3.125
@@ -10340,6 +11030,21 @@
             },
             "t": {
               "docs": {},
+              "c": {
+                "docs": {},
+                "h": {
+                  "docs": {
+                    "AppHub.html#.addToStorage": {
+                      "ref": "AppHub.html#.addToStorage",
+                      "tf": 25
+                    },
+                    "AppHub.html#.deleteFromStorage": {
+                      "ref": "AppHub.html#.deleteFromStorage",
+                      "tf": 25
+                    }
+                  }
+                }
+              },
               "h": {
                 "docs": {
                   "SceneHub.html#.load": {
@@ -10468,6 +11173,10 @@
                           "ref": "FE.html#.uiAddButtonEditMode",
                           "tf": 10
                         },
+                        "AppHub.html#.addToStorage": {
+                          "ref": "AppHub.html#.addToStorage",
+                          "tf": 5.555555555555555
+                        },
                         "SceneHub.html#.setEditMode": {
                           "ref": "SceneHub.html#.setEditMode",
                           "tf": 5
@@ -10500,7 +11209,12 @@
             }
           },
           "e": {
-            "docs": {},
+            "docs": {
+              "GeoLoc.html#.distance": {
+                "ref": "GeoLoc.html#.distance",
+                "tf": 2.941176470588235
+              }
+            },
             "a": {
               "docs": {},
               "d": {
@@ -11618,6 +12332,10 @@
                         "ref": "Node.html#attachTo",
                         "tf": 6.25
                       },
+                      "AppHub.html#.getAppID": {
+                        "ref": "AppHub.html#.getAppID",
+                        "tf": 33.33333333333333
+                      },
                       "Utils.html#.getHumanReadableDistance": {
                         "ref": "Utils.html#.getHumanReadableDistance",
                         "tf": 25
@@ -11643,6 +12361,28 @@
             },
             "o": {
               "docs": {},
+              "r": {
+                "docs": {},
+                "a": {
+                  "docs": {},
+                  "g": {
+                    "docs": {
+                      "AppHub.html#.addToStorage": {
+                        "ref": "AppHub.html#.addToStorage",
+                        "tf": 5.555555555555555
+                      },
+                      "AppHub.html#.deleteFromStorage": {
+                        "ref": "AppHub.html#.deleteFromStorage",
+                        "tf": 6.25
+                      },
+                      "AppHub.html#.getStorage": {
+                        "ref": "AppHub.html#.getStorage",
+                        "tf": 7.142857142857142
+                      }
+                    }
+                  }
+                }
+              },
               "p": {
                 "docs": {
                   "Nav.html#.stop": {
@@ -12980,6 +13720,18 @@
                   "docs": {},
                   "r": {
                     "docs": {
+                      "AppHub.html#.addToStorage": {
+                        "ref": "AppHub.html#.addToStorage",
+                        "tf": 5.555555555555555
+                      },
+                      "AppHub.html#.deleteFromStorage": {
+                        "ref": "AppHub.html#.deleteFromStorage",
+                        "tf": 6.25
+                      },
+                      "AppHub.html#.getStorage": {
+                        "ref": "AppHub.html#.getStorage",
+                        "tf": 7.142857142857142
+                      },
                       "SceneHub.html#.setEditMode": {
                         "ref": "SceneHub.html#.setEditMode",
                         "tf": 5
@@ -13659,6 +14411,18 @@
               },
               "e": {
                 "docs": {
+                  "AppHub.html#.addToStorage": {
+                    "ref": "AppHub.html#.addToStorage",
+                    "tf": 5.555555555555555
+                  },
+                  "AppHub.html#.deleteFromStorage": {
+                    "ref": "AppHub.html#.deleteFromStorage",
+                    "tf": 6.25
+                  },
+                  "AppHub.html#.getStorage": {
+                    "ref": "AppHub.html#.getStorage",
+                    "tf": 7.142857142857142
+                  },
                   "VRoadcast.html#.log": {
                     "ref": "VRoadcast.html#.log",
                     "tf": 12.5
@@ -14268,6 +15032,17 @@
                     "ref": "VRoadcast.html#.requestSceneEnter",
                     "tf": 2.941176470588235
                   }
+                }
+              }
+            }
+          },
+          "w": {
+            "docs": {},
+            "o": {
+              "docs": {
+                "GeoLoc.html#.distance": {
+                  "ref": "GeoLoc.html#.distance",
+                  "tf": 5.88235294117647
                 }
               }
             }
@@ -15649,6 +16424,22 @@
                 "FE.html": {
                   "ref": "FE.html",
                   "tf": 3.3333333333333335
+                },
+                "AppHub.html#.getAppID": {
+                  "ref": "AppHub.html#.getAppID",
+                  "tf": 12.5
+                },
+                "AppHub.html#.addToStorage": {
+                  "ref": "AppHub.html#.addToStorage",
+                  "tf": 5.555555555555555
+                },
+                "AppHub.html#.deleteFromStorage": {
+                  "ref": "AppHub.html#.deleteFromStorage",
+                  "tf": 6.25
+                },
+                "AppHub.html#.getStorage": {
+                  "ref": "AppHub.html#.getStorage",
+                  "tf": 7.142857142857142
                 }
               },
               "x": {
@@ -16058,6 +16849,10 @@
                       "ref": "GeoLoc.html#.getCurrentLocation",
                       "tf": 25
                     },
+                    "GeoLoc.html#.distance": {
+                      "ref": "GeoLoc.html#.distance",
+                      "tf": 2.941176470588235
+                    },
                     "GeoLoc.html#.addPOI": {
                       "ref": "GeoLoc.html#.addPOI",
                       "tf": 3.125
@@ -16195,6 +16990,29 @@
                   }
                 }
               }
+            },
+            "n": {
+              "docs": {},
+              "g": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "t": {
+                    "docs": {},
+                    "u": {
+                      "docs": {},
+                      "d": {
+                        "docs": {
+                          "GeoLoc.html#.distance": {
+                            "ref": "GeoLoc.html#.distance",
+                            "tf": 2.941176470588235
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "a": {
@@ -16280,6 +17098,48 @@
             },
             "t": {
               "docs": {},
+              "i": {
+                "docs": {},
+                "t": {
+                  "docs": {},
+                  "u": {
+                    "docs": {},
+                    "d": {
+                      "docs": {
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 2.941176470588235
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "l": {
+                "docs": {},
+                "o": {
+                  "docs": {},
+                  "n": {
+                    "docs": {},
+                    "a": {
+                      "docs": {
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 20
+                        }
+                      }
+                    },
+                    "b": {
+                      "docs": {
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 20
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               ",": {
                 "docs": {},
                 "l": {
@@ -16433,6 +17293,22 @@
                                     "ref": "XR.html#.getControllerWorldDirection",
                                     "tf": 33.33333333333333
                                   },
+                                  "AppHub.html#.getAppID": {
+                                    "ref": "AppHub.html#.getAppID",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "AppHub.html#.addToStorage": {
+                                    "ref": "AppHub.html#.addToStorage",
+                                    "tf": 25
+                                  },
+                                  "AppHub.html#.deleteFromStorage": {
+                                    "ref": "AppHub.html#.deleteFromStorage",
+                                    "tf": 25
+                                  },
+                                  "AppHub.html#.getStorage": {
+                                    "ref": "AppHub.html#.getStorage",
+                                    "tf": 33.33333333333333
+                                  },
                                   "SceneHub.html#.init": {
                                     "ref": "SceneHub.html#.init",
                                     "tf": 50
@@ -16481,9 +17357,21 @@
                                     "ref": "GeoLoc.html#.getCurrentLocation",
                                     "tf": 33.33333333333333
                                   },
+                                  "GeoLoc.html#.distance": {
+                                    "ref": "GeoLoc.html#.distance",
+                                    "tf": 20
+                                  },
                                   "GeoLoc.html#.addPOI": {
                                     "ref": "GeoLoc.html#.addPOI",
                                     "tf": 25
+                                  },
+                                  "GeoLoc.html#.getClosestPOI": {
+                                    "ref": "GeoLoc.html#.getClosestPOI",
+                                    "tf": 33.33333333333333
+                                  },
+                                  "GeoLoc.html#.getClosestPOIdistance": {
+                                    "ref": "GeoLoc.html#.getClosestPOIdistance",
+                                    "tf": 33.33333333333333
                                   },
                                   "Nav.html#.getCurrentEyeLocation": {
                                     "ref": "Nav.html#.getCurrentEyeLocation",
@@ -16833,6 +17721,10 @@
                           },
                           "XR.html": {
                             "ref": "XR.html",
+                            "tf": 110
+                          },
+                          "AppHub.html": {
+                            "ref": "AppHub.html",
                             "tf": 110
                           },
                           "AudioHub.html": {
@@ -18794,6 +19686,18 @@
                   "docs": {},
                   "r": {
                     "docs": {
+                      "GeoLoc.html#.distance": {
+                        "ref": "GeoLoc.html#.distance",
+                        "tf": 20
+                      },
+                      "GeoLoc.html#.getClosestPOI": {
+                        "ref": "GeoLoc.html#.getClosestPOI",
+                        "tf": 33.33333333333333
+                      },
+                      "GeoLoc.html#.getClosestPOIdistance": {
+                        "ref": "GeoLoc.html#.getClosestPOIdistance",
+                        "tf": 33.33333333333333
+                      },
                       "Nav.html#.getFOV": {
                         "ref": "Nav.html#.getFOV",
                         "tf": 33.33333333333333
@@ -19252,6 +20156,26 @@
                     "SceneHub.html#.setEditMode": {
                       "ref": "SceneHub.html#.setEditMode",
                       "tf": 5
+                    }
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "w": {
+                "docs": {},
+                "e": {
+                  "docs": {},
+                  "e": {
+                    "docs": {},
+                    "n": {
+                      "docs": {
+                        "GeoLoc.html#.distance": {
+                          "ref": "GeoLoc.html#.distance",
+                          "tf": 5.88235294117647
+                        }
+                      }
                     }
                   }
                 }
@@ -19809,6 +20733,29 @@
                   }
                 }
               }
+            },
+            "v": {
+              "docs": {},
+              "e": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "i": {
+                      "docs": {},
+                      "n": {
+                        "docs": {
+                          "GeoLoc.html#.distance": {
+                            "ref": "GeoLoc.html#.distance",
+                            "tf": 2.941176470588235
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
             }
           },
           "i": {
@@ -19831,6 +20778,10 @@
               "docs": {
                 "EventHub.html": {
                   "ref": "EventHub.html",
+                  "tf": 16.666666666666664
+                },
+                "AppHub.html": {
+                  "ref": "AppHub.html",
                   "tf": 16.666666666666664
                 },
                 "AudioHub.html": {
@@ -19915,6 +20866,149 @@
                                 "FE.html#.popupShow": {
                                   "ref": "FE.html#.popupShow",
                                   "tf": 25
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "t": {
+              "docs": {},
+              "p": {
+                "docs": {},
+                "s": {
+                  "docs": {},
+                  ":": {
+                    "docs": {},
+                    "/": {
+                      "docs": {},
+                      "/": {
+                        "docs": {},
+                        "s": {
+                          "docs": {},
+                          "t": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "c": {
+                                "docs": {},
+                                "k": {
+                                  "docs": {},
+                                  "o": {
+                                    "docs": {},
+                                    "v": {
+                                      "docs": {},
+                                      "e": {
+                                        "docs": {},
+                                        "r": {
+                                          "docs": {},
+                                          "f": {
+                                            "docs": {},
+                                            "l": {
+                                              "docs": {},
+                                              "o": {
+                                                "docs": {},
+                                                "w": {
+                                                  "docs": {},
+                                                  ".": {
+                                                    "docs": {},
+                                                    "c": {
+                                                      "docs": {},
+                                                      "o": {
+                                                        "docs": {},
+                                                        "m": {
+                                                          "docs": {},
+                                                          "/": {
+                                                            "docs": {},
+                                                            "q": {
+                                                              "docs": {},
+                                                              "u": {
+                                                                "docs": {},
+                                                                "e": {
+                                                                  "docs": {},
+                                                                  "s": {
+                                                                    "docs": {},
+                                                                    "t": {
+                                                                      "docs": {},
+                                                                      "i": {
+                                                                        "docs": {},
+                                                                        "o": {
+                                                                          "docs": {},
+                                                                          "n": {
+                                                                            "docs": {},
+                                                                            "s": {
+                                                                              "docs": {},
+                                                                              "/": {
+                                                                                "2": {
+                                                                                  "7": {
+                                                                                    "9": {
+                                                                                      "2": {
+                                                                                        "8": {
+                                                                                          "docs": {},
+                                                                                          "/": {
+                                                                                            "docs": {},
+                                                                                            "c": {
+                                                                                              "docs": {},
+                                                                                              "a": {
+                                                                                                "docs": {},
+                                                                                                "l": {
+                                                                                                  "docs": {},
+                                                                                                  "c": {
+                                                                                                    "docs": {},
+                                                                                                    "u": {
+                                                                                                      "docs": {},
+                                                                                                      "l": {
+                                                                                                        "docs": {
+                                                                                                          "GeoLoc.html#.distance": {
+                                                                                                            "ref": "GeoLoc.html#.distance",
+                                                                                                            "tf": 2.941176470588235
+                                                                                                          }
+                                                                                                        }
+                                                                                                      }
+                                                                                                    }
+                                                                                                  }
+                                                                                                }
+                                                                                              }
+                                                                                            }
+                                                                                          }
+                                                                                        },
+                                                                                        "docs": {}
+                                                                                      },
+                                                                                      "docs": {}
+                                                                                    },
+                                                                                    "docs": {}
+                                                                                  },
+                                                                                  "docs": {}
+                                                                                },
+                                                                                "docs": {}
+                                                                              }
+                                                                            }
+                                                                          }
+                                                                        }
+                                                                      }
+                                                                    }
+                                                                  }
+                                                                }
+                                                              }
+                                                            }
+                                                          }
+                                                        }
+                                                      }
+                                                    }
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -20032,7 +21126,7 @@
           }
         }
       },
-      "length": 1641
+      "length": 1735
     },
     "corpusTokens": [
       "1.0",
@@ -20052,12 +21146,18 @@
       "addlightprob",
       "addpoi",
       "address",
+      "addtostorag",
       "adopt",
       "allow",
       "amount",
       "anywher",
       "api",
       "app",
+      "apphub",
+      "apphub.addtostorag",
+      "apphub.deletefromstorag",
+      "apphub.getappid",
+      "apphub.getstorag",
       "appli",
       "approach",
       "ar",
@@ -20111,6 +21211,7 @@
       "base",
       "basic",
       "becom",
+      "between",
       "blueprint",
       "boolean",
       "bound",
@@ -20138,6 +21239,7 @@
       "clear",
       "cleareventhandl",
       "close",
+      "closest",
       "code",
       "collabor",
       "collect",
@@ -20150,6 +21252,7 @@
       "consist",
       "constructor",
       "contain",
+      "content",
       "control",
       "copi",
       "copycurrentpov",
@@ -20168,6 +21271,7 @@
       "default",
       "degre",
       "delet",
+      "deletefromstorag",
       "densiti",
       "depend",
       "deploy",
@@ -20240,6 +21344,7 @@
       "fire",
       "fireev",
       "first",
+      "formula",
       "found",
       "fov",
       "framework",
@@ -20253,10 +21358,16 @@
       "geoloc",
       "geoloc.addpoi",
       "geoloc.disabletrack",
+      "geoloc.dist",
       "geoloc.enabletrack",
+      "geoloc.getclosestpoi",
+      "geoloc.getclosestpoidist",
       "geoloc.getcurrentloc",
       "geoloc.setmaxerror",
+      "getappid",
       "getbound",
+      "getclosestpoi",
+      "getclosestpoidist",
       "getcontrollerworlddirect",
       "getcontrollerworldloc",
       "getcurrentdirect",
@@ -20278,6 +21389,7 @@
       "getscenequeriedpoint",
       "getselectorradiu",
       "getsemanticnod",
+      "getstorag",
       "getuinod",
       "given",
       "global",
@@ -20289,10 +21401,12 @@
       "handlernetwork",
       "hasid",
       "haskeyword",
+      "haversin",
       "hide",
       "hmd",
       "home",
       "htmlcontent",
+      "https://stackoverflow.com/questions/27928/calcul",
       "hub",
       "human",
       "i.",
@@ -20332,6 +21446,9 @@
       "label#setbasecolor",
       "label#settext",
       "lat,lon",
+      "latitud",
+      "latlona",
+      "latlonb",
       "length",
       "light",
       "lightprob",
@@ -20348,6 +21465,7 @@
       "locomotionvalid",
       "log",
       "login/logout",
+      "longitud",
       "lp",
       "lt;static&gt",
       "m",
@@ -20360,6 +21478,7 @@
       "measur",
       "media",
       "mediarec",
+      "meter",
       "mobil",
       "modal",
       "mode",
@@ -20442,6 +21561,7 @@
       "p",
       "panorama",
       "parent",
+      "patch",
       "path",
       "paus",
       "perform",
@@ -20479,6 +21599,7 @@
       "radian",
       "radiu",
       "ray",
+      "re",
       "re)assign",
       "readabl",
       "readm",
@@ -20580,6 +21701,7 @@
       "static",
       "still",
       "stop",
+      "storag",
       "string",
       "sub",
       "subscrib",
@@ -20619,6 +21741,7 @@
       "transit",
       "translat",
       "true",
+      "two",
       "txt",
       "type",
       "typic",
@@ -21513,6 +22636,57 @@
       "summary": "",
       "description": "Get controller world direction"
     },
+    "AppHub.html": {
+      "id": "AppHub.html",
+      "kind": "namespace",
+      "title": "AppHub",
+      "longname": "AppHub",
+      "name": "AppHub",
+      "tags": "AppHub",
+      "summary": "",
+      "description": "ATON App Hub",
+      "body": ""
+    },
+    "AppHub.html#.getAppID": {
+      "id": "AppHub.html#.getAppID",
+      "kind": "function",
+      "title": "&lt;static&gt; getAppID() → {string}",
+      "longname": "AppHub.getAppID",
+      "name": "getAppID",
+      "tags": "AppHub.getAppID getAppID",
+      "summary": "",
+      "description": "Get current web-app ID"
+    },
+    "AppHub.html#.addToStorage": {
+      "id": "AppHub.html#.addToStorage",
+      "kind": "function",
+      "title": "&lt;static&gt; addToStorage( patch, onComplete )",
+      "longname": "AppHub.addToStorage",
+      "name": "addToStorage",
+      "tags": "AppHub.addToStorage addToStorage",
+      "summary": "",
+      "description": "Add data to persistent, server-side storage of current web-app"
+    },
+    "AppHub.html#.deleteFromStorage": {
+      "id": "AppHub.html#.deleteFromStorage",
+      "kind": "function",
+      "title": "&lt;static&gt; deleteFromStorage( patch, onComplete )",
+      "longname": "AppHub.deleteFromStorage",
+      "name": "deleteFromStorage",
+      "tags": "AppHub.deleteFromStorage deleteFromStorage",
+      "summary": "",
+      "description": "Delete data from server-side storage of current web-app"
+    },
+    "AppHub.html#.getStorage": {
+      "id": "AppHub.html#.getStorage",
+      "kind": "function",
+      "title": "&lt;static&gt; getStorage( onComplete )",
+      "longname": "AppHub.getStorage",
+      "name": "getStorage",
+      "tags": "AppHub.getStorage getStorage",
+      "summary": "",
+      "description": "Get content of server-side storage for current web-app"
+    },
     "AudioHub.html": {
       "id": "AudioHub.html",
       "kind": "namespace",
@@ -21688,6 +22862,16 @@
       "summary": "",
       "description": "Get current location"
     },
+    "GeoLoc.html#.distance": {
+      "id": "GeoLoc.html#.distance",
+      "kind": "function",
+      "title": "&lt;static&gt; distance( latlonA, latlonB ) → {number}",
+      "longname": "GeoLoc.distance",
+      "name": "distance",
+      "tags": "GeoLoc.distance distance",
+      "summary": "",
+      "description": "Get distance (meters) between two geo-locations re-adapted from https://stackoverflow.com/questions/27928/calculate-distance-between-two-latitude-longitude-points-haversine-formula"
+    },
     "GeoLoc.html#.addPOI": {
       "id": "GeoLoc.html#.addPOI",
       "kind": "function",
@@ -21697,6 +22881,26 @@
       "tags": "GeoLoc.addPOI addPOI",
       "summary": "",
       "description": "Add a Geo-POI (point-of-interest) in given location (lat,lon) and radius. You can handle enter/leave POI events using ATON.on(\"EnterPOI\") and ATON.on(\"LeavePOI\")"
+    },
+    "GeoLoc.html#.getClosestPOI": {
+      "id": "GeoLoc.html#.getClosestPOI",
+      "kind": "function",
+      "title": "&lt;static&gt; getClosestPOI() → {number}",
+      "longname": "GeoLoc.getClosestPOI",
+      "name": "getClosestPOI",
+      "tags": "GeoLoc.getClosestPOI getClosestPOI",
+      "summary": "",
+      "description": "Get index of closest Geo-POI"
+    },
+    "GeoLoc.html#.getClosestPOIdistance": {
+      "id": "GeoLoc.html#.getClosestPOIdistance",
+      "kind": "function",
+      "title": "&lt;static&gt; getClosestPOIdistance() → {number}",
+      "longname": "GeoLoc.getClosestPOIdistance",
+      "name": "getClosestPOIdistance",
+      "tags": "GeoLoc.getClosestPOIdistance getClosestPOIdistance",
+      "summary": "",
+      "description": "Get distance (meters) to the closest Geo-POI"
     },
     "Nav.html": {
       "id": "Nav.html",

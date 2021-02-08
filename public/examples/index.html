@@ -14,6 +14,7 @@
 <meta name="apple-mobile-web-app-title" content="ATON Examples">
 <link rel="apple-touch-icon" href="/res/aton-logo.png">
 <meta name="description" content="ATON Examples">
+
 <!-- Add meta theme-color -->
 <meta name="theme-color" content="#000000" />
 
@@ -22,8 +23,6 @@
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
 
 <script>
-window.addEventListener( 'load', ()=>{
-
 let getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf( '/' );
     if ( index !== -1 ) return filepath.substring( 0, index + 1 );
@@ -31,6 +30,85 @@ let getBaseFolder = ( filepath )=>{
     return '';
 };
 
+let createExampleBlock = (dir, title, kwords)=>{
+    let htmlcontent = "";
+
+    let kwds = kwords.split(" ");
+
+    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; padding:4px'>";
+    htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
+    htmlcontent += "<div class='atonCover' style='margin:0px'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
+
+    // keywords
+    htmlcontent += "<div>";
+    for (let k in kwds) htmlcontent += kwds[k] + " ";
+    htmlcontent += "</div>";
+
+    htmlcontent += "</div>";
+
+    return htmlcontent
+};
+
+let showAllBlocks = ()=>{
+    $('.atonGalleryItem').each(function(){
+        $(this).show();
+    });
+};
+
+let searchTerm = ()=>{
+    let count = 0;
+    let searchTerm = $('#idSearch').val().toLowerCase();
+
+    if (searchTerm.length < 2){
+        showAllBlocks();
+        return count;
+    }
+    //console.log(searchTerm);
+
+    $('.atonGalleryItem').each(function(){
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1){
+            $(this).show();
+            count++;
+        }
+        else $(this).hide();
+    });
+
+    return count;
+};
+
+window.addEventListener( 'load', ()=>{
+    let htmlcontent = "";
+    //htmlcontent += "<div class='atonBlockTitle'>ATON Examples</div><br>";
+
+    // Base
+    htmlcontent += createExampleBlock("minimal", "Minimal", "basic minimal");
+    htmlcontent += createExampleBlock("basic", "Basic", "basic");
+
+    // Scenes
+    htmlcontent += createExampleBlock("scene-basic", "Basic Scene", "basic scene");
+
+    // Events
+    htmlcontent += createExampleBlock("events-basic", "Basic Events", "basic events");
+    htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events");
+
+    // Nav
+    htmlcontent += createExampleBlock("navigation-basic", "Basic Navigation", "basic navigation");
+    htmlcontent += createExampleBlock("navigation-pov", "Navigation Viewpoints", "basic navigation pov");
+
+    // PBR
+    htmlcontent += createExampleBlock("pbr-basic", "Basic PBR", "basic pbr");
+    htmlcontent += createExampleBlock("pbr-basic-object", "PBR Object", "basic pbr object");
+    htmlcontent += createExampleBlock("pbr-shadows", "PBR Shadows", "pbr shadows");
+
+    // VRoadcast
+    htmlcontent += createExampleBlock("vroadcast-basic", "Basic VRoadcast", "vroadcast collaborative scene");
+    htmlcontent += createExampleBlock("vroadcast-populate", "VRoadcast populate", "vroadcast collaborative scene populate");
+
+    $("#mainContent").html(htmlcontent);
+
+    $("#idSearch").on("input change", searchTerm );
+
+/*
 $.getJSON( "/api/examples/", (data)=>{
     console.log(data);
 
@@ -45,19 +123,24 @@ $.getJSON( "/api/examples/", (data)=>{
     }
 
     $("#blockExamples").html(htmlcontent);
-}); 
+});
+*/ 
 });
 
 </script>
 </head>
 
 <body class="atonDefaultBody">
-    <div style="text-align: center;">
-        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.5);">
+        <h2 style='float:right; margin-right:10px'>Examples</h2>
+        <div class='atonBTN' onclick="$('#idSearch').val(''); resetExampleBlocks();"><img src='/res/icons/search-clear.png'></div>
+        <input id="idSearch" type="text" size="12" >
+    </div>
 
-        <h2>Examples</h2>
-        <div id='blockExamples'></div>
-
+    <div style="text-align: center; margin-top: 75px">
+        <div class="descriptionText">This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "navigation", "pbr", "collaborative", etc... There is also an example of <a href='minimal/'>minimal setup</a>.
+        </div><br>
+        <div id='mainContent'></div>
     </div>
     
     </body>

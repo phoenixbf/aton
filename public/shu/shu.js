@@ -94,6 +94,32 @@ SHU.getScenesInputList = (idlist)=>{
     });
 };
 
+SHU.createPubScenesGallery = (idcontainer)=>{
+    let htmlcontent = "";
+
+    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
+        for (let s in data){
+            let scene = data[s];
+            let sid = scene.sid;
+
+            let urlCover = (scene.cover)? DIR_SCENES+sid+"/cover.png" : PATH_RES+"scenecover.png";
+
+            htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' style='padding:4px' >";
+            htmlcontent += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+sid+"</div></a><br>";
+            
+            htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
+            htmlcontent += "<img src='"+urlCover+"'>";
+            htmlcontent += "</a>";
+            
+            htmlcontent += "</div>";
+        }
+
+        
+
+        $("#"+idcontainer).html(htmlcontent);
+    });
+};
+
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
     SHU.checkAuth((data)=>{

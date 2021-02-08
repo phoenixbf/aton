@@ -37,7 +37,7 @@ let renderForm = ()=>{
         for (let i in data){
             let A = data[i];
             let wappid = A.wappid;
-            let appicon = (A.icon)? DIR_WAPPS+wappid+"/appicon.png" : PATH_RES+"appicon.png";
+            let appicon = (A.icon)? DIR_WAPPS+wappid+"/appicon.png" : DIR_WAPPS+"app_template/appicon.png";
 
             htmlcontent += "<a href='"+DIR_WAPPS+wappid+"' style='display:inline-block; width:256px; height:256px'>";
             htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'><br>";

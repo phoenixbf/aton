@@ -1,0 +1,13 @@
+{
+	"name": "app_template",
+	"background_color": "#000000",
+	"display": "fullscreen",
+	"scope": "/",
+	"icons": [
+	    {
+	    "src": "appicon.png",
+	    "sizes": "512x512",
+	    "type": "image/png"
+	    }
+	]
+}

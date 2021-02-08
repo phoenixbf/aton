@@ -328,6 +328,12 @@ canvas {
     -webkit-overflow-scrolling: touch;
 }
 
+.descriptionText {
+    text-shadow: 0px 0px 4px black;
+    text-align: justify;
+    padding: 4px;
+}
+
 
 .atonCenterLoader {
     position: fixed;
@@ -352,6 +358,23 @@ canvas {
     border-radius: 10px;
 }
 
+/* Gallery */
+.atonGalleryItem {
+    display: inline-block;
+    vertical-align: top;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border-radius: 10px;
+
+    margin: 5px;
+    padding: 0px;
+
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
 .atonCover {
     border: 0px;
     display: inline-block;
@@ -360,8 +383,8 @@ canvas {
     text-align: center;
     vertical-align: middle;
 
-    padding: 4px;
-    margin: 4px;
+    padding: 0px;
+    margin: 0px;
 
     outline: none;
 }
@@ -1198,6 +1221,27 @@ label {
     /*border: 2px solid black;*/
 }
 
+.atonBlockSubTitle {
+    display: block;
+    position: relative;
+
+    text-align: center;
+
+    background-color: rgba(0,0,0, 0.3);
+    border-radius: 10px;
+
+    padding: 5px;
+    margin: 0px;
+    margin-left: 2px;
+    margin-right: 2px;
+
+    font-weight: bold;
+
+    box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
+    /*border: 2px solid black;*/
+}
+
+
 .atonOptionBlockShort {
     display: inline-block;
     
@@ -1253,21 +1297,6 @@ label {
 
     margin: 1px;
     padding: 8px;
-}
-
-.atonBlockScene {
-    display: inline-block;
-
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    border-radius: 10px;
-
-    margin: 3px;
-    padding: 1px;
-
-    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .atonProcessBTN {

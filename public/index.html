@@ -38,6 +38,8 @@ window.addEventListener( 'load', ()=>{
 
         if (sid && sid.length > 1) SHU.goToScene( sid );
     });
+
+    SHU.createPubScenesGallery("idPubGallery");
 });
 
 </script>
@@ -45,10 +47,12 @@ window.addEventListener( 'load', ()=>{
 
 <body class="atonDefaultBody">
     <div style="text-align: center;">
-        <img src="/res/aton-logo.png" style="width:200px; height: auto;"><br>
+        <img src="/res/aton-logo.png" style="width:150px; height:auto;"><br>
 
         <h2>Published Scenes</h2>
-        <div id='idScenes'></div><button id='btn-go' type='button' class='atonBTN atonBTN-green' style="width:30%;"><img src='/res/icons/play.png'></button>
+        <div id='idScenes'></div><div id='btn-go' class='atonBTN atonBTN-green' style="width:30%;"><img src='/res/icons/play.png'></div><br><br>
+
+        <div id='idPubGallery'></div>
 <!--
         <div class='select' style='width:50%;'>
             <select id='sid'></select><div class='selectArrow'></div>

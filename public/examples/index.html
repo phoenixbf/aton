@@ -117,7 +117,7 @@ window.addEventListener( 'load', ()=>{
         searchTerm($('#idSearch').val().toLowerCase());
     });
 
-    if (paramKeyword !== undefined) searchTerm(paramKeyword);
+    if (paramKeyword !== undefined && paramKeyword !== null) searchTerm(paramKeyword);
 });
 
 </script>

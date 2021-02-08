@@ -23,6 +23,9 @@
 <script type="text/javascript" src="/vendors/vendors.min.js"></script>
 
 <script>
+let urlParams = new URLSearchParams(window.location.search);
+let paramKeyword = urlParams.get('k');
+
 let getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf( '/' );
     if ( index !== -1 ) return filepath.substring( 0, index + 1 );
@@ -100,9 +103,9 @@ window.addEventListener( 'load', ()=>{
     htmlcontent += createExampleBlock("navigation-pov", "Navigation Viewpoints", "basic navigation pov");
 
     // PBR
-    htmlcontent += createExampleBlock("pbr-basic", "Basic PBR", "basic pbr");
-    htmlcontent += createExampleBlock("pbr-basic-object", "PBR Object", "basic pbr object");
-    htmlcontent += createExampleBlock("pbr-shadows", "PBR Shadows", "pbr shadows");
+    htmlcontent += createExampleBlock("pbr-basic", "Basic PBR", "basic pbr lighting");
+    htmlcontent += createExampleBlock("pbr-basic-object", "PBR Object", "basic pbr object lighting");
+    htmlcontent += createExampleBlock("pbr-shadows", "PBR Shadows", "pbr shadows lighting");
 
     // VRoadcast
     htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");
@@ -114,23 +117,7 @@ window.addEventListener( 'load', ()=>{
         searchTerm($('#idSearch').val().toLowerCase());
     });
 
-/*
-$.getJSON( "/api/examples/", (data)=>{
-    console.log(data);
-
-    let htmlcontent = "";
-
-    for (let e in data){
-        let url   = data[e];
-        let title = getBaseFolder(url).slice(0,-1).replace("-"," ");
-        let cover = getBaseFolder(url) + "cover.jpg";
-
-        if (url !== "index.html") htmlcontent += "<div class='atonCover'><a href='"+url+"'><img src='"+cover+"'></a><br>"+title+"</div>";
-    }
-
-    $("#blockExamples").html(htmlcontent);
-});
-*/ 
+    if (paramKeyword !== undefined) searchTerm(paramKeyword);
 });
 
 </script>

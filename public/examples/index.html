@@ -41,7 +41,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     // keywords
     htmlcontent += "<div>";
-    for (let k in kwds) htmlcontent += kwds[k] + " ";
+    for (let k in kwds) htmlcontent += "<div class='atonKeyword' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
     htmlcontent += "</div>";
 
     htmlcontent += "</div>";
@@ -55,9 +55,13 @@ let showAllBlocks = ()=>{
     });
 };
 
-let searchTerm = ()=>{
+let searchTerm = (searchTerm)=>{
     let count = 0;
-    let searchTerm = $('#idSearch').val().toLowerCase();
+
+    if (searchTerm === undefined) searchTerm = $('#idSearch').val().toLowerCase();
+    else $('#idSearch').val(String(searchTerm));
+
+    //if (searchTerm === undefined) return;
 
     if (searchTerm.length < 2){
         showAllBlocks();
@@ -89,7 +93,7 @@ window.addEventListener( 'load', ()=>{
 
     // Events
     htmlcontent += createExampleBlock("events-basic", "Basic Events", "basic events");
-    htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events");
+    htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events picking");
 
     // Nav
     htmlcontent += createExampleBlock("navigation-basic", "Basic Navigation", "basic navigation");
@@ -101,12 +105,14 @@ window.addEventListener( 'load', ()=>{
     htmlcontent += createExampleBlock("pbr-shadows", "PBR Shadows", "pbr shadows");
 
     // VRoadcast
-    htmlcontent += createExampleBlock("vroadcast-basic", "Basic VRoadcast", "vroadcast collaborative scene");
-    htmlcontent += createExampleBlock("vroadcast-populate", "VRoadcast populate", "vroadcast collaborative scene populate");
+    htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");
+    htmlcontent += createExampleBlock("vroadcast-populate", "Collaborative Scene Population", "vroadcast collaborative scene populate picking");
 
     $("#mainContent").html(htmlcontent);
 
-    $("#idSearch").on("input change", searchTerm );
+    $("#idSearch").on("input change", ()=>{ 
+        searchTerm($('#idSearch').val().toLowerCase());
+    });
 
 /*
 $.getJSON( "/api/examples/", (data)=>{
@@ -133,12 +139,13 @@ $.getJSON( "/api/examples/", (data)=>{
 <body class="atonDefaultBody">
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.5);">
         <h2 style='float:right; margin-right:10px'>Examples</h2>
-        <div class='atonBTN' onclick="$('#idSearch').val(''); resetExampleBlocks();"><img src='/res/icons/search-clear.png'></div>
+        <div class='atonBTN' onclick="$('#idSearch').val(''); showAllBlocks();"><img src='/res/icons/search-clear.png'></div>
         <input id="idSearch" type="text" size="12" >
     </div>
 
-    <div style="text-align: center; margin-top: 75px">
-        <div class="descriptionText">This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "navigation", "pbr", "collaborative", etc... There is also an example of <a href='minimal/'>minimal setup</a>.
+    <div style="text-align: center; margin-top: 70px">
+        <div class="descriptionText" style='background-color: rgba(0,0,0, 0.2); padding:10px'>This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "navigation", "pbr", "collaborative", etc...
+        There is also an example of <a href='minimal/'>minimal setup</a> (the minimal html required to present an interactive 3D scene or model).
         </div><br>
         <div id='mainContent'></div>
     </div>

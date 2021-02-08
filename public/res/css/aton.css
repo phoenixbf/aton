@@ -395,6 +395,23 @@ canvas {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
+.atonKeyword {
+    display: inline-block;
+    border-radius: 5px;
+
+    font-size: smaller;
+
+    color: black;
+    background-color: rgba(255, 255, 255, 0.5);
+
+    margin: 3px;
+    padding: 3px;
+}
+
+.atonKeyword:hover {
+    box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
+}
+
 /* icon / button */
 .atonBTN {
     border: 0px;

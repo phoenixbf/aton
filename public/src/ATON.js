@@ -88,7 +88,6 @@ ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
-//ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 
@@ -123,6 +122,22 @@ ATON._setupBaseListeners = ()=>{
     window.addEventListener( 'resize', ATON._onResize, false );
     window.onorientationchange = ATON._readDeviceOrientationMode;
 
+    if (screenfull.isEnabled){
+	    screenfull.on('change', ()=>{
+            ATON._bFS = screenfull.isFullscreen;
+            ATON.fireEvent("Fullscreen", ATON._bFS);
+
+		    if (ATON._bFS) console.log("Now fullscreen");
+            else console.log("Exit fullscreen");
+	    });
+    }
+
+/*
+    document.addEventListener('webkitfullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('mozfullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('fullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('MSFullscreenChange', ATON._onFSchange, false);
+*/
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
@@ -332,19 +347,21 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // TODO: go POV in sight if any (panorama only mode)
 }
 
-/**
-Toggle fullscreen
-*/
-ATON.toggleFullScreen = ()=>{
-    screenfull.toggle();
+// Fullscreen
+ATON.isFullscreen = ()=>{
+    return ATON._bFS;
 /*
-    if (b === undefined){
-        screenfull.toggle();
-        return;
+    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== undefined){
+        return true;
     }
 
-    if (b) screenfull.request();
+    return false;
 */
+};
+
+
+ATON.toggleFullScreen = ()=>{
+    screenfull.toggle();
 };
 
 
@@ -366,6 +383,8 @@ ATON.realize = ()=>{
 
     // Timing
     ATON._clock = new THREE.Clock(true);
+
+    ATON._bFS = false; // fullscreen
 
     let wglopts = {
         //canvas: document.getElementById("View3D"),

@@ -123,7 +123,7 @@ SHU.createPubScenesGallery = (idcontainer)=>{
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
     SHU.checkAuth((data)=>{
-        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN switchedON'><img src='"+PATH_RES+"icons/user.png'>"+data.username+"</div>";
+        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>"+data.username+"</div>";
         else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>User</div>";
 
         htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+PATH_RES+"icons/scene.png'>Scenes</div>";

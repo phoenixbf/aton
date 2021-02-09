@@ -658,6 +658,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
     if (esemid === undefined) htmlcontent += "New Annotation</div>";
     else htmlcontent += "Modify '"+esemid+"'</div>";
 
+    // New ID
     if (esemid === undefined){
         htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
         htmlcontent += "<label for='psemid'>child of:</label>";
@@ -665,19 +666,22 @@ HATHOR._createPopupStdSem = (esemid)=>{
         htmlcontent += "<option value='.'>root</option>";
         for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
         htmlcontent += "</select><div class='selectArrow'></div></div>";
-        
+
         htmlcontent += "<datalist id='semlist'>";
         for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
         htmlcontent += "</datalist>";
+
+        htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray' style='width:300px;'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
+        htmlcontent += "<div id='idSemDescCont' style='display:none'><textarea id='idSemDescription' style='width:100%;'></textarea></div><br>";
+    }
+    // modifying existing ID
+    else {
+        htmlcontent += "<textarea id='idSemDescription' style='width:100%;'></textarea><br>";
     }
 
-    //htmlcontent += "<br>";
-    //htmlcontent += "<div id='btnRichContent' class='atonBTN' style='width:50%'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
-    //htmlcontent += "<div id='idSemDescCont'><textarea id='idSemDescription' style='width:100%'></textarea></div><br>";
-    htmlcontent += "<textarea id='idSemDescription' style='width:100%'></textarea><br>";
 
     if (ATON.Utils.isConnectionSecure() && !ATON.MediaRec.isAudioRecording()){
-        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray' style='width:300px;'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
 
@@ -718,6 +722,10 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
     if (semtype === ATON.FE.SEMSHAPE_CONVEX && !ATON.SemFactory.bConvexBuilding) return;
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+
+    $("#btnRichContent").click(()=>{
+        $("#idSemDescCont").toggle();
+    });
 
     let SCE = HATHOR.createSemanticTextEditor("idSemDescription");
 

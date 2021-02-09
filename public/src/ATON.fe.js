@@ -51,6 +51,11 @@ FE.realize = ()=>{
 
     ATON.realize();
 
+    // Built-in events
+    ATON.on("Fullscreen", (b)=>{
+        FE.uiSwitchButton("fullscreen",b);
+    });
+
     // built-in base front-end parameters
     let ddens = ATON.FE.urlParams.get('d');
     if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
@@ -135,10 +140,11 @@ FE.loadSceneID = (sid)=>{
     if (sid === undefined) return;
 
     let reqstr = ATON.PATH_RESTAPI_SCENE + sid;
-    if (ATON.SceneHub._bEdit) reqstr += ",edit";
+    //if (ATON.SceneHub._bEdit) reqstr += ",edit";
 
     ATON.SceneHub.load(reqstr, sid);
-    //$('meta[property=og\\:image]').attr('content', ATON.PATH_SCENES+sid+'/cover.png');
+
+    //$("meta[property=og\\:image]").attr("content", ATON.PATH_SCENES+sid+'/cover.png');
 
     console.log(reqstr);
 };
@@ -335,8 +341,9 @@ Add fullscreen button
 FE.uiAddButtonFullScreen = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "fullscreen", ()=>{
         ATON.toggleFullScreen();
-        screenfull.isFullscreen? FE.uiSwitchButton("fullscreen",false) : FE.uiSwitchButton("fullscreen",true);
     }, "Fullscreen");
+
+    FE.uiSwitchButton("fullscreen", ATON.isFullscreen());
 };
 
 // Get css class from vrc ID

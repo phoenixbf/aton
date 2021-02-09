@@ -27,9 +27,9 @@ const Core = require('./Core');
 Core.init();
 
 
-const PORT            = Core.config.services.main.PORT || 8080;
+const PORT            = process.env.PORT || Core.config.services.main.PORT || 8080;
 const PORT_SECURE     = Core.config.services.main.PORT_S || 8083;
-const PORT_ATONIZER   = Core.config.services.atonizer.PORT || 8085;
+//const PORT_ATONIZER   = Core.config.services.atonizer.PORT || 8085;
 const PORT_VRC        = Core.config.services.vroadcast.PORT || 8890;
 //const PORT_WEBDAV     = Core.config.services.webdav.PORT || 8891;
 

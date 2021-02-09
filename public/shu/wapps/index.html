@@ -28,9 +28,9 @@ let renderForm = ()=>{
     let htmlcontent = "";
 
     // Hathor
-    htmlcontent += "<a href='/fe/' style='display:inline-block; width:256px; height:256px'>";
-    htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'><br>";
-    htmlcontent += "<div class='atonBlockTitle' style='font-size:small;'>hathor</div>";
+    htmlcontent += "<a href='/fe/' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+    htmlcontent += "<div class='atonBlockSubTitle'>hathor</div><br>";
+    htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'>";
     htmlcontent += "</a>";
 
     $.getJSON( PATH_RESTAPI+"wapps/", (data)=>{
@@ -39,9 +39,9 @@ let renderForm = ()=>{
             let wappid = A.wappid;
             let appicon = (A.icon)? DIR_WAPPS+wappid+"/appicon.png" : DIR_WAPPS+"app_template/appicon.png";
 
-            htmlcontent += "<a href='"+DIR_WAPPS+wappid+"' style='display:inline-block; width:256px; height:256px'>";
-            htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'><br>";
-            htmlcontent += "<div class='atonBlockTitle' style='font-size:small;'>"+wappid+"</div>";
+            htmlcontent += "<a href='"+DIR_WAPPS+wappid+"' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>"+wappid+"</div><br>";
+            htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'>";
             htmlcontent += "</a>";
         }
 

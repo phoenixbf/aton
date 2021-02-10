@@ -152,6 +152,7 @@ ATON._setupBaseListeners = ()=>{
     ATON._bPointerDown = false;
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
     });
     window.addEventListener('pointerup', (e)=>{
         ATON._bPointerDown = false;
@@ -165,6 +166,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener('touchstart', (e)=>{
         ATON._bPointerDown = true;
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
     });
     window.addEventListener('touchend', (e)=>{
         ATON._bPointerDown = false;
@@ -201,6 +203,8 @@ ATON._setupBaseListeners = ()=>{
         //ATON._evPointer = e.srcEvent;
         ATON._bPointerDown = false;
 
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
 
@@ -227,6 +231,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener("keydown", (e)=>{
         //e.preventDefault();
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
 
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
@@ -912,10 +917,29 @@ ATON.setMainPanorama = (path)=>{
         //return;
     }
 */
-//    else {
+    // Panoramic Video
+    if (ATON.Utils.isVideo(path)){
+        // First time
+        if (ATON._elPanoVideo === undefined){
+            ATON._elPanoVideo = document.createElement('video');
+            ATON._elPanoVideo.id = "idPanoVideo";
+            ATON._elPanoVideo.innerHTML = "<source src='"+path+"'>";
+            ATON._elPanoVideo.crossOrigin = "anonymous";
+            ATON._elPanoVideo.loop = true;
+            ATON._elPanoVideo.playsinline = true;
+            ATON._elPanoVideo.style.cssText = "display:none;";
+            //ATON._elPanoVideo.src = path;
+            ATON._elPanoVideo.autoplay = true;
+        }
+
+        tpano = new THREE.VideoTexture( ATON._elPanoVideo );
+        console.log(ATON._elPanoVideo);
+    }
+    // Static Panorama
+    else {
         tpano = new THREE.TextureLoader().load(path);
         tpano.encoding = THREE.sRGBEncoding;
-//    }
+    }
 
     if (ATON._matMainPano !== undefined){
         ATON._matMainPano.map = tpano;

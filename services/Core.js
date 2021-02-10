@@ -525,7 +525,7 @@ Core.realizeBaseAPI = (app)=>{
 	app.get("/api/landing/", function(req,res,next){
 		let o = {};
 		if (Core.config.landing !== undefined) o = Core.config.landing;
-		
+
 		res.send(o);
 	});
 
@@ -629,7 +629,7 @@ Core.realizeBaseAPI = (app)=>{
 		O.cwd = Core.DIR_COLLECTION+relpath; //Core.DIR_PANO+uname;
 		O.follow = true;
 
-		let files = glob.sync("**/*.{jpg,hdr}", O);
+		let files = glob.sync("**/*.{jpg,mp4,webm}", O); // hdr
 
 		let P = [];
 		for (let f in files) P.push( relpath + files[f] );

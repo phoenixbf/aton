@@ -118,6 +118,13 @@ Utils.getFileExtension = ( filepath )=>{
 	return filepath.substr(filepath.lastIndexOf('.')+1).toLowerCase();
 };
 
+Utils.isVideo = ( filepath )=>{
+    let ext = Utils.getFileExtension(filepath);
+
+    if (ext === "mp4")  return true;
+    if (ext === "webm") return true;
+};
+
 Utils.getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf('/');
     if (index !== -1) return filepath.substring( 0, index + 1 );

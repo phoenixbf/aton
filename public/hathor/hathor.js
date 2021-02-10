@@ -1383,7 +1383,7 @@ HATHOR.popupHelp = ()=>{
     // Toolbar
     //let sp = "<br>";
     let iblock = "<div style='width:210px; display:inline-block; margin:5px; vertical-align:top;'>";
-    htmlcontent += "<h3>Toolbars</h3>";
+    htmlcontent += "<h3>Icons</h3>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' class='atonDefIcon'> User authentication</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' class='atonDefIcon'> Current scene</div>";

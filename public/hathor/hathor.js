@@ -1387,12 +1387,15 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' class='atonDefIcon'> User authentication</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' class='atonDefIcon'> Current scene</div>";
-    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' class='atonDefIcon'> Immersive VR mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' class='atonDefIcon'> Fullscreen mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"info.png' class='atonDefIcon'> Scene information</div>";
 
-    if (ATON.Utils.isMobile()){
-        htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' class='atonDefIcon'> Device orientation mode</div>";
+    if (ATON.Utils.isConnectionSecure()){
+        htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' class='atonDefIcon'> Immersive VR mode</div>";
+
+        if (ATON.Utils.isMobile()){
+            htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' class='atonDefIcon'> Device orientation mode</div>";
+        }
     }
 
     htmlcontent +="<br><br>";

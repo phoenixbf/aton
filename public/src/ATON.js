@@ -933,7 +933,8 @@ ATON.setMainPanorama = (path)=>{
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );
-        console.log(ATON._elPanoVideo);
+        tpano.encoding = THREE.sRGBEncoding;
+        //console.log(ATON._elPanoVideo);
     }
     // Static Panorama
     else {

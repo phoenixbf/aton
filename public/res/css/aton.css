@@ -1219,7 +1219,7 @@ label {
     display: block;
     position: relative;
 
-    cursor: pointer;
+    /*cursor: pointer;*/
 
     text-align: center;
 

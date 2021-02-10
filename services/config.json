@@ -15,5 +15,9 @@
 			"PORT": 8085,
 			"address": "http://localhost"
 		}
-	}
+	},
+
+    "landing":{
+        "gallery": true
+    }
 }

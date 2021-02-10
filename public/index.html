@@ -24,6 +24,37 @@
 
 <script>
 
+let onLandingData = (data)=>{
+    let htmlcontent = "";
+
+    if (data.redirect !== undefined){
+        window.location.replace(data.redirect);
+        return;
+    }
+
+    if (data.gallery){
+        htmlcontent += "<div class='atonBlockTitle'>Published Scenes</div>";
+        htmlcontent += "<div id='idScenes'></div><div id='btn-go' class='atonBTN atonBTN-green' style='width:30%;'><img src='/res/icons/play.png'></div><br><br>";
+
+        htmlcontent += "<div id='idPubGallery'></div>";
+    }
+
+    // Footer
+    htmlcontent += "<br><a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";
+
+    $("#idMainContent").html(htmlcontent);
+
+    if (data.gallery){
+        SHU.getScenesInputList("idScenes");
+        $("#btn-go").click(()=>{
+            let sid = $("#sid").val();
+
+            if (sid && sid.length > 1) SHU.goToScene( sid );
+        });
+
+        SHU.createPubScenesGallery("idPubGallery");
+    }
+};
 
 window.addEventListener( 'load', ()=>{
 /*
@@ -32,14 +63,7 @@ window.addEventListener( 'load', ()=>{
         BE.goToScene( $("#sid").val() );
     });
 */
-    SHU.getScenesInputList("idScenes");
-    $("#btn-go").click(()=>{
-        let sid = $("#sid").val();
-
-        if (sid && sid.length > 1) SHU.goToScene( sid );
-    });
-
-    SHU.createPubScenesGallery("idPubGallery");
+$.getJSON( PATH_RESTAPI+"landing", onLandingData );
 });
 
 </script>
@@ -49,10 +73,7 @@ window.addEventListener( 'load', ()=>{
     <div style="text-align: center;">
         <img src="/res/aton-logo.png" style="width:150px; height:auto;"><br>
 
-        <h2>Published Scenes</h2>
-        <div id='idScenes'></div><div id='btn-go' class='atonBTN atonBTN-green' style="width:30%;"><img src='/res/icons/play.png'></div><br><br>
-
-        <div id='idPubGallery'></div>
+        <div id='idMainContent'></div>
 <!--
         <div class='select' style='width:50%;'>
             <select id='sid'></select><div class='selectArrow'></div>

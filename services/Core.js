@@ -465,14 +465,13 @@ Core.realizeAuth = (app)=>{
 // API
 //================================================
 Core.realizeBaseAPI = (app)=>{
-
 	// Get ID
 	app.get("/api/getid/", function(req,res,next){
 		let id = nanoid.nanoid();
 		res.send(id);
 	});
 
-	// /api/scenes/<SID>
+	// /api/scene/<SID>
 	app.get(/^\/api\/scene\/(.*)$/, function(req,res,next){
 		let args = req.params[0].split(',');
 
@@ -521,7 +520,16 @@ Core.realizeBaseAPI = (app)=>{
 		res.sendFile(path.join(Core.DIR_BE,"newscene/index.html"));
 	});
 */
-	// List all published scenes
+
+	// Landing page opts
+	app.get("/api/landing/", function(req,res,next){
+		let o = {};
+		if (Core.config.landing !== undefined) o = Core.config.landing;
+		
+		res.send(o);
+	});
+
+	// List all public scenes
 	app.get("/api/scenes/", function(req,res,next){
 		let O = {};
 		O.cwd = Core.DIR_SCENES;
@@ -634,6 +642,7 @@ Core.realizeBaseAPI = (app)=>{
 	});
 
 	// Web-apps
+	//=========================================================
 	app.get("/api/wapps/", (req,res,next)=>{
 		let O = {};
 		O.cwd = Core.DIR_WAPPS;

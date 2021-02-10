@@ -685,8 +685,8 @@ HATHOR._createPopupStdSem = (esemid)=>{
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
 
-    if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>ADD</div>";
-    else htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:80%'>DONE</div>";
+    if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>ADD</div>";
+    else htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>DONE</div>";
 
     return htmlcontent;
 };

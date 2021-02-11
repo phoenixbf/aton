@@ -13,7 +13,7 @@ const processGltf = gltfPipeline.processGltf;
 
 const Jimp   = require('jimp');
 //const sharp  = require('sharp');
-//const imSize = require('image-size');
+const imSize = require('image-size');
 
 let bDraco = true;
 let processingTextures = {};

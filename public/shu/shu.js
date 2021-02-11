@@ -1,6 +1,6 @@
 const DIR_COLLECTION = "../../collection/";
 const DIR_SCENES     = "../../scenes/";
-const DIR_WAPPS      = "../../wapps/";
+const DIR_WAPPS      = "../../a/";
 const PATH_FE        = "../../fe/";
 const PATH_RESTAPI   = "../../api/";
 const PATH_RES       = "../../res/";
@@ -151,13 +151,39 @@ SHU.createBaseScene = ()=>{
 
     sobj.scenegraph = {};
     sobj.scenegraph.nodes = {};
-    sobj.scenegraph.nodes.main = {};
-    sobj.scenegraph.nodes.main.urls = [];
+    //sobj.scenegraph.nodes.main = {};
+    //sobj.scenegraph.nodes.main.urls = [];
 
     sobj.scenegraph.edges = {};
-    sobj.scenegraph.edges["."] = ["main"];
+    sobj.scenegraph.edges["."] = [];
 
     return sobj;
+};
+
+SHU.uiAttachModelsInputList = (elid)=>{
+    //let htmlcontent = "<input id='"+elid+"' type='text' list='"+elid+"-list' style='width:80%'>";
+    let htmlcontent = "";
+
+    $.getJSON( PATH_RESTAPI+"c/models/", ( data )=>{
+        let folders = {};
+        
+        htmlcontent += "<datalist id='"+elid+"-list'>";
+
+        for (let m in data){
+            let mp = data[m];
+            htmlcontent += "<option value='"+mp+"'>"+mp+"</option>";
+
+            let F = SHU.getBaseFolder(mp);
+            if (folders[F] === undefined) folders[F] = mp;
+            else folders[F] += ","+mp;
+        }
+
+        for (let F in folders) htmlcontent += "<option value='"+folders[F]+"'>"+F+"*</option>";
+
+        htmlcontent += "</datalist>";
+
+        $("#"+elid).html(htmlcontent);
+    });
 };
 
 SHU.appendModelsToSelect = (idselect)=>{

@@ -485,7 +485,7 @@ Core.realizeBaseAPI = (app)=>{
 			return res.sendFile(sjsonpath);
 		}
 
-		// look into models collection and build scene
+		// look into models collection and build scene FIXME:
 		let mfolder = path.join(Core.DIR_COLLECTION,sid)+"/";
 		let O = {};
 		O.cwd = mfolder;

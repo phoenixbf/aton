@@ -63,7 +63,7 @@ app.use(cors({credentials: true, origin: true}));
 
 app.use(express.json({ limit: '50mb' }));
 
-// Redirect
+// Scenes redirect /s/<sid>
 app.get(/^\/s\/(.*)$/, function(req,res,next){
 	let sid = req.params[0];
 
@@ -80,7 +80,14 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 
 app.use('/', express.static(Core.DIR_PUBLIC));
 app.use('/mods', express.static(Core.DIR_NODE_MODULES));
+
+// Official front-end (Hathor)
 app.use('/fe', express.static(Core.DIR_FE));
+
+// Web-apps
+app.use('/a', express.static(Core.DIR_WAPPS));
+
+// API documentation
 if (bAPIdoc) app.use('/apidoc', express.static(Core.DIR_APIDOC));
 
 

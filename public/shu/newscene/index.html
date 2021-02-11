@@ -23,12 +23,25 @@
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
-
+let numLayers = 0;
+let numModels = 0;
 let sobj = SHU.createBaseScene();
-let sid  = SHU.generateID("sid");
+
+
+// Date-based SID
+let today = new Date();
+let dd   = today.getDate();
+let mm   = today.getMonth()+1; 
+let yyyy = today.getFullYear();
+if(dd<10) dd = '0'+dd;
+if(mm<10) mm = '0'+mm;
+
+let sid  = SHU.generateID(yyyy+mm+dd);
 console.log(sid);
 
 
+
+//================================================
 let requestSceneCreation = ()=>{
 
     composeScene();
@@ -50,6 +63,7 @@ let handleServerResponse = (r)=>{
 let composeScene = ()=>{
 
     // Transform
+/*
     let transP = $("#idTransPos").val();
     let transR = $("#idTransRot").val();
     let transS = $("#idTransScale").val();
@@ -65,6 +79,7 @@ let composeScene = ()=>{
         if (bTransR) sobj.scenegraph.nodes.main.transform.rotation = transR.split(",");
         if (bTransS) sobj.scenegraph.nodes.main.transform.scale    = transS.split(",");
     }
+*/
 
     // LightProbes
     let bAutoLP = $("#autoLP").is(":checked");
@@ -85,8 +100,8 @@ let composeScene = ()=>{
         console.log(sobj.environment);
     }
 
-    let numModels = sobj.scenegraph.nodes.main.urls.length;
-    if (numModels<=0){ // Panoramic content only
+    //let numModels = sobj.scenegraph.nodes.main.urls.length;
+    if (numModels <= 0){ // Panoramic content only
         sobj.viewpoints = {};
         sobj.viewpoints.home = {};
         sobj.viewpoints.home.position = [0,0,0];
@@ -97,16 +112,177 @@ let composeScene = ()=>{
 
 };
 
-let renderForm = ()=>{
-    $("#idSID").html(sid);
+let addToNode = (nid)=>{
+    let path = $("#nid-"+nid+"add").val();
 
-    SHU.appendModelsToSelect("mpath");
+    if (path.length < 4) return;
+
+    if (sobj.scenegraph.nodes[nid] === undefined) sobj.scenegraph.nodes[nid] = {};
+    let N = sobj.scenegraph.nodes[nid];
+
+    let rootChildren = sobj.scenegraph.edges["."];
+    if (rootChildren.indexOf(nid) === -1) rootChildren.push(nid);
+
+    let paths = path.split(",");
+
+    if (N.urls === undefined) N.urls = [];
+
+    let htmlcontent = "";
+
+    for (let i in paths){
+        htmlcontent += "<div class='atonBlockRound atonBTN-white' style='font-size:smaller; display:block'>";
+        htmlcontent += paths[i];
+        htmlcontent += "</div>";
+
+        N.urls.push( paths[i] );
+        numModels++;
+    }
+
+    $("#nid-"+nid+"-list").append(htmlcontent);
+    $("#nid-"+nid+"add").val(""); // clear field
+
+    console.log(sobj);
+};
+
+let deleteNode = (nid)=>{
+    if (sobj.scenegraph.nodes[nid] !== undefined){
+        sobj.scenegraph.nodes[nid] = undefined;
+    }
+
+    let rootChildren = sobj.scenegraph.edges["."];
+    let i = rootChildren.indexOf(nid);
+    if (i >= 0) rootChildren.splice(i,1);
+
+    $("#nid-"+nid).remove();
+
+    console.log(sobj);
+};
+
+let addNodeBlock = (nid)=>{
+    let htmlcontent = "";
+    if (nid === undefined){
+        nid = $('#idAddNewNodeID').val();
+
+        if (nid.length <2) return;
+        $('#idAddNewNodeID').val("");
+    }
+
+    if (sobj.scenegraph.nodes[nid] !== undefined) return;
+
+    sobj.scenegraph.nodes[nid] = {};
+
+    let elNID      = "nid-" + nid; //numLayers;
+    let elNIDList  = elNID+"-list";
+    let elNIDAdd   = elNID+"add";
+    
+    let elNIDtformTrans = elNID+"-tf-t";
+    let elNIDtformRot   = elNID+"-tf-r";
+    let elNIDtformScale = elNID+"-tf-s";
+
+    //htmlcontent += "<div style='display:inline-block; min-width:300px; vertical-align:top; background-color: rgba(0,0,0, 0.2)'>";
+    htmlcontent += "<div id='"+elNID+"' class='atonOptionBlock' style='max-width:400px; min-width:250px; width:50%; background-color:rgba(128,255,128, 0.2); box-shadow: 0px 0px 20px rgba(0,50,0, 1);'>";
+
+    // Layer title
+    htmlcontent += "<div class='atonBlockSubTitle'>Node '"+nid+"'</div><br>";
+    
+    // Input field (add 3D models)
+    htmlcontent += "Add 3D models:";
+    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='max-width:200px'>";
+    htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
+
+    // item list
+    htmlcontent += "<div id='"+elNIDList+"' style='height:100px; margin:5px' class='scrollableY'></div>"; // background-color:rgba(255,255,255, 0.1);
+
+    // Transform
+    htmlcontent += "<br>Translation, Rotation, Scale<br>";
+    htmlcontent += "<input id='"+elNIDtformTrans+"' type='text' size='10' placeholder='x,y,z'>";
+    htmlcontent += "<input id='"+elNIDtformRot+"' type='text' size='10' placeholder='x,y,z'>";
+    htmlcontent += "<input id='"+elNIDtformScale+"' type='text' size='10' placeholder='x,y,z'>";
+
+    // Del
+    htmlcontent += "<br><div onclick='deleteNode(\""+nid+"\")' class='atonBTN atonBTN-red' style='width:90%'><img src='../../res/icons/trash.png'>Delete this node</div>";
+
+    htmlcontent += "</div>";
+
+    numLayers++;
+    //return htmlcontent;
+
+    $("#idMainSGblocks").append(htmlcontent);
+    SHU.uiAttachModelsInputList(elNIDAdd);
+
+    // Transform
+    $("#"+elNIDtformTrans).on("input change",()=>{
+        let tformtrans = $("#"+elNIDtformTrans).val();
+        let values = tformtrans.split(",");
+        if (values.length !== 3) return;
+        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return;
+        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+
+        sobj.scenegraph.nodes[nid].transform.position = values;
+        console.log(sobj.scenegraph.nodes[nid]);
+    });
+
+    $("#"+elNIDtformScale).on("input change",()=>{
+        let tformscale = $("#"+elNIDtformScale).val();
+        let values = tformscale.split(",");
+        if (values.length !== 3) return;
+        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return;
+        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+
+        sobj.scenegraph.nodes[nid].transform.scale = values;
+        console.log(sobj.scenegraph.nodes[nid]);
+    });
+
+    $("#"+elNIDtformRot).on("input change",()=>{
+        let tformrot = $("#"+elNIDtformRot).val();
+        let values = tformrot.split(",");
+        if (values.length !== 3) return;
+        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return;
+        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+
+        sobj.scenegraph.nodes[nid].transform.rotation = values;
+        console.log(sobj.scenegraph.nodes[nid]);
+    });
+};
+
+let addNewNodeBlock = ()=>{
+    let htmlcontent = "";
+
+    htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(255,255,255, 0.2);'>";
+    htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
+    htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
+    htmlcontent += "<img src='../../res/icons/add.png'></div>";
+    htmlcontent += "</div></div><br><br>";
+/*
+    htmlcontent += "<div class='atonOptionBlock' style='width:150px; height:150px; background-color:rgba(0,0,0, 0.2);'>";
+    htmlcontent += "<br>Add new node:<br><input id='idAddNewNodeID' type='text' value='reconstruction' style='width:80%'><br>";
+
+    htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
+    htmlcontent += "<img src='../../res/icons/add.png' style='width:64px; height:64px;'></div>";
+    htmlcontent += "</div>";
+*/
+    $("#idMainSGblocks").append(htmlcontent);
+};
+
+let renderForm = ()=>{
+    $("#idSID").html("('"+sid+"')");
+
+    addNewNodeBlock();
+    addNodeBlock("main");
+
+    //SHU.appendModelsToSelect("mpath");
     SHU.appendPanoramasToSelect("panopath");
 
     // initial blocks
-    $('#blockTransform').hide();
-    $('#blockEnv').hide();
-
+    //$('#blockTransform').hide();
+    //$('#blockEnv').hide();
+/*
     $("#btn-addmodel").click(()=>{
         let mp = $("#mpath").val();
         
@@ -132,7 +308,7 @@ let renderForm = ()=>{
         $("#idmlist").html("");
         document.getElementById("mpath").selectedIndex = 0;
     });
-
+*/
     // Env
     $("#panopath").on("change", ()=>{
         let path = $("#panopath").val();
@@ -172,24 +348,26 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX" style="background-color: rgba(0,0,0, 0.8);"></div>
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
     <div class='shuMainContainer'>
-        <div class="atonTitle">New Scene</div>
+        <div class="atonTitle">New Scene<br>
+        <div id='idSID' style='font-size:small; font-weight:normal;'></div>
+        </div><br>
 
         <div class="atonBlockRound">
             <!-- <div id="idSID" class="atonBlockRound" style="background-color: rgba(0,0,0, 0.5); width: 90%;"></div><br><br> -->
-            <div id="idSID" class='atonBlockTitle' style='font-size:small;'></div><br>
+            <!-- <div id="idSID" class='atonBlockTitle' style='font-size:small;'></div><br>-->
 
             <!-- <label for="sid">Scene ID</label>
             <input id="sid" type="text" size="40" placeholder="SceneID..."><br><br>
             -->
 
-            <label for="sidvis">Scene visibility</label>
-            <div class='select' style="width:200px;">
+            <img class="atonDefIcon" src='../../res/icons/visibility.png'>
+            <div class='select' style="width:250px;">
                 <select id='sidvis'>
                     <option value='pvt'>Private link</option>
-                    <option value='pub'>Public (listed)</option>
+                    <option value='pub'>Public (listed in the main gallery)</option>
                 </select>
                 <div class='selectArrow'></div>
             </div>
@@ -199,8 +377,13 @@ window.addEventListener( 'load', ()=>{
         <br><br>
 
         <div class="atonBlockGroup">
-            <div class="atonBlockTitle" onclick="$('#blockModels').toggle()">Add 3D models</div>
-            <div id='blockModels' class="atonBlockCut">
+            <div class="atonBlockTitle" onclick="$('#blockMainSG').toggle()">Main SceneGraph</div>
+            <div id='blockMainSG' class="atonBlockCut">
+                <div class="descriptionText">This section allows to add or remove nodes from the main scene-graph. Multiple 3D models can be added to each node (green blocks). Each node can be transformed (translation, rotation, scale). At runtime, any node can be toggled (on/off) by an ATON front-end, thus they are ideal for multi-temporal representations, node switching or simply for creating multiple layers.</div>
+                <br>
+
+                <div id='idMainSGblocks'></div>
+<!--
                 Here you can select and add ('+') 3D models to the base scene (under a main node) from the collection. You can pick single 3D models (*.gltf or *.glb) or entire folders.
                 <br><br>
                 <div class='select' style='width:50%;'>
@@ -211,10 +394,11 @@ window.addEventListener( 'load', ()=>{
                 <div id='btn-clearmodels' class='atonBTN atonBTN-red' style="width:150px;"><img src='../../res/icons/trash.png'></div>
 
                 <br><div id="idmlist"></div>
-
+-->
             </div>
         </div>
 
+<!--
         <div class="atonBlockGroup">
             <div class="atonBlockTitle" onclick="$('#blockTransform').toggle()">Transform</div>
             <div id='blockTransform' class="atonBlockCut">
@@ -225,7 +409,7 @@ window.addEventListener( 'load', ()=>{
                 <label for="idTransScale">Scale</label><input id="idTransScale" type="text" size="10" placeholder="x,y,z">
             </div>
         </div>
-
+-->
         <div class="atonBlockGroup">
             <div class="atonBlockTitle" onclick="$('#blockEnv').toggle()">Environment</div>
             <di id='blockEnv' class="atonBlockCut">

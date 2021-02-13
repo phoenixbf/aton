@@ -179,19 +179,19 @@ let addNodeBlock = (nid)=>{
     let elNIDtformRot   = elNID+"-tf-r";
     let elNIDtformScale = elNID+"-tf-s";
 
-    //htmlcontent += "<div style='display:inline-block; min-width:300px; vertical-align:top; background-color: rgba(0,0,0, 0.2)'>";
-    htmlcontent += "<div id='"+elNID+"' class='atonOptionBlock' style='max-width:400px; min-width:250px; width:50%; background-color:rgba(128,255,128, 0.2); box-shadow: 0px 0px 20px rgba(0,50,0, 1);'>";
+    htmlcontent += "<div id='"+elNID+"' class='shuBlockNode'>";
 
     // Layer title
     htmlcontent += "<div class='atonBlockSubTitle'>Node '"+nid+"'</div><br>";
     
     // Input field (add 3D models)
-    htmlcontent += "Add 3D models:";
-    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='max-width:200px'>";
+    htmlcontent += "Add 3D models:<br>";
+    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:300px'>";
     htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
 
     // item list
     htmlcontent += "<div id='"+elNIDList+"' style='height:100px; margin:5px' class='scrollableY'></div>"; // background-color:rgba(255,255,255, 0.1);
+    //htmlcontent += "<div id='"+elNIDList+"' style='margin:5px'></div>";
 
     // Transform
     htmlcontent += "<br>Translation, Rotation, Scale<br>";
@@ -257,7 +257,7 @@ let addNewNodeBlock = ()=>{
     htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(255,255,255, 0.2);'>";
     htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
-    htmlcontent += "<img src='../../res/icons/add.png'></div>";
+    htmlcontent += "<img src='../../res/icons/graph.png'></div>";
     htmlcontent += "</div></div><br><br>";
 /*
     htmlcontent += "<div class='atonOptionBlock' style='width:150px; height:150px; background-color:rgba(0,0,0, 0.2);'>";

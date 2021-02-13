@@ -1192,6 +1192,28 @@ label {
     box-shadow: 0px 0px 15px rgba(0,0,0, 1);
 }
 
+.shuBlockNode {
+    display: inline-block;
+    vertical-align: top;
+
+    padding: 5px;
+    border-radius: 5px;
+
+    max-width: 400px;
+    min-width: 250px;
+    
+    margin: 10px;
+    
+    /*float: left; */
+    
+    background-color:rgba(128,255,128, 0.2);
+    box-shadow: 0px 0px 20px rgba(0,20,0, 1);
+}
+
+.shuBlockNode:hover {
+    box-shadow: 0px 0px 20px rgba(0,255,0, 0.5);
+}
+
 .atonTitle {
     display: block;
     position: relative;

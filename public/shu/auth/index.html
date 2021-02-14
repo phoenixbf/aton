@@ -20,6 +20,8 @@
 <title>Login</title>
 <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
 <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
@@ -32,7 +34,7 @@ let onLoginSuccess = (r)=>{
     console.log(r);
 
     $("#idLoginBTN").html("Logged in");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-green atonBTN-large");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-green");
 
     if (targetURL === undefined || targetURL === null){
         location.reload();
@@ -44,7 +46,7 @@ let onLoginSuccess = (r)=>{
 // Failed
 let onLoginFail = ()=>{
     $("#idLoginBTN").html("Login FAILED");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-red atonBTN-large");
+    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
 };
 
 let renderAuthForm = (data)=>{
@@ -52,7 +54,7 @@ let renderAuthForm = (data)=>{
 
     if (data.username){
         htmlcontent += "<div class='atonBlockRound' style='width:80%'>";
-        htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-large' id='idLogoutBTN'>LOGOUT</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-red' style='width:90%' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 
         let strTitle = "'"+data.username+"'";
@@ -61,7 +63,7 @@ let renderAuthForm = (data)=>{
         $("#idAuth").html(htmlcontent);
 
         $("#idLogoutBTN").click(()=>{
-            SHU.getJSON(PATH_RESTAPI+"logout/",(r)=>{
+            $.getJSON(ATON.PATH_RESTAPI+"logout/",(r)=>{
                 location.reload();
             });
         });
@@ -73,7 +75,7 @@ let renderAuthForm = (data)=>{
         htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
         htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-        htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-large' id='idLoginBTN'>LOGIN</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idLoginBTN'>LOGIN</div>";
         htmlcontent += "</div>";
 
         $("#idUserTitle").html("User Authentication");
@@ -85,7 +87,7 @@ let renderAuthForm = (data)=>{
                 password: $("#idPassword").val()
             };
 
-            SHU.postJSON(PATH_RESTAPI+"login/", o, onLoginSuccess, onLoginFail );
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"login/", o, onLoginSuccess, onLoginFail );
         });
     }
 };
@@ -94,7 +96,7 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
-    SHU.checkAuth((data)=>{
+    ATON.Utils.checkAuth((data)=>{
         renderAuthForm(data);
     });
 });

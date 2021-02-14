@@ -20,6 +20,8 @@
 <title>Users</title>
 <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
 <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
@@ -27,7 +29,7 @@
 let renderForm = ()=>{
     let htmlcontent = "";
 
-    $.getJSON( PATH_RESTAPI+"users/", (data)=>{
+    $.getJSON( ATON.PATH_RESTAPI+"users/", (data)=>{
 
         htmlcontent += "<div class='atonBlockRound'>";
         htmlcontent += "username:<input id='idNewUsername' type='text' maxlength='15' size='15' ><br>";
@@ -39,7 +41,7 @@ let renderForm = ()=>{
         for (let u in data){
             let username = data[u];
 
-            htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+PATH_RES+"icons/user.png'>"+username+"</div><br>";
+            htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+ATON.PATH_RES+"icons/user.png'>"+username+"</div><br>";
         }
 
 
@@ -51,7 +53,7 @@ let renderForm = ()=>{
                 password: $("#idNewPassword").val()
             };
 
-            SHU.postJSON(PATH_RESTAPI+"new/user/", o, 
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"new/user/", o, 
                 (r)=>{ // success
                     console.log(r);
                     if (r){
@@ -75,7 +77,7 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
-    SHU.checkAuth((data)=>{
+    ATON.Utils.checkAuth((data)=>{
         if (data.username && data.admin){
             renderForm();
         }

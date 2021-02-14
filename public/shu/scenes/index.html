@@ -20,18 +20,26 @@
 <title>Scenes</title>
 <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
 <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
 
 let renderForm = ()=>{
-    $.getJSON( PATH_RESTAPI+"scenes/own", (data)=>{
+    $.getJSON( ATON.PATH_RESTAPI+"scenes/own", (data)=>{
+
+/*
+        shtml += "<div class='atonGalleryItem' style='width:230px; height:230px;'>";
+        //shtml += "<div style>"
+        shtml += "</div>";
+*/
 
         for (let i in data){
             let scene = data[i];
             let sid = scene.sid;
 
-            let urlCover = (scene.cover)? DIR_SCENES+sid+"/cover.png" : PATH_RES+"scenecover.png";
+            let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
 
             let shtml = "";
             shtml += "<div id='s"+i+"' class='atonGalleryItem' style='width:230px;'>"; // background-image: url(\""+urlCover+"\");
@@ -44,9 +52,9 @@ let renderForm = ()=>{
             shtml += "</a>";
 
             shtml += "<br>";
-            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='"+PATH_RES+"icons/play.png'></button>";
+            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='"+ATON.PATH_RES+"icons/play.png'></button>";
             
-            shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='"+PATH_RES+"icons/trash.png'></div>";
+            shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='"+ATON.PATH_RES+"icons/trash.png'></div>";
             
             shtml += "<div id='delConf-"+i+"' style='display:none;'>Delete this scene: are you sure?<br>";
             shtml += "<div id='del-"+i+"' class='atonBTN atonBTN-red'>YES</div><div id='delNo-"+i+"' class='atonBTN'>NO</div>";
@@ -66,7 +74,7 @@ let renderForm = ()=>{
                 $("#s"+i).css("background-color","rgba(127,0,0,0.3)");
 
                 $('#del-'+i).click(()=>{
-                    SHU.postJSON(PATH_RESTAPI+"del/scene", {sid: sid}, (b)=>{
+                    ATON.Utils.postJSON(ATON.PATH_RESTAPI+"del/scene", {sid: sid}, (b)=>{
                         if (b) $("#s"+i).hide();
                     });
                 });
@@ -88,7 +96,7 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
-    SHU.checkAuth((data)=>{
+    ATON.Utils.checkAuth((data)=>{
         if (data.username){
             renderForm();
 
@@ -110,12 +118,11 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
     <div class='shuMainContainer'>
-        <div class="atonTitle">Your Scenes</div>
-        <br>
+        <div class="atonTitle">Your Scenes</div><br>
+        <div id="btn-newscene" class="atonBTN atonBTN-green" style="width: 90%;"><img src='../../res/icons/scene.png'>New Scene</div>
+        <br><br>
 
         <div class="" id='idOwnScenes'></div>
-
-        <br><div id="btn-newscene" class="atonBTN atonBTN-green atonBTN-large"><img src='../../res/icons/scene.png'>New Scene</div>
 
     </div>
     

@@ -258,6 +258,19 @@ Utils.setVectorPrecision = (v, prec)=>{
     return v;
 };
 
+// User auth
+Utils.checkAuth = (onReceive)=>{
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{ onReceive(data); }
+    });
+};
+
+
 /**
 Get human-readable length (distances, measures, etc...)
 @param {number} d - the distance

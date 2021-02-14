@@ -1,10 +1,15 @@
-const DIR_COLLECTION = "../../collection/";
-const DIR_SCENES     = "../../scenes/";
-const DIR_WAPPS      = "../../a/";
-const PATH_FE        = "../../fe/";
-const PATH_RESTAPI   = "../../api/";
-const PATH_RES       = "../../res/";
+/*===========================================================================
 
+    "Shu": ATON back-end
+
+    Author: B. Fanini
+
+===========================================================================*/
+
+/**
+Shu back-end (official ATON back-end)
+@namespace SHU
+*/
 let SHU = {};
 
 SHU.getBaseFolder = ( filepath )=>{
@@ -25,35 +30,18 @@ SHU.goToScene = (sid, vrc)=>{
     if (sid === undefined) return;
     if (sid.length < 2) return;
 
-    let feURL = PATH_FE+"?s="+sid;
+    let feURL = ATON.PATH_FE+"?s="+sid;
     if (vrc !== undefined) feURL += "&vrc="+vrc;
 
     window.location.href = feURL;
 };
 
-SHU.postJSON = (endpoint, obj, onReceive, onFail)=>{
-    $.ajax({
-        url: endpoint,
-        type:"POST",
-        xhrFields: { withCredentials: true },
-        data: JSON.stringify(obj),
-        contentType:"application/json; charset=utf-8",
-        dataType:"json",
-
-        success: (data)=>{
-            if (onReceive) onReceive(data);
-        }
-    }).fail((err)=>{
-        console.log(err);
-        if (onFail) onFail();
-    });
-};
-
 // Users
+/*
 SHU.checkAuth = (onReceive)=>{
     $.ajax({
         type: 'GET',
-        url: PATH_RESTAPI+"user",
+        url: ATON.PATH_RESTAPI+"user",
         xhrFields: { withCredentials: true },            
         dataType: 'json',
 
@@ -62,15 +50,9 @@ SHU.checkAuth = (onReceive)=>{
         }
     });
 };
-
-SHU.getJSON = (endpoint, onReceive)=>{
-    $.getJSON( endpoint, (data)=>{
-        if (onReceive) onReceive(data);
-    });  
-};
-
+*/
 SHU.getScenesSelect = (idselect)=>{
-    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         let list = "<option value=''>Choose scene ID...</option>";
 
         for (let s in data){
@@ -85,7 +67,7 @@ SHU.getScenesSelect = (idselect)=>{
 SHU.getScenesInputList = (idlist)=>{
     let htmlcontent = "<label for='sid'>Scene ID</label><br><input id='sid' type='text' list='sidlist' style='width:50%'>";
 
-    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         htmlcontent += "<datalist id='sidlist'>";
         for (let s in data) htmlcontent += "<option>"+data[s].sid+"</option>";
         htmlcontent += "</datalist>";
@@ -97,12 +79,12 @@ SHU.getScenesInputList = (idlist)=>{
 SHU.createPubScenesGallery = (idcontainer)=>{
     let htmlcontent = "";
 
-    $.getJSON( PATH_RESTAPI+"scenes/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         for (let s in data){
             let scene = data[s];
             let sid = scene.sid;
 
-            let urlCover = (scene.cover)? DIR_SCENES+sid+"/cover.png" : PATH_RES+"scenecover.png";
+            let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
 
             htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' style='padding:4px' >";
             htmlcontent += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+sid+"</div></a><br>";
@@ -122,15 +104,16 @@ SHU.createPubScenesGallery = (idcontainer)=>{
 
 SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
-    SHU.checkAuth((data)=>{
-        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>"+data.username+"</div>";
-        else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+PATH_RES+"icons/user.png'>User</div>";
 
-        htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+PATH_RES+"icons/scene.png'>Scenes</div>";
+    ATON.Utils.checkAuth((data)=>{
+        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>"+data.username+"</div>";
+        else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>User</div>";
+
+        htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/scene.png'>Scenes</div>";
 
         if (data.username && data.admin){
-            htmlcode += "<div id='btn-t-users' class='atonBTN'><img src='"+PATH_RES+"icons/users.png'>Users</div>";
-            htmlcode += "<div id='btn-t-wapps' class='atonBTN'><img src='"+PATH_RES+"icons/app.png'>Apps</div>";
+            htmlcode += "<div id='btn-t-users' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/users.png'>Users</div>";
+            htmlcode += "<div id='btn-t-wapps' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/app.png'>Apps</div>";
         }
 
         $("#"+idcontainer).append(htmlcode);
@@ -142,29 +125,11 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
     });
 };
 
-SHU.createBaseScene = ()=>{
-    let sobj = {};
-
-    sobj.status = "complete";
-
-    sobj.environment = {};
-
-    sobj.scenegraph = {};
-    sobj.scenegraph.nodes = {};
-    //sobj.scenegraph.nodes.main = {};
-    //sobj.scenegraph.nodes.main.urls = [];
-
-    sobj.scenegraph.edges = {};
-    sobj.scenegraph.edges["."] = [];
-
-    return sobj;
-};
-
 SHU.uiAttachModelsInputList = (elid)=>{
     //let htmlcontent = "<input id='"+elid+"' type='text' list='"+elid+"-list' style='width:80%'>";
     let htmlcontent = "";
 
-    $.getJSON( PATH_RESTAPI+"c/models/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"c/models/", ( data )=>{
         let folders = {};
         
         htmlcontent += "<datalist id='"+elid+"-list'>";
@@ -187,7 +152,7 @@ SHU.uiAttachModelsInputList = (elid)=>{
 };
 
 SHU.appendModelsToSelect = (idselect)=>{
-    $.getJSON( PATH_RESTAPI+"c/models/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"c/models/", ( data )=>{
         let list = "";
         let folders = {};
 
@@ -207,7 +172,7 @@ SHU.appendModelsToSelect = (idselect)=>{
 };
 
 SHU.appendPanoramasToSelect = (idselect)=>{
-    $.getJSON( PATH_RESTAPI+"c/panoramas/", ( data )=>{
+    $.getJSON( ATON.PATH_RESTAPI+"c/panoramas/", ( data )=>{
         let list = "";
 
         for (let p in data){
@@ -218,3 +183,67 @@ SHU.appendPanoramasToSelect = (idselect)=>{
         $("#"+idselect).append(list);
     });
 };
+
+
+/* Scene composer */
+SHU.composer = {};
+
+SHU.composer.createBaseScene = ()=>{
+    let sobj = {};
+
+    sobj.status = "complete";
+
+    sobj.environment = {};
+
+    sobj.scenegraph = {};
+    sobj.scenegraph.nodes = {};
+    //sobj.scenegraph.nodes.main = {};
+    //sobj.scenegraph.nodes.main.urls = [];
+
+    sobj.scenegraph.edges = {};
+    sobj.scenegraph.edges["."] = [];
+
+    return sobj;
+};
+
+SHU.composer.deleteSceneNode = (sobj, nid)=>{
+    if (sobj.scenegraph.nodes[nid] !== undefined){
+        sobj.scenegraph.nodes[nid] = undefined;
+    }
+
+    let rootChildren = sobj.scenegraph.edges["."];
+    let i = rootChildren.indexOf(nid);
+    if (i >= 0) rootChildren.splice(i,1);
+
+    return sobj;
+};
+
+SHU.composer.addSceneNode = (sobj, nid)=>{
+    if (sobj.scenegraph.nodes[nid] !== undefined) return sobj;
+
+    sobj.scenegraph.nodes[nid] = {};
+
+    let rootChildren = sobj.scenegraph.edges["."];
+    let i = rootChildren.indexOf(nid);
+    if (i < 0) rootChildren.push(nid);
+
+    return sobj;
+};
+
+/*
+SHU.composer.transformSceneNodeUsingStrings = (sobj, strT, strS, strR)=>{
+
+    if (strT){
+        let values = tformtrans.split(",");
+        if (values.length !== 3) return sobj;
+        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return sobj;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return sobj;
+        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+
+        sobj.scenegraph.nodes[nid].transform.position = values;
+    }
+
+    return sobj;
+};
+*/

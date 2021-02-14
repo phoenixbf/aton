@@ -20,12 +20,14 @@
 <title>New Scene</title>
 <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
 <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
 let numLayers = 0;
 let numModels = 0;
-let sobj = SHU.createBaseScene();
+let sobj = SHU.composer.createBaseScene();
 
 
 // Date-based SID
@@ -53,7 +55,7 @@ let requestSceneCreation = ()=>{
 
     console.log(o);
 
-    SHU.postJSON( PATH_RESTAPI+"new/scene", o, handleServerResponse);
+    ATON.Utils.postJSON( ATON.PATH_RESTAPI+"new/scene", o, handleServerResponse);
 };
 
 let handleServerResponse = (r)=>{
@@ -145,6 +147,7 @@ let addToNode = (nid)=>{
 };
 
 let deleteNode = (nid)=>{
+/*
     if (sobj.scenegraph.nodes[nid] !== undefined){
         sobj.scenegraph.nodes[nid] = undefined;
     }
@@ -152,6 +155,8 @@ let deleteNode = (nid)=>{
     let rootChildren = sobj.scenegraph.edges["."];
     let i = rootChildren.indexOf(nid);
     if (i >= 0) rootChildren.splice(i,1);
+*/
+    sobj = SHU.composer.deleteSceneNode(sobj, nid);
 
     $("#nid-"+nid).remove();
 
@@ -167,9 +172,9 @@ let addNodeBlock = (nid)=>{
         $('#idAddNewNodeID').val("");
     }
 
-    if (sobj.scenegraph.nodes[nid] !== undefined) return;
-
-    sobj.scenegraph.nodes[nid] = {};
+    //if (sobj.scenegraph.nodes[nid] !== undefined) return;
+    //sobj.scenegraph.nodes[nid] = {};
+    sobj = SHU.composer.addSceneNode(sobj, nid);
 
     let elNID      = "nid-" + nid; //numLayers;
     let elNIDList  = elNID+"-list";
@@ -257,7 +262,7 @@ let addNewNodeBlock = ()=>{
     htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(255,255,255, 0.2);'>";
     htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
-    htmlcontent += "<img src='../../res/icons/graph.png'></div>";
+    htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
     htmlcontent += "</div></div><br><br>";
 /*
     htmlcontent += "<div class='atonOptionBlock' style='width:150px; height:150px; background-color:rgba(0,0,0, 0.2);'>";
@@ -313,7 +318,8 @@ let renderForm = ()=>{
     $("#panopath").on("change", ()=>{
         let path = $("#panopath").val();
         if (path && path.length > 0){
-            $("#idpanopreview").html("<img src='"+DIR_COLLECTION+path+"' style='width:100%;height:auto'>");
+            if (ATON.Utils.isVideo(path)) $("#idpanopreview").html("<video src='"+ATON.PATH_COLLECTION+path+"' autoplay='true' style='width:100%;height:auto'>");
+            else $("#idpanopreview").html("<img src='"+ATON.PATH_COLLECTION+path+"' style='width:100%;height:auto'>");
 
             if (sobj.environment.mainpano === undefined) sobj.environment.mainpano = {};
             
@@ -331,7 +337,7 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
-    SHU.checkAuth((data)=>{
+    ATON.Utils.checkAuth((data)=>{
         if (data.username){
             sid = data.username+"/"+sid;
             renderForm();

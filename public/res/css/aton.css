@@ -466,9 +466,19 @@ canvas {
     */
 }
 
+.atonSmallIcon {
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+}
 .atonDefIcon {
     height: 32px;
     width: 32px;
+    vertical-align: middle;
+}
+.atonBigIcon {
+    height: 64px;
+    width: 64px;
     vertical-align: middle;
 }
 
@@ -1335,12 +1345,12 @@ label {
 .atonBlockRound {
     display: inline-block;
 
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     /*border-radius: 20px;*/
 
     border-radius: 10px;
 
-    margin: 1px;
+    margin: 4px;
     padding: 8px;
 }
 

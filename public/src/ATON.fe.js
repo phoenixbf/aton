@@ -721,6 +721,24 @@ FE.popupVRC = ()=>{
 
 // User auth
 FE.checkAuth = (onReceive)=>{
+    ATON.Utils.checkAuth((data)=>{
+        FE._userAuth = data;
+        //console.log(FE._userAuth);
+
+        if (data.username !== undefined){
+            $("#btn-user").addClass("switchedON");
+            if (ATON.VRoadcast._username === undefined) ATON.VRoadcast.setUsername(data.username);
+        }
+        else {
+            $("#btn-user").removeClass("switchedON");
+        }
+
+        if (onReceive) onReceive(data);
+    });
+};
+
+/*
+FE.checkAuth = (onReceive)=>{
     $.ajax({
         type: 'GET',
         url: ATON.PATH_RESTAPI+"user",
@@ -743,6 +761,7 @@ FE.checkAuth = (onReceive)=>{
         }
     });
 };
+*/
 
 FE.popupUser = ()=>{
 

@@ -20,6 +20,8 @@
 <title>Web-Apps</title>
 <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
 <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
 <script type="text/javascript" src="../shu.js"></script>
 
 <script>
@@ -33,13 +35,13 @@ let renderForm = ()=>{
     htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'>";
     htmlcontent += "</a>";
 
-    $.getJSON( PATH_RESTAPI+"wapps/", (data)=>{
+    $.getJSON( ATON.PATH_RESTAPI+"wapps/", (data)=>{
         for (let i in data){
             let A = data[i];
             let wappid = A.wappid;
-            let appicon = (A.icon)? DIR_WAPPS+wappid+"/appicon.png" : DIR_WAPPS+"app_template/appicon.png";
+            let appicon = (A.icon)? ATON.PATH_WAPPS+wappid+"/appicon.png" : ATON.PATH_WAPPS+"app_template/appicon.png";
 
-            htmlcontent += "<a href='"+DIR_WAPPS+wappid+"' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+            htmlcontent += "<a href='"+ATON.PATH_WAPPS+wappid+"' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
             htmlcontent += "<div class='atonBlockSubTitle'>"+wappid+"</div><br>";
             htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'>";
             htmlcontent += "</a>";
@@ -64,7 +66,7 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
-    SHU.checkAuth((data)=>{
+    ATON.Utils.checkAuth((data)=>{
         if (data.username && data.admin){
             renderForm();
         }

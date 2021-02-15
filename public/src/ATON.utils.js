@@ -12,6 +12,8 @@ ATON Utils
 */
 let Utils = {};
 
+Utils.TSTRING_SEPARATOR = " ";
+
 
 Utils.init = ()=>{
     // read-only object to inspect device capabilities
@@ -138,6 +140,7 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
+// JSON post utility
 Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({
         url: endpoint,
@@ -179,7 +182,25 @@ Utils.mergeObject = ( object )=>{
     return group;
 };
 
+Utils.setPicking = (node, type, b)=>{
+    if (b === undefined) b = true;
+
+    //console.log(b);
+    
+    node.traverse((o) => {
+        if (b) o.layers.enable(type);
+        else o.layers.disable(type);
+    });
+
+    // children
+    for (let c in node.children){
+        let C = node.children[c];
+        Utils.setPicking(C, type, b);
+    }
+};
+
 // Helper visitor routine
+// Note: parentNode is not connected to model
 Utils.modelVisitor = (parentNode, model)=>{
     if (!model) return this;
 
@@ -189,11 +210,18 @@ Utils.modelVisitor = (parentNode, model)=>{
     let type = N.type; // Differentiate visit depending on node type
 
     model.traverse( ( o ) => {
-
+/*
         if (N.bPickable !== undefined){
             if (N.bPickable) o.layers.enable(type);
             else o.layers.disable(type);
+            //Utils.setPicking(N, type, N.bPickable);
         }
+        //else o.layers.enable(type); //Utils.setPicking(N, type, true);
+*/
+
+        //Utils.setPicking(model, type, N.bPickable);
+        //if (!N.visible) Utils.setPicking(model, type, false);
+
 
         if (o.isMesh){
             //let numVertices = o.geometry.attributes.position.count;
@@ -208,6 +236,13 @@ Utils.modelVisitor = (parentNode, model)=>{
                 if (o.geometry){
                     o.geometry.computeBoundsTree();
                     console.log("Computed visible BVH");
+
+                    // visualize bounds
+                    /*
+                    let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
+                    BVHVis.update();
+                    o.parent.add(BVHVis);
+                    */
                 }
 
                 // Ensure mipmapping is correct
@@ -248,6 +283,36 @@ Utils.modelVisitor = (parentNode, model)=>{
         }
 */
     });
+
+    //Utils.setPicking(N, type, N.bPickable);
+
+/*
+    for (let c in model.children){
+        let C = model.children[c];
+        Utils.modelVisitor(model, C);
+    }
+*/
+};
+
+Utils.parseTransformString = (tstr)=>{
+    let T = new THREE.Group();
+
+    let values = tstr.split(Utils.TSTRING_SEPARATOR);
+    let numValues = values.length;
+
+    if (numValues < 3) return T; // nothing to do
+
+    // Translation
+    T.position.set( parseFloat(values[0]), parseFloat(values[1]), parseFloat(values[2]) );
+    if (numValues < 6) return T;
+
+    // Rotation
+    T.rotation.set( parseFloat(values[3]), parseFloat(values[4]), parseFloat(values[5]) );
+    if (numValues < 9) return T;
+
+    // Scale
+    T.scale.set( parseFloat(values[6]), parseFloat(values[7]), parseFloat(values[8]) );
+    return T;
 };
 
 Utils.setVectorPrecision = (v, prec)=>{

@@ -125,7 +125,16 @@ let addToNode = (nid)=>{
     let rootChildren = sobj.scenegraph.edges["."];
     if (rootChildren.indexOf(nid) === -1) rootChildren.push(nid);
 
-    let paths = path.split(",");
+    let paths = [];
+    
+    // Folder
+    if (path.endsWith("*")){
+        let F = path.slice(0,-1);
+        if (SHU._cModelDirs[F] !== undefined) paths = SHU._cModelDirs[F];
+        //console.log(paths);
+    }
+    // Single path
+    else paths.push(path);
 
     if (N.urls === undefined) N.urls = [];
 

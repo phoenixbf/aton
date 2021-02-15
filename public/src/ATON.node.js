@@ -21,7 +21,8 @@ constructor(id, type){
 
     this.type = type? type : ATON.NTYPES.SCENE;
     
-    this.bPickable = true;
+    //this.bPickable = true;
+    this.enablePicking();
 
     if (this.type === ATON.NTYPES.SCENE){
         this._rootG = ATON._rootVisible;
@@ -45,6 +46,9 @@ constructor(id, type){
     this.kwords = undefined;
 
     this._bCloneOnLoadHit = true;
+
+    // Transform list (instancing)
+    this._tlist = undefined;
 
     // Shadows
     this.castShadow    = false;
@@ -158,7 +162,9 @@ myNode.hide()
 */
 hide(){
     this.visible = false;
-    this.traverse((o) => { o.layers.disable(this.type); });
+
+    //this.traverse((o) => { o.layers.disable(this.type); });
+    ATON.Utils.setPicking(this, this.type, false);
 
     return this;
 }
@@ -171,7 +177,7 @@ myNode.show()
 show(){
     this.visible = true;
 
-    if (this.bPickable) this.traverse((o) => { o.layers.enable(this.type); });
+    if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
 
     return this;
 }
@@ -198,13 +204,7 @@ myNode.load("somevegetation.gltf").disablePicking()
 */
 disablePicking(){
     this.bPickable = false;
-    this.traverse((o) => { o.layers.disable(this.type); });
-
-    // children
-    for (let c in this.children){
-        let C = this.children[c];
-        if (C.disablePicking) C.disablePicking();
-    }
+    ATON.Utils.setPicking(this, this.type, this.bPickable);
 
     return this;  
 }
@@ -216,13 +216,7 @@ myNode.enablePicking()
 */
 enablePicking(){
     this.bPickable = true;
-    this.traverse((o) => { o.layers.enable(this.type); });
-
-    // children
-    for (let c in this.children){
-        let C = this.children[c];
-        if (C.enablePicking) C.enablePicking();
-    }
+    ATON.Utils.setPicking(this, this.type, this.bPickable);
 
     return this;
 }
@@ -451,8 +445,8 @@ attachTo(node){
     let N = (typeof node === 'string')? this._nodes[node] : node;
     if (N){
         N.add(this);
-        if (N.userData.cMat) this.userData.cMat = N.userData.cMat; // this.setMaterial(N.userData.cMat);
-        if (N.bPickable) this.bPickable = N.bPickable;
+        if (N.userData.cMat !== undefined) this.userData.cMat = N.userData.cMat; // this.setMaterial(N.userData.cMat);
+        if (N.bPickable !== undefined) this.bPickable = N.bPickable;
     }
     
     return N;
@@ -466,8 +460,8 @@ myNode.attachToRoot()
 */
 attachToRoot(){
     this._rootG.add(this);
-    if (this._rootG.userData.cMat) this.userData.cMat = this._rootG.userData.cMat;
-    if (this._rootG.bPickable) this.bPickable = this._rootG.bPickable;
+    if (this._rootG.userData.cMat !== undefined) this.userData.cMat = this._rootG.userData.cMat;
+    if (this._rootG.bPickable !== undefined) this.bPickable = this._rootG.bPickable;
     
     return this._rootG;
 }
@@ -546,6 +540,28 @@ setYup(){
 }
 
 /**
+Add a transform for this node.
+Adding multiple transforms before loading a 3D model will result in instancing these resources
+@param {string} T - the transform string to be added
+@example
+myNode.addTransform("10 0 0").addTransform("-5 0 0").load("mymodel.gltf").attachToRoot()
+*/
+addTransform(T){
+    let TT = undefined;
+
+    if (typeof T === "string"){
+        TT = ATON.Utils.parseTransformString(T);
+    }
+
+    if (TT === undefined) return this;
+
+    if (this._tlist === undefined) this._tlist = [];
+    this._tlist.push(TT);
+
+    return this;
+}
+
+/**
 Load a 3D model under this node, with optional onComplete handler.
 Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth
 @param {string} url - the url of the 3D model
@@ -563,8 +579,15 @@ load(url, onComplete){
         ATON._assetsManager[url].then(( o ) =>{
             let C = o.clone();
 
-            ATON.Utils.modelVisitor(N, C); // check
-            N.add( C );
+            ATON.Utils.modelVisitor(N, C);
+            
+            if (N._tlist !== undefined){
+                for (let t in N._tlist){
+                    N._tlist[t].add(C.clone());
+                    N.add(N._tlist[t]);
+                }
+            }
+            else N.add( C );
 
             if (onComplete) onComplete();
         });
@@ -583,12 +606,22 @@ load(url, onComplete){
             // Visit loaded model
             ATON.Utils.modelVisitor(N, model);
 
-            N.add( model );
+            if (N._tlist !== undefined){
+                for (let t in N._tlist){
+                    N._tlist[t].add(model.clone());
+                    N.add(N._tlist[t]);
+                }
+            }
+            else N.add( model );
 
             resolve(model);
             console.log("Model "+url+" loaded");
             
             if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+
+            // post-visit (FIXME:)
+            N.setPickable(N.bPickable);
+            N.toggle(N.visible);
 
             if (onComplete) onComplete();
         },

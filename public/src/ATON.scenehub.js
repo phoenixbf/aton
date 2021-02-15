@@ -74,6 +74,7 @@ SceneHub.load = (reqpath, sid, oncomplete)=>{
     });
 };
 
+// Parse JSON scene obj
 SceneHub.parseScene = (sobj)=>{
     sobj = (sobj === undefined)? SceneHub.currData : sobj;
     if (sobj === undefined) return;
@@ -293,6 +294,19 @@ SceneHub.initBaseParsers = ()=>{
 
             //let G = ATON.createSceneNode(nid); // ATON node
             let G = ATON.getOrCreateSceneNode(nid).removeChildren();
+
+            // Transform node
+            let transform = N.transform;
+            let tlist = undefined;
+            if (transform){
+                if (transform.position) G.setPosition(transform.position[0],transform.position[1],transform.position[2]);
+                if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
+                if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
+
+                if (transform.list && Array.isArray(transform.list)){
+                    //TODO:
+                }
+            }
             
             // load models by urls list
             let urls = N.urls;
@@ -330,14 +344,6 @@ SceneHub.initBaseParsers = ()=>{
 */
             // Keywords
             if (N.keywords) G.kwords = N.keywords;
-
-            // Transform node
-            let transform = N.transform;
-            if (transform){
-                if (transform.position) G.setPosition(transform.position[0],transform.position[1],transform.position[2]);
-                if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
-                if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
-            }
 /*
             if (N.show !== undefined){
                 if (N.show){ G.show(); console.log("show "+nid); }
@@ -366,7 +372,10 @@ SceneHub.initBaseParsers = ()=>{
             let N = nodes[nid]; // JSON node
             let G = ATON.getSceneNode(nid);
 
-            if (G !== undefined){ 
+            if (G !== undefined){
+                //if (N.nopicking){ G.disablePicking(); }
+                //else G.enablePicking();
+
                 if (N.show !== undefined){
                     //console.log(N.show);
 
@@ -374,8 +383,7 @@ SceneHub.initBaseParsers = ()=>{
                     else { G.hide(); console.log("hide "+nid); }
                     //console.log(ATON.getSceneNode(nid));
                 }
-
-                if (N.nopicking){ G.disablePicking(); }
+                //else G.show();
 
                 if (N.material){
                     let mat = new THREE.MeshStandardMaterial(N.material);

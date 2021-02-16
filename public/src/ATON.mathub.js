@@ -47,8 +47,8 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.green,
         transparent: true,
         depthWrite: false,
-        opacity: 0.2, 
-        flatShading: true
+        opacity: 0.2 
+        //flatShading: true
     });
 
     // XR/VR ray
@@ -56,8 +56,8 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.white, 
         transparent: true, 
         opacity: 0.2,
-        depthWrite: false,
-        flatShading: true
+        depthWrite: false
+        //flatShading: true
     });
 
     // Teleport locator
@@ -65,7 +65,7 @@ MatHub.addDefaults = ()=>{
         transparent: true, 
         opacity: 1.0,
         depthWrite: false,
-        flatShading: true,
+        //flatShading: true,
         side: THREE.DoubleSide
     });
 
@@ -80,8 +80,8 @@ MatHub.addDefaults = ()=>{
         transparent: true,
         depthWrite: false,
         opacity: 0.5, 
-        depthTest: false,
-        flatShading: true
+        depthTest: false
+        //flatShading: true
     });
 
     // Semantic shapes
@@ -96,15 +96,15 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.sem, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.2,
-        flatShading: true
+        opacity: 0.2
+        //flatShading: true
     });
     MatHub.materials.semanticShapeEdit = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.orange, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.5,
-        flatShading: true
+        opacity: 0.5
+        //flatShading: true
     });
 };
 

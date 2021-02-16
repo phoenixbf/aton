@@ -366,15 +366,32 @@ FE.uiAddButtonVRC = (idcontainer)=>{
         }
     }, "VRoadcast (collaborative session)");
 
+    $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'></span>");
+
     ATON.on("VRC_IDassigned", (uid)=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
+
+        // Selector color
+        ATON.MatHub.materials.selector.color = ATON.VRoadcast.ucolors[uid%6];
+
         FE.checkAuth((data)=>{
             if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
         });
     });
 
+    ATON.on("VRC_UserEnter", (uid)=>{
+        $("#idVRCnumusers").html(ATON.VRoadcast.getNumUsers());
+        console.log("Users: "+ATON.VRoadcast.getNumUsers());
+    });
+    ATON.on("VRC_UserLeave", (uid)=>{
+        $("#idVRCnumusers").html(ATON.VRoadcast.getNumUsers());
+        console.log("Users: "+ATON.VRoadcast.getNumUsers());
+    });
+
     ATON.on("VRC_Disconnected", ()=>{
         $("#btn-vrc").attr("class","atonBTN");
+        // Selector color
+        ATON.MatHub.materials.selector.color = ATON.MatHub.colors.green;
     });
 
     if (ATON.VRoadcast.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.VRoadcast.uid) );

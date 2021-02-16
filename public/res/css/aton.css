@@ -619,6 +619,18 @@ canvas {
     border-radius: 10px;
 }
 
+.atonVRCcounter {
+    position: absolute; 
+    z-index:2; 
+    margin-left: -18px;
+    margin-top: 3px;
+
+    text-align: center;
+    text-shadow: 0px 0px 4px black;
+
+    font-size: 70%;
+}
+
 .atonVRCchat {
     margin: 4px;
     /*font-size: smaller;*/

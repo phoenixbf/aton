@@ -130,6 +130,23 @@ realize(){
     }
 };
 
+// TODO:
+destroy(){
+    if (this.usermaterial) this.usermaterial.dispose();
+    if (this.usermeshnode) this.usermeshnode.dispose();
+    if (this.userauinode) this.userauinode.dispose();
+
+    if (this.userfpnode) this.userfpnode.dispose();
+    if (ATON.VRoadcast._focNodes[this.userid]) ATON.VRoadcast._focNodes[this.userid].dispose();
+
+    if (this.userlabelnode) this.userlabelnode.dispose();
+    if (this.labelcontainer) this.labelcontainer.dispose();
+    if (this.usernametext) this.usernametext.dispose();
+    if (this.usermessagetext) this.usermessagetext.dispose();
+
+    this.dispose();
+}
+
 // Loads custom avatar representation (3D model)
 loadRepresentation(url){
     let A = this;

@@ -39,7 +39,8 @@ VRoadcast.init = ()=>{
 
     VRoadcast.uid = undefined; // my userID (0,1,....)
     VRoadcast._bStreamFocus = false; // stream focal point
-    VRoadcast._numUsers = 0;
+    
+    VRoadcast._numUsers = 1;
 
     VRoadcast.avatarList = [];
 
@@ -348,6 +349,9 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" entered the scene</i><br>");
 
         VRoadcast.touchAvatar(uid);
+        
+        //VRoadcast._numUsers++;
+        //ATON.fireEvent("VRC_UserEnter", uid);
     });
 
     VRoadcast.socket.on('ULEAVE', (data)=>{
@@ -356,12 +360,15 @@ VRoadcast._registerSocketHandlers = ()=>{
         
         let A = VRoadcast.avatarList[uid];
         if (A) A.hide();
+        //VRoadcast.destroyAvatar(uid);
+
         // TODO: hide also focus
 
         console.log("User #" +uid+" left the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" left the scene</i><br>");
 
-        if (VRoadcast._numUsers>0) VRoadcast._numUsers--;
+        if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
+        ATON.fireEvent("VRC_UserLeave", uid);
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
@@ -618,14 +625,30 @@ VRoadcast.touchAvatar = (uid)=>{
         //console.log(VRoadcast.avatarList);
         //console.log(ATON.MatHub.materials.avatars);
         //console.log(A);
+        
         VRoadcast._numUsers++;
+        ATON.fireEvent("VRC_UserEnter", uid);
     }
 
     let A = VRoadcast.avatarList[uid];
+
+    // Reclaim of previously used slot
+    if (!A.visible){
+        VRoadcast._numUsers++;
+        ATON.fireEvent("VRC_UserEnter", uid);
+    }
+
     A.show();
 
     return A;
 }
+
+VRoadcast.destroyAvatar = (uid)=>{
+    let A = VRoadcast.avatarList[uid];
+    if (A === undefined) return;
+
+    A.destroy();
+};
 
 VRoadcast.clearAllAvatars = ()=>{
     for (let i in VRoadcast.avatarList){

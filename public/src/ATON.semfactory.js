@@ -1,5 +1,6 @@
 /*
     ATON Semantic shapes factory
+    TODO: rename in SemHub
 
     author: bruno.fanini_AT_gmail.com
 
@@ -156,7 +157,11 @@ SemFactory.completeConvexShape = (semid)=>{
 
     let S = ATON.getSemanticNode(semid) || ATON.createSemanticNode(semid);
     
-    S.add(SemFactory.currSemNode.children[0]);
+    let meshape = SemFactory.currSemNode.children[0];
+    
+    ATON.SUI.addSemIcon(semid, meshape);
+
+    S.add( meshape );
     S.setMaterial( /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape);
     S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ ATON.MatHub.materials.semanticShape, /*ATON.MatHub.materials.semanticShapeHL*/SemFactory.currMaterial);
     S.enablePicking();
@@ -196,7 +201,9 @@ SemFactory.createConvexShape = (semid, points)=>{
         semesh.userData._convexPoints.push( p.x );
         semesh.userData._convexPoints.push( p.y );
         semesh.userData._convexPoints.push( p.z );
-        }
+    }
+
+    ATON.SUI.addSemIcon(semid, semesh);
 
     let S = ATON.getOrCreateSemanticNode(semid);
     S.add(semesh);
@@ -252,6 +259,8 @@ SemFactory.createSphere = (semid, location, radius)=>{
     sphere.scale.set(radius, radius, radius);
     sphere.add(M);
 
+    ATON.SUI.addSemIcon(semid, sphere);
+
     S.add( sphere );
     S.enablePicking();
     S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape, SemFactory.currMaterial/*ATON.MatHub.materials.semanticShapeHL*/);
@@ -270,6 +279,20 @@ SemFactory.createSurfaceSphere = (semid)=>{
     let r = ATON.SUI.getSelectorRadius();
 
     return SemFactory.createSphere(semid, p,r);
+};
+
+SemFactory.deleteSemanticNode = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+
+    if (S === undefined) return false;
+    S.removeChildren();
+
+    for (let s in ATON.SUI.gSemIcons.children){
+        let C = ATON.SUI.gSemIcons.children[s];
+        if (C && C.name === semid) ATON.SUI.gSemIcons.removeChild(C);
+    }
+
+    return true;
 };
 
 export default SemFactory;

@@ -36,6 +36,11 @@ SUI.init = ()=>{
     SUI.fpTeleport.visible = false;
     ATON._rootUI.add(SUI.fpTeleport);
 
+    // Sem-shapes icons
+    SUI.gSemIcons = ATON.createUINode();
+    SUI.gSemIcons.disablePicking();
+    ATON._rootUI.add(SUI.gSemIcons);
+
     // Main Font
     //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
     //SUI.PATH_FONT_TEX  = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.png"; // ATON.PATH_RES+"fonts/custom.png"
@@ -69,9 +74,16 @@ SUI.init = ()=>{
     SUI._labelScale   = ATON.Utils.isMobile()? 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
-    ATON.on( "SemanticNodeHover", (semid)=>{
+    ATON.on("SemanticNodeHover", (semid)=>{
         SUI.setInfoNodeText(semid);
+        SUI.gSemIcons.hide();
     });
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        SUI.gSemIcons.show();
+    });
+
+    //SUI.setSemIconsOpacity(0.5);
+
 /*
     ATON.on("UINodeHover", (uiid)=>{
         console.log("Hover UI node: "+uiid);
@@ -115,6 +127,29 @@ SUI.setSelectorModel = (path, bUseStdMat)=>{
     SUI.mainSelector.load(path).disablePicking();
     if (bUseStdMat) SUI.mainSelector.setMaterial( ATON.MatHub.getMaterial("selector") );
 };
+
+// Sem-shape icons
+SUI.addSemIcon = (semid, meshape)=>{
+    let bb = new THREE.Box3().setFromObject( meshape );
+    let bs = new THREE.Sphere();
+    bb.getBoundingSphere(bs);
+
+    // icon sprite
+    let semicon = new THREE.Sprite( ATON.MatHub.semIcon );
+    semicon.position.copy(bs.center);
+
+    let ss = 0.035; //bs.radius * 0.3;
+    semicon.scale.set(ss,ss,1.0);
+    semicon.name = semid;
+
+    SUI.gSemIcons.add(semicon);
+};
+
+SUI.setSemIconsOpacity = (f)=>{
+    if (f === undefined) ATON.MatHub.semIcon.opacity = 1.0;
+    else ATON.MatHub.semIcon.opacity = f;
+};
+
 
 SUI.buildInfoNode = ()=>{
     SUI.infoNode = ATON.createUINode();
@@ -327,6 +362,7 @@ SUI.update = ()=>{
     }
     else SUI._measLine.visible = false;
 
+    // Selector
     if (ATON._queryDataScene && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
         SUI.mainSelector.position.copy(ATON._queryDataScene.p);
@@ -336,7 +372,15 @@ SUI.update = ()=>{
         //SUI.fpTeleport.visible = false;
     }
 
-    
+    // SemIcons
+    if (ATON.Nav._bInteracting){
+        SUI.gSemIcons.hide();
+    }
+    else {
+        if (ATON._hoveredSemNode === undefined) SUI.gSemIcons.show();
+    }
+
+    // Teleport SUI
     if ((!ATON.Nav.isOrbit() || ATON.XR._bPresenting) && ATON.Nav.currentQueryValidForLocomotion()){
         SUI.fpTeleport.visible = true;
         SUI.fpTeleport.position.copy(ATON._queryDataScene.p);

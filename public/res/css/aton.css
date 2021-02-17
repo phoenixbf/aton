@@ -609,10 +609,10 @@ canvas {
 .atonVRCsidePanel {
     position: absolute;
     width: 90%;
-    max-width: 400px;
+    max-width: 300px;
     left: 0px;
     top: 70px;
-    bottom: 20px;
+    bottom: 50px;
     padding: 8px;
 
     background-color: rgba(0, 0, 0, 0.2);

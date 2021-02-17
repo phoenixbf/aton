@@ -257,9 +257,7 @@ HATHOR.setupVRCEventHandlers = ()=>{
         if (type === undefined) return;
 
         if (type === ATON.NTYPES.SEM){
-            let N = ATON.getSemanticNode(nid);
-            if (N === undefined) return;
-            N.removeChildren();
+            ATON.SemFactory.deleteSemanticNode(nid);
         }
         /*
         if (type === ATON.NTYPES.SCENE){
@@ -413,10 +411,7 @@ HATHOR.setupEventHandlers = ()=>{
 
     ATON.on("KeyPress", (k)=>{
         if (k === 'Delete'){
-            let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
-            if (hsn !== undefined){
-                hsn.removeChildren();
-                //hsn.delete();
+            if (ATON.SemFactory.deleteSemanticNode(ATON._hoveredSemNode)){
 
                 let E = {};
                 E.semanticgraph = {};

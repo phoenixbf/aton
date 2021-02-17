@@ -366,7 +366,10 @@ FE.uiAddButtonVRC = (idcontainer)=>{
         }
     }, "VRoadcast (collaborative session)");
 
-    $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'></span>");
+    $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'>1</span>");
+
+    //$("<div id='idVRCchatPanel' class='atonVRCsidePanel'>xxx</div>").appendTo(document.body);
+    //$("#idVRCchatPanel").append(ATON.VRoadcast._elChat);
 
     ATON.on("VRC_IDassigned", (uid)=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
@@ -671,7 +674,10 @@ FE.popupScreenShot = ()=>{
 
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
+    let numUsers = ATON.VRoadcast.getNumUsers();
+
+    if (numUsers>1) htmlcontent += "<div class='atonPopupTitle'>Collaborative Session ("+numUsers+" users)</div>";
+    else htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
 
     // Username
     //htmlcontent += "Your username in this collaborative session is:<br>";

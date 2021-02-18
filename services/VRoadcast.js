@@ -51,8 +51,8 @@ VRoadcast.scene = class {
     constructor(sid){
         if (sid) this.sid = sid;
 
-        this.users = [];
-        this.numUsers = 0; // Note: this.users[] may not be contiguous
+        this.users = []; // Note: this.users[] may not be contiguous
+        this.numUsers = 0;
     }
 
     touchUser(uid){
@@ -177,6 +177,20 @@ VRoadcast.onNewConnection = (socket)=>{
         else {
             console.log(ipAddr+" cannot enter scene "+sid+" since it's full.");
         }
+    });
+
+    // Handle scene state requests
+    socket.on('SSTATE', ()=>{
+        let sinfo = {};
+
+        if (scene !== undefined){
+            sinfo.numUsers = scene.numUsers;
+        }
+        else {
+            sinfo.numUsers = 0;
+        }
+
+        socket.emit("SSTATE", sinfo);
     });
 
     socket.on('USTATE', (data)=>{

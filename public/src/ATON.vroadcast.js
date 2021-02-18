@@ -227,6 +227,12 @@ VRoadcast.requestSceneEnter = (sceneid)=>{
     VRoadcast.socket.emit("SENTER", sceneid );
 };
 
+VRoadcast.requestSceneState = ()=>{
+    if (!VRoadcast.socket) return;
+
+    VRoadcast.socket.emit("SSTATE");
+};
+
 /**
 Connect to VRoadcast service
 @param {string} address - the address of the service (optional). Default is same server where main service is running
@@ -261,6 +267,8 @@ VRoadcast.connect = (address)=>{
 
 VRoadcast.disconnect = ()=>{
     if (VRoadcast.socket === undefined) return;
+
+    VRoadcast._numUsers = 1;
 
     VRoadcast.socket.disconnect();
     VRoadcast._connected = false;
@@ -338,7 +346,17 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your ID is #"+data+"</i><br>");
 
+        // Request scene state
+        VRoadcast.requestSceneState();
+
         ATON.fireEvent("VRC_IDassigned", data);
+    });
+
+    VRoadcast.socket.on('SSTATE', (data)=>{
+        VRoadcast._numUsers = data.numUsers;
+        console.log("Num. users: "+VRoadcast._numUsers);
+
+        ATON.fireEvent("VRC_SceneState", data);
     });
 
     VRoadcast.socket.on('UENTER', (data)=>{
@@ -351,7 +369,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         VRoadcast.touchAvatar(uid);
         
         //VRoadcast._numUsers++;
-        //ATON.fireEvent("VRC_UserEnter", uid);
+        VRoadcast.requestSceneState();
+        ATON.fireEvent("VRC_UserEnter", uid);
     });
 
     VRoadcast.socket.on('ULEAVE', (data)=>{
@@ -367,7 +386,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("User #" +uid+" left the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" left the scene</i><br>");
 
-        if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
+        //if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
+        VRoadcast.requestSceneState();
         ATON.fireEvent("VRC_UserLeave", uid);
     });
 
@@ -626,8 +646,8 @@ VRoadcast.touchAvatar = (uid)=>{
         //console.log(ATON.MatHub.materials.avatars);
         //console.log(A);
         
-        VRoadcast._numUsers++;
-        ATON.fireEvent("VRC_UserEnter", uid);
+        //VRoadcast._numUsers++;
+        //ATON.fireEvent("VRC_UserEnter", uid);
     }
 
     let A = VRoadcast.avatarList[uid];

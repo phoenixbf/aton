@@ -588,12 +588,12 @@ VRoadcast.sendState = ()=>{
     let fp = ATON.getSceneQueriedPoint();
     if (VRoadcast._bStreamFocus && fp !== undefined){
         //let F = new THREE.Vector3();
-        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(3);
-        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(3);
-        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(3);
-        let r  = ATON.SUI.getSelectorRadius().toPrecision(3);
+        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(5);
+        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(5);
+        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(5);
+        let r  = ATON.SUI.getSelectorRadius().toPrecision(5);
         
-        VRoadcast.socket.emit("UFOCUS", [fx,fy,fz,r]);
+        VRoadcast.socket.emit("UFOCUS", [fx,fy,fz, r]);
     }
 
     // Compose state

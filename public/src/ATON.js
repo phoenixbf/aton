@@ -1211,6 +1211,9 @@ ATON._onFrame = ()=>{
     // UI
     ATON.SUI.update();
 
+    // Mat
+    ATON.MatHub.update();
+
     // Environment/lighting
     ATON._updateEnvironment();
 

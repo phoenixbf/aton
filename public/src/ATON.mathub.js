@@ -16,9 +16,31 @@ MatHub.init = ()=>{
     MatHub.materials = {};
     MatHub.colors    = {};
 
-    MatHub.addDefaults();
-
     MatHub._loader = new THREE.MaterialLoader();
+
+    // Uniforms
+    MatHub._uSem = {
+        time: { type:'float', value: 0.0 },
+        tint: { type:'vec4', value: new THREE.Vector4(0.0,0.0,1.0, 0.1) }
+    };
+
+    MatHub.addDefaults();
+};
+
+MatHub.getDefVertexShader = ()=>{
+    return `
+        varying vec3 vPositionW;
+        varying vec3 vNormalW;
+        varying vec3 vNormalV;
+
+        void main(){
+            vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
+            vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
+            vNormalV   = normalize( vec3( normalMatrix * normal ) );
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        }
+    `;
 };
 
 MatHub.addDefaults = ()=>{
@@ -84,6 +106,7 @@ MatHub.addDefaults = ()=>{
     });
 
     // Semantic shapes
+/*
     MatHub.materials.semanticShape = new THREE.MeshBasicMaterial({ 
         //color: MatHub.colors.white, 
         transparent: true,
@@ -91,43 +114,33 @@ MatHub.addDefaults = ()=>{
         opacity: 0.0,
         //flatShading: true
     });
-
-/*
-    MatHub._uSem = {
-        time: { type:'float', value: 0.0 },
-    };
+*/
 
     MatHub.materials.semanticShape = new THREE.ShaderMaterial({
         uniforms: MatHub._uSem,
 
-        vertexShader:`
-		    //varying vec3 vPositionW;
-		    //varying vec3 vNormalW;
-
-		    void main(){
-		        //vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
-		        //vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
-
-		        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-		    }
-        `,
-
+        vertexShader: MatHub.getDefVertexShader(),
         fragmentShader:`
-            //varying vec3 vPositionW;
-		    //varying vec3 vNormalW;
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+
             uniform float time;
+            uniform vec4 tint;
 
 		    void main(){
-		        //vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
-		        //float f = dot(viewDirectionW, vNormalW);
+		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+
+                float f;
+		        //f = dot(viewDirectionW, vNormalW);
+                //f = dot(vNormalV, vec3(0,0,1));
 		        //f = clamp(1.0 - f, 0.0, 1.0);
 
-
-                float f = cos(time*5.0);
+                f = (1.0 * cos(time*2.0)); // - 0.5;
+                //f = cos(time + (vPositionW.y*10.0));
                 f = clamp(f, 0.0,1.0);
-                f *= 0.1;
 
-		        gl_FragColor = vec4(0.0, 0.0, 1.0, f);
+		        gl_FragColor = vec4(tint.rgb, tint.a * f);
 		    }
         `,
         transparent: true,
@@ -135,7 +148,7 @@ MatHub.addDefaults = ()=>{
         flatShading: false
         //opacity: 0.0,
     });
-*/
+
     MatHub.materials.semanticShapeHL = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.sem, 
         transparent: true,
@@ -183,6 +196,10 @@ MatHub.loadMaterial = (id, jsonfile)=>{
 
 MatHub.getMaterial = (id)=>{
     return MatHub.materials[id];
+};
+
+MatHub.update = ()=>{
+    MatHub._uSem.time.value += ATON._dt;
 };
 
 export default MatHub;

@@ -13,6 +13,7 @@ ATON Semantic Factory
 let SemFactory = {};
 
 SemFactory.FLOAT_PREC = 5;
+SemFactory.useSemIcons = false;
 
 
 SemFactory.init = ()=>{
@@ -159,7 +160,7 @@ SemFactory.completeConvexShape = (semid)=>{
     
     let meshape = SemFactory.currSemNode.children[0];
     
-    ATON.SUI.addSemIcon(semid, meshape);
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, meshape);
 
     S.add( meshape );
     S.setMaterial( /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape);
@@ -203,7 +204,7 @@ SemFactory.createConvexShape = (semid, points)=>{
         semesh.userData._convexPoints.push( p.z );
     }
 
-    ATON.SUI.addSemIcon(semid, semesh);
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, semesh);
 
     let S = ATON.getOrCreateSemanticNode(semid);
     S.add(semesh);
@@ -259,7 +260,7 @@ SemFactory.createSphere = (semid, location, radius)=>{
     sphere.scale.set(radius, radius, radius);
     sphere.add(M);
 
-    ATON.SUI.addSemIcon(semid, sphere);
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, sphere);
 
     S.add( sphere );
     S.enablePicking();

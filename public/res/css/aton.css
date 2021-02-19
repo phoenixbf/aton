@@ -4,6 +4,13 @@
 
 ====================================================================*/
 
+/*
+@font-face {
+    font-family: 'atonfont';
+    src: url("../fonts/roboto/Roboto-Light.ttf");
+}
+*/
+
 /* Animations */
 @keyframes popupAnimation {
     0% {
@@ -81,11 +88,11 @@ body {
 
     overflow: hidden;
 
-    font-family: sans-serif;
     color: #FFF;
 
     font-size: 13px;
     font-family: Tahoma, Verdana, Geneva;
+    /*font-family: 'atonfont';*/
 
 /*
     touch-action: none;

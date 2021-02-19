@@ -1192,6 +1192,13 @@ input[type="number"]:hover {
     background-color: #BBB;
     color: #FFF;
 
+    background-image: url("../bg.jpg");
+
+    background-position: top;
+    background-repeat: no-repeat;
+    /*background-size: cover;*/
+    background-size: auto;
+
     overflow-y: auto;
 /*
     -moz-user-select: none;
@@ -1244,13 +1251,15 @@ label {
 
 .shuFooter {
     display: block;
+    width: 100%;
+
     text-align: center;
     text-shadow: 0px 0px 4px black;
 
     margin-top: 20px;
     padding: 10px;
 
-    background-color:rgba(0,0,0, 0.2);
+    background-color:rgba(0,0,0, 0.4);
 }
 
 .atonTitle {

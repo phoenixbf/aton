@@ -26,7 +26,12 @@
 
 <script>
 
-let renderForm = ()=>{
+let renderGallery = ()=>{
+
+    $("#btn-newscene").click(()=>{
+        window.location.href = "/shu/newscene/";
+    });
+
     $.getJSON( ATON.PATH_RESTAPI+"scenes/own", (data)=>{
 
 /*
@@ -98,11 +103,7 @@ window.addEventListener( 'load', ()=>{
 
     ATON.Utils.checkAuth((data)=>{
         if (data.username){
-            renderForm();
-
-            $("#btn-newscene").click(()=>{
-                window.location.href = "/shu/newscene/";
-            });
+            renderGallery();
         }
         else {
             window.location.href = "/shu/auth/?url="+window.location.href;

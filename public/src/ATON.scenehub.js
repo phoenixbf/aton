@@ -557,9 +557,8 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
         // Update local scene JSON
         // TODO: improve traffic by applying patch to local json, and NOT by receiving entire JSON 
         success: (r)=>{
-            if (r === undefined) return;
             //console.log(r);
-            SceneHub.currData = r;
+            if (r) SceneHub.currData = r;
             //console.log(ATON.currSceneHub.data);
 
             if (onComplete) onComplete();

@@ -759,9 +759,13 @@ Core.realizeBaseAPI = (app)=>{
 		});
 	});
 
-	// Scene edit (add or remove)
+	// Scene patch (add or remove)
 	app.post('/api/edit/scene', (req, res) => {
-		// TODO: only auth users
+		// Only auth users
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
 
 		let O = req.body;
 		let sid   = O.sid;
@@ -775,7 +779,11 @@ Core.realizeBaseAPI = (app)=>{
 
 	// New Scene
 	app.post('/api/new/scene', (req, res) => {
-		// TODO: only auth users
+		// Only auth users
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
 
 		let O = req.body;
 		let sid  = O.sid;

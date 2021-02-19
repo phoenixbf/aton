@@ -36,21 +36,13 @@ SHU.goToScene = (sid, vrc)=>{
     window.location.href = feURL;
 };
 
-// Users
-/*
-SHU.checkAuth = (onReceive)=>{
-    $.ajax({
-        type: 'GET',
-        url: ATON.PATH_RESTAPI+"user",
-        xhrFields: { withCredentials: true },            
-        dataType: 'json',
+SHU.uiBuildFooter = (elid)=>{
+    let htmlcontent = "SHU back-end - ";
+    htmlcontent += "<a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";
 
-        success: (data)=>{
-            onReceive(data);
-        }
-    });
+    $("#"+elid).html(htmlcontent);
 };
-*/
+
 SHU.getScenesSelect = (idselect)=>{
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         let list = "<option value=''>Choose scene ID...</option>";

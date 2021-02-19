@@ -36,18 +36,18 @@ let onLandingData = (data)=>{
 
     if (data.gallery){
         htmlcontent += "<div class='atonBlockTitle'>Published Scenes</div>";
-        htmlcontent += "<div id='idScenes'></div><div id='btn-go' class='atonBTN atonBTN-green' style='width:30%;'><img src='/res/icons/play.png'></div><br><br>";
+        htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:12px'></div>";
+        htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='/res/icons/play.png'></div>";
+        htmlcontent += "<br><br>";
 
         htmlcontent += "<div id='idPubGallery'></div>";
     }
 
-    // Footer
-    htmlcontent += "<br><a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";
-
     $("#idMainContent").html(htmlcontent);
 
     if (data.gallery){
-        SHU.getScenesInputList("idScenes");
+        SHU.createScenesInputList("idScenes");
+
         $("#btn-go").click(()=>{
             let sid = $("#sid").val();
 
@@ -81,6 +81,8 @@ $.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
             <select id='sid'></select><div class='selectArrow'></div>
         </div>
 -->
+
+        <div class="shuFooter"><a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a></div>
 
     </div>
     

@@ -1,23 +1,20 @@
 {
     "status": "complete",
-
-	"environment":{
-		"mainpano":{
-			"url": "samples/pano/defsky-grass.jpg",
-			"rotation": 0.0
+    "environment": {
+        "mainpano": {
+            "url": "samples/pano/defsky-grass.jpg"
         },
-
-        "mainlight":{
-            "direction": [0,-1,-1],
-			"shadows": false
-        },
-
-        "lightprobes":{
+        "lightprobes": {
             "auto": true
+        },
+        "mainlight": {
+            "direction": [
+                -0.0846315900906896,
+                -0.7511136796681608,
+                -0.6547256938398531
+            ]
         }
-
-	},
-
+    },
     "scenegraph": {
         "nodes": {
             "main": {
@@ -31,5 +28,236 @@
                 "main"
             ]
         }
-    }
+    },
+    "viewpoints": {
+        "home": {
+            "position": [
+                0.2030486121138375,
+                -0.6112775562963173,
+                -0.21251107536408753
+            ],
+            "target": [
+                -0.09773774048842927,
+                -0.8613044326500375,
+                0.11431588319404228
+            ],
+            "fov": 50
+        }
+    },
+    "semanticgraph": {
+        "nodes": {
+            "cracks": {
+                "convexshapes": [
+                    [
+                        -0.1154,
+                        -0.7734,
+                        0.2436,
+                        -0.1034,
+                        -0.7835,
+                        0.2445,
+                        -0.09261,
+                        -0.7893,
+                        0.2465,
+                        -0.08837,
+                        -0.7952,
+                        0.2467,
+                        -0.08716,
+                        -0.8041,
+                        0.2463,
+                        -0.08807,
+                        -0.8108,
+                        0.2465,
+                        -0.09169,
+                        -0.8144,
+                        0.2464,
+                        -0.09895,
+                        -0.8221,
+                        0.2451,
+                        -0.1023,
+                        -0.8326,
+                        0.2452,
+                        -0.09772,
+                        -0.8397,
+                        0.2446,
+                        -0.09566,
+                        -0.8447,
+                        0.2441,
+                        -0.09493,
+                        -0.8555,
+                        0.2431,
+                        -0.09672,
+                        -0.8593,
+                        0.2446,
+                        -0.1031,
+                        -0.8739,
+                        0.2414,
+                        -0.1103,
+                        -0.8813,
+                        0.2384,
+                        -0.1048,
+                        -0.8862,
+                        0.2369,
+                        -0.09653,
+                        -0.8842,
+                        0.2381,
+                        -0.09623,
+                        -0.8778,
+                        0.2398,
+                        -0.09371,
+                        -0.8663,
+                        0.2426,
+                        -0.08719,
+                        -0.8424,
+                        0.2454,
+                        -0.08048,
+                        -0.826,
+                        0.2459,
+                        -0.0718,
+                        -0.8121,
+                        0.2449,
+                        -0.06263,
+                        -0.7991,
+                        0.2432,
+                        -0.05752,
+                        -0.7902,
+                        0.2419,
+                        -0.05296,
+                        -0.7824,
+                        0.2399,
+                        -0.04833,
+                        -0.7754,
+                        0.2382,
+                        -0.05453,
+                        -0.7761,
+                        0.2231,
+                        -0.05103,
+                        -0.7711,
+                        0.2323,
+                        -0.04922,
+                        -0.7716,
+                        0.2338,
+                        -0.1115,
+                        -0.7721,
+                        0.2348,
+                        -0.1074,
+                        -0.7765,
+                        0.2312,
+                        -0.1154,
+                        -0.7714,
+                        0.2403
+                    ],
+                    [
+                        -0.1813,
+                        -0.8113,
+                        0.04264,
+                        -0.1748,
+                        -0.818,
+                        0.03519,
+                        -0.1857,
+                        -0.8285,
+                        0.04585,
+                        -0.1954,
+                        -0.8372,
+                        0.05923,
+                        -0.1988,
+                        -0.8403,
+                        0.06515,
+                        -0.1974,
+                        -0.835,
+                        0.06318,
+                        -0.1938,
+                        -0.8274,
+                        0.05603,
+                        -0.1887,
+                        -0.8213,
+                        0.04957,
+                        -0.1864,
+                        -0.8174,
+                        0.04727,
+                        -0.1924,
+                        -0.8349,
+                        0.07227,
+                        -0.1766,
+                        -0.8117,
+                        0.04897,
+                        -0.1767,
+                        -0.8236,
+                        0.04925,
+                        -0.1888,
+                        -0.8375,
+                        0.06691,
+                        -0.1698,
+                        -0.8196,
+                        0.04173
+                    ],
+                    [
+                        -0.003827,
+                        -0.8701,
+                        0.0409,
+                        0.003398,
+                        -0.88,
+                        0.0511,
+                        0.01026,
+                        -0.8772,
+                        0.05957,
+                        0.003496,
+                        -0.8899,
+                        0.05806,
+                        -0.004547,
+                        -0.9051,
+                        0.05249,
+                        -0.008519,
+                        -0.9084,
+                        0.05045,
+                        -0.01196,
+                        -0.915,
+                        0.05093,
+                        -0.02162,
+                        -0.9328,
+                        0.05623,
+                        -0.03013,
+                        -0.9395,
+                        0.05466,
+                        -0.03652,
+                        -0.9453,
+                        0.05219,
+                        -0.04583,
+                        -0.9536,
+                        0.05125,
+                        -0.04329,
+                        -0.9448,
+                        0.04883,
+                        -0.03484,
+                        -0.9301,
+                        0.04387,
+                        -0.02815,
+                        -0.9188,
+                        0.04123,
+                        -0.009772,
+                        -0.8714,
+                        0.0505,
+                        -0.0009572,
+                        -0.8797,
+                        0.06329,
+                        -0.03498,
+                        -0.9153,
+                        0.05041,
+                        -0.04336,
+                        -0.9329,
+                        0.05557,
+                        -0.003081,
+                        -0.8699,
+                        0.05583
+                    ]
+                ]
+            }
+        },
+        "edges": {
+            ".": [
+                "cracks"
+            ]
+        }
+    },
+    "description": "\"<p style=\\\"text-align: left;\\\">\\n\\n<!--StartFragment--><span style=\\\"text-align: justify; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;\\\">Multi-view photogrammetric acquisition of the museum artifacts -&nbsp;</span><span style=\\\"orphans: 2; text-align: justify; text-indent: 0px; widows: 2; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;\\\"><b>Etruscan <i>skyphos</i></b><i> </i>from the the Archeological Museum of Fara in Sabina, Italy). Model created by CNR-ISPC (D. Ferdani) within<span>&nbsp;</span></span><a href=\\\"https://www.ispc.cnr.it/it_it/2019/09/01/innova-patrimonio/\\\" style=\\\"orphans: 2; text-align: justify; text-indent: 0px; widows: 2;\\\">Innova Patrimonio</a><span style=\\\"orphans: 2; text-align: justify; text-indent: 0px; widows: 2; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;\\\">, a research project funded by Regione Lazio.</span><br></p><p style=\\\"text-align: center; \\\"><span style=\\\"orphans: 2; text-align: justify; text-indent: 0px; widows: 2; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;\\\"><br></span></p><p style=\\\"text-align: center; \\\"><span style=\\\"orphans: 2; text-align: justify; text-indent: 0px; widows: 2; text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; float: none; display: inline !important;\\\"><iframe width=\\\"560\\\" height=\\\"315\\\" frameborder=\\\"0\\\" allowfullscreen=\\\"\\\" src=\\\"https://www.youtube.com/embed/sNY4fLbd-gc?wmode=opaque&amp;start=0\\\" data-youtube-id=\\\"sNY4fLbd-gc\\\"></iframe><br></span></p><p class=\\\"sceditor-nlf\\\"><br></p>\"",
+    "title": "Skyphos"
 }

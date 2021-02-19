@@ -1,6 +1,8 @@
 {
 	"status": "complete",
 
+    "title": "Basic",
+
 	"environment":{
 		"mainpano":{
 			"url": "samples/pano/defsky-grass.jpg",

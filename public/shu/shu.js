@@ -64,8 +64,8 @@ SHU.getScenesSelect = (idselect)=>{
     });
 };
 
-SHU.getScenesInputList = (idlist)=>{
-    let htmlcontent = "<label for='sid'>Scene ID</label><br><input id='sid' type='text' list='sidlist' style='width:50%'>";
+SHU.createScenesInputList = (idlist)=>{
+    let htmlcontent = "<input id='sid' type='text' list='sidlist' style='width:100%'>";
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         htmlcontent += "<datalist id='sidlist'>";
@@ -85,9 +85,10 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             let sid = scene.sid;
 
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
+            let title = (scene.title)? scene.title : sid;
 
-            htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' style='padding:4px' >";
-            htmlcontent += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+sid+"</div></a><br>";
+            htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' data-search-term='"+title+"' style='padding:4px' >";
+            htmlcontent += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+title+"</div></a><br>";
             
             htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
             htmlcontent += "<img src='"+urlCover+"'>";

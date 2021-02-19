@@ -331,7 +331,7 @@ canvas {
 .descriptionText {
     text-shadow: 0px 0px 4px black;
     text-align: justify;
-    padding: 4px;
+    padding: 8px;
 }
 
 
@@ -403,6 +403,12 @@ canvas {
 
     color: black;
     background-color: rgba(255, 255, 255, 0.5);
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 
     margin: 3px;
     padding: 3px;
@@ -1183,17 +1189,17 @@ input[type="number"]:hover {
 }
 
 .atonDefaultBody {
-    background-color: #999;
+    background-color: #BBB;
     color: #FFF;
 
     overflow-y: auto;
-
+/*
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
     -o-user-select: none;
     user-select: none;
-
+*/
     touch-action: auto;
     -webkit-user-drag: auto;
 
@@ -1234,6 +1240,17 @@ label {
 
 .shuBlockNode:hover {
     box-shadow: 0px 0px 20px rgba(0,255,0, 0.5);
+}
+
+.shuFooter {
+    display: block;
+    text-align: center;
+    text-shadow: 0px 0px 4px black;
+
+    margin-top: 20px;
+    padding: 10px;
+
+    background-color:rgba(0,0,0, 0.2);
 }
 
 .atonTitle {
@@ -1285,6 +1302,12 @@ label {
 
     box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
     /*border: 2px solid black;*/
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .atonBlockSubTitle {

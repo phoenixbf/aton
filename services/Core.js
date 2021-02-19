@@ -543,11 +543,17 @@ Core.realizeBaseAPI = (app)=>{
 			let pubfile   = Core.DIR_SCENES + basepath+"/" + Core.STD_PUBFILE;
 			let coverfile = Core.DIR_SCENES + basepath+"/" + Core.STD_COVERFILE;
 
-			if (fs.existsSync(pubfile))
-				S.push({
-					sid: basepath,
-					cover: fs.existsSync(coverfile)? true : false
-				});
+			if (fs.existsSync(pubfile)){
+				let O = {};
+				O.sid = basepath;
+				O.cover = fs.existsSync(coverfile)? true : false;
+
+				let sobj = Core.readSceneJSON(O.sid);
+
+				if (sobj.title) O.title = sobj.title;
+
+				S.push(O);
+			}
 		}
 
 		res.send(S);

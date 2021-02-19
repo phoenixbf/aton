@@ -1219,7 +1219,7 @@ HATHOR.popupScene = ()=>{
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
 
-            //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
 
             //htmlcontent += "<br>";
         }
@@ -1241,26 +1241,31 @@ HATHOR.popupScene = ()=>{
 
         if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
 
+        if (ATON.SceneHub._bEdit) $('#btnInfo').show();
+        else $('#btnInfo').hide();
+
         // Build QR
         let url = window.location.href;
         new QRCode(document.getElementById("idQRcode"), url);
 
-    $('#btnSchanges').click(()=>{
-        ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
+        $('#btnSchanges').click(()=>{
+            ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
 
-        if (ATON.SceneHub._bEdit){
-            $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes");
-            $('#btnSchanges').attr("class","atonBTN switchedON");
-            ATON.FE.uiSwitchButton("scene",true);
-            console.log("Scene edits are now persistent");
-        }
-        else {
-            $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes");
-            $('#btnSchanges').attr("class","atonBTN");
-            ATON.FE.uiSwitchButton("scene",false);
-            console.log("Scene edits are now temporary"); 
-        }
-    });
+            if (ATON.SceneHub._bEdit){
+                $('#btnInfo').show();
+                $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes");
+                $('#btnSchanges').attr("class","atonBTN switchedON");
+                ATON.FE.uiSwitchButton("scene",true);
+                console.log("Scene edits are now persistent");
+            }
+            else {
+                $('#btnInfo').hide();
+                $('#btnSchanges').html("<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes");
+                $('#btnSchanges').attr("class","atonBTN");
+                ATON.FE.uiSwitchButton("scene",false);
+                console.log("Scene edits are now temporary"); 
+            }
+        });
 
 /*
         if (ATON.SceneHub._bEdit) $('#idEditMode').val('1');
@@ -1296,9 +1301,9 @@ HATHOR.popupScene = ()=>{
             ATON.FE.subPopup( HATHOR.popupGraphs );
         });
 
-//        $("#btnInfo").click(()=>{
-//            ATON.FE.subPopup( HATHOR.popupEditSceneInfo );
-//        });
+        $("#btnInfo").click(()=>{
+            ATON.FE.subPopup( HATHOR.popupEditSceneInfo );
+        });
 
         $("#btnSShot").click(()=>{
             ATON.FE.subPopup( ATON.FE.popupScreenShot );

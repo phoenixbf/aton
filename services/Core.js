@@ -28,13 +28,11 @@ Core = {};
 
 Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
-Core.DIR_NODE_MODULES = path.join(__dirname, "node_modules");
+Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
 Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
 Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
 Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
 Core.DIR_COLLECTION   = path.join(Core.DIR_PUBLIC,"collection/");
-//Core.DIR_MODELS       = path.join(Core.DIR_COLLECTION,"models/");
-//Core.DIR_PANO         = path.join(Core.DIR_COLLECTION,"pano/");
 Core.DIR_SCENES       = path.join(Core.DIR_PUBLIC,"scenes/");
 Core.DIR_WAPPS        = path.join(Core.DIR_PUBLIC,"wapps/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
@@ -47,7 +45,7 @@ Core.STATUS_PROCESSING = "processing";
 
 
 Core.config = undefined; // main config
-Core.users  = []; // users config
+Core.users  = [];        // users config
 
 
 // Main init routine

@@ -67,6 +67,7 @@ typings/
 #################################
 
 /services/sessions
+/sessions
 
 _prv
 *.psd

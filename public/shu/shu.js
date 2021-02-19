@@ -19,6 +19,11 @@ SHU.getBaseFolder = ( filepath )=>{
     return '';
 };
 
+SHU.getUserFromSID = (sid)=>{
+    let v = sid.split("/");
+    return v[0];
+};
+
 SHU.generateID = (prefix)=>{
     if (prefix === undefined) prefix = "id";
     //let currDate = new Date();
@@ -80,11 +85,14 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             let title = (scene.title)? scene.title : sid;
 
             htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' data-search-term='"+title+"' style='padding:4px' >";
-            htmlcontent += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+title+"</div></a><br>";
+            htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
             
             htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
             htmlcontent += "<img src='"+urlCover+"'>";
             htmlcontent += "</a>";
+
+            let user = SHU.getUserFromSID(sid);
+            htmlcontent += "<br><div class='atonAuthor'>"+user+"</div>";
             
             htmlcontent += "</div>";
         }

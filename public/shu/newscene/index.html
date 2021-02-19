@@ -268,7 +268,7 @@ let addNodeBlock = (nid)=>{
 let addNewNodeBlock = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(255,255,255, 0.2);'>";
+    htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(0,0,0, 0.2);'>";
     htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
     htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
@@ -429,7 +429,8 @@ window.addEventListener( 'load', ()=>{
             <div class="atonBlockTitle" onclick="$('#blockEnv').toggle()">Environment</div>
             <di id='blockEnv' class="atonBlockCut">
                 <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
-                    <h3>Panorama</h3>
+                    <div class='atonBlockSubTitle'>Panorama</div><br>
+                    <div class="descriptionText">You can pick here the main panorama (equirectangular image or video) from your collection</div>
                     <div class='select'>
                         <select id='panopath'><option value=''>NONE</option></select><div class='selectArrow'></div>
                     </div>
@@ -437,8 +438,8 @@ window.addEventListener( 'load', ()=>{
                 </div>
 
                 <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
-                    <h3>Lighting</h3>
-                    <input id="autoLP" type="checkbox"><label for="autoLP">Automatic LightProbe</label><br>
+                    <div class='atonBlockSubTitle'>Lighting</div><br>
+                    <input id="autoLP" type="checkbox">Automatic LightProbe<br>
 <!--
                     <label for="dlight">Direct light</label>
                     <input id="dlight" type="text" size="10" placeholder="x,y,z">
@@ -451,7 +452,8 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <div id="btn-createscene" class="atonBTN atonBTN-green atonBTN-large" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
+        <div id="btn-createscene" class="atonBTN atonBTN-green" style="width: 80%;" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
+        <br>
     </div>
     
     </body>

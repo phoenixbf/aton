@@ -5,12 +5,11 @@
   "main": "ATON.service.main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup": "npm install pm2 parcel jsdoc -g",
-    "start": "node ATON.service.main.js",
-    "start-vrc": "node ATON.service.vroadcast.js",
+    "start": "node services/ATON.service.main.js",
+    "start-vrc": "node services/ATON.service.vroadcast.js",
     "deploy": "pm2 start ecosystem.config.js",
-    "build-three": "parcel build ./tool-three.bundle.js -d ../public/dist/ --out-file THREE.bundle.js",
-    "build-aton": "parcel build ../public/src/ATON.js -d ../public/dist/ --out-file ATON.min.js",
+    "build-three": "parcel build ./services/tool-three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
+    "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
     "build-apidoc": "jsdoc -c config-jsdoc.json"
   },
   "author": "Bruno Fanini",

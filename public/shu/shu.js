@@ -99,6 +99,8 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
 
     ATON.Utils.checkAuth((data)=>{
+        htmlcode += "<div id='btn-t-aton' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/aton.png'></div>";
+
         if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>"+data.username+"</div>";
         else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>User</div>";
 
@@ -111,6 +113,7 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
 
         $("#"+idcontainer).append(htmlcode);
 
+        $("#btn-t-aton").click(()=>{ window.location.href = window.location.origin; });
         $("#btn-t-user").click(()=>{ window.location.href = "../../shu/auth/"; });
         $("#btn-t-scenes").click(()=>{ window.location.href = "../../shu/scenes/"; });
         $("#btn-t-users").click(()=>{ window.location.href = "../../shu/users/"; });

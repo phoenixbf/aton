@@ -1028,7 +1028,7 @@ input[type="checkbox"]:checked {
 }
 input[type="checkbox"]:hover {
     border: 2px solid white;
-    /*background: #CCFFCC;*/
+    box-shadow: 0px 0px 10px white;
 }
 
 input[type="radio"] {
@@ -1055,6 +1055,7 @@ input[type="radio"]:checked {
 }
 input[type="radio"]:hover {
     border: 2px solid white;
+    box-shadow: 0px 0px 10px white;
 }
 
 
@@ -1074,6 +1075,7 @@ input[type="text"]{
 }
 input[type="text"]:hover {
     border: 2px solid white;
+    box-shadow: 0px 0px 10px white;
 }
 
 input[type="password"]{
@@ -1092,6 +1094,7 @@ input[type="password"]{
 }
 input[type="password"]:hover {
     border: 2px solid white;
+    box-shadow: 0px 0px 10px white;
 }
 
 input[type="number"]{
@@ -1110,6 +1113,7 @@ input[type="number"]{
 }
 input[type="number"]:hover {
     border: 2px solid white;
+    box-shadow: 0px 0px 10px white;
 }
 
 /* SELECT */
@@ -1418,132 +1422,4 @@ label {
     box-shadow: 0 0px 5px rgba(0,0,0, 1.0);
 
     /*border: 2px solid black;*/
-}
-
-/* Icon sprites */
-.icon {
-    margin: 0px;
-    padding: 0px;
-    text-align: center;    
-}
-
-.icon-add {
-  background-image: url("../spritesheet.png");
-  background-position: 0px 0px;
-  width: 32px;
-  height: 32px;
-}
-.icon-aton {
-  background-image: url("../spritesheet.png");
-  background-position: -32px 0px;
-  width: 32px;
-  height: 32px;
-}
-.icon-devori {
-  background-image: url("../spritesheet.png");
-  background-position: 0px -32px;
-  width: 32px;
-  height: 32px;
-}
-.icon-embed {
-  background-image: url("../spritesheet.png");
-  background-position: -32px -32px;
-  width: 32px;
-  height: 32px;
-}
-.icon-fp {
-  background-image: url("../spritesheet.png");
-  background-position: -64px 0px;
-  width: 32px;
-  height: 32px;
-}
-.icon-fullscreen {
-  background-image: url("../spritesheet.png");
-  background-position: -64px -32px;
-  width: 32px;
-  height: 32px;
-}
-.icon-home {
-  background-image: url("../spritesheet.png");
-  background-position: 0px -64px;
-  width: 32px;
-  height: 32px;
-}
-.icon-ii-inv-share {
-  background-image: url("../spritesheet.png");
-  background-position: -32px -64px;
-  width: 32px;
-  height: 32px;
-}
-.icon-layers {
-  background-image: url("../spritesheet.png");
-  background-position: -64px -64px;
-  width: 32px;
-  height: 32px;
-}
-.icon-next {
-  background-image: url("../spritesheet.png");
-  background-position: -96px 0px;
-  width: 32px;
-  height: 32px;
-}
-.icon-pov {
-  background-image: url("../spritesheet.png");
-  background-position: -96px -32px;
-  width: 32px;
-  height: 32px;
-}
-.icon-prev {
-  background-image: url("../spritesheet.png");
-  background-position: -96px -64px;
-  width: 32px;
-  height: 32px;
-}
-.icon-qr {
-  background-image: url("../spritesheet.png");
-  background-position: 0px -96px;
-  width: 32px;
-  height: 32px;
-}
-.icon-rec {
-  background-image: url("../spritesheet.png");
-  background-position: -32px -96px;
-  width: 32px;
-  height: 32px;
-}
-.icon-search-clear {
-  background-image: url("../spritesheet.png");
-  background-position: -64px -96px;
-  width: 32px;
-  height: 32px;
-}
-.icon-settings {
-  background-image: url("../spritesheet.png");
-  background-position: -96px -96px;
-  width: 32px;
-  height: 32px;
-}
-.icon-speech {
-  background-image: url("../spritesheet.png");
-  background-position: -128px 0px;
-  width: 32px;
-  height: 32px;
-}
-.icon-trash {
-  background-image: url("../spritesheet.png");
-  background-position: -128px -32px;
-  width: 32px;
-  height: 32px;
-}
-.icon-vr {
-  background-image: url("../spritesheet.png");
-  background-position: -128px -64px;
-  width: 32px;
-  height: 32px;
-}
-.icon-warn {
-  background-image: url("../spritesheet.png");
-  background-position: -128px -96px;
-  width: 32px;
-  height: 32px;
 }

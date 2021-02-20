@@ -394,7 +394,7 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('USTATE', (data)=>{
         let S = VRoadcast.decodeState(data);
 
-        console.log(data);
+        //console.log(data);
 
         let uid = S.userid;
         let A = VRoadcast.touchAvatar(uid);
@@ -522,7 +522,7 @@ VRoadcast.decodeState = (binData)=>{
     //S.userid = binData[20];
     S.userid = view[20];
 
-    console.log(view);
+    //console.log(view);
 
     // First decode quat
     S.quaternion = new THREE.Quaternion(

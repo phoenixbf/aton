@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -129,6 +129,11 @@ SUI.init = ()=>{
     SUI.fpTeleport.visible = false;
     ATON._rootUI.add(SUI.fpTeleport);
 
+    // Sem-shapes icons
+    SUI.gSemIcons = ATON.createUINode();
+    SUI.gSemIcons.disablePicking();
+    ATON._rootUI.add(SUI.gSemIcons);
+
     // Main Font
     //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
     //SUI.PATH_FONT_TEX  = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.png"; // ATON.PATH_RES+"fonts/custom.png"
@@ -162,9 +167,16 @@ SUI.init = ()=>{
     SUI._labelScale   = ATON.Utils.isMobile()? 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
-    ATON.on( "SemanticNodeHover", (semid)=>{
+    ATON.on("SemanticNodeHover", (semid)=>{
         SUI.setInfoNodeText(semid);
+        SUI.gSemIcons.hide();
     });
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        SUI.gSemIcons.show();
+    });
+
+    //SUI.setSemIconsOpacity(0.5);
+
 /*
     ATON.on("UINodeHover", (uiid)=>{
         console.log("Hover UI node: "+uiid);
@@ -208,6 +220,29 @@ SUI.setSelectorModel = (path, bUseStdMat)=>{
     SUI.mainSelector.load(path).disablePicking();
     if (bUseStdMat) SUI.mainSelector.setMaterial( ATON.MatHub.getMaterial("selector") );
 };
+
+// Sem-shape icons
+SUI.addSemIcon = (semid, meshape)=>{
+    let bb = new THREE.Box3().setFromObject( meshape );
+    let bs = new THREE.Sphere();
+    bb.getBoundingSphere(bs);
+
+    // icon sprite
+    let semicon = new THREE.Sprite( ATON.MatHub.semIcon );
+    semicon.position.copy(bs.center);
+
+    let ss = 0.035; //bs.radius * 0.3;
+    semicon.scale.set(ss,ss,1.0);
+    semicon.name = semid;
+
+    SUI.gSemIcons.add(semicon);
+};
+
+SUI.setSemIconsOpacity = (f)=>{
+    if (f === undefined) ATON.MatHub.semIcon.opacity = 1.0;
+    else ATON.MatHub.semIcon.opacity = f;
+};
+
 
 SUI.buildInfoNode = ()=>{
     SUI.infoNode = ATON.createUINode();
@@ -420,6 +455,7 @@ SUI.update = ()=>{
     }
     else SUI._measLine.visible = false;
 
+    // Selector
     if (ATON._queryDataScene &amp;&amp; !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
         SUI.mainSelector.position.copy(ATON._queryDataScene.p);
@@ -429,7 +465,15 @@ SUI.update = ()=>{
         //SUI.fpTeleport.visible = false;
     }
 
-    
+    // SemIcons
+    if (ATON.Nav._bInteracting){
+        SUI.gSemIcons.hide();
+    }
+    else {
+        if (ATON._hoveredSemNode === undefined) SUI.gSemIcons.show();
+    }
+
+    // Teleport SUI
     if ((!ATON.Nav.isOrbit() || ATON.XR._bPresenting) &amp;&amp; ATON.Nav.currentQueryValidForLocomotion()){
         SUI.fpTeleport.visible = true;
         SUI.fpTeleport.position.copy(ATON._queryDataScene.p);
@@ -481,7 +525,7 @@ export default SUI;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

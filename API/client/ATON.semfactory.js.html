@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -93,6 +93,7 @@
 			<article></article>
 			<pre class="prettyprint source language-javascript line-numbers"><code class="language-javascript">/*
     ATON Semantic shapes factory
+    TODO: rename in SemHub
 
     author: bruno.fanini_AT_gmail.com
 
@@ -105,6 +106,7 @@ ATON Semantic Factory
 let SemFactory = {};
 
 SemFactory.FLOAT_PREC = 5;
+SemFactory.useSemIcons = false;
 
 
 SemFactory.init = ()=>{
@@ -249,7 +251,11 @@ SemFactory.completeConvexShape = (semid)=>{
 
     let S = ATON.getSemanticNode(semid) || ATON.createSemanticNode(semid);
     
-    S.add(SemFactory.currSemNode.children[0]);
+    let meshape = SemFactory.currSemNode.children[0];
+    
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, meshape);
+
+    S.add( meshape );
     S.setMaterial( /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape);
     S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ ATON.MatHub.materials.semanticShape, /*ATON.MatHub.materials.semanticShapeHL*/SemFactory.currMaterial);
     S.enablePicking();
@@ -289,7 +295,9 @@ SemFactory.createConvexShape = (semid, points)=>{
         semesh.userData._convexPoints.push( p.x );
         semesh.userData._convexPoints.push( p.y );
         semesh.userData._convexPoints.push( p.z );
-        }
+    }
+
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, semesh);
 
     let S = ATON.getOrCreateSemanticNode(semid);
     S.add(semesh);
@@ -345,6 +353,8 @@ SemFactory.createSphere = (semid, location, radius)=>{
     sphere.scale.set(radius, radius, radius);
     sphere.add(M);
 
+    if (SemFactory.useSemIcons) ATON.SUI.addSemIcon(semid, sphere);
+
     S.add( sphere );
     S.enablePicking();
     S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape, SemFactory.currMaterial/*ATON.MatHub.materials.semanticShapeHL*/);
@@ -365,6 +375,20 @@ SemFactory.createSurfaceSphere = (semid)=>{
     return SemFactory.createSphere(semid, p,r);
 };
 
+SemFactory.deleteSemanticNode = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+
+    if (S === undefined) return false;
+    S.removeChildren();
+
+    for (let s in ATON.SUI.gSemIcons.children){
+        let C = ATON.SUI.gSemIcons.children[s];
+        if (C &amp;&amp; C.name === semid) ATON.SUI.gSemIcons.removeChild(C);
+    }
+
+    return true;
+};
+
 export default SemFactory;</code></pre>
 		</section>
 			</div>
@@ -372,7 +396,7 @@ export default SemFactory;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

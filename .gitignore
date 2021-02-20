@@ -66,8 +66,12 @@ typings/
 #   ATON framework custom
 #################################
 
+# Passport sessions
 /services/sessions
 /sessions
+
+# Custom ATON configurations
+/config
 
 _prv
 *.psd

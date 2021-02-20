@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -132,7 +132,8 @@ VRoadcast.init = ()=>{
 
     VRoadcast.uid = undefined; // my userID (0,1,....)
     VRoadcast._bStreamFocus = false; // stream focal point
-    VRoadcast._numUsers = 0;
+    
+    VRoadcast._numUsers = 1;
 
     VRoadcast.avatarList = [];
 
@@ -319,6 +320,12 @@ VRoadcast.requestSceneEnter = (sceneid)=>{
     VRoadcast.socket.emit("SENTER", sceneid );
 };
 
+VRoadcast.requestSceneState = ()=>{
+    if (!VRoadcast.socket) return;
+
+    VRoadcast.socket.emit("SSTATE");
+};
+
 /**
 Connect to VRoadcast service
 @param {string} address - the address of the service (optional). Default is same server where main service is running
@@ -353,6 +360,8 @@ VRoadcast.connect = (address)=>{
 
 VRoadcast.disconnect = ()=>{
     if (VRoadcast.socket === undefined) return;
+
+    VRoadcast._numUsers = 1;
 
     VRoadcast.socket.disconnect();
     VRoadcast._connected = false;
@@ -430,7 +439,17 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (VRoadcast._elChat) VRoadcast._elChat.append("&lt;i>Your ID is #"+data+"&lt;/i>&lt;br>");
 
+        // Request scene state
+        VRoadcast.requestSceneState();
+
         ATON.fireEvent("VRC_IDassigned", data);
+    });
+
+    VRoadcast.socket.on('SSTATE', (data)=>{
+        VRoadcast._numUsers = data.numUsers;
+        console.log("Num. users: "+VRoadcast._numUsers);
+
+        ATON.fireEvent("VRC_SceneState", data);
     });
 
     VRoadcast.socket.on('UENTER', (data)=>{
@@ -441,6 +460,10 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (VRoadcast._elChat) VRoadcast._elChat.append("&lt;i>User #"+uid+" entered the scene&lt;/i>&lt;br>");
 
         VRoadcast.touchAvatar(uid);
+        
+        //VRoadcast._numUsers++;
+        VRoadcast.requestSceneState();
+        ATON.fireEvent("VRC_UserEnter", uid);
     });
 
     VRoadcast.socket.on('ULEAVE', (data)=>{
@@ -449,12 +472,16 @@ VRoadcast._registerSocketHandlers = ()=>{
         
         let A = VRoadcast.avatarList[uid];
         if (A) A.hide();
+        //VRoadcast.destroyAvatar(uid);
+
         // TODO: hide also focus
 
         console.log("User #" +uid+" left the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("&lt;i>User #"+uid+" left the scene&lt;/i>&lt;br>");
 
-        if (VRoadcast._numUsers>0) VRoadcast._numUsers--;
+        //if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
+        VRoadcast.requestSceneState();
+        ATON.fireEvent("VRC_UserLeave", uid);
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
@@ -654,12 +681,12 @@ VRoadcast.sendState = ()=>{
     let fp = ATON.getSceneQueriedPoint();
     if (VRoadcast._bStreamFocus &amp;&amp; fp !== undefined){
         //let F = new THREE.Vector3();
-        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(3);
-        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(3);
-        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(3);
-        let r  = ATON.SUI.getSelectorRadius().toPrecision(3);
+        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(5);
+        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(5);
+        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(5);
+        let r  = ATON.SUI.getSelectorRadius().toPrecision(5);
         
-        VRoadcast.socket.emit("UFOCUS", [fx,fy,fz,r]);
+        VRoadcast.socket.emit("UFOCUS", [fx,fy,fz, r]);
     }
 
     // Compose state
@@ -711,14 +738,30 @@ VRoadcast.touchAvatar = (uid)=>{
         //console.log(VRoadcast.avatarList);
         //console.log(ATON.MatHub.materials.avatars);
         //console.log(A);
-        VRoadcast._numUsers++;
+        
+        //VRoadcast._numUsers++;
+        //ATON.fireEvent("VRC_UserEnter", uid);
     }
 
     let A = VRoadcast.avatarList[uid];
+
+    // Reclaim of previously used slot
+    if (!A.visible){
+        VRoadcast._numUsers++;
+        ATON.fireEvent("VRC_UserEnter", uid);
+    }
+
     A.show();
 
     return A;
 }
+
+VRoadcast.destroyAvatar = (uid)=>{
+    let A = VRoadcast.avatarList[uid];
+    if (A === undefined) return;
+
+    A.destroy();
+};
 
 VRoadcast.clearAllAvatars = ()=>{
     for (let i in VRoadcast.avatarList){
@@ -735,7 +778,7 @@ export default VRoadcast;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

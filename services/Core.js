@@ -28,6 +28,7 @@ Core = {};
 
 Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
+Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
 Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
 Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
@@ -48,20 +49,60 @@ Core.config = undefined; // main config
 Core.users  = [];        // users config
 
 
+// Configs
+//========================================
+// Default main config
+Core.CONF_MAIN = {
+	services: {
+		main: {
+			PORT: 8080,		// main ATON port
+			PORT_S: 8083,	// secure ATON port
+			pathCert: "",	// custom path to cert
+			pathKey: "",	// custom path to key
+			apidoc: true	// expose API documentation folder
+		},
+
+		vroadcast: {
+			PORT: 8890,					// local VRoadcast port
+			address: "ws://localhost"
+		},
+
+		atonizer: {
+			PORT: 8085,
+			address: "http://localhost"
+		}
+	},
+
+    landing: {
+        gallery: true,		// Show gallery (public scenes) in the landing page
+		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
+    }
+};
+
+// Default users config
+// NOTE: this is a sample users config, you'll need to provide your own
+Core.CONF_USERS = [
+	{ 
+        username: "ra",
+        admin: true,
+        password: "ra2020"
+	}
+];
+
+
+
 // Main init routine
 Core.init = ()=>{
-	if (!fs.existsSync(Core.DIR_PRV)) makeDir.sync(Core.DIR_PRV);
+	if (!fs.existsSync(Core.DIR_CONFIG)) makeDir.sync(Core.DIR_CONFIG);
 
-	Core.config = Core.loadConfigFile("config.json");
-	Core.users  = Core.loadConfigFile("config-users.json");
+	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
+	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 	console.log("DB users: "+Core.users.length);
 };
 
-// Routine for loading custom -> default fallback config JSON files
-Core.loadConfigFile = (jsonfile)=>{
-	let customconfig  = path.join(Core.DIR_PRV + jsonfile);
-	let defaultconfig = path.join(__dirname, jsonfile);
+Core.loadConfigFile = (jsonfile, defconf)=>{
+	let customconfig  = path.join(Core.DIR_CONFIG + jsonfile);
 
 	if (fs.existsSync(customconfig)){
 		let C = JSON.parse(fs.readFileSync(customconfig, 'utf8'));
@@ -70,13 +111,14 @@ Core.loadConfigFile = (jsonfile)=>{
 	}
 
 	// Custom config does not exist...
-	console.log(jsonfile+" not found in '_prv/', Loading default...");
-	let C = JSON.parse(fs.readFileSync(defaultconfig, 'utf8'));
+	console.log("Custom config not found in "+Core.DIR_CONFIG+", using default...");
 
 	// Create custom config from default
-	fs.writeFileSync(customconfig, JSON.stringify(C, null, 4));
-	return C;
+	fs.writeFileSync(customconfig, JSON.stringify(defconf, null, 4));
+	return defconf;
+
 };
+
 
 // SSL certs
 Core.getCertPath = ()=>{

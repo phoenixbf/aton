@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -104,6 +104,8 @@ ATON Utils
 @namespace Utils
 */
 let Utils = {};
+
+Utils.TSTRING_SEPARATOR = " ";
 
 
 Utils.init = ()=>{
@@ -211,6 +213,13 @@ Utils.getFileExtension = ( filepath )=>{
 	return filepath.substr(filepath.lastIndexOf('.')+1).toLowerCase();
 };
 
+Utils.isVideo = ( filepath )=>{
+    let ext = Utils.getFileExtension(filepath);
+
+    if (ext === "mp4")  return true;
+    if (ext === "webm") return true;
+};
+
 Utils.getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf('/');
     if (index !== -1) return filepath.substring( 0, index + 1 );
@@ -224,6 +233,7 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
+// JSON post utility
 Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({
         url: endpoint,
@@ -265,7 +275,25 @@ Utils.mergeObject = ( object )=>{
     return group;
 };
 
+Utils.setPicking = (node, type, b)=>{
+    if (b === undefined) b = true;
+
+    //console.log(b);
+    
+    node.traverse((o) => {
+        if (b) o.layers.enable(type);
+        else o.layers.disable(type);
+    });
+
+    // children
+    for (let c in node.children){
+        let C = node.children[c];
+        Utils.setPicking(C, type, b);
+    }
+};
+
 // Helper visitor routine
+// Note: parentNode is not connected to model
 Utils.modelVisitor = (parentNode, model)=>{
     if (!model) return this;
 
@@ -275,11 +303,18 @@ Utils.modelVisitor = (parentNode, model)=>{
     let type = N.type; // Differentiate visit depending on node type
 
     model.traverse( ( o ) => {
-
+/*
         if (N.bPickable !== undefined){
             if (N.bPickable) o.layers.enable(type);
             else o.layers.disable(type);
+            //Utils.setPicking(N, type, N.bPickable);
         }
+        //else o.layers.enable(type); //Utils.setPicking(N, type, true);
+*/
+
+        //Utils.setPicking(model, type, N.bPickable);
+        //if (!N.visible) Utils.setPicking(model, type, false);
+
 
         if (o.isMesh){
             //let numVertices = o.geometry.attributes.position.count;
@@ -294,6 +329,13 @@ Utils.modelVisitor = (parentNode, model)=>{
                 if (o.geometry){
                     o.geometry.computeBoundsTree();
                     console.log("Computed visible BVH");
+
+                    // visualize bounds
+                    /*
+                    let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
+                    BVHVis.update();
+                    o.parent.add(BVHVis);
+                    */
                 }
 
                 // Ensure mipmapping is correct
@@ -334,6 +376,36 @@ Utils.modelVisitor = (parentNode, model)=>{
         }
 */
     });
+
+    //Utils.setPicking(N, type, N.bPickable);
+
+/*
+    for (let c in model.children){
+        let C = model.children[c];
+        Utils.modelVisitor(model, C);
+    }
+*/
+};
+
+Utils.parseTransformString = (tstr)=>{
+    let T = new THREE.Group();
+
+    let values = tstr.split(Utils.TSTRING_SEPARATOR);
+    let numValues = values.length;
+
+    if (numValues &lt; 3) return T; // nothing to do
+
+    // Translation
+    T.position.set( parseFloat(values[0]), parseFloat(values[1]), parseFloat(values[2]) );
+    if (numValues &lt; 6) return T;
+
+    // Rotation
+    T.rotation.set( parseFloat(values[3]), parseFloat(values[4]), parseFloat(values[5]) );
+    if (numValues &lt; 9) return T;
+
+    // Scale
+    T.scale.set( parseFloat(values[6]), parseFloat(values[7]), parseFloat(values[8]) );
+    return T;
 };
 
 Utils.setVectorPrecision = (v, prec)=>{
@@ -343,6 +415,19 @@ Utils.setVectorPrecision = (v, prec)=>{
     
     return v;
 };
+
+// User auth
+Utils.checkAuth = (onReceive)=>{
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{ onReceive(data); }
+    });
+};
+
 
 /**
 Get human-readable length (distances, measures, etc...)
@@ -376,6 +461,24 @@ Utils.getHumanReadableDistance = (d)=>{
 Utils.stripHTMLtagsFromString = (str)=>{
     str = str.replace(/(&lt;([^>]+)>)/gi, "");
     return str;
+};
+
+// Fullscreen (NOT USED)
+Utils.requestFullscreen = ()=>{
+    let elem = document.documentElement;
+
+    if (elem.requestFullscreen) elem.requestFullscreen();
+
+    else if (elem.mozRequestFullScreen){ // Firefox
+        elem.mozRequestFullScreen();
+    }
+    else if (elem.webkitRequestFullscreen){ // Chrome, Safari &amp; Opera
+        elem.webkitRequestFullscreen();
+    }
+    else if (elem.msRequestFullscreen){ // IE/Edge
+        elem.msRequestFullscreen();
+    }
+    return true;
 };
 
 
@@ -561,7 +664,7 @@ export default Utils;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

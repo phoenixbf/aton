@@ -469,6 +469,24 @@
           "orient",
           "orienttocamera"
         ],
+        "Node.html#addTransform": [
+          "3d",
+          "ad",
+          "add",
+          "addtransform",
+          "befor",
+          "function",
+          "instanc",
+          "load",
+          "model",
+          "multipl",
+          "node",
+          "node#addtransform",
+          "resourc",
+          "result",
+          "t",
+          "transform"
+        ],
         "Node.html#load": [
           "3d",
           "avoid",
@@ -888,13 +906,6 @@
           "namespac",
           "record"
         ],
-        "SemFactory.html": [
-          "aton",
-          "factori",
-          "namespac",
-          "semant",
-          "semfactori"
-        ],
         "XR.html": [
           "aton",
           "immers",
@@ -1096,6 +1107,13 @@
           "scene",
           "scenehub.load",
           "sid"
+        ],
+        "SemFactory.html": [
+          "aton",
+          "factori",
+          "namespac",
+          "semant",
+          "semfactori"
         ],
         "Utils.html": [
           "aton",
@@ -1844,14 +1862,6 @@
           "set",
           "setpathscen"
         ],
-        "ATON.html#.toggleFullScreen": [
-          "aton.togglefullscreen",
-          "fullscreen",
-          "function",
-          "lt;static&gt",
-          "toggl",
-          "togglefullscreen"
-        ],
         "ATON.html#.realize": [
           "aton",
           "aton.r",
@@ -2187,6 +2197,10 @@
                 "ref": "POV.html",
                 "tf": 2.5
               },
+              "Node.html#addTransform": {
+                "ref": "Node.html#addTransform",
+                "tf": 3.8461538461538463
+              },
               "Node.html#load": {
                 "ref": "Node.html#load",
                 "tf": 2.1739130434782608
@@ -2210,6 +2224,10 @@
               "Node.html#addKeywords": {
                 "ref": "Node.html#addKeywords",
                 "tf": 6.25
+              },
+              "Node.html#addTransform": {
+                "ref": "Node.html#addTransform",
+                "tf": 3.8461538461538463
               }
             },
             "a": {
@@ -2253,6 +2271,10 @@
                 "Node.html#addKeywords": {
                   "ref": "Node.html#addKeywords",
                   "tf": 6.25
+                },
+                "Node.html#addTransform": {
+                  "ref": "Node.html#addTransform",
+                  "tf": 3.8461538461538463
                 },
                 "FE.html#.addBasicLoaderEvents": {
                   "ref": "FE.html#.addBasicLoaderEvents",
@@ -2353,6 +2375,64 @@
                   }
                 }
               },
+              "t": {
+                "docs": {},
+                "r": {
+                  "docs": {},
+                  "a": {
+                    "docs": {},
+                    "n": {
+                      "docs": {},
+                      "s": {
+                        "docs": {},
+                        "f": {
+                          "docs": {},
+                          "o": {
+                            "docs": {},
+                            "r": {
+                              "docs": {},
+                              "m": {
+                                "docs": {
+                                  "Node.html#addTransform": {
+                                    "ref": "Node.html#addTransform",
+                                    "tf": 700
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "o": {
+                  "docs": {},
+                  "s": {
+                    "docs": {},
+                    "t": {
+                      "docs": {},
+                      "o": {
+                        "docs": {},
+                        "r": {
+                          "docs": {},
+                          "a": {
+                            "docs": {},
+                            "g": {
+                              "docs": {
+                                "AppHub.html#.addToStorage": {
+                                  "ref": "AppHub.html#.addToStorage",
+                                  "tf": 675
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
               "b": {
                 "docs": {},
                 "a": {
@@ -2404,35 +2484,6 @@
                     "FE.html#.loadSceneID": {
                       "ref": "FE.html#.loadSceneID",
                       "tf": 4.545454545454546
-                    }
-                  }
-                }
-              },
-              "t": {
-                "docs": {},
-                "o": {
-                  "docs": {},
-                  "s": {
-                    "docs": {},
-                    "t": {
-                      "docs": {},
-                      "o": {
-                        "docs": {},
-                        "r": {
-                          "docs": {},
-                          "a": {
-                            "docs": {},
-                            "g": {
-                              "docs": {
-                                "AppHub.html#.addToStorage": {
-                                  "ref": "AppHub.html#.addToStorage",
-                                  "tf": 675
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
                     }
                   }
                 }
@@ -2766,10 +2817,6 @@
                     "ref": "MediaRec.html",
                     "tf": 16.666666666666664
                   },
-                  "SemFactory.html": {
-                    "ref": "SemFactory.html",
-                    "tf": 16.666666666666664
-                  },
                   "XR.html": {
                     "ref": "XR.html",
                     "tf": 16.666666666666664
@@ -2788,6 +2835,10 @@
                   },
                   "SceneHub.html": {
                     "ref": "SceneHub.html",
+                    "tf": 16.666666666666664
+                  },
+                  "SemFactory.html": {
+                    "ref": "SemFactory.html",
                     "tf": 16.666666666666664
                   },
                   "Utils.html": {
@@ -3155,59 +3206,6 @@
                                                           "tf": 1150
                                                         }
                                                       }
-                                                    }
-                                                  }
-                                                }
-                                              }
-                                            }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  },
-                  "t": {
-                    "docs": {},
-                    "o": {
-                      "docs": {},
-                      "g": {
-                        "docs": {},
-                        "g": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "e": {
-                              "docs": {},
-                              "f": {
-                                "docs": {},
-                                "u": {
-                                  "docs": {},
-                                  "l": {
-                                    "docs": {},
-                                    "l": {
-                                      "docs": {},
-                                      "s": {
-                                        "docs": {},
-                                        "c": {
-                                          "docs": {},
-                                          "r": {
-                                            "docs": {},
-                                            "e": {
-                                              "docs": {},
-                                              "e": {
-                                                "docs": {},
-                                                "n": {
-                                                  "docs": {
-                                                    "ATON.html#.toggleFullScreen": {
-                                                      "ref": "ATON.html#.toggleFullScreen",
-                                                      "tf": 1150
                                                     }
                                                   }
                                                 }
@@ -6717,6 +6715,10 @@
                             "ref": "Node.html#orientToCamera",
                             "tf": 110
                           },
+                          "Node.html#addTransform": {
+                            "ref": "Node.html#addTransform",
+                            "tf": 110
+                          },
                           "Node.html#load": {
                             "ref": "Node.html#load",
                             "tf": 110
@@ -7113,10 +7115,6 @@
                             "ref": "ATON.html#.setPathScenes",
                             "tf": 110
                           },
-                          "ATON.html#.toggleFullScreen": {
-                            "ref": "ATON.html#.toggleFullScreen",
-                            "tf": 110
-                          },
                           "ATON.html#.realize": {
                             "ref": "ATON.html#.realize",
                             "tf": 110
@@ -7247,10 +7245,6 @@
                               "FE.html#.uiAddButtonFullScreen": {
                                 "ref": "FE.html#.uiAddButtonFullScreen",
                                 "tf": 16.666666666666664
-                              },
-                              "ATON.html#.toggleFullScreen": {
-                                "ref": "ATON.html#.toggleFullScreen",
-                                "tf": 25
                               }
                             }
                           }
@@ -9156,6 +9150,10 @@
                         "Node.html#disablePicking": {
                           "ref": "Node.html#disablePicking",
                           "tf": 5
+                        },
+                        "Node.html#addTransform": {
+                          "ref": "Node.html#addTransform",
+                          "tf": 3.8461538461538463
                         }
                       }
                     }
@@ -9898,6 +9896,10 @@
                       "ref": "LightProbe.html#update",
                       "tf": 3.125
                     },
+                    "Node.html#addTransform": {
+                      "ref": "Node.html#addTransform",
+                      "tf": 3.8461538461538463
+                    },
                     "Node.html#load": {
                       "ref": "Node.html#load",
                       "tf": 2.1739130434782608
@@ -10099,6 +10101,40 @@
               }
             }
           },
+          "u": {
+            "docs": {},
+            "l": {
+              "docs": {},
+              "t": {
+                "docs": {},
+                "i": {
+                  "docs": {},
+                  "p": {
+                    "docs": {},
+                    "l": {
+                      "docs": {
+                        "Node.html#addTransform": {
+                          "ref": "Node.html#addTransform",
+                          "tf": 3.8461538461538463
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "c": {
+              "docs": {},
+              "h": {
+                "docs": {
+                  "ATON.html#.realize": {
+                    "ref": "ATON.html#.realize",
+                    "tf": 4.166666666666666
+                  }
+                }
+              }
+            }
+          },
           "e": {
             "docs": {},
             "d": {
@@ -10160,20 +10196,6 @@
                       "ref": "GeoLoc.html#.getClosestPOIdistance",
                       "tf": 10
                     }
-                  }
-                }
-              }
-            }
-          },
-          "u": {
-            "docs": {},
-            "c": {
-              "docs": {},
-              "h": {
-                "docs": {
-                  "ATON.html#.realize": {
-                    "ref": "ATON.html#.realize",
-                    "tf": 4.166666666666666
                   }
                 }
               }
@@ -11657,11 +11679,37 @@
                     "docs": {},
                     "c": {
                       "docs": {
+                        "Node.html#addTransform": {
+                          "ref": "Node.html#addTransform",
+                          "tf": 3.8461538461538463
+                        },
                         "Node.html#load": {
                           "ref": "Node.html#load",
                           "tf": 4.3478260869565215
                         }
                       }
+                    }
+                  }
+                }
+              },
+              "u": {
+                "docs": {},
+                "l": {
+                  "docs": {},
+                  "t": {
+                    "docs": {
+                      "Node.html#addTransform": {
+                        "ref": "Node.html#addTransform",
+                        "tf": 3.8461538461538463
+                      }
+                    }
+                  }
+                },
+                "m": {
+                  "docs": {
+                    "ATON.html#.renderResume": {
+                      "ref": "ATON.html#.renderResume",
+                      "tf": 16.666666666666664
                     }
                   }
                 }
@@ -11726,17 +11774,6 @@
                           }
                         }
                       }
-                    }
-                  }
-                }
-              },
-              "u": {
-                "docs": {},
-                "m": {
-                  "docs": {
-                    "ATON.html#.renderResume": {
-                      "ref": "ATON.html#.renderResume",
-                      "tf": 16.666666666666664
                     }
                   }
                 }
@@ -14462,7 +14499,12 @@
           }
         },
         "t": {
-          "docs": {},
+          "docs": {
+            "Node.html#addTransform": {
+              "ref": "Node.html#addTransform",
+              "tf": 50
+            }
+          },
           "o": {
             "docs": {},
             "o": {
@@ -14521,10 +14563,6 @@
                     "Nav.html#.toggleUserControl": {
                       "ref": "Nav.html#.toggleUserControl",
                       "tf": 16.666666666666664
-                    },
-                    "ATON.html#.toggleFullScreen": {
-                      "ref": "ATON.html#.toggleFullScreen",
-                      "tf": 25
                     }
                   },
                   "e": {
@@ -14555,41 +14593,6 @@
                                               "ref": "Nav.html#.toggleUserControl",
                                               "tf": 700
                                             }
-                                          }
-                                        }
-                                      }
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "f": {
-                      "docs": {},
-                      "u": {
-                        "docs": {},
-                        "l": {
-                          "docs": {},
-                          "l": {
-                            "docs": {},
-                            "s": {
-                              "docs": {},
-                              "c": {
-                                "docs": {},
-                                "r": {
-                                  "docs": {},
-                                  "e": {
-                                    "docs": {},
-                                    "e": {
-                                      "docs": {},
-                                      "n": {
-                                        "docs": {
-                                          "ATON.html#.toggleFullScreen": {
-                                            "ref": "ATON.html#.toggleFullScreen",
-                                            "tf": 700
                                           }
                                         }
                                       }
@@ -14786,6 +14789,23 @@
                           "Node.html#setPosition": {
                             "ref": "Node.html#setPosition",
                             "tf": 12.5
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "f": {
+                    "docs": {},
+                    "o": {
+                      "docs": {},
+                      "r": {
+                        "docs": {},
+                        "m": {
+                          "docs": {
+                            "Node.html#addTransform": {
+                              "ref": "Node.html#addTransform",
+                              "tf": 7.6923076923076925
+                            }
                           }
                         }
                       }
@@ -16766,6 +16786,10 @@
                     "ref": "Node.html#setMaterial",
                     "tf": 4.545454545454546
                   },
+                  "Node.html#addTransform": {
+                    "ref": "Node.html#addTransform",
+                    "tf": 3.8461538461538463
+                  },
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 687.6811594202899
@@ -17545,10 +17569,6 @@
                                     "ref": "ATON.html#.setPathScenes",
                                     "tf": 33.33333333333333
                                   },
-                                  "ATON.html#.toggleFullScreen": {
-                                    "ref": "ATON.html#.toggleFullScreen",
-                                    "tf": 50
-                                  },
                                   "ATON.html#.realize": {
                                     "ref": "ATON.html#.realize",
                                     "tf": 50
@@ -17715,10 +17735,6 @@
                             "ref": "MediaRec.html",
                             "tf": 110
                           },
-                          "SemFactory.html": {
-                            "ref": "SemFactory.html",
-                            "tf": 110
-                          },
                           "XR.html": {
                             "ref": "XR.html",
                             "tf": 110
@@ -17737,6 +17753,10 @@
                           },
                           "SceneHub.html": {
                             "ref": "SceneHub.html",
+                            "tf": 110
+                          },
+                          "SemFactory.html": {
+                            "ref": "SemFactory.html",
                             "tf": 110
                           },
                           "Utils.html": {
@@ -19013,6 +19033,10 @@
                     "ref": "Node.html#orientToCamera",
                     "tf": 12.5
                   },
+                  "Node.html#addTransform": {
+                    "ref": "Node.html#addTransform",
+                    "tf": 3.8461538461538463
+                  },
                   "Node.html#load": {
                     "ref": "Node.html#load",
                     "tf": 2.1739130434782608
@@ -19116,6 +19140,38 @@
                                         "Node.html#addKeywords": {
                                           "ref": "Node.html#addKeywords",
                                           "tf": 1150
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "t": {
+                          "docs": {},
+                          "r": {
+                            "docs": {},
+                            "a": {
+                              "docs": {},
+                              "n": {
+                                "docs": {},
+                                "s": {
+                                  "docs": {},
+                                  "f": {
+                                    "docs": {},
+                                    "o": {
+                                      "docs": {},
+                                      "r": {
+                                        "docs": {},
+                                        "m": {
+                                          "docs": {
+                                            "Node.html#addTransform": {
+                                              "ref": "Node.html#addTransform",
+                                              "tf": 1150
+                                            }
+                                          }
                                         }
                                       }
                                     }
@@ -20161,6 +20217,20 @@
                 }
               }
             },
+            "f": {
+              "docs": {},
+              "o": {
+                "docs": {},
+                "r": {
+                  "docs": {
+                    "Node.html#addTransform": {
+                      "ref": "Node.html#addTransform",
+                      "tf": 3.8461538461538463
+                    }
+                  }
+                }
+              }
+            },
             "t": {
               "docs": {},
               "w": {
@@ -21126,7 +21196,7 @@
           }
         }
       },
-      "length": 1735
+      "length": 1745
     },
     "corpusTokens": [
       "1.0",
@@ -21147,6 +21217,7 @@
       "addpoi",
       "address",
       "addtostorag",
+      "addtransform",
       "adopt",
       "allow",
       "amount",
@@ -21196,7 +21267,6 @@
       "aton.setmainpanoramarot",
       "aton.setpathcollect",
       "aton.setpathscen",
-      "aton.togglefullscreen",
       "aton.updatelightprob",
       "attach",
       "attachto",
@@ -21211,6 +21281,7 @@
       "base",
       "basic",
       "becom",
+      "befor",
       "between",
       "blueprint",
       "boolean",
@@ -21487,6 +21558,7 @@
       "motion",
       "move",
       "much",
+      "multipl",
       "n",
       "namespac",
       "nav",
@@ -21524,6 +21596,7 @@
       "node",
       "node#a",
       "node#addkeyword",
+      "node#addtransform",
       "node#attachto",
       "node#attachtoroot",
       "node#disablepick",
@@ -21626,6 +21699,7 @@
       "resourc",
       "restor",
       "restorepreviousnavmod",
+      "result",
       "resum",
       "return",
       "root",
@@ -21717,6 +21791,7 @@
       "surfac",
       "switch",
       "system",
+      "t",
       "tablet",
       "take",
       "talk",
@@ -21732,12 +21807,12 @@
       "three.vector3",
       "through",
       "toggl",
-      "togglefullscreen",
       "toggleusercontrol",
       "tool",
       "toolbar",
       "tooltip",
       "track",
+      "transform",
       "transit",
       "translat",
       "true",
@@ -21829,7 +21904,7 @@
       "longname": "index",
       "name": "ATON 3.0 API",
       "tags": "index",
-      "summary": "ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).",
+      "summary": "ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).",
       "description": "",
       "body": ""
     },
@@ -22199,6 +22274,16 @@
       "summary": "",
       "description": "Orient this node to current camera"
     },
+    "Node.html#addTransform": {
+      "id": "Node.html#addTransform",
+      "kind": "function",
+      "title": "addTransform( T )",
+      "longname": "Node#addTransform",
+      "name": "addTransform",
+      "tags": "Node#addTransform addTransform",
+      "summary": "",
+      "description": "Add a transform for this node. Adding multiple transforms before loading a 3D model will result in instancing these resources"
+    },
     "Node.html#load": {
       "id": "Node.html#load",
       "kind": "function",
@@ -22554,17 +22639,6 @@
       "description": "ATON Media Recorder",
       "body": ""
     },
-    "SemFactory.html": {
-      "id": "SemFactory.html",
-      "kind": "namespace",
-      "title": "SemFactory",
-      "longname": "SemFactory",
-      "name": "SemFactory",
-      "tags": "SemFactory",
-      "summary": "",
-      "description": "ATON Semantic Factory",
-      "body": ""
-    },
     "XR.html": {
       "id": "XR.html",
       "kind": "namespace",
@@ -22749,6 +22823,17 @@
       "tags": "SceneHub.load load",
       "summary": "",
       "description": "Loads a scene by providing JSON path"
+    },
+    "SemFactory.html": {
+      "id": "SemFactory.html",
+      "kind": "namespace",
+      "title": "SemFactory",
+      "longname": "SemFactory",
+      "name": "SemFactory",
+      "tags": "SemFactory",
+      "summary": "",
+      "description": "ATON Semantic Factory",
+      "body": ""
     },
     "Utils.html": {
       "id": "Utils.html",
@@ -23375,16 +23460,6 @@
       "tags": "ATON.setPathScenes setPathScenes",
       "summary": "",
       "description": "Set path scenes"
-    },
-    "ATON.html#.toggleFullScreen": {
-      "id": "ATON.html#.toggleFullScreen",
-      "kind": "function",
-      "title": "&lt;static&gt; toggleFullScreen()",
-      "longname": "ATON.toggleFullScreen",
-      "name": "toggleFullScreen",
-      "tags": "ATON.toggleFullScreen toggleFullScreen",
-      "summary": "",
-      "description": "Toggle fullscreen"
     },
     "ATON.html#.realize": {
       "id": "ATON.html#.realize",

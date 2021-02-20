@@ -8,9 +8,9 @@
     "start": "node services/ATON.service.main.js",
     "start-vrc": "node services/ATON.service.vroadcast.js",
     "deploy": "pm2 start ecosystem.config.js",
-    "build-three": "parcel build ./services/tool-three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
+    "build-three": "parcel build ./services/tools/three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
-    "build-apidoc": "jsdoc -c config-jsdoc.json"
+    "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"
   },
   "author": "Bruno Fanini",
   "license": "GPLv3",

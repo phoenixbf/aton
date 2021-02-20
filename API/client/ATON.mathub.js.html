@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -109,9 +109,31 @@ MatHub.init = ()=>{
     MatHub.materials = {};
     MatHub.colors    = {};
 
-    MatHub.addDefaults();
-
     MatHub._loader = new THREE.MaterialLoader();
+
+    // Uniforms
+    MatHub._uSem = {
+        time: { type:'float', value: 0.0 },
+        tint: { type:'vec4', value: new THREE.Vector4(0.0,0.0,1.0, 0.1) }
+    };
+
+    MatHub.addDefaults();
+};
+
+MatHub.getDefVertexShader = ()=>{
+    return `
+        varying vec3 vPositionW;
+        varying vec3 vNormalW;
+        varying vec3 vNormalV;
+
+        void main(){
+            vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
+            vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
+            vNormalV   = normalize( vec3( normalMatrix * normal ) );
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+        }
+    `;
 };
 
 MatHub.addDefaults = ()=>{
@@ -140,8 +162,8 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.green,
         transparent: true,
         depthWrite: false,
-        opacity: 0.2, 
-        flatShading: true
+        opacity: 0.2 
+        //flatShading: true
     });
 
     // XR/VR ray
@@ -149,8 +171,8 @@ MatHub.addDefaults = ()=>{
         color: MatHub.colors.white, 
         transparent: true, 
         opacity: 0.2,
-        depthWrite: false,
-        flatShading: true
+        depthWrite: false
+        //flatShading: true
     });
 
     // Teleport locator
@@ -158,10 +180,9 @@ MatHub.addDefaults = ()=>{
         transparent: true, 
         opacity: 1.0,
         depthWrite: false,
-        flatShading: true,
+        //flatShading: true,
         side: THREE.DoubleSide
     });
-
     ATON.Utils.textureLoader.load(ATON.PATH_RES+"grad.png", (texture) => {
         MatHub.materials.teleportLoc.map = texture;
     });
@@ -173,11 +194,12 @@ MatHub.addDefaults = ()=>{
         transparent: true,
         depthWrite: false,
         opacity: 0.5, 
-        depthTest: false,
-        flatShading: true
+        depthTest: false
+        //flatShading: true
     });
 
     // Semantic shapes
+/*
     MatHub.materials.semanticShape = new THREE.MeshBasicMaterial({ 
         //color: MatHub.colors.white, 
         transparent: true,
@@ -185,20 +207,65 @@ MatHub.addDefaults = ()=>{
         opacity: 0.0,
         //flatShading: true
     });
+*/
+
+    MatHub.materials.semanticShape = new THREE.ShaderMaterial({
+        uniforms: MatHub._uSem,
+
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+
+            uniform float time;
+            uniform vec4 tint;
+
+		    void main(){
+		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+
+                float f;
+		        //f = dot(viewDirectionW, vNormalW);
+                //f = dot(vNormalV, vec3(0,0,1));
+		        //f = clamp(1.0 - f, 0.0, 1.0);
+
+                f = (1.0 * cos(time*2.0)); // - 0.5;
+                //f = cos(time + (vPositionW.y*10.0));
+                f = clamp(f, 0.0,1.0);
+
+		        gl_FragColor = vec4(tint.rgb, tint.a * f);
+		    }
+        `,
+        transparent: true,
+        depthWrite: false,
+        flatShading: false
+        //opacity: 0.0,
+    });
+
     MatHub.materials.semanticShapeHL = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.sem, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.2,
-        flatShading: true
+        opacity: 0.2
+        //flatShading: true
     });
     MatHub.materials.semanticShapeEdit = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.orange, 
         transparent: true,
         depthWrite: false, 
-        opacity: 0.5,
-        flatShading: true
+        opacity: 0.5
+        //flatShading: true
     });
+
+    MatHub.semIcon = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"semicon.png" ), 
+        //color: MatHub.colors.sem, // multiply
+        transparent: true,
+        opacity: 1.0,
+        //depthWrite: false, 
+        depthTest: false
+    });
+    MatHub.semIcon.sizeAttenuation = false;
 };
 
 MatHub.addMaterial = (id, mat)=>{
@@ -224,6 +291,10 @@ MatHub.getMaterial = (id)=>{
     return MatHub.materials[id];
 };
 
+MatHub.update = ()=>{
+    MatHub._uSem.time.value += ATON._dt;
+};
+
 export default MatHub;</code></pre>
 		</section>
 			</div>
@@ -231,7 +302,7 @@ export default MatHub;</code></pre>
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

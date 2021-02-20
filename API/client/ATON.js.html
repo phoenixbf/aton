@@ -13,7 +13,7 @@
 		<link type="text/css" rel="stylesheet" href="css/prism.min.css">
 		<link type="text/css" rel="stylesheet" href="css/template.min.css">
 		<script type="text/javascript">
-			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc…) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
+			window.TEMPLATE_OPTIONS = {"includeDate":true,"dateFormat":"Do MMM YYYY","systemName":"ATON 3.0 API","systemSummary":"ATON is a framework to create Web3D apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR).","systemLogo":"img/logo-inv-40x40.png","systemColor":"","navMembers":[{"kind":"class","title":"Classes","summary":"All documented classes."},{"kind":"external","title":"Externals","summary":"All documented external members."},{"kind":"global","title":"Globals","summary":"All documented globals."},{"kind":"mixin","title":"Mixins","summary":"All documented mixins."},{"kind":"interface","title":"Interfaces","summary":"All documented interfaces."},{"kind":"module","title":"Modules","summary":"All documented modules."},{"kind":"namespace","title":"Namespaces","summary":"All documented namespaces."},{"kind":"tutorial","title":"Tutorials","summary":"All available tutorials."}],"footer":"","copyright":"FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.","linenums":true,"collapseSymbols":true,"inverseNav":true,"inlineNav":false,"outputSourceFiles":false,"sourceRootPath":null,"disablePackagePath":true,"outputSourcePath":false,"showTableOfContents":true,"showAccessFilter":true,"analytics":null,"methodHeadingReturns":true,"sort":"linenum, longname, version, since","search":true,"favicon":null,"stylesheets":[],"scripts":[],"monospaceLinks":false,"cleverLinks":false};
 			window.DOCLET_TOC_ENABLED = false;
 			window.DOCLET_AFILTER_ENABLED = false;
 		</script>
@@ -174,16 +174,16 @@ ATON.NTYPES.UI     = 5;
 // Folders
 ATON.PATH_RESTAPI       = window.location.origin + "/api/"; // "../api/";
 ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
-ATON.PATH_WAPPS         = window.location.origin + "/wapps/";
+ATON.PATH_WAPPS         = window.location.origin + "/a/";
 ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
 ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
-//ATON.PATH_MODELS     = ATON.PATH_COLLECTION + "models/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
+ATON.PATH_FE         = window.location.origin + "/fe/"; // "../res/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0; //50.0;
@@ -216,6 +216,22 @@ ATON._setupBaseListeners = ()=>{
     window.addEventListener( 'resize', ATON._onResize, false );
     window.onorientationchange = ATON._readDeviceOrientationMode;
 
+    if (screenfull.isEnabled){
+	    screenfull.on('change', ()=>{
+            ATON._bFS = screenfull.isFullscreen;
+            ATON.fireEvent("Fullscreen", ATON._bFS);
+
+		    if (ATON._bFS) console.log("Now fullscreen");
+            else console.log("Exit fullscreen");
+	    });
+    }
+
+/*
+    document.addEventListener('webkitfullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('mozfullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('fullscreenchange', ATON._onFSchange, false);
+    document.addEventListener('MSFullscreenChange', ATON._onFSchange, false);
+*/
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
@@ -230,6 +246,7 @@ ATON._setupBaseListeners = ()=>{
     ATON._bPointerDown = false;
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
     });
     window.addEventListener('pointerup', (e)=>{
         ATON._bPointerDown = false;
@@ -243,6 +260,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener('touchstart', (e)=>{
         ATON._bPointerDown = true;
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
     });
     window.addEventListener('touchend', (e)=>{
         ATON._bPointerDown = false;
@@ -279,6 +297,8 @@ ATON._setupBaseListeners = ()=>{
         //ATON._evPointer = e.srcEvent;
         ATON._bPointerDown = false;
 
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
 
@@ -305,6 +325,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener("keydown", (e)=>{
         //e.preventDefault();
+        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
 
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
@@ -425,19 +446,21 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     // TODO: go POV in sight if any (panorama only mode)
 }
 
-/**
-Toggle fullscreen
-*/
-ATON.toggleFullScreen = ()=>{
-    screenfull.toggle();
+// Fullscreen
+ATON.isFullscreen = ()=>{
+    return ATON._bFS;
 /*
-    if (b === undefined){
-        screenfull.toggle();
-        return;
+    if (document.webkitIsFullScreen || document.mozFullScreen || document.msFullscreenElement !== undefined){
+        return true;
     }
 
-    if (b) screenfull.request();
+    return false;
 */
+};
+
+
+ATON.toggleFullScreen = ()=>{
+    screenfull.toggle();
 };
 
 
@@ -459,6 +482,8 @@ ATON.realize = ()=>{
 
     // Timing
     ATON._clock = new THREE.Clock(true);
+
+    ATON._bFS = false; // fullscreen
 
     let wglopts = {
         //canvas: document.getElementById("View3D"),
@@ -986,10 +1011,30 @@ ATON.setMainPanorama = (path)=>{
         //return;
     }
 */
-//    else {
+    // Panoramic Video
+    if (ATON.Utils.isVideo(path)){
+        // First time
+        if (ATON._elPanoVideo === undefined){
+            ATON._elPanoVideo = document.createElement('video');
+            ATON._elPanoVideo.id = "idPanoVideo";
+            ATON._elPanoVideo.innerHTML = "&lt;source src='"+path+"'>";
+            ATON._elPanoVideo.crossOrigin = "anonymous";
+            ATON._elPanoVideo.loop = true;
+            ATON._elPanoVideo.playsinline = true;
+            ATON._elPanoVideo.style.cssText = "display:none;";
+            //ATON._elPanoVideo.src = path;
+            ATON._elPanoVideo.autoplay = true;
+        }
+
+        tpano = new THREE.VideoTexture( ATON._elPanoVideo );
+        tpano.encoding = THREE.sRGBEncoding;
+        //console.log(ATON._elPanoVideo);
+    }
+    // Static Panorama
+    else {
         tpano = new THREE.TextureLoader().load(path);
         tpano.encoding = THREE.sRGBEncoding;
-//    }
+    }
 
     if (ATON._matMainPano !== undefined){
         ATON._matMainPano.map = tpano;
@@ -1258,6 +1303,9 @@ ATON._onFrame = ()=>{
 
     // UI
     ATON.SUI.update();
+
+    // Mat
+    ATON.MatHub.update();
 
     // Environment/lighting
     ATON._updateEnvironment();
@@ -1550,7 +1598,7 @@ export default ATON;
 	</div>
 	<footer>
 				<div class="copyright">FooDoc Copyright © 2016 The contributors to the JSDoc3 and FooDoc projects.</div>
-			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 7th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
+			<div class="generated-by">Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.6</a> on 20th Feb 2021 using the <a href="https://github.com/steveush/foodoc">FooDoc template</a>.</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

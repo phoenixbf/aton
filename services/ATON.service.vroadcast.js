@@ -7,7 +7,7 @@ const Core = require('./Core');
 const VRoadcast = require('./VRoadcast.js');
 
 // Loads config
-let aConfig = Core.loadConfigFile("config.json");
+let aConfig = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 
 const PORT_VRC = aConfig.services.vroadcast.PORT || 8890;
 

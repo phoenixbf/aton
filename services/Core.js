@@ -64,7 +64,8 @@ Core.CONF_MAIN = {
 
 		vroadcast: {
 			PORT: 8890,					// local VRoadcast port
-			address: "ws://localhost"
+			address: "ws://localhost",
+			maxClientsPerScene: 50		// Max clients per scene
 		},
 
 		atonizer: {

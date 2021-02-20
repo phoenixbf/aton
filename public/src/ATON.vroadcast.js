@@ -394,6 +394,8 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('USTATE', (data)=>{
         let S = VRoadcast.decodeState(data);
 
+        console.log(data);
+
         let uid = S.userid;
         let A = VRoadcast.touchAvatar(uid);
 
@@ -508,14 +510,34 @@ VRoadcast.encodeState = (S)=>{
 
     //binData[21] = parseInt(S.rank);
 
+    //console.log(binData);
     return binData;
 }
 
 // Decode state
 VRoadcast.decodeState = (binData)=>{
     let S = {};
-    S.userid = binData[20];
+    let view = new Int8Array(binData);
 
+    //S.userid = binData[20];
+    S.userid = view[20];
+
+    console.log(view);
+
+    // First decode quat
+    S.quaternion = new THREE.Quaternion(
+        view[16] / 128.0,
+        view[17] / 128.0,
+        view[18] / 128.0,
+        view[19] / 128.0
+    );
+
+    // Now decode floats
+    view = new Float32Array(binData);
+    S.position = new THREE.Vector3(view[0],view[1],view[2]);
+    //S.scale = A[3];
+
+/*
     // First decode quat
     S.quaternion = new THREE.Quaternion(
         binData[16] / 128.0,
@@ -532,7 +554,7 @@ VRoadcast.decodeState = (binData)=>{
     S.position = new THREE.Vector3(A[0],A[1],A[2]);
 
     //S.scale = A[3];
-
+*/
     return S;
 }
 

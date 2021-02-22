@@ -13,7 +13,13 @@
     "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"
   },
   "author": "Bruno Fanini",
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/phoenixbf/aton.git"
+  },
+
   "dependencies": {
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
@@ -54,7 +60,7 @@
     "three": "^0.125",
     "three-mesh-bvh": "^0.3.3",
     "three-mesh-ui": "^4.4.9",
-    "webdav": "^3.6.2",
+    "webdav": "^4.2.0",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

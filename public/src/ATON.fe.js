@@ -318,6 +318,27 @@ FE.uiAddButtonTalk = (idcontainer)=>{
 };
 
 /**
+Add focus stream button (VRoadcast)
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonStreamFocus = (idcontainer)=>{
+
+    FE.uiAddButton(idcontainer, "focus", ()=>{
+        if (ATON.VRoadcast._bStreamFocus){
+            ATON.VRoadcast.setFocusStreaming(false);
+            $("#btn-focus").removeClass("atonBTN-rec");
+        }
+        else {
+            ATON.VRoadcast.setFocusStreaming(true);
+            $("#btn-focus").addClass("atonBTN-rec");
+        }
+    }, "Focus streaming ON/OFF");
+
+    if (ATON.VRoadcast._bStreamFocus) $("#btn-focus").addClass("atonBTN-rec");
+    else $("#btn-focus").removeClass("atonBTN-rec");
+};
+
+/**
 Add QR-code button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */

@@ -111,6 +111,30 @@ HATHOR.uiBase = ()=>{
     ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
 };
 
+HATHOR.uiAddBaseSem = ()=>{
+    ATON.FE.uiAddButton("idTopToolbar", "shape-sphere", ()=>{
+        HATHOR.setSelectionMode(HATHOR.SELACTION_ADDSPHERESHAPE);
+    });
+
+    ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
+        if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
+            HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
+            ATON.Nav.setUserControl(false);
+            $("#btn-cancel").show();
+        }
+        else {
+            HATHOR.resetSelectionMode();
+            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
+        }
+    });
+
+    ATON.FE.uiAddButton("idTopToolbar", "cancel", ()=>{
+        HATHOR.cancelCurrentTask();
+    });
+
+    $("#btn-cancel").hide();
+};
+
 // Create UI Profiles
 HATHOR.buildUIProfiles = ()=>{
 
@@ -133,27 +157,26 @@ HATHOR.buildUIProfiles = ()=>{
             ATON.FE.popupSelector();
         });
 
-        ATON.FE.uiAddButton("idTopToolbar", "shape-sphere", ()=>{
-            HATHOR.setSelectionMode(HATHOR.SELACTION_ADDSPHERESHAPE);
+        HATHOR.uiAddBaseSem();
+    });
+
+    // Collab
+    ATON.FE.uiAddProfile("collaborate", ()=>{
+        $("#idTopToolbar").html(""); // clear
+
+        ATON.FE.uiAddButtonVRC("idTopToolbar");
+        ATON.FE.uiAddButtonUser("idTopToolbar");
+        
+        ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
+        ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
+
+        ATON.FE.uiAddButton("idTopToolbar", "selector", ()=>{
+            ATON.FE.popupSelector();
         });
 
-        ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
-            if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
-                HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
-                ATON.Nav.setUserControl(false);
-                $("#btn-cancel").show();
-            }
-            else {
-                HATHOR.resetSelectionMode();
-                HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
-            }
-        });
+        HATHOR.uiAddBaseSem();
 
-        ATON.FE.uiAddButton("idTopToolbar", "cancel", ()=>{
-            HATHOR.cancelCurrentTask();
-        });
-
-        $("#btn-cancel").hide();
+        ATON.FE.uiAddButtonStreamFocus("idBottomToolbar");
     });
 };
 

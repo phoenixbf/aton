@@ -160,7 +160,7 @@ HATHOR.buildUIProfiles = ()=>{
         HATHOR.uiAddBaseSem();
     });
 
-    // Collab
+    // Collaborate
     ATON.FE.uiAddProfile("collaborate", ()=>{
         $("#idTopToolbar").html(""); // clear
 
@@ -172,11 +172,14 @@ HATHOR.buildUIProfiles = ()=>{
 
         ATON.FE.uiAddButton("idTopToolbar", "selector", ()=>{
             ATON.FE.popupSelector();
-        });
+        }, "3D Selector options");
+        ATON.FE.uiAddButtonStreamFocus("idTopToolbar");
 
+        ATON.FE.uiAddButton("idTopToolbar", "list", ()=>{
+            HATHOR.popupGraphs();
+        }, "Layers / Graphs");
+        
         HATHOR.uiAddBaseSem();
-
-        ATON.FE.uiAddButtonStreamFocus("idBottomToolbar");
     });
 };
 

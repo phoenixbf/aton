@@ -1004,13 +1004,32 @@ FE.popupSelector = ()=>{
 FE.popupNav = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Navigation</div>";
 
-    htmlcontent += "<div id='idNavModes'></div>";
+    //htmlcontent += "<div id='idNavModes'></div>";
+
+    htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+    htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMfp'></div>";
+    htmlcontent +="<div style='text-align:left'>Switch between first-person and orbit navigation mode</div>";
+    htmlcontent += "</div>";
+
+    if (ATON.Utils.isConnectionSecure()){
+        htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+        htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMvr'></div>";
+        htmlcontent +="<div style='text-align:left'>Immersive VR mode</div>";
+        htmlcontent += "</div>";
+
+        if (ATON.Utils.isMobile()){
+            htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+            htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMdevori'></div>";
+            htmlcontent +="<div style='text-align:left'>Enable or disable device-orientation mode</div>";
+            htmlcontent += "</div>";
+        }
+    }
 
     if ( !FE.popupShow(htmlcontent) ) return;
 
-    FE.uiAddButtonFirstPerson("idNavModes");
-    FE.uiAddButtonDeviceOrientation("idNavModes");
-    FE.uiAddButtonVR("idNavModes");
+    FE.uiAddButtonFirstPerson("idNMfp");
+    FE.uiAddButtonDeviceOrientation("idNMdevori");
+    FE.uiAddButtonVR("idNMvr");
 
 };
 

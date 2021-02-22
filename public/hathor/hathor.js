@@ -180,7 +180,9 @@ HATHOR.buildUIProfiles = ()=>{
             HATHOR.popupGraphs();
         }, "Layers / Graphs");
         
-        HATHOR.uiAddBaseSem();
+        //HATHOR.uiAddBaseSem();
+
+        if (HATHOR.paramSID) ATON.VRoadcast.connect();
     });
 };
 

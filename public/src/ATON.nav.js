@@ -289,6 +289,8 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._prevMode = Nav._mode; // store previous nav mode
 
+    ATON.SUI.setSelectorRadius(0.5); // for first-person we (re)set selector radius to 0.5m
+
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
 

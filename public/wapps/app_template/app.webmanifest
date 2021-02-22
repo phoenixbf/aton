@@ -1,6 +1,6 @@
 {
 	"name": "app_template",
-	"background_color": "#000000",
+	"background_color": "#BBB",
 	"display": "fullscreen",
 	"scope": "/",
 	"icons": [

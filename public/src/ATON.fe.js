@@ -212,12 +212,14 @@ FE.uiAddButton = (idcontainer, icon, onPress, tooltip)=>{
         iconid  = icon;
     }
 
-    let htmlcode = "<div id='btn-"+iconid+"' class='atonBTN' ><img src='"+iconurl+"'></div>";
-    $("#"+idcontainer).append(htmlcode);
+    let elid = "btn-"+iconid;
+    //let htmlcode = "<div id='"+elid+"' class='atonBTN' ><img src='"+iconurl+"'></div>";
+    let el = $("<div id='"+elid+"' class='atonBTN' ><img src='"+iconurl+"'></div>");
+    
+    $("#"+idcontainer).append(el);
 
-    if (onPress) $("#btn-"+iconid).click( onPress );
-
-    if (tooltip) $("#btn-"+iconid).attr("title", tooltip);
+    if (onPress) el.click( onPress ); //$("#"+elid).click( onPress );
+    if (tooltip) el.attr("title", tooltip); //$("#"+elid).attr("title", tooltip);
 };
 
 FE.uiSwitchButton = (iconid, b)=>{
@@ -291,6 +293,16 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
 
     if (ATON.Nav.isDevOri()) FE.uiSwitchButton("devori",true);
     else FE.uiSwitchButton("devori",false);
+};
+
+/**
+Add Navigation button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonNav = (idcontainer)=>{
+    FE.uiAddButton(idcontainer,"nav", ()=>{
+        FE.popupNav();
+    }, "Navigation");
 };
 
 /**
@@ -963,8 +975,6 @@ FE.computeSelectorRanges = ()=>{
 };
 
 FE.popupSelector = ()=>{
-    console.log("X");
-
     let htmlcontent = "<div class='atonPopupTitle'>3D Selector</div>";
 
     let rad = ATON.SUI.getSelectorRadius();
@@ -985,6 +995,19 @@ FE.popupSelector = ()=>{
         ATON.SUI.setSelectorRadius(r);
         $("#idSelRadTxt").html( ATON.Utils.getHumanReadableDistance(r) );
     });
+};
+
+FE.popupNav = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Navigation</div>";
+
+    htmlcontent += "<div id='idNavModes'></div>";
+
+    if ( !FE.popupShow(htmlcontent) ) return;
+
+    FE.uiAddButtonFirstPerson("idNavModes");
+    FE.uiAddButtonDeviceOrientation("idNavModes");
+    FE.uiAddButtonVR("idNavModes");
+
 };
 
 export default FE;

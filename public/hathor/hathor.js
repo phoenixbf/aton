@@ -142,8 +142,9 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("default", ()=>{
         HATHOR.uiBase();
 
+        ATON.FE.uiAddButtonNav("idTopToolbar");
         ATON.FE.uiAddButtonVR("idTopToolbar");
-        ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+        //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
@@ -540,7 +541,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='v') HATHOR.popupPOV();
 
 
-        if (k==='n') HATHOR.popupNav();
+        if (k==='n') ATON.FE.popupNav();
 
         //if (k==='^') ATON.Nav.setFirstPersonControl();
 
@@ -692,7 +693,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
         for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
         htmlcontent += "</datalist>";
 
-        htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray' style='width:300px;'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
+        htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
         htmlcontent += "<div id='idSemDescCont' style='display:none'><textarea id='idSemDescription' style='width:100%;'></textarea></div><br>";
     }
     // modifying existing ID
@@ -702,9 +703,11 @@ HATHOR._createPopupStdSem = (esemid)=>{
 
 
     if (ATON.Utils.isConnectionSecure() && !ATON.MediaRec.isAudioRecording()){
-        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray' style='width:300px;'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
+
+    htmlcontent += "<br>";
 
     if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>ADD</div>";
     else htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>DONE</div>";

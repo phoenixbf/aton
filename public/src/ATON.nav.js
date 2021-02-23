@@ -276,6 +276,9 @@ Nav.setOrbitControl = ()=>{
     Nav._controls = Nav._cOrbit;
     //Nav._controls.target.copy(Nav._camera.position);
     Nav._camera = Nav._camOrbit;
+
+    // reparent audio listener
+    if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
     
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -326,6 +329,9 @@ Nav.setFirstPersonControl = ()=>{
     //Nav._controls.target.copy(Nav._camera.position);
     Nav._camera = Nav._camFP;
 
+    // reparent audio listener
+    if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
+
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
 /*
@@ -369,6 +375,9 @@ Nav.setDeviceOrientationControl = ()=>{
 
     Nav._controls = Nav._cDevOri;
     Nav._camera   = Nav._camDevOri;
+
+    // reparent audio listener
+    if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();

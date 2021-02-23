@@ -1201,6 +1201,26 @@ input[type="number"]:hover {
     text-align: left;
 }
 
+.atonCode {
+    display: inline-block;
+
+    color: black;
+    font-family: monospace;
+    background-color: rgba(255,255,255, 0.9);
+
+    padding: 10px;
+    text-align: left;
+
+    -moz-user-select: auto !important;
+    -khtml-user-select: auto !important;
+    -webkit-user-select: auto !important;
+    -o-user-select: auto !important;
+    user-select:auto !important;
+
+    touch-action: auto;
+    -webkit-user-drag: auto;
+}
+
 .atonGradientBottomDark {
     background: linear-gradient( to bottom,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.5));
 }

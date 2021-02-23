@@ -227,6 +227,8 @@ XR.onSessionStarted = ( session )=>{
 
     //console.log(session);
 
+    ATON.SUI.setSelectorRadius(0.5); // for immersive sessions we (re)set selector radius to 0.5m
+
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 

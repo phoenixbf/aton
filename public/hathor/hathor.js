@@ -38,6 +38,7 @@ window.addEventListener( 'load', ()=>{
     }
     
     HATHOR._bVRCsetup = false;
+    HATHOR._bVRCreq   = false;
 
     HATHOR._selMode = HATHOR.SELACTION_STD;
 
@@ -182,7 +183,9 @@ HATHOR.buildUIProfiles = ()=>{
         
         //HATHOR.uiAddBaseSem();
 
-        if (HATHOR.paramSID) ATON.VRoadcast.connect();
+        //if (HATHOR.paramSID) ATON.VRoadcast.connect();
+        //HATHOR.paramVRC = "1";
+        HATHOR._bVRCreq = true;
     });
 };
 
@@ -355,6 +358,8 @@ HATHOR.setupEventHandlers = ()=>{
             if (HATHOR.paramVRC.length > 4) ATON.FE._vrcAddr = HATHOR.paramVRC;
             ATON.VRoadcast.connect(ATON.FE._vrcAddr);
         }
+        if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
+
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
     });
 
@@ -1534,14 +1539,36 @@ HATHOR.popupNav = ()=>{
 HATHOR.popupEmbed = ()=>{
     let htmlcontent = "<div class='atonPopupTitle' style='min-width:300px'>Embed</div>";
 
-    htmlcontent += "Copy and paste this HTML code in your blog or website to embed an interactive 3D component<br><br>";
-    htmlcontent += "<textarea id='idEmbed' style='width:100%; height:200px; resize:none;'></textarea><br>";
+    htmlcontent += "Copy and paste this HTML code in your blog or website to embed an interactive 3D component for this scene<br><br>";
+    htmlcontent += "<input id='idEmbStaticCover' type='checkbox'>Use static cover<br>";
+    htmlcontent += "<textarea id='idEmbed' style='width:90%; height:100px; resize:none;' readonly ></textarea><br>";
+    //htmlcontent += "<div id='idEmbed' class='atonCode'></div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='btnEmbedCopy'>Copy</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
-    let iframecode = "<iframe style='height:500px; margin:0;' src='"+window.location.href+"' width='100%' height='500px' frameborder='0' allowfullscreen=''></iframe>";
+    let iframecode = "<iframe style='height:500px; margin:0;' src='"+window.location.href+"' width='100%' height='500px' frameborder='0' allowfullscreen='1'></iframe>";
+    let istaticcode = "<a href='"+window.location.href+"'><img src='"+ATON.PATH_SCENES+ATON.SceneHub.currID+"/cover.png'></a>";
 
     $('#idEmbed').val(iframecode);
+    //$('#idEmbed').text(iframecode);
+
+    $("#btnEmbedCopy").click(()=>{
+        let copyText = document.getElementById("idEmbed");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+
+        ATON.FE.popupClose();
+    });
+
+    $("#idEmbStaticCover").on("change", ()=>{
+        let b = $("#idEmbStaticCover").is(':checked');
+
+        if (b) $('#idEmbed').val(istaticcode);
+        else $('#idEmbed').val(iframecode);
+    });
 };
 
 /*

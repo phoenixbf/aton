@@ -765,6 +765,16 @@ Nav.requestHome = (duration)=>{
     Nav.requestPOV(Nav.homePOV, duration);
 };
 
+/** 
+Set and request home viewpoint
+@param {POV} pov - the home POV
+@param {number} duration - transition duration
+*/
+Nav.setAndRequestHomePOV = (pov, duration)=>{
+    Nav.setHomePOV(pov);
+    Nav.requestPOV(pov, duration);
+};
+
 
 /*
 Mobile devori (modified for absolute compass - UNSTABLE)

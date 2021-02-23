@@ -38,7 +38,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     let kwds = kwords.split(" ");
 
-    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; padding:4px'>";
+    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px'>";
     htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
     htmlcontent += "<div class='atonCover' style='margin:0px'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
 
@@ -88,7 +88,7 @@ window.addEventListener( 'load', ()=>{
     //htmlcontent += "<div class='atonBlockTitle'>ATON Examples</div><br>";
 
     // Base
-    htmlcontent += createExampleBlock("minimal", "Minimal", "basic minimal");
+    htmlcontent += createExampleBlock("minimal", "Minimal", "basic minimal object");
     htmlcontent += createExampleBlock("basic", "Basic", "basic");
 
     // Scenes
@@ -96,11 +96,11 @@ window.addEventListener( 'load', ()=>{
 
     // Events
     htmlcontent += createExampleBlock("events-basic", "Basic Events", "basic events");
-    htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events picking");
+    htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events picking query");
 
     // Nav
     htmlcontent += createExampleBlock("navigation-basic", "Basic Navigation", "basic navigation");
-    htmlcontent += createExampleBlock("navigation-pov", "Navigation Viewpoints", "basic navigation pov");
+    htmlcontent += createExampleBlock("navigation-pov", "Navigation Viewpoints", "basic navigation pov object");
 
     // PBR
     htmlcontent += createExampleBlock("pbr-basic", "Basic PBR", "basic pbr lighting");
@@ -109,7 +109,7 @@ window.addEventListener( 'load', ()=>{
 
     // VRoadcast
     htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");
-    htmlcontent += createExampleBlock("vroadcast-populate", "Collaborative Scene Population", "vroadcast collaborative scene populate picking");
+    htmlcontent += createExampleBlock("vroadcast-populate", "Collaborative Scene Population", "vroadcast collaborative scene populate picking query");
 
     $("#mainContent").html(htmlcontent);
 

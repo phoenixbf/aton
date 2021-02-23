@@ -61,13 +61,13 @@ window.addEventListener( 'load', ()=>{
 
 /*
     ATON.createSceneNode("skyphos")
-        .load(ATON.PATH_MODELS+"samples/skyphos/skyphos.gltf")
+        .load(ATON.PATH_COLLECTION+"samples/models/skyphos/skyphos.gltf")
 		.setPosition(0,1.2,-1.0)
         .attachToRoot();
 */
 	// We create and arrange two "ATON cubes"
-	let pos_A = new THREE.Vector3(-2.0,0.5,-2.0);
-	let pos_B = new THREE.Vector3(-4.0,0.5,4.0);
+	let pos_A = new THREE.Vector3(-2.0,0.8,-2.0);
+	let pos_B = new THREE.Vector3(-4.0,0.8,4.0);
 
 	ATON.Utils.createATONCubePBR("atoncube_A").setPosition(pos_A).attachToRoot();
 	ATON.Utils.createATONCubePBR("atoncube_B").setPosition(pos_B).attachToRoot();
@@ -92,6 +92,9 @@ window.addEventListener( 'load', ()=>{
 
 	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
 	ATON.toggleShadows(true);
+
+    // Set and request home viewpoint
+    //ATON.Nav.setAndRequestHomePOV( new ATON.POV().setPosition(5,1.5,6).setTarget(-1,2,1) );
 });
 
 </script>

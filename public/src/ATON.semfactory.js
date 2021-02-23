@@ -13,7 +13,7 @@ ATON Semantic Factory
 let SemFactory = {};
 
 SemFactory.FLOAT_PREC = 5;
-SemFactory.useSemIcons = false;
+SemFactory.useSemIcons = true;
 
 
 SemFactory.init = ()=>{

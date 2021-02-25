@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+
+<script>
+const SAMPLE_MODELS = "samples/models/";
+
+let modelURL = SAMPLE_MODELS+"chrysippus/50k_delighted.gltf";
+
+let pos_A = new THREE.Vector3(0.0, 0.0, 0.0);
+let pos_B = new THREE.Vector3(0.5, 0.0, 0.0);
+let pos_C = new THREE.Vector3(1.0, 0.0, 0.0);
+
+let posLP_A = new THREE.Vector3(-0.29, 0.02, 0.01);
+let posLP_B = new THREE.Vector3(0.21, 0.02, 0.01);
+let posLP_C = new THREE.Vector3(0.71, 0.02, 0.01);
+
+let posLP_cylA = new THREE.Vector3(-0.16, 0.03, -0.12); // -0.06 // -0.12
+let posLP_cylB = new THREE.Vector3(0.32, 0.03, -0.12);
+let posLP_cylC = new THREE.Vector3(0.83, 0.03, -0.12);
+
+
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    ATON.SUI.enableLPIcons();
+
+    // POVs
+    let currpov = 0;
+	let povs = [];
+	povs.push( new ATON.POV("A").setPosition(posLP_A.x, posLP_A.y-0.1, posLP_A.z + 0.2).setTarget(posLP_A).setFOV(60.0) );
+	povs.push( new ATON.POV("B").setPosition(posLP_B.x, posLP_B.y-0.1, posLP_B.z + 0.2).setTarget(posLP_B).setFOV(60.0) );
+	povs.push( new ATON.POV("C").setPosition(posLP_C.x, posLP_C.y-0.1, posLP_C.z + 0.2).setTarget(posLP_C).setFOV(60.0) );
+
+    ATON.Nav.setHomePOV( povs[0] );
+
+    // Some UI
+    ATON.FE.uiAddButtonVR("idTopToolbar");  // VR button will show up only on secure connections
+
+	ATON.FE.uiAddButton("idBottomToolbar", "prev",()=>{ // prev pov button
+		currpov--;
+		if (currpov<0) currpov = (povs.length-1);
+		ATON.Nav.requestPOV( povs[currpov], 1.0 );
+	});
+    ATON.FE.uiAddButtonHome("idBottomToolbar"); // Home button
+	ATON.FE.uiAddButton("idBottomToolbar", "next",()=>{ // next pov button
+		currpov = (currpov + 1) % povs.length;
+		ATON.Nav.requestPOV( povs[currpov], 1.0 );
+	});
+
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
+
+	ATON.on("KeyPress", function(k){
+		if (k === 'x') ATON.updateLightProbes();
+
+        if (k === 'l') ATON.SUI.gLPIcons.toggle();
+
+        if (k === 's'){
+            ATON.toggleShadows(true);
+            ATON.updateLightProbes();
+        }
+
+        if (k === 'p'){
+            let qp = ATON.getSceneQueriedPoint();
+            if (qp === undefined) return;
+
+            ATON.addLightProbe( new ATON.LightProbe(64, ATON.SUI.getSelectorRadius()).setPosition(qp) );
+            ATON.getRootScene().assignLightProbesByProximity();
+            ATON.updateLightProbes();
+        }
+
+        if (k === '('){
+            ATON._envMapInt -= 0.5;
+            if (ATON._envMapInt < 0.5) ATON._envMapInt = 0.5;
+            console.log(ATON._envMapInt);
+            ATON.updateLightProbes();
+        }
+        if (k === ')'){
+            ATON._envMapInt += 0.5;
+            console.log(ATON._envMapInt);
+            ATON.updateLightProbes();
+        }
+
+        if (k === 'b'){
+            ATON.getSceneNode("bg").toggle();
+            ATON.updateLightProbes();
+        }
+        if (k === '1'){
+            ATON.getSceneNode("01").toggle();
+            ATON.updateLightProbes();
+        }
+        if (k === '2'){
+            ATON.getSceneNode("02").toggle();
+            ATON.updateLightProbes();
+        }
+        if (k === '3'){
+            ATON.getSceneNode("03").toggle();
+            ATON.updateLightProbes();
+        }
+	});
+
+    // Sample scene
+	ATON.SUI.setSelectorRadius(0.01);
+
+	// Loads main panorama (equirectangular)
+	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
+	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -0.9, -0.9) );
+    //ATON.setExposure(1.2);
+
+    ATON.FE.loadSceneID("samples/set01");
+
+    // 3D model instances
+/*
+    ATON.Utils.createATONCubePBR("atoncube_A").setPosition(posLP_A).setScale(0.1).attachToRoot();
+    ATON.Utils.createATONCubePBR("atoncube_B").setPosition(posLP_B).setScale(0.1).attachToRoot();
+    ATON.Utils.createATONCubePBR("atoncube_C").setPosition(posLP_C).setScale(0.1).attachToRoot();
+*/
+    ATON.createSceneNode("A").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_A).attachToRoot();
+    ATON.createSceneNode("B").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_B).attachToRoot();
+    ATON.createSceneNode("C").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_C).attachToRoot();
+
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_A) );
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_B) );
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_C) );
+
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylA) );
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylB) );
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylC) );
+
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_A.x, posLP_A.y-0.09, posLP_A.z) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_B.x, posLP_B.y-0.09, posLP_B.z) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_C.x, posLP_C.y-0.09, posLP_C.z) );
+
+    ATON.on("AllNodeRequestsCompleted",function(){
+        ATON.toggleShadows(true);
+        ATON.updateLightProbes();
+    });
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel
+	<div id="idSidePanel" class="atonSidePanelRight">test test</div>
+-->
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

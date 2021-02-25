@@ -50,7 +50,7 @@ window.addEventListener( 'load', ()=>{
 		p.y += 0.5; // add a little height offset
 
 		ATON.createSceneNode()
-			.load(ATON.PATH_COLLECTION+"samples/models/atoncube.glb")
+			.load("samples/models/atoncube.glb")
 			.setPosition(p)
 			.attachToRoot();
 	});
@@ -58,18 +58,18 @@ window.addEventListener( 'load', ()=>{
 
     // Sample scene with chaining
     ATON.createSceneNode("venus")
-        .load(ATON.PATH_COLLECTION+"samples/models/venus/venus.gltf")
+        .load("samples/models/venus/venus.gltf")
         .setScale(0.3)
 		.setPosition(-4,-0.5,4)
         .attachToRoot();
 
     ATON.createSceneNode("ground")
-        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")
+        .load("samples/models/basic/ground.gltf")
         .setScale(10.0)
         .attachToRoot();
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
+	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
 });
 
 </script>

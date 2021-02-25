@@ -45,15 +45,15 @@ window.addEventListener( 'load', ()=>{
     // Sample scene
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
+	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
 
     ATON.createSceneNode("ground")
-        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")
+        .load("samples/models/basic/ground.gltf")
         .setScale(10.0)
         .attachToRoot();
 
     ATON.createSceneNode("venus")
-        .load(ATON.PATH_COLLECTION+"samples/models/venus/venus.gltf")
+        .load("samples/models/venus/venus.gltf")
         .setScale(0.3)
 		.rotateY(Math.PI * 0.5)
 		.setPosition(-2,-0.5,1.0)
@@ -61,7 +61,7 @@ window.addEventListener( 'load', ()=>{
 
 /*
     ATON.createSceneNode("skyphos")
-        .load(ATON.PATH_COLLECTION+"samples/models/skyphos/skyphos.gltf")
+        .load("samples/models/skyphos/skyphos.gltf")
 		.setPosition(0,1.2,-1.0)
         .attachToRoot();
 */

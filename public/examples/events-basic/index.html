@@ -46,7 +46,7 @@ window.addEventListener( 'load', ()=>{
 
     // Sample scene with chaining
     ATON.createSceneNode("ground")                                      // create our scene node with ID 'ground'
-        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")  // load a sample GLTF
+        .load("samples/models/basic/ground.gltf")  // load a sample GLTF
         .setScale(10.0)                                                 // scale "ground" node 10x
         .attachToRoot();                                       // attach this node to main root
 
@@ -55,7 +55,7 @@ window.addEventListener( 'load', ()=>{
 	ATON.Utils.createATONCube("atoncube").setPosition(-4.0,0.5,4.0).attachToRoot();
 
 	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama(ATON.PATH_COLLECTION+"samples/pano/defsky-grass.jpg");
+	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
 });
 
 </script>

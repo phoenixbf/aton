@@ -564,13 +564,15 @@ addTransform(T){
 /**
 Load a 3D model under this node, with optional onComplete handler.
 Note the system will take care of loading the resources in background, and will manage duplicate requests to same resources avoiding waste of bandwidth
-@param {string} url - the url of the 3D model
+@param {string} url - the url of the 3D model (local to collection or complete)
 @param {function} onComplete - the optional handler to be fired on completion
 @example
 myNode.load("mymodel.gltf", ()=>{ console.log("completed!") })
 */
 load(url, onComplete){
     if (url === undefined) return this;
+
+    url = ATON.Utils.resolveCollectionURL(url);
 
     let N = this;
 

@@ -140,6 +140,12 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
+Utils.resolveCollectionURL = (url)=>{
+    if (url.startsWith("http:")) return url;
+    
+    return ATON.PATH_COLLECTION+url;
+};
+
 // JSON post utility
 Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({

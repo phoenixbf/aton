@@ -860,6 +860,10 @@ ATON.addLightProbe = (LP)=>{
     if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
 
     ATON._lps.push(LP);
+
+    // SUI
+    if (ATON.SUI.gLPIcons === undefined) return;
+    SUI.addLPIcon(LP);
 };
 
 /**
@@ -904,6 +908,8 @@ ATON.setMainPanorama("my/pano.jpg");
 */
 ATON.setMainPanorama = (path)=>{
     let tpano = undefined;
+
+    path = ATON.Utils.resolveCollectionURL(path);
 
     //const pmremGenerator = new THREE.PMREMGenerator( ATON._renderer );
     //pmremGenerator.compileEquirectangularShader();

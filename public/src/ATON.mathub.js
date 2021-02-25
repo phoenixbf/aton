@@ -165,14 +165,48 @@ MatHub.addDefaults = ()=>{
     });
 
     MatHub.semIcon = new THREE.SpriteMaterial({ 
-        map: new THREE.TextureLoader().load( ATON.PATH_RES+"semicon.png" ), 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-sem.png" ), 
         //color: MatHub.colors.sem, // multiply
         transparent: true,
         opacity: 1.0,
         //depthWrite: false, 
         depthTest: false
     });
+
+    MatHub.materials.lp = new THREE.ShaderMaterial({ 
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+
+		    void main(){
+		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+
+                float f;
+		        f = dot(viewDirectionW, vNormalW);
+                f = dot(vNormalV, vec3(0,0,1));
+		        f = clamp(1.0 - f, 0.0, 1.0);
+
+		        gl_FragColor = vec4(1.0,1.0,1.0, f);
+		    }
+        `,
+        transparent: true,
+        depthWrite: false,
+        flatShading: false
+    }); 
+
+    MatHub.lpIcon = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-lp.png" ), 
+        //color: MatHub.colors.sem, // multiply
+        transparent: true,
+        opacity: 1.0,
+        depthWrite: false, 
+        //depthTest: false
+    });
+
     MatHub.semIcon.sizeAttenuation = false;
+    MatHub.lpIcon.sizeAttenuation  = false;
 };
 
 MatHub.addMaterial = (id, mat)=>{

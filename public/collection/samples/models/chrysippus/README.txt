@@ -1,0 +1,2 @@
+3D model by CNR-ISPC (Emanuel Demetrescu)
+Chrysippus Head, bronze statue (75-80 A.D) placed in The Museum of the Imperial Fora, Rome. IPR rights of the model are owned by Sovrintendenza Capitolina ai Beni Culturali and CNR-ISPC (former ITABC)

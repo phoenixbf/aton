@@ -39,10 +39,10 @@ window.addEventListener( 'load', ()=>{
 	ATON.FE.addBasicLoaderEvents();
 
     // Sample scene with chaining
-    ATON.createSceneNode("ground")                                      // create our scene node with ID 'ground'
-        .load(ATON.PATH_COLLECTION+"samples/models/basic/ground.gltf")  // load a sample GLTF
-        .setScale(10.0)                                                 // scale "ground" node 10x
-        .attachToRoot();                                                // attach the node to main root
+    ATON.createSceneNode("ground")                      // create our scene node with ID 'ground'
+        .load("samples/models/basic/ground.gltf")       // load a sample GLTF from our local collection
+        .setScale(10.0)                                 // scale "ground" node 10x
+        .attachToRoot();                                // attach the node to main root
 
 	// Create sample shape ("ATON cube") and assign it ID 'atoncube'
 	// then position it somewhere and attach to main root

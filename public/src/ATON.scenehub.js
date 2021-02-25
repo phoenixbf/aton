@@ -191,7 +191,7 @@ SceneHub.initBaseParsers = ()=>{
 
         let pano = env.mainpano;
         if (env.mainpano){
-            if (pano.url) ATON.setMainPanorama(ATON.PATH_COLLECTION+pano.url);
+            if (pano.url) ATON.setMainPanorama(pano.url);
             if (pano.rotation) ATON.setMainPanoramaRotation(pano.rotation);
         }
 
@@ -313,11 +313,11 @@ SceneHub.initBaseParsers = ()=>{
             if (urls){
                 if (Array.isArray(urls)){
                     urls.forEach(u => {
-                        ATON.createSceneNode().load(ATON.PATH_COLLECTION+u).attachTo(G);
+                        ATON.createSceneNode().load(u).attachTo(G);
                     });
                 }
                 else {
-                    G.load(ATON.PATH_COLLECTION+urls);
+                    G.load(urls);
                 }
             }
 
@@ -426,11 +426,11 @@ SceneHub.initBaseParsers = ()=>{
             if (urls){
                 if (Array.isArray(urls)){
                     urls.forEach(u => {
-                        ATON.createSemanticNode().load(ATON.PATH_COLLECTION+u).attachTo(G);
+                        ATON.createSemanticNode().load(u).attachTo(G);
                     });
                 }
                 else {
-                    G.load(ATON.PATH_COLLECTION+urls);
+                    G.load(urls);
                 }
             }
 

@@ -37,9 +37,7 @@ SUI.init = ()=>{
     ATON._rootUI.add(SUI.fpTeleport);
 
     // Sem-shapes icons
-    SUI.gSemIcons = ATON.createUINode();
-    SUI.gSemIcons.disablePicking();
-    ATON._rootUI.add(SUI.gSemIcons);
+    SUI.enableSemIcons();
 
     // Main Font
     //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
@@ -96,6 +94,20 @@ SUI.init = ()=>{
     //SUI._sync = 0;
 };
 
+// note: before adding LPs
+SUI.enableLPIcons = ()=>{
+    SUI.gLPIcons = ATON.createUINode();
+    SUI.gLPIcons.disablePicking();
+    ATON._rootUI.add(SUI.gLPIcons);
+};
+
+
+SUI.enableSemIcons = ()=>{
+    SUI.gSemIcons = ATON.createUINode();
+    SUI.gSemIcons.disablePicking();
+    ATON._rootUI.add(SUI.gSemIcons);
+};
+
 /**
 Set selector radius
 @param {number} r - the radius
@@ -130,6 +142,8 @@ SUI.setSelectorModel = (path, bUseStdMat)=>{
 
 // Sem-shape icons
 SUI.addSemIcon = (semid, meshape)=>{
+    if (SUI.gSemIcons === undefined) return;
+
     let bb = new THREE.Box3().setFromObject( meshape );
     let bs = new THREE.Sphere();
     bb.getBoundingSphere(bs);
@@ -143,6 +157,24 @@ SUI.addSemIcon = (semid, meshape)=>{
     semicon.name = semid;
 
     SUI.gSemIcons.add(semicon);
+};
+
+SUI.addLPIcon = (LP)=>{
+    if (SUI.gLPIcons === undefined) return;
+
+    let rn = LP._near;
+    let isize = 0.1; //rn * 0.3;
+
+    let lpicon = new THREE.Sprite( ATON.MatHub.lpIcon );
+    lpicon.position.copy(LP.pos);
+    lpicon.scale.set(isize,isize,isize);
+
+    let s = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.materials.lp );
+    s.scale.set(rn,rn,rn);
+    s.position.copy(LP.pos);
+
+    SUI.gLPIcons.add( lpicon );
+    SUI.gLPIcons.add( s );
 };
 
 SUI.setSemIconsOpacity = (f)=>{

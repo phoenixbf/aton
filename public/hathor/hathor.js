@@ -297,6 +297,10 @@ HATHOR.setupVRCEventHandlers = ()=>{
         }*/
     });
 
+    ATON.VRoadcast.on("AFE_ClearMeasurements",()=>{
+        ATON.SUI.clearMeasurements();
+    });
+
     ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
         ATON.SceneHub.parseScene(d);
         //console.log(d);
@@ -1112,6 +1116,11 @@ HATHOR.popupGraphs = ()=>{
 
     $("#btnClearMeas").click(()=>{
         ATON.SUI.clearMeasurements();
+
+        let E = {};
+        E.measurements = {};
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+        ATON.VRoadcast.fireEvent("AFE_ClearMeasurements");
     });
 
 };

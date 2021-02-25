@@ -457,6 +457,7 @@ ATON.realize = ()=>{
 
     ATON._lps = []; // lightprobes
     ATON._bAutoLP = false;
+    ATON._envMapInt = 1.0;
     //ATON._dirtyLPs = true;
     ATON._bShadowsFixedBound = false;
 
@@ -884,7 +885,7 @@ ATON.updateLightProbes = ()=>{
         if (LP !== undefined && LP instanceof ATON.LightProbe){
             o.material.envMap = LP.getEnvTex();
             //o.material.combine = THREE.AddOperation;
-            //o.material.envMapIntensity = 5.0;
+            o.material.envMapIntensity = ATON._envMapInt;
         }
     });
 
@@ -1086,6 +1087,8 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
     ATON._dMainL.shadow.mapSize.height = ATON._shadowsRes;
     ATON._dMainL.shadow.camera.near    = ATON._shadowsNear;
     ATON._dMainL.shadow.camera.far     = ATON._shadowsFar;
+
+    ATON._dMainL.shadow.bias = -0.0001;
 };
 
 
@@ -1101,18 +1104,6 @@ ATON.toggleShadows = (b)=>{
         ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
         //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
-        //ATON._dMainL.shadow.bias        = 0.0001;
-/*
-        ATON._dMainL.shadow.mapSize.width  = ATON._shadowsRes;
-        ATON._dMainL.shadow.mapSize.height = ATON._shadowsRes;
-        ATON._dMainL.shadow.camera.near    = ATON._shadowsNear;
-        ATON._dMainL.shadow.camera.far     = ATON._shadowsFar;
-
-        ATON._dMainL.shadow.camera.left   = -ATON._shadowsSize;
-        ATON._dMainL.shadow.camera.right  = ATON._shadowsSize;
-        ATON._dMainL.shadow.camera.bottom = -ATON._shadowsSize;
-        ATON._dMainL.shadow.camera.top    = ATON._shadowsSize;
-*/
         ATON._rootVisible.traverse((o) => {
             if (o.isMesh){
                 o.castShadow = true;

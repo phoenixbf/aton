@@ -141,7 +141,7 @@ Utils.isResourceURL = (s)=>{
 };
 
 Utils.resolveCollectionURL = (url)=>{
-    if (url.startsWith("http:")) return url;
+    if (url.startsWith("http")) return url;
     
     return ATON.PATH_COLLECTION+url;
 };

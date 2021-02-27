@@ -380,22 +380,34 @@ Core.writeSceneJSON = (sid, data, pub)=>{
 
 // Web-Apps
 //=======================================
-Core.getWAppJSONPath = (wappid)=>{
-	let jsonfile = path.join( Core.DIR_WAPPS, wappid + "/data.json");
+Core.getAppDataFolder = (wappid)=>{
+	return path.join( Core.DIR_WAPPS, wappid+"/data");
+};
+
+Core.getAppJSONPath = (wappid, fid)=>{
+	let jsonfile = Core.getAppDataFolder(wappid) + "/"+fid+".json";
+	console.log(jsonfile);
 	return jsonfile;
 };
 
-Core.readWAppJSONData = (wappid)=>{
-	let jsonfile = Core.getWAppJSONPath(wappid);
-	if (!fs.existsSync(jsonfile)) return undefined;
+Core.readAppJSONData = (wappid, fid)=>{
+	if (!fs.existsSync(Core.getAppDataFolder(wappid))) return undefined;
+
+	let jsonfile = Core.getAppJSONPath(wappid, fid);
+	if (!fs.existsSync(jsonfile)){
+		fs.writeFileSync(jsonfile, "{}");
+	}
 
 	let S = JSON.parse(fs.readFileSync(jsonfile, 'utf8'));
 	return S;
 };
 
-Core.wappDataEdit = (wappid, patch, mode)=>{
-	let jdpath = Core.getWAppJSONPath(wappid);
-	let D = Core.readWAppJSONData(wappid);
+Core.wappDataEdit = (wappid, fid, patch, mode)=>{
+	if (wappid === undefined) return undefined;
+	if (fid === undefined) return undefined;
+
+	let jdpath = Core.getAppJSONPath(wappid, fid);
+	let D = Core.readAppJSONData(wappid, fid);
 
 	if (D === undefined) return undefined; // data does not exist
 
@@ -714,10 +726,11 @@ Core.realizeBaseAPI = (app)=>{
 	app.post('/api/patch/wapp', (req, res) => {
 		let O = req.body;
 		let wappid = O.wappid;
+		let fid    = O.fid;
 		let patch  = O.data;
 		let mode   = O.mode;
 
-		let J = Core.wappDataEdit(wappid, patch, mode);
+		let J = Core.wappDataEdit(wappid, fid, patch, mode);
 
 		res.json(J);
 	});

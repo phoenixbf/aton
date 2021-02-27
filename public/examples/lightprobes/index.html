@@ -76,6 +76,8 @@ window.addEventListener( 'load', ()=>{
     // Our events
 	ATON.FE.addBasicLoaderEvents();
 
+    ATON.SUI.gLPIcons.hide();
+
 	ATON.on("KeyPress", function(k){
 		if (k === 'x') ATON.updateLightProbes();
 
@@ -126,14 +128,50 @@ window.addEventListener( 'load', ()=>{
 	});
 
     // Sample scene
-	ATON.SUI.setSelectorRadius(0.01);
-
 	// Loads main panorama (equirectangular)
 	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
 	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -0.9, -0.9) );
     //ATON.setExposure(1.2);
 
+    // Spheres
+    let spA = new THREE.Mesh( 
+        new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
+        new THREE.MeshStandardMaterial({
+            color: ATON.MatHub.colors.green,
+            roughness: 0.3,
+            metalness: 1
+        })
+    );
+    spA.position.set(posLP_A.x+0.15, posLP_A.y-0.07, posLP_A.z);
+    ATON.getRootScene().add(spA);
+
+    let spB = new THREE.Mesh( 
+        new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
+        new THREE.MeshStandardMaterial({
+            color: ATON.MatHub.colors.blue,
+            roughness: 0.3,
+            metalness: 1
+        })
+    );
+    spB.position.set(posLP_B.x+0.15, posLP_B.y-0.07, posLP_B.z);
+    ATON.getRootScene().add(spB);
+
+    let spC = new THREE.Mesh( 
+        new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
+        new THREE.MeshStandardMaterial({
+            color: ATON.MatHub.colors.red,
+            roughness: 0.3,
+            metalness: 1
+        })
+    );
+    spC.position.set(posLP_C.x+0.15, posLP_C.y-0.07, posLP_C.z);
+    ATON.getRootScene().add(spC);
+
     ATON.FE.loadSceneID("samples/set01");
+
+    ATON.createSceneNode().load("samples/models/set01/1_piedistallo.gltf").attachToRoot();
+    ATON.createSceneNode().load("samples/models/set01/2_piedistallo.gltf").attachToRoot();
+    ATON.createSceneNode().load("samples/models/set01/3_piedistallo.gltf").attachToRoot();
 
     // 3D model instances
 /*
@@ -157,9 +195,15 @@ window.addEventListener( 'load', ()=>{
     ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_B.x, posLP_B.y-0.09, posLP_B.z) );
     ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_C.x, posLP_C.y-0.09, posLP_C.z) );
 
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spA.position) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spB.position) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spC.position) );
+
     ATON.on("AllNodeRequestsCompleted",function(){
         ATON.toggleShadows(true);
         ATON.updateLightProbes();
+
+        ATON.SUI.setSelectorRadius(0.002);
     });
 });
 

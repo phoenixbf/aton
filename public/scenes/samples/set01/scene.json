@@ -10,8 +10,7 @@
                 "urls": [
                     "samples/models/set01/1_base.gltf",
                     "samples/models/set01/1_cilindro.gltf",
-                    "samples/models/set01/1_pannello.gltf",
-                    "samples/models/set01/1_piedistallo.gltf"
+                    "samples/models/set01/1_pannello.gltf"
                 ]
             },
 
@@ -19,8 +18,7 @@
                 "urls": [
                     "samples/models/set01/2_base.gltf",
                     "samples/models/set01/2_cilindro.gltf",
-                    "samples/models/set01/2_pannello.gltf",
-                    "samples/models/set01/2_piedistallo.gltf"
+                    "samples/models/set01/2_pannello.gltf"
                 ]
             },
 
@@ -28,8 +26,7 @@
                 "urls": [
                     "samples/models/set01/3_base.gltf",
                     "samples/models/set01/3_cilindro.gltf",
-                    "samples/models/set01/3_pannello.gltf",
-                    "samples/models/set01/3_piedistallo.gltf"
+                    "samples/models/set01/3_pannello.gltf"
                 ]
             }
         },

@@ -88,4 +88,4 @@ _prv
 /public/wapps/*
 !/public/wapps/README.txt
 !/public/wapps/app_template/
-/public/wapps/app_template/data.json
+/public/wapps/app_template/data/

@@ -872,13 +872,28 @@ Update all LightProbes in the scene
 ATON.updateLightProbes = ()=>{
     if (ATON._lps.length === 0) return;
 
-    for (let i in ATON._lps) ATON._lps[i].update();
+    for (let i in ATON._lps){
+        ATON._lps[i].update();
+/*
+        if (ATON._indLPs === undefined) ATON._indLPs = [];
+        if (ATON._indLPs[i]) ATON._mainRoot.remove(ATON._indLPs[i]);
+
+        ATON._indLPs[i] = THREE.LightProbeGenerator.fromCubeRenderTarget( ATON._renderer, ATON._lps[i]._prevCCtarget );
+        ATON._indLPs[i].intensity = 1.0;
+
+        ATON._mainRoot.add( ATON._indLPs[i] );
+
+        console.log(ATON._mainRoot);
+*/
+    }
 
     // FIXME: indirect LP based on first LP (for now)
     if (ATON._lps[0]){
         if (ATON._indLP) ATON._mainRoot.remove(ATON._indLP);
 
         ATON._indLP = THREE.LightProbeGenerator.fromCubeRenderTarget( ATON._renderer, ATON._lps[0]._prevCCtarget );
+        ATON._indLP.intensity = 1.0;
+
         ATON._mainRoot.add( ATON._indLP );
     }
 
@@ -888,7 +903,7 @@ ATON.updateLightProbes = ()=>{
         let LP = o.userData.LP;
         if (LP !== undefined && LP instanceof ATON.LightProbe){
             o.material.envMap = LP.getEnvTex();
-            //o.material.combine = THREE.AddOperation;
+            o.material.combine = THREE.AddOperation;
             o.material.envMapIntensity = ATON._envMapInt;
         }
     });

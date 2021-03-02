@@ -53,6 +53,8 @@ MatHub.addDefaults = ()=>{
     MatHub.colors.red    = new THREE.Color(1,0,0);
     MatHub.colors.blue   = new THREE.Color(0,0,1);
     MatHub.colors.orange = new THREE.Color(1,0.5,0);
+
+    MatHub.colors.defUI  = new THREE.Color(0,1,0.5);
     
     MatHub.colors.sem     = new THREE.Color(0,0,1);
     MatHub.colors.darksem = new THREE.Color(0,0,0.1);
@@ -63,8 +65,43 @@ MatHub.addDefaults = ()=>{
         depthWrite: false, 
         opacity: 0.0
     });
+
+    // Default UI
+    MatHub.materials.defUI = new THREE.ShaderMaterial({
+        uniforms: {
+            color: { type:'vec3', value: MatHub.colors.defUI },
+            opacity: { type:'float', value: 0.8 }
+        },
+
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+            uniform vec3 color;
+            uniform float opacity;
+
+		    void main(){
+		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+
+                float f;
+		        //f = dot(viewDirectionW, vNormalW);
+                f = dot(vNormalV, vec3(0,0,1));
+                //f = dot(vNormalV, viewDirectionW);
+		        f = clamp(1.0 - f, 0.3, 1.0);
+
+		        gl_FragColor = vec4(color.rgb, f * opacity);
+		    }
+        `,
+        transparent: true,
+        depthWrite: false,
+        flatShading: false
+    }); 
     
     // Selector
+    MatHub.materials.selector = MatHub.materials.defUI.clone();
+
+/*
     MatHub.materials.selector = new THREE.MeshBasicMaterial({
         color: MatHub.colors.green,
         transparent: true,
@@ -72,8 +109,11 @@ MatHub.addDefaults = ()=>{
         opacity: 0.2 
         //flatShading: true
     });
-
+*/
     // XR/VR ray
+    MatHub.materials.controllerRay = MatHub.materials.defUI.clone();
+    MatHub.materials.controllerRay.uniforms.color.value = MatHub.colors.white;
+/*
     MatHub.materials.controllerRay = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.white, 
         transparent: true, 
@@ -81,7 +121,7 @@ MatHub.addDefaults = ()=>{
         depthWrite: false
         //flatShading: true
     });
-
+*/
     // Teleport locator
     MatHub.materials.teleportLoc = new THREE.MeshBasicMaterial({ 
         transparent: true, 
@@ -129,14 +169,9 @@ MatHub.addDefaults = ()=>{
             uniform vec4 tint;
 
 		    void main(){
-		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+		        //vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
 
-                float f;
-		        //f = dot(viewDirectionW, vNormalW);
-                //f = dot(vNormalV, vec3(0,0,1));
-		        //f = clamp(1.0 - f, 0.0, 1.0);
-
-                f = (1.0 * cos(time*2.0)); // - 0.5;
+                float f = (1.0 * cos(time*2.0)); // - 0.5;
                 //f = cos(time + (vPositionW.y*10.0));
                 f = clamp(f, 0.0,1.0);
 
@@ -184,7 +219,7 @@ MatHub.addDefaults = ()=>{
 		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
 
                 float f;
-		        f = dot(viewDirectionW, vNormalW);
+		        //f = dot(viewDirectionW, vNormalW);
                 f = dot(vNormalV, vec3(0,0,1));
 		        f = clamp(1.0 - f, 0.0, 1.0);
 

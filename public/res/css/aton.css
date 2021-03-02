@@ -806,8 +806,38 @@ canvas {
     animation: 0.2s ease-out 0s 1 popupAnimation;
 }
 
+@media screen and (orientation: portrait){
+/*@media screen and (max-width: 600px){*/
+    .atonPopup {
+        width: 90%;
+        max-width: 90%;
+    }
+}
+
+.atonPopupLarge {
+    width: 80%;
+}
+@media screen and (orientation: portrait){
+    /*@media screen and (max-width: 800px){*/
+        .atonPopupLarge {
+            width: 90%;
+        }
+}
+
+.atonPopupCompact {
+    max-width: 750px;
+}
+@media screen and (orientation: portrait){
+    /*@media screen and (max-width: 800px){*/
+        .atonPopupCompact {
+            width: 90%;
+            max-width: none;
+        }
+}
+
 .atonPopupTitle {
     display: block;
+
     font-weight: bold;
     font-size: larger;
 
@@ -829,24 +859,6 @@ canvas {
 
     border-radius: 10px;
     background-color: black;
-}
-
-@media screen and (orientation: portrait){
-/*@media screen and (max-width: 600px){*/
-    .atonPopup {
-        width: 90%;
-        max-width: 90%;
-    }
-}
-
-.atonPopupLarge {
-    width: 80%;
-}
-@media screen and (orientation: portrait){
-    /*@media screen and (max-width: 800px){*/
-        .atonPopupLarge {
-            width: 90%;
-        }
 }
 
 /* Popup description container */

@@ -97,6 +97,9 @@ VRoadcast.initMaterials = ()=>{
     let MM = ATON.MatHub.materials;
     MM.avatars = [];
 
+    let mat = ATON.MatHub.materials.defUI.clone();
+    mat.uniforms.color.value = VRoadcast.ucolors[0];
+/*
     let mat = new THREE.MeshBasicMaterial({
         color: VRoadcast.ucolors[0], 
         transparent: true, 
@@ -104,12 +107,13 @@ VRoadcast.initMaterials = ()=>{
         depthWrite: false,
         flatShading: true
     });
-
+*/
     MM.avatars.push(mat);
 
     for (let c=1; c<VRoadcast.ucolors.length; c++){
         let M = mat.clone();
-        M.color = VRoadcast.ucolors[c];
+        //M.color = VRoadcast.ucolors[c];
+        M.uniforms.color.value = VRoadcast.ucolors[c];
 
         MM.avatars.push(M);
     }

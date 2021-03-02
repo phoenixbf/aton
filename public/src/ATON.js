@@ -397,7 +397,7 @@ ATON.realize = ()=>{
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
         //pecision: "mediump"
-        preserveDrawingBuffer: true
+        //preserveDrawingBuffer: true
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
@@ -795,13 +795,17 @@ ATON._assetReqComplete = (url)=>{
             console.log("Auto LP");
         }
 
+        // re-center main pano
+        if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+
         ATON.getRootScene().assignLightProbesByProximity();
+        //ATON.updateLightProbes();
 
         //ATON._bDirtyLP = true;
 
         // FIXME: dirty
         setTimeout( ()=>{
-            if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+            //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
             ATON.updateLightProbes();
         }, 1000);
 

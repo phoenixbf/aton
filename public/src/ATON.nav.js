@@ -259,7 +259,7 @@ Nav.setOrbitControl = ()=>{
         
         C.enableZoom  = true;
         C.minDistance = 0.03;
-        C.maxDistance = 1000.0;
+        C.maxDistance = 100.0;
 
         if (!Nav._bControl) C.enabled = false;
 
@@ -567,6 +567,7 @@ Nav.handleXRtransition = ()=>{
         //Nav._controls.enabled = true;
 
         //ATON.XR.setRefSpaceLocation(Nav._reqXRpos);
+        ATON.XR._currPos.copy(ATON.XR._reqPos);
 
         console.log("XR height"+ATON.XR._currPos.y);
         console.log("HMD height"+Nav._currPOV.pos.y);
@@ -675,17 +676,17 @@ Nav.requestPOV = (pov, duration)=>{
 Nav.requestPOVbyBound = (bs, duration)=>{
     if (bs === undefined) return;
 
-    let T = new THREE.Vector3();
+    //let T = new THREE.Vector3();
     let E = new THREE.Vector3();
 
-    T.copy(bs.center);
+    //T.copy(bs.center);
     
     let r = bs.radius * 3.0;
-    E.x = T.x - (r * Nav._vDir.x);
-    E.y = T.y - (r * Nav._vDir.y);
-    E.z = T.z - (r * Nav._vDir.z);
+    E.x = bs.center.x - (r * Nav._vDir.x);
+    E.y = bs.center.y - (r * Nav._vDir.y);
+    E.z = bs.center.z - (r * Nav._vDir.z);
 
-    let pov = new ATON.POV().setPosition(E).setTarget(T);    
+    let pov = new ATON.POV().setPosition(E).setTarget(bs.center);    
     Nav.requestPOV(pov, duration);
 };
 

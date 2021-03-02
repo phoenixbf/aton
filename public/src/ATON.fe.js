@@ -412,7 +412,9 @@ FE.uiAddButtonVRC = (idcontainer)=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
 
         // Selector color
-        ATON.MatHub.materials.selector.color = ATON.VRoadcast.ucolors[uid%6];
+        //ATON.MatHub.materials.selector.color = ATON.VRoadcast.ucolors[uid%6];
+        ATON.MatHub.materials.selector.uniforms.color.value = ATON.VRoadcast.ucolors[uid%6];
+        console.log(ATON.MatHub.materials.selector);
 
         FE.checkAuth((data)=>{
             if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
@@ -441,7 +443,8 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     ATON.on("VRC_Disconnected", ()=>{
         $("#btn-vrc").attr("class","atonBTN");
         // Selector color
-        ATON.MatHub.materials.selector.color = ATON.MatHub.colors.green;
+        //ATON.MatHub.materials.selector.color = ATON.MatHub.colors.green;
+        ATON.MatHub.materials.selector.uniforms.color.value = ATON.MatHub.colors.defUI;
 
         $("#idVRCnumusers").html("");
     });

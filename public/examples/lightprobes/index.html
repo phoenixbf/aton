@@ -27,6 +27,9 @@
 
 <script>
 const SAMPLE_MODELS = "samples/models/";
+let spA = undefined;
+let spB = undefined;
+let spC = undefined;
 
 let modelURL = SAMPLE_MODELS+"chrysippus/50k_delighted.gltf";
 
@@ -42,6 +45,26 @@ let posLP_cylA = new THREE.Vector3(-0.16, 0.03, -0.12); // -0.06 // -0.12
 let posLP_cylB = new THREE.Vector3(0.32, 0.03, -0.12);
 let posLP_cylC = new THREE.Vector3(0.83, 0.03, -0.12);
 
+let setupLPs = ()=>{
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_A) );
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_B) );
+	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_C) );
+
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylA) );
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylB) );
+	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylC) );
+
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_A.x, posLP_A.y-0.09, posLP_A.z) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_B.x, posLP_B.y-0.09, posLP_B.z) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_C.x, posLP_C.y-0.09, posLP_C.z) );
+
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spA.position) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spB.position) );
+    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spC.position) );
+
+    ATON.getRootScene().assignLightProbesByProximity();
+    ATON.updateLightProbes();
+};
 
 window.addEventListener( 'load', ()=>{
 
@@ -53,9 +76,9 @@ window.addEventListener( 'load', ()=>{
     // POVs
     let currpov = 0;
 	let povs = [];
-	povs.push( new ATON.POV("A").setPosition(posLP_A.x, posLP_A.y-0.1, posLP_A.z + 0.2).setTarget(posLP_A).setFOV(60.0) );
-	povs.push( new ATON.POV("B").setPosition(posLP_B.x, posLP_B.y-0.1, posLP_B.z + 0.2).setTarget(posLP_B).setFOV(60.0) );
-	povs.push( new ATON.POV("C").setPosition(posLP_C.x, posLP_C.y-0.1, posLP_C.z + 0.2).setTarget(posLP_C).setFOV(60.0) );
+	povs.push( new ATON.POV("A").setPosition(posLP_A.x-0.15, posLP_A.y-0.05, posLP_A.z + 0.25).setTarget(posLP_A).setFOV(60.0) );
+	povs.push( new ATON.POV("B").setPosition(posLP_B.x-0.15, posLP_B.y-0.05, posLP_B.z + 0.25).setTarget(posLP_B).setFOV(60.0) );
+	povs.push( new ATON.POV("C").setPosition(posLP_C.x-0.15, posLP_C.y-0.05, posLP_C.z + 0.25).setTarget(posLP_C).setFOV(60.0) );
 
     ATON.Nav.setHomePOV( povs[0] );
 
@@ -79,7 +102,7 @@ window.addEventListener( 'load', ()=>{
     ATON.SUI.gLPIcons.hide();
 
 	ATON.on("KeyPress", function(k){
-		if (k === 'x') ATON.updateLightProbes();
+		//if (k === 'x') setupLPs();
 
         if (k === 'l') ATON.SUI.gLPIcons.toggle();
 
@@ -94,6 +117,11 @@ window.addEventListener( 'load', ()=>{
 
             ATON.addLightProbe( new ATON.LightProbe(64, ATON.SUI.getSelectorRadius()).setPosition(qp) );
             ATON.getRootScene().assignLightProbesByProximity();
+            ATON.updateLightProbes();
+        }
+
+        if (k === 'm'){
+            ATON.setMainPanorama("samples/pano/redblue.jpg");
             ATON.updateLightProbes();
         }
 
@@ -134,7 +162,7 @@ window.addEventListener( 'load', ()=>{
     //ATON.setExposure(1.2);
 
     // Spheres
-    let spA = new THREE.Mesh( 
+    spA = new THREE.Mesh( 
         new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
         new THREE.MeshStandardMaterial({
             color: ATON.MatHub.colors.green,
@@ -145,7 +173,7 @@ window.addEventListener( 'load', ()=>{
     spA.position.set(posLP_A.x+0.15, posLP_A.y-0.07, posLP_A.z);
     ATON.getRootScene().add(spA);
 
-    let spB = new THREE.Mesh( 
+    spB = new THREE.Mesh( 
         new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
         new THREE.MeshStandardMaterial({
             color: ATON.MatHub.colors.blue,
@@ -156,7 +184,7 @@ window.addEventListener( 'load', ()=>{
     spB.position.set(posLP_B.x+0.15, posLP_B.y-0.07, posLP_B.z);
     ATON.getRootScene().add(spB);
 
-    let spC = new THREE.Mesh( 
+    spC = new THREE.Mesh( 
         new THREE.SphereBufferGeometry( 0.05, 32, 32 ), 
         new THREE.MeshStandardMaterial({
             color: ATON.MatHub.colors.red,
@@ -183,21 +211,7 @@ window.addEventListener( 'load', ()=>{
     ATON.createSceneNode("B").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_B).attachToRoot();
     ATON.createSceneNode("C").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_C).attachToRoot();
 
-	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_A) );
-	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_B) );
-	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_C) );
-
-	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylA) );
-	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylB) );
-	ATON.addLightProbe( new ATON.LightProbe(64, 0.05).setPosition(posLP_cylC) );
-
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_A.x, posLP_A.y-0.09, posLP_A.z) );
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_B.x, posLP_B.y-0.09, posLP_B.z) );
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.001).setPosition(posLP_C.x, posLP_C.y-0.09, posLP_C.z) );
-
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spA.position) );
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spB.position) );
-    ATON.addLightProbe( new ATON.LightProbe(64, 0.06).setPosition(spC.position) );
+    setupLPs();
 
     ATON.on("AllNodeRequestsCompleted",function(){
         ATON.toggleShadows(true);

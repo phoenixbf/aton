@@ -376,12 +376,15 @@ XR.toggle = ()=>{
     // Enter XR
     if (XR.currSession === null){
         let sessionInit = {
-            //optionalFeatures: [ 'local-floor', 'bounded-floor', 'hand-tracking' ]
-
             optionalFeatures: [
                 "local",
-                //"local-floor" 
-                ///"bounded-floor"
+                //"local-floor",
+                ///"bounded-floor",
+
+                //"hand-tracking",
+
+                //"high-refresh-rate",
+                //"high-fixed-foveation-level",
             ]
 
         };

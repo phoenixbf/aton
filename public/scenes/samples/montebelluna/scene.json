@@ -42,7 +42,8 @@
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.026_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.027_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo_LOD1.gltf"
-                ]
+                ],
+                "show": false
             },
             "Last period": {
                 "urls": [
@@ -52,7 +53,8 @@
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.026_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.027_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo_LOD1.gltf"
-                ]
+                ],
+                "show": false
             },
             "Building 1": {
                 "urls": [
@@ -62,7 +64,8 @@
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.026_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo.027_LOD1.gltf",
                     "samples/models/montebelluna/Attuale/Montebelluna_scavo_LOD1.gltf"
-                ]
+                ],
+                "show": false
             },
             "Last period Rec": {
                 "urls": [
@@ -78,7 +81,8 @@
                     "samples/models/montebelluna/shared/Room_G_floor.gltf",
                     "samples/models/montebelluna/shared/Room_G_wall.gltf",
                     "samples/models/montebelluna/shared/Room_G_wall_plinth.gltf"
-                ]
+                ],
+                "show": false
             },
             "Build. 2 Rec": {
                 "urls": [

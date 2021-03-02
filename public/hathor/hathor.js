@@ -756,7 +756,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
     // Not yet a valid convex shape
     if (semtype === ATON.FE.SEMSHAPE_CONVEX && !ATON.SemFactory.bConvexBuilding) return;
 
-    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupCompact") ) return;
 
     $("#btnRichContent").click(()=>{
         $("#idSemDescCont").toggle();
@@ -910,7 +910,7 @@ HATHOR.popupSemDescription = (semid)=>{
 
     htmlcontent += "<div class='atonPopupDescriptionContainer'>"+descr+"</div>";
 
-    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupCompact") ) return;
 
     ATON.FE.checkAuth((r)=>{
         let authUser = r.username;
@@ -982,7 +982,7 @@ HATHOR.popupSceneInfo = ()=>{
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='btnOK' style='width:90%'>OK</div>";
 
-    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupCompact") ) return;
 
     $("#btnOK").click(()=>{
         ATON.FE.popupClose();

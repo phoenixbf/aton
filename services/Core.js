@@ -524,12 +524,27 @@ Core.realizeBaseAPI = (app)=>{
 		res.send(id);
 	});
 
-	// /api/scene/<SID>
-	app.get(/^\/api\/scene\/(.*)$/, function(req,res,next){
-		let args = req.params[0].split(',');
+	// Landing page opts
+	app.get("/api/landing/", function(req,res,next){
+		let o = {};
+		if (Core.config.landing !== undefined) o = Core.config.landing;
 
-		let bEdit = (args[1] && args[1] === "edit")? true : false; // Edit mode
-		let sid = args[0];
+		res.send(o);
+	});
+
+	// Collection
+	app.get(/^\/api\/collection\/(.*)$/, (req,res,next)=>{
+		// TODO:
+	});
+
+	// /api/scene/<SID>
+	app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
+		//let args = req.params[0].split(',');
+
+		//let bEdit = (args[1] && args[1] === "edit")? true : false; // Edit mode
+		//let sid = args[0];
+
+		let sid = req.params[0];
 
 		let sjsonpath = Core.getSceneJSONPath(sid);
 
@@ -538,12 +553,16 @@ Core.realizeBaseAPI = (app)=>{
 			return res.sendFile(sjsonpath);
 		}
 
+		if (sid.startsWith("c/")){
+			//TODO: generate temp. scene
+		}
+/*
 		// look into models collection and build scene FIXME:
 		let mfolder = path.join(Core.DIR_COLLECTION,sid)+"/";
 		let O = {};
 		O.cwd = mfolder;
 
-		glob("*.{gltf,glb}", O, (err, files)=>{ // "**/*.gltf"
+		glob("*.{gltf,glb}", O, (err, files)=>{
 
 			// build scene json
 			let sobj = Core.createBasicScene();
@@ -558,28 +577,8 @@ Core.realizeBaseAPI = (app)=>{
 
 			return res.send(sobj);
 		});
-
-		//next();
-	});
-
-	// Back-end (SHU)
-/*
-	app.get("/be/newscene/", (req,res,next)=>{
-		if (req.user === undefined){
-			res.sendFile(path.join(Core.DIR_BE, "auth/index.html"));
-			return;
-		}
-
-		res.sendFile(path.join(Core.DIR_BE,"newscene/index.html"));
-	});
 */
-
-	// Landing page opts
-	app.get("/api/landing/", function(req,res,next){
-		let o = {};
-		if (Core.config.landing !== undefined) o = Core.config.landing;
-
-		res.send(o);
+		//next();
 	});
 
 	// List all public scenes

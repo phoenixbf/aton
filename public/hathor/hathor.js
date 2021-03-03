@@ -55,6 +55,10 @@ window.addEventListener( 'load', ()=>{
 
     ATON.FE.addBasicLoaderEvents();
 
+    // POVs
+    HATHOR._cPOVind = undefined;
+    HATHOR._povs = [];
+
     HATHOR.uiSetup();
     HATHOR.suiSetup();
     HATHOR.setupEventHandlers();
@@ -200,13 +204,18 @@ HATHOR.uiSetup = ()=>{
   
     // Bottom toolbar
     //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
+    ATON.FE.uiAddButton("idBottomToolbar", "prev", HATHOR.povPrev, "Previous Viewpoint" );
     ATON.FE.uiAddButtonHome("idBottomToolbar");
+    ATON.FE.uiAddButton("idBottomToolbar", "next", HATHOR.povNext, "Next Viewpoint" );
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
     ATON.FE.uiAddButton("idBottomRToolbar", "info", HATHOR.popupSceneInfo, "Scene information" );
 
     $("#btn-talk").hide();
     $("#btn-info").hide();
+
+    $("#btn-prev").hide();
+    $("#btn-next").hide();
 
     if (HATHOR.paramFPS){
         $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
@@ -365,6 +374,8 @@ HATHOR.setupEventHandlers = ()=>{
         if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
 
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
+
+        HATHOR.uiUpdatePOVs();
     });
 
     ATON.on("NodeRequestFired", ()=>{ 
@@ -681,6 +692,49 @@ HATHOR.measure = ()=>{
 };
 
 
+// POVs
+HATHOR.povNext = ()=>{
+    let numpovs = HATHOR._povs.length;
+    if (numpovs < 1) return;
+
+    HATHOR._cPOVind = (HATHOR._cPOVind + 1) % numpovs;
+
+    let pov = HATHOR._povs[HATHOR._cPOVind];
+    ATON.Nav.requestPOV(pov, 1.0);
+};
+HATHOR.povPrev = ()=>{
+    let numpovs = HATHOR._povs.length;
+    if (numpovs < 1) return;
+
+    HATHOR._cPOVind = (HATHOR._cPOVind - 1);
+    if (HATHOR._cPOVind<0) HATHOR._cPOVind = (numpovs-1);
+
+    let pov = HATHOR._povs[HATHOR._cPOVind];
+    ATON.Nav.requestPOV(pov, 1.0);
+};
+
+HATHOR.uiUpdatePOVs = ()=>{
+
+    HATHOR._povs = [];
+
+    for (let k in ATON.Nav.povlist){
+        let pov = ATON.Nav.povlist[k];
+
+        HATHOR._povs.push(pov);
+        //console.log(pov);
+    }
+
+    if (HATHOR._povs.length>0){
+        HATHOR._cPOVind = 0;
+        $("#btn-prev").show();
+        $("#btn-next").show();
+    }
+    else {
+        HATHOR._cPOVind = undefined;
+        $("#btn-prev").hide();
+        $("#btn-next").hide();
+    }
+};
 
 // Popups
 //=======================================
@@ -693,8 +747,8 @@ HATHOR._createPopupStdSem = (esemid)=>{
 
     // New ID
     if (esemid === undefined){
-        htmlcontent += "<label for='semid'>ID:</label><input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
-        htmlcontent += "<label for='psemid'>child of:</label>";
+        htmlcontent += "ID:<input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
+        htmlcontent += "child of:";
         htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
         htmlcontent += "<option value='.'>root</option>";
         for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
@@ -1013,6 +1067,9 @@ HATHOR.popupPOV = ()=>{
     htmlcontent += "</div>";
     htmlcontent += "<br>";
 
+    htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%;' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set current viewpoint as Home</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%;' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
+/*
     htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'>&nbsp;";
     htmlcontent += "<div class='select' style='width:250px;'><select id='idPOVmode'>";
     htmlcontent += "<option value='h'>Set viewpoint as Home</option>";
@@ -1028,9 +1085,52 @@ HATHOR.popupPOV = ()=>{
     htmlcontent += "</div>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='btnPOV' style='width:90%'>OK</div>"; // <img src='"+FE.PATH_RES_ICONS+"pov.png'>
-
+*/
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
+    let povid = undefined;
+
+    $("#btnPOVsetHome").click(()=>{
+        povid = "home";
+
+        ATON.Nav.setHomePOV( pov );
+
+        ATON.FE.popupClose();
+
+        let E = {};
+        E.viewpoints = {};
+        E.viewpoints[povid] = {};
+        E.viewpoints[povid].position = [pov.pos.x, pov.pos.y, pov.pos.z];
+        E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
+        E.viewpoints[povid].fov      = pov.fov;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+
+
+    });
+
+    $("#btnPOVadd").click(()=>{
+        povid = ATON.Utils.generateID("pov");
+        pov.as(povid);
+
+        ATON.Nav.addPOV(pov);
+        HATHOR.uiUpdatePOVs();
+
+        ATON.FE.popupClose();
+
+        let E = {};
+        E.viewpoints = {};
+        E.viewpoints[povid] = {};
+        E.viewpoints[povid].position = [pov.pos.x, pov.pos.y, pov.pos.z];
+        E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
+        E.viewpoints[povid].fov      = pov.fov;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    });
+
+/*
     $("#idPOVmode").on("change",()=>{
         let mode = $("#idPOVmode").val();
         
@@ -1061,6 +1161,9 @@ HATHOR.popupPOV = ()=>{
 
             let kwords = $("#idPOVkwords").val();
             if (kwords.length>1) pov.addKeywords(kwords);
+
+            ATON.Nav.addPOV(pov);
+            HATHOR.uiUpdatePOVs();
         }
 
         ATON.FE.popupClose();
@@ -1077,6 +1180,7 @@ HATHOR.popupPOV = ()=>{
 
         console.log(pov);
     });
+*/
 };
 
 HATHOR.popupGraphs = ()=>{

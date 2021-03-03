@@ -36,7 +36,7 @@ MatHub.getDefVertexShader = ()=>{
         void main(){
             vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
             vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
-            vNormalV   = normalize( vec3( normalMatrix * normal ) );
+            vNormalV   = normalize( vec3( normalMatrix * normal ));
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
         }
@@ -87,8 +87,7 @@ MatHub.addDefaults = ()=>{
                 float f;
 		        //f = dot(viewDirectionW, vNormalW);
                 f = dot(vNormalV, vec3(0,0,1));
-                //f = dot(vNormalV, viewDirectionW);
-		        f = clamp(1.0 - f, 0.3, 1.0);
+		        f = clamp(1.0 - f, 0.2, 1.0);
 
 		        gl_FragColor = vec4(color.rgb, f * opacity);
 		    }

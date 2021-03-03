@@ -140,6 +140,16 @@ SUI.setSelectorModel = (path, bUseStdMat)=>{
     if (bUseStdMat) SUI.mainSelector.setMaterial( ATON.MatHub.getMaterial("selector") );
 };
 
+/**
+Set selector color
+@param {THREE.Color} color - color
+@param {number} opacity - (optional) opacity 
+*/
+SUI.setSelectorColor = (color, opacity)=>{
+    ATON.MatHub.materials.selector.uniforms.color.value = color;
+    if (opacity !== undefined) ATON.MatHub.materials.selector.uniforms.opacity.value = opacity;
+};
+
 // Sem-shape icons
 SUI.addSemIcon = (semid, meshape)=>{
     if (SUI.gSemIcons === undefined) return;

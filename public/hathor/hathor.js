@@ -724,6 +724,8 @@ HATHOR.uiUpdatePOVs = ()=>{
         //console.log(pov);
     }
 
+    //console.log(HATHOR._povs);
+
     if (HATHOR._povs.length>0){
         HATHOR._cPOVind = 0;
         $("#btn-prev").show();
@@ -1536,6 +1538,7 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' class='atonDefIcon'> User authentication</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"nav.png' class='atonDefIcon'> Navigation</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"prev.png' class='atonDefIcon'><img src='"+ATON.FE.PATH_RES_ICONS+"next.png' class='atonDefIcon'> Previous/Next viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' class='atonDefIcon'> Current scene</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' class='atonDefIcon'> Fullscreen mode</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"info.png' class='atonDefIcon'> Scene information</div>";

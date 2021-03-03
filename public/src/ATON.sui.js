@@ -37,7 +37,7 @@ SUI.init = ()=>{
     ATON._rootUI.add(SUI.fpTeleport);
 
     // Sem-shapes icons
-    SUI.enableSemIcons();
+    //SUI.enableSemIcons();
 
     // Main Font
     //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
@@ -74,10 +74,10 @@ SUI.init = ()=>{
 
     ATON.on("SemanticNodeHover", (semid)=>{
         SUI.setInfoNodeText(semid);
-        SUI.gSemIcons.hide();
+        if (SUI.gSemIcons) SUI.gSemIcons.hide();
     });
     ATON.on("SemanticNodeLeave", (semid)=>{
-        SUI.gSemIcons.show();
+        if (SUI.gSemIcons) SUI.gSemIcons.show();
     });
 
     //SUI.setSemIconsOpacity(0.5);
@@ -415,11 +415,13 @@ SUI.update = ()=>{
     }
 
     // SemIcons
-    if (ATON.Nav._bInteracting){
-        SUI.gSemIcons.hide();
-    }
-    else {
-        if (ATON._hoveredSemNode === undefined) SUI.gSemIcons.show();
+    if (SUI.gSemIcons){
+        if (ATON.Nav._bInteracting){
+            SUI.gSemIcons.hide();
+        }
+        else {
+            if (ATON._hoveredSemNode === undefined) SUI.gSemIcons.show();
+        }
     }
 
     // Teleport SUI

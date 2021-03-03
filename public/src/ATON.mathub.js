@@ -21,7 +21,7 @@ MatHub.init = ()=>{
     // Uniforms
     MatHub._uSem = {
         time: { type:'float', value: 0.0 },
-        tint: { type:'vec4', value: new THREE.Vector4(0.0,0.0,1.0, 0.1) }
+        tint: { type:'vec4', value: new THREE.Vector4(0.0,0.0,1.0, 0.2) }
     };
 
     MatHub.addDefaults();
@@ -82,7 +82,7 @@ MatHub.addDefaults = ()=>{
             uniform float opacity;
 
 		    void main(){
-		        vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
+		        //vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
 
                 float f;
 		        //f = dot(viewDirectionW, vNormalW);
@@ -170,11 +170,15 @@ MatHub.addDefaults = ()=>{
 		    void main(){
 		        //vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
 
+                //float ff = dot(vNormalV, vec3(0,0,1));
+		        //ff = clamp(1.0-ff, 0.0, 1.0);
+
                 float f = (1.0 * cos(time*2.0)); // - 0.5;
                 //f = cos(time + (vPositionW.y*10.0));
                 f = clamp(f, 0.0,1.0);
 
 		        gl_FragColor = vec4(tint.rgb, tint.a * f);
+                //gl_FragColor = vec4(tint.rgb, ff);
 		    }
         `,
         transparent: true,

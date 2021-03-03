@@ -286,6 +286,8 @@ SemFactory.deleteSemanticNode = (semid)=>{
     if (S === undefined) return false;
     S.removeChildren();
 
+    if (ATON.SUI.gSemIcons === undefined) return true;
+
     for (let s in ATON.SUI.gSemIcons.children){
         let C = ATON.SUI.gSemIcons.children[s];
         if (C && C.name === semid) ATON.SUI.gSemIcons.removeChild(C);

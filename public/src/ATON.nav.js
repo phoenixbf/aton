@@ -292,7 +292,7 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._prevMode = Nav._mode; // store previous nav mode
 
-    ATON.SUI.setSelectorRadius(0.5); // for first-person we (re)set selector radius to 0.5m
+    if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5); // for immersive sessions we (re)set selector radius to 50cm
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;

@@ -773,6 +773,7 @@ ATON._assetReqComplete = (url)=>{
         let r = ATON._rootVisible.getBound().radius;
 
         if (ATON._renderer.shadowMap.enabled){
+
             ATON._rootVisible.traverse((o) => {
                 if (o.isMesh){
                     o.castShadow = true;
@@ -796,7 +797,7 @@ ATON._assetReqComplete = (url)=>{
         }
 
         // re-center main pano
-        //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+        if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
 
         ATON.getRootScene().assignLightProbesByProximity();
         //ATON.updateLightProbes();
@@ -805,7 +806,7 @@ ATON._assetReqComplete = (url)=>{
 
         // FIXME: dirty
         setTimeout( ()=>{
-            if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+            //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
             ATON.updateLightProbes();
         }, 1000);
 
@@ -1095,13 +1096,23 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
     if (r <= 0.0 || r >= ATON.SHADOWS_SIZE){
         ATON._bShadowsFixedBound = false;
         ATON._shadowsSize = ATON.SHADOWS_SIZE;
+        //ATON._shadowsNear = ATON.SHADOWS_NEAR;
+        //ATON._shadowsFar  = ATON.SHADOWS_FAR;
     }
     else {
         ATON._bShadowsFixedBound = true;
         ATON._shadowsSize = r * 1.5;
-        //console.log(ATON._shadowsSize);
-        //console.log(c);
+
+        //console.log(ATON._shadowsNear,ATON._shadowsFar);
     }
+
+    // must dispose when changing shadow params
+    if (ATON._dMainL.shadow.map){
+        ATON._dMainL.shadow.map.dispose();
+        ATON._dMainL.shadow.map = null;
+    }
+
+    //console.log(ATON._dMainL.shadow.camera);
 
     ATON._dMainL.shadow.camera.left   = -ATON._shadowsSize;
     ATON._dMainL.shadow.camera.right  = ATON._shadowsSize;
@@ -1113,7 +1124,9 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
     ATON._dMainL.shadow.camera.near    = ATON._shadowsNear;
     ATON._dMainL.shadow.camera.far     = ATON._shadowsFar;
 
-    ATON._dMainL.shadow.bias = -0.0001;
+    //ATON._dMainL.shadow.camera.updateProjectionMatrix();
+
+    ATON._dMainL.shadow.bias = -0.0005;
 };
 
 

@@ -977,7 +977,7 @@ FE.computeSelectorRanges = ()=>{
     FE._selRefRadius = r * 0.02;
     FE._selRanges[1] = r * 0.5;
 
-    console.log("3D Selector ranges: "+FE._selRanges[0]+", "+FE._selRanges[1]);
+    //console.log("3D Selector ranges: "+FE._selRanges[0]+", "+FE._selRanges[1]);
 };
 
 FE.popupSelector = ()=>{

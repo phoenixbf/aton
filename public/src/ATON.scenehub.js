@@ -225,6 +225,14 @@ SceneHub.initBaseParsers = ()=>{
 
     };
 
+    SceneHub._jsonParsers.soundscape = (soundscape)=>{
+        if (soundscape === undefined) return;
+
+        if (soundscape.global){
+            ATON.setGlobalAudio(soundscape.global.url, soundscape.global.loop);
+        }
+    };
+
     // NavMode
     SceneHub._jsonParsers.navmode = (navmode)=>{
         if (navmode === undefined) return;

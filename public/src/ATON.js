@@ -116,6 +116,11 @@ ATON.setPathScenes = (path)=>{
     ATON.PATH_SCENES = /*window.location.origin +*/ path;
 };
 
+// For resuming suspended audio/video streams
+ATON._onUserInteraction = ()=>{
+    if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+    if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
+};
 
 ATON._setupBaseListeners = ()=>{
     let el = ATON._renderer.domElement;
@@ -153,7 +158,7 @@ ATON._setupBaseListeners = ()=>{
     ATON._bPointerDown = false;
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
-        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+        ATON._onUserInteraction();
     });
     window.addEventListener('pointerup', (e)=>{
         ATON._bPointerDown = false;
@@ -167,7 +172,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener('touchstart', (e)=>{
         ATON._bPointerDown = true;
-        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+        ATON._onUserInteraction();
     });
     window.addEventListener('touchend', (e)=>{
         ATON._bPointerDown = false;
@@ -1196,6 +1201,25 @@ ATON._updateEnvironment = ()=>{
     if (ATON._bShadowsFixedBound) return;
 
     ATON.updateDirShadows();
+};
+
+// main audio
+ATON.setGlobalAudio = (audioURL, bLoop)=>{
+    if (audioURL === undefined) return;
+    if (bLoop === undefined) bLoop = true;
+
+    audioURL = ATON.Utils.resolveCollectionURL(audioURL);
+
+    if (ATON._auMain === undefined || ATON._auMain === null) ATON._auMain = new THREE.Audio( ATON.AudioHub._listener );
+    else if (ATON._auMain.isPlaying) ATON._auMain.stop();
+
+    ATON.AudioHub._loader.load( audioURL, (buffer)=>{
+        ATON._auMain.setBuffer( buffer );
+        ATON._auMain.setLoop( bLoop );
+        //ATON._auMain.setVolume( 2.0 );
+        //A._auTalk.setPlaybackRate(0.9);
+        ATON._auMain.play();
+    });
 };
 
 //==============================================================

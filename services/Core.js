@@ -156,6 +156,19 @@ Core.existsScene = (sid)=>{;
 	return b;
 };
 
+// Generate timestamped user SID
+Core.generateUserSID = ()=>{
+    let today = new Date();
+    let dd   = today.getDate();
+    let mm   = today.getMonth()+1; 
+    let yyyy = today.getFullYear();
+    if(dd<10) dd = '0'+dd;
+    if(mm<10) mm = '0'+mm;
+
+    let sid = yyyy+mm+dd + '-' + Math.random().toString(36).substr(2,9);
+	return sid;
+};
+
 Core.createBasicScene = ()=>{
 	let sobj = {};
 
@@ -828,6 +841,33 @@ Core.realizeBaseAPI = (app)=>{
 		let J = Core.applySceneEdit(sid, patch, mode);
 
 		res.json(J);
+	});
+
+	// Scene clone
+	app.post('/api/clone/scene', (req, res) => {
+		// Only auth users
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
+
+		let O = req.body;
+		let sid = O.sid;
+
+		if (sid.endsWith("/")) sid = sid.slice(0, -1);
+		let parent = path.dirname(sid);
+
+		let newsid = parent+"/"+Core.generateUserSID();
+
+		fsx.copy(Core.DIR_SCENES+sid, Core.DIR_SCENES+newsid, (err)=>{
+			if (err){
+				console.log(err);
+				res.send(false);
+				return;
+			}
+		});
+		
+		res.json(newsid);
 	});
 
 	// New Scene

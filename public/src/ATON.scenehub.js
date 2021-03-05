@@ -225,6 +225,7 @@ SceneHub.initBaseParsers = ()=>{
 
     };
 
+    // Soundscape
     SceneHub._jsonParsers.soundscape = (soundscape)=>{
         if (soundscape === undefined) return;
 
@@ -381,9 +382,6 @@ SceneHub.initBaseParsers = ()=>{
             let G = ATON.getSceneNode(nid);
 
             if (G !== undefined){
-                //if (N.nopicking){ G.disablePicking(); }
-                //else G.enablePicking();
-
                 if (N.show !== undefined){
                     //console.log(N.show);
 
@@ -392,6 +390,9 @@ SceneHub.initBaseParsers = ()=>{
                     //console.log(ATON.getSceneNode(nid));
                 }
                 //else G.show();
+
+                //if (N.nopicking){ G.disablePicking(); }
+                //else G.enablePicking();
 
                 if (N.material){
                     let mat = new THREE.MeshStandardMaterial(N.material);

@@ -205,6 +205,22 @@ Utils.setPicking = (node, type, b)=>{
     }
 };
 
+Utils.graphPostVisitor = (N)=>{
+    //if (N.type === undefined) return;
+
+    if (!N.visible){
+        Utils.setPicking(N, N.type, false);
+        return;
+    }
+
+    for (let c in N.children){
+        let C = N.children[c];
+        Utils.graphPostVisitor(C);
+    }
+
+    console.log(N);
+};
+
 // Helper visitor routine
 // Note: parentNode is not connected to model
 Utils.modelVisitor = (parentNode, model)=>{
@@ -244,11 +260,11 @@ Utils.modelVisitor = (parentNode, model)=>{
                     console.log("Computed visible BVH");
 
                     // visualize bounds
-                    /*
+/*
                     let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
                     BVHVis.update();
                     o.parent.add(BVHVis);
-                    */
+*/
                 }
 
                 // Ensure mipmapping is correct

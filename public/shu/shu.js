@@ -26,9 +26,20 @@ SHU.getUserFromSID = (sid)=>{
 
 SHU.generateID = (prefix)=>{
     if (prefix === undefined) prefix = "id";
-    //let currDate = new Date();
-    //let ts = currDate.getYear()+":"+currDate.getMonth()+":"+currDate.getDay()+":"+currDate.getHours()+":"+currDate.getMinutes() +":"+ currDate.getSeconds();
     return prefix+'-' + Math.random().toString(36).substr(2,9);
+};
+
+// timestamped user SID
+// TODO: merge with Core routine
+SHU.generateUserSID = ()=>{
+    let today = new Date();
+    let dd   = today.getDate();
+    let mm   = today.getMonth()+1; 
+    let yyyy = today.getFullYear();
+    if(dd<10) dd = '0'+dd;
+    if(mm<10) mm = '0'+mm;
+
+    return SHU.generateID(yyyy+mm+dd);
 };
 
 SHU.goToScene = (sid, vrc)=>{

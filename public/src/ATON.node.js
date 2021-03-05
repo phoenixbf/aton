@@ -21,7 +21,6 @@ constructor(id, type){
 
     this.type = type? type : ATON.NTYPES.SCENE;
     
-    //this.bPickable = true;
     this.enablePicking();
 
     if (this.type === ATON.NTYPES.SCENE){
@@ -447,6 +446,8 @@ attachTo(node){
         N.add(this);
         if (N.userData.cMat !== undefined) this.userData.cMat = N.userData.cMat; // this.setMaterial(N.userData.cMat);
         if (N.bPickable !== undefined) this.bPickable = N.bPickable;
+
+        //this.toggle(N.visible);
     }
     
     return N;
@@ -462,6 +463,8 @@ attachToRoot(){
     this._rootG.add(this);
     if (this._rootG.userData.cMat !== undefined) this.userData.cMat = this._rootG.userData.cMat;
     if (this._rootG.bPickable !== undefined) this.bPickable = this._rootG.bPickable;
+
+    //this.toggle(this._rootG.visible);
     
     return this._rootG;
 }
@@ -590,6 +593,9 @@ load(url, onComplete){
                 }
             }
             else N.add( C );
+
+            N.setPickable(N.bPickable);
+            N.toggle(N.visible);
 
             if (onComplete) onComplete();
         });

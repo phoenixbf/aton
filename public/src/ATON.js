@@ -118,7 +118,7 @@ ATON.setPathScenes = (path)=>{
 
 // For resuming suspended audio/video streams
 ATON._onUserInteraction = ()=>{
-    if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+    if (ATON._elPanoVideo && !ATON._vpanoPlaying) ATON._elPanoVideo.play();
     if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
 };
 
@@ -209,7 +209,8 @@ ATON._setupBaseListeners = ()=>{
         //ATON._evPointer = e.srcEvent;
         ATON._bPointerDown = false;
 
-        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+        //if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+        ATON._onUserInteraction();
 
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
@@ -237,7 +238,7 @@ ATON._setupBaseListeners = ()=>{
 
     window.addEventListener("keydown", (e)=>{
         //e.preventDefault();
-        if (ATON._elPanoVideo) ATON._elPanoVideo.play();
+        ATON._onUserInteraction();
 
         if (e.key === "Shift")   ATON._kModShift = true;
         if (e.key === "Control") ATON._kModCtrl  = true;
@@ -445,6 +446,10 @@ ATON.realize = ()=>{
     //canvas.style.margin  = "0px";
     //canvas.style.width   = "100%";
     //canvas.style.height  = "100%";
+
+    // Multimedia
+    ATON._vpanoPlaying = false;
+    ATON._bUserInts = 0;
 
     ATON.EventHub.init();
     ATON.MatHub.init();
@@ -801,6 +806,8 @@ ATON._assetReqComplete = (url)=>{
             console.log("Auto LP");
         }
 
+        //ATON.Utils.graphPostVisitor(ATON._rootVisible);
+
         // re-center main pano
         if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
 
@@ -963,6 +970,11 @@ ATON.setMainPanorama = (path)=>{
             ATON._elPanoVideo.style.cssText = "display:none;";
             //ATON._elPanoVideo.src = path;
             ATON._elPanoVideo.autoplay = true;
+
+            ATON._elPanoVideo.onplaying = ()=>{
+                console.log("VideoPano playing");
+                ATON._vpanoPlaying = true;
+            };
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );

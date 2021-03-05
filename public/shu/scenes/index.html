@@ -60,6 +60,8 @@ let renderGallery = ()=>{
             //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='"+ATON.PATH_RES+"icons/play.png'></button>";
             
             shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='"+ATON.PATH_RES+"icons/trash.png'></div>";
+
+            shtml += "<div id='clone-"+i+"' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/clone.png'></div>";
             
             shtml += "<div id='delConf-"+i+"' style='display:none;'>Delete this scene: are you sure?<br>";
             shtml += "<div id='del-"+i+"' class='atonBTN atonBTN-red'>YES</div><div id='delNo-"+i+"' class='atonBTN'>NO</div>";
@@ -71,10 +73,17 @@ let renderGallery = ()=>{
 
             //$('#go-'+i).click(()=>{ SHU.goToScene( sid ); });
 
+            $('#clone-'+i).click(()=>{
+                ATON.Utils.postJSON(ATON.PATH_RESTAPI+"clone/scene", {sid: sid}, (newsid)=>{
+                    console.log(newsid);
+                });
+            });
+
             $('#delAsk-'+i).click(()=>{
                 $('#delConf-'+i).show();
                 $('#go-'+i).hide();
                 $('#delAsk-'+i).hide();
+                $('#clone-'+i).hide();
 
                 $("#s"+i).css("background-color","rgba(127,0,0,0.3)");
 
@@ -89,6 +98,7 @@ let renderGallery = ()=>{
                     $("#s"+i).css("background-color","");
                     $('#go-'+i).show();
                     $('#delAsk-'+i).show();
+                    $('#clone-'+i).show();
                 });
 
             });

@@ -52,6 +52,12 @@ SHU.goToScene = (sid, vrc)=>{
     window.location.href = feURL;
 };
 
+SHU.onCoverNotFound = (image)=>{
+    image.onerror = "";
+    image.src = ATON.PATH_RES+"scenecover.png";
+    return true;
+};
+
 SHU.uiBuildFooter = (elid)=>{
     let htmlcontent = "SHU back-end - ";
     htmlcontent += "<a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";

@@ -28,17 +28,19 @@
 
 let renderGallery = ()=>{
 
+    let htmlcontent = "";
+    htmlcontent += "<div class='atonTitle'>Your Scenes</div><br>";
+    htmlcontent += "<div id='btn-newscene' class='atonBTN atonBTN-green' style='width: 90%;'><img src='"+ATON.PATH_RES+"icons/scene.png'>New Scene</div>";
+    htmlcontent += "<br><br>";
+
+    $('#idContent').append(htmlcontent);
+
     $("#btn-newscene").click(()=>{
         window.location.href = "/shu/newscene/";
     });
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/own", (data)=>{
 
-/*
-        shtml += "<div class='atonGalleryItem' style='width:230px; height:230px;'>";
-        //shtml += "<div style>"
-        shtml += "</div>";
-*/
 
         for (let i in data){
             let scene = data[i];
@@ -47,9 +49,12 @@ let renderGallery = ()=>{
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonGalleryItem' style='width:230px;'>"; // background-image: url(\""+urlCover+"\");
-            shtml += "<a href='/s/"+sid+"'><div class='atonBlockSubTitle'>"+sid+"</div></a><br>";
-            //shtml += "<div class='atonBlockTitle'>"+sid+"</div><br>";
+            shtml += "<div id='s"+i+"' class='atonGalleryItem' style='position:relative; width:250px; margin:10px'>";
+
+            shtml += "<div class='atonBlurBG' style='width:250px; height:320px; background-image: url(\""+urlCover+"\")'></div>";
+
+            shtml += "<div style='width:250px; height:320px; position:absolute; top:0; left:0'>";
+            shtml += "<div class='atonBlockSubTitle'>"+sid+"</div><br>";
             
 
             shtml += "<a class='atonCover' href='/s/"+sid+"'>";
@@ -57,8 +62,10 @@ let renderGallery = ()=>{
             shtml += "</a>";
 
             shtml += "<br>";
-            //shtml += "<button id='go-"+i+"' class='atonBTN atonBTN-green'><img src='"+ATON.PATH_RES+"icons/play.png'></button>";
+            shtml += "<a class='atonBTN' href='/shu/scenes/?s="+sid+"' style='width:60%; background-color:rgba(0,0,0,0.2)'><img src='"+ATON.PATH_RES+"icons/settings.png'>Edit</a>";
+            shtml += "</div>";
             
+/*
             shtml += "<div id='delAsk-"+i+"' class='atonBTN atonBTN-red'><img src='"+ATON.PATH_RES+"icons/trash.png'></div>";
 
             shtml += "<div id='clone-"+i+"' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/clone.png'></div>";
@@ -66,13 +73,12 @@ let renderGallery = ()=>{
             shtml += "<div id='delConf-"+i+"' style='display:none;'>Delete this scene: are you sure?<br>";
             shtml += "<div id='del-"+i+"' class='atonBTN atonBTN-red'>YES</div><div id='delNo-"+i+"' class='atonBTN'>NO</div>";
             shtml += "</div>";
-            
+*/     
             shtml += "</div>";
 
-            $('#idOwnScenes').append(shtml);
+            $('#idContent').append(shtml);
 
-            //$('#go-'+i).click(()=>{ SHU.goToScene( sid ); });
-
+/*
             $('#clone-'+i).click(()=>{
                 ATON.Utils.postJSON(ATON.PATH_RESTAPI+"clone/scene", {sid: sid}, (newsid)=>{
                     console.log(newsid);
@@ -100,10 +106,103 @@ let renderGallery = ()=>{
                     $('#delAsk-'+i).show();
                     $('#clone-'+i).show();
                 });
-
             });
+*/
         }
         
+    });
+};
+
+let renderScene = (sid)=>{
+    $('#idContent').html("");
+
+    let htmlcontent = "";
+    htmlcontent += "<div class='atonTitle'>"+sid+"</div><br>";
+
+    $('#idContent').append(htmlcontent);
+
+    $.getJSON( ATON.PATH_RESTAPI+"scene/"+sid, (data)=>{
+        console.log(data);
+
+        let shtml = "";
+        shtml += "<div id='idSceneBlock' class='atonBlockRound' style='background-color: rgba(0,0,0,0.3); text-align:justify; min-width:50%'>";
+        if (data.title) shtml += "<div class='atonBlockTitle'>"+data.title+"</div><br>";
+        else shtml += "<div class='atonBlockTitle'>No Title</div><br>";
+
+        shtml += "<div style='display:block; width:90%; min-height:250px; vertical-align:top'>";
+
+        // cover
+        shtml += "<a href='/s/"+sid+"' class='atonCover' style='display:inline-block; width:250px; float:left' >";
+        shtml += "<img src='"+ATON.PATH_SCENES+sid+"/cover.png' onerror='SHU.onCoverNotFound(this);'>";
+        shtml += "</a>";
+
+        // Scene fields
+        shtml +="<div style='text-align:left; padding:20px'>";
+        if (data.status) shtml += "<b>Status:</b><span class='atonKeyword'>"+data.status+"</span><br>";
+        if (data.scenegraph){
+            shtml += "<b>Scene-graph nodes:</b> ";
+            for (let n in data.scenegraph.nodes) shtml += "<span class='atonKeyword'>"+n+"</span>";
+            shtml += "<br>";
+        }
+        if (data.semanticgraph){
+            shtml += "<b>Semantic-graph nodes:</b> ";
+            for (let n in data.semanticgraph.nodes) shtml += "<span class='atonKeyword'>"+n+"</span>";
+            shtml += "<br>"; 
+        }
+        if (data.environment){
+            shtml += "<b>Main panorama:</b> ";
+            if (data.environment.mainpano) shtml += "<span class='atonKeyword'>yes</span>";
+            else shtml += "<span class='atonKeyword'>no</span>";
+            shtml += "<br>"; 
+        }
+        if (data.description) shtml += "<b>Description:</b> "+JSON.parse(data.description);
+        shtml += "</div>";
+        
+        shtml += "</div>";
+
+        // Actions
+        shtml += "<div style='text-align:center'>";
+        shtml += "<div id='idActions'>";
+        shtml += "<a id='idOpen' href='/s/"+sid+"' class='atonBTN atonBTN-green' style='width:150px'><img src='"+ATON.PATH_RES+"icons/hathor.png'>Open</a>";
+        shtml += "<div id='idClone' class='atonBTN' style='width:150px'><img src='"+ATON.PATH_RES+"icons/clone.png'>Clone</div>";
+        shtml += "<div id='delAsk' class='atonBTN atonBTN-red' style='width:150px'><img src='"+ATON.PATH_RES+"icons/trash.png'>Delete</div>";
+        shtml += "</div><br>";
+
+        shtml += "<div id='idConfirmDel' style='display:none'>";
+        shtml += "Are you sure to DELETE this scene? ";
+        shtml += "<div id='delYES' class='atonBTN atonBTN-red'>YES</div>";
+        shtml += "<div id='delNO' class='atonBTN'>NO</div>";
+        shtml += "</div>";
+        shtml += "</div>";
+
+        shtml += "</div>";
+
+        $('#idContent').append(shtml);
+
+        $('#delAsk').click(()=>{
+            $("#idActions").hide();
+            $("#idConfirmDel").show();
+            $("#idSceneBlock").css("background-color","rgba(127,0,0,0.3)");
+        });
+
+        $('#delYES').click(()=>{
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"del/scene", {sid: sid}, (b)=>{
+                if (b) window.location.href = "/shu/scenes";
+            });
+        });
+
+        $('#delNO').click(()=>{
+            $("#idActions").show();
+            $("#idConfirmDel").hide(); 
+            $("#idSceneBlock").css("background-color","rgba(0,0,0,0.3)");     
+        });
+
+        $('#idClone').click(()=>{
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"clone/scene", {sid: sid}, (newsid)=>{
+                if (newsid) window.location.href = "/s/"+newsid;
+            });
+        });
+
     });
 };
 
@@ -111,9 +210,13 @@ window.addEventListener( 'load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 
+    let urlParams = new URLSearchParams(window.location.search);
+    let sid = urlParams.get('s');
+
     ATON.Utils.checkAuth((data)=>{
         if (data.username){
-            renderGallery();
+            if (sid && sid.startsWith(data.username)) renderScene(sid);
+            else renderGallery();
         }
         else {
             window.location.href = "/shu/auth/?url="+window.location.href;
@@ -128,13 +231,14 @@ window.addEventListener( 'load', ()=>{
 <body class="atonDefaultBody">
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
-    <div class='shuMainContainer'>
+    <div id='idContent' class='shuMainContainer'>
+<!--
         <div class="atonTitle">Your Scenes</div><br>
         <div id="btn-newscene" class="atonBTN atonBTN-green" style="width: 90%;"><img src='../../res/icons/scene.png'>New Scene</div>
         <br><br>
 
         <div class="" id='idOwnScenes'></div>
-
+-->
     </div>
     
 </body>

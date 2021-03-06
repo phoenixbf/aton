@@ -402,6 +402,34 @@ canvas {
     box-shadow: 0 0px 10px rgba(255, 255, 255, 1.0);
 }
 
+.atonBlurBG {
+    position: relative;
+
+    left: 0;
+    right: 0;
+    z-index: -10;
+    /*
+    display: block;
+    */
+    /*background-image: url();*/
+    width: 100%;
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /*background-color: rgba(0, 0, 0, 0.5);*/
+    opacity: 0.5;
+
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+
+}
+
 .atonKeyword {
     display: inline-block;
     border-radius: 5px;
@@ -436,6 +464,8 @@ canvas {
     border: 0px;
     display: inline-block;
     cursor: pointer;
+
+    text-decoration: none;
 
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -1347,6 +1377,8 @@ label {
 
     text-align: center;
 
+    text-decoration: none;
+
     background-color: rgba(0,0,0, 0.5);
     border-radius: 10px;
 
@@ -1374,10 +1406,12 @@ label {
 
     text-align: center;
 
+    text-decoration: none;
+
     background-color: rgba(0,0,0, 0.3);
     border-radius: 10px;
 
-    padding: 5px;
+    padding: 10px;
     margin: 0px;
     margin-left: 2px;
     margin-right: 2px;

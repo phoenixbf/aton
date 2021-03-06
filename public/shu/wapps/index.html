@@ -30,10 +30,11 @@ let renderForm = ()=>{
     let htmlcontent = "";
 
     // Hathor
-    htmlcontent += "<a href='/fe/' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+    htmlcontent += "<div class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
     htmlcontent += "<div class='atonBlockSubTitle'>hathor</div><br>";
+    htmlcontent += "<a href='/fe/'>";
     htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'>";
-    htmlcontent += "</a>";
+    htmlcontent += "</a></div>";
 
     $.getJSON( ATON.PATH_RESTAPI+"wapps/", (data)=>{
         for (let i in data){
@@ -41,10 +42,11 @@ let renderForm = ()=>{
             let wappid = A.wappid;
             let appicon = (A.icon)? ATON.PATH_WAPPS+wappid+"/appicon.png" : ATON.PATH_WAPPS+"app_template/appicon.png";
 
-            htmlcontent += "<a href='"+ATON.PATH_WAPPS+wappid+"' class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+            htmlcontent += "<div class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
             htmlcontent += "<div class='atonBlockSubTitle'>"+wappid+"</div><br>";
+            htmlcontent += "<a href='"+ATON.PATH_WAPPS+wappid+"' >";
             htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'>";
-            htmlcontent += "</a>";
+            htmlcontent += "</a></div>";
         }
 
         $("#idWApps").html(htmlcontent);

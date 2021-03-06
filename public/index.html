@@ -35,10 +35,12 @@ let onLandingData = (data)=>{
     }
 
     if (data.gallery){
-        htmlcontent += "<div class='atonBlockTitle'>Published Scenes</div>";
+        htmlcontent += "<a href='/shu/scenes/' class='atonBTN'><img src='/res/icons/user.png'></a>";
         htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:12px'></div>";
         htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='/res/icons/play.png'></div>";
         htmlcontent += "<br><br>";
+
+        htmlcontent += "<div class='atonBlockTitle'>Public Scenes</div><br>";
 
         htmlcontent += "<div id='idPubGallery'></div>";
     }

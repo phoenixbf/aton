@@ -101,7 +101,13 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
             let title = (scene.title)? scene.title : sid;
 
-            htmlcontent += "<div id='sid-"+sid+"' class='atonGalleryItem' data-search-term='"+title+"' style='padding:4px' >";
+            htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+title+"' style='padding:4px; background-color:rgba(0,0,0, 0.1)' >";
+
+            // gallery item bg
+            htmlcontent += "<div class='atonBlurBG' style='width:250px; height:290px; background-image: url(\""+urlCover+"\")'></div>";
+
+            // gallery item content
+            htmlcontent += "<div style='width:250px; height:290px; position:absolute; top:0; left:0'>";
             htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
             
             htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
@@ -110,6 +116,7 @@ SHU.createPubScenesGallery = (idcontainer)=>{
 
             let user = SHU.getUserFromSID(sid);
             htmlcontent += "<br><div class='atonAuthor'>"+user+"</div>";
+            htmlcontent += "</div>";
             
             htmlcontent += "</div>";
         }

@@ -851,13 +851,16 @@ Core.realizeBaseAPI = (app)=>{
 			return;
 		}
 
+		let uname = req.user.username;
+		if (uname === undefined) return false;
+
 		let O = req.body;
 		let sid = O.sid;
 
 		if (sid.endsWith("/")) sid = sid.slice(0, -1);
 		let parent = path.dirname(sid);
 
-		let newsid = parent+"/"+Core.generateUserSID();
+		let newsid = uname+"/"+Core.generateUserSID();
 
 		fsx.copy(Core.DIR_SCENES+sid, Core.DIR_SCENES+newsid, (err)=>{
 			if (err){

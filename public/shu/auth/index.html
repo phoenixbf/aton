@@ -78,7 +78,7 @@ let renderAuthForm = (data)=>{
         htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idLoginBTN'>LOGIN</div>";
         htmlcontent += "</div>";
 
-        $("#idUserTitle").html("User Authentication");
+        $("#idUserTitle").html("Authentication");
         $("#idAuth").html(htmlcontent);
 
         $("#idLoginBTN").click(()=>{
@@ -99,6 +99,8 @@ window.addEventListener( 'load', ()=>{
     ATON.Utils.checkAuth((data)=>{
         renderAuthForm(data);
     });
+
+    SHU.uiBuildFooter("idFooter");
 });
 
 </script>
@@ -111,5 +113,8 @@ window.addEventListener( 'load', ()=>{
         <div class="atonTitle" id='idUserTitle'></div>
         <div class="atonBlockGroup" id="idAuth"></div>
     </div>
+
+    <!-- Footer -->
+    <div id= 'idFooter' class="atonToolbar atonToolbar-bottom shuFooter"></div>
     
 </body>

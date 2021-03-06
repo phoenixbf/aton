@@ -26,7 +26,10 @@
 
 <script>
 
+let user = undefined;
+
 let renderGallery = ()=>{
+    if (user === undefined) return;
 
     let htmlcontent = "";
     htmlcontent += "<div class='atonTitle'>Your Scenes</div><br>";
@@ -49,14 +52,14 @@ let renderGallery = ()=>{
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonGalleryItem' style='position:relative; width:250px; margin:10px'>";
+            shtml += "<div id='s"+i+"' class='atonGalleryItem'>";
 
+            // gallery item bg
             shtml += "<div class='atonBlurBG' style='width:250px; height:320px; background-image: url(\""+urlCover+"\")'></div>";
 
+            // gallery item content
             shtml += "<div style='width:250px; height:320px; position:absolute; top:0; left:0'>";
             shtml += "<div class='atonBlockSubTitle'>"+sid+"</div><br>";
-            
-
             shtml += "<a class='atonCover' href='/s/"+sid+"'>";
             shtml += "<img src='"+urlCover+"'>";
             shtml += "</a>";
@@ -114,6 +117,8 @@ let renderGallery = ()=>{
 };
 
 let renderScene = (sid)=>{
+    if (user === undefined) return;
+
     $('#idContent').html("");
 
     let htmlcontent = "";
@@ -165,15 +170,17 @@ let renderScene = (sid)=>{
         shtml += "<div id='idActions'>";
         shtml += "<a id='idOpen' href='/s/"+sid+"' class='atonBTN atonBTN-green' style='width:150px'><img src='"+ATON.PATH_RES+"icons/hathor.png'>Open</a>";
         shtml += "<div id='idClone' class='atonBTN' style='width:150px'><img src='"+ATON.PATH_RES+"icons/clone.png'>Clone</div>";
-        shtml += "<div id='delAsk' class='atonBTN atonBTN-red' style='width:150px'><img src='"+ATON.PATH_RES+"icons/trash.png'>Delete</div>";
+        if (sid.startsWith(user)) shtml += "<div id='delAsk' class='atonBTN atonBTN-red' style='width:150px'><img src='"+ATON.PATH_RES+"icons/trash.png'>Delete</div>";
         shtml += "</div><br>";
 
-        shtml += "<div id='idConfirmDel' style='display:none'>";
-        shtml += "Are you sure to DELETE this scene? ";
-        shtml += "<div id='delYES' class='atonBTN atonBTN-red'>YES</div>";
-        shtml += "<div id='delNO' class='atonBTN'>NO</div>";
-        shtml += "</div>";
-        shtml += "</div>";
+        if (sid.startsWith(user)){
+            shtml += "<div id='idConfirmDel' style='display:none'>";
+            shtml += "Are you sure to DELETE this scene? ";
+            shtml += "<div id='delYES' class='atonBTN atonBTN-red'>YES</div>";
+            shtml += "<div id='delNO' class='atonBTN'>NO</div>";
+            shtml += "</div>";
+            shtml += "</div>";
+        }
 
         shtml += "</div>";
 
@@ -214,8 +221,10 @@ window.addEventListener( 'load', ()=>{
     let sid = urlParams.get('s');
 
     ATON.Utils.checkAuth((data)=>{
+        user = data.username;
+
         if (data.username){
-            if (sid && sid.startsWith(data.username)) renderScene(sid);
+            if (sid && sid.length>2) renderScene(sid);
             else renderGallery();
         }
         else {

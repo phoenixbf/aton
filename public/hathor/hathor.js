@@ -1352,6 +1352,7 @@ HATHOR.popupScene = ()=>{
 
     ATON.FE.checkAuth((r)=>{
         let authUser = r.username;
+        let bYourScene = ATON.SceneHub.currID.startsWith(authUser);
 
         htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; max-width:300px; text-align:center'>";
 
@@ -1387,7 +1388,7 @@ HATHOR.popupScene = ()=>{
         if (authUser){
             htmlcontent += "<br><br>";
             htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
-            htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
+            if (bYourScene) htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
         }
 
         if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;

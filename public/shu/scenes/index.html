@@ -52,7 +52,7 @@ let renderGallery = ()=>{
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
 
             let shtml = "";
-            shtml += "<div id='s"+i+"' class='atonGalleryItem'>";
+            shtml += "<div id='s"+i+"' class='atonGalleryItem' style='background-color:rgba(0,0,0, 0.1)'>";
 
             // gallery item bg
             shtml += "<div class='atonBlurBG' style='width:250px; height:320px; background-image: url(\""+urlCover+"\")'></div>";
@@ -127,18 +127,18 @@ let renderScene = (sid)=>{
     $('#idContent').append(htmlcontent);
 
     $.getJSON( ATON.PATH_RESTAPI+"scene/"+sid, (data)=>{
-        console.log(data);
+        //console.log(data);
 
         let shtml = "";
-        shtml += "<div id='idSceneBlock' class='atonBlockRound' style='background-color: rgba(0,0,0,0.3); text-align:justify; min-width:50%'>";
+        shtml += "<div id='idSceneBlock' class='atonBlockRound' style='background-color: rgba(0,0,0,0.3); text-align:justify; width:90%'>";
         if (data.title) shtml += "<div class='atonBlockTitle'>"+data.title+"</div><br>";
-        else shtml += "<div class='atonBlockTitle'>No Title</div><br>";
+        else shtml += "<div class='atonBlockTitle'><input id='idTitleText' type='text' maxlength='30' size='30' placeholder='Set a title...'><div id='idNewTitle' class='atonBTN atonBTN-green'>Ok</div></div><br>";
 
         shtml += "<div style='display:block; width:90%; min-height:250px; vertical-align:top'>";
 
         // cover
         shtml += "<a href='/s/"+sid+"' class='atonCover' style='display:inline-block; width:250px; float:left' >";
-        shtml += "<img src='"+ATON.PATH_SCENES+sid+"/cover.png' onerror='SHU.onCoverNotFound(this);'>";
+        shtml += "<img id='idCoverImg' src='"+ATON.PATH_RES+"scenecover.png'>";
         shtml += "</a>";
 
         // Scene fields
@@ -160,7 +160,7 @@ let renderScene = (sid)=>{
             else shtml += "<span class='atonKeyword'>no</span>";
             shtml += "<br>"; 
         }
-        if (data.description) shtml += "<b>Description:</b> "+JSON.parse(data.description);
+        if (data.description) shtml += JSON.parse(data.description);
         shtml += "</div>";
         
         shtml += "</div>";
@@ -169,6 +169,7 @@ let renderScene = (sid)=>{
         shtml += "<div style='text-align:center'>";
         shtml += "<div id='idActions'>";
         shtml += "<a id='idOpen' href='/s/"+sid+"' class='atonBTN atonBTN-green' style='width:150px'><img src='"+ATON.PATH_RES+"icons/hathor.png'>Open</a>";
+        shtml += "<div id='idPublic' class='atonBTN' style='width:150px'></div>";
         shtml += "<div id='idClone' class='atonBTN' style='width:150px'><img src='"+ATON.PATH_RES+"icons/clone.png'>Clone</div>";
         if (sid.startsWith(user)) shtml += "<div id='delAsk' class='atonBTN atonBTN-red' style='width:150px'><img src='"+ATON.PATH_RES+"icons/trash.png'>Delete</div>";
         shtml += "</div><br>";
@@ -185,6 +186,45 @@ let renderScene = (sid)=>{
         shtml += "</div>";
 
         $('#idContent').append(shtml);
+
+        // Scene data info
+        $.getJSON( ATON.PATH_RESTAPI+"info/scene/"+sid, (data)=>{
+            if (data === undefined) return;
+            let bPublic = false;
+
+            if (data.cover) $('#idCoverImg').attr("src", ATON.PATH_SCENES+sid+"/cover.png");
+
+            if (data.public){
+                $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/lock.png'>Make Private");
+                bPublic = true;
+            }
+            else {
+                $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/users.png'>Make Public");
+            }
+
+            $('#idPublic').click(()=>{
+                let O = {};
+                O.sid = sid;
+                O.vis = bPublic? "private" : "public";
+                ATON.Utils.postJSON(ATON.PATH_RESTAPI+"visibility/scene", O, (data)=>{
+                    if (data) window.location.reload(true);
+                });
+            });
+        });
+
+        $('#idNewTitle').click(()=>{
+            let title = $('#idTitleText').val();
+            if (title === undefined || title.length < 2) return;
+
+            console.log(title);
+            let E = {};
+            E.title = title;
+
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"edit/scene", {sid: sid, data: E, mode:"ADD"}, (r)=>{
+                if (r) window.location.reload(true);
+            });
+            
+        });
 
         $('#delAsk').click(()=>{
             $("#idActions").hide();

@@ -626,6 +626,31 @@ Core.realizeBaseAPI = (app)=>{
 		//next();
 	});
 
+	app.get(/^\/api\/info\/scene\/(.*)$/, (req,res,next)=>{
+		let R = {};
+
+		let sid = req.params[0];
+
+		let sjpath = Core.getSceneJSONPath(sid);
+		if (!fs.existsSync(sjpath)){
+			res.send(R);
+			return;
+		}
+		
+		R.public = false;
+		R.cover  = false;
+
+		let basepath = Core.DIR_SCENES + sid;
+
+		let pubfile   = basepath+"/" + Core.STD_PUBFILE;
+		let coverfile = basepath+"/" + Core.STD_COVERFILE;
+
+		if (fs.existsSync(pubfile))   R.public = true;
+		if (fs.existsSync(coverfile)) R.cover  = true;
+
+		res.send(R);
+	});
+
 	// List own scenes (authenticated user)
 	app.get("/api/scenes/own/", function(req,res,next){
 		if (req.user === undefined){
@@ -787,8 +812,9 @@ Core.realizeBaseAPI = (app)=>{
 			return;
 		}
 
+		// only own scenes
 		let uname = req.user.username;
-		if (!sid.startsWith(uname)){ // only own scenes
+		if (!sid.startsWith(uname)){
 			console.log("Only "+uname+" can delete this scene");
 			res.send(false);
 			return;
@@ -841,6 +867,47 @@ Core.realizeBaseAPI = (app)=>{
 		let J = Core.applySceneEdit(sid, patch, mode);
 
 		res.json(J);
+	});
+
+	// Change scene visibility
+	app.post('/api/visibility/scene', (req, res) => {
+
+		// Only auth users
+		if (req.user === undefined){
+			res.send(false);
+			return;
+		}
+
+		let O = req.body;
+		let sid = O.sid;
+		let vis = O.vis;
+
+		if (sid === undefined || vis === undefined){
+			res.send(false);
+			return;
+		}
+
+		// only own scenes
+		let uname = req.user.username;
+		if (!sid.startsWith(uname)){
+			res.send(false);
+			return;
+		}
+
+		let pubfile = Core.getPubFilePath(sid);
+
+		if (vis === "public"){
+			if (!fs.existsSync(pubfile)) fs.writeFileSync(pubfile, "");
+			res.json(vis);
+			return;
+		}
+		if (vis === "private"){
+			if (fs.existsSync(pubfile)) fs.unlinkSync(pubfile);
+			res.json(vis);
+			return;
+		}
+
+		res.send(false);
 	});
 
 	// Scene clone

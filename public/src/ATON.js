@@ -402,13 +402,14 @@ ATON.realize = ()=>{
         //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
-        //pecision: "mediump"
+        powerPreference: "high-performance",
+        //pecision: "lowp", //"mediump"
         //preserveDrawingBuffer: true
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
-    //console.log(ATON._renderer);
+    console.log(ATON._renderer);
 
     ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );

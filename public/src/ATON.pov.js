@@ -18,7 +18,7 @@ constructor(id){
     this.pos    = new THREE.Vector3(1,0,0);
     this.target = new THREE.Vector3(0,0,0);
     this.up     = ATON.STD_UPVECTOR;
-    this.fov    = ATON.Nav.STD_FOV;
+    this.fov    = undefined; //ATON.Nav.STD_FOV;
 
     this.nextPOV = undefined;
     this.prevPOV = undefined;

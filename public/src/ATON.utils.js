@@ -244,6 +244,9 @@ Utils.modelVisitor = (parentNode, model)=>{
         //Utils.setPicking(model, type, N.bPickable);
         //if (!N.visible) Utils.setPicking(model, type, false);
 
+        // perf.
+        // TODO: manually call object.updateMatrix()
+        //o.matrixAutoUpdate = false;
 
         if (o.isMesh){
             //let numVertices = o.geometry.attributes.position.count;

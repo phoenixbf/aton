@@ -120,6 +120,7 @@ let renderScene = (sid)=>{
     if (user === undefined) return;
 
     $('#idContent').html("");
+    $('#idContent').css("background-color","rgba(0,0,0,0.3)");
 
     let htmlcontent = "";
     htmlcontent += "<div class='atonTitle'>"+sid+"</div><br>";
@@ -130,9 +131,15 @@ let renderScene = (sid)=>{
         //console.log(data);
 
         let shtml = "";
-        shtml += "<div id='idSceneBlock' class='atonBlockRound' style='background-color: rgba(0,0,0,0.3); text-align:justify; width:90%'>";
-        if (data.title) shtml += "<div class='atonBlockTitle'>"+data.title+"</div><br>";
-        else shtml += "<div class='atonBlockTitle'><input id='idTitleText' type='text' maxlength='30' size='30' placeholder='Set a title...'><div id='idNewTitle' class='atonBTN atonBTN-green'>Ok</div></div><br>";
+        shtml += "<div id='idSceneBlock' class='atonBlockRound' style='background-color: rgba(0,0,0,0.0); text-align:justify; width:90%'>";
+
+        // Main
+        //shtml += "<div style='position:absolute; width:100%; top:0; left:0'>";
+
+        // Title
+        if (data.title) shtml += "<div class='atonBlockSubTitle'>"+data.title+"</div><br>";
+        else shtml += "<div class='atonBlockSubTitle'>-Untitled-</div><br>";
+        //else shtml += "<div class='atonBlockTitle'><input id='idTitleText' type='text' maxlength='30' size='30' placeholder='Set a title...'><div id='idNewTitle' class='atonBTN'>Ok</div></div><br>";
 
         shtml += "<div style='display:block; width:90%; min-height:250px; vertical-align:top'>";
 
@@ -142,24 +149,27 @@ let renderScene = (sid)=>{
         shtml += "</a>";
 
         // Scene fields
-        shtml +="<div style='text-align:left; padding:20px'>";
-        if (data.status) shtml += "<b>Status:</b><span class='atonKeyword'>"+data.status+"</span><br>";
+        shtml +="<div style='text-align:left; display:inline-block; vertical-align:top; padding-left:20px; width:300px'>";
+        //if (data.status) shtml += "<b>Status:</b><span class='atonKeyword'>"+data.status+"</span><br><br>";
         if (data.scenegraph){
-            shtml += "<b>Scene-graph nodes:</b> ";
+            shtml += "<b>Scene-graph nodes:</b><br>";
             for (let n in data.scenegraph.nodes) shtml += "<span class='atonKeyword'>"+n+"</span>";
-            shtml += "<br>";
+            shtml += "<br><br>";
         }
         if (data.semanticgraph){
-            shtml += "<b>Semantic-graph nodes:</b> ";
+            shtml += "<b>Semantic-graph nodes:</b><br>";
             for (let n in data.semanticgraph.nodes) shtml += "<span class='atonKeyword'>"+n+"</span>";
-            shtml += "<br>"; 
+            shtml += "<br><br>"; 
         }
         if (data.environment){
-            shtml += "<b>Main panorama:</b> ";
+            shtml += "<b>Main panorama:</b><br>";
             if (data.environment.mainpano) shtml += "<span class='atonKeyword'>yes</span>";
             else shtml += "<span class='atonKeyword'>no</span>";
-            shtml += "<br>"; 
+            shtml += "<br><br>"; 
         }
+        shtml += "</div>";
+
+        shtml +="<div style='text-align:left; display:inline-block; vertical-align:top; padding-left:20px; max-width:500px'>";
         if (data.description) shtml += JSON.parse(data.description);
         shtml += "</div>";
         
@@ -183,6 +193,10 @@ let renderScene = (sid)=>{
             shtml += "</div>";
         }
 
+        //shtml += "</div>";
+        // blur BG
+        //shtml += "<div id='idBGBlur' class='atonBlurBG' style='width:100%;'></div>";
+        
         shtml += "</div>";
 
         $('#idContent').append(shtml);
@@ -192,7 +206,11 @@ let renderScene = (sid)=>{
             if (data === undefined) return;
             let bPublic = false;
 
-            if (data.cover) $('#idCoverImg').attr("src", ATON.PATH_SCENES+sid+"/cover.png");
+            if (data.cover){
+                let impath = ATON.PATH_SCENES+sid+"/cover.png";
+                $('#idCoverImg').attr("src", impath);
+                //$('#idBGBlur').css("background-image", "url('"+impath+"')");
+            }
 
             if (data.public){
                 $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/lock.png'>Make Private");
@@ -229,7 +247,8 @@ let renderScene = (sid)=>{
         $('#delAsk').click(()=>{
             $("#idActions").hide();
             $("#idConfirmDel").show();
-            $("#idSceneBlock").css("background-color","rgba(127,0,0,0.3)");
+            //$("#idSceneBlock").css("background-color","rgba(127,0,0,0.3)");
+            $('#idContent').css("background-color","rgba(127,0,0,0.3)");
         });
 
         $('#delYES').click(()=>{
@@ -241,7 +260,8 @@ let renderScene = (sid)=>{
         $('#delNO').click(()=>{
             $("#idActions").show();
             $("#idConfirmDel").hide(); 
-            $("#idSceneBlock").css("background-color","rgba(0,0,0,0.3)");     
+            //$("#idSceneBlock").css("background-color","rgba(0,0,0,0.0)");  
+            $('#idContent').css("background-color","rgba(0,0,0,0.3)");   
         });
 
         $('#idClone').click(()=>{
@@ -277,7 +297,7 @@ window.addEventListener( 'load', ()=>{
 </script>
 </head>
 
-<body class="atonDefaultBody">
+<body class="atonDefaultBody" >
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
     <div id='idContent' class='shuMainContainer'>

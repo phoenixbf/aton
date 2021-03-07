@@ -1471,6 +1471,7 @@ label {
 }
 
 .atonBlockRound {
+    position: relative;
     display: inline-block;
 
     background-color: rgba(0, 0, 0, 0.1);

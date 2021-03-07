@@ -147,7 +147,8 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("default", ()=>{
         HATHOR.uiBase();
 
-        ATON.FE.uiAddButtonNav("idTopToolbar");
+        //ATON.FE.uiAddButtonNav("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
         ATON.FE.uiAddButtonVR("idTopToolbar");
         //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
@@ -563,7 +564,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='v') HATHOR.popupPOV();
 
 
-        if (k==='n') ATON.FE.popupNav();
+        if (k==='n') HATHOR.popupNav();
 
         //if (k==='^') ATON.Nav.setFirstPersonControl();
 
@@ -1642,15 +1643,42 @@ HATHOR.popupSceneDelete = ()=>{
 HATHOR.popupNav = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Navigation</div>";
 
-    htmlcontent += "<div id='idNavModes'></div>";
-    //htmlcontent += "<div class='atonBTN' id='btnFP'><img src='"+ATON.FE.PATH_RES_ICONS+"fp.png'></div>";
-    //htmlcontent += "<div class='atonBTN' id='btnOrb'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'></div>";
+    //htmlcontent += "<div id='idNavModes'></div>";
+
+    htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+    htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMfp'></div>";
+    htmlcontent +="<div style='text-align:left'>Switch between first-person and orbit navigation mode</div>";
+    htmlcontent += "</div>";
+
+    if (ATON.Utils.isConnectionSecure()){
+        htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+        htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMvr'></div>";
+        htmlcontent +="<div style='text-align:left'>Immersive VR mode</div>";
+        htmlcontent += "</div>";
+
+        if (ATON.Utils.isMobile()){
+            htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
+            htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMdevori'></div>";
+            htmlcontent +="<div style='text-align:left'>Enable or disable device-orientation mode</div>";
+            htmlcontent += "</div>";
+        }
+    }
+
+    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN' id='btnDefNavMode' style='width:90%'>Set current navigation mode as default</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
-    ATON.FE.uiAddButtonFirstPerson("idNavModes");
-    ATON.FE.uiAddButtonDeviceOrientation("idNavModes");
-    ATON.FE.uiAddButtonVR("idNavModes");
+    ATON.FE.uiAddButtonFirstPerson("idNMfp");
+    ATON.FE.uiAddButtonDeviceOrientation("idNMdevori");
+    ATON.FE.uiAddButtonVR("idNMvr");
+
+    $('#btnDefNavMode').click(()=>{
+        let E = {};
+        E.navmode = ATON.Nav._mode;
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+
+        ATON.FE.popupClose();
+    });
 };
 
 HATHOR.popupEmbed = ()=>{

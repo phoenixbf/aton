@@ -267,13 +267,13 @@ Utils.modelVisitor = (parentNode, model)=>{
 */
                 }
 
-                // Ensure mipmapping is correct
+                // Fix mipmapping
                 if ( o.material.map !== null){
                     //console.log(object.material.map);
                     
                     // Why do I have to do this?
                     //o.material.map.generateMipmaps = false;
-                    o.material.map.anisotropy = ATON._maxAnisotropy;
+                    o.material.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
                     o.material.map.minFilter  = THREE.LinearMipmapLinearFilter;
                     o.material.map.magFilter  = THREE.LinearFilter;
                     //o.material.map.needsUpdate = true;

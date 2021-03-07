@@ -776,7 +776,7 @@ ATON._assetReqComplete = (url)=>{
     ATON._numReqLoad--;
 
     if (ATON._numReqLoad <= 0){
-        ATON.fireEvent("AllNodeRequestsCompleted");
+        //ATON.fireEvent("AllNodeRequestsCompleted");
 
         // Bounds
         let c = ATON._rootVisible.getBound().center;
@@ -815,6 +815,8 @@ ATON._assetReqComplete = (url)=>{
         //ATON.updateLightProbes();
 
         //ATON._bDirtyLP = true;
+
+        ATON.fireEvent("AllNodeRequestsCompleted");
 
         // FIXME: dirty
         setTimeout( ()=>{

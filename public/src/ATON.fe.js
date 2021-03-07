@@ -70,7 +70,7 @@ FE.addBasicLoaderEvents = ()=>{
         $("#idLoader").hide();
         
         FE.computeSelectorRanges();
-        ATON.SUI.setSelectorRadius( FE._selRefRadius );
+        if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );
 
         if (FE._bReqHome) return;
 

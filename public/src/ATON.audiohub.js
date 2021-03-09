@@ -19,6 +19,19 @@ AudioHub.init = ()=>{
     AudioHub._loader   = new THREE.AudioLoader();
 };
 
+AudioHub.playOnceGlobally = (audioURL)=>{
+    audioURL = ATON.Utils.resolveCollectionURL(audioURL);
+
+    let au = new THREE.Audio( ATON.AudioHub._listener );
+
+    AudioHub._loader.load( audioURL, (buffer)=>{
+        au.setBuffer( buffer );
+        //au.setVolume( 2.0 );
+        //au.setPlaybackRate(0.9);
+        au.play();
+    });
+};
+
 /* TODO:
 AudioHub.addToSoundscape = (auid, audioURL, position, radius)=>{
 

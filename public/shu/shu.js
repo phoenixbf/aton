@@ -12,6 +12,9 @@ Shu back-end (official ATON back-end)
 */
 let SHU = {};
 
+SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/";
+SHU.urlATONgit     = "https://github.com/phoenixbf/aton";
+
 SHU.getBaseFolder = ( filepath )=>{
     let index  = filepath.lastIndexOf( '/' );
     if ( index !== -1 ) return filepath.substring( 0, index + 1 );
@@ -60,7 +63,7 @@ SHU.onCoverNotFound = (image)=>{
 
 SHU.uiBuildFooter = (elid)=>{
     let htmlcontent = "SHU back-end - ";
-    htmlcontent += "<a href='http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";
+    htmlcontent += "<a href='"+SHU.urlATONwebsite+"' target='_blank'>ATON</a> framework by <a href='https://www.ispc.cnr.it/' target='_blank'>CNR ISPC</a>";
 
     $("#"+elid).html(htmlcontent);
 };
@@ -98,10 +101,15 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             let scene = data[s];
             let sid = scene.sid;
 
+            let user = SHU.getUserFromSID(sid);
+
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
             let title = (scene.title)? scene.title : sid;
 
-            htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+title+"' style='padding:4px; background-color:rgba(0,0,0, 0.1)' >";
+            let kwords = title;
+            kwords += " "+user;
+
+            htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.1)' >";
 
             // gallery item bg
             htmlcontent += "<div class='atonBlurBG' style='width:250px; height:290px; background-image: url(\""+urlCover+"\")'></div>";
@@ -114,8 +122,8 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             htmlcontent += "<img src='"+urlCover+"'>";
             htmlcontent += "</a>";
 
-            let user = SHU.getUserFromSID(sid);
-            htmlcontent += "<br><div class='atonAuthor'>"+user+"</div>";
+            // user
+            htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>&nbsp;"+user+"</div>";
             htmlcontent += "</div>";
             
             htmlcontent += "</div>";

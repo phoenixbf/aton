@@ -245,7 +245,7 @@ SUI.setInfoNodeText = (txt)=>{
 /**
 Create a SpatialUI toolbar from a list of SUI buttons
 This can be arranged anywhere in the scene or attached to other UI nodes
-@param {string} buttonlist - a list (array) of SUI buttons
+@param {array} buttonlist - a list (array) of SUI buttons
 @param {THREE.Color} color - (optional) base color for the toolbar
 @returns {Node}
 */
@@ -254,9 +254,10 @@ SUI.createToolbar = (buttonlist, color)=>{
 
     let num = buttonlist.length;
     let padding = SUI.STD_BTN_SIZE * 0.3;
+    let marginf = 1.1;
 
     let cont = new ThreeMeshUI.Block({
-        width: (SUI.STD_BTN_SIZE * num) + padding,
+        width: (SUI.STD_BTN_SIZE * num * marginf) + padding,
         height: SUI.STD_BTN_SIZE + padding,
         padding: 0.01,
         borderRadius: 0.02,
@@ -271,13 +272,15 @@ SUI.createToolbar = (buttonlist, color)=>{
     });
     //cont.position.set(0,0,0);
 
-    let m = (num*0.5) * SUI.STD_BTN_SIZE;
+    let m = (num*0.5) * SUI.STD_BTN_SIZE * marginf;
     m -= (SUI.STD_BTN_SIZE*0.5);
 
     for (let i=0; i<num; i++){
         let button = buttonlist[i];
-        button.position.set((i*SUI.STD_BTN_SIZE)-m, 0.0, 0.01);
-        cont.add(button);
+        if (button){
+            button.position.set((i*SUI.STD_BTN_SIZE*marginf)-m, 0.0, 0.005);
+            cont.add(button);
+        }
     }
 
     T.add(cont);

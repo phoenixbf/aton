@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Items
+    let currItem = 0;
+    let itemURLs = [
+        "samples/models/vegetation/grass.gltf",
+        "samples/models/vegetation/flowers.gltf",
+        "samples/models/atoncube.glb",
+    ];
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+
+    let spawnPos = new THREE.Vector3(-4,0.0,4);
+
+    ATON.Nav.setHomePOV( new ATON.POV().setPosition(-4,1.8,-4).setTarget(spawnPos) );
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    // sample scene
+    ATON.createSceneNode("ground").load("samples/models/basic/ground.gltf").setScale(10.0).attachToRoot();
+    ATON.createSceneNode("item").load(itemURLs[currItem]).setPosition(spawnPos).setScale(2).attachToRoot();
+
+    // SUI button list
+    let suiButtons = [];
+    suiButtons.push( new ATON.SUI.Button("SUI_Home") );
+    suiButtons.push( new ATON.SUI.Button("SUI_Prev") );
+    suiButtons.push( new ATON.SUI.Button("SUI_Next") );
+    suiButtons.push( new ATON.SUI.Button("SUI_VR") );
+    
+    ATON.getUINode("SUI_Home")
+        .setIcon(ATON.PATH_RES+"icons/home.png")
+        .onSelect = ()=>{
+            ATON.Nav.requestHome();
+        };
+
+    ATON.getUINode("SUI_Prev")
+        .setIcon(ATON.PATH_RES+"icons/prev.png")
+        .onSelect = ()=>{
+            let N = ATON.getSceneNode("item");
+            currItem--;
+            if (currItem<0) currItem = (itemURLs.length-1);
+            N.removeChildren();
+            N.load(itemURLs[currItem]);
+        };
+
+    ATON.getUINode("SUI_Next")
+        .setIcon(ATON.PATH_RES+"icons/next.png")
+        .onSelect = ()=>{
+            let N = ATON.getSceneNode("item");
+            currItem = (currItem+1)%itemURLs.length;
+            N.removeChildren();
+            N.load(itemURLs[currItem]);
+        };
+
+    ATON.getUINode("SUI_VR")
+        .setText("")
+        .setBaseColor(ATON.MatHub.colors.red)
+        .setIcon(ATON.PATH_RES+"icons/vr.png")
+        .onSelect = ()=>{
+            ATON.XR.toggle();
+        };
+
+    for (let b in suiButtons){
+        suiButtons[b].onHover = ()=>{ 
+            ATON.AudioHub.playOnceGlobally(ATON.PATH_RES+"audio/blop.mp3");
+            suiButtons[b].setBackgroundOpacity(0.9);
+        };
+
+        suiButtons[b].onLeave = ()=>{
+            suiButtons[b].setBackgroundOpacity(0.5);
+        };
+    }
+
+    console.log(suiButtons);
+
+    let suiToolbar = ATON.SUI.createToolbar( suiButtons );
+    suiToolbar.setPosition(-4.0,0.2,1.0).setRotation(1.0,3.14,0).setScale(5.0).attachToRoot();
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        ATON.Nav.requestHome(0.1);
+    });
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

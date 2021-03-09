@@ -409,7 +409,7 @@ ATON.realize = ()=>{
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
-    console.log(ATON._renderer);
+    //console.log(ATON._renderer);
 
     ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );

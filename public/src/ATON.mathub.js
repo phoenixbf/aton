@@ -21,7 +21,7 @@ MatHub.init = ()=>{
     // Uniforms
     MatHub._uSem = {
         time: { type:'float', value: 0.0 },
-        tint: { type:'vec4', value: new THREE.Vector4(0.0,0.0,1.0, 0.2) }
+        tint: { type:'vec4', value: new THREE.Vector4(0.2,0.2,1.0, 0.2) }
     };
 
     MatHub.addDefaults();
@@ -56,7 +56,7 @@ MatHub.addDefaults = ()=>{
 
     MatHub.colors.defUI  = new THREE.Color(0,1,0.5);
     
-    MatHub.colors.sem     = new THREE.Color(0,0,1);
+    MatHub.colors.sem     = new THREE.Color(0,1,0.5);
     MatHub.colors.darksem = new THREE.Color(0,0,0.1);
 
     // Materials

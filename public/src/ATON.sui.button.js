@@ -41,10 +41,11 @@ constructor(uiid){
     this.add(this.container);
 
     this.uiText = new ThreeMeshUI.Text({ 
-        content: "button",
+        content: "",
         fontSize: 0.02,
         fontColor: ATON.MatHub.colors.white
     });
+    //this.uiText.position.set(0,0,-0.01);
     this.container.add(this.uiText);
 
     this._trigger = new THREE.Mesh( 
@@ -86,6 +87,11 @@ Set button switch color (when activated)
 setSwitchColor(c){
     this.switchColor = c;
     if (this._bSwitched) this.container.set({ backgroundColor: this.switchColor });
+    return this;
+}
+
+setBackgroundOpacity(f){
+    this.container.set({ backgroundOpacity: f });
     return this;
 }
 

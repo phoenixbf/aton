@@ -594,8 +594,8 @@ load(url, onComplete){
             }
             else N.add( C );
 
-            N.setPickable(N.bPickable);
-            N.toggle(N.visible);
+            //N.setPickable(N.bPickable);
+            //N.toggle(N.visible);
 
             if (onComplete) onComplete();
         });
@@ -628,8 +628,8 @@ load(url, onComplete){
             if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
 
             // post-visit (FIXME:)
-            N.setPickable(N.bPickable);
-            N.toggle(N.visible);
+            //N.setPickable(N.bPickable);
+            //N.toggle(N.visible);
 
             if (onComplete) onComplete();
         },

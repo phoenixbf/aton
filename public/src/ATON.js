@@ -772,59 +772,75 @@ ATON._assetReqNew = (url)=>{
     ATON._numReqLoad++;
     ATON.fireEvent("NodeRequestFired", url);
 };
+
 ATON._assetReqComplete = (url)=>{
     ATON.fireEvent("NodeRequestCompleted", url);
     ATON._numReqLoad--;
 
-    if (ATON._numReqLoad <= 0){
-        //ATON.fireEvent("AllNodeRequestsCompleted");
+    if (ATON._numReqLoad <= 0) ATON._onAllReqsCompleted();
+};
 
-        // Bounds
-        let c = ATON._rootVisible.getBound().center;
-        let r = ATON._rootVisible.getBound().radius;
+ATON._onAllReqsCompleted = ()=>{
+    // Bounds
+    let c = ATON._rootVisible.getBound().center;
+    let r = ATON._rootVisible.getBound().radius;
 
-        if (ATON._renderer.shadowMap.enabled){
+    if (ATON._renderer.shadowMap.enabled){
 
-            ATON._rootVisible.traverse((o) => {
-                if (o.isMesh){
-                    o.castShadow = true;
-                    o.receiveShadow = true;
-                }
-            });
-
-            ATON.adjustShadowsParamsFromSceneBounds();
-
-            if (ATON._bShadowsFixedBound){
-                ATON.updateDirShadows(c);
+        ATON._rootVisible.traverse((o) => {
+            if (o.isMesh){
+                o.castShadow = true;
+                o.receiveShadow = true;
             }
+        });
+
+        ATON.adjustShadowsParamsFromSceneBounds();
+
+        if (ATON._bShadowsFixedBound){
+            ATON.updateDirShadows(c);
         }
+    }
 
-        if (ATON._bAutoLP){
-            if (ATON._lps[0] === undefined) ATON.addLightProbe( new ATON.LightProbe().setPosition(c).setNear(r) );
-            else {
-                ATON._lps[0].setPosition(c.x, c.y, c.z).setNear(r);
-            }
-            console.log("Auto LP");
+    if (ATON._bAutoLP){
+        if (ATON._lps[0] === undefined) ATON.addLightProbe( new ATON.LightProbe().setPosition(c).setNear(r) );
+        else {
+            ATON._lps[0].setPosition(c.x, c.y, c.z).setNear(r);
         }
+        console.log("Auto LP");
+    }
 
-        //ATON.Utils.graphPostVisitor(ATON._rootVisible);
+    //ATON.Utils.graphPostVisitor(ATON._rootVisible);
 
-        // re-center main pano
-        if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+    // re-center main pano
+    if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
 
-        ATON.getRootScene().assignLightProbesByProximity();
-        //ATON.updateLightProbes();
+    ATON.getRootScene().assignLightProbesByProximity();
+    //ATON.updateLightProbes();
 
-        //ATON._bDirtyLP = true;
+    //ATON._bDirtyLP = true;
 
-        ATON.fireEvent("AllNodeRequestsCompleted");
+    ATON.fireEvent("AllNodeRequestsCompleted");
 
-        // FIXME: dirty
-        setTimeout( ()=>{
-            //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
-            ATON.updateLightProbes();
-        }, 1000);
+    ATON._postAllReqsCompleted();
 
+    // FIXME: dirty
+    setTimeout( ()=>{
+        //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+        ATON.updateLightProbes();
+    }, 1000);
+};
+
+ATON._postAllReqsCompleted = (R)=>{
+    if (R === undefined) R = ATON._rootVisible;
+
+    for (let n in R.children){
+        let N = R.children[n];
+
+        if (N && N.toggle){
+            ATON._postAllReqsCompleted(N);
+            N.toggle(N.visible);
+            //if (N.bPickable !== undefined) N.setPickable(N.bPickable);
+        }
     }
 };
 

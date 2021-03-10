@@ -33,8 +33,13 @@ constructor(res, near, far){
 */
     this._envtex = undefined;
     this._prevCCtarget = undefined;
-
-    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+/*
+    this._LP = new THREE.LightProbe();
+    this._LP.intensity = 10;
+    ATON._mainRoot.add( this._LP );
+*/
+    
+    //this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
 
     //this.realize();
 }
@@ -73,8 +78,7 @@ setPosition(x,y,z){
     if (x instanceof THREE.Vector3) this.pos.copy(x);
     else this.pos.set(x,y,z);
 
-    //if (this._LP0) this._LP0.position.copy(this.pos);
-    //if (this._LP1) this._LP1.position.copy(this.pos);
+    //this._LP.position.copy(this.pos);
 
     return this;
 }
@@ -99,9 +103,9 @@ update(){
     if (this._prevCCtarget) this._prevCCtarget.dispose();
 
     let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBEFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
+        format: THREE.RGBAFormat, //THREE.RGBEFormat,
+        //generateMipmaps: true,
+        //minFilter: THREE.LinearMipmapLinearFilter,
         encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
     });
 
@@ -109,8 +113,12 @@ update(){
     CC.position.copy(this.pos);
 
     CC.update( ATON._renderer, ATON._rootVisibleGlobal );
-
     this._envtex = CCtarget.texture;
+
+    // new
+    //this._LP.copy( THREE.LightProbeGenerator.fromCubeRenderTarget(ATON._renderer, CCtarget) );
+    //this._envtex = this._LP;
+    
     
 /*
     console.log(CC);

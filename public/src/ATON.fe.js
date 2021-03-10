@@ -61,29 +61,38 @@ FE.realize = ()=>{
     if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
 };
 
+FE._handleHomeReq = ()=>{
+    if (FE._bReqHome) return;
+
+    FE._bReqHome = true;
+
+    if (ATON.Nav.homePOV === undefined){
+        ATON.Nav.computeAndRequestDefaultHome(0.5);
+        return;
+    }
+    
+    ATON.Nav.requestHome(0.5);
+    //console.log(ATON.Nav.homePOV);
+};
+
 /**
 Add basic front-end events such as showing spinner while loading assets and home viewpoint setup
 */
 FE.addBasicLoaderEvents = ()=>{
     ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
+
+    ATON.on("SceneJSONLoaded",()=>{
+        if (ATON.SceneHub.getDescription()) $("#btn-info").show();
+        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.2);
+    });
+
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
         
         FE.computeSelectorRanges();
         if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );
 
-        if (FE._bReqHome) return;
-
-        if (ATON.Nav.homePOV === undefined){
-            ATON.Nav.computeAndRequestDefaultHome(0.5);
-        }
-        
-        FE._bReqHome = true;
-    });
-
-    ATON.on("SceneJSONLoaded",()=>{
-        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.5);
-        if (ATON.SceneHub.getDescription()) $("#btn-info").show();
+        FE._handleHomeReq();
     });
 
     ATON.on("frame", FE._update);

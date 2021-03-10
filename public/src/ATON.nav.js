@@ -49,7 +49,7 @@ Nav.init = ()=>{
     Nav.setOrbitControl();
 
     // POV data
-    Nav._currPOV = new ATON.POV(); // holds current viewpoint data (eye, target, etc...)
+    Nav._currPOV = new ATON.POV().setFOV(ATON.Nav.STD_FOV); // holds current viewpoint data (eye, target, etc...)
     Nav._fromPOV = new ATON.POV(); // initial POV when requesting a transition
     Nav._reqPOV  = new ATON.POV(); // requested POV for transition
 

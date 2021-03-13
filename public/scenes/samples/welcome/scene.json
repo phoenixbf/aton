@@ -1,0 +1,36 @@
+{
+	"status": "complete",
+    "title": "Welcome",
+    "navmode": 0,
+
+	"environment":{
+		"mainpano":{
+			"url": "samples/pano/bg-welcome.jpg"
+        },
+        "lightprobes":{
+            "auto": true
+        }
+	},
+
+    "scenegraph":{
+        "nodes":{
+            "ground":{
+                "urls": "samples/models/basic/aton-ground.gltf",
+                "transform":{
+                    "scale": [10,10,10]
+                }
+            }
+        },
+        "edges":{
+            ".":["ground"]
+        }
+    },
+
+    "viewpoints": {
+        "home": {
+            "position": [7,2,0],
+            "target": [0,0,0],
+            "fov": 70
+        }
+    }
+}

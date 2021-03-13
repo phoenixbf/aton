@@ -282,6 +282,8 @@ Nav.setOrbitControl = ()=>{
     
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
+
+    ATON._onResize();
 };
 
 /**
@@ -334,6 +336,8 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
+
+    ATON._onResize();
 /*
     if (Nav._controls) ATON._controls.dispose();
     ATON._controls = new THREE.FirstPersonControls( ATON._camera, ATON._renderer.domElement);
@@ -381,6 +385,8 @@ Nav.setDeviceOrientationControl = ()=>{
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
+
+    ATON._onResize();
 };
 
 /**

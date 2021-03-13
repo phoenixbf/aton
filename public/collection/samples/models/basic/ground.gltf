@@ -1,1 +1,204 @@
-{"accessors":[{"name":"D:\\bruno\\3Dassets\\ground\\ground.osg__Geometry_0-Mesh_0_indices","componentType":5123,"count":6,"min":[0],"max":[3],"type":"SCALAR"},{"name":"D:\\bruno\\3Dassets\\ground\\ground.osg__Geometry_0-Mesh_0_positions","componentType":5126,"count":4,"min":[-1.0009770395701025,-0.0009770395701026503,-1.0009770395701025],"max":[1.0009770395701025,0.000977039570102528,1.0009770395701025],"type":"VEC3"},{"name":"D:\\bruno\\3Dassets\\ground\\ground.osg__Geometry_0-Mesh_0_texcoords","componentType":5126,"count":4,"min":[-0.0002442002442002442,-0.0002442002442002442],"max":[1.0002442002442002,1.0002442002442002],"type":"VEC2"}],"asset":{"generator":"obj2gltf","version":"2.0"},"buffers":[{"name":"ground","byteLength":120,"uri":"ground.bin"}],"bufferViews":[{"buffer":0,"byteOffset":0,"byteLength":119}],"images":[{"name":"ground","uri":"ground.jpg"}],"materials":[{"name":"material_1","pbrMetallicRoughness":{"baseColorTexture":{"index":0,"texCoord":0},"baseColorFactor":[1,1,1,1],"metallicFactor":0,"roughnessFactor":1},"emissiveFactor":[0,0,0],"alphaMode":"OPAQUE","doubleSided":false}],"meshes":[{"name":"D:\\bruno\\3Dassets\\ground\\ground.osg__Geometry_0-Mesh","primitives":[{"attributes":{"POSITION":1,"TEXCOORD_0":2},"indices":0,"material":0,"mode":4,"extensions":{"KHR_draco_mesh_compression":{"bufferView":0,"attributes":{"POSITION":0,"TEXCOORD_0":1}}}}]}],"nodes":[{"name":"D:\\bruno\\3Dassets\\ground\\ground.osg__Geometry_0","mesh":0}],"samplers":[{"magFilter":9729,"minFilter":9986,"wrapS":10497,"wrapT":10497}],"scene":0,"scenes":[{"nodes":[0]}],"textures":[{"name":"ground","sampler":0,"source":0}],"extensionsRequired":["KHR_draco_mesh_compression"],"extensionsUsed":["KHR_draco_mesh_compression"]}
+{
+   "accessors" : [
+      {
+         "bufferView" : 0,
+         "byteOffset" : 0,
+         "componentType" : 5123,
+         "count" : 6,
+         "max" : [
+            5
+         ],
+         "min" : [
+            0
+         ],
+         "type" : "SCALAR"
+      },
+      {
+         "bufferView" : 1,
+         "byteOffset" : 0,
+         "componentType" : 5126,
+         "count" : 6,
+         "max" : [
+            1.000000,
+            0.000000,
+            1.000000
+         ],
+         "min" : [
+            -1.000000,
+            0.000000,
+            -1.000000
+         ],
+         "type" : "VEC3"
+      },
+      {
+         "bufferView" : 2,
+         "byteOffset" : 0,
+         "componentType" : 5126,
+         "count" : 6,
+         "max" : [
+            -0.000000,
+            1.000000,
+            -0.000000
+         ],
+         "min" : [
+            -0.000000,
+            1.000000,
+            -0.000000
+         ],
+         "type" : "VEC3"
+      },
+      {
+         "bufferView" : 3,
+         "byteOffset" : 0,
+         "componentType" : 5126,
+         "count" : 6,
+         "max" : [
+            0.000000,
+            0.000000,
+            -1.000000,
+            1.000000
+         ],
+         "min" : [
+            0.000000,
+            0.000000,
+            -1.000000,
+            1.000000
+         ],
+         "type" : "VEC4"
+      },
+      {
+         "bufferView" : 4,
+         "byteOffset" : 0,
+         "componentType" : 5126,
+         "count" : 6,
+         "max" : [
+            0.999900,
+            0.999900
+         ],
+         "min" : [
+            0.000100,
+            0.000100
+         ],
+         "type" : "VEC2"
+      }
+   ],
+   "asset" : {
+      "generator" : "VKTS glTF 2.0 exporter",
+      "version" : "2.0"
+   },
+   "bufferViews" : [
+      {
+         "buffer" : 0,
+         "byteLength" : 12,
+         "byteOffset" : 0,
+         "target" : 34963
+      },
+      {
+         "buffer" : 0,
+         "byteLength" : 72,
+         "byteOffset" : 12,
+         "target" : 34962
+      },
+      {
+         "buffer" : 0,
+         "byteLength" : 72,
+         "byteOffset" : 84,
+         "target" : 34962
+      },
+      {
+         "buffer" : 0,
+         "byteLength" : 96,
+         "byteOffset" : 156,
+         "target" : 34962
+      },
+      {
+         "buffer" : 0,
+         "byteLength" : 48,
+         "byteOffset" : 252,
+         "target" : 34962
+      }
+   ],
+   "buffers" : [
+      {
+         "byteLength" : 300,
+         "uri" : "plane.bin"
+      }
+   ],
+   "images" : [
+      {
+         "uri" : "ground.jpg"
+      },
+      {
+         "uri" : "ground-mr.jpg"
+      },
+      {
+         "uri" : "ground-nrm.png"
+      }
+   ],
+   "materials" : [
+      {
+         "doubleSided" : true,
+         "name" : "TwoSidedPlane",
+         "normalTexture" : {
+            "index" : 2
+         },
+         "pbrMetallicRoughness" : {
+            "baseColorTexture" : {
+               "index" : 0
+            },
+            "metallicRoughnessTexture" : {
+               "index" : 1
+            }
+         }
+      }
+   ],
+   "meshes" : [
+      {
+         "name" : "TwoSidedPlane",
+         "primitives" : [
+            {
+               "attributes" : {
+                  "NORMAL" : 2,
+                  "POSITION" : 1,
+                  "TANGENT" : 3,
+                  "TEXCOORD_0" : 4
+               },
+               "indices" : 0,
+               "material" : 0,
+               "mode" : 4
+            }
+         ]
+      }
+   ],
+   "nodes" : [
+      {
+         "mesh" : 0,
+         "name" : "TwoSidedPlane"
+      }
+   ],
+   "samplers" : [
+      {}
+   ],
+   "scene" : 0,
+   "scenes" : [
+      {
+         "nodes" : [
+            0
+         ]
+      }
+   ],
+   "textures" : [
+      {
+         "sampler" : 0,
+         "source" : 0
+      },
+      {
+         "sampler" : 0,
+         "source" : 1
+      },
+      {
+         "sampler" : 0,
+         "source" : 2
+      }
+   ]
+}

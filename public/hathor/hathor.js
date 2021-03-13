@@ -506,6 +506,18 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='x') HATHOR.popupExportSemShapes();
         if (k==='u') ATON.FE.popupUser();
 
+        if (k === '('){
+            ATON._envMapInt -= 0.5;
+            if (ATON._envMapInt < 0.5) ATON._envMapInt = 0.5;
+            console.log(ATON._envMapInt);
+            ATON.updateLightProbes();
+        }
+        if (k === ')'){
+            ATON._envMapInt += 0.5;
+            console.log(ATON._envMapInt);
+            ATON.updateLightProbes();
+        }
+
         //if (k==='w'){
         //    if (ATON.Nav._mode === ATON.Nav.MODE_FP) ATON.Nav.setMotionAmount(0.5);
         //}

@@ -1164,8 +1164,8 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
 
     //ATON._dMainL.shadow.camera.updateProjectionMatrix();
 
-    //ATON._dMainL.shadow.bias = -0.0005;
-    ATON._dMainL.shadow.normalBias = 0.05;
+    ATON._dMainL.shadow.bias = -0.0005;
+    //ATON._dMainL.shadow.normalBias = 0.05;
 };
 
 

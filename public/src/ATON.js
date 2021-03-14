@@ -827,6 +827,7 @@ ATON._onAllReqsCompleted = ()=>{
     setTimeout( ()=>{
         //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
         ATON.updateLightProbes();
+        //if (ATON._renderer.shadowMap.enabled && ATON._bShadowsFixedBound) ATON._dMainL.shadow.autoUpdate = false;
     }, 1000);
 };
 
@@ -864,6 +865,7 @@ ATON.initGraphs = ()=>{
 
     // UI graph
     ATON._rootUI = ATON.createUINode().setAsRoot();
+    //ATON._rootUI.renderOrder = 10;
     ATON._mainRoot.add(ATON._rootUI);
 
     // Uniform lighting
@@ -1162,7 +1164,8 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
 
     //ATON._dMainL.shadow.camera.updateProjectionMatrix();
 
-    ATON._dMainL.shadow.bias = -0.0005;
+    //ATON._dMainL.shadow.bias = -0.0005;
+    ATON._dMainL.shadow.normalBias = 0.05;
 };
 
 

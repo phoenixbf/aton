@@ -56,6 +56,9 @@ XR.init = ()=>{
     XR._lastPosR = undefined;
     XR._lastPosL = undefined;
 
+    XR._pointerLineGeom = undefined;
+    XR._pointerLineMesh = undefined;
+
     XR.gpad0 = undefined;
     XR.gpad1 = undefined;
 
@@ -403,7 +406,7 @@ XR.toggle = ()=>{
 
 XR.setupControllerUI = (h, bAddRep)=>{
     let raytick = 0.003;
-    let raylen  = 5.0;
+    let raylen  = 1.0;
 
     let rhand = undefined;
     let lhand = undefined;
@@ -431,12 +434,13 @@ XR.setupControllerUI = (h, bAddRep)=>{
         XR.gControllers.add( XR.controller0 );
 
         if (bAddRep){
-            var geometry = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
-            geometry.rotateX( -Math.PI / 2 );
-            geometry.translate(0,0,-(raylen*0.5));
+            XR._pointerLineGeom = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
+            XR._pointerLineGeom.rotateX( -Math.PI / 2 );
+            XR._pointerLineGeom.translate(0,0,-(raylen*0.5));
 
-            var mesh = new THREE.Mesh( geometry, ATON.MatHub.materials.controllerRay );
-            XR.controller0.add( mesh.clone() );
+            XR._pointerLineMesh = new THREE.Mesh( XR._pointerLineGeom, ATON.MatHub.materials.controllerRay );
+            XR.controller0.add( /*mesh.clone()*/ XR._pointerLineMesh );
+            XR._pointerLineMesh.visible = false;
         
             rhand = ATON.createUINode("Rhand").load(XR._urlHand).setMaterial(ATON.MatHub.materials.controllerRay);
             XR.controller0.add(rhand);

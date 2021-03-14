@@ -38,7 +38,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     let kwds = kwords.split(" ");
 
-    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px'>";
+    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px; background-color:rgba(0,0,0,0.0)'>";
     htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
     htmlcontent += "<div class='atonCover' style='margin:0px'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
 
@@ -63,6 +63,8 @@ let searchTerm = (searchTerm)=>{
 
     if (searchTerm === undefined) searchTerm = $('#idSearch').val().toLowerCase();
     else $('#idSearch').val(String(searchTerm));
+
+    searchTerm = searchTerm.split(" ")[0];
 
     //if (searchTerm === undefined) return;
 

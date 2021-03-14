@@ -434,6 +434,23 @@ SUI.update = ()=>{
     }
     else SUI.fpTeleport.visible = false;
 
+    // Pointer-line
+    if (ATON.XR._pointerLineMesh){
+        let d = 0.0;
+        if (ATON._queryDataScene) d = ATON._queryDataScene.d;
+        if (ATON._queryDataUI && (d <= 0.0 || ATON._queryDataUI.d<d)){
+            d = ATON._queryDataUI.d;
+            SUI.mainSelector.visible = false;
+            SUI.fpTeleport.visible   = false;
+        }
+
+        if (d>0.0){
+            ATON.XR._pointerLineMesh.visible = true;
+            ATON.XR._pointerLineMesh.scale.set(1,1,d);
+        }
+        else ATON.XR._pointerLineMesh.visible = false;
+    }
+
     // Measures
     SUI._updateMeasurements();
 

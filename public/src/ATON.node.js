@@ -165,6 +165,10 @@ hide(){
     //this.traverse((o) => { o.layers.disable(this.type); });
     ATON.Utils.setPicking(this, this.type, false);
 
+    if (ATON._renderer.shadowMap.enabled){
+        ATON._renderer.shadowMap.needsUpdate = true;
+    }
+
     return this;
 }
 
@@ -177,6 +181,10 @@ show(){
     this.visible = true;
 
     if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
+
+    if (ATON._renderer.shadowMap.enabled){
+        ATON._renderer.shadowMap.needsUpdate = true;
+    }
 
     return this;
 }

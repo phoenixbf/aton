@@ -81,7 +81,7 @@ SHU.getScenesSelect = (idselect)=>{
     });
 };
 
-SHU.createScenesInputList = (idlist)=>{
+SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput)=>{
     let htmlcontent = "<input id='sid' type='text' list='sidlist' style='width:100%'>";
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
@@ -90,6 +90,13 @@ SHU.createScenesInputList = (idlist)=>{
         htmlcontent += "</datalist>";
 
         $("#"+idlist).html(htmlcontent);
+
+        if (onkeyenter) $("#sid").keypress(function(event){
+            let keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13') onkeyenter();
+        });
+
+        if (onkeyinput) $("#sid").on("input change", onkeyinput );
     });
 };
 
@@ -106,8 +113,8 @@ SHU.createPubScenesGallery = (idcontainer)=>{
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
             let title = (scene.title)? scene.title : sid;
 
-            let kwords = title;
-            kwords += " "+user;
+            let kwords = title.toLowerCase();
+            kwords += " "+user.toLowerCase();
 
             htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.1)' >";
 

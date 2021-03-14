@@ -26,6 +26,36 @@
 
 <script>
 
+let openSID = ()=>{
+    let sid = $("#sid").val();
+    if (sid && sid.length > 1) SHU.goToScene( sid );
+};
+
+let showAllScenes = ()=>{
+    $('.atonGalleryItem').each(function(){
+        $(this).show();
+    });
+};
+
+let search = ()=>{
+    let searchTerm = $("#sid").val().toLowerCase();
+    searchTerm = searchTerm.split(" ")[0];
+
+    //console.log(searchTerm);
+
+    if (searchTerm.length<3 || searchTerm.includes("/")){
+        showAllScenes();
+        return;
+    }
+
+    $('.atonGalleryItem').each(function(){
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1){
+            $(this).show();
+        }
+        else $(this).hide();
+    });
+};
+
 let onLandingData = (data)=>{
     let htmlcontent = "";
 
@@ -48,13 +78,9 @@ let onLandingData = (data)=>{
     $("#idMainContent").html(htmlcontent);
 
     if (data.gallery){
-        SHU.createScenesInputList("idScenes");
+        SHU.createScenesInputList("idScenes", openSID, search);
 
-        $("#btn-go").click(()=>{
-            let sid = $("#sid").val();
-
-            if (sid && sid.length > 1) SHU.goToScene( sid );
-        });
+        $("#btn-go").click( openSID );
 
         SHU.createPubScenesGallery("idPubGallery");
     }

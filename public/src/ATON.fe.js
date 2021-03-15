@@ -71,7 +71,7 @@ FE._handleHomeReq = ()=>{
         return;
     }
     
-    ATON.Nav.requestHome(0.5);
+    ATON.Nav.requestHome(1.0);
     //console.log(ATON.Nav.homePOV);
 };
 
@@ -83,7 +83,7 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.SceneHub.getDescription()) $("#btn-info").show();
-        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.2);
+        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(1.0);
     });
 
     ATON.on("AllNodeRequestsCompleted", ()=>{ 

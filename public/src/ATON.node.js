@@ -49,6 +49,9 @@ constructor(id, type){
     // Transform list (instancing)
     this._tlist = undefined;
 
+    // Animation mixers
+    this._aniMixers = undefined;
+
     // Shadows
     this.castShadow    = false;
     this.receiveShadow = false;
@@ -602,6 +605,9 @@ load(url, onComplete){
             }
             else N.add( C );
 
+            // animations
+            ATON.Utils.registerAniMixers(N, data);
+
             //N.setPickable(N.bPickable);
             //N.toggle(N.visible);
 
@@ -629,6 +635,9 @@ load(url, onComplete){
                 }
             }
             else N.add( model );
+
+            // animations
+            ATON.Utils.registerAniMixers(N, data);
 
             resolve(model);
             console.log("Model "+url+" loaded");

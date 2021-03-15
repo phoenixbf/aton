@@ -319,6 +319,21 @@ Utils.modelVisitor = (parentNode, model)=>{
 */
 };
 
+Utils.registerAniMixers = (N, data)=>{
+    let model = data.scene || data.scene[0];
+
+    let mixer = new THREE.AnimationMixer( model );
+    data.animations.forEach((clip)=>{
+        mixer.clipAction( clip ).play();
+        //console.log(mixer.clipAction( clip ));
+        console.log(N);
+    });
+    ATON._aniMixers.push(mixer);
+
+    if (N._aniMixers === undefined) N._aniMixers = [];
+    N._aniMixers.push(mixer);
+};
+
 Utils.parseTransformString = (tstr)=>{
     let T = new THREE.Group();
 

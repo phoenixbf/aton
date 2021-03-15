@@ -420,6 +420,8 @@ ATON.realize = ()=>{
     ATON._avgFPScount = 0;
     ATON._avgFPSaccum = 0;
     ATON._avgFPS = 60;
+
+    ATON._aniMixers = [];
     
     ATON._renderer.outputEncoding = THREE.sRGBEncoding;
     ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
@@ -1304,7 +1306,21 @@ ATON._onFrame = ()=>{
     // Environment/lighting
     ATON._updateEnvironment();
 
+    // 3D models animations
+    ATON._updateAniMixers();
+
     ATON.fireEvent("frame");
+};
+
+ATON._updateAniMixers = ()=>{
+    let num = ATON._aniMixers.length;
+    //if (num < 1) return;
+
+    for (let m=0; m<num; m++){
+        let M = ATON._aniMixers[m];
+        M.update( ATON._dt );
+        //console.log(M);
+    }
 };
 
 ATON._updateScreenMove = (e)=>{

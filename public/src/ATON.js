@@ -465,6 +465,9 @@ ATON.realize = ()=>{
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
     ATON._numReqLoad = 0;
 
+    // CC Manager
+    ATON._ccModels = [];
+
     // Periods (TODO:)
     //ATON.periods = [];
 
@@ -1178,9 +1181,12 @@ ATON.toggleShadows = (b)=>{
         ATON._dMainL.castShadow = true;
         ATON._renderer.shadowMap.enabled = true;
 
+        if (ATON.device.isMobile) ATON._renderer.shadowMap.type = THREE.PCFShadowMap;
+        else ATON._renderer.shadowMap.type = THREE.PCFSoftShadowMap; // THREE.VSMShadowMap; 
+
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
         //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;
-        ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
+        //ATON._renderer.shadowMap.type    = THREE.PCFSoftShadowMap; //
         //ATON._renderer.shadowMap.type    = THREE.VSMShadowMap;
 
         ATON._rootVisible.traverse((o) => {

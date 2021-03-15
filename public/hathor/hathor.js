@@ -210,10 +210,12 @@ HATHOR.uiSetup = ()=>{
     ATON.FE.uiAddButton("idBottomToolbar", "next", HATHOR.povNext, "Next Viewpoint" );
     ATON.FE.uiAddButtonTalk("idBottomToolbar");
 
+    ATON.FE.uiAddButton("idBottomRToolbar", "cc", HATHOR.popupCC, "Assets copyright" );
     ATON.FE.uiAddButton("idBottomRToolbar", "info", HATHOR.popupSceneInfo, "Scene information" );
 
     $("#btn-talk").hide();
     $("#btn-info").hide();
+    $("#btn-cc").hide();
 
     $("#btn-prev").hide();
     $("#btn-next").hide();
@@ -1067,6 +1069,24 @@ HATHOR.popupSceneInfo = ()=>{
             });
         }
     });
+};
+
+HATHOR.popupCC = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Assets Copyright</div>";
+
+    htmlcontent += "<div style='text-align:left;'>";
+    for (let cc in ATON._ccModels){
+        let CC = ATON._ccModels[cc];
+
+        for (let e in CC){
+            htmlcontent += "<strong>"+e+"</strong>: "+ ATON.Utils.URLify(CC[e]) + "<br>";
+        }
+
+        htmlcontent += "<br>";
+    }
+    htmlcontent += "</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
 };
 
 HATHOR.popupPOV = ()=>{

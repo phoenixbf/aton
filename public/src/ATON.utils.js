@@ -140,6 +140,17 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
+Utils.URLify =(string)=>{
+    const urls = string.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
+    if (urls){
+        urls.forEach(function(url){
+            string = string.replace(url, '<a target="_blank" href="' + url + '">' + url + "</a>");
+        });
+    }
+
+    return string;
+};
+
 Utils.resolveCollectionURL = (url)=>{
     if (url.startsWith("http")) return url;
     
@@ -326,12 +337,23 @@ Utils.registerAniMixers = (N, data)=>{
     data.animations.forEach((clip)=>{
         mixer.clipAction( clip ).play();
         //console.log(mixer.clipAction( clip ));
-        console.log(N);
+        //console.log(N);
     });
     ATON._aniMixers.push(mixer);
 
     if (N._aniMixers === undefined) N._aniMixers = [];
     N._aniMixers.push(mixer);
+};
+
+Utils.ccExtract = (data)=>{
+    if (data === undefined) return;
+    if (data.asset === undefined) return;
+    if (data.asset.extras === undefined) return;
+
+    let cc = data.asset.extras;
+
+    ATON._ccModels.push(cc);
+    console.log(cc);
 };
 
 Utils.parseTransformString = (tstr)=>{

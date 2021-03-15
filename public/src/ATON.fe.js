@@ -88,6 +88,7 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
+        if (ATON._ccModels.length>0) $("#btn-cc").show();
         
         FE.computeSelectorRanges();
         if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );

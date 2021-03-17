@@ -19,7 +19,6 @@
     "url": "https://github.com/phoenixbf/aton.git"
   },
   "dependencies": {
-    "3d-tiles-renderer": "^0.2.9",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",

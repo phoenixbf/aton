@@ -468,6 +468,9 @@ ATON.realize = ()=>{
     // CC Manager
     ATON._ccModels = [];
 
+    // Update routines
+    ATON._updRoutines = [];
+
     // Periods (TODO:)
     //ATON.periods = [];
 
@@ -855,6 +858,7 @@ ATON.initGraphs = ()=>{
     // Global root
     ATON._mainRoot = new THREE.Scene();
     ATON._mainRoot.background = new THREE.Color( 0.7,0.7,0.7 );
+    //ATON._mainRoot.fog = new THREE.Fog(new THREE.Color( 0.7,0.7,0.7 ), 5, 200);
 
     // visible scene-graph
     ATON._rootVisibleGlobal = new THREE.Group();
@@ -880,6 +884,7 @@ ATON.initGraphs = ()=>{
 
 ATON.setBackgroundColor = (bg)=>{
     ATON._mainRoot.background = bg;
+    //ATON._mainRoot.fog = new THREE.Fog(bg, 5, 200);
 };
 
 //==============================================================
@@ -1038,6 +1043,7 @@ ATON.setMainPanorama = (path)=>{
     ATON._mMainPano.frustumCulled = false;
     ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
 
+    // FIXME: dirty, find another way
     ATON._mMainPano.onAfterRender = ()=>{
         //if (ATON._numReqLoad > 0) return;
         ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
@@ -1275,24 +1281,21 @@ ATON._onFrame = ()=>{
     ATON._fps = 1.0 / dt;
     ATON._dt  = dt;
 
+    //ATON.fireEvent("preframe");
+
     // avg fps
     //ATON._avgFPScount++;
     //ATON._avgFPSaccum += ATON._fps;
     
-    //ATON.Nav._bControlChange = false;
-    ATON.Nav._controls.update(dt);
+    ///ATON.Nav._bControlChange = false;
+    //ATON.Nav._controls.update(dt);
 
+    // Render
     ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
 
-/*
-    if (ATON.Nav._bControlChange){
-        }
-    else {
-        //ATON._handleScreenPick();
-        }
-*/
 
     if (ATON.XR._bPresenting) ATON.XR.update();
+    else ATON.Nav._controls.update(dt);
 
     // Spatial queries
     ATON._handleQueries();
@@ -1303,7 +1306,7 @@ ATON._onFrame = ()=>{
     // VRoadcast
     ATON.VRoadcast.update();
 
-    // UI
+    // SUI
     ATON.SUI.update();
 
     // Mat
@@ -1315,7 +1318,24 @@ ATON._onFrame = ()=>{
     // 3D models animations
     ATON._updateAniMixers();
 
-    ATON.fireEvent("frame");
+    //ATON.fireEvent("frame");
+    ATON._updateRoutines();
+};
+
+ATON.addUpdateRoutine = (U)=>{
+    if (U === undefined) return;
+    ATON._updRoutines.push(U);
+};
+
+ATON.deleteAllUpdateRoutines = ()=>{
+    ATON._updRoutines = [];
+};
+
+ATON._updateRoutines = ()=>{
+    let n = ATON._updRoutines.length;
+    if (n <= 0) return;
+
+    for (let u=0; u<n; u++) ATON._updRoutines[u]();
 };
 
 ATON._updateAniMixers = ()=>{
@@ -1389,13 +1409,13 @@ ATON._handleQueryScene = ()=>{
     //ATON._hitsOperator(ATON._hits);
 
     // Process hits
-    let hitsnum = ATON._hitsScene.length;
+    const hitsnum = ATON._hitsScene.length;
     if (hitsnum <= 0){
         ATON._queryDataScene = undefined;
         return;
     }
 
-    let h = ATON._hitsScene[0];
+    const h = ATON._hitsScene[0];
 
     ATON._queryDataScene = {};
     ATON._queryDataScene.p = h.point;
@@ -1462,7 +1482,7 @@ ATON._handleQuerySemantics = ()=>{
     ATON._rcSemantics.intersectObjects( ATON._mainRoot.children, true, ATON._hitsSem );
 
     // Process hits
-    let hitsnum = ATON._hitsSem.length;
+    const hitsnum = ATON._hitsSem.length;
     if (hitsnum <= 0){
         ATON._queryDataSem = undefined;
 
@@ -1476,7 +1496,7 @@ ATON._handleQuerySemantics = ()=>{
         return;
     }
 
-    let h = ATON._hitsSem[0];
+    const h = ATON._hitsSem[0];
 
     // Occlusion
     if (ATON._bQuerySemOcclusion && ATON._queryDataScene){

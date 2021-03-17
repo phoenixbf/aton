@@ -94,7 +94,7 @@ MatHub.addDefaults = ()=>{
         `,
         transparent: true,
         depthWrite: false,
-        flatShading: false
+        //flatShading: false
     }); 
     
     // Selector
@@ -183,7 +183,7 @@ MatHub.addDefaults = ()=>{
         `,
         transparent: true,
         depthWrite: false,
-        flatShading: false
+        //flatShading: false
         //opacity: 0.0,
     });
 
@@ -231,7 +231,7 @@ MatHub.addDefaults = ()=>{
         `,
         transparent: true,
         depthWrite: false,
-        flatShading: false
+        //flatShading: false
     }); 
 
     MatHub.lpIcon = new THREE.SpriteMaterial({ 

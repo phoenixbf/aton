@@ -606,7 +606,7 @@ load(url, onComplete){
             else N.add( C );
 
             // animations
-            ATON.Utils.registerAniMixers(N, data);
+            //ATON.Utils.registerAniMixers(N, data);
 
             //N.setPickable(N.bPickable);
             //N.toggle(N.visible);
@@ -655,7 +655,7 @@ load(url, onComplete){
         },
         undefined,
         (err)=>{
-            console.log(err);
+            //console.log(err);
             //reject(model);
 
             if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);

@@ -294,7 +294,7 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._prevMode = Nav._mode; // store previous nav mode
 
-    if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5); // for immersive sessions we (re)set selector radius to 50cm
+    if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5); // we (re)set selector radius to 50cm
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
@@ -321,8 +321,8 @@ Nav.setFirstPersonControl = ()=>{
 
         C.target.copy(Nav._camera.position);
 
-        C.minDistance = 0.05;
-        C.maxDistance = 0.05;
+        C.minDistance = 0.01;
+        C.maxDistance = 0.01;
 
         if (!Nav._bControl) C.enabled = false;
     }
@@ -446,10 +446,10 @@ Nav.getFOV = ()=>{
 Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
         
-        let C = ATON._renderer.xr.getCamera(Nav._camera);
-        C.getWorldPosition( Nav._currPOV.pos );
-        C.getWorldQuaternion( Nav._qOri );
-        C.getWorldDirection( Nav._vDir );
+        ATON.XR._cam = ATON._renderer.xr.getCamera(Nav._camera);
+        ATON.XR._cam.getWorldPosition( Nav._currPOV.pos );
+        ATON.XR._cam.getWorldQuaternion( Nav._qOri );
+        ATON.XR._cam.getWorldDirection( Nav._vDir );
         //console.log(Nav._hmdPos);
 
         //ATON.XR.hmdPos.copy(Nav._currPOV.pos);
@@ -495,7 +495,7 @@ Nav.handlePOV = ()=>{
     if (ATON.XR.isPresenting()) Nav.handleXRtransition();
     else Nav.handlePOVtransition();
 
-    Nav.handleMotion();
+    //Nav.handleMotion();
 
     //if (ATON.XR.isPresenting()) console.log(ATON._renderer.xr);
 
@@ -503,6 +503,7 @@ Nav.handlePOV = ()=>{
 
 };
 
+// Not used for now
 Nav.handleMotion = ()=>{
     if (Nav.isTransitioning()) return;
 

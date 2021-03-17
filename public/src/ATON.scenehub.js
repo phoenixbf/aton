@@ -195,6 +195,10 @@ SceneHub.initBaseParsers = ()=>{
             if (pano.rotation) ATON.setMainPanoramaRotation(pano.rotation);
         }
 
+        if (env.bgcolor){
+            ATON.setBackgroundColor( new THREE.Color(env.bgcolor[0],env.bgcolor[1],env.bgcolor[2]) );
+        }
+
         let L = env.mainlight;
         if (L){
             if (L.direction) ATON.setMainLightDirection( new THREE.Vector3(L.direction[0],L.direction[1],L.direction[2]) );

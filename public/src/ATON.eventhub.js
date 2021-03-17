@@ -37,7 +37,7 @@ EventHub.executeHandlers = (ehList, data)=>{
     if (!ehList) return;
 
     for (let h = 0; h < ehList.length; h++) {
-        let handler = ehList[h];
+        const handler = ehList[h];
         if (handler) handler(data);
     }
 };
@@ -56,7 +56,7 @@ ATON.on("myEvent", function(data){ console.log("received local event"); })
 EventHub.on = (evtname, handlerLocal, handlerNetwork)=>{
     // Local event (default)
     if (handlerLocal !== undefined){
-        let evhLocal = EventHub.evLocal;
+        const evhLocal = EventHub.evLocal;
 
         if (evhLocal[evtname] === undefined) evhLocal[evtname] = []; // First time (event not registered)
         evhLocal[evtname].push(handlerLocal);
@@ -81,7 +81,7 @@ ATON.EventHub.fireEvent("myEvent", data)
 ATON.fireEvent("myEvent", data)
 */
 EventHub.fireEvent = (evtname, data, bReplicate)=>{
-    let ehList = EventHub.evLocal[evtname];
+    const ehList = EventHub.evLocal[evtname];
     EventHub.executeHandlers(ehList, data);
 
     if (!bReplicate) return;

@@ -103,9 +103,9 @@ update(){
     if (this._prevCCtarget) this._prevCCtarget.dispose();
 
     let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBAFormat, //THREE.RGBEFormat,
-        //generateMipmaps: true,
-        //minFilter: THREE.LinearMipmapLinearFilter,
+        format: THREE.RGBEFormat, //THREE.RGBEFormat,
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
         encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
     });
 

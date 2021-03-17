@@ -39,6 +39,8 @@ XR.init = ()=>{
     //XR.hmdOri = new THREE.Quaternion();
     //XR.hmdPos = new THREE.Vector3();
 
+    XR._cam = undefined;
+
     XR._currPos = XR.rig.position; //new THREE.Vector3();
     XR._fromPos = new THREE.Vector3();
     XR._reqPos  = new THREE.Vector3();
@@ -599,7 +601,7 @@ XR.update = ()=>{
         XR.controller0.getWorldDirection(XR.controller0dir);
         XR.controller0dir.negate();
 
-        XR._deltaMotionController(XR.HAND_R);
+        //XR._deltaMotionController(XR.HAND_R);
     }
     // L controller
     if (XR.controller1 && XR.controller1.visible){
@@ -607,7 +609,7 @@ XR.update = ()=>{
         XR.controller1.getWorldDirection(XR.controller1dir);
         XR.controller1dir.negate(); 
 
-        XR._deltaMotionController(XR.HAND_L);
+        //XR._deltaMotionController(XR.HAND_L);
     }
 
 /*

@@ -37,6 +37,7 @@ FE.realize = ()=>{
     FE._bReqHome = false;   // auto-compute home
 
     FE._vrcAddr = undefined;
+    FE._bVRCsetup = false;
 
     FE.urlParams = new URLSearchParams(window.location.search);
 
@@ -96,7 +97,8 @@ FE.addBasicLoaderEvents = ()=>{
         FE._handleHomeReq();
     });
 
-    ATON.on("frame", FE._update);
+    //ATON.on("frame", FE._update);
+    ATON.addUpdateRoutine(FE._update);
 };
 
 FE.controlLight = (b)=>{
@@ -399,24 +401,9 @@ FE.getVRCclassFromID = (uid)=>{
     return "atonVRCu"+i;
 };
 
-/**
-Add VRoadcast button (to connect/disconnect from collaborative sessions)
-@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
-*/
-FE.uiAddButtonVRC = (idcontainer)=>{
-    FE.uiAddButton(idcontainer, "vrc", ()=>{
-        if (ATON.VRoadcast.isConnected()){
-            FE.popupVRC();
-        }
-        else {
-            ATON.VRoadcast.connect(FE._vrcAddr);
-        }
-    }, "VRoadcast (collaborative session)");
-
-    $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'></span>");
-
-    //$("<div id='idVRCchatPanel' class='atonVRCsidePanel'>xxx</div>").appendTo(document.body);
-    //$("#idVRCchatPanel").append(ATON.VRoadcast._elChat);
+// Setup VRC events
+FE._setupVRCevents = ()=>{
+    if (FE._bVRCsetup) return;
 
     ATON.on("VRC_IDassigned", (uid)=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
@@ -457,6 +444,29 @@ FE.uiAddButtonVRC = (idcontainer)=>{
 
         $("#idVRCnumusers").html("");
     });
+
+    FE._bVRCsetup = true;
+};
+
+/**
+Add VRoadcast button (to connect/disconnect from collaborative sessions)
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonVRC = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "vrc", ()=>{
+        if (ATON.VRoadcast.isConnected()){
+            FE.popupVRC();
+        }
+        else {
+            ATON.VRoadcast.connect(FE._vrcAddr);
+        }
+    }, "VRoadcast (collaborative session)");
+
+    $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'></span>");
+
+    //$("<div id='idVRCchatPanel' class='atonVRCsidePanel'>xxx</div>").appendTo(document.body);
+    //$("#idVRCchatPanel").append(ATON.VRoadcast._elChat);
+    FE._setupVRCevents();
 
     if (ATON.VRoadcast.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.VRoadcast.uid) );
     else $("#btn-vrc").attr("class","atonBTN");

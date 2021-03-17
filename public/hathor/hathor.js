@@ -65,6 +65,8 @@ window.addEventListener( 'load', ()=>{
 
     // Load scene
     ATON.FE.loadSceneID(HATHOR.paramSID);
+
+    //ATON._bPauseQuery = true;
 });
 
 
@@ -223,7 +225,8 @@ HATHOR.uiSetup = ()=>{
     if (HATHOR.paramFPS){
         $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
 
-        ATON.on("frame", ()=>{
+        //ATON.on("frame", ()=>{
+        ATON.addUpdateRoutine(()=>{
             let fps = parseInt(ATON._fps);
             $("#idFPS").html(fps);
         });

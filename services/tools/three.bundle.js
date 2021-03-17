@@ -34,6 +34,8 @@ import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoade
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 import * as ThreeMeshBVH from 'three-mesh-bvh';
 
+import { TilesRenderer } from '3d-tiles-renderer';
+
 // Add the extension functions
 THREE.BufferGeometry.prototype.computeBoundsTree = ThreeMeshBVH.computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = ThreeMeshBVH.disposeBoundsTree;
@@ -57,7 +59,9 @@ THREE.RoughnessMipmapper = RoughnessMipmapper;
 THREE.LightProbeHelper = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
 
+
 window.THREE = THREE;
 
 //window.ThreeMeshUI  = ThreeMeshUI;
-window.ThreeMeshBVH = ThreeMeshBVH;
+window.ThreeMeshBVH  = ThreeMeshBVH;
+window.TilesRenderer = TilesRenderer;

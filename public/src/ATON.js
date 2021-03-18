@@ -551,7 +551,7 @@ ATON.realize = ()=>{
     ATON._rcUI = new THREE.Raycaster();
     ATON._rcUI.layers.set(ATON.NTYPES.UI);
 
-    //ATON._registerRCS(); // not used for now
+    ATON._registerRCS(); // not used for now
 
     ATON._setupBaseListeners();
 
@@ -835,7 +835,12 @@ ATON._onAllReqsCompleted = ()=>{
     setTimeout( ()=>{
         //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
         ATON.updateLightProbes();
-        //if (ATON._renderer.shadowMap.enabled && ATON._bShadowsFixedBound) ATON._dMainL.shadow.autoUpdate = false;
+
+        // Lazy shadows updates (performances)
+        if (ATON._renderer.shadowMap.enabled && ATON._bShadowsFixedBound && ATON._aniMixers.length === 0){
+            ATON._dMainL.shadow.autoUpdate = false;
+            console.log("Lazy shadows");
+        }
     }, 1000);
 };
 
@@ -1010,12 +1015,16 @@ ATON.setMainPanorama = (path)=>{
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );
         tpano.encoding = THREE.sRGBEncoding;
+        //tpano.minFilter = THREE.NearestFilter;
+		//tpano.generateMipmaps = false;
         //console.log(ATON._elPanoVideo);
     }
     // Static Panorama
     else {
         tpano = new THREE.TextureLoader().load(path);
         tpano.encoding = THREE.sRGBEncoding;
+        //tpano.minFilter = THREE.NearestFilter;
+		tpano.generateMipmaps = true;
     }
 
     if (ATON._matMainPano !== undefined){
@@ -1026,21 +1035,23 @@ ATON.setMainPanorama = (path)=>{
 
     // First time: create it
     ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 60,60 );
+    ATON._gMainPano.castShadow = false;
+    ATON._gMainPano.receiveShadow = false;
 
     ATON._matMainPano = new THREE.MeshBasicMaterial({ 
-        map: tpano, 
+        map: tpano,
         //emissive: tpano,
-        //castShadow: false,
-        //receiveShadow: false,
         fog: false,
-        depthTest: false,
-        depthWrite: false,
-        //depthFunc: THREE.AlwaysDepth,
-        //side: THREE.DoubleSide
+        
+        //depthTest: false,
+        //depthWrite: false,
+        
+        ///depthFunc: THREE.AlwaysDepth,
+        ///side: THREE.DoubleSide
     });
 
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
-    ATON._mMainPano.frustumCulled = false;
+    //ATON._mMainPano.frustumCulled = false;
     ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
 
     // FIXME: dirty, find another way
@@ -1099,6 +1110,8 @@ ATON.setMainLightDirection = (v)=>{
     ATON._dMainLdir = d;
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
+
+    if (ATON._renderer.shadowMap.enabled) ATON._dMainL.shadow.needsUpdate = true;
 
     ATON.toggleMainLight(true);
 };
@@ -1209,6 +1222,8 @@ ATON.toggleShadows = (b)=>{
             ATON.updateDirShadows(c);
         }
         else ATON.updateDirShadows();
+
+        ATON._dMainL.shadow.needsUpdate = true;
 
         console.log("Shadows ON");
     }
@@ -1383,9 +1398,9 @@ ATON._handleQueries = ()=>{
     if (ATON.Nav.isTransitioning()) return; // do not query during POV transitions
     //if (ATON.device.isMobile || !ATON.XR.isPresenting()) return; 
 
-    // round-robin
-    //ATON._rcRR = (ATON._rcRR+1) % 2;
+    // interleaving mode
     //ATON._rcHandlers[ATON._rcRR]();
+    //ATON._rcRR = (ATON._rcRR+1) % 3;
 
     ATON._handleQueryScene();
     ATON._handleQuerySemantics();

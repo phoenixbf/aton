@@ -463,8 +463,8 @@ Nav.syncCurrPOV = ()=>{
         return;
     }
 
-    let ctrl  = Nav._controls;
-    let cam   = Nav._camera;
+    const ctrl  = Nav._controls;
+    const cam   = Nav._camera;
 
     cam.getWorldDirection(Nav._vDir);
     cam.getWorldQuaternion(Nav._qOri);
@@ -590,6 +590,8 @@ Nav.handleXRtransition = ()=>{
 
 // Update internal camera from currPOV 
 Nav.syncCurrCamera = ()=>{
+    if (ATON.XR.isPresenting()) return;
+
     let ctrl  = Nav._controls;
     let cam   = Nav._camera;
     
@@ -597,6 +599,7 @@ Nav.syncCurrCamera = ()=>{
     let tgt = Nav._currPOV.target;
 
     // We are in VR
+/*
     if (ATON.XR.isPresenting()){
         ///let vrcam = ATON.XR.rig;
         ///vrcam.position.copy(pos);
@@ -607,7 +610,7 @@ Nav.syncCurrCamera = ()=>{
         //C.getWorldDirection(Nav._vDir);
         return;
     }
-
+*/
     if (Nav._mode === Nav.MODE_DEVORI){
         cam.position.copy(pos);
         return;

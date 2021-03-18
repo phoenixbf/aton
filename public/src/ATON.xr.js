@@ -223,9 +223,10 @@ XR._setupControllerL = (C, bAddRep)=>{
     ATON.fireEvent("XRcontrollerConnected", XR.HAND_L);
 };
 
-
 // On XR session started
 XR.onSessionStarted = ( session )=>{
+    if (XR.currSession) return; // Already running
+
 	session.addEventListener( 'end', XR.onSessionEnded );
 
     console.log(XR._sessionType + " session started.");
@@ -237,124 +238,127 @@ XR.onSessionStarted = ( session )=>{
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
-	ATON._renderer.xr.setSession( session );
-	XR.currSession = session;
+    // Promised
+	ATON._renderer.xr.setSession( session ).then(()=>{
+        XR.currSession = session;
 
-    // Disable panorama on AR sessions
-    if (XR._sessionType === "immersive-ar"){
-        ATON._mainRoot.background = null;
-        if (ATON._mMainPano) ATON._mMainPano.visible = false;
-    }
+        // Disable panorama on AR sessions
+        if (XR._sessionType === "immersive-ar"){
+            ATON._mainRoot.background = null;
+            if (ATON._mMainPano) ATON._mMainPano.visible = false;
+        }
 
-    // get xrRefSpace
-    /*
-    session.requestReferenceSpace('local').then((refSpace) => {
-        xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
-    });
-    */
+        // get xrRefSpace
+        /*
+        session.requestReferenceSpace('local').then((refSpace) => {
+            xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
+        });
+        */
 
-    for (let c = 0; c < 2; c++){
-        const C = ATON._renderer.xr.getController(c);
+        for (let c = 0; c < 2; c++){
+            const C = ATON._renderer.xr.getController(c);
 
-        if (C !== undefined){
-            //console.log(C);
+            if (C !== undefined && !C.userData.bXRconfig){
+                //console.log(C);
 
-            C.visible = false;
+                C.visible = false;
+                C.userData.bXRconfig = true;
 
-            C.addEventListener( 'connected', (e) => {
-                //console.log( e.data.handedness );
-                let hand = e.data.handedness;
-                
-                //console.log(e.data);
-                console.log("Hand "+hand);
+                C.addEventListener( 'connected', (e) => {
+                    //console.log( e.data.handedness );
+                    let hand = e.data.handedness;
+                    
+                    //console.log(e.data);
+                    console.log("Hand "+hand);
 
-                if (hand === "left")  XR._setupControllerL(C, true);
-                else {
-                    if (hand === "right") XR._setupControllerR(C, true);
-                    else { // FIXME:
+                    if (hand === "left")  XR._setupControllerL(C, true);
+                    else {
+                        if (hand === "right") XR._setupControllerR(C, true);
+                        else { // FIXME:
 
-                        //XR._setupControllerR(C, false);
-                        
-                        C.addEventListener('selectstart', ()=>{
-                            if (XR._handleUISelection()) return;
-                            ATON.fireEvent("XRselectStart", XR.HAND_R);
+                            //XR._setupControllerR(C, false);
                             
-                            console.log("Head-aligned select");
-                        });
-                        C.addEventListener('selectend', ()=>{ 
-                            ATON.fireEvent("XRselectEnd", XR.HAND_R);
-                        });
+                            C.addEventListener('selectstart', ()=>{
+                                if (XR._handleUISelection()) return;
+                                ATON.fireEvent("XRselectStart", XR.HAND_R);
+                                
+                                console.log("Head-aligned select");
+                            });
+                            C.addEventListener('selectend', ()=>{ 
+                                ATON.fireEvent("XRselectEnd", XR.HAND_R);
+                            });
 
-                        ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
+                            ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
+                        }
                     }
-                }
+                });
+            }
+        }
+
+    /*
+        let C0 = ATON._renderer.xr.getController(0);
+        let C1 = ATON._renderer.xr.getController(1);
+
+        console.log(C0);
+        //ATON.VRoadcast.log(JSON.stringify(C0));
+
+        // Controller 0
+        if (C0){
+            C0.visible = false;
+
+            C0.addEventListener( 'connected', (e) => {
+
+                //console.log( e.data.handedness );
+
+                if (e.data.handedness === "left") XR._setupControllerL(C0);
+                else XR._setupControllerR(C0);
+
+                //C0.gamepad = e.data.gamepad;
+                //console.log(XR.controller0.gamepad);
+
+                //ATON.VRoadcast.log(JSON.stringify(e));
+
+                //let gp = C0.gamepad;
+                //if (gp.pose && gp.pose.hasPosition) C0.visible = true;
+
             });
         }
-        
-    }
 
-/*
-    let C0 = ATON._renderer.xr.getController(0);
-    let C1 = ATON._renderer.xr.getController(1);
+        // Controller 1
+        if (C1){
+            C1.visible = false;
 
-    console.log(C0);
-    //ATON.VRoadcast.log(JSON.stringify(C0));
+            C1.addEventListener( 'connected', (e) => {
+                //console.log( e.data.handedness );
 
-    // Controller 0
-    if (C0){
-        C0.visible = false;
+                if (e.data.handedness === "left") XR._setupControllerL(C1);
+                else XR._setupControllerR(C1);
 
-        C0.addEventListener( 'connected', (e) => {
+                //C1.gamepad = e.data.gamepad;
+                
+                //let gp = C1.gamepad;
+                //if (gp.pose && gp.pose.hasPosition) C1.visible = true;
 
-            //console.log( e.data.handedness );
+            });
+        }
+    */
 
-            if (e.data.handedness === "left") XR._setupControllerL(C0);
-            else XR._setupControllerR(C0);
+        // reparent current camera to the XR rig
+        XR.rig.add( ATON.Nav._camera );
 
-            //C0.gamepad = e.data.gamepad;
-            //console.log(XR.controller0.gamepad);
+        XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
+        console.log(ATON.Nav._currPOV.pos);
 
-            //ATON.VRoadcast.log(JSON.stringify(e));
+        XR._bPresenting = true;
+        console.log("XR now presenting");
 
-            //let gp = C0.gamepad;
-            //if (gp.pose && gp.pose.hasPosition) C0.visible = true;
+        //XR.setupControllersUI();
 
-        });
-    }
+        ATON.fireEvent("XRmode", true);
 
-    // Controller 1
-    if (C1){
-        C1.visible = false;
+        //console.log(session);
 
-        C1.addEventListener( 'connected', (e) => {
-            //console.log( e.data.handedness );
-
-            if (e.data.handedness === "left") XR._setupControllerL(C1);
-            else XR._setupControllerR(C1);
-
-            //C1.gamepad = e.data.gamepad;
-            
-            //let gp = C1.gamepad;
-            //if (gp.pose && gp.pose.hasPosition) C1.visible = true;
-
-        });
-    }
-*/
-
-    // reparent current camera to the XR rig
-    XR.rig.add( ATON.Nav._camera );
-
-    XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
-    console.log(ATON.Nav._currPOV.pos);
-
-    XR._bPresenting = true;
-    console.log("XR now presenting");
-
-    //XR.setupControllersUI();
-
-    ATON.fireEvent("XRmode", true);
-
-    //console.log(session);
+    });
 };
 
 // On XR session terminated
@@ -386,11 +390,11 @@ XR.toggle = ()=>{
     if (XR.currSession === null){
         let sessionInit = {
             optionalFeatures: [
-                "local",
+                //"local",
                 //"local-floor",
                 ///"bounded-floor",
 
-                //"hand-tracking",
+                "hand-tracking",
 
                 //"high-refresh-rate",
                 //"high-fixed-foveation-level",

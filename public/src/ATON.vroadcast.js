@@ -574,6 +574,7 @@ VRoadcast.decodeState = (binData)=>{
 
 // Update
 VRoadcast.update = ()=>{
+    if (!VRoadcast._connected) return;
 
     // State interpolation
     for (let a=0; a<VRoadcast.avatarList.length; a++){

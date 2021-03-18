@@ -534,7 +534,7 @@ Core.realizeBaseAPI = (app)=>{
 	// Get ID
 	app.get("/api/getid/", function(req,res,next){
 		let id = nanoid.nanoid();
-		res.send(id);
+		res.json(id);
 	});
 
 	// Landing page opts
@@ -746,7 +746,7 @@ Core.realizeBaseAPI = (app)=>{
 
 		let wapps = [];
 
-		let files = glob.sync("**/*.html", O);
+		let files = glob.sync("**/index.html", O);
 		for (let f in files){
 			let wid = path.dirname(files[f]);
 			let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");

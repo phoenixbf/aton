@@ -91,7 +91,7 @@ SUI.init = ()=>{
     });
 */
 
-    //SUI._sync = 0;
+    SUI._sync = 0;
 };
 
 // note: before adding LPs
@@ -222,6 +222,8 @@ SUI.buildInfoNode = ()=>{
     });
     SUI.infoContainer.add(SUI.infoNodeText);
     //SUI.infoNode.scale.set(0.07,0.07,0.07);
+
+    //ThreeMeshUI.update();
 };
 
 /**
@@ -239,7 +241,8 @@ Set text for main info node
 SUI.setInfoNodeText = (txt)=>{
     if (!SUI.bShowInfo) return;
     SUI.infoNodeText.set({ content: txt });
-    //ThreeMeshUI.update();  
+    
+    ThreeMeshUI.update();  
 };
 
 /**
@@ -388,9 +391,13 @@ SUI.update = ()=>{
         SUI.infoNode.visible = false;
         return;
     }
-
-    //SUI._sync = (SUI._sync+1) % 10;
-    //if (SUI._sync===0) ThreeMeshUI.update();
+/*
+    SUI._sync = (SUI._sync+1) % 10;
+    if (SUI._sync===0){
+        ThreeMeshUI.update();
+        //console.log("sync");
+    } 
+*/
     ThreeMeshUI.update();
 
     // Meas-line indicator

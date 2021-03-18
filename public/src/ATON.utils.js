@@ -332,13 +332,20 @@ Utils.modelVisitor = (parentNode, model)=>{
 
 Utils.registerAniMixers = (N, data)=>{
     let model = data.scene || data.scene[0];
+    let bAnimations = false;
+
+    if (data.animations === undefined) return;
 
     let mixer = new THREE.AnimationMixer( model );
     data.animations.forEach((clip)=>{
         mixer.clipAction( clip ).play();
         //console.log(mixer.clipAction( clip ));
         //console.log(N);
+        bAnimations = true;
     });
+
+    if (!bAnimations) return;
+
     ATON._aniMixers.push(mixer);
 
     if (N._aniMixers === undefined) N._aniMixers = [];

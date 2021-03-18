@@ -169,7 +169,7 @@ hide(){
     ATON.Utils.setPicking(this, this.type, false);
 
     if (ATON._renderer.shadowMap.enabled){
-        ATON._renderer.shadowMap.needsUpdate = true;
+        ATON._dMainL.shadow.needsUpdate = true;
     }
 
     return this;
@@ -186,7 +186,7 @@ show(){
     if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
 
     if (ATON._renderer.shadowMap.enabled){
-        ATON._renderer.shadowMap.needsUpdate = true;
+        ATON._dMainL.shadow.needsUpdate = true;
     }
 
     return this;

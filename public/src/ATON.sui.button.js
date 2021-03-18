@@ -16,7 +16,7 @@ new ATON.SUI.Button("myButton")
 */
 class Button extends Node {
 
-constructor(uiid){
+constructor(uiid, ratio=1.0, fsize=1.0){
     super(uiid, ATON.NTYPES.UI);
 
     this.baseColor   = ATON.MatHub.colors.black;
@@ -25,7 +25,7 @@ constructor(uiid){
     this._bSwitched = false;
 
     this.container = new ThreeMeshUI.Block({
-        width: 0.1,
+        width: 0.1*ratio,
         height: 0.1,
         padding: 0.01,
         borderRadius: 0.02,
@@ -42,14 +42,17 @@ constructor(uiid){
 
     this.uiText = new ThreeMeshUI.Text({ 
         content: "",
-        fontSize: 0.02,
+        fontSize: 0.02*fsize,
         fontColor: ATON.MatHub.colors.white
     });
     //this.uiText.position.set(0,0,-0.01);
     this.container.add(this.uiText);
 
-    this._trigger = new THREE.Mesh( 
-        new THREE.PlaneGeometry( ATON.SUI.STD_BTN_SIZE*0.9, ATON.SUI.STD_BTN_SIZE*0.9, 2 ), 
+    // Trigger geom
+    let trw = ATON.SUI.STD_BTN_SIZE * 0.9 * ratio;
+    let trh = ATON.SUI.STD_BTN_SIZE * 0.9;
+    this._trigger = new THREE.Mesh(
+        new THREE.PlaneGeometry( trw, trh, 2 ), 
         ATON.MatHub.materials.fullyTransparent
     );
     this._trigger.position.set(0,0,0.002);

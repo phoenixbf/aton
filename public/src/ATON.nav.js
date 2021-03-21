@@ -15,8 +15,8 @@ let Nav = {};
 
 // Consts
 Nav.STD_FOV  = 50.0;
-Nav.STD_NEAR = 0.05;
-Nav.STD_FAR  = 1000.0;
+Nav.STD_NEAR = 0.01; //0.05;
+Nav.STD_FAR  = 800.0; // 1000
 
 Nav.FP_EPS = 0.01;
 Nav.STD_POV_TRANS_DURATION = 2.0;
@@ -447,9 +447,16 @@ Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
         
         ATON.XR._cam = ATON._renderer.xr.getCamera(Nav._camera);
+        //console.log(ATON.XR._cam);
+
         ATON.XR._cam.getWorldPosition( Nav._currPOV.pos );
         ATON.XR._cam.getWorldQuaternion( Nav._qOri );
         ATON.XR._cam.getWorldDirection( Nav._vDir );
+
+
+        //Nav._currPOV.pos.copy(ATON.XR._cam.position);
+        //Nav._qOri.copy(ATON.XR._cam.quaternion);
+
         //console.log(Nav._hmdPos);
 
         //ATON.XR.hmdPos.copy(Nav._currPOV.pos);

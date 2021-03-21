@@ -30,6 +30,7 @@ FE.realize = ()=>{
 
     FE._bControlLight = false;
     FE._bControlSelScale = false;
+    FE._cLightDir = new THREE.Vector3();
 
     FE._auSemNode = undefined;
     FE._auSemNodePlaying = false;
@@ -166,28 +167,31 @@ FE.loadSceneID = (sid)=>{
 };
 
 FE._update = ()=>{
+    //if (ATON.XR._bPresenting) return;
+
     if (FE._bControlLight){
-        let sx = ATON._screenPointerCoords.x;
-        let sy = ATON._screenPointerCoords.y;
+        // Normalized
+        const sx = ATON._screenPointerCoords.x;
+        const sy = ATON._screenPointerCoords.y;
         //console.log(sx,sy);
 
-        let D = new THREE.Vector3();
-        D.x = -Math.cos(sx * Math.PI);
-        D.y = -sy * 2.0;
-        D.z = -Math.sin(sx * Math.PI);
+        FE._cLightDir.x = -Math.cos(sx * Math.PI);
+        FE._cLightDir.y = -sy * 2.0;
+        FE._cLightDir.z = -Math.sin(sx * Math.PI);
 
-        D.normalize();
+        //FE._cLightDir.x = ATON.Nav._vDir.x + (sx);
 
-        ATON.setMainLightDirection(D);
+        FE._cLightDir.normalize();
+
+        ATON.setMainLightDirection(FE._cLightDir);
         //ATON.updateDirShadows();
     }
 
     if (FE._bControlSelScale){
-        //let sx = ATON._screenPointerCoords.x;
-        let f = ATON._screenPointerCoords.y;
+        //const sx = ATON._screenPointerCoords.x;
+        const f = ATON._screenPointerCoords.y;
 
-        let r = ATON.SUI.mainSelector.scale.x;
-        r += f;
+        const r = ATON.SUI.mainSelector.scale.x + f;
         if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
     }
 };

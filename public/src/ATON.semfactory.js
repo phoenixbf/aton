@@ -184,6 +184,7 @@ SemFactory.completeConvexShape = (semid)=>{
 
     // Spatial UI
     ATON.SUI.gPoints.removeChildren();
+    ATON._bqSem = true;
 
     return S;
 };
@@ -209,6 +210,7 @@ SemFactory.createConvexShape = (semid, points)=>{
     S.setDefaultAndHighlightMaterials(/*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape, SemFactory.currMaterial /*ATON.MatHub.materials.semanticShapeHL*/);
 
     S.enablePicking();
+    ATON._bqSem = true;
 
     return S;
 };
@@ -267,6 +269,7 @@ SemFactory.createSphere = (semid, location, radius)=>{
     //SemFactory.currParent.add( S );
 
     SemFactory._numShapes++;
+    ATON._bqSem = true;
 
     return S;
 };

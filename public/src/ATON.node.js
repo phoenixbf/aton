@@ -651,6 +651,9 @@ load(url, onComplete){
             //N.setPickable(N.bPickable);
             //N.toggle(N.visible);
 
+            if (N.type === ATON.NTYPES.SCENE) ATON._bqScene = true;
+            if (N.type === ATON.NTYPES.SEM)   ATON._bqSem = true;
+
             if (onComplete) onComplete();
         },
         undefined,

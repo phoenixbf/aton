@@ -69,7 +69,8 @@ SUI.init = ()=>{
     SUI.buildInfoNode();
     SUI.bShowInfo = true;
 
-    SUI._labelScale   = ATON.Utils.isMobile()? 1.2 : 1.0;
+    // InfoNode scale
+    SUI._labelScale   = ATON.Utils.isMobile()? 50.0 : 60.0; //note: inverse. Orginally 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
     ATON.on("SemanticNodeHover", (semid)=>{
@@ -464,6 +465,7 @@ SUI.update = ()=>{
     // InfoNode (semantics)
     if (ATON._queryDataSem){
 
+        // Immersive Session
         if (ATON.XR._bPresenting){
             if (ATON.XR.controller0){
                 SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
@@ -475,9 +477,11 @@ SUI.update = ()=>{
                 SUI.infoNode.setScale(ATON._queryDataSem.d * SUI._labelScaleVR);
             }
         }
+        // Default session
         else {
             SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.2);
-            SUI.infoNode.setScale(ATON._queryDataSem.d * SUI._labelScale);
+            const ls = ATON._queryDataSem.d * (ATON.Nav._currPOV.fov / SUI._labelScale);
+            SUI.infoNode.setScale(ls);
         }
         SUI.infoNode.orientToCamera();
 

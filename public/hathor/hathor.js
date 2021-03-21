@@ -67,6 +67,7 @@ window.addEventListener( 'load', ()=>{
     ATON.FE.loadSceneID(HATHOR.paramSID);
 
     //ATON._bPauseQuery = true;
+    //ATON.setTimedGazeDuration(2.0);
 });
 
 

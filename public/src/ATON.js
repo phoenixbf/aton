@@ -209,7 +209,6 @@ ATON._setupBaseListeners = ()=>{
         //ATON._evPointer = e.srcEvent;
         ATON._bPointerDown = false;
 
-        //if (ATON._elPanoVideo) ATON._elPanoVideo.play();
         ATON._onUserInteraction();
 
         ATON._updateScreenMove(e.srcEvent);
@@ -315,20 +314,33 @@ ATON.focusOn3DView = ()=>{
     ATON._renderer.domElement.focus();
 };
 
-// Default retarget from screen coordinates (eg.: on double tap)
-ATON.defaultDoubleTapFromScreenCoords = (e)=>{
-    ATON._updateScreenMove(e);
-    ATON._handleQueryScene();
-
+// Base/default routine on generic user activation
+// E.g. double-tap, VR controller trigger, etc.
+ATON._stdActivation = ()=>{
     if (!ATON.Nav._bControl) return;
 
+    // Handle SUI nodes
+    const U = ATON.getUINode(ATON._hoveredUI);
+    if (U && U.onSelect){
+        U.onSelect();
+        return;
+    }
+
+    // Handle active immersive AR/VR session
+    if (ATON.XR._bPresenting){
+        if (XR._sessionType === "immersive-vr") XR.teleportOnQueriedPoint();
+        ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
+        return;
+    }
+
+    // Non-immersive sessions
     let bFPtrans = ATON.Nav.isFirstPerson() || ATON.Nav.isDevOri();
 
     // When first-person mode, teleport (non immersive)
     if (bFPtrans){
         if (ATON.Nav.currentQueryValidForLocomotion()){
             let P = ATON._queryDataScene.p;
-            let N = ATON._queryDataScene.n;
+            //let N = ATON._queryDataScene.n;
 
             let currDir = ATON.Nav._vDir;
             let feye = new THREE.Vector3(P.x, P.y+ATON.userHeight, P.z);
@@ -357,6 +369,14 @@ ATON.defaultDoubleTapFromScreenCoords = (e)=>{
     }
 
     // TODO: go POV in sight if any (panorama only mode)
+};
+
+// Default retarget from screen coordinates (eg.: on double tap)
+ATON.defaultDoubleTapFromScreenCoords = (e)=>{
+    ATON._updateScreenMove(e);
+    ATON._handleQueryScene();
+
+    ATON._stdActivation();
 }
 
 // Fullscreen
@@ -398,12 +418,13 @@ ATON.realize = ()=>{
 
     ATON._bFS = false; // fullscreen
 
-    let wglopts = {
+    const wglopts = {
         //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,
+
         powerPreference: "high-performance",
-        //pecision: "lowp", //"mediump"
+        ///pecision: "lowp", //"mediump"
         //preserveDrawingBuffer: true
     };
 
@@ -526,6 +547,13 @@ ATON.realize = ()=>{
     ATON._bQuerySemOcclusion = true;
     ATON._bQueryNormals  = true;
     ATON._bPauseQuery    = false;
+    
+    ATON._bqScene = false;
+    ATON._bqSem   = false;
+
+    // Timed Gaze Input
+    ATON._tgiDur = undefined; // set to seconds (e.g. 2.0 to enable)
+    ATON._tHover  = undefined;
 
     //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
 
@@ -583,6 +611,10 @@ ATON.realize = ()=>{
         ATON._avgFPScount = 0;
     }, 2000);
 */
+};
+
+ATON.setTimedGazeDuration = (dt)=>{
+    ATON._tgiDur = dt;
 };
 
 /**
@@ -1051,7 +1083,7 @@ ATON.setMainPanorama = (path)=>{
     });
 
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
-    //ATON._mMainPano.frustumCulled = false;
+    ATON._mMainPano.frustumCulled = false;
     ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
 
     // FIXME: dirty, find another way
@@ -1291,10 +1323,8 @@ ATON.setGlobalAudio = (audioURL, bLoop)=>{
 ATON._onFrame = ()=>{
     // TODO: add pause render
 
-    let dt = ATON._clock.getDelta();
-
-    ATON._fps = 1.0 / dt;
-    ATON._dt  = dt;
+    ATON._dt  = ATON._clock.getDelta();
+    ATON._fps = (1.0 / ATON._dt);
 
     //ATON.fireEvent("preframe");
 
@@ -1306,26 +1336,26 @@ ATON._onFrame = ()=>{
     //ATON.Nav._controls.update(dt);
 
     // Render
-    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
 
 
     if (ATON.XR._bPresenting) ATON.XR.update();
-    else ATON.Nav._controls.update(dt);
+    else ATON.Nav._controls.update(ATON._dt);
 
     // Spatial queries
-    ATON._handleQueries();
+    ATON._handleQueries(); // k
 
     // Navigation system
-    ATON.Nav.update();
+    ATON.Nav.update(); // k
 
     // VRoadcast
     ATON.VRoadcast.update();
 
     // SUI
-    ATON.SUI.update();
+    ATON.SUI.update(); // k
 
     // Mat
-    ATON.MatHub.update();
+    ATON.MatHub.update(); // k
 
     // Environment/lighting
     ATON._updateEnvironment();
@@ -1335,6 +1365,9 @@ ATON._onFrame = ()=>{
 
     //ATON.fireEvent("frame");
     ATON._updateRoutines();
+
+    // Render
+    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
 };
 
 ATON.addUpdateRoutine = (U)=>{
@@ -1355,7 +1388,7 @@ ATON._updateRoutines = ()=>{
 
 ATON._updateAniMixers = ()=>{
     let num = ATON._aniMixers.length;
-    //if (num < 1) return;
+    if (num < 1) return;
 
     for (let m=0; m<num; m++){
         let M = ATON._aniMixers[m];
@@ -1402,11 +1435,25 @@ ATON._handleQueries = ()=>{
     //ATON._rcHandlers[ATON._rcRR]();
     //ATON._rcRR = (ATON._rcRR+1) % 3;
 
-    ATON._handleQueryScene();
-    ATON._handleQuerySemantics();
+    if (ATON._bqScene) ATON._handleQueryScene();
+    if (ATON._bqSem)   ATON._handleQuerySemantics();
+    
     ATON._handleQueryUI();
 
     ATON.Nav.locomotionValidator();
+
+    // Timed gaze input
+    if (ATON._tgiDur === undefined) return;
+    if (ATON._tHover === undefined) return;
+    //console.log(ATON._tHover);
+
+    const d = ATON._clock.elapsedTime - ATON._tHover;
+    if (d >= ATON._tgiDur){
+        ATON._stdActivation();
+
+        ATON._tHover = undefined;
+    }
+
 };
 
 // Ray casting visible scenegraph
@@ -1508,6 +1555,7 @@ ATON._handleQuerySemantics = ()=>{
         }
         
         ATON._hoveredSemNode = undefined;
+        ATON._tHover = undefined;
         return;
     }
 
@@ -1526,6 +1574,7 @@ ATON._handleQuerySemantics = ()=>{
             }
 
             ATON._hoveredSemNode = undefined;
+            ATON._tHover = undefined;
             return;
         }
     }
@@ -1537,26 +1586,30 @@ ATON._handleQuerySemantics = ()=>{
     ATON._queryDataSem.list = []; // holds sem-nodes parental list
 
     // traverse parents
-    let L = ATON._queryDataSem.list;
+    const L = ATON._queryDataSem.list;
     let sp = h.object.parent;
     while (sp){
         if (sp.nid && sp.nid !== ATON.ROOT_NID) L.push(sp.nid);
         sp = sp.parent;
     }
 
-    let hsn = L[0];
+    const hsn = L[0];
     if (hsn){
         if (ATON._hoveredSemNode !== hsn){
             if (ATON._hoveredSemNode){
                 ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
                 let S = ATON.getSemanticNode(ATON._hoveredSemNode);
                 if (S && S.onLeave) S.onLeave();
+                
+                ATON._tHover = undefined;
             }
 
             ATON._hoveredSemNode = hsn;
             ATON.fireEvent("SemanticNodeHover", hsn);
             let S = ATON.getSemanticNode(hsn);
             if (S && S.onHover) S.onHover();
+
+            ATON._tHover = ATON._clock.elapsedTime;
         }
     }
 
@@ -1574,21 +1627,22 @@ ATON._handleQueryUI = ()=>{
     ATON._rcUI.intersectObjects( ATON._mainRoot.children, true, ATON._hitsUI );
 
     // Process hits
-    let hitsnum = ATON._hitsUI.length;
+    const hitsnum = ATON._hitsUI.length;
     if (hitsnum <= 0){
         ATON._queryDataUI = undefined;
 
         if (ATON._hoveredUI){
             ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
-            let S = ATON.getUINode(ATON._hoveredUI);
+            const S = ATON.getUINode(ATON._hoveredUI);
             if (S && S.onLeave) S.onLeave();
         }
         
         ATON._hoveredUI = undefined;
+        ATON._tHover = undefined;
         return;
     }
 
-    let h = ATON._hitsUI[0];
+    const h = ATON._hitsUI[0];
 
     // Occlusion
     if (ATON._queryDataScene){
@@ -1597,12 +1651,13 @@ ATON._handleQueryUI = ()=>{
             ATON._queryDataUI = undefined;
 
             if (ATON._hoveredUI){
-                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredUI);
-                let S = ATON.getUINode(ATON._hoveredUI);
+                ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+                const S = ATON.getUINode(ATON._hoveredUI);
                 if (S && S.onLeave) S.onLeave();
             }
 
             ATON._hoveredUI = undefined;
+            ATON._tHover = undefined;
             return;
         }
     }
@@ -1614,26 +1669,30 @@ ATON._handleQueryUI = ()=>{
     ATON._queryDataUI.list = []; // holds ui-nodes parental list
 
     // traverse parents
-    let L = ATON._queryDataUI.list;
+    const L = ATON._queryDataUI.list;
     let sp = h.object.parent;
     while (sp){
         if (sp.nid && sp.nid !== ATON.ROOT_NID) L.push(sp.nid);
         sp = sp.parent;
     }
 
-    let hui = L[0];
+    const hui = L[0];
     if (hui){
         if (ATON._hoveredUI !== hui){
             if (ATON._hoveredUI){
                 ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
-                let S = ATON.getUINode(ATON._hoveredUI);
+                const S = ATON.getUINode(ATON._hoveredUI);
                 if (S && S.onLeave) S.onLeave();
+                
+                ATON._tHover = undefined;
             }
 
             ATON._hoveredUI = hui;
             ATON.fireEvent("UINodeHover", hui);
-            let S = ATON.getUINode(hui);
+            const S = ATON.getUINode(hui);
             if (S && S.onHover) S.onHover();
+
+            ATON._tHover = ATON._clock.elapsedTime;
         }
     }
 };

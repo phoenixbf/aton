@@ -68,7 +68,7 @@ XR.init = ()=>{
 
     // Base ev
     ATON.on("XRselectStart", (c)=>{
-        if (c === XR.HAND_R) XR.defaultSelectHandler(c);
+        if (c === XR.HAND_R) ATON._stdActivation(); //XR.defaultSelectHandler(c);
     });
     ATON.on("XRselectEnd", (c)=>{
         //ATON.Nav.stop();
@@ -114,8 +114,8 @@ XR.isPresenting = ()=>{
 XR.teleportOnQueriedPoint = ()=>{
     if (!ATON.Nav.currentQueryValidForLocomotion()) return false;
 
-    let P = ATON._queryDataScene.p;
-    let N = ATON._queryDataScene.n;
+    const P = ATON._queryDataScene.p;
+    //const N = ATON._queryDataScene.n;
 
     // FIXME: height offset needed for "local", fill this automatically
     ATON.Nav.requestPOV( new ATON.POV().setPosition(P.x, P.y + ATON.userHeight, P.z), XR.STD_TELEP_DURATION );
@@ -124,6 +124,7 @@ XR.teleportOnQueriedPoint = ()=>{
     return true;
 };
 
+/* Deprecated
 XR.defaultSelectHandler = (c)=>{
 
     if (XR._sessionType === "immersive-vr") XR.teleportOnQueriedPoint();
@@ -141,6 +142,7 @@ XR._handleUISelection = ()=>{
     
     return true;
 }
+*/
 
 // Helper routine to setup a ray-caster
 XR.setupQueryRay = (rc)=>{
@@ -173,7 +175,7 @@ XR._setupControllerR = (C, bAddRep)=>{
 
     // Main trigger
     C.addEventListener( 'selectstart', ()=>{
-        if (XR._handleUISelection()) return;
+        //if (XR._handleUISelection()) return;
 
         ATON.fireEvent("XRselectStart", XR.HAND_R);
     });
@@ -279,7 +281,7 @@ XR.onSessionStarted = ( session )=>{
                             //XR._setupControllerR(C, false);
                             
                             C.addEventListener('selectstart', ()=>{
-                                if (XR._handleUISelection()) return;
+                                //if (XR._handleUISelection()) return;
                                 ATON.fireEvent("XRselectStart", XR.HAND_R);
                                 
                                 console.log("Head-aligned select");
@@ -394,7 +396,7 @@ XR.toggle = ()=>{
                 //"local-floor",
                 ///"bounded-floor",
 
-                "hand-tracking",
+                //"hand-tracking",
 
                 //"high-refresh-rate",
                 //"high-fixed-foveation-level",

@@ -19,7 +19,8 @@ Utils.init = ()=>{
     // read-only object to inspect device capabilities
     ATON.device = {};
 
-    Utils.geomUnitSphere = new THREE.SphereBufferGeometry( 1.0, 16, 16 );
+    //Utils.geomUnitSphere = new THREE.SphereBufferGeometry( 1.0, 16, 16 );
+    Utils.geomUnitSphere = new THREE.SphereGeometry( 1.0, 16, 16 );
 
     // Export/Download utils
     Utils.exporterGLTF = undefined;
@@ -210,10 +211,12 @@ Utils.setPicking = (node, type, b)=>{
     });
 
     // children
+/*
     for (let c in node.children){
         let C = node.children[c];
         Utils.setPicking(C, type, b);
     }
+*/
 };
 
 Utils.graphPostVisitor = (N)=>{
@@ -223,12 +226,12 @@ Utils.graphPostVisitor = (N)=>{
         Utils.setPicking(N, N.type, false);
         return;
     }
-
+/*
     for (let c in N.children){
         let C = N.children[c];
         Utils.graphPostVisitor(C);
     }
-
+*/
     console.log(N);
 };
 

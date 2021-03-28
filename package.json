@@ -1,5 +1,5 @@
 {
-  "name": "aton.service.main",
+  "name": "aton",
   "version": "3.0.0",
   "description": "ATON Framework",
   "main": "ATON.service.main.js",
@@ -57,7 +57,7 @@
     "socket.io": "^3.1.1",
     "three": "0.126",
     "three-mesh-bvh": "0.3.7",
-    "three-mesh-ui": "4.4.9",
+    "three-mesh-ui": "4.5.1",
     "webdav": "^4.2.0",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

@@ -243,6 +243,7 @@ XR.onSessionStarted = ( session )=>{
     // Promised
 	ATON._renderer.xr.setSession( session ).then(()=>{
         XR.currSession = session;
+        console.log(XR.currSession);
 
         // Disable panorama on AR sessions
         if (XR._sessionType === "immersive-ar"){
@@ -442,7 +443,9 @@ XR.setupControllerUI = (h, bAddRep)=>{
         XR.gControllers.add( XR.controller0 );
 
         if (bAddRep){
-            XR._pointerLineGeom = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
+            //XR._pointerLineGeom = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
+            XR._pointerLineGeom = new THREE.CylinderGeometry( raytick,raytick, raylen, 4 );
+
             XR._pointerLineGeom.rotateX( -Math.PI / 2 );
             XR._pointerLineGeom.translate(0,0,-(raylen*0.5));
 

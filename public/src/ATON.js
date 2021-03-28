@@ -1066,30 +1066,35 @@ ATON.setMainPanorama = (path)=>{
     }
 
     // First time: create it
-    ATON._gMainPano = new THREE.SphereBufferGeometry( 1.0, 60,60 );
+    //ATON._gMainPano = new THREE.SphereBufferGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
+    ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
+    
     ATON._gMainPano.castShadow = false;
     ATON._gMainPano.receiveShadow = false;
 
     ATON._matMainPano = new THREE.MeshBasicMaterial({ 
         map: tpano,
-        //emissive: tpano,
-        fog: false,
+        ///emissive: tpano,
+        //fog: false,
         
-        //depthTest: false,
-        //depthWrite: false,
+        depthTest: false,
+        depthWrite: false,
         
         ///depthFunc: THREE.AlwaysDepth,
-        ///side: THREE.DoubleSide
+        side: THREE.BackSide, // THREE.DoubleSide
     });
 
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
     ATON._mMainPano.frustumCulled = false;
-    ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.9);
+    ATON._mMainPano.renderOrder = -100;
+    
+    //ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
+    ///ATON.setMainPanoramaRadius(100.0);
 
     // FIXME: dirty, find another way
     ATON._mMainPano.onAfterRender = ()=>{
         //if (ATON._numReqLoad > 0) return;
-        ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
+        if (ATON.Nav._currPOV) ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
     };
 
     ATON._rootVisibleGlobal.add(ATON._mMainPano);

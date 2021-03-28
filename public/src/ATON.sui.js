@@ -22,7 +22,9 @@ SUI.Label  = Label;
 //Initializes Spatial UI module
 SUI.init = ()=>{
     SUI.mainSelector = ATON.createUINode();
-    SUI.mainSelector.add( new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") ));
+    SUI._mSelectorSphere = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") );
+    SUI._mSelectorSphere.renderOrder = 100;
+    SUI.mainSelector.add( SUI._mSelectorSphere );
     SUI.mainSelector.disablePicking();
 
     SUI.setSelectorRadius(0.05);
@@ -30,8 +32,13 @@ SUI.init = ()=>{
     ATON._rootUI.add(SUI.mainSelector);
 
     SUI.fpTeleport = ATON.createUINode();
-    let gTeleport = new THREE.CylinderBufferGeometry(0.4,0.4, 0.3, 32,1, true);
-    SUI.fpTeleport.add( new THREE.Mesh( gTeleport, ATON.MatHub.getMaterial("teleportLoc") ));
+    
+    //let gTeleport = new THREE.CylinderBufferGeometry(0.4,0.4, 0.9, 32,1, true);
+    let gTeleport = new THREE.CylinderGeometry(0.4,0.4, 0.9, 32,1, true);
+
+    let mTeleport = new THREE.Mesh( gTeleport, ATON.MatHub.getMaterial("teleportLoc") );
+    mTeleport.renderOrder = 100;
+    SUI.fpTeleport.add( mTeleport );
     SUI.fpTeleport.disablePicking();
     SUI.fpTeleport.visible = false;
     ATON._rootUI.add(SUI.fpTeleport);
@@ -444,6 +451,7 @@ SUI.update = ()=>{
 
     // Pointer-line
     if (ATON.XR._pointerLineMesh){
+
         let d = 0.0;
         if (ATON._queryDataScene) d = ATON._queryDataScene.d;
         if (ATON._queryDataUI && (d <= 0.0 || ATON._queryDataUI.d<d)){
@@ -469,7 +477,9 @@ SUI.update = ()=>{
         if (ATON.XR._bPresenting){
             if (ATON.XR.controller0){
                 SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
-                SUI.infoNode.position.y += 0.1;
+                SUI.infoNode.position.x -= (ATON.XR.controller0dir.x * 0.1);
+                SUI.infoNode.position.y -= (ATON.XR.controller0dir.y * 0.1); // + 0.1;
+                SUI.infoNode.position.z -= (ATON.XR.controller0dir.z * 0.1);
                 SUI.infoNode.setScale(SUI._labelScaleVR);
             }
             else {

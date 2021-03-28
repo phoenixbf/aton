@@ -111,8 +111,9 @@ update(){
 
     let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
     CC.position.copy(this.pos);
+    //CC.layers.set(ATON.NTYPES.SCENE);
 
-    CC.update( ATON._renderer, ATON._rootVisibleGlobal );
+    CC.update( ATON._renderer, ATON._rootVisibleGlobal/*ATON._mainRoot*/ );
     this._envtex = CCtarget.texture;
 
     // new

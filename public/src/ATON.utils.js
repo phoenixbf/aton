@@ -235,6 +235,65 @@ Utils.graphPostVisitor = (N)=>{
     console.log(N);
 };
 
+Utils.loadTileSet = (tsurl, N)=>{
+
+    let ts = new TILES.TilesRenderer(tsurl);
+    if (!ts) return;
+
+    //ATON._assetReqNew(tsurl);
+
+    ts.setCamera( ATON.Nav._camera );
+    ts.setResolutionFromRenderer( ATON.Nav._camera, ATON._renderer );
+
+    //ts.errorTarget = ;
+
+    let bFirst = false;
+
+    ts.onLoadModel = ( scene )=>{
+        Utils.modelVisitor( N, scene );
+/*
+        if (!bFirst){
+            //ATON._assetReqComplete(tsurl);
+            ATON._onAllReqsCompleted();
+            bFirst = true;
+        }
+
+        scene.traverse( c => {
+            if (c.isMesh){
+                c.castShadow    = true; //N.castShadow;
+                c.receiveShadow = true; //N.receiveShadow;
+            }
+
+            if ( c.material ) {
+                //c.originalMaterial = c.material;
+                //c.material = wireMat;
+                if (N.userData.cMat) c.material = N.userData.cMat;
+
+                if (c.material.map){
+                    c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
+                    c.material.map.magFilter = THREE.LinearFilter;
+                }
+            }
+        });
+*/
+
+    };
+
+    ts.onDisposeModel = (scene)=>{
+        scene.traverse( c => {
+            if ( c.isMesh ) {
+                c.material.dispose();
+            }
+        });
+    };
+
+    N.add(ts.group);
+
+    //console.log(ts);
+
+    ATON._tsets.push(ts);
+};
+
 // Helper visitor routine
 // Note: parentNode is not connected to model
 Utils.modelVisitor = (parentNode, model)=>{

@@ -92,6 +92,7 @@ HATHOR.setSelectionMode = (m)=>{
     }
 
     HATHOR._selMode = m;
+    console.log(m);
 
     if (m === HATHOR.SELACTION_ADDSPHERESHAPE){
         $("#btn-shape-sphere").addClass("atonBTN-rec");
@@ -246,20 +247,21 @@ HATHOR.suiSetup = ()=>{
 
     let btnMeasure = ATON.getUINode("sui_measure");
     btnMeasure.setIcon(ATON.FE.PATH_RES_ICONS+"measure.png")
-        .setText("")
+        //.setSwitchColor(ATON.MatHub.colors.green)
         .onSelect = ()=>{
             if (HATHOR._selMode !== HATHOR.SELACTION_MEASURE){
                 HATHOR.setSelectionMode(HATHOR.SELACTION_MEASURE);
+                btnMeasure.switch(true);
             }
             else {
                 HATHOR.resetSelectionMode();
+                btnMeasure.switch(false);
             }
         };
 
     let btnTalk = ATON.getUINode("sui_talk");
     btnTalk.setIcon(ATON.FE.PATH_RES_ICONS+"talk.png")
-        .setText("")
-        .setSwitchColor(ATON.MatHub.colors.green)
+        //.setSwitchColor(ATON.MatHub.colors.orange)
         .onSelect = ()=>{
             if (ATON.MediaRec.isAudioRecording()){
                 ATON.MediaRec.stopMediaStreaming();
@@ -272,7 +274,6 @@ HATHOR.suiSetup = ()=>{
         };
 
     ATON.getUINode("sui_exitxr")
-        .setText("exit")
         .setBaseColor(ATON.MatHub.colors.red)
         .setIcon(ATON.FE.PATH_RES_ICONS+"vr.png")
         .onSelect = ()=>{
@@ -353,18 +354,28 @@ HATHOR.setupEventHandlers = ()=>{
 
     // XR
     ATON.on("XRmode",(b)=>{
-        HATHOR._selMode === HATHOR.SELACTION_STD; // reset select mode
+        HATHOR.resetSelectionMode();
     });
 
-    ATON.EventHub.clearEventHandlers("XRselectStart");
+    //ATON.EventHub.clearEventHandlers("XRselectStart");
     ATON.on("XRselectStart", (c)=>{
         if (c === ATON.XR.HAND_R){
+/*
             if (HATHOR._selMode === HATHOR.SELACTION_STD){
-                if (ATON.XR._sessionType === "immersive-vr") ATON.XR.teleportOnQueriedPoint();
+                ATON._stdActivation(); //ATON.XR.teleportOnQueriedPoint();
             }
-            if (HATHOR._selMode === HATHOR.SELACTION_MEASURE) HATHOR.measure();
+            if (HATHOR._selMode === HATHOR.SELACTION_MEASURE){
+                if (ATON._SUIactivation()) return;
+                
+                console.log("measurement!");
+                HATHOR.measure();
+            }
+*/
+            //ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
 
-            ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
+            if (HATHOR._selMode === HATHOR.SELACTION_MEASURE){
+                HATHOR.measure();
+            }
         }
     });
 
@@ -654,7 +665,7 @@ HATHOR.setupEventHandlers = ()=>{
     });
 
     //ATON.on("frame", HATHOR._update);
-    setInterval(HATHOR._update, 100);
+    //setInterval(HATHOR._update, 100);
 };
 
 // TODO: Main HATHOR update routine

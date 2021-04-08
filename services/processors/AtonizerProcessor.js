@@ -90,16 +90,21 @@ glob(atonizerOPTS.infolder + atonizerOPTS.pattern, undefined, (er, files)=>{
 
         console.log("Processing file "+filepath);
 
-        // for some reasons, generates wrong mipmappig
-        obj2gltf(filepath, OPT_CONVERT).then(function(gltf){
-            let outfilepath = buildFname(outfolder, fBasename);
+        if (atonizerOPTS.pattern === "*.glb" || atonizerOPTS.pattern === "*.gltf"){
+            processModel(outfolder, fBasename);
+        }
+        else {
+            // for some reasons, generates wrong mipmappig
+            obj2gltf(filepath, OPT_CONVERT).then(function(gltf){
+                let outfilepath = buildFname(outfolder, fBasename);
 
-            const data = Buffer.from(JSON.stringify(gltf));
-            fs.writeFileSync(outfilepath, data);
-            console.log("Model "+outfilepath+" written.");
+                const data = Buffer.from(JSON.stringify(gltf));
+                fs.writeFileSync(outfilepath, data);
+                console.log("Model "+outfilepath+" written.");
 
-            if (atonizerOPTS.compression > 0) processModel(outfolder, fBasename);
-        });
+                if (atonizerOPTS.compression > 0) processModel(outfolder, fBasename);
+            });
+        }
     }
 });
 

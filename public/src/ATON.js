@@ -316,15 +316,24 @@ ATON.focusOn3DView = ()=>{
 
 // Base/default routine on generic user activation
 // E.g. double-tap, VR controller trigger, etc.
+ATON._SUIactivation = ()=>{
+    const U = ATON.getUINode(ATON._hoveredUI);
+    
+    if (U === undefined) return false;
+    if (U.onSelect === undefined) return false;
+
+    U.onSelect();
+    return true;
+};
+
+
 ATON._stdActivation = ()=>{
-    if (!ATON.Nav._bControl) return;
+    //if (!ATON.Nav._bControl) return;
 
     // Handle SUI nodes
-    const U = ATON.getUINode(ATON._hoveredUI);
-    if (U && U.onSelect){
-        U.onSelect();
-        return;
-    }
+    if (ATON._SUIactivation()) return;
+
+    if (!ATON.Nav._bControl) return;
 
     // Handle active immersive AR/VR session
     if (ATON.XR._bPresenting){
@@ -438,9 +447,12 @@ ATON.realize = ()=>{
 
     ATON._fps = 60.0;
     ATON._dt  = 0.01;
-    ATON._avgFPScount = 0;
-    ATON._avgFPSaccum = 0;
-    ATON._avgFPS = 60;
+    ATON._dtAccum     = 0.0;
+    ATON._avgFPScount = 0.0;
+    ATON._avgFPSaccum = 0.0;
+    ATON._avgFPS = 60.0;
+
+    ATON._bDynamicDensity = false;
 
     ATON._aniMixers = [];
     
@@ -508,6 +520,9 @@ ATON.realize = ()=>{
 
     ATON.initGraphs();
     ATON.SceneHub.init();
+
+    // TileSets (3D Tiles)
+    ATON._tsets = [];
 
     // Init audio hub
     ATON.AudioHub.init();
@@ -588,29 +603,6 @@ ATON.realize = ()=>{
     ATON._wappID = undefined;
 
     ATON.focusOn3DView();
-
-/*  dynamic px density
-    window.setInterval(() => {
-        if (ATON._avgFPScount <= 0) return;
-
-        ATON._avgFPS = ATON._avgFPSaccum / ATON._avgFPScount;
-        console.log(ATON._avgFPS);
-
-        let d = ATON._renderer.getPixelRatio();
-
-        if (ATON._avgFPS < 30.0){
-            d *= 0.75;
-            ATON._renderer.setPixelRatio( d );
-        } 
-        if (ATON._avgFPS > 50.0){
-            d *= 1.33;
-            if (d <= ATON._stdpxd) ATON._renderer.setPixelRatio( d );
-        } 
-
-        ATON._avgFPSaccum = 0.0;
-        ATON._avgFPScount = 0;
-    }, 2000);
-*/
 };
 
 ATON.setTimedGazeDuration = (dt)=>{
@@ -1066,8 +1058,8 @@ ATON.setMainPanorama = (path)=>{
     }
 
     // First time: create it
-    //ATON._gMainPano = new THREE.SphereBufferGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
-    ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
+    ATON._gMainPano = new THREE.SphereBufferGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
+    //ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
     
     ATON._gMainPano.castShadow = false;
     ATON._gMainPano.receiveShadow = false;
@@ -1081,14 +1073,14 @@ ATON.setMainPanorama = (path)=>{
         depthWrite: false,
         
         ///depthFunc: THREE.AlwaysDepth,
-        side: THREE.BackSide, // THREE.DoubleSide
+        //side: THREE.BackSide, // THREE.DoubleSide
     });
 
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
     ATON._mMainPano.frustumCulled = false;
     ATON._mMainPano.renderOrder = -100;
     
-    //ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
+    ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
     ///ATON.setMainPanoramaRadius(100.0);
 
     // FIXME: dirty, find another way
@@ -1322,23 +1314,57 @@ ATON.setGlobalAudio = (audioURL, bLoop)=>{
     });
 };
 
+// FPS monitoring
+ATON._markFPS = ()=>{
+    if (ATON._numReqLoad > 0) return;
+
+    const fps = (1.0 / ATON._dt);
+
+    ATON._avgFPScount += 1.0;
+    ATON._dtAccum += ATON._dt;
+    ATON._avgFPSaccum += fps;
+
+    if (ATON._dtAccum < 1.0) return;
+
+    ATON._fps = ATON._avgFPSaccum / ATON._avgFPScount;
+    //console.log(ATON._fps);
+
+    ATON._avgFPSaccum = 0.0;
+    ATON._avgFPScount = 0.0;
+    ATON._dtAccum = 0.0;
+
+    // Dynamic density
+    if (!ATON._bDynamicDensity) return;
+    let d = ATON._renderer.getPixelRatio();
+
+    if (ATON._fps < 30.0){
+        d *= 0.75;
+        if (d >= 0.1){
+            ATON._renderer.setPixelRatio( d );
+            console.log(d);
+        }
+    } 
+    if (ATON._fps > 50.0){
+        d *= 1.33;
+        if (d <= ATON._stdpxd){
+            ATON._renderer.setPixelRatio( d );
+            console.log(d);
+        }
+    }
+};
+
 //==============================================================
 // Update routines
 //==============================================================
 ATON._onFrame = ()=>{
     // TODO: add pause render
 
-    ATON._dt  = ATON._clock.getDelta();
-    ATON._fps = (1.0 / ATON._dt);
+    ATON._dt = ATON._clock.getDelta();
+    //ATON._fps = (1.0 / ATON._dt);
+    
+    ATON._markFPS();
 
     //ATON.fireEvent("preframe");
-
-    // avg fps
-    //ATON._avgFPScount++;
-    //ATON._avgFPSaccum += ATON._fps;
-    
-    ///ATON.Nav._bControlChange = false;
-    //ATON.Nav._controls.update(dt);
 
     // Render
     //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
@@ -1371,6 +1397,9 @@ ATON._onFrame = ()=>{
     //ATON.fireEvent("frame");
     ATON._updateRoutines();
 
+    // TileSets
+    ATON._updateTSets();
+
     // Render
     ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
 };
@@ -1390,6 +1419,20 @@ ATON._updateRoutines = ()=>{
 
     for (let u=0; u<n; u++) ATON._updRoutines[u]();
 };
+
+//================================================
+ATON._updateTSets = ()=>{
+    const nts = ATON._tsets.length;
+    if (nts <= 0) return;
+
+    ATON.Nav._camera.updateMatrixWorld();
+
+    for (let ts=0; ts<nts; ts++){
+        const TS = ATON._tsets[ts];   
+        TS.update();
+    }
+};
+
 
 ATON._updateAniMixers = ()=>{
     let num = ATON._aniMixers.length;
@@ -1440,10 +1483,12 @@ ATON._handleQueries = ()=>{
     //ATON._rcHandlers[ATON._rcRR]();
     //ATON._rcRR = (ATON._rcRR+1) % 3;
 
+    ATON._handleQueryUI();
+
     if (ATON._bqScene) ATON._handleQueryScene();
     if (ATON._bqSem)   ATON._handleQuerySemantics();
     
-    ATON._handleQueryUI();
+    //ATON._handleQueryUI();
 
     ATON.Nav.locomotionValidator();
 

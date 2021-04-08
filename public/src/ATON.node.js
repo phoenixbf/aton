@@ -590,6 +590,11 @@ load(url, onComplete){
 
     let N = this;
 
+    if (url.endsWith("tileset.json")){
+        ATON.Utils.loadTileSet(url, N);
+        return N;
+    }
+
     // [C] Promise already requested
     if ( N._bCloneOnLoadHit && ATON._assetsManager[url] !== undefined ){
         ATON._assetsManager[url].then(( o ) =>{

@@ -68,6 +68,10 @@ Core.CONF_MAIN = {
 			maxClientsPerScene: 50		// Max clients per scene
 		},
 
+		webdav: {
+			PORT: 8081
+		},
+
 		atonizer: {
 			PORT: 8085,
 			address: "http://localhost"

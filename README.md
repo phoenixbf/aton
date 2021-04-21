@@ -2,20 +2,21 @@
 
 ![Header](./public/res/aton-header.jpg)
 
-ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for the final user. ATON offers:
+ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for final users. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
 * Real-time collaborative multi-user features (*VRoadcast* module)
-* Immersive VR (WebXR) for 3DOF and 6DOF devices
+* Immersive VR (WebXR) for 3-DOF and 6-DOF devices
 * Multi-touch interfaces
 * Spatial UI (3D labels, buttons, etc...) targeting immersive XR sessions
 * Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*
 * 3D semantic annotations including free-form volumetric shapes
 * Fast, real-time 3D queries on visible graph, semantic graph and UI nodes
-* Built-in Front-End with WYSIWYG rich annotation editor (HTML5)
+* Built-in Front-End ("Hathor") with WYSIWYG rich HTML5 annotation editor
 * Built-in profiler (adapt presentation to different devices)
+* Built-in service to access 3D collections and scenes
 * Event-driven API for fully customizable events (local and synchronous collaborative contexts)
 * 360 panoramas and virtual tours
-* Advanced multi-texturing, PBR (physically-based rendering) for advanced materials and custom shaders
+* Physically-Based Rendering (PBR) for advanced materials and custom shaders for complex representations
 * Advanced lighting, including IBL and Light Probes
 * Camera/POV transitions, viewpoint handling and custom navigation constraints
 * Complex scene-graph manipulation, hierarchical culling, instancing, composition and cascading transformations

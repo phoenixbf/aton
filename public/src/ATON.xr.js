@@ -349,6 +349,8 @@ XR.onSessionStarted = ( session )=>{
         // reparent current camera to the XR rig
         XR.rig.add( ATON.Nav._camera );
 
+        ATON.Utils.updateTSetsCamera();
+
         XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
         console.log(ATON.Nav._currPOV.pos);
 

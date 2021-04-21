@@ -32,16 +32,18 @@ let renderForm = ()=>{
     $.getJSON( ATON.PATH_RESTAPI+"users/", (data)=>{
 
         htmlcontent += "<div class='atonBlockRound'>";
-        htmlcontent += "username:<input id='idNewUsername' type='text' maxlength='15' size='15' ><br>";
-        htmlcontent += "password:<input id='idNewPassword' type='password' maxlength='15' size='15' ><br>";
-        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>Add User</div>";
+        htmlcontent += "<div style='white-space:nowrap; display:inline'>username:<input id='idNewUsername' type='text' maxlength='15' size='15' ></div>";
+        htmlcontent += "<div style='white-space:nowrap; display:inline'>password:<input id='idNewPassword' type='password' maxlength='15' size='15' ></div><br>";
+        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='"+ATON.PATH_RES+"icons/user.png'>Add User</div>";
         htmlcontent += "<br><div id='idResponse'></div>";
         htmlcontent += "</div><br><br>";
 
         for (let u in data){
             let username = data[u];
 
-            htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+ATON.PATH_RES+"icons/user.png'>"+username+"</div><br>";
+            htmlcontent += "<div class='atonBTN' style='display:block'>"+username+"</div>";
+
+            //htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+ATON.PATH_RES+"icons/user.png'>"+username+"</div><br>";
         }
 
 

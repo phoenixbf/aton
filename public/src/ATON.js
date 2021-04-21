@@ -1426,6 +1426,8 @@ ATON._updateTSets = ()=>{
     if (nts <= 0) return;
 
     ATON.Nav._camera.updateMatrixWorld();
+    //if (Nav._camOrbit) Nav._camOrbit.updateMatrixWorld();
+    //if (Nav._camFP) Nav._camFP.updateMatrixWorld();
 
     for (let ts=0; ts<nts; ts++){
         const TS = ATON._tsets[ts];   

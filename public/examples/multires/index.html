@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // This is our sample tileset url (from NASA "Dingo Gap Mars dataset": https://github.com/NASA-AMMOS/3DTilesSampleData)
+    const TS_URL = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize_tileset.json";
+    //const TS_URL = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256/0528_0260184_to_s64o256/0528_0260184_to_s64o256_tileset.json";
+
+    // Apply scale to the multi-res tileset
+    const tsScale = 1.0;
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    ATON.createSceneNode("ts")
+        .setRotation(1.57079632679,0.0,0.0) // Y-up
+        .setScale(tsScale)
+        .load(TS_URL)
+        .attachToRoot();
+
+/*
+    let wireMat = new THREE.MeshBasicMaterial( { color: "#000", transparent: true, opacity: 0.2, depthWrite: false, wireframe: true } );
+    ATON.getSceneNode("ts").setMaterial(wireMat);
+*/
+
+/*
+    ATON.createSceneNode("venus")
+        .load("samples/models/venus/venus.gltf")
+        .setScale(0.3)
+        .setPosition(0,-0.5,0)
+		.rotateY(Math.PI * 0.5)
+        .attachToRoot();
+*/
+    //ATON.Nav.setHomePOV( new ATON.POV().setPosition(26,40,20).setTarget(24, 0.03, 8.66) );
+    
+    ATON.Nav.setHomePOV( new ATON.POV().setPosition(10*tsScale,10*tsScale,10*tsScale).setTarget(0, 0, 0) );
+    //ATON.Nav.setHomePOV( new ATON.POV().setPosition(0,10*tsScale,0).setTarget(10*tsScale, 10*tsScale, 0) );
+    
+    ATON.Nav.requestHome();
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

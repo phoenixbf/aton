@@ -592,6 +592,8 @@ load(url, onComplete){
 
     if (url.endsWith("tileset.json")){
         ATON.Utils.loadTileSet(url, N);
+        ATON._bqScene = true;
+        if (onComplete) onComplete();
         return N;
     }
 

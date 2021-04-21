@@ -279,6 +279,9 @@ Nav.setOrbitControl = ()=>{
 
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
+
+    // Update TSets camera
+    ATON.Utils.updateTSetsCamera();
     
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -333,6 +336,9 @@ Nav.setFirstPersonControl = ()=>{
 
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
+    
+    // Update TSets camera
+    ATON.Utils.updateTSetsCamera();
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -382,6 +388,9 @@ Nav.setDeviceOrientationControl = ()=>{
 
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
+
+    // Update TSets camera
+    ATON.Utils.updateTSetsCamera();
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();

@@ -235,12 +235,28 @@ Utils.graphPostVisitor = (N)=>{
     console.log(N);
 };
 
+// TileSets utils
+Utils.updateTSetsCamera = (cam)=>{
+    if (cam === undefined) cam = ATON.Nav._camera;
+
+    const nts = ATON._tsets.length;
+    if (nts <= 0) return;
+
+    for (let ts=0; ts<nts; ts++){
+        const TS = ATON._tsets[ts];   
+        TS.setCamera( cam );
+        TS.setResolutionFromRenderer( cam, ATON._renderer );
+    }
+};
+
 Utils.loadTileSet = (tsurl, N)=>{
 
     let ts = new TILES.TilesRenderer(tsurl);
     if (!ts) return;
 
     //ATON._assetReqNew(tsurl);
+
+    ts.fetchOptions.mode = 'cors';
 
     ts.setCamera( ATON.Nav._camera );
     ts.setResolutionFromRenderer( ATON.Nav._camera, ATON._renderer );
@@ -249,9 +265,12 @@ Utils.loadTileSet = (tsurl, N)=>{
 
     let bFirst = false;
 
+    //ATON._assetReqComplete(tsurl);
+
     ts.onLoadModel = ( scene )=>{
-        Utils.modelVisitor( N, scene );
-/*
+        //Utils.modelVisitor( N, scene );
+        //ATON._onAllReqsCompleted();
+
         if (!bFirst){
             //ATON._assetReqComplete(tsurl);
             ATON._onAllReqsCompleted();
@@ -259,6 +278,8 @@ Utils.loadTileSet = (tsurl, N)=>{
         }
 
         scene.traverse( c => {
+            //c.layers.enable(N.type);
+
             if (c.isMesh){
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
@@ -275,7 +296,6 @@ Utils.loadTileSet = (tsurl, N)=>{
                 }
             }
         });
-*/
 
     };
 
@@ -288,6 +308,8 @@ Utils.loadTileSet = (tsurl, N)=>{
     };
 
     N.add(ts.group);
+
+    Utils.setPicking(N, N.type, true);
 
     //console.log(ts);
 

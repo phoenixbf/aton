@@ -19,7 +19,7 @@
     "url": "https://github.com/phoenixbf/aton.git"
   },
   "dependencies": {
-    "3d-tiles-renderer": "^0.2.9",
+    "3d-tiles-renderer": "^0.2.10",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",
@@ -59,7 +59,6 @@
     "three": "0.126",
     "three-mesh-bvh": "0.3.7",
     "three-mesh-ui": "4.5.1",
-    "webdav": "^4.2.0",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

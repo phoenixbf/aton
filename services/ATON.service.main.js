@@ -32,7 +32,7 @@ const PORT_SECURE     = Core.config.services.main.PORT_S || 8083;
 //const PORT_ATONIZER   = Core.config.services.atonizer.PORT || 8085;
 const PORT_VRC        = Core.config.services.vroadcast.PORT || 8890;
 
-let PORT_WEBDAV = 8891;
+let PORT_WEBDAV = 8081;
 if (Core.config.services.webdav && Core.config.services.webdav.PORT) PORT_WEBDAV = Core.config.services.webdav.PORT;
 
 const pathCert = Core.getCertPath();
@@ -128,13 +128,12 @@ app.use('/svrc', createProxyMiddleware({
 
 // WebDav
 /*
-app.use('/webdav', createProxyMiddleware({ 
+app.use('/dav', createProxyMiddleware({ 
 	//target: Core.config.services.webdav.address+":"+PORT_WEBDAV, 
 	target: "http://localhost:"+PORT_WEBDAV,
-	pathRewrite: { '^/webdav': ''},
-	changeOrigin: true,
-	auth: "user:password"
-	//router: { "/webdav" : "http://localhost:"+PORT_WEBDAV }
+	pathRewrite: { '^/dav': ''},
+	changeOrigin: true
+	//router: { "/dav" : "http://localhost:"+PORT_WEBDAV }
 }));
 */
 

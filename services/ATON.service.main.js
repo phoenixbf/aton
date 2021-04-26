@@ -39,7 +39,7 @@ const pathCert = Core.getCertPath();
 const pathKey  = Core.getKeyPath();
 
 let bExamples = Core.config.services.main.examples;
-let bAPIdoc   = Core.config.services.main.apidoc;
+//let bAPIdoc   = Core.config.services.main.apidoc;
 
 // Debug on req received (client)
 let logger = function(req, res, next){
@@ -90,7 +90,7 @@ app.use('/fe', express.static(Core.DIR_FE));
 app.use('/a', express.static(Core.DIR_WAPPS));
 
 // API documentation
-if (bAPIdoc) app.use('/apidoc', express.static(Core.DIR_APIDOC));
+//if (bAPIdoc) app.use('/apidoc', express.static(Core.DIR_APIDOC));
 
 
 Core.setupPassport();

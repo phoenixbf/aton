@@ -12,7 +12,7 @@ Shu back-end (official ATON back-end)
 */
 let SHU = {};
 
-SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/";
+SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/aton/";
 SHU.urlATONgit     = "https://github.com/phoenixbf/aton";
 
 SHU.getBaseFolder = ( filepath )=>{

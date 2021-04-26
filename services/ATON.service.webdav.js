@@ -30,13 +30,16 @@ let privilegeManager = new webdav.SimplePathPrivilegeManager();
 
 for (let u in Core.users){
     let dbuser = Core.users[u];
-    let uname  = dbuser.username;
     if (dbuser){
-        let user = userManager.addUser(uname, dbuser.password, false);
+        let uname  = dbuser.username;
+        let bAdmin = dbuser.admin;
+
+        let user = userManager.addUser(uname, dbuser.password, bAdmin);
         //privilegeManager.setRights(user, '/collection', ['canReadProperties']);
         //privilegeManager.setRights(user, '/scenes', ['canReadProperties']);
 
         //privilegeManager.setRights(user, "/", [ 'canRead' ]);
+        //privilegeManager.setRights(user, "/"+uname+"/", [ 'canRead' ]);
 /*
         privilegeManager.setRights(user, "/"+uname+"/", [ 'canRead' ]);
         privilegeManager.setRights(user, "/"+uname+"/collection/", [ 'all' ]);
@@ -44,6 +47,10 @@ for (let u in Core.users){
 */      
         privilegeManager.setRights(user, "/"+uname+"-collection/", [ 'all' ]);
         privilegeManager.setRights(user, "/"+uname+"-scenes/", [ 'all' ]);
+
+        if (bAdmin){
+            privilegeManager.setRights(user, "/apps/", [ 'all' ]);
+        }
         
         //privilegeManager.setRights(user, '/', [ 'all' ]);
         console.log(user);
@@ -54,12 +61,12 @@ console.log(privilegeManager);
 
 // Start service
 const server = new webdav.WebDAVServer({
-    httpAuthentication: new webdav.HTTPDigestAuthentication(userManager, 'Seth'),
+    httpAuthentication: new webdav.HTTPDigestAuthentication(userManager, 'ATON'),
     privilegeManager: privilegeManager,
     port: PORT_WEBDAV
 });
 
-
+// link physical fs
 for (let u in Core.users){
     let dbuser = Core.users[u];
     let uname = dbuser.username;
@@ -74,6 +81,10 @@ for (let u in Core.users){
         server.setFileSystemSync("/"+uname+"-scenes", new webdav.PhysicalFileSystem(upathScenes));
     }
 }
+
+// Access to web-apps
+server.setFileSystemSync("/apps", new webdav.PhysicalFileSystem(Core.DIR_WAPPS));
+
 
 //server.setFileSystemSync('/collection', new webdav.PhysicalFileSystem(Core.DIR_COLLECTION));
 //server.setFileSystemSync('/scenes', new webdav.PhysicalFileSystem(Core.DIR_SCENES));

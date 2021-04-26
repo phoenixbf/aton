@@ -1,7 +1,7 @@
 module.exports = {
 
   apps: [
-    // Content service
+    // Main service
     {
       name         : 'ATON Main Service',
       script       : 'services/ATON.service.main.js',

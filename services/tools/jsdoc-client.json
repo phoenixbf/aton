@@ -23,7 +23,7 @@
     },
 
     "opts": {
-        "destination": "./API/client/",
+        "destination": "./public/apidoc/client/",
         "template": "node_modules/foodoc/template"
     }
 }

@@ -357,7 +357,7 @@ Utils.modelVisitor = (parentNode, model)=>{
                     o.geometry.computeBoundsTree();
                     console.log("Computed visible BVH");
 
-                    // visualize bounds
+                    // visualize BVH bounds
 /*
                     let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
                     BVHVis.update();

@@ -73,6 +73,9 @@ typings/
 # Custom ATON configurations
 /config
 
+# API doc
+/public/apidoc
+
 _prv
 *.psd
 

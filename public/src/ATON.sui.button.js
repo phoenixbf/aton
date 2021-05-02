@@ -22,6 +22,9 @@ constructor(uiid, ratio=1.0, fsize=1.0){
     this.baseColor   = ATON.MatHub.colors.black;
     this.switchColor = ATON.MatHub.colors.green;
 
+    this.baseOpacity  = 0.5;
+    this.hoverOpacity = 0.8;
+
     this._bSwitched = false;
 
     this.container = new ThreeMeshUI.Block({
@@ -30,7 +33,7 @@ constructor(uiid, ratio=1.0, fsize=1.0){
         padding: 0.01,
         borderRadius: 0.02,
         backgroundColor: this.baseColor,
-        backgroundOpacity: 0.5,
+        backgroundOpacity: this.baseOpacity,
 
         fontFamily: ATON.SUI.PATH_FONT_JSON,
         fontTexture: ATON.SUI.PATH_FONT_TEX,
@@ -61,12 +64,12 @@ constructor(uiid, ratio=1.0, fsize=1.0){
 
     this.onHover = ()=>{
         this.container.set({ 
-            backgroundOpacity: 0.8
+            backgroundOpacity: this.hoverOpacity
         });
     };
     this.onLeave = ()=>{
         this.container.set({ 
-            backgroundOpacity: 0.5 
+            backgroundOpacity: this.baseOpacity 
         });
     };
 
@@ -95,6 +98,7 @@ setSwitchColor(c){
 
 setBackgroundOpacity(f){
     this.container.set({ backgroundOpacity: f });
+    this.baseOpacity = f;
     return this;
 }
 
@@ -123,7 +127,7 @@ switch(b){
 Set button icon
 @param {string} url - the url to the icon (tipically a PNG file)
 */
-setIcon(url){
+setIcon(url, bNoBackground){
     ATON.Utils.textureLoader.load(url, (texture) => {
 
         this._trigger.material = new THREE.MeshStandardMaterial({
@@ -131,6 +135,12 @@ setIcon(url){
             transparent: true,
             depthWrite: false
         });
+
+        if (bNoBackground){
+            this.setBackgroundOpacity(0.0);
+            this.hoverOpacity = 0.0;
+        }
+
 /*
         this.container.set({ 
             backgroundTexture: texture,

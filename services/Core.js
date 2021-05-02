@@ -95,6 +95,47 @@ Core.CONF_USERS = [
 ];
 
 
+// Cached lists (TODO:)
+//=============================
+Core.SCENES_GLOB_OPTS = {
+	cwd: Core.DIR_SCENES,
+	follow: true
+};
+
+Core.scenesList = [];
+
+Core.rebuildScenesList = ()=>{	
+	let files = glob.sync("**/"+Core.STD_SCENEFILE, gopts);
+
+	Core.listScenes = [];
+	for (let f in files){
+		let basepath  = path.dirname(files[f]);
+		let pubfile   = Core.DIR_SCENES + basepath+"/" + Core.STD_PUBFILE;
+		let coverfile = Core.DIR_SCENES + basepath+"/" + Core.STD_COVERFILE;
+
+		if (fs.existsSync(pubfile)){
+			let O = {};
+			O.sid = basepath;
+			O.cover = fs.existsSync(coverfile)? true : false;
+
+			let sobj = Core.readSceneJSON(O.sid);
+
+			if (sobj.title) O.title = sobj.title;
+
+			Core.listScenes.push(O);
+		}
+	}
+};
+
+// FS watch
+/*
+fs.watch(Core.DIR_SCENES, (eventType, filename) => {
+	console.log("\nThe file " + filename + " was modified! ("+eventType+")");
+
+});
+*/
+//==========
+
 
 // Main init routine
 Core.init = ()=>{
@@ -600,11 +641,11 @@ Core.realizeBaseAPI = (app)=>{
 
 	// List all public scenes
 	app.get("/api/scenes/", function(req,res,next){
-		let O = {};
-		O.cwd = Core.DIR_SCENES;
-		O.follow = true;
+		//let O = {};
+		//O.cwd = Core.DIR_SCENES;
+		//O.follow = true;
 		
-		let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
+		let files = glob.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
 
 		let S = [];
 		for (let f in files){

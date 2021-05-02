@@ -5,6 +5,7 @@
     including:
     - THREE mesh BVH (https://www.npmjs.com/package/three-mesh-bvh)
     - THREE mesh UI (https://www.npmjs.com/package/three-mesh-ui)
+    - 3D Tiles Renderer (https://github.com/NASA-AMMOS/3DTilesRendererJS)
 ==================================================================================*/
 
 import * as THREE from "three";

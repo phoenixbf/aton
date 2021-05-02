@@ -568,6 +568,7 @@ ATON.realize = ()=>{
 
     // Timed Gaze Input
     ATON._tgiDur = undefined; // set to seconds (e.g. 2.0 to enable)
+    ATON._tgiPer = undefined; // tgi percentage
     ATON._tHover  = undefined;
 
     //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
@@ -605,8 +606,29 @@ ATON.realize = ()=>{
     ATON.focusOn3DView();
 };
 
+/**
+Set timed-gaze duration
+@param {number} dt - time to trigger activation
+*/
 ATON.setTimedGazeDuration = (dt)=>{
     ATON._tgiDur = dt;
+};
+
+/**
+Get timed-gaze current progress (percentage)
+@returns {number}
+*/
+ATON.getTimedGazeProgress = ()=>{
+    if (ATON._tgiDur === undefined) return undefined;
+    return ATON._tgiPer;
+};
+
+/**
+Get current elapsed time since ATON initialization
+@returns {number}
+*/
+ATON.getElapsedTime = ()=>{
+    return ATON._clock.elapsedTime;
 };
 
 /**
@@ -1504,7 +1526,9 @@ ATON._handleQueries = ()=>{
         ATON._stdActivation();
 
         ATON._tHover = undefined;
+        ATON._tgiPer = undefined;
     }
+    else ATON._tgiPer = (d/ATON._tgiDur);
 
 };
 

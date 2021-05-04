@@ -183,7 +183,8 @@ myNode.show()
 show(){
     this.visible = true;
 
-    if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
+    //if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
+    ATON.Utils.setPicking(this, this.type, this.bPickable);
 
     if (ATON._renderer.shadowMap.enabled){
         ATON._dMainL.shadow.needsUpdate = true;

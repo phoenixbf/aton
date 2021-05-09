@@ -181,6 +181,25 @@ Core.getKeyPath = ()=>{
 };
 
 
+// Users
+//=======================================
+Core.createNewUser = (entry)=>{
+	if (entry === undefined) return false;
+
+	// Add new entry into users json
+	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+	Core.users.push(entry);
+	let uconfig = path.join(Core.DIR_CONFIG + "users.json");
+	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
+
+	// Create collection & scenes TODO:
+
+	console.log("Created new user: "+entry);
+
+	return true;
+};
+
+
 // Scenes
 //=======================================
 Core.getSceneFolder = (sid)=>{
@@ -1083,12 +1102,18 @@ Core.realizeBaseAPI = (app)=>{
 		let O = req.body;
 		console.log(O);
 
+		let b = Core.createNewUser(O);
+		res.send(b);
+
 		// Add new entry into users json
+/*
+		Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
 		Core.users.push(O);
-		let uconfig = path.join(Core.DIR_PRV + "config-users.json");
+		let uconfig = path.join(Core.DIR_CONFIG + "users.json");
 		fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
 		res.send(true);
+*/
 	});
 
 };

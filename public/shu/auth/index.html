@@ -53,7 +53,7 @@ let renderAuthForm = (data)=>{
     let htmlcontent = "";
 
     if (data.username){
-        htmlcontent += "<div class='atonBlockRound' style='color:black; width:80%; max-width:500px; background-color: rgba(255,255,255, 0.2)'>";
+        htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
         htmlcontent += "<div class='atonBTN atonBTN-red' style='width:90%' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 
@@ -71,7 +71,7 @@ let renderAuthForm = (data)=>{
     }
     else {
 
-        htmlcontent += "<div class='atonBlockRound' style='color:black; width:80%; max-width:500px; background-color: rgba(255,255,255, 0.2)'>";
+        htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
         htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
         htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 

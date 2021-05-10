@@ -38,14 +38,28 @@ let renderForm = ()=>{
         htmlcontent += "<br><div id='idResponse'></div>";
         htmlcontent += "</div><br><br>";
 
+        htmlcontent += "<table>";
+        htmlcontent += "<tr><th>#</th><th>username</th><th>actions</th></tr>";
+
         for (let u in data){
             let username = data[u];
 
-            htmlcontent += "<div class='atonBTN' style='display:block'>"+username+"</div>";
+            htmlcontent += "<tr>";
+
+            htmlcontent += "<td>"+u+"</td>";
+            htmlcontent += "<td>"+username+"</td>";
+            htmlcontent += "<td>";
+            htmlcontent += "<div class='atonBTN' style='width:200px'><img src='"+ATON.PATH_RES+"icons/edit.png'>change password</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-red' style='width:200px'><img src='"+ATON.PATH_RES+"icons/trash.png'>delete</div>";
+            htmlcontent += "</td>";
+            
+            //htmlcontent += "<div class='atonBTN' style='display:block'>"+username+"</div>";
 
             //htmlcontent += "<div class='atonBTN' style='width:300px'><img src='"+ATON.PATH_RES+"icons/user.png'>"+username+"</div><br>";
+            htmlcontent += "</tr>";
         }
 
+        htmlcontent += "</table>";
 
         $("#idAddUser").html(htmlcontent);
 

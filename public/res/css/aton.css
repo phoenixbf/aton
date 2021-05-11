@@ -585,12 +585,21 @@ canvas:active {
 .atonBTN-green:hover {
     box-shadow: 0 0px 10px rgba(0, 255, 0, 1.0);
 }
+
 .atonBTN-blue {
     background-color: rgba(0, 0, 127, 0.5);
 }
 .atonBTN-blue:hover {
     box-shadow: 0 0px 10px rgba(0, 0, 255, 1.0);
 }
+
+.atonBTN-cyan {
+    background-color: rgba(0, 127, 127, 0.5);
+}
+.atonBTN-cyan:hover {
+    box-shadow: 0 0px 10px rgba(0, 255, 255, 1.0);
+}
+
 .atonBTN-white {
     background-color: rgba(255, 255, 255, 0.5) !important;
     color: black;

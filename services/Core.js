@@ -80,6 +80,7 @@ Core.CONF_MAIN = {
 
     landing: {
         gallery: true,		// Show gallery (public scenes) in the landing page
+		samples: true,		// Show samples (def true)
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
     }
 };
@@ -197,6 +198,15 @@ Core.createNewUser = (entry)=>{
 	console.log("Created new user: "+entry);
 
 	return true;
+};
+
+//TODO:
+Core.deleteUser = (userid)=>{
+	if (userid === undefined) return false;
+
+	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+	
+	//
 };
 
 

@@ -33,7 +33,6 @@
     "express-basic-auth": "^1.2.0",
     "express-session": "^1.17.1",
     "fast-json-patch": "^3.0.0-1",
-    "foodoc": "0.0.9",
     "fs": "0.0.1-security",
     "fs-extra": "^9.1.0",
     "glob": "^7.1.6",

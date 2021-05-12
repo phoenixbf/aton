@@ -80,8 +80,12 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 	next();
 });
 
-app.use('/', express.static(Core.DIR_PUBLIC));
-app.use('/mods', express.static(Core.DIR_NODE_MODULES));
+// Data routing (advanced)
+//Core.setupDataRoute(app);
+
+
+app.use('/', express.static(Core.DIR_PUBLIC, /* { maxAge: 31557600 } */));
+app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*{ maxAge: 31557600 }*/));
 
 // Official front-end (Hathor)
 app.use('/fe', express.static(Core.DIR_FE));
@@ -89,13 +93,12 @@ app.use('/fe', express.static(Core.DIR_FE));
 // Web-apps
 app.use('/a', express.static(Core.DIR_WAPPS));
 
-// API documentation
-//if (bAPIdoc) app.use('/apidoc', express.static(Core.DIR_APIDOC));
+// Data (static)
+app.use('/', express.static(Core.DIR_DATA));
 
 
 Core.setupPassport();
 Core.realizeAuth(app);
-
 
 // REST API
 Core.realizeBaseAPI(app);

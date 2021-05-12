@@ -87,7 +87,7 @@ ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
 
-ATON.PATH_COLLECTION = window.location.origin + "/collection/"; // "../collection/";
+ATON.PATH_COLLECTION = window.location.origin + "/collections/"; // "../collection/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
 ATON.PATH_FE         = window.location.origin + "/fe/"; // "../res/";

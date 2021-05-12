@@ -71,7 +71,7 @@ for (let u in Core.users){
     let dbuser = Core.users[u];
     let uname = dbuser.username;
 
-    let upathCollection = Core.DIR_COLLECTION + uname + "/";
+    let upathCollection = Core.DIR_COLLECTIONS + uname + "/";
     let upathScenes     = Core.DIR_SCENES + uname + "/";
 
     if (fs.existsSync(upathCollection)){
@@ -86,7 +86,7 @@ for (let u in Core.users){
 server.setFileSystemSync("/apps", new webdav.PhysicalFileSystem(Core.DIR_WAPPS));
 
 
-//server.setFileSystemSync('/collection', new webdav.PhysicalFileSystem(Core.DIR_COLLECTION));
+//server.setFileSystemSync('/collection', new webdav.PhysicalFileSystem(Core.DIR_COLLECTIONS));
 //server.setFileSystemSync('/scenes', new webdav.PhysicalFileSystem(Core.DIR_SCENES));
 
 /*

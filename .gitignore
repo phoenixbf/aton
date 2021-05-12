@@ -80,15 +80,15 @@ _prv
 *.psd
 
 # Scenes
-/public/scenes/*
-!/public/scenes/samples/
+/data/scenes/*
+!/data/scenes/samples/
 
-# Collection
-/public/collection/*
-!/public/collection/samples/
+# Collections
+/data/collections/*
+!/data/collections/samples/
 
-# wapps
-/public/wapps/*
-!/public/wapps/README.txt
-!/public/wapps/app_template/
-/public/wapps/app_template/data/
+# Apps
+/wapps/*
+!/wapps/README.txt
+!/wapps/app_template/
+/wapps/app_template/data/

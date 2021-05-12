@@ -26,16 +26,18 @@ const FileStore      = require('session-file-store')(session);
 
 Core = {};
 
+Core.DIR_DATA         = path.join(__dirname,"/../data/");
+Core.DIR_WAPPS        = path.join(__dirname,"/../wapps/");
 Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
 Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
-Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
+//Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
 Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
 Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
-Core.DIR_COLLECTION   = path.join(Core.DIR_PUBLIC,"collection/");
-Core.DIR_SCENES       = path.join(Core.DIR_PUBLIC,"scenes/");
-Core.DIR_WAPPS        = path.join(Core.DIR_PUBLIC,"wapps/");
+Core.DIR_COLLECTIONS  = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
+Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
+//Core.DIR_WAPPS        = path.join(Core.DIR_PUBLIC,"wapps/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
 Core.STD_SCENEFILE    = "scene.json";
 Core.STD_PUBFILE      = "pub.txt";
@@ -53,13 +55,17 @@ Core.users  = [];        // users config
 //========================================
 // Default main config
 Core.CONF_MAIN = {
+	data: {
+		//collections: "",
+		//scenes: ""
+	},
+
 	services: {
 		main: {
 			PORT: 8080,		// main ATON port
 			PORT_S: 8083,	// secure ATON port
 			pathCert: "",	// custom path to cert
-			pathKey: "",	// custom path to key
-			apidoc: true	// expose API documentation folder
+			pathKey: ""		// custom path to key
 		},
 
 		vroadcast: {
@@ -600,7 +606,36 @@ Core.realizeAuth = (app)=>{
     app.use(passport.session());
 };
 
+// DATA
+//================================================
+Core.setupDataRoute = (app)=>{
 
+	if (Core.config && Core.config.data){
+		const D = Core.config.data;
+
+		if (D.collections) Core.DIR_COLLECTIONS = D.collections;
+		if (D.scenes)      Core.DIR_SCENES      = D.scenes;
+	}
+
+	app.get(/^\/collections\/(.*)$/, function(req,res,next){
+		let path = req.params[0];
+
+		// auth here if needed
+
+		res.sendFile(Core.DIR_COLLECTIONS + path);
+		//console.log(Core.DIR_COLLECTIONS + path);
+		//next();
+	});
+
+	app.get(/^\/scenes\/(.*)$/, function(req,res,next){
+		let path = req.params[0];
+
+		// auth here if needed
+
+		res.sendFile(Core.DIR_SCENES + path);
+		//next();
+	});
+};
 
 // API
 //================================================
@@ -645,7 +680,7 @@ Core.realizeBaseAPI = (app)=>{
 		}
 /*
 		// look into models collection and build scene FIXME:
-		let mfolder = path.join(Core.DIR_COLLECTION,sid)+"/";
+		let mfolder = path.join(Core.DIR_COLLECTIONS,sid)+"/";
 		let O = {};
 		O.cwd = mfolder;
 
@@ -771,7 +806,7 @@ Core.realizeBaseAPI = (app)=>{
 		let relpath = uname+"/models/";
 
 		let O = {};
-		O.cwd = Core.DIR_COLLECTION+relpath; //Core.DIR_MODELS+uname;
+		O.cwd = Core.DIR_COLLECTIONS+relpath; //Core.DIR_MODELS+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/{*.gltf,*.glb,tileset.json}", O);
@@ -796,7 +831,7 @@ Core.realizeBaseAPI = (app)=>{
 		let relpath = uname+"/pano/";
 
 		let O = {};
-		O.cwd = Core.DIR_COLLECTION+relpath; //Core.DIR_PANO+uname;
+		O.cwd = Core.DIR_COLLECTIONS+relpath; //Core.DIR_PANO+uname;
 		O.follow = true;
 
 		let files = glob.sync("**/*.{jpg,mp4,webm}", O); // hdr

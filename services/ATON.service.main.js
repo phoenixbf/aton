@@ -34,12 +34,20 @@ let PORT_SECURE = 8083;
 let PORT_VRC    = 8890;
 let PORT_WEBDAV = 8081;
 
-if (process.env.PORT) 				PORT = process.env.PORT;
-if (CONF.services.main.PORT)		PORT = CONF.services.main.PORT;
-if (CONF.services.main.PORT_S)		PORT_SECURE = CONF.services.main.PORT_S;
-if (CONF.services.vroadcast.PORT)	PORT_VRC = CONF.services.vroadcast.PORT;
+if (CONF.services.main.PORT) 
+	PORT = CONF.services.main.PORT;
+	
+if (process.env.PORT)
+	PORT = process.env.PORT;
 
-if (CONF.services.webdav && CONF.services.webdav.PORT) PORT_WEBDAV = CONF.services.webdav.PORT;
+if (CONF.services.main.PORT_S)
+	PORT_SECURE = CONF.services.main.PORT_S;
+
+if (CONF.services.vroadcast.PORT)
+	PORT_VRC = CONF.services.vroadcast.PORT;
+
+if (CONF.services.webdav && CONF.services.webdav.PORT)
+	PORT_WEBDAV = CONF.services.webdav.PORT;
 
 
 const pathCert = Core.getCertPath();

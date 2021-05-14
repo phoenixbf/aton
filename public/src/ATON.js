@@ -83,9 +83,9 @@ ATON.PATH_RESTAPI       = window.location.origin + "/api/"; // "../api/";
 ATON.PATH_RESTAPI_SCENE = ATON.PATH_RESTAPI + "scene/";
 ATON.PATH_WAPPS         = window.location.origin + "/a/";
 ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
-ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
-ATON.PATH_DRACO_LIB     = ATON.PATH_THREE+"examples/js/libs/draco/";
-ATON.PATH_BASIS_LIB     = ATON.PATH_THREE+"examples/js/libs/basis/";
+//ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
+ATON.PATH_DRACO_LIB     = window.location.origin + "/dist/draco/"; //ATON.PATH_THREE+"examples/js/libs/draco/";
+ATON.PATH_BASIS_LIB     = window.location.origin + "/dist/basis/"; //ATON.PATH_THREE+"examples/js/libs/basis/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collections/"; // "../collection/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";

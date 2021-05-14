@@ -809,7 +809,7 @@ Core.realizeBaseAPI = (app)=>{
 		O.cwd = Core.DIR_COLLECTIONS+relpath; //Core.DIR_MODELS+uname;
 		O.follow = true;
 
-		let files = glob.sync("**/{*.gltf,*.glb,tileset.json}", O);
+		let files = glob.sync("**/{*.gltf,*.glb,*.json}", O);
 
 		let M = [];
 		for (let f in files) M.push( relpath + files[f] );

@@ -7,7 +7,7 @@ module.exports = {
       script       : 'services/ATON.service.main.js',
       instances    : 'max',
       exec_mode    : 'cluster',
-      watch        : ["services"]
+      watch        : ["services","config"]
     },
 
     // VRoadcast service
@@ -16,7 +16,7 @@ module.exports = {
       script       : 'services/ATON.service.vroadcast.js',
       instances    : 1,
       exec_mode    : 'cluster',
-      watch        : ["services"]
+      watch        : ["services","config"]
     },
 
       // WebDav service

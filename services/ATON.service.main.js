@@ -26,20 +26,27 @@ const Core = require('./Core');
 // Initialize & load config files
 Core.init();
 
+const CONF = Core.config;
 
-const PORT            = process.env.PORT || Core.config.services.main.PORT || 8080;
-const PORT_SECURE     = Core.config.services.main.PORT_S || 8083;
-//const PORT_ATONIZER   = Core.config.services.atonizer.PORT || 8085;
-const PORT_VRC        = Core.config.services.vroadcast.PORT || 8890;
-
+// Standard PORTS
+let PORT        = 8080;
+let PORT_SECURE = 8083;
+let PORT_VRC    = 8890;
 let PORT_WEBDAV = 8081;
-if (Core.config.services.webdav && Core.config.services.webdav.PORT) PORT_WEBDAV = Core.config.services.webdav.PORT;
+
+if (process.env.PORT) 				PORT = process.env.PORT;
+if (CONF.services.main.PORT)		PORT = CONF.services.main.PORT;
+if (CONF.services.main.PORT_S)		PORT_SECURE = CONF.services.main.PORT_S;
+if (CONF.services.vroadcast.PORT)	PORT_VRC = CONF.services.vroadcast.PORT;
+
+if (CONF.services.webdav && CONF.services.webdav.PORT) PORT_WEBDAV = CONF.services.webdav.PORT;
+
 
 const pathCert = Core.getCertPath();
 const pathKey  = Core.getKeyPath();
 
-let bExamples = Core.config.services.main.examples;
-//let bAPIdoc   = Core.config.services.main.apidoc;
+let bExamples = CONF.services.main.examples;
+//let bAPIdoc   = CONF.services.main.apidoc;
 
 // Debug on req received (client)
 let logger = function(req, res, next){
@@ -84,8 +91,8 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 //Core.setupDataRoute(app);
 
 
-app.use('/', express.static(Core.DIR_PUBLIC, /* { maxAge: 31557600 } */));
-app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*{ maxAge: 31557600 }*/));
+app.use('/', express.static(Core.DIR_PUBLIC, { maxAge: 31557600 } ));
+//app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*{ maxAge: 31557600 }*/));
 
 // Official front-end (Hathor)
 app.use('/fe', express.static(Core.DIR_FE));
@@ -116,13 +123,13 @@ app.use('/atonizer', createProxyMiddleware({
 
 // VRoadcast
 app.use('/vrc', createProxyMiddleware({ 
-	target: Core.config.services.vroadcast.address+":"+PORT_VRC, 
+	target: CONF.services.vroadcast.address+":"+PORT_VRC, 
 	ws: true, 
 	pathRewrite: { '^/vrc': ''},
 	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
-	target: Core.config.services.vroadcast.address+":"+PORT_VRC, 
+	target: CONF.services.vroadcast.address+":"+PORT_VRC, 
 	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
@@ -132,10 +139,12 @@ app.use('/svrc', createProxyMiddleware({
 // WebDav
 /*
 app.use('/dav', createProxyMiddleware({ 
-	//target: Core.config.services.webdav.address+":"+PORT_WEBDAV, 
+	//target: CONF.services.webdav.address+":"+PORT_WEBDAV, 
 	target: "http://localhost:"+PORT_WEBDAV,
 	pathRewrite: { '^/dav': ''},
-	changeOrigin: true
+	changeOrigin: true,
+	xfwd: true,
+	secure: true,
 	//router: { "/dav" : "http://localhost:"+PORT_WEBDAV }
 }));
 */

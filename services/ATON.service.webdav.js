@@ -59,11 +59,26 @@ for (let u in Core.users){
 
 console.log(privilegeManager);
 
+// dav secure
+const pathCert = Core.getCertPath();
+const pathKey  = Core.getKeyPath();
+
+let httpsOptions = null;
+/*
+if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
+	httpsOptions = {
+		key: fs.readFileSync(pathKey, 'utf8'),
+		cert: fs.readFileSync(pathCert, 'utf8')
+    };
+}
+*/
+
 // Start service
 const server = new webdav.WebDAVServer({
     httpAuthentication: new webdav.HTTPDigestAuthentication(userManager, 'ATON'),
     privilegeManager: privilegeManager,
-    port: PORT_WEBDAV
+    port: PORT_WEBDAV,
+    https: httpsOptions
 });
 
 // link physical fs

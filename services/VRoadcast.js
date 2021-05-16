@@ -9,7 +9,7 @@
 ==================================================================================*/
 VRoadcast = {};
 
-VRoadcast.MAX_CLIENTS_PER_SCENE = 50;
+VRoadcast.MAX_CLIENTS_PER_SESSION = 50;
 
 
 // Classes
@@ -46,8 +46,8 @@ VRoadcast.user = class {
 };
 
 
-// Scene
-VRoadcast.scene = class {
+// Session
+VRoadcast.session = class {
     constructor(sid){
         if (sid) this.sid = sid;
 
@@ -72,12 +72,12 @@ VRoadcast.scene = class {
         }
 
         // If not full, tail index
-        if (tsize < VRoadcast.MAX_CLIENTS_PER_SCENE) return tsize;
+        if (tsize < VRoadcast.MAX_CLIENTS_PER_SESSION) return tsize;
 
         return undefined;
     };
 
-    // Send scene snapshot, except exlcuid
+    // Send session snapshot, except exlcuid
     sendSnapshot(socket, excluid){
         let tsize = this.users.length;
 
@@ -95,20 +95,19 @@ VRoadcast.init = (io)=>{
     if (!io) return;
     VRoadcast.io = io;
 
-    VRoadcast.scenes = {};
+    VRoadcast.sessions = {};
     VRoadcast.totConnections = 0;
 
     VRoadcast.io.on('connection', VRoadcast.onNewConnection);
 };
 
+VRoadcast.touchSession = (sid)=>{
+    if (VRoadcast.sessions[sid]) return VRoadcast.sessions[sid];
 
-VRoadcast.touchScene = (sid)=>{
-    if (VRoadcast.scenes[sid]) return VRoadcast.scenes[sid];
+    VRoadcast.sessions[sid] = new VRoadcast.session(sid);
 
-    VRoadcast.scenes[sid] = new VRoadcast.scene(sid);
-
-    console.log("Created scene ID: "+sid);
-    return VRoadcast.scenes[sid];
+    console.log("Created session ID: "+sid);
+    return VRoadcast.sessions[sid];
 };
 
 
@@ -119,9 +118,9 @@ VRoadcast.onNewConnection = (socket)=>{
     let ipAddr = socket.handshake.address;
     console.log("New connection from "+ipAddr);
 
-    // current scene
-    let sid   = undefined;
-    let scene = undefined;
+    // current session
+    let sid     = undefined;
+    let session = undefined;
 
     // assigned ID
     let uid  = undefined;
@@ -132,59 +131,59 @@ VRoadcast.onNewConnection = (socket)=>{
         if (sid) socket.leave(sid);
         VRoadcast.totConnections--;
 
-        if (scene !== undefined && uid !== undefined){
-            delete scene.users[uid];
-            if (scene.numUsers>0) scene.numUsers--;
+        if (session !== undefined && uid !== undefined){
+            delete session.users[uid];
+            if (session.numUsers>0) session.numUsers--;
 
             socket.broadcast.to(sid).emit("ULEAVE", uid );
 
-            console.log("UID #" + uid + " left scene "+sid+" (tot users: "+scene.numUsers+")");
+            console.log("UID #" + uid + " left session "+sid+" (tot users: "+session.numUsers+")");
 
-            if (scene.numUsers === 0){
-                delete scene;
-                delete VRoadcast.scenes[sid];
-                console.log("DELETED scene "+sid);
+            if (session.numUsers === 0){
+                delete session;
+                delete VRoadcast.sessions[sid];
+                console.log("DELETED session "+sid);
             }
         }
     });
 
     socket.on('SENTER', (data)=>{
-        sid   = data;
-        scene = VRoadcast.touchScene(sid);
+        sid     = data;
+        session = VRoadcast.touchSession(sid);
 
         socket.join(sid);
 
-        console.log("ENTER request in scene "+sid);
+        console.log("ENTER request in session "+sid);
 
         // Assign user id
-        uid = scene.getAvailableUID();
+        uid = session.getAvailableUID();
         if (uid !== undefined){
-            user = scene.touchUser(uid);
+            user = session.touchUser(uid);
             user.ipaddress = ipAddr;
 
-            scene.numUsers++;
+            session.numUsers++;
 
             // Send assigned ID to the user
             socket.emit("ID", uid );
 
-            scene.sendSnapshot(socket, uid);
+            session.sendSnapshot(socket, uid);
 
-            // Inform other users in the scene that uid entered
+            // Inform other users in the session that uid entered
             socket.broadcast.to(sid).emit("UENTER", uid );
 
-            console.log("UID #" + uid + " entered scene "+sid+" (tot users: "+scene.numUsers+")");
+            console.log("UID #" + uid + " entered session "+sid+" (tot users: "+session.numUsers+")");
         }
         else {
-            console.log(ipAddr+" cannot enter scene "+sid+" since it's full.");
+            console.log(ipAddr+" cannot enter session "+sid+" since it's full.");
         }
     });
 
-    // Handle scene state requests
+    // Handle session state requests
     socket.on('SSTATE', ()=>{
         let sinfo = {};
 
-        if (scene !== undefined){
-            sinfo.numUsers = scene.numUsers;
+        if (session !== undefined){
+            sinfo.numUsers = session.numUsers;
         }
         else {
             sinfo.numUsers = 0;
@@ -195,13 +194,13 @@ VRoadcast.onNewConnection = (socket)=>{
 
     socket.on('USTATE', (data)=>{
         if (user) user.setEncodedState(data);
-        // Broadcast to other users in scene
+        // Broadcast to other users in session
         socket.broadcast.to(sid).emit("USTATE", data );
     });
 
     socket.on('UFOCUS', (data)=>{
         //if (user) user.setFocalPoint(data);
-        // Broadcast to other users in scene
+        // Broadcast to other users in session
         socket.broadcast.to(sid).emit("UFOCUS", { uid: uid, fp: data });
     });
 
@@ -229,12 +228,12 @@ VRoadcast.onNewConnection = (socket)=>{
 
     // Replicated event
     socket.on('EREP', (data)=>{
-        // Broadcast to other users in scene
+        // Broadcast to other users in session
         socket.broadcast.to(sid).emit("EREP", data );
     });
 
     socket.on('UTALK', (data)=>{
-        socket.to(sid).compress(false).emit('UTALK', data); // .binary(true)
+        socket.to(sid).emit('UTALK', data); // compress(false) // .binary(true)
         //console.log(data.audio);
     });
 };

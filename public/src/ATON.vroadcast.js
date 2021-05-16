@@ -52,6 +52,7 @@ VRoadcast.init = ()=>{
     VRoadcast._focNodes = [];
 
     // send own state with given freq
+    VRoadcast.bSendState = true;
     window.setInterval( VRoadcast.sendState, VRoadcast.USER_STATE_FREQ*1000.0 );
     VRoadcast._lastStateSent = undefined;
 
@@ -213,22 +214,22 @@ VRoadcast.log = (d)=>{
 };
 
 /**
-Request enter in a given scene. 
-Note: this routine does not load the scene itself, instead it tells the VRoadcast service we want to connect to the given scene.
-@param {string} sceneid - the scene id (sid)
+Request to join a given VRoadcast session (typically, the scene ID)
+@param {string} ssid - the session id (room or scene ID)
 @example
-ATON.VRoadcast.requestSceneEnter("testscene");
+ATON.VRoadcast.joinSession("testscene");
 */
-VRoadcast.requestSceneEnter = (sceneid)=>{
+VRoadcast.joinSession = (ssid)=>{
     if (!VRoadcast.socket) return;
-    if (sceneid === undefined) sceneid = ATON.SceneHub.currID;
+    if (ssid === undefined) ssid = ATON.SceneHub.currID;
 
-    if (sceneid === undefined){
-        console.log("VRC ERROR: current scene ID is undefined");
+    if (ssid === undefined){
+        console.log("VRC ERROR: current session ID is undefined");
         return;
     }
 
-    VRoadcast.socket.emit("SENTER", sceneid );
+    console.log("Joining VRC session "+ssid+"...");
+    VRoadcast.socket.emit("SENTER", ssid );
 };
 
 VRoadcast.requestSceneState = ()=>{
@@ -314,10 +315,12 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('connect', ()=>{
         VRoadcast._connected = true;
 
-        // Request enter in scene node (room)
-        if (ATON.SceneHub.currID !== undefined) VRoadcast.requestSceneEnter();
+        // If we have a valid Scene ID join corresponding session
+        if (ATON.SceneHub.currID !== undefined){
+            VRoadcast.joinSession();
+        }
         
-        console.log("VRC connected, entering scene: "+ATON.SceneHub.currID);
+        console.log("Connected to VRC service!");
         ATON.fireEvent("VRC_Connected");
 
         VRoadcast._onConnected();
@@ -613,6 +616,7 @@ VRoadcast.setFocusStreaming = (b)=>{
 };
 
 VRoadcast.sendState = ()=>{
+    if (!VRoadcast.bSendState) return;
     if (VRoadcast.uid === undefined) return;
     if (!VRoadcast.socket || !VRoadcast._connected) return;
     

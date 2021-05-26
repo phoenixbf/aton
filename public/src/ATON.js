@@ -86,6 +86,7 @@ ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
 //ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = window.location.origin + "/dist/draco/"; //ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = window.location.origin + "/dist/basis/"; //ATON.PATH_THREE+"examples/js/libs/basis/";
+ATON.PATH_IFC_LIB       = window.location.origin + "/dist/ifc/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collections/"; // "../collection/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
@@ -573,7 +574,14 @@ ATON.realize = ()=>{
 
     //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
 
-    // Basis (future support)
+
+    // IFC
+/*
+    ATON._ifcLoader = new IFCLoader();
+    ATON._ifcLoader.setWasmPath( ATON.PATH_IFC_LIB );
+*/
+
+    // Basis
 /*
     ATON._basisLoader = new BasisTextureLoader();
     ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );

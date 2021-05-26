@@ -115,6 +115,15 @@ SHU.createPubScenesGallery = (idcontainer)=>{
 
             let kwords = title.toLowerCase();
             kwords += " "+user.toLowerCase();
+            let htskw = "";
+
+            if (scene.kwords){
+                for (let k in scene.kwords){
+                    let kk = k.toLowerCase();
+                    htskw += "<span class='atonKeyword'>"+kk+"</span>";
+                    kwords += " "+kk;
+                }
+            }
 
             htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.1)' >";
 
@@ -131,12 +140,11 @@ SHU.createPubScenesGallery = (idcontainer)=>{
 
             // user
             htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>&nbsp;"+user+"</div>";
+            //htmlcontent += htskw;
             htmlcontent += "</div>";
             
             htmlcontent += "</div>";
         }
-
-        
 
         $("#"+idcontainer).html(htmlcontent);
     });

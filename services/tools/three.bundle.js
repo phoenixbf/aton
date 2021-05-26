@@ -17,6 +17,8 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+//import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js"
+
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
@@ -43,16 +45,20 @@ THREE.BufferGeometry.prototype.disposeBoundsTree = ThreeMeshBVH.disposeBoundsTre
 THREE.Mesh.prototype.raycast = ThreeMeshBVH.acceleratedRaycast;
 
 // THREE components
-THREE.OrbitControls = OrbitControls;
+THREE.OrbitControls             = OrbitControls;
 THREE.DeviceOrientationControls = DeviceOrientationControls;
-THREE.GLTFLoader    = GLTFLoader;
-THREE.GLTFExporter  = GLTFExporter;
-THREE.OBJExporter   = OBJExporter;
-THREE.DRACOLoader   = DRACOLoader;
+
+THREE.GLTFLoader         = GLTFLoader;
+THREE.GLTFExporter       = GLTFExporter;
+THREE.OBJExporter        = OBJExporter;
+THREE.DRACOLoader        = DRACOLoader;
+//THREE.IFCLoader          = IFCLoader;
 THREE.BasisTextureLoader = BasisTextureLoader;
+
 ///THREE.FirstPersonControls = FirstPersonControls;
+
 //THREE.ConvexBufferGeometry = ConvexBufferGeometry;
-THREE.ConvexGeometry = ConvexGeometry;
+THREE.ConvexGeometry      = ConvexGeometry;
 THREE.BufferGeometryUtils = BufferGeometryUtils;
 
 THREE.RGBELoader = RGBELoader;

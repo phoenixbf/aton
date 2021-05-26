@@ -3,6 +3,12 @@
     "title": "Welcome",
     "navmode": 0,
 
+    "kwords":{
+        "basic":1,
+        "quad":1,
+        "relax":1
+    },
+
 	"environment":{
 		"mainpano":{
 			"url": "samples/pano/bg-welcome.jpg"

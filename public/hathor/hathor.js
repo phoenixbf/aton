@@ -172,6 +172,7 @@ HATHOR.buildUIProfiles = ()=>{
     });
 
     // Collaborate
+/*
     ATON.FE.uiAddProfile("collaborate", ()=>{
         $("#idTopToolbar").html(""); // clear
 
@@ -196,6 +197,7 @@ HATHOR.buildUIProfiles = ()=>{
         //HATHOR.paramVRC = "1";
         HATHOR._bVRCreq = true;
     });
+*/
 };
 
 
@@ -1405,7 +1407,7 @@ HATHOR.popupScene = ()=>{
         htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; max-width:300px; text-align:center'>";
 
         // Authenticated
-        if (authUser){
+        if (authUser && bYourScene){
             if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN switchedON' style='width:80%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes</div>";
             else htmlcontent += "<div class='atonBTN' style='width:250px' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
 
@@ -1530,10 +1532,11 @@ HATHOR.popupScene = ()=>{
 };
 
 HATHOR.popupEditSceneInfo = ()=>{
-    let htmlcontent = "<div class='atonPopupTitle'>Scene Title & Description</div>";
+    let htmlcontent = "<div class='atonPopupTitle'>Scene information</div>";
     
     htmlcontent += "Title: <input id='idSceneTitle' type='text' maxlength='30' size='30' ><br>";
     htmlcontent += "<textarea id='idSummaryEditor' style='width:100%'></textarea><br>";
+    htmlcontent += "Keywords (comma separated):<br><input id='idSceneKWords' type='text' maxlength='100' style='width:90%' ><br>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='idSceneSummaryOK' style='width:80%'>DONE</div>";
 
@@ -1550,10 +1553,21 @@ HATHOR.popupEditSceneInfo = ()=>{
     $('#idSceneSummaryOK').click(()=>{
         let xxtmldescr = JSON.stringify( $("#idSummaryEditor").val() );
         let title = $("#idSceneTitle").val();
+        
+        let kwords = $("#idSceneKWords").val().trim();
+        if (kwords.length>2){
+            kwords = kwords.toLowerCase();
+            kwords = kwords.split(",");
+        }
 
         ATON.FE.popupClose();
 
         let E = {};
+
+        if (kwords && kwords.length>0){
+            E.kwords = {};
+            for (let k in kwords) E.kwords[ kwords[k] ] = 1;
+        }
 
         if (xxtmldescr && xxtmldescr.length>2){
             ATON.SceneHub.setDescription( xxtmldescr );

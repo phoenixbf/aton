@@ -19,15 +19,25 @@ module.exports = {
       watch        : ["services","config"]
     },
 
-      // WebDav service
+    // WebDav service
     {
       name         : 'ATON WebDav Service',
       script       : 'services/ATON.service.webdav.js',
       instances    : 1,
       exec_mode    : 'cluster',
       watch        : ["services", "config"]
-    }
+    },
 
+    // Maat service
+/*
+    {
+      name         : 'ATON Maat Service',
+      script       : 'services/ATON.service.maat.js',
+      instances    : 1,
+      exec_mode    : 'cluster',
+      watch        : ["services", "config"]
+    }
+*/
     // Atonizer
 /*
     {

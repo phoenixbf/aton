@@ -15,6 +15,7 @@ const del         = require('del');
 const makeDir     = require('make-dir');
 const nanoid      = require('nanoid');
 const fsx         = require('fs-extra');
+const axios       = require('axios');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -50,6 +51,11 @@ Core.STATUS_PROCESSING = "processing";
 Core.config = undefined; // main config
 Core.users  = [];        // users config
 
+Core.SCENES_GLOB_OPTS = {
+	cwd: Core.DIR_SCENES,
+	follow: true
+};
+
 
 // Configs
 //========================================
@@ -78,10 +84,15 @@ Core.CONF_MAIN = {
 			PORT: 8081
 		},
 
+		maat: {
+			PORT: 8891
+		},
+/*
 		atonizer: {
 			PORT: 8085,
 			address: "http://localhost"
 		}
+*/
 	},
 
     landing: {
@@ -102,46 +113,20 @@ Core.CONF_USERS = [
 ];
 
 
-// Cached lists (TODO:)
+// Maat requests
 //=============================
-Core.SCENES_GLOB_OPTS = {
-	cwd: Core.DIR_SCENES,
-	follow: true
+Core.maatQuery = (str, onresponse)=>{
+	let q = Core._maatEP + str;
+
+	axios.get(q)
+		.then(res => {
+			//console.log(res.data);
+			if (onresponse) onresponse(res.data);
+		})
+		.catch(err => {
+    		console.log('Error: ', err.message);
+		});
 };
-
-Core.scenesList = [];
-
-Core.rebuildScenesList = ()=>{	
-	let files = glob.sync("**/"+Core.STD_SCENEFILE, gopts);
-
-	Core.listScenes = [];
-	for (let f in files){
-		let basepath  = path.dirname(files[f]);
-		let pubfile   = Core.DIR_SCENES + basepath+"/" + Core.STD_PUBFILE;
-		let coverfile = Core.DIR_SCENES + basepath+"/" + Core.STD_COVERFILE;
-
-		if (fs.existsSync(pubfile)){
-			let O = {};
-			O.sid = basepath;
-			O.cover = fs.existsSync(coverfile)? true : false;
-
-			let sobj = Core.readSceneJSON(O.sid);
-
-			if (sobj.title) O.title = sobj.title;
-
-			Core.listScenes.push(O);
-		}
-	}
-};
-
-// FS watch
-/*
-fs.watch(Core.DIR_SCENES, (eventType, filename) => {
-	console.log("\nThe file " + filename + " was modified! ("+eventType+")");
-
-});
-*/
-//==========
 
 
 // Main init routine
@@ -150,6 +135,9 @@ Core.init = ()=>{
 
 	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
+
+	const maatport = (Core.config.services.maat)? Core.config.services.maat.PORT : 8891;
+	Core._maatEP = "http://localhost:"+maatport+"/";
 
 	console.log("DB users: "+Core.users.length);
 };
@@ -705,10 +693,11 @@ Core.realizeBaseAPI = (app)=>{
 
 	// List all public scenes
 	app.get("/api/scenes/", function(req,res,next){
-		//let O = {};
-		//O.cwd = Core.DIR_SCENES;
-		//O.follow = true;
-		
+/*
+		Core.maatQuery("scenes/public", (R)=>{
+			res.send(R);
+		});
+*/		
 		let files = glob.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
 
 		let S = [];
@@ -724,7 +713,8 @@ Core.realizeBaseAPI = (app)=>{
 
 				let sobj = Core.readSceneJSON(O.sid);
 
-				if (sobj.title) O.title = sobj.title;
+				if (sobj.title)  O.title  = sobj.title;
+				if (sobj.kwords) O.kwords = sobj.kwords;
 
 				S.push(O);
 			}
@@ -768,11 +758,16 @@ Core.realizeBaseAPI = (app)=>{
 		}
 
 		let uname = req.user.username;
+/*
+		Core.maatQuery("scenes/byuser/"+uname, (R)=>{
+			res.send(R);
+		});
+*/
 
 		let O = {};
 		O.cwd = Core.DIR_SCENES+uname;
 		O.follow = true;
-		
+
 		let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
 
 		let S = [];

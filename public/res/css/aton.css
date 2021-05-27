@@ -71,6 +71,20 @@
         }
 }
 
+/* STD font: segoe UI */
+@font-face {
+    font-family: 'Segoe UI Local';
+    src: local('Segoe UI Semilight');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Segoe UI Web (West European)';
+    src: url('https://static2.sharepointonline.com/files/fabric/assets/fonts/segoeui-westeuropean/segoeui-semilight.woff2') format('woff2'), url('https://static2.sharepointonline.com/files/fabric/assets/fonts/segoeui-westeuropean/segoeui-semilight.woff') format('woff');
+    font-weight: 300;
+    font-style: normal;
+}
+
 /*=========================================================*/
 
 html {
@@ -91,7 +105,10 @@ body {
     color: #FFF;
 
     font-size: 13px;
-    font-family: Tahoma, Verdana, Geneva;
+
+    /*font-family: Tahoma, Verdana, Geneva;*/
+    font-family: 'Segoe UI Local', 'Segoe UI Web (West European)';
+    
     /*font-family: 'atonfont';*/
 
 /*
@@ -1293,6 +1310,8 @@ input[type="number"]:hover {
     background-color: #BBB;
     color: #FFF;
 
+    font-family: 'Segoe UI Local', 'Segoe UI Web (West European)';
+
     background-image: url("../bg.jpg");
 
     background-position: top;
@@ -1496,7 +1515,7 @@ label {
     display: inline-block;
 
     text-shadow: 0px 0px 4px black;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     /*border-radius: 20px;*/
 
     border-radius: 10px;

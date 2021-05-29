@@ -56,6 +56,8 @@ VRoadcast.init = ()=>{
     window.setInterval( VRoadcast.sendState, VRoadcast.USER_STATE_FREQ*1000.0 );
     VRoadcast._lastStateSent = undefined;
 
+    VRoadcast._bShowAvaG = true;
+
     console.log("VRoadcast initialized");
     VRoadcast.enableChatLog();
 };
@@ -238,6 +240,13 @@ VRoadcast.requestSceneState = ()=>{
     VRoadcast.socket.emit("SSTATE");
 };
 
+VRoadcast.setAvatarsVisibility = (b)=>{
+    VRoadcast._bShowAvaG = b;
+
+    if (b) VRoadcast.avaGroup.show();
+    else VRoadcast.avaGroup.hide();
+};
+
 /**
 Connect to VRoadcast service
 @param {string} address - the address of the service (optional). Default is same server where main service is running
@@ -351,7 +360,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("Your ID is " + data);
         VRoadcast.uid = data;
 
-        VRoadcast.avaGroup.show();
+        if (VRoadcast._bShowAvaG) VRoadcast.avaGroup.show();
 
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your ID is #"+data+"</i><br>");
 
@@ -401,6 +410,8 @@ VRoadcast._registerSocketHandlers = ()=>{
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
+        if (!VRoadcast._bShowAvaG) return;
+
         let S = VRoadcast.decodeState(data);
 
         //console.log(data);
@@ -671,7 +682,6 @@ VRoadcast.getAvatar = (uid)=>{
 };
 
 VRoadcast.touchAvatar = (uid)=>{
-
     // First time
     if (VRoadcast.avatarList[uid] === undefined){
         let A = new VRoadcast.Avatar(uid);
@@ -698,7 +708,7 @@ VRoadcast.touchAvatar = (uid)=>{
         ATON.fireEvent("VRC_UserEnter", uid);
     }
 
-    A.show();
+    if (VRoadcast._bShowAvaG) A.show();
 
     return A;
 }

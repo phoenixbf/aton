@@ -1402,7 +1402,7 @@ HATHOR.popupScene = ()=>{
 
     ATON.FE.checkAuth((r)=>{
         let authUser = r.username;
-        let bYourScene = ATON.SceneHub.currID.startsWith(authUser);
+        let bYourScene = (ATON.SceneHub.currID)? ATON.SceneHub.currID.startsWith(authUser) : false;
 
         htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; max-width:300px; text-align:center'>";
 
@@ -1437,7 +1437,7 @@ HATHOR.popupScene = ()=>{
 
         if (authUser){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage your scenes</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
             if (bYourScene) htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
         }
 
@@ -1517,8 +1517,8 @@ HATHOR.popupScene = ()=>{
         });
 */
         $("#idSHUscenes").click(()=>{
-            //ATON.Utils.goToURL("/shu/scenes/");
-            window.open("/shu/scenes/", "_self");
+            if (ATON.SceneHub.currID === undefined) return;
+            window.open("/shu/scenes/?s="+ATON.SceneHub.currID, "_self");
         });
 
         $("#btnPopEmbed").click(()=>{
@@ -1589,8 +1589,9 @@ HATHOR.popupEditSceneInfo = ()=>{
 
 
 HATHOR.popupHelp = ()=>{
-    let htmlcontent = "<div class='atonPopupTitle'>Hathor help</div>";
-    //htmlcontent += "<img src='hathor.png'>";
+    let htmlcontent = "<div class='atonPopupTitle'>Hathor <img src='"+ATON.FE.PATH_RES_ICONS+"hathor.png' class='atonDefIcon'> help</div>";
+    
+    htmlcontent += "<i>Hathor</i> is the official ATON front-end<br>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
@@ -1640,6 +1641,7 @@ HATHOR.popupHelp = ()=>{
     }
     else {
         htmlcontent += "<li><b>'SHIFT' + mouse wheel</b>: increase/decrease radius of selector</li>";
+        htmlcontent += "<li><b>'space'</b>: selector options</li>";
     }
     htmlcontent += "</ul></div>";
 

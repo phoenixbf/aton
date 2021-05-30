@@ -121,6 +121,10 @@ Utils.getFileExtension = ( filepath )=>{
 	return filepath.substr(filepath.lastIndexOf('.')+1).toLowerCase();
 };
 
+Utils.removeFileExtension = ( filepath )=>{
+    return filepath.replace(/\.[^/.]+$/, "");
+};
+
 Utils.isVideo = ( filepath )=>{
     let ext = Utils.getFileExtension(filepath);
 

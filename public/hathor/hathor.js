@@ -147,7 +147,17 @@ HATHOR.uiAddBaseSem = ()=>{
 // Create UI Profiles
 HATHOR.buildUIProfiles = ()=>{
 
-    // Standard / public
+    // Expo / Minimal
+    ATON.FE.uiAddProfile("expo", ()=>{
+        $("#idTopToolbar").html(""); // clear
+
+        ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+        ATON.FE.uiAddButtonVR("idTopToolbar");
+        ATON.FE.uiAddButtonQR("idTopToolbar");
+        //ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    });
+
+    // Standard
     ATON.FE.uiAddProfile("default", ()=>{
         HATHOR.uiBase();
 

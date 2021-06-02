@@ -44,7 +44,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     // keywords
     htmlcontent += "<div>";
-    for (let k in kwds) htmlcontent += "<div class='atonKeyword' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
+    for (let k in kwds) htmlcontent += "<div class='atonKeyword atonKeywordActivable' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
     htmlcontent += "</div>";
 
     htmlcontent += "</div>";

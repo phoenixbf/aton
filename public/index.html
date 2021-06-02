@@ -84,18 +84,13 @@ let onLandingData = (data)=>{
 
         $("#btn-go").click( openSID );
 
-        SHU.createPubScenesGallery("idPubGallery");
+        SHU.createPubScenesGallery("idPubGallery", data.samples);
     }
 };
 
 window.addEventListener( 'load', ()=>{
-/*
-    BE.getScenesSelect("sid");
-    $("#sid").on("change", ()=>{
-        BE.goToScene( $("#sid").val() );
-    });
-*/
-$.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
+
+    $.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
 });
 
 </script>

@@ -422,7 +422,7 @@ FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
         if (onAddKeyword) onAddKeyword(kw);
 
         // Populate box with remove handlers
-        $("#idKWords").append("<div class='atonKeyword' id='idkw-"+kw+"'>"+kw+"</div>");
+        $("#idKWords").append("<div class='atonKeyword atonKeywordActivable' id='idkw-"+kw+"'>"+kw+"</div>");
         $("#idkw-"+kw).click(()=>{
             $("#idkw-"+kw).remove();
 

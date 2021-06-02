@@ -112,9 +112,9 @@ Core.CONF_USERS = [
 	}
 ];
 
+//=========================================
 
-// Maat requests
-//=============================
+// Maat requests (NOT USED for now)
 Core.maatQuery = (str, onresponse)=>{
 	let q = Core._maatEP + str;
 
@@ -130,6 +130,7 @@ Core.maatQuery = (str, onresponse)=>{
 
 
 // Main init routine
+//==========================================================================
 Core.init = ()=>{
 	if (!fs.existsSync(Core.DIR_CONFIG)) makeDir.sync(Core.DIR_CONFIG);
 

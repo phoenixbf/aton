@@ -399,6 +399,53 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
     FE.uiSwitchButton("fullscreen", ATON.isFullscreen());
 };
 
+//TODO:
+FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
+    let htmlcode = "";
+    htmlcode += "Add keyword: <input id='idKWordInput' type='text' maxlength='100' size='30' ><br>";
+    htmlcode += "<div id='idKWords'></div>";
+
+    $("#"+idcontainer).html(htmlcode);
+
+    let kwsObj = {};
+
+    let addKWtoBox = (kw)=>{
+        if (kwsObj[kw]) return; // already there
+
+        kw = kw.toLowerCase().trim();
+
+        $("#idKWordInput").val(""); // clear
+
+        kwsObj[kw] = 1;
+
+        console.log("Added keyword "+kw);
+        if (onAddKeyword) onAddKeyword(kw);
+
+        // Populate box with remove handlers
+        $("#idKWords").append("<div class='atonKeyword' id='idkw-"+kw+"'>"+kw+"</div>");
+        $("#idkw-"+kw).click(()=>{
+            $("#idkw-"+kw).remove();
+
+            console.log("Removed keyword "+kw);
+            if (onRemoveKeyword) onRemoveKeyword(kw);
+        });
+    };
+
+    if (kwList){
+        for (let k in kwList) addKWtoBox( kwList[k] );
+    }
+
+    $("#idKWordInput").keypress(function(event){
+        let keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode != '13') return;
+
+        let kw = $("#idKWordInput").val().toLowerCase().trim();
+        if (!kw || kw.length < 3) return;
+
+        addKWtoBox(kw);
+    });
+};
+
 // Get css class from vrc ID
 FE.getVRCclassFromID = (uid)=>{
     let i = (uid%6);

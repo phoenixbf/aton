@@ -1546,7 +1546,9 @@ HATHOR.popupEditSceneInfo = ()=>{
     
     htmlcontent += "Title: <input id='idSceneTitle' type='text' maxlength='30' size='30' ><br>";
     htmlcontent += "<textarea id='idSummaryEditor' style='width:100%'></textarea><br>";
-    htmlcontent += "Keywords (comma separated):<br><input id='idSceneKWords' type='text' maxlength='100' style='width:90%' ><br>";
+    //htmlcontent += "Keywords (comma separated):<br><input id='idSceneKWords' type='text' maxlength='100' style='width:90%' ><br>";
+
+    htmlcontent += "<div id='idSceneKWords'></div>";
 
     htmlcontent += "<div class='atonBTN atonBTN-green' id='idSceneSummaryOK' style='width:80%'>DONE</div>";
 
@@ -1560,25 +1562,49 @@ HATHOR.popupEditSceneInfo = ()=>{
     let T = ATON.SceneHub.getTitle();
     if (T) $("#idSceneTitle").val(T);
 
+    let kwlist = [];
+    if (ATON.SceneHub.currData && ATON.SceneHub.currData.kwords){
+        for (let kw in ATON.SceneHub.currData.kwords) kwlist.push(kw);
+    }
+
+    ATON.FE.uiAddKeywordsArea("idSceneKWords", kwlist, 
+    (kw)=>{ // on add keyword
+        let E = {};
+        E.kwords = {};
+        E.kwords[kw] = 1;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+    },
+    (kw)=>{ // on remove keyword
+        let E = {};
+        E.kwords = {};
+        E.kwords[kw] = 1;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+
+    });
+
     $('#idSceneSummaryOK').click(()=>{
         let xxtmldescr = JSON.stringify( $("#idSummaryEditor").val() );
         let title = $("#idSceneTitle").val();
         
+/*
         let kwords = $("#idSceneKWords").val().trim();
         if (kwords.length>2){
             kwords = kwords.toLowerCase();
             kwords = kwords.split(",");
         }
-
+*/
         ATON.FE.popupClose();
 
         let E = {};
 
+/*
         if (kwords && kwords.length>0){
             E.kwords = {};
             for (let k in kwords) E.kwords[ kwords[k] ] = 1;
         }
-
+*/
         if (xxtmldescr && xxtmldescr.length>2){
             ATON.SceneHub.setDescription( xxtmldescr );
             E.description = xxtmldescr;

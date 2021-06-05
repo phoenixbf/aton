@@ -627,7 +627,7 @@ load(url, onComplete){
     }
 
     // Fire request
-    if (N.type === ATON.NTYPES.SCENE) ATON._assetReqNew(url);
+    /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqNew(url);
 
     let P = new Promise( ( resolve, reject ) => {
         ATON._aLoader.load( url, (data)=>{
@@ -653,7 +653,7 @@ load(url, onComplete){
             resolve(model);
             console.log("Model "+url+" loaded");
             
-            if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
 
             // post-visit (FIXME:)
             //N.setPickable(N.bPickable);
@@ -662,6 +662,9 @@ load(url, onComplete){
             if (N.type === ATON.NTYPES.SCENE) ATON._bqScene = true;
             if (N.type === ATON.NTYPES.SEM)   ATON._bqSem = true;
 
+            //
+            if (N.bPickable) N.enablePicking();
+
             if (onComplete) onComplete();
         },
         undefined,
@@ -669,7 +672,7 @@ load(url, onComplete){
             //console.log(err);
             //reject(model);
 
-            if (N.type === ATON.NTYPES.SCENE) ATON._assetReqComplete(url);
+            /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
             if (onComplete) onComplete();
         });
 

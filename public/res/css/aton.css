@@ -300,9 +300,11 @@ canvas:active {
 	position: absolute;
 
     height: 100%;
+    max-height: none;
  
     width: 40%;
     /*min-width: 400px;*/
+    max-width: 350px;
 
     margin: 0px;
     padding: 10px;
@@ -323,10 +325,12 @@ canvas:active {
 
 @media screen and (orientation: portrait) {
     .infoContainer {
-        left: 0%;
-
-        width: 100%;
+        width: 95%;
+        max-width: none;
         height: 40%;
+        max-height: 350px;
+
+        margin: auto;
 
         top: 60%;
         bottom: 0px;
@@ -334,18 +338,20 @@ canvas:active {
         animation: 0.5s ease-out 0s 1 slideFromBottom;
     }
 }
-
+/*
 @media screen and (max-width: 500px) {
     .infoContainer {
         width: 90%;
         margin: auto;
     }
 }
-
+*/
 .infoTitle {
     text-align: right;
     font-size: larger;
     font-weight: bold;
+
+    margin: 10px;
 }
 
 @media screen and (orientation: portrait) {
@@ -355,8 +361,10 @@ canvas:active {
 }
 
 .infoContent {
+/*
     padding: 10px;
-
+    margin: auto;
+*/
     width: 100%;
     height: 100%;
 
@@ -364,10 +372,34 @@ canvas:active {
     -webkit-overflow-scrolling: touch;
 }
 
+.infoContent img {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+    margin-bottom: 10px;
+
+    border-radius: 10px;
+
+    width: 300px;
+    height: auto;
+}
+
+@media screen and (orientation: portrait) {
+    .infoContent img {
+        display: inline;
+        float: left;
+        width: 300px;
+        margin-right: 10px;
+    }
+}
+
 .descriptionText {
     text-shadow: 0px 0px 4px black;
     text-align: justify;
+/*
     padding: 8px;
+*/
 }
 
 

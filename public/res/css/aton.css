@@ -295,7 +295,7 @@ canvas:active {
     -webkit-overflow-scrolling: touch;
 }
 
-.infoContainer {
+.atonSidePanelContainer {
     z-index: 8;
 	position: absolute;
 
@@ -304,10 +304,12 @@ canvas:active {
  
     width: 40%;
     /*min-width: 400px;*/
-    max-width: 350px;
+    max-width: 300px;
 
     margin: 0px;
     padding: 10px;
+
+    padding-top: 45px;
 /*
     padding-right: 45px;
     padding-bottom: 45px;
@@ -324,43 +326,46 @@ canvas:active {
 }
 
 @media screen and (orientation: portrait) {
-    .infoContainer {
-        width: 95%;
+    .atonSidePanelContainer {
+        width: auto;
         max-width: none;
         height: 40%;
-        max-height: 350px;
+        max-height: 300px;
 
-        margin: auto;
+        padding-top: 10px;
 
-        top: 60%;
         bottom: 0px;
-
+        top: auto;
+        
+        margin: auto;
+        
         animation: 0.5s ease-out 0s 1 slideFromBottom;
     }
 }
 /*
 @media screen and (max-width: 500px) {
-    .infoContainer {
+    .atonSidePanelContainer {
         width: 90%;
         margin: auto;
     }
 }
 */
-.infoTitle {
-    text-align: right;
-    font-size: larger;
-    font-weight: bold;
 
-    margin: 10px;
+.atonSidePanelCloseBTN {
+    position: absolute;
+    left: 8px;
+    top: 50px;
+
+    pointer-events: auto;
 }
 
 @media screen and (orientation: portrait) {
-    .infoTitle {
-        text-align: center;
+    .atonSidePanelCloseBTN {
+        top: 8px;
     }
 }
 
-.infoContent {
+.atonSidePanelContent {
 /*
     padding: 10px;
     margin: auto;
@@ -372,7 +377,7 @@ canvas:active {
     -webkit-overflow-scrolling: touch;
 }
 
-.infoContent img {
+.atonSidePanelContent img {
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -381,15 +386,17 @@ canvas:active {
 
     border-radius: 10px;
 
-    width: 300px;
+    width: 250px;
     height: auto;
 }
 
 @media screen and (orientation: portrait) {
-    .infoContent img {
+    .atonSidePanelContent img {
         display: inline;
         float: left;
-        width: 300px;
+        width: 50%;
+        max-width: 250px;
+
         margin-right: 10px;
     }
 }
@@ -917,8 +924,8 @@ canvas:active {
 @media screen and (orientation: portrait){
 /*@media screen and (max-width: 600px){*/
     .atonPopup {
-        width: 90%;
-        max-width: 90%;
+        width: auto;
+        max-width: auto;
     }
 }
 
@@ -928,7 +935,7 @@ canvas:active {
 @media screen and (orientation: portrait){
     /*@media screen and (max-width: 800px){*/
         .atonPopupLarge {
-            width: 90%;
+            width: auto;
         }
 }
 
@@ -938,7 +945,7 @@ canvas:active {
 @media screen and (orientation: portrait){
     /*@media screen and (max-width: 800px){*/
         .atonPopupCompact {
-            width: 90%;
+            width: auto;
             max-width: none;
         }
 }

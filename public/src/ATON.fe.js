@@ -402,15 +402,17 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
 //TODO:
 FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
     let htmlcode = "";
-    htmlcode += "Add keyword: <input id='idKWordInput' type='text' maxlength='100' size='30' ><br>";
+    htmlcode += "Add keyword: <input id='idKWordInput' type='text' maxlength='100' size='20'><div class='atonBTN atonBTN-green' id='idKWadd'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div><br>";
     htmlcode += "<div id='idKWords'></div>";
 
     $("#"+idcontainer).html(htmlcode);
 
+    FE.uiAttachInputFilterID("idKWordInput");
+
     let kwsObj = {};
 
     let addKWtoBox = (kw)=>{
-        if (kwsObj[kw]) return; // already there
+        if (kwsObj[kw]) return; // check duplicate
 
         kw = kw.toLowerCase().trim();
 
@@ -439,6 +441,13 @@ FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
         let keycode = (event.keyCode ? event.keyCode : event.which);
         if (keycode != '13') return;
 
+        let kw = $("#idKWordInput").val().toLowerCase().trim();
+        if (!kw || kw.length < 3) return;
+
+        addKWtoBox(kw);
+    });
+
+    $("#idKWadd").click(()=>{
         let kw = $("#idKWordInput").val().toLowerCase().trim();
         if (!kw || kw.length < 3) return;
 

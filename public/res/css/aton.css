@@ -936,6 +936,7 @@ canvas:active {
     /*@media screen and (max-width: 800px){*/
         .atonPopupLarge {
             width: auto;
+            max-width: none;
         }
 }
 

@@ -100,7 +100,7 @@ SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput)=>{
     });
 };
 
-SHU.createPubScenesGallery = (idcontainer, bSamples)=>{
+SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
     let htmlcontent = "";
 
     if (bSamples === undefined) bSamples = true;
@@ -150,6 +150,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples)=>{
         }
 
         $("#"+idcontainer).html(htmlcontent);
+
+        if (onComplete) onComplete();
     });
 };
 

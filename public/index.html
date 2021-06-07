@@ -25,6 +25,8 @@
 <script type="text/javascript" src="shu/shu.js"></script>
 
 <script>
+let urlParams = new URLSearchParams(window.location.search);
+let query = urlParams.get('q');
 
 let openSID = ()=>{
     let sid = $("#sid").val();
@@ -37,11 +39,32 @@ let showAllScenes = ()=>{
     });
 };
 
+
+// Search
 let search = ()=>{
-    let searchTerm = $("#sid").val().toLowerCase();
+    let searchTerm = $("#sid").val().trim().toLowerCase();
     searchTerm = searchTerm.split(" ")[0];
 
+    searchByTerm(searchTerm);
+
     //console.log(searchTerm);
+/*
+    if (searchTerm.length<3 || searchTerm.includes("/")){
+        showAllScenes();
+        return;
+    }
+
+    $('.atonGalleryItem').each(function(){
+        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1){
+            $(this).show();
+        }
+        else $(this).hide();
+    });
+*/
+};
+
+let searchByTerm = (searchTerm)=>{
+    if (searchTerm === undefined) return;
 
     if (searchTerm.length<3 || searchTerm.includes("/")){
         showAllScenes();
@@ -58,6 +81,20 @@ let search = ()=>{
 
 let onLandingData = (data)=>{
     let htmlcontent = "";
+
+    if (query){
+        htmlcontent += "<div id='idPubGallery'></div>";
+
+        htmlcontent += "<br><br>";
+
+        $("#idMainContent").html(htmlcontent);
+
+        SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
+            searchByTerm( query );
+        });
+
+        return;
+    }
 
     if (data.redirect !== undefined){
         window.location.replace(data.redirect);
@@ -89,7 +126,6 @@ let onLandingData = (data)=>{
 };
 
 window.addEventListener( 'load', ()=>{
-
     $.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
 });
 

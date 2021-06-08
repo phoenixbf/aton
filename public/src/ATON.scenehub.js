@@ -50,11 +50,11 @@ SceneHub.setEditMode = (b)=>{
     Loads a scene by providing JSON path
     @param {string} reqpath - JSON url
     @param {string} sid - Scene ID
-    @param {function} oncomplete - Function to be called on complete
+    @param {function} onSuccess - (Optional) function to be called on success
     @example
         ATON.SceneHub.load("http://path/to/scene.json", "sample", ()=>{ console.log("Done!"); });
 */
-SceneHub.load = (reqpath, sid, oncomplete)=>{
+SceneHub.load = (reqpath, sid, onSuccess/*, onFail*/)=>{
     //let args = reqpath.split(',');
 
     SceneHub._bLoading = true;
@@ -69,9 +69,17 @@ SceneHub.load = (reqpath, sid, oncomplete)=>{
 
         SceneHub.parseScene(data);
 
-        if (oncomplete) oncomplete();
+        if (onSuccess) onSuccess();
         ATON.fireEvent("SceneJSONLoaded", sid);
     });
+/*
+    .fail(()=>{
+        SceneHub._bLoading = false;
+        console.log("Fail to load "+reqpath);
+
+        if (onFail) onFail();
+    });
+*/
 };
 
 // Parse JSON scene obj

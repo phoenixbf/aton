@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "description": "ATON Framework",
   "main": "ATON.service.main.js",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node services/ATON.service.main.js",
@@ -12,14 +13,20 @@
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
     "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"
   },
+
   "author": "Bruno Fanini",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "https://github.com/phoenixbf/aton.git"
   },
+  
+  "browserslist": [
+    "since 2017-06"
+  ],
+
   "dependencies": {
-    "3d-tiles-renderer": "^0.2.10",
+    "3d-tiles-renderer": "^0.2.11",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
@@ -56,9 +63,9 @@
     "replace": "^1.2.0",
     "session-file-store": "^1.5.0",
     "socket.io": "^3.1.1",
-    "three": "0.127",
+    "three": "0.129",
     "three-mesh-bvh": "0.3.7",
-    "three-mesh-ui": "4.6.1",
+    "three-mesh-ui": "4.7.1",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

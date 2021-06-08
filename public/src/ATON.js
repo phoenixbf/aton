@@ -572,6 +572,11 @@ ATON.realize = ()=>{
     ATON._tgiPer = undefined; // tgi percentage
     ATON._tHover  = undefined;
 
+    // Main Panorama
+    ATON._bMainPanoInfinite = true;
+    ATON._matMainPano = undefined;
+    ATON._mMainPano   = undefined;
+
     //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
 
 
@@ -1047,6 +1052,23 @@ ATON.setMainPanorama = (path)=>{
         //return;
     }
 */
+
+    // Geometry
+    if (ATON._mMainPano === undefined){
+        ATON._gMainPano = new THREE.SphereBufferGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
+        //ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
+        
+        ATON._gMainPano.castShadow    = false;
+        ATON._gMainPano.receiveShadow = false;
+
+        ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
+        ATON._mMainPano.frustumCulled = false;
+        ATON._mMainPano.renderOrder = -100;
+        
+        ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
+        ///ATON.setMainPanoramaRadius(100.0);
+    }
+
     // Panoramic Video
     if (ATON.Utils.isVideo(path)){
         // First time
@@ -1072,27 +1094,34 @@ ATON.setMainPanorama = (path)=>{
         //tpano.minFilter = THREE.NearestFilter;
 		//tpano.generateMipmaps = false;
         //console.log(ATON._elPanoVideo);
+
+        ATON._realizeOrUpdateMainPano(tpano);
     }
     // Static Panorama
     else {
+        /*
         tpano = new THREE.TextureLoader().load(path);
         tpano.encoding = THREE.sRGBEncoding;
         //tpano.minFilter = THREE.NearestFilter;
 		tpano.generateMipmaps = true;
-    }
+        */
+        ATON.Utils.textureLoader.load(path, (tex)=>{
+            tex.encoding = THREE.sRGBEncoding;
+            //tex.minFilter = THREE.NearestFilter;
+		    tex.generateMipmaps = true;
 
+            ATON._realizeOrUpdateMainPano(tex);
+        });
+    }
+};
+
+ATON._realizeOrUpdateMainPano = (tpano)=>{
+    // We already created a main pano
     if (ATON._matMainPano !== undefined){
         ATON._matMainPano.map = tpano;
         //ATON._matMainPano.emissive = tpano;
         return;
     }
-
-    // First time: create it
-    ATON._gMainPano = new THREE.SphereBufferGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
-    //ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
-    
-    ATON._gMainPano.castShadow = false;
-    ATON._gMainPano.receiveShadow = false;
 
     ATON._matMainPano = new THREE.MeshBasicMaterial({ 
         map: tpano,
@@ -1106,18 +1135,23 @@ ATON.setMainPanorama = (path)=>{
         //side: THREE.BackSide, // THREE.DoubleSide
     });
 
+    ATON._mMainPano.material = ATON._matMainPano;
+
+/*
     ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
     ATON._mMainPano.frustumCulled = false;
     ATON._mMainPano.renderOrder = -100;
     
     ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
     ///ATON.setMainPanoramaRadius(100.0);
-
+*/
     // FIXME: dirty, find another way
-    ATON._mMainPano.onAfterRender = ()=>{
-        //if (ATON._numReqLoad > 0) return;
-        if (ATON.Nav._currPOV) ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
-    };
+    if (ATON._bMainPanoInfinite){
+        ATON._mMainPano.onAfterRender = ()=>{
+            //if (ATON._numReqLoad > 0) return;
+            if (ATON.Nav._currPOV) ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
+        };
+    }
 
     ATON._rootVisibleGlobal.add(ATON._mMainPano);
 };
@@ -1137,6 +1171,35 @@ ATON.setMainPanoramaRotation(1.5);
 ATON.setMainPanoramaRotation = (r)=>{
     if (ATON._mMainPano === undefined) return;
     ATON._mMainPano.rotation.set( 0,r,0 );
+};
+
+/**
+Enable or disable main panorama infinite distance
+@param {boolean} b
+@example
+ATON.setMainPanoramaInfinite(false);
+*/
+ATON.setMainPanoramaInfinite = (b)=>{
+    ATON._bMainPanoInfinite = b;
+
+    if (ATON._mMainPano === undefined) return;
+
+    if (b){
+        ATON._mMainPano.onAfterRender = ()=>{
+            //if (ATON._numReqLoad > 0) return;
+            if (ATON.Nav._currPOV) ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
+        };
+    }
+    else {
+        ATON._mMainPano.onAfterRender = undefined;
+    }
+};
+
+ATON.setMainPanoramaLocation = (c)=>{
+    if (ATON._bMainPanoInfinite) return;
+    if (ATON._mMainPano === undefined) return;
+
+    ATON._mMainPano.position.copy(c);    
 };
 
 /**

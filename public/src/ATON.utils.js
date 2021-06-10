@@ -246,10 +246,45 @@ Utils.updateTSetsCamera = (cam)=>{
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
 
+/*
+    // Immersive VR mode
+    if (ATON.XR._bPresenting){
+        //console.log(ATON._tsets)
+
+        for (let ts=0; ts<nts; ts++){
+            const TS = ATON._tsets[ts];
+
+            // remove all cameras so we can use the VR camera instead
+            TS.cameras.forEach( c => TS.deleteCamera( cam ) );
+
+            let currCamera = ATON._renderer.xr.getCamera(); // cam
+            if (currCamera){
+                TS.setCamera( currCamera );
+
+                TS.setResolution( currCamera, 8000, 8000 );
+
+                let leftCam = currCamera.cameras[0];
+                if ( leftCam ){
+                    //TS.setResolution( currCamera, leftCam.viewport.z, leftCam.viewport.w );
+                    //console.log(leftCam);
+                }
+            }
+        }
+
+        return;
+    }
+*/
+
     for (let ts=0; ts<nts; ts++){
         const TS = ATON._tsets[ts];   
+
+        //console.log(TS.cameras);
+        for (let c in TS.cameras) TS.deleteCamera( TS.cameras[c] );
+
         TS.setCamera( cam );
-        TS.setResolutionFromRenderer( cam, ATON._renderer );
+
+        //TS.setResolutionFromRenderer( cam, ATON._renderer );
+        TS.setResolution( cam, 200, 200 );
     }
 };
 
@@ -276,7 +311,7 @@ Utils.loadTileSet = (tsurl, N)=>{
         //ATON._onAllReqsCompleted();
 
         if (!bFirst){
-            //ATON._assetReqComplete(tsurl);
+            ///ATON._assetReqComplete(tsurl);
             ATON._onAllReqsCompleted();
             bFirst = true;
         }

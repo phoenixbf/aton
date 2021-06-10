@@ -235,8 +235,6 @@ XR.onSessionStarted = ( session )=>{
 
     //console.log(session);
 
-    if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5); // for immersive sessions we (re)set selector radius to 50cm
-
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
@@ -349,8 +347,6 @@ XR.onSessionStarted = ( session )=>{
         // reparent current camera to the XR rig
         XR.rig.add( ATON.Nav._camera );
 
-        ATON.Utils.updateTSetsCamera();
-
         XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
         console.log(ATON.Nav._currPOV.pos);
 
@@ -361,8 +357,19 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.fireEvent("XRmode", true);
 
+        // for immersive sessions we (re)set selector radius to 50cm
+        if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
+
         //console.log(session);
 
+        let C = ATON._renderer.xr.getCamera();
+        ATON.Utils.updateTSetsCamera( C );
+
+        // FIXME: needed bc selector 0.5 radius is not applied
+        setTimeout( ()=>{
+            //ATON.Utils.updateTSetsCamera();
+            if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
+        }, 2000);
     });
 };
 
@@ -381,6 +388,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
     ATON.MediaRec.stopMediaStreaming();
 
     ATON.Nav.requestHome();
+
+    ATON.Utils.updateTSetsCamera();
 
     console.log("Quit XR");
 };
@@ -606,6 +615,14 @@ XR._deltaMotionController = (C)=>{
 };
 
 XR.update = ()=>{
+
+/*
+    //if (XR._bPresenting) ATON.Utils.updateTSetsCamera();
+    if (XR._bPresenting){
+        let C = ATON._renderer.xr.getCamera();
+        ATON.Utils.updateTSetsCamera( C );
+    }
+*/
     // R controller
     if (XR.controller0 && XR.controller0.visible){
         XR.controller0.getWorldPosition(XR.controller0pos);

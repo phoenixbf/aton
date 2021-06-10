@@ -409,7 +409,7 @@ canvas:active {
 */
 }
 
-
+/* Spinner/Loader */
 .atonCenterLoader {
     position: fixed;
     z-index: 10;
@@ -425,6 +425,21 @@ canvas:active {
     pointer-events: none;
 
     animation: loader 2s linear infinite;
+}
+
+.atonCenterPointer {
+    position: fixed;
+    z-index: 10;
+
+    display:inline-block;
+    width: 32px;
+    height: 32px;
+
+    top: 50%;
+    left: 50%;
+    /*transform: translate(-50%,-50%);*/
+
+    pointer-events: none;
 }
 
 .atonUserBG {

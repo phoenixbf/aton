@@ -123,6 +123,7 @@ Set selector radius
 SUI.setSelectorRadius = (r)=>{
     SUI._selectorRad = r;
     SUI.mainSelector.scale.set(r,r,r);
+    //console.log(r);
 };
 
 /**

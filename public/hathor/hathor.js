@@ -528,6 +528,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==="Control") ATON.Nav.setUserControl(false);
 
         if (k === 'y'){
+            //ATON.Utils.updateTSetsCamera();
         }
 
         if (k === 'g') HATHOR.popupGraphs();

@@ -186,7 +186,7 @@ FE._update = ()=>{
         ATON.setMainLightDirection(FE._cLightDir);
         //ATON.updateDirShadows();
     }
-
+/*
     if (FE._bControlSelScale){
         //const sx = ATON._screenPointerCoords.x;
         const f = ATON._screenPointerCoords.y;
@@ -194,6 +194,7 @@ FE._update = ()=>{
         const r = ATON.SUI.mainSelector.scale.x + f;
         if (r > 0.0001) ATON.SUI.setSelectorRadius(r);
     }
+*/
 };
 
 
@@ -427,6 +428,8 @@ FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
         $("#idKWords").append("<div class='atonKeyword atonKeywordActivable' id='idkw-"+kw+"'>"+kw+"</div>");
         $("#idkw-"+kw).click(()=>{
             $("#idkw-"+kw).remove();
+
+            kwsObj[kw] = undefined;
 
             console.log("Removed keyword "+kw);
             if (onRemoveKeyword) onRemoveKeyword(kw);

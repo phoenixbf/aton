@@ -488,8 +488,9 @@ VRoadcast._registerSocketHandlers = ()=>{
             //A._auTalk.setPlaybackRate(0.9);
             A._auTalk.play();
         });
-        
 
+        audioURL = null;
+        
 /*
         //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
         //let audioURL = window.URL.createObjectURL(newblob);

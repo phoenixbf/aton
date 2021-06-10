@@ -44,6 +44,7 @@ npm start
 # Publications
 Here is a list of publications where ATON (including previous versions) was employed:
 
+* Fanini, B., Ferdani, D., & Demetrescu, E. (2021). Temporal Lensing: An Interactive and Scalable Technique for Web3D/WebXR Applications in Cultural Heritage. Heritage, 4(2), 710-724.
 * Luigini, A., Fanini, B., Basso, A., & Basso, D. (2020). Heritage education through serious games. A web-based proposal for primary schools to cope with distance learning. VITRUVIO-International Journal of Architectural Technology and Sustainability, 5(2), 73-85.
 * B. Fanini, L. Cinque (2020). Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue "Emerging Artificial Intelligence (AI) Technologies for Learning"
 * B. Fanini (2020). Applications of a compact session encoding for immersive WebVR/XR analytics. Chapter 6 in Digital & Documentation – Digital strategies for Cultural Heritage. Vol. 2

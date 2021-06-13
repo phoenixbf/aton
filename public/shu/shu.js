@@ -15,6 +15,16 @@ let SHU = {};
 SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/aton/";
 SHU.urlATONgit     = "https://github.com/phoenixbf/aton";
 
+SHU.sidCompare = (a,b)=>{
+    if (a.sid > b.sid) {
+        return -1;
+    }
+    if (b.sid > a.sid) {
+        return 1;
+    }
+    return 0;
+};
+
 SHU.getBaseFolder = ( filepath )=>{
     let index  = filepath.lastIndexOf( '/' );
     if ( index !== -1 ) return filepath.substring( 0, index + 1 );
@@ -106,6 +116,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
     if (bSamples === undefined) bSamples = true;
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
+        data.sort( SHU.sidCompare );
+
         for (let s in data){
             let scene = data[s];
             let sid   = scene.sid;

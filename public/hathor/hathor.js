@@ -78,10 +78,11 @@ HATHOR.resetSelectionMode = ()=>{
     HATHOR._selMode = HATHOR.SELACTION_STD;
     $("#btn-shape-convex").removeClass("atonBTN-rec");
     $("#btn-shape-sphere").removeClass("atonBTN-rec");
-
-    ATON.Nav.setUserControl(true);
+    $("#btn-measure").removeClass("atonBTN-rec");
 
     ATON.getUINode("sui_measure").switch(false);
+
+    ATON.Nav.setUserControl(true);
     return;
 };
 
@@ -106,6 +107,7 @@ HATHOR.setSelectionMode = (m)=>{
 
     if (m === HATHOR.SELACTION_MEASURE){
         ATON.getUINode("sui_measure").switch(true);
+        $("#btn-measure").addClass("atonBTN-rec");
     }
 };
 
@@ -147,7 +149,29 @@ HATHOR.uiAddBaseSem = ()=>{
 // Create UI Profiles
 HATHOR.buildUIProfiles = ()=>{
 
-    // Expo / Minimal
+    ATON.FE.uiAddProfile("minimal", ()=>{
+        $("#idTopToolbar").html(""); // clear
+
+        ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+        ATON.FE.uiAddButtonVR("idTopToolbar");
+        ATON.FE.uiAddButtonScreenshot("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "measure", ()=>{
+            if (HATHOR._selMode !== HATHOR.SELACTION_MEASURE){
+                HATHOR.setSelectionMode(HATHOR.SELACTION_MEASURE);
+                //ATON.Nav.setUserControl(false);
+                //$("#btn-cancel").show();
+            }
+            else {
+                HATHOR.resetSelectionMode();
+            }
+        }, "Measure");
+
+        ATON.FE.uiAddButton("idTopToolbar","light", HATHOR.popupEnvironment, "Environment");
+
+        //ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    });
+
+    // Expo
     ATON.FE.uiAddProfile("expo", ()=>{
         $("#idTopToolbar").html(""); // clear
 
@@ -479,6 +503,10 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.SemFactory.stopCurrentConvex();
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
             HATHOR.resetSelectionMode();
+        }
+
+        if (HATHOR._selMode === HATHOR.SELACTION_MEASURE){
+            HATHOR.measure();
         }
     });
 

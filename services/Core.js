@@ -9,13 +9,15 @@
 ==================================================================================*/
 const fs          = require('fs');
 const path        = require('path');
-const glob        = require("glob");
+//const glob        = require("glob");
 const jsonpatch   = require('fast-json-patch');
 const del         = require('del');
 const makeDir     = require('make-dir');
 const nanoid      = require('nanoid');
 const fsx         = require('fs-extra');
 const axios       = require('axios');
+//const chokidar    = require('chokidar');
+const fg          = require('fast-glob');
 
 var passport = require('passport');
 var Strategy = require('passport-local').Strategy;
@@ -113,8 +115,228 @@ Core.CONF_USERS = [
 ];
 
 //=========================================
+// Maat
 
-// Maat requests (NOT USED for now)
+Core.maat = {};
+Core.maat.INTERVAL = 5000;
+
+
+Core.maat.init = ()=>{
+	Core.maat.needScan = {};
+	Core.maat.needScan.scenes      = true;
+	Core.maat.needScan.collections = {};
+	//Core.maat.needScan.models = {};
+	//Core.maat.needScan.panos  = {}
+
+	//Core.maat._bDirtyScenes      = true;
+	//Core.maat._bDirtyCollections = true;
+
+	Core.maat.db = {};
+	Core.maat.db.scenes = [];
+	Core.maat.db.kwords = {};
+
+	Core.maat.db.collections = {};
+
+	//Core.maat.scanScenes();
+
+/*
+	const watcherScenes = chokidar.watch(Core.DIR_SCENES, {
+		ignored: /(^|[\/\\])\../, // ignore dotfiles
+		persistent: true,
+		usePolling: true,
+		interval: 2000,
+		ignoreInitial: true
+	});
+	const watcherCollections = chokidar.watch(Core.DIR_COLLECTIONS, {
+		ignored: /(^|[\/\\])\../, // ignore dotfiles
+		persistent: true,
+		usePolling: true,
+		interval: 2000,
+		ignoreInitial: true
+	});
+
+	let onScenesChange = (p)=>{
+		Core.maat._bDirtyCollections = true
+	};
+	let onCollectionsChange = (p)=>{
+		Core.maat._bDirtyCollections = true;
+	};
+
+	watcherScenes
+		.on('add', onScenesChange )
+		.on('change', onScenesChange )
+		.on('unlink', onScenesChange );
+
+	watcherCollections
+		.on('add', onCollectionsChange )
+		.on('change', onCollectionsChange )
+		.on('unlink', onCollectionsChange );
+*/
+
+
+/*
+    fs.watch(Core.DIR_SCENES, (eventType, filename) => {
+        console.log("\nThe file " + filename + " was modified! ("+eventType+")");
+        Core.maat._bDirtyScenes = true;
+    });
+
+    fs.watch(Core.DIR_COLLECTIONS, (eventType, filename) => {
+        console.log("\nThe file " + filename + " was modified! ("+eventType+")");
+        Core.maat._bDirtyCollections = true;
+    });
+*/
+    //Core.maat._dUpd = setInterval(Core.maat.update, Core.maat.INTERVAL);
+};
+
+/*
+Core.maat.update = ()=>{
+	//if (Core.maat._bDirtyScenes) 
+		Core.maat.scanScenes();
+	//if (Core.maat._bDirtyCollections) 
+		Core.maat.scanCollections();
+
+	//console.log("ping #"+process.env.INSTANCE_ID);
+
+	//console.log(Core.db.scenes);
+};
+*/
+
+Core.maat.scanScenes = ()=>{
+	if (Core.maat.needScan.scenes === false) return;
+
+	Core.maat.db.scenes = [];
+	
+	console.log("Scanning scenes...");
+
+	let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+
+	for (let f in files){
+		let S = {};
+
+		let sid       = path.dirname(files[f]);
+		let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
+		let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
+
+		S.sid    = sid;
+		S.cover  = fs.existsSync(coverfile)? true : false;
+		S.public = fs.existsSync(pubfile)? true : false;
+		
+		let sobj = Core.readSceneJSON(sid);
+
+		if (sobj){
+			if (sobj.title)  S.title  = sobj.title;
+			if (sobj.kwords) S.kwords = sobj.kwords;
+		}
+
+		Core.maat.db.scenes.push(S);
+	}
+
+	Core.maat.needScan.scenes = false;
+
+	setTimeout(()=>{
+		Core.maat.needScan.scenes = true;
+	}, Core.maat.INTERVAL);
+};
+
+// Collections
+Core.maat.scanCollection = (uid)=>{
+	if (Core.maat.needScan.collections[uid] === false) return;
+
+	Core.maat.scanModels(uid);
+	Core.maat.scanPanoramas(uid);
+
+	Core.maat.needScan.collections[uid] = false;
+
+	setTimeout(()=>{
+		Core.maat.needScan.collections[uid] = true;
+	}, Core.maat.INTERVAL);
+
+};
+
+Core.maat.scanModels = (uid)=>{
+	let CC = Core.maat.db.collections;
+
+	if (CC[uid] === undefined) CC[uid] = {};
+
+	let relpath = uid +"/models/";
+
+	let globopts    = {};
+	globopts.cwd    = Core.DIR_COLLECTIONS + relpath;
+	globopts.follow = true;
+
+	let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
+
+	if (files.length < 1) return;
+
+	CC[uid].models = [];
+
+	for (let f in files) CC[uid].models.push( relpath + files[f] );
+};
+
+Core.maat.scanPanoramas = (uid)=>{
+	let CC = Core.maat.db.collections;
+
+	if (CC[uid] === undefined) CC[uid] = {};
+
+	let relpath = uid +"/pano/";
+
+	let globopts    = {};
+	globopts.cwd    = Core.DIR_COLLECTIONS + relpath;
+	globopts.follow = true;
+
+	let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
+
+	if (files.length < 1) return;
+
+	CC[uid].panos = [];
+	for (let f in files) CC[uid].panos.push( relpath + files[f] );
+};
+
+
+Core.maat.getAllScenes = ()=>{
+	Core.maat.scanScenes();
+
+	return Core.maat.db.scenes;
+}
+Core.maat.getPublicScenes = ()=>{
+	Core.maat.scanScenes();
+
+	let R = Core.maat.db.scenes.filter((s)=>{
+		return (s.public);
+	});
+
+	return R;
+};
+Core.maat.getUserScenes = (uid)=>{
+	Core.maat.scanScenes();
+
+	let R = Core.maat.db.scenes.filter((s)=>{
+		return (s.sid.startsWith(uid));
+	});
+
+	return R;
+}
+Core.maat.getUserModels = (uid)=>{
+	Core.maat.scanCollection(uid);
+
+	let CC = Core.maat.db.collections;
+	if (CC[uid] === undefined) return [];
+
+	return CC[uid].models;
+};
+Core.maat.getUserPanoramas = (uid)=>{
+	Core.maat.scanCollection(uid);
+
+	let CC = Core.maat.db.collections;
+	if (CC[uid] === undefined) return [];
+
+	return CC[uid].panos;
+};
+
+
+
+// Maat as external service (NOT USED for now)
+/*
 Core.maatQuery = (str, onresponse)=>{
 	let q = Core._maatEP + str;
 
@@ -127,7 +349,7 @@ Core.maatQuery = (str, onresponse)=>{
     		console.log('Error: ', err.message);
 		});
 };
-
+*/
 
 // Main init routine
 //==========================================================================
@@ -141,6 +363,8 @@ Core.init = ()=>{
 	Core._maatEP = "http://localhost:"+maatport+"/";
 
 	console.log("DB users: "+Core.users.length);
+
+	Core.maat.init();
 };
 
 Core.loadConfigFile = (jsonfile, defconf)=>{
@@ -698,9 +922,11 @@ Core.realizeBaseAPI = (app)=>{
 		Core.maatQuery("scenes/public", (R)=>{
 			res.send(R);
 		});
-*/		
-		let files = glob.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+*/
+		res.send( Core.maat.getPublicScenes() );
 
+		//let files = glob.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+/*
 		let S = [];
 		for (let f in files){
 			let basepath  = path.dirname(files[f]);
@@ -722,7 +948,7 @@ Core.realizeBaseAPI = (app)=>{
 		}
 
 		res.send(S);
-
+*/
 		//next();
 	});
 
@@ -764,13 +990,15 @@ Core.realizeBaseAPI = (app)=>{
 			res.send(R);
 		});
 */
+		res.send( Core.maat.getUserScenes(uname) );
 
+/*
 		let O = {};
 		O.cwd = Core.DIR_SCENES+uname;
 		O.follow = true;
-
-		let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
-
+*/
+		//let files = glob.sync("**/"+Core.STD_SCENEFILE, O);
+/*
 		let S = [];
 		for (let f in files){
 			let basepath  = uname+"/"+path.dirname(files[f]);
@@ -785,11 +1013,11 @@ Core.realizeBaseAPI = (app)=>{
 		}
 
 		res.send(S);
-
+*/
 		//next();
 	});
 
-	// List all collection models
+	// List all collection models owned by auth user
 	app.get("/api/c/models/", function(req,res,next){
 
 		if (req.user === undefined){
@@ -797,21 +1025,25 @@ Core.realizeBaseAPI = (app)=>{
 			return;
 		}
 
-		let uname   = req.user.username;
+		let uname = req.user.username;
+
+		res.send( Core.maat.getUserModels(uname) );
+
+/*
 		//let relpath = "models/"+uname+"/";
 		let relpath = uname+"/models/";
 
 		let O = {};
 		O.cwd = Core.DIR_COLLECTIONS+relpath; //Core.DIR_MODELS+uname;
 		O.follow = true;
-
-		let files = glob.sync("**/{*.gltf,*.glb,*.json}", O);
-
+*/
+		//let files = glob.sync("**/{*.gltf,*.glb,*.json}", O);
+/*
 		let M = [];
 		for (let f in files) M.push( relpath + files[f] );
 
 		res.send(M);
-
+*/
 		//next();
 	});
 
@@ -822,21 +1054,25 @@ Core.realizeBaseAPI = (app)=>{
 			return;
 		}
 
-		let uname   = req.user.username;
+		let uname = req.user.username;
+
+		res.send( Core.maat.getUserPanoramas(uname) );
+
+/*
 		//let relpath = "pano/"+uname+"/";
 		let relpath = uname+"/pano/";
 
 		let O = {};
 		O.cwd = Core.DIR_COLLECTIONS+relpath; //Core.DIR_PANO+uname;
 		O.follow = true;
-
-		let files = glob.sync("**/*.{jpg,mp4,webm}", O); // hdr
-
+*/
+		//let files = glob.sync("**/*.{jpg,mp4,webm}", O); // hdr
+/*
 		let P = [];
 		for (let f in files) P.push( relpath + files[f] );
 
 		res.send(P);
-		
+*/		
 		//glob("**/*.{jpg,hdr}", O, (err, files)=>{ });
 
 		//next();

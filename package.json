@@ -3,7 +3,6 @@
   "version": "3.0.0",
   "description": "ATON Framework",
   "main": "ATON.service.main.js",
-
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node services/ATON.service.main.js",
@@ -13,23 +12,21 @@
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
     "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"
   },
-
   "author": "Bruno Fanini",
   "license": "GPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "https://github.com/phoenixbf/aton.git"
   },
-  
   "browserslist": [
     "since 2017-06"
   ],
-
   "dependencies": {
     "3d-tiles-renderer": "^0.2.11",
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
+    "chokidar": "^3.5.1",
     "clamp": "^1.0.1",
     "command-line-args": "^4.0.7",
     "compression": "^1.7.4",
@@ -40,6 +37,7 @@
     "express": "^4.17.1",
     "express-basic-auth": "^1.2.0",
     "express-session": "^1.17.1",
+    "fast-glob": "^3.2.5",
     "fast-json-patch": "^3.0.0-1",
     "fs": "0.0.1-security",
     "fs-extra": "^9.1.0",

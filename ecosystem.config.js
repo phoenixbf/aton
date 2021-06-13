@@ -7,7 +7,11 @@ module.exports = {
       script       : 'services/ATON.service.main.js',
       instances    : 'max',
       exec_mode    : 'cluster',
-      watch        : ["services","config"]
+      watch        : ["services","config"],
+      instance_var : 'INSTANCE_ID',
+      env: {
+        "NODE_ENV" : "production",
+      }
     },
 
     // VRoadcast service
@@ -16,7 +20,10 @@ module.exports = {
       script       : 'services/ATON.service.vroadcast.js',
       instances    : 1,
       exec_mode    : 'cluster',
-      watch        : ["services","config"]
+      watch        : ["services","config"],
+      env: {
+        "NODE_ENV" : "production",
+      }
     },
 
     // WebDav service
@@ -25,7 +32,10 @@ module.exports = {
       script       : 'services/ATON.service.webdav.js',
       instances    : 1,
       exec_mode    : 'cluster',
-      watch        : ["services", "config"]
+      watch        : ["services", "config"],
+      env: {
+        "NODE_ENV" : "production",
+      }
     },
 
     // Maat service

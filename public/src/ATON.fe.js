@@ -380,6 +380,14 @@ FE.uiAddButtonQR = (idcontainer)=>{
 };
 
 /**
+Add screenshot button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonScreenshot = (idcontainer)=>{
+    FE.uiAddButton(idcontainer,"sshot", FE.popupScreenShot, "Screenshot" );
+};
+
+/**
 Add scene information button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */

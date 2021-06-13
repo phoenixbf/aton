@@ -44,6 +44,7 @@ let renderGallery = ()=>{
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/own", (data)=>{
 
+        data.sort( SHU.sidCompare );
 
         for (let i in data){
             let scene = data[i];

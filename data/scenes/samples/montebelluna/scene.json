@@ -1,5 +1,11 @@
 {
     "status": "complete",
+
+    "kwords":{
+        "site":1,
+        "roman":1,
+        "anvil":1
+    },
     
     "title": "Montebelluna Smithy",
     "description": "\"<p style=\\\"text-align: center;\\\"><b>Montebelluna roman smithy sample</b><br>(E. Demetrescu, CNR ISPC)</p><p style=\\\"text-align: center;\\\"><br></p><p style=\\\"text-align: center;\\\">The project has been founded by the Montebelluna Municipality and Museo di Storia Naturale e Archeologia Montebelluna.<br></p><p class=\\\"sceditor-nlf\\\"><br></p>\"",

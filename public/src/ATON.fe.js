@@ -411,12 +411,22 @@ FE.uiAddButtonFullScreen = (idcontainer)=>{
 //TODO:
 FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
     let htmlcode = "";
-    htmlcode += "Add keyword: <input id='idKWordInput' type='text' maxlength='100' size='20'><div class='atonBTN atonBTN-green' id='idKWadd'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div><br>";
+    htmlcode += "Add keyword: <input id='idKWordInput' list='lkwords' type='text' maxlength='100' size='20'><div class='atonBTN atonBTN-green' id='idKWadd'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div><br>";
     htmlcode += "<div id='idKWords'></div>";
 
     $("#"+idcontainer).html(htmlcode);
 
     FE.uiAttachInputFilterID("idKWordInput");
+
+    // Request global keywords list
+    $.getJSON( ATON.PATH_RESTAPI+"keywords/", ( data )=>{
+        let ht = "<datalist id='lkwords'>";
+        for (let s in data) ht += "<option>"+s+"</option>";
+        ht += "</datalist>";
+
+        $("#"+idcontainer).append(ht);
+    });
+
 
     let kwsObj = {};
 

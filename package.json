@@ -8,6 +8,7 @@
     "start": "node services/ATON.service.main.js",
     "start-vrc": "node services/ATON.service.vroadcast.js",
     "deploy": "pm2 start ecosystem.config.js",
+    "update-aton": "git stash && git pull && npm update",
     "build-three": "parcel build ./services/tools/three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
     "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"

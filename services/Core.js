@@ -201,10 +201,21 @@ Core.maat.update = ()=>{
 };
 */
 
+Core.maat.addSceneKeyword = (k)=>{
+	if (k === undefined) return;
+
+	k = k.toLowerCase().trim();
+
+	// kw counters
+	if (Core.maat.db.kwords[k] === undefined) Core.maat.db.kwords[k] = 1;
+	else Core.maat.db.kwords[k]++;
+};
+
 Core.maat.scanScenes = ()=>{
 	if (Core.maat.needScan.scenes === false) return;
 
-	Core.maat.db.scenes = [];
+	Core.maat.db.scenes = []; // clear
+	Core.maat.db.kwords = {}; // clear global keywords
 	
 	console.log("Scanning scenes...");
 
@@ -224,14 +235,20 @@ Core.maat.scanScenes = ()=>{
 		let sobj = Core.readSceneJSON(sid);
 
 		if (sobj){
-			if (sobj.title)  S.title  = sobj.title;
-			if (sobj.kwords) S.kwords = sobj.kwords;
+			if (sobj.title) S.title = sobj.title;
+
+			if (sobj.kwords){
+				S.kwords = sobj.kwords;
+				for (let k in S.kwords) Core.maat.addSceneKeyword(k);
+			}
 		}
 
 		Core.maat.db.scenes.push(S);
 	}
 
 	Core.maat.needScan.scenes = false;
+
+	//console.log(Core.maat.db.kwords);
 
 	setTimeout(()=>{
 		Core.maat.needScan.scenes = true;
@@ -292,7 +309,7 @@ Core.maat.scanPanoramas = (uid)=>{
 	for (let f in files) CC[uid].panos.push( relpath + files[f] );
 };
 
-
+// Scenes
 Core.maat.getAllScenes = ()=>{
 	Core.maat.scanScenes();
 
@@ -331,6 +348,12 @@ Core.maat.getUserPanoramas = (uid)=>{
 	if (CC[uid] === undefined) return [];
 
 	return CC[uid].panos;
+};
+
+Core.maat.getScenesKeywords = ()=>{
+	Core.maat.scanScenes();
+
+	return Core.maat.db.kwords;
 };
 
 
@@ -1134,6 +1157,12 @@ Core.realizeBaseAPI = (app)=>{
 		res.send(S);
 
 		//next();
+	});
+
+	// All keywords
+	app.get("/api/keywords", (req,res)=>{
+		let kk = Core.maat.getScenesKeywords();
+		res.send(kk);
 	});
 
 	// Delete a scene

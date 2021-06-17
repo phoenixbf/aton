@@ -115,6 +115,9 @@ SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput, onData)=>{
 SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
     let htmlcontent = "";
 
+    let coversizex = 250;
+    let coversizey = 300;
+
     if (bSamples === undefined) bSamples = true;
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
@@ -144,10 +147,10 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
                 htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.1)' >";
 
                 // gallery item bg
-                htmlcontent += "<div class='atonBlurBG' style='width:250px; height:300px; background-image: url(\""+urlCover+"\")'></div>";
+                htmlcontent += "<div class='atonBlurBG' style='width:"+coversizex+"px; height:"+coversizey+"px; background-image: url(\""+urlCover+"\")'></div>";
 
                 // gallery item content
-                htmlcontent += "<div style='width:250px; height:300px; position:absolute; top:0; left:0'>";
+                htmlcontent += "<div style='width:"+coversizex+"px; height:"+coversizey+"px; position:absolute; top:0; left:0'>";
                 htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
                 
                 htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";

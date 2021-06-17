@@ -119,11 +119,11 @@ let onLandingData = (data)=>{
     if (data.gallery){
         SHU.createScenesInputList("idScenes", openSID, search, (scenes)=>{
             $("#sid").attr("placeholder", "search by term, user or paste a scene-ID...");
-
+/*
             $.getJSON( ATON.PATH_RESTAPI+"keywords/", ( kwds )=>{
                 for (let k in kwds) $("#sidlist").append("<option>"+k+"</option>");
             });
-
+*/
             
         });
 

@@ -103,7 +103,7 @@ let onLandingData = (data)=>{
 
     if (data.gallery){
         htmlcontent += "<a href='/shu/scenes/' class='atonBTN'><img src='/res/icons/user.png'></a>";
-        htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:12px'></div>";
+        htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
         htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='/res/icons/play.png'></div>";
         htmlcontent += "<br><br>";
 
@@ -117,7 +117,15 @@ let onLandingData = (data)=>{
     $("#idMainContent").html(htmlcontent);
 
     if (data.gallery){
-        SHU.createScenesInputList("idScenes", openSID, search);
+        SHU.createScenesInputList("idScenes", openSID, search, (scenes)=>{
+            $("#sid").attr("placeholder", "search by term, user or paste a scene-ID...");
+
+            $.getJSON( ATON.PATH_RESTAPI+"keywords/", ( kwds )=>{
+                for (let k in kwds) $("#sidlist").append("<option>"+k+"</option>");
+            });
+
+            
+        });
 
         $("#btn-go").click( openSID );
 
@@ -133,7 +141,7 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-        <img src="/res/aton-logo.png" style="width:150px; height:auto;"><br>
+        <img src="/res/aton-logo.png" style="width:100px; height:auto;"><br>
         
         <div id='idMainContent'></div>
 <!--

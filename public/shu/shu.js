@@ -91,7 +91,7 @@ SHU.getScenesSelect = (idselect)=>{
     });
 };
 
-SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput)=>{
+SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput, onData)=>{
     let htmlcontent = "<input id='sid' type='text' list='sidlist' style='width:100%'>";
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
@@ -107,6 +107,8 @@ SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput)=>{
         });
 
         if (onkeyinput) $("#sid").on("input change", onkeyinput );
+
+        if (onData) onData(data);
     });
 };
 

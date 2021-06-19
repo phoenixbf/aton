@@ -494,12 +494,14 @@ ATON.realize = ()=>{
     //ATON._setupLoadManager();
     ATON._assetsManager = {};
     ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
+    ATON._numReqLoad = 0;
+    
     ATON._dracoLoader = new THREE.DRACOLoader();
+    ATON._dracoLoader.setDecoderConfig({type: "wasm"});
     ATON._dracoLoader.setDecoderPath( ATON.PATH_DRACO_LIB );
-    ATON._dracoLoader.setWorkerLimit(8);
+    ATON._dracoLoader.setWorkerLimit(2);
     ATON._dracoLoader.preload();
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
-    ATON._numReqLoad = 0;
 
     // CC Manager
     ATON._ccModels = [];

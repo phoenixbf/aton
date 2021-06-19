@@ -97,6 +97,7 @@ Set session type
 */
 XR.setSessionType = (type)=>{
     if (type === undefined) return;
+    if (type !== "immersive-vr" && type !== "immersive-ar") return;
 
     XR._sessionType = type;
     console.log("Session type: "+type);
@@ -395,9 +396,12 @@ XR.onSessionEnded = ( /*event*/ )=>{
 };
 
 /**
-Toggle immersive mode
+Toggle immersive VR/AR mode
+@param {string} sessiontype - Can be "immersive-vr" or "immersive-ar", if undefined defaults to immersive VR
 */
-XR.toggle = ()=>{
+XR.toggle = (sessiontype)=>{
+    XR.setSessionType(sessiontype);
+
     if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR

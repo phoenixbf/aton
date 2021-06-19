@@ -181,6 +181,18 @@ HATHOR.buildUIProfiles = ()=>{
         //ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
     });
 
+    // XR
+    ATON.FE.uiAddProfile("xr", ()=>{
+        $("#idTopToolbar").html(""); // clear
+
+        ATON.FE.uiAddButtonVR("idTopToolbar");
+        ATON.FE.uiAddButtonAR("idTopToolbar");
+        ATON.FE.uiAddButtonQR("idTopToolbar");
+        //ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    });
+
+    
+
     // Standard
     ATON.FE.uiAddProfile("default", ()=>{
         HATHOR.uiBase();
@@ -1347,6 +1359,10 @@ HATHOR.popupEnvironment = ()=>{
     htmlcontent += "<input type='checkbox' id='idAutoLP' "+str+"><b>Auto Light-Probe</b><br>";
     htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"lp.png' class='atonDefIcon' style='float:left'>this option estimates location and radius of a light-probe</div>";
 
+    htmlcontent += "<div style='text-align:center;'>Panorama rotation (<span id='idEnvRotVal'></span>)<br>";
+    htmlcontent += "<input id='idEnvRot' type='range' min='0.0' max='1.0' step='0.02' >";
+    htmlcontent += "</div><br>";
+
     htmlcontent += "</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -1413,6 +1429,17 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainlight = {};
         E.environment.mainlight.shadows = b;
         //if (ld) E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    });
+
+    $("#idEnvRot").on("input change",()=>{
+        let r = parseFloat( $("#idEnvRot").val() * Math.PI * 2.0 ).toPrecision(4);
+        ATON.setMainPanoramaRotation(r);
+        $("#idEnvRotVal").html(r);
+
+        E.environment.mainpano = {};
+        E.environment.mainpano.rotation = r;
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
     });

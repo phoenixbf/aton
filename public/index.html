@@ -35,7 +35,7 @@ let openSID = ()=>{
 
 let showAllScenes = ()=>{
     $('.atonGalleryItem').each(function(){
-        $(this).show();
+        $(this).show(/*"scale"*/);
     });
 };
 
@@ -46,21 +46,6 @@ let search = ()=>{
     searchTerm = searchTerm.split(" ")[0];
 
     searchByTerm(searchTerm);
-
-    //console.log(searchTerm);
-/*
-    if (searchTerm.length<3 || searchTerm.includes("/")){
-        showAllScenes();
-        return;
-    }
-
-    $('.atonGalleryItem').each(function(){
-        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1){
-            $(this).show();
-        }
-        else $(this).hide();
-    });
-*/
 };
 
 let searchByTerm = (searchTerm)=>{
@@ -72,10 +57,10 @@ let searchByTerm = (searchTerm)=>{
     }
 
     $('.atonGalleryItem').each(function(){
-        if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1){
-            $(this).show();
+        if ($(this).filter('[data-search-term*='+searchTerm+']').length > 0 || searchTerm.length < 1){
+            $(this).show(/*"scale"*/);
         }
-        else $(this).hide();
+        else $(this).hide(/*"scale"*/);
     });
 };
 

@@ -132,19 +132,19 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
                 let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
                 let title = (scene.title)? scene.title : sid;
 
-                let kwords = title.toLowerCase();
-                kwords += " "+user.toLowerCase();
-                let htskw = "";
+                let terms = title.trim().toLowerCase();
+                terms += " "+user.trim().toLowerCase();
 
+                let htskw = "";
                 if (scene.kwords){
                     for (let k in scene.kwords){
                         let kk = k.toLowerCase();
                         htskw += "<span class='atonKeyword'>"+kk+"</span>";
-                        kwords += " "+kk;
+                        terms += " "+kk;
                     }
                 }
 
-                htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.1)' >";
+                htmlcontent += "<div id='sid-"+s+"' class='atonGalleryItem' data-search-term='"+terms+"' style='background-color:rgba(255,255,255, 0.1)' >";
 
                 // gallery item bg
                 htmlcontent += "<div class='atonBlurBG' style='width:"+coversizex+"px; height:"+coversizey+"px; background-image: url(\""+urlCover+"\")'></div>";

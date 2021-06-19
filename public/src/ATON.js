@@ -563,6 +563,7 @@ ATON.realize = ()=>{
     ATON._bQuerySemOcclusion = true;
     ATON._bQueryNormals  = true;
     ATON._bPauseQuery    = false;
+    ATON._bCenteredQuery = false;
     
     ATON._bqScene = false;
     ATON._bqSem   = false;
@@ -1543,16 +1544,28 @@ ATON._updateAniMixers = ()=>{
 ATON._updateScreenMove = (e)=>{
     if (e.preventDefault) e.preventDefault();
 
+    if (ATON._bCenteredQuery) return;
+
+/*
     if (ATON.Nav._mode === ATON.Nav.MODE_DEVORI){
         ATON._screenPointerCoords.x = 0.0;
         ATON._screenPointerCoords.y = 0.0;
         return;
     }
-
+*/
 	ATON._screenPointerCoords.x = ( e.clientX / window.innerWidth ) * 2 - 1;
 	ATON._screenPointerCoords.y = -( e.clientY / window.innerHeight ) * 2 + 1;
 
     //console.log(ATON._screenPointerCoords);
+};
+
+ATON.toggleCenteredQuery = (b)=>{
+    ATON._bCenteredQuery = b;
+    
+    if (b){
+        ATON._screenPointerCoords.x = 0.0;
+        ATON._screenPointerCoords.y = 0.0;
+    }
 };
 
 //==============================================================

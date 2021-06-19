@@ -97,7 +97,16 @@ FE.addBasicLoaderEvents = ()=>{
 
         FE._handleHomeReq();
     });
-
+/*
+    ATON.on("XR_support", (o)=>{
+        if (o.type === "immersive-vr"){
+            if (!o.v) $("#btn-vr").hide();
+        }
+        if (o.type === "immersive-ar"){
+            if (!o.v) $("#btn-ar").hide();
+        }
+    });
+*/
     //ATON.on("frame", FE._update);
     ATON.addUpdateRoutine(FE._update);
 };
@@ -176,7 +185,7 @@ FE._update = ()=>{
         //console.log(sx,sy);
 
         FE._cLightDir.x = -Math.cos(sx * Math.PI);
-        FE._cLightDir.y = -sy * 2.0;
+        FE._cLightDir.y = -sy * 4.0;
         FE._cLightDir.z = -Math.sin(sx * Math.PI);
 
         //FE._cLightDir.x = ATON.Nav._vDir.x + (sx);
@@ -287,9 +296,24 @@ FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     //if (!ATON.Utils.isVRsupported()) return; //Not showing on mobile
 
-    //ATON.XR.setSessionType("immersive-ar");
+    FE.uiAddButton(idcontainer, "vr", ()=>{
+        ATON.XR.toggle("immersive-vr");
+    },
+    "Immersive VR mode" );
+};
 
-    FE.uiAddButton(idcontainer, "vr", ATON.XR.toggle, "Immersive VR mode" );
+/**
+Add immersive-AR button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonAR = (idcontainer)=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+    //if (!ATON.Utils.isARsupported()) return; //Not showing on mobile
+
+    FE.uiAddButton(idcontainer, "ar", ()=>{ 
+        ATON.XR.toggle("immersive-ar");
+    }, 
+    "Immersive AR mode" );
 };
 
 /**

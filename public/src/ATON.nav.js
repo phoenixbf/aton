@@ -288,6 +288,8 @@ Nav.setOrbitControl = ()=>{
 
     ATON._onResize();
 
+    ATON.toggleCenteredQuery(false);
+
     ATON.fireEvent("NavMode", Nav._mode);
 };
 
@@ -347,6 +349,8 @@ Nav.setFirstPersonControl = ()=>{
 
     ATON._onResize();
 
+    ATON.toggleCenteredQuery(false);
+
     ATON.fireEvent("NavMode", Nav._mode);
 /*
     if (Nav._controls) ATON._controls.dispose();
@@ -400,6 +404,8 @@ Nav.setDeviceOrientationControl = ()=>{
     if (Nav._currPOV) Nav.syncCurrCamera();
 
     ATON._onResize();
+
+    ATON.toggleCenteredQuery(true);
     
     ATON.fireEvent("NavMode", Nav._mode);
 };

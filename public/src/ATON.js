@@ -496,6 +496,8 @@ ATON.realize = ()=>{
     ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
     ATON._dracoLoader = new THREE.DRACOLoader();
     ATON._dracoLoader.setDecoderPath( ATON.PATH_DRACO_LIB );
+    ATON._dracoLoader.setWorkerLimit(8);
+    ATON._dracoLoader.preload();
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
     ATON._numReqLoad = 0;
 

@@ -99,7 +99,7 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 //Core.setupDataRoute(app);
 
 
-app.use('/', express.static(Core.DIR_PUBLIC /*, { maxAge: 31557600 }*/ ));
+app.use('/', express.static(Core.DIR_PUBLIC, { maxAge: 31557600 } ));
 //app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*{ maxAge: 31557600 }*/));
 
 // Official front-end (Hathor)

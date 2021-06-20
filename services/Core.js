@@ -1110,7 +1110,7 @@ Core.realizeBaseAPI = (app)=>{
 
 		let wapps = [];
 
-		let files = glob.sync("**/index.html", O);
+		let files = fg.sync("**/index.html", O);
 		for (let f in files){
 			let wid = path.dirname(files[f]);
 			let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
@@ -1149,7 +1149,7 @@ Core.realizeBaseAPI = (app)=>{
 		O.cwd = Core.DIR_EXAMPLES;
 		//O.follow = true;
 		
-		let files = glob.sync("**/*.html", O);
+		let files = fg.sync("**/*.html", O);
 
 		let S = [];
 		for (let f in files) S.push(files[f]);

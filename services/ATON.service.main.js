@@ -98,9 +98,12 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 // Data routing (advanced)
 //Core.setupDataRoute(app);
 
+const CACHING_OPT = {
+	maxage: "3h"
+};
 
-app.use('/', express.static(Core.DIR_PUBLIC, { maxAge: 31557600 } ));
-//app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*{ maxAge: 31557600 }*/));
+app.use('/', express.static(Core.DIR_PUBLIC, CACHING_OPT ));
+//app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*CACHING_OPT*/));
 
 // Official front-end (Hathor)
 app.use('/fe', express.static(Core.DIR_FE));
@@ -109,7 +112,7 @@ app.use('/fe', express.static(Core.DIR_FE));
 app.use('/a', express.static(Core.DIR_WAPPS));
 
 // Data (static)
-app.use('/', express.static(Core.DIR_DATA));
+app.use('/', express.static(Core.DIR_DATA, CACHING_OPT));
 
 
 Core.setupPassport();

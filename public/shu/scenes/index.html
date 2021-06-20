@@ -33,14 +33,15 @@ let renderGallery = ()=>{
 
     let htmlcontent = "";
     htmlcontent += "<div class='atonTitle'>Your Scenes</div><br>";
-    htmlcontent += "<div id='btn-newscene' class='atonBTN atonBTN-green' style='width: 90%;'><img src='"+ATON.PATH_RES+"icons/scene.png'>New Scene</div>";
+    htmlcontent += "<a href='/shu/newscene/' class='atonBTN atonBTN-green' style='width: 90%;'><img src='"+ATON.PATH_RES+"icons/scene.png'>New Scene</a>";
     htmlcontent += "<br><br>";
-
+/*
+    htmlcontent += "<div class='atonGalleryItem' style='width:250px; height:320px; background-color:rgba(0,255,0, 0.1)'>";
+    htmlcontent += "<div class='atonBlockSubTitle'>New Scene</div><br>";
+    htmlcontent += "<a href='/shu/newscene/' class='atonCover'><img src='"+ATON.PATH_RES+"scenecover.png'></a>";
+    htmlcontent += "</div>";
+*/
     $('#idContent').append(htmlcontent);
-
-    $("#btn-newscene").click(()=>{
-        window.location.href = "/shu/newscene/";
-    });
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/own", (data)=>{
 
@@ -301,14 +302,6 @@ window.addEventListener( 'load', ()=>{
 <body class="atonDefaultBody" >
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
-    <div id='idContent' class='shuMainContainer'>
-<!--
-        <div class="atonTitle">Your Scenes</div><br>
-        <div id="btn-newscene" class="atonBTN atonBTN-green" style="width: 90%;"><img src='../../res/icons/scene.png'>New Scene</div>
-        <br><br>
-
-        <div class="" id='idOwnScenes'></div>
--->
-    </div>
+    <div id='idContent' class='shuMainContainer'></div>
     
 </body>

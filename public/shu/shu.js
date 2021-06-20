@@ -253,6 +253,23 @@ SHU.appendModelsToSelect = (idselect)=>{
     });
 };
 
+SHU.uiAttachPanoramasToInputList = (elid)=>{
+    let htmlcontent = "";
+
+    $.getJSON( ATON.PATH_RESTAPI+"c/panoramas/", ( data )=>{
+        htmlcontent += "<datalist id='"+elid+"-list'>";
+
+        for (let p in data){
+            let purl = data[p];
+            htmlcontent += "<option value='"+purl+"'>"+purl+"</option>";
+        }
+
+        htmlcontent += "</datalist>";
+
+        $("#"+elid).html(htmlcontent);
+    });
+};
+
 SHU.appendPanoramasToSelect = (idselect)=>{
     $.getJSON( ATON.PATH_RESTAPI+"c/panoramas/", ( data )=>{
         let list = "";

@@ -134,7 +134,7 @@ let addToNode = (nid)=>{
     let htmlcontent = "";
 
     for (let i in paths){
-        htmlcontent += "<div class='atonBlockRound atonBTN-white' style='font-size:smaller; display:block'>";
+        htmlcontent += "<div class='atonBlockRound atonBTN-white' style='font-size:smaller; display:block; text-shadow:none;'>";
         htmlcontent += paths[i];
         htmlcontent += "</div>";
 
@@ -283,8 +283,8 @@ let renderForm = ()=>{
     addNewNodeBlock();
     addNodeBlock("main");
 
-    //SHU.appendModelsToSelect("mpath");
-    SHU.appendPanoramasToSelect("panopath");
+    //SHU.appendPanoramasToSelect("panopath");
+    SHU.uiAttachPanoramasToInputList("panopath");
 
     // initial blocks
     //$('#blockTransform').hide();
@@ -320,12 +320,14 @@ let renderForm = ()=>{
     $("#panopath").on("change", ()=>{
         let path = $("#panopath").val();
         if (path && path.length > 0){
-            if (ATON.Utils.isVideo(path)) $("#idpanopreview").html("<video src='"+ATON.PATH_COLLECTION+path+"' autoplay='true' style='width:100%;height:auto'>");
-            else $("#idpanopreview").html("<img src='"+ATON.PATH_COLLECTION+path+"' style='width:100%;height:auto'>");
-
             if (sobj.environment.mainpano === undefined) sobj.environment.mainpano = {};
-            
             sobj.environment.mainpano.url = path;
+
+            // fetch preview
+            if (!path.startsWith("http")) path = ATON.PATH_COLLECTION + path;
+
+            if (ATON.Utils.isVideo(path)) $("#idpanopreview").html("<video src='"+path+"' autoplay='true' style='width:90%;height:auto'>");
+            else $("#idpanopreview").html("<img src='"+path+"' style='width:90%;height:auto'>");
         }
         else {
             $("#idpanopreview").html("");
@@ -424,9 +426,12 @@ window.addEventListener( 'load', ()=>{
                 <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
                     <div class='atonBlockSubTitle'>Panorama</div><br>
                     <div class="descriptionText">You can pick here the main panorama (equirectangular image or video) from your collection</div>
+                    <input id="panopath" list="panopath-list" name="panopath-list" type="text" style="width:90%;">
+<!--
                     <div class='select'>
                         <select id='panopath'><option value=''>NONE</option></select><div class='selectArrow'></div>
                     </div>
+-->
                     <br><div id="idpanopreview"></div>
                 </div>
 

@@ -146,6 +146,11 @@ Nav.locomotionValidator = ()=>{
     let P = ATON._queryDataScene.p;
     let N = ATON._queryDataScene.n;
 
+    if (!N){
+        Nav._bValidLocomotion = false;
+        return;  
+    }
+
     if (N.y <= 0.7){
         Nav._bValidLocomotion = false;
         return;

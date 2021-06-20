@@ -58,6 +58,11 @@ Core.SCENES_GLOB_OPTS = {
 	follow: true
 };
 
+Core.COLLECTIONS_GLOB_OPTS = {
+	cwd: Core.DIR_COLLECTIONS,
+	follow: true
+};
+
 
 // Configs
 //========================================
@@ -275,19 +280,20 @@ Core.maat.scanModels = (uid)=>{
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	let relpath = uid +"/models/";
-
+	//let relpath = uid +"/models/";
+/*
 	let globopts    = {};
-	globopts.cwd    = Core.DIR_COLLECTIONS + relpath;
+	globopts.cwd    = Core.DIR_COLLECTIONS;// + relpath;
 	globopts.follow = true;
-
-	let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
+*/
+	//let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
+	let files = fg.sync("{"+uid+",samples}/models/**/{*.gltf,*.glb,*.json}", Core.COLLECTIONS_GLOB_OPTS);
 
 	if (files.length < 1) return;
 
 	CC[uid].models = [];
 
-	for (let f in files) CC[uid].models.push( relpath + files[f] );
+	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 };
 
 Core.maat.scanPanoramas = (uid)=>{
@@ -295,18 +301,19 @@ Core.maat.scanPanoramas = (uid)=>{
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	let relpath = uid +"/pano/";
-
+	//let relpath = uid +"/pano/";
+/*
 	let globopts    = {};
-	globopts.cwd    = Core.DIR_COLLECTIONS + relpath;
+	globopts.cwd    = Core.DIR_COLLECTIONS; // + relpath;
 	globopts.follow = true;
-
-	let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
+*/
+	//let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
+	let files = fg.sync("{"+uid+",samples}/pano/**/{*.jpg,*.mp4,*.webm}", Core.COLLECTIONS_GLOB_OPTS);
 
 	if (files.length < 1) return;
 
 	CC[uid].panos = [];
-	for (let f in files) CC[uid].panos.push( relpath + files[f] );
+	for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
 };
 
 // Scenes

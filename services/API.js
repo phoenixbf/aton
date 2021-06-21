@@ -22,6 +22,7 @@ let BaseAPI = (app)=>{
 /**
 	* @api {get} /api/examples
 	* @apiGroup Misc
+	* @apiPermission none
 
 	* @apiDescription Retrieve list of developer examples
 	* @apiSuccess {Array} list List of HTML indexes
@@ -44,9 +45,9 @@ app.get("/api/examples/", function(req,res,next){
 /**
 	* @api {get} /api/getid
 	* @apiGroup Misc
+	* @apiPermission none
 
-	* @apiDescription Generate a general purpose unique ID
-	* @apiResponse ID object
+	* @apiDescription Retrieve a general purpose unique ID
 */
 app.get("/api/getid/", function(req,res,next){
 	let id = nanoid.nanoid();
@@ -58,7 +59,6 @@ app.get("/api/getid/", function(req,res,next){
 	* @apiGroup Misc
 
 	* @apiDescription Retrieve ATON landing page rendering options
-	* @apiResponse config object
 */
 app.get("/api/landing/", (req,res,next)=>{
 	let o = {};
@@ -78,8 +78,9 @@ app.get(/^\/api\/collection\/(.*)$/, (req,res,next)=>{
 //=========================================================
 
 /**
-	* @api {get} /api/scene/<scene-ID>
+	* @api {get} /api/scene/<scene-ID> Get scene descriptor
 	* @apiGroup Scenes
+	* @apiPermission none
 
 	* @apiDescription Get scene descriptor (JSON) given a scene ID (e.g.: "samples/skyphos")
 	* @apiSuccess {Object} sobj Scene descriptor (JSON)
@@ -103,8 +104,9 @@ app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
 
 
 /**
-	* @api {get} /api/scenes/
+	* @api {get} /api/scenes/ Get public scenes
 	* @apiGroup Scenes
+	* @apiPermission none
 
 	* @apiDescription List all public scenes
 	* @apiSuccess {Array} list scenes object list
@@ -121,11 +123,12 @@ app.get("/api/scenes/", function(req,res,next){
 });
 
 /**
-	* @api {get} /api/keywords
+	* @api {get} /api/keywords Get keywords list
 	* @apiGroup Scenes
+	* @apiPermission none
 
 	* @apiDescription Retrieve a weighted list of keywords for all scenes 
-	* @apiSuccess {Array} list List of HTML indexes
+	* @apiSuccess {Array} list List of scenes
 */
 app.get("/api/keywords", (req,res)=>{
 	let kk = Core.maat.getScenesKeywords();
@@ -133,8 +136,46 @@ app.get("/api/keywords", (req,res)=>{
 });
 
 /**
-	* @api {post} /api/del/scene
+	* @api {get} /api/keyword/:kword Get public scenes by keyword
 	* @apiGroup Scenes
+	* @apiPermission none
+
+	* @apiDescription Retrieve all public scenes matching with specific keyword 
+	* @apiSuccess {Array} list List of scenes
+*/
+app.get("/api/keyword/:kw", (req,res)=>{
+	let kw  = req.params.kw;
+	
+	let R = Core.maat.getScenesByKeyword(kw);
+	res.send(R);
+});
+
+/**
+	* @api {get} /api/keyword/:kword/own Get own scenes by keyword
+	* @apiGroup Scenes
+	* @apiPermission user
+
+	* @apiDescription Retrieve all scenes for currently authenticated user matching with specific keyword 
+	* @apiSuccess {Array} list List of scenes
+*/
+app.get("/api/keyword/:kw/own", (req,res)=>{
+	// Only auth users
+	if (req.user === undefined){
+		res.send(401);
+		return;
+	}
+
+	let uid = req.user.username;
+	let kw  = req.params.kw;
+	
+	let R = Core.maat.getScenesByKeyword(kw, uid);
+	res.send(R);
+});
+
+/**
+	* @api {post} /api/del/scene Delete a scene
+	* @apiGroup Scenes
+	* @apiPermission user
 
 	* @apiDescription Deletes a scene by providing scene-ID. Operation is possible only for authenticated users on their own scenes 
 	* @apiSuccess {Boolean} bool True on success, false otherwise
@@ -169,8 +210,9 @@ app.post("/api/del/scene/", (req,res,next)=>{
 
 
 /**
-	* @api {post} /api/cover/scene
+	* @api {post} /api/cover/scene Set scene cover
 	* @apiGroup Scenes
+	* @apiPermission user
 
 	* @apiDescription Set a cover image for given scene by providing base64 img
 	* @apiSuccess {Boolean} bool True on success, false otherwise
@@ -203,8 +245,9 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 
 /**
-	* @api {post} /api/edit/scene
+	* @api {post} /api/edit/scene Patch (edit) scene
 	* @apiGroup Scenes
+	* @apiPermission user
 
 	* @apiDescription Send a scene JSON patch (add or remove)
 */
@@ -226,8 +269,9 @@ app.post('/api/edit/scene', (req, res) => {
 });
 
 /**
-	* @api {post} /api/visibility/scene
+	* @api {post} /api/visibility/scene Set scene visibility
 	* @apiGroup Scenes
+	* @apiPermission user
 
 	* @apiDescription Change a scene visibility (public or private)
 */
@@ -351,8 +395,9 @@ app.get(/^\/api\/info\/scene\/(.*)$/, (req,res,next)=>{
 
 
 /**
-	* @api {get} /api/scenes/own
+	* @api {get} /api/scenes/own List own scenes
 	* @apiGroup Scenes
+	* @apiPermission user
 
 	* @apiDescription Retrieve currently authenticated user scenes
 	* @apiSuccess {Array} list Scenes
@@ -380,8 +425,9 @@ app.get("/api/scenes/own/", (req,res,next)=>{
 //=========================================================
 
 /**
-	* @api {get} /api/c/models
+	* @api {get} /api/c/models Get list of own 3D models
 	* @apiGroup Collections
+	* @apiPermission user
 
 	* @apiDescription Retrieve all 3D models owned by currently authenticated user. Paths are relative to the local ATON collection
 	* @apiSuccess {Array} list List of 3D models
@@ -402,8 +448,9 @@ app.get("/api/c/models/", (req,res,next)=>{
 
 
 /**
-	* @api {get} /api/c/panoramas
+	* @api {get} /api/c/panoramas Get list of own panoramas
 	* @apiGroup Collections
+	* @apiPermission user
 
 	* @apiDescription Retrieve all panoramas (360 images and videos) owned by currently authenticated user. Paths are relative to the local ATON collection
 	* @apiSuccess {Array} list List of panoramas
@@ -427,8 +474,9 @@ app.get("/api/c/panoramas/", (req,res,next)=>{
 //=========================================================
 
 /**
-	* @api {get} /api/wapps
+	* @api {get} /api/wapps Get list of web-apps
 	* @apiGroup Apps
+	* @apiPermission none
 
 	* @apiDescription Retrieve list of web-apps currently deployed on the ATON instance
 	* @apiSuccess {Array} list List of web-apps
@@ -480,7 +528,7 @@ app.post('/api/new/wapp', (req, res) => {
 //=========================================================
 
 /**
-	* @api {post} /api/login
+	* @api {post} /api/login Login
 	* @apiGroup Users
 
 	* @apiDescription Login through username and password
@@ -525,7 +573,7 @@ app.post("/api/login", (req,res,next)=>{
 */
 
 /**
-	* @api {get} /api/logout
+	* @api {get} /api/logout Logout
 	* @apiGroup Users
 
 	* @apiDescription Logout
@@ -538,8 +586,9 @@ app.get('/api/logout', (req, res)=>{
 });
 
 /**
-	* @api {get} /api/user
+	* @api {get} /api/user User data
 	* @apiGroup Users
+	* @apiPermission user
 
 	* @apiDescription Retrieve currently authenticated user information (object)
 */
@@ -554,6 +603,7 @@ app.get("/api/user", (req,res)=>{
 /**
 	* @api {get} /api/users
 	* @apiGroup Users
+	* @apiPermission admin
 
 	* @apiDescription Retrieve list of all users (only admin)
 */
@@ -574,6 +624,7 @@ app.get("/api/users", (req,res)=>{
 /**
 	* @api {post} /api/new/user
 	* @apiGroup Users
+	* @apiPermission admin
 
 	* @apiDescription Create a new user (only admin)
 */

@@ -24,6 +24,6 @@
 
     "opts": {
         "destination": "./public/apidoc/client/",
-        "template": "node_modules/foodoc/template"
+        "template": "_prv/foodoc/template"
     }
 }

@@ -12,7 +12,7 @@
     "build-three": "parcel build ./services/tools/three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
     "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json",
-    "build-apidoc-server": "apidoc -c ./services/tools/apidoc-server.json -i ./services/ -o ./public/apidoc/server/ -e _prv"
+    "build-apidoc-server": "apidoc -c ./services/tools/apidoc-server.json -i ./services/ -o ./public/apidoc/server/ -e _prv -t ./_prv/apidoc-template/template"
   },
   "author": "Bruno Fanini",
   "license": "GPL-3.0-only",

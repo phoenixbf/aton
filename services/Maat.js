@@ -217,6 +217,8 @@ Maat.getPublicScenes = ()=>{
 	return R;
 };
 Maat.getUserScenes = (uid)=>{
+    if (uid === undefined) return undefined;
+
 	Maat.scanScenes();
 
 	let R = Maat.db.scenes.filter((s)=>{
@@ -224,7 +226,31 @@ Maat.getUserScenes = (uid)=>{
 	});
 
 	return R;
-}
+};
+
+Maat.getScenesByKeyword = (kw, uid)=>{
+    if (kw === undefined) return undefined;
+
+	Maat.scanScenes();
+
+    // Specific user
+    if (uid !== undefined){
+        let R = Maat.db.scenes.filter((s)=>{
+            return (s.sid.startsWith(uid) && s.kwords !== undefined && s.kwords[kw] !== undefined);
+        });
+
+        return R;
+    }
+
+    // Public scenes
+	let R = Maat.db.scenes.filter((s)=>{
+		return (s.public && s.kwords !== undefined && s.kwords[kw] !== undefined);
+	});
+
+	return R;
+};
+
+// Collections
 Maat.getUserModels = (uid)=>{
 	Maat.scanCollection(uid);
 

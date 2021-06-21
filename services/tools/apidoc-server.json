@@ -5,6 +5,7 @@
     "title": "ATON REST API",
 
     "url": "http://localhost:8080",
+    "sampleUrl": "http://localhost:8080",
 
     "template": {
         "forceLanguage": "en",

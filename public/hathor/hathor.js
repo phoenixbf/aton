@@ -442,6 +442,10 @@ HATHOR.setupEventHandlers = ()=>{
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
 
         HATHOR.uiUpdatePOVs();
+
+        // page title
+        document.title = (ATON.SceneHub.currData.title)? ATON.SceneHub.currData.title : ATON.SceneHub.currID;
+        //if (ATON.SceneHub.currData.description) $('meta[name="description"]').attr("content", ATON.SceneHub.currData.description);
     });
 
     ATON.on("NodeRequestFired", ()=>{ 

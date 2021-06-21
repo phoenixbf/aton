@@ -140,8 +140,10 @@ VRoadcast.onNewConnection = (socket)=>{
             console.log("UID #" + uid + " left session "+sid+" (tot users: "+session.numUsers+")");
 
             if (session.numUsers === 0){
-                delete session;
-                delete VRoadcast.sessions[sid];
+                //delete session;
+                //delete VRoadcast.sessions[sid];
+                session = null;
+                VRoadcast.sessions[sid] = undefined;
                 console.log("DELETED session "+sid);
             }
         }

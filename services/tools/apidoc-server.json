@@ -1,0 +1,14 @@
+{
+    "name": "ATON REST API",
+    "version": "3.0.0",
+    "description": "A detailed list for main ATON service REST API",
+    "title": "ATON REST API",
+
+    "url": "http://localhost:8080",
+
+    "template": {
+        "forceLanguage": "en",
+        "withCompare": false,
+        "withGenerator": true
+    }
+  }

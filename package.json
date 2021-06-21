@@ -11,7 +11,8 @@
     "update-aton": "git stash && git pull && npm update",
     "build-three": "parcel build ./services/tools/three.bundle.js -d ./public/dist/ --out-file THREE.bundle.js",
     "build-aton": "parcel build ./public/src/ATON.js -d ./public/dist/ --out-file ATON.min.js",
-    "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json"
+    "build-apidoc": "jsdoc -c ./services/tools/jsdoc-client.json",
+    "build-apidoc-server": "apidoc -c ./services/tools/apidoc-server.json -i ./services/ -o ./public/apidoc/server/ -e _prv"
   },
   "author": "Bruno Fanini",
   "license": "GPL-3.0-only",
@@ -40,6 +41,7 @@
     "express-session": "^1.17.1",
     "fast-glob": "^3.2.5",
     "fast-json-patch": "^3.0.0-1",
+    "foodoc": "0.0.9",
     "fs": "0.0.1-security",
     "fs-extra": "^9.1.0",
     "glob": "^7.1.6",

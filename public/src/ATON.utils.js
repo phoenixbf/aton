@@ -478,14 +478,21 @@ Utils.registerAniMixers = (N, data)=>{
     N._aniMixers.push(mixer);
 };
 
+// Copyright extraction
 Utils.ccExtract = (data)=>{
     if (data === undefined) return;
     if (data.asset === undefined) return;
-    if (data.asset.extras === undefined) return;
 
-    let cc = data.asset.extras;
+    let cc = {};
 
-    ATON._ccModels.push(cc);
+    if (data.asset.copyright) cc.copyright = data.asset.copyright;
+    if (data.asset.extras){
+        for (let e in data.asset.extras) cc[e] = data.asset.extras[e];
+    }
+    if (data.asset.generator) cc.generator = data.asset.generator;
+
+    if (data.asset.copyright || data.asset.extras) ATON._ccModels.push(cc);
+    
     console.log(cc);
 };
 
@@ -527,6 +534,7 @@ Utils.checkAuth = (onReceive)=>{
         dataType: 'json',
 
         success: (data)=>{ onReceive(data); }
+        //error: ()=>{ onReceive(undefined) }
     });
 };
 

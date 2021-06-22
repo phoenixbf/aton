@@ -104,7 +104,7 @@ app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
 
 
 /**
-	* @api {get} /api/scenes/ Get public scenes
+	* @api {get} /api/scenes/	List public scenes
 	* @apiGroup Scenes
 	* @apiPermission none
 
@@ -123,7 +123,7 @@ app.get("/api/scenes/", function(req,res,next){
 });
 
 /**
-	* @api {get} /api/keywords Get keywords list
+	* @api {get} /api/keywords 	List keywords
 	* @apiGroup Scenes
 	* @apiPermission none
 
@@ -136,11 +136,11 @@ app.get("/api/keywords", (req,res)=>{
 });
 
 /**
-	* @api {get} /api/keyword/:kword Get public scenes by keyword
+	* @api {get} /api/keyword/:kword	List public scenes by keyword
 	* @apiGroup Scenes
 	* @apiPermission none
 
-	* @apiDescription Retrieve all public scenes matching with specific keyword 
+	* @apiDescription List all public scenes matching with specific keyword 
 	* @apiSuccess {Array} list List of scenes
 */
 app.get("/api/keyword/:kw", (req,res)=>{
@@ -151,11 +151,11 @@ app.get("/api/keyword/:kw", (req,res)=>{
 });
 
 /**
-	* @api {get} /api/keyword/:kword/own Get own scenes by keyword
+	* @api {get} /api/keyword/:kword/own	List own scenes by keyword
 	* @apiGroup Scenes
 	* @apiPermission user
 
-	* @apiDescription Retrieve all scenes for currently authenticated user matching with specific keyword 
+	* @apiDescription List all scenes by currently authenticated user, matching with specific keyword 
 	* @apiSuccess {Array} list List of scenes
 */
 app.get("/api/keyword/:kw/own", (req,res)=>{
@@ -173,7 +173,7 @@ app.get("/api/keyword/:kw/own", (req,res)=>{
 });
 
 /**
-	* @api {post} /api/del/scene Delete a scene
+	* @api {post} /api/del/scene	Delete a scene
 	* @apiGroup Scenes
 	* @apiPermission user
 
@@ -210,7 +210,7 @@ app.post("/api/del/scene/", (req,res,next)=>{
 
 
 /**
-	* @api {post} /api/cover/scene Set scene cover
+	* @api {post} /api/cover/scene	Set scene cover
 	* @apiGroup Scenes
 	* @apiPermission user
 
@@ -425,7 +425,7 @@ app.get("/api/scenes/own/", (req,res,next)=>{
 //=========================================================
 
 /**
-	* @api {get} /api/c/models Get list of own 3D models
+	* @api {get} /api/c/models	List 3D models
 	* @apiGroup Collections
 	* @apiPermission user
 
@@ -448,7 +448,7 @@ app.get("/api/c/models/", (req,res,next)=>{
 
 
 /**
-	* @api {get} /api/c/panoramas Get list of own panoramas
+	* @api {get} /api/c/panoramas	List panoramas
 	* @apiGroup Collections
 	* @apiPermission user
 
@@ -531,6 +531,9 @@ app.post('/api/new/wapp', (req, res) => {
 	* @api {post} /api/login Login
 	* @apiGroup Users
 
+	* @apiParam {String} username	Username or uid
+	* @apiParam {String} password	Password
+
 	* @apiDescription Login through username and password
 */
 app.post('/api/login', Core.passport.authenticate('local'/*, { failureRedirect: '/login' }*/), (req, res)=>{
@@ -596,6 +599,7 @@ app.get("/api/user", (req,res)=>{
 	console.log(req.session);
 
 	let U = Core.createClientUserAuthResponse(req);
+
 	res.send(U);
 });
 

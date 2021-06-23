@@ -35,10 +35,12 @@ window.addEventListener( 'load', ()=>{
 		url: ATON.PATH_COLLECTION+"samples/models/atoncube.glb",
 		pickable: true
 	});
+/*
 	items.push({
 		url: ATON.PATH_COLLECTION+"samples/models/vegetation/tree1b.gltf",
 		pickable: false
 	});
+*/
 	items.push({
 		url: ATON.PATH_COLLECTION+"samples/models/vegetation/grass.gltf",
 		pickable: false
@@ -74,7 +76,7 @@ window.addEventListener( 'load', ()=>{
 	// Setup our spatial UI
 	ATON.SUI.setSelectorRadius(0.5);
 	ATON.SUI.setSelectorModel( items[currItem].url );
-	ATON.FE.useMouseWheelToScaleSelector(0.0002);
+	//ATON.FE.useMouseWheelToScaleSelector(0.0002);
 
 
 	ATON.on("KeyPress", (k)=>{

@@ -22,10 +22,10 @@ let processingTextures = {};
 
 // Command-line
 const optDefs = [
-    { name: 'infolder', alias: 'i', type: String },      // input folder containing multiple obj files (with *.mtl and textures)
+    { name: 'infolder', alias: 'i', type: String },      // input folder containing multiple files to process (obj, gltf or glb)
     { name: 'outfolder', alias: 'o', type: String },     // output folder
     { name: 'pattern', alias: 'p', type: String },       // input pattern. Default *.obj
-    { name: 'compression', alias: 'c', type: Number },   // compression level (0-10). Default: 4
+    { name: 'compression', alias: 'c', type: Number },   // compression level (0-10). 0 = No compression. Default: 4
     { name: 'opts', type: String },
     { name: 'outformat', type: String },                 // output format. Default 'gltf'
     { name: 'inup', type: String },                      // input up-vector. Default 'Z'

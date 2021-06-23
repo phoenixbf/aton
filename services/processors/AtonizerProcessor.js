@@ -22,16 +22,16 @@ let processingTextures = {};
 
 // Command-line
 const optDefs = [
-    { name: 'infolder', alias: 'i', type: String },
-    { name: 'outfolder', alias: 'o', type: String },
-    { name: 'pattern', alias: 'p', type: String },
+    { name: 'infolder', alias: 'i', type: String },      // input folder containing multiple obj files (with *.mtl and textures)
+    { name: 'outfolder', alias: 'o', type: String },     // output folder
+    { name: 'pattern', alias: 'p', type: String },       // input pattern. Default *.obj
     { name: 'compression', alias: 'c', type: Number },   // compression level (0-10). Default: 4
     { name: 'opts', type: String },
-    { name: 'outformat', type: String },
-    { name: 'inup', type: String },
+    { name: 'outformat', type: String },                 // output format. Default 'gltf'
+    { name: 'inup', type: String },                      // input up-vector. Default 'Z'
     { name: 'merge', type: Boolean },
-    { name: 'texsize', type: Number },      // max texture size, def. 2048
-    { name: 'texquality', type: Number }    // texture quality, def. 60
+    { name: 'texsize', type: Number },                   // max texture size, def. 4096
+    { name: 'texquality', type: Number }                 // texture quality, def. 60
 ];
 let atonizerOPTS = commandLineArgs(optDefs);
 
@@ -41,7 +41,7 @@ if (atonizerOPTS.outformat === undefined) atonizerOPTS.outformat = "gltf";
 if (atonizerOPTS.inup === undefined) atonizerOPTS.inup = "Z";
 if (atonizerOPTS.merge  === undefined) atonizerOPTS.merge = false;
 if (atonizerOPTS.compression === undefined) atonizerOPTS.compression = 4; // 10
-if (atonizerOPTS.texsize === undefined) atonizerOPTS.texsize = 2048;
+if (atonizerOPTS.texsize === undefined) atonizerOPTS.texsize = 4096; //2048;
 if (atonizerOPTS.texquality === undefined) atonizerOPTS.texquality = 60;
 
 const OPT_CONVERT = {
@@ -169,7 +169,7 @@ let processTextureFile = (imgPath)=>{
     let h = imSize(imgPath).height;
 
     if (w > 4096 || h > 4096){
-        console.log("ERROR: Texture "+imgPath+" too large.");
+        console.log("WARNING: Texture '"+imgPath+"' too large. Please reduce this texture resolution.");
         return;
     }
 

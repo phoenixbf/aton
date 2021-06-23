@@ -41,6 +41,20 @@ npm start
 
 4) Open http://localhost:8080/examples/basic/ on your browser.
 
+# Citation
+You can cite ATON framework using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618387.svg)](https://doi.org/10.5281/zenodo.4618387), and the following BibTeX entry:
+```
+@software{aton2020_4618387,
+  author       = {Bruno Fanini},
+  title        = {ATON framework},
+  year         = 2020,
+  publisher    = {Zenodo},
+  version      = {3.0},
+  doi          = {10.5281/zenodo.4618387},
+  url          = {https://doi.org/10.5281/zenodo.4618387}
+}
+```
+
 # Publications
 Here is a list of publications where ATON (including previous versions) was employed:
 

@@ -176,25 +176,20 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
     let htmlcode = "";
 
     ATON.Utils.checkAuth((data)=>{
-        htmlcode += "<div id='btn-t-aton' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/aton.png'></div>";
+        htmlcode += "<a id='btn-t-aton' class='atonBTN' href='"+window.location.origin+"'><img src='"+ATON.PATH_RES+"icons/aton.png'></a>";
 
-        if (data.username) htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>"+data.username+"</div>";
-        else htmlcode += "<div id='btn-t-user' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'>User</div>";
+        if (data.username) htmlcode += "<a id='btn-t-user' class='atonBTN' href='../../shu/auth/'><img src='"+ATON.PATH_RES+"icons/user.png'>"+data.username+"</a>";
+        else htmlcode += "<a id='btn-t-user' class='atonBTN' href='../../shu/auth/'><img src='"+ATON.PATH_RES+"icons/user.png'>User</a>";
 
-        htmlcode += "<div id='btn-t-scenes' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/scene.png'>Scenes</div>";
+        //htmlcode += "<a id='btn-t-collection' class='atonBTN' href='../../shu/collection/'><img src='"+ATON.PATH_RES+"icons/collection.png'>Collection</a>";
+        htmlcode += "<a id='btn-t-scenes' class='atonBTN' href='../../shu/scenes/'><img src='"+ATON.PATH_RES+"icons/scene.png'>Scenes</a>";
 
         if (data.username && data.admin){
-            htmlcode += "<div id='btn-t-users' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/users.png'>Users</div>";
-            htmlcode += "<div id='btn-t-wapps' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/app.png'>Apps</div>";
+            htmlcode += "<a id='btn-t-users' class='atonBTN' href='../../shu/users/'><img src='"+ATON.PATH_RES+"icons/users.png'>Users</a>";
+            htmlcode += "<a id='btn-t-wapps' class='atonBTN' href='../../shu/wapps/'><img src='"+ATON.PATH_RES+"icons/app.png'>Apps</a>";
         }
 
         $("#"+idcontainer).append(htmlcode);
-
-        $("#btn-t-aton").click(()=>{ window.location.href = window.location.origin; });
-        $("#btn-t-user").click(()=>{ window.location.href = "../../shu/auth/"; });
-        $("#btn-t-scenes").click(()=>{ window.location.href = "../../shu/scenes/"; });
-        $("#btn-t-users").click(()=>{ window.location.href = "../../shu/users/"; });
-        $("#btn-t-wapps").click(()=>{ window.location.href = "../../shu/wapps/"; });
     });
 };
 

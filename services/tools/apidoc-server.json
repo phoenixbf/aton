@@ -1,7 +1,7 @@
 {
     "name": "ATON REST API",
     "version": "3.0.0",
-    "description": "A detailed list for main ATON service REST API",
+    "description": "REST API available for main ATON service. For each routine, documentation provides a sample request that can be performed on a local ATON instance (if running) for testing purposes.",
     "title": "ATON REST API",
 
     "url": "http://localhost:8080",

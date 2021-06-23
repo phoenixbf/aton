@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="../appicon.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Collection">
+<link rel="apple-touch-icon" href="../appicon.png">
+<meta name="description" content="Collection">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>Collection</title>
+<link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
+<script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
+
+<script>
+
+const renderForm = ()=>{
+
+    // 3D Models
+    $('#idContent').append("<div class='atonBlockGroup'><div class='atonBlockTitle'>3D Models</div>");
+
+    $.getJSON( ATON.PATH_RESTAPI+"c/models", (data)=>{
+
+        for (let m=0; m<data.length; m++){
+            let murl = data[m];
+
+            //$('#idContent').append("<a class='atonBTN'>"+murl+"</a>");
+        }
+        
+    });
+
+    $('#idContent').append("</div>");
+
+    // Panoramas
+    $('#idContent').append("<div class='atonBlockGroup'><div class='atonBlockTitle'>Panoramas</div>");
+    $('#idContent').append("</div>");
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.uiAddMainToolbar("idTopToolbar");
+
+    ATON.Utils.checkAuth((data)=>{
+        if (data.username){
+            renderForm();
+        }
+        else {
+            window.location.href = "../../shu/auth/?url="+window.location.href;
+        }
+    });
+
+
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
+
+    <div class='shuMainContainer'>
+        <div class="atonTitle">Your Collection</div>
+        <div id='idContent'></div>
+    </div>
+    
+</body>

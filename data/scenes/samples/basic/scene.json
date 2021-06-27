@@ -24,7 +24,7 @@
                 }
             },
             "atoncube":{
-                "urls": "samples/models/atoncube-pbr.glb",
+                "urls": "samples/models/atoncube.glb",
                 "transform":{
                     "position": [-4.0,0.5,4.0]
                 }

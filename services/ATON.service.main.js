@@ -81,6 +81,20 @@ app.use(cors({credentials: true, origin: true}));
 
 app.use(express.json({ limit: '50mb' }));
 
+/*
+app.set('view engine', 'ejs');
+
+app.get(/^\/s\/(.*)$/, (req,res,next)=>{
+	let d = {};
+	d.sid = req.params[0];
+
+	let S = Core.readSceneJSON(d.sid);
+	d.title = S.title? S.title : d.sid;
+
+	res.render("hathor.ejs", d);
+});
+*/
+
 // Scenes redirect /s/<sid>
 app.get(/^\/s\/(.*)$/, function(req,res,next){
 	let sid = req.params[0];

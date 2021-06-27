@@ -2,10 +2,14 @@
 const fs = require('fs');
 const fsExtra = require('fs-extra');
 
+const fg   = require("fast-glob");
 const glob = require("glob");
+
 const deleteKey = require('key-del');
 const commandLineArgs = require('command-line-args');
 const path = require('path');
+
+//const gbb = require("gltf-bounding-box"); // not supporting bin
 
 const obj2gltf = require('obj2gltf');
 const gltfPipeline = require('gltf-pipeline');
@@ -14,10 +18,6 @@ const processGltf = gltfPipeline.processGltf;
 const Jimp   = require('jimp');
 //const sharp  = require('sharp');
 const imSize = require('image-size');
-
-let bDraco = true;
-let processingTextures = {};
-
 
 
 // Command-line
@@ -33,83 +33,97 @@ const optDefs = [
     { name: 'texsize', type: Number },                   // max texture size, def. 4096
     { name: 'texquality', type: Number }                 // texture quality, def. 60
 ];
-let atonizerOPTS = commandLineArgs(optDefs);
 
-if (!atonizerOPTS.infolder || !atonizerOPTS.outfolder) return;
-if (atonizerOPTS.pattern === undefined) atonizerOPTS.pattern = "*.obj";
-if (atonizerOPTS.outformat === undefined) atonizerOPTS.outformat = "gltf";
-if (atonizerOPTS.inup === undefined) atonizerOPTS.inup = "Z";
-if (atonizerOPTS.merge  === undefined) atonizerOPTS.merge = false;
-if (atonizerOPTS.compression === undefined) atonizerOPTS.compression = 4; // 10
-if (atonizerOPTS.texsize === undefined) atonizerOPTS.texsize = 4096; //2048;
-if (atonizerOPTS.texquality === undefined) atonizerOPTS.texquality = 60;
 
-const OPT_CONVERT = {
-    //binary : true
-    separate : !atonizerOPTS.merge, //true,
-    outputDirectory: atonizerOPTS.outfolder,
-    inputUpAxis: atonizerOPTS.inup,
-    outputUpAxis: 'Y',  // three.js
-    packOcclusion: false, // true
-    //unlit : true,
-}
+let Atonizer = {};
 
-const OPT_GLTF = {
-    separate: !atonizerOPTS.merge, //true,
-    separateTextures: !atonizerOPTS.merge, //true,
-    separateShaders: !atonizerOPTS.merge, //true,
-    separateBuffers: !atonizerOPTS.merge, //true,
-    
-    separateResources: atonizerOPTS.outfolder,
-    resourceDirectory: atonizerOPTS.outfolder,
+Atonizer.args = commandLineArgs(optDefs);
 
-    dracoOptions: {
-        compressMeshes: true,
-        compressionLevel: atonizerOPTS.compression,
-        quantizeTexcoordBits: 12,
-        unifiedQuantization: true // avoid gaps
+Atonizer.processingTextures = {};
+
+
+Atonizer.run = ()=>{
+    if (!Atonizer.args.infolder || !Atonizer.args.outfolder) return;
+    if (Atonizer.args.pattern === undefined) Atonizer.args.pattern = "*.obj";
+    if (Atonizer.args.outformat === undefined) Atonizer.args.outformat = "gltf";
+    if (Atonizer.args.inup === undefined) Atonizer.args.inup = "Z";
+    if (Atonizer.args.merge  === undefined) Atonizer.args.merge = false;
+    if (Atonizer.args.compression === undefined) Atonizer.args.compression = 4; // 10
+    if (Atonizer.args.texsize === undefined) Atonizer.args.texsize = 4096; //2048;
+    if (Atonizer.args.texquality === undefined) Atonizer.args.texquality = 60;
+
+
+    Atonizer.OPT_CONVERT = {
+        //binary : true
+        separate : !Atonizer.args.merge, //true,
+        outputDirectory: Atonizer.args.outfolder,
+        inputUpAxis: Atonizer.args.inup,
+        outputUpAxis: 'Y',  // three.js
+        packOcclusion: false, // true
+        //unlit : true,
     }
+
+    Atonizer.OPT_GLTF = {
+        separate: !Atonizer.args.merge, //true,
+        separateTextures: !Atonizer.args.merge, //true,
+        separateShaders: !Atonizer.args.merge, //true,
+        separateBuffers: !Atonizer.args.merge, //true,
+        
+        separateResources: Atonizer.args.outfolder,
+        resourceDirectory: Atonizer.args.outfolder,
+
+        dracoOptions: {
+            compressMeshes: true,
+            compressionLevel: Atonizer.args.compression,
+            quantizeTexcoordBits: 12,
+            unifiedQuantization: true // avoid gaps
+        }
+    };
+
+    console.log(Atonizer.args);
+
+    glob(Atonizer.args.infolder + Atonizer.args.pattern, undefined, (er, files)=>{
+        let outfolder = Atonizer.args.outfolder;
+        //let outfolder = path.join(Atonizer.args.outfolder, "uncomp/");
+        //if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
+
+        for (let i in files){
+            let filepath = files[i];
+
+            let IFile     = path.parse(filepath);
+            let fBasename = IFile.name;    // IFile.dir+
+            let fExt      = IFile.ext;     // eg: .obj
+            let fName     = IFile.name + IFile.ext; // model.obj
+
+            console.log("Processing file "+filepath);
+
+            if (Atonizer.args.pattern === "*.glb" || Atonizer.args.pattern === "*.gltf"){
+                processModel(outfolder, fBasename);
+            }
+            else {
+                // for some reasons, generates wrong mipmappig
+                obj2gltf(filepath, Atonizer.OPT_CONVERT).then(function(gltf){
+                    let outfilepath = Atonizer.buildFname(outfolder, fBasename);
+
+                    const data = Buffer.from(JSON.stringify(gltf));
+                    fs.writeFileSync(outfilepath, data);
+                    console.log("Model "+outfilepath+" written.");
+
+                    if (Atonizer.args.compression > 0) Atonizer.processModel(outfolder, fBasename);
+                });
+            }
+        }
+    });
 };
 
-let buildFname = (outfolder, basename)=>{
-    return outfolder+basename+"."+atonizerOPTS.outformat;
+
+
+Atonizer.buildFname = (outfolder, basename)=>{
+    return outfolder+basename+"."+Atonizer.args.outformat;
 };
-
-glob(atonizerOPTS.infolder + atonizerOPTS.pattern, undefined, (er, files)=>{
-    let outfolder = atonizerOPTS.outfolder;
-    //let outfolder = path.join(atonizerOPTS.outfolder, "uncomp/");
-    //if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
-
-    for (let i in files){
-        let filepath = files[i];
-
-        let IFile     = path.parse(filepath);
-        let fBasename = IFile.name;    // IFile.dir+
-        let fExt      = IFile.ext;     // eg: .obj
-        let fName     = IFile.name + IFile.ext; // model.obj
-
-        console.log("Processing file "+filepath);
-
-        if (atonizerOPTS.pattern === "*.glb" || atonizerOPTS.pattern === "*.gltf"){
-            processModel(outfolder, fBasename);
-        }
-        else {
-            // for some reasons, generates wrong mipmappig
-            obj2gltf(filepath, OPT_CONVERT).then(function(gltf){
-                let outfilepath = buildFname(outfolder, fBasename);
-
-                const data = Buffer.from(JSON.stringify(gltf));
-                fs.writeFileSync(outfilepath, data);
-                console.log("Model "+outfilepath+" written.");
-
-                if (atonizerOPTS.compression > 0) processModel(outfolder, fBasename);
-            });
-        }
-    }
-});
 
 // Texture processing
-let isJPEG = (imgPath)=>{
+Atonizer.isJPEG = (imgPath)=>{
     if (imgPath.endsWith(".jpg")) return true;
     if (imgPath.endsWith(".JPG")) return true;
     if (imgPath.endsWith(".jpeg")) return true;
@@ -118,7 +132,7 @@ let isJPEG = (imgPath)=>{
     return false;
 };
 
-let isPNG = (imgPath)=>{
+Atonizer.isPNG = (imgPath)=>{
     if (imgPath.endsWith(".png")) return true;
     if (imgPath.endsWith(".PNG")) return true;
 
@@ -129,9 +143,9 @@ let isPNG = (imgPath)=>{
 // With sharp
 /*
 let processTextureFile = (imgPath)=>{
-    if (processingTextures[imgPath] !== undefined) return;
+    if (Atonizer.processingTextures[imgPath] !== undefined) return;
 
-    processingTextures[imgPath] = true;
+    Atonizer.processingTextures[imgPath] = true;
 
     let w = imSize(imgPath).width;
     let h = imSize(imgPath).height;
@@ -149,8 +163,8 @@ let processTextureFile = (imgPath)=>{
 
     if (bNeedResize) im = im.resize(w,h);
 
-    if (isJPEG(imgPath)) im = im.jpeg({ quality: atonizerOPTS.texquality });
-    if (isPNG(imgPath))  im = im.png({ quality: atonizerOPTS.texquality });
+    if (isJPEG(imgPath)) im = im.jpeg({ quality: Atonizer.args.texquality });
+    if (isPNG(imgPath))  im = im.png({ quality: Atonizer.args.texquality });
 
     im = im.toFile(imgPath).then(()=>{
         console.log("Texture "+imgPath+" processed.");
@@ -159,11 +173,10 @@ let processTextureFile = (imgPath)=>{
 };
 */
 
+Atonizer.processTextureFile = (imgPath)=>{
+    if (Atonizer.processingTextures[imgPath] !== undefined) return;
 
-let processTextureFile = (imgPath)=>{
-    if (processingTextures[imgPath] !== undefined) return;
-
-    processingTextures[imgPath] = true;
+    Atonizer.processingTextures[imgPath] = true;
 
     let w = imSize(imgPath).width;
     let h = imSize(imgPath).height;
@@ -181,12 +194,12 @@ let processTextureFile = (imgPath)=>{
 
         let bNeedResize = false;
 
-        if (w > atonizerOPTS.texsize){ bNeedResize=true; w=atonizerOPTS.texsize; }
-        if (h > atonizerOPTS.texsize){ bNeedResize=true; h=atonizerOPTS.texsize; }
+        if (w > Atonizer.args.texsize){ bNeedResize=true; w=Atonizer.args.texsize; }
+        if (h > Atonizer.args.texsize){ bNeedResize=true; h=Atonizer.args.texsize; }
 
         if (bNeedResize) image = image.resize(w,h);
 
-        image = image.quality( atonizerOPTS.texquality );
+        image = image.quality( Atonizer.args.texquality );
 
         image.write(imgPath);
         console.log("Texture "+imgPath+" processed.");
@@ -195,12 +208,12 @@ let processTextureFile = (imgPath)=>{
 
 
 // Draconize model
-let processModel = (outfolder, basename)=>{
-    let f = fsExtra.readJsonSync( buildFname(outfolder,basename) );
+Atonizer.processModel = (outfolder, basename)=>{
+    let f = fsExtra.readJsonSync( Atonizer.buildFname(outfolder,basename) );
 
     //basename += "-d";
 
-    let opt = OPT_GLTF;
+    let opt = Atonizer.OPT_GLTF;
     opt.name = basename;
     
     processGltf(f, opt).then((results)=>{
@@ -210,7 +223,7 @@ let processModel = (outfolder, basename)=>{
             //let outDracoDir = outfolder+"d/";
             //if (!fs.existsSync(outDracoDir)) fs.mkdirSync(outDracoDir);
 
-            fsExtra.writeJsonSync(outfolder+basename+"."+atonizerOPTS.outformat, results.gltf);
+            fsExtra.writeJsonSync(outfolder+basename+"."+Atonizer.args.outformat, results.gltf);
 
             // Save separate resources
             const separateResources = results.separateResources;
@@ -222,10 +235,15 @@ let processModel = (outfolder, basename)=>{
 
                     fsExtra.writeFileSync(absPathRes, resource);
                     //console.log(absPathRes);
-                    if (isJPEG(absPathRes) || isPNG(absPathRes)) processTextureFile(absPathRes);
+                    if (Atonizer.isJPEG(absPathRes) || Atonizer.isPNG(absPathRes)) Atonizer.processTextureFile(absPathRes);
                 }
             }
 
             console.log("GLTF draconized.");
         });
 };
+
+
+Atonizer.run();
+
+module.exports = Atonizer;

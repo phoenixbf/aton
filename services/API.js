@@ -263,6 +263,11 @@ app.post('/api/edit/scene', (req, res) => {
 	let mode  = O.mode;
 	let patch = O.data;
 
+	if (sid === undefined){
+		res.send(false);
+		return;
+	}
+
 	let J = Core.applySceneEdit(sid, patch, mode);
 
 	res.json(J);

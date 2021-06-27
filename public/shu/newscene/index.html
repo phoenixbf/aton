@@ -29,6 +29,7 @@ let numLayers = 0;
 let numModels = 0;
 let sobj = SHU.composer.createBaseScene();
 
+let uid = undefined;
 
 // Date-based SID
 let sid  = SHU.generateUserSID();
@@ -134,8 +135,16 @@ let addToNode = (nid)=>{
     let htmlcontent = "";
 
     for (let i in paths){
+        let p = paths[i].replace(uid+"/models","");
+
+        //htmlcontent += "<div class='atonBTN'>";
+        
+        //htmlcontent += "<img class='atonDefIcon' src='../../res/icons/collection-item.png' title='"+p+"'>";
+
+        //htmlcontent += "<div class='atonBTN' style='font-size:smaller; display:block; text-shadow:none; height:15px'>";
+        
         htmlcontent += "<div class='atonBlockRound atonBTN-white' style='font-size:smaller; display:block; text-shadow:none;'>";
-        htmlcontent += paths[i];
+        htmlcontent += "<img class='atonSmallIcon' src='../../res/icons/collection-item.png'>" + p;
         htmlcontent += "</div>";
 
         N.urls.push( paths[i] );
@@ -261,7 +270,7 @@ let addNodeBlock = (nid)=>{
 let addNewNodeBlock = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<div class='atonOptionBlock' style='max-width:300px; background-color:rgba(0,0,0, 0.2);'>";
+    htmlcontent += "<div class='atonOptionBlock' style='display:block; width:auto; background-color:rgba(0,0,0, 0.2);'>";
     htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
     htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
@@ -343,6 +352,7 @@ window.addEventListener( 'load', ()=>{
 
     ATON.Utils.checkAuth((data)=>{
         if (data.username){
+            uid = data.username;
             sid = data.username+"/"+sid;
             renderForm();
         }
@@ -450,8 +460,8 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <div id="btn-createscene" class="atonBTN atonBTN-green" style="width: 80%;" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
-        <br>
+        <div id="btn-createscene" class="atonBTN atonBTN-green" style="width:90%;" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
+        <br><br>
     </div>
     
     </body>

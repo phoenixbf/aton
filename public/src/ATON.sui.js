@@ -211,7 +211,7 @@ SUI.buildInfoNode = ()=>{
         height: 0.05, //0.07,
         padding: 0.01,
         borderRadius: 0.02,
-        //backgroundColor: ATON.MatHub.colors.darksem,
+        backgroundColor: ATON.MatHub.colors.black, //darksem,
         //backgroundOpacity: 0.2,
 
         fontFamily: SUI.PATH_FONT_JSON,

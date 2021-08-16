@@ -24,8 +24,9 @@ Initialize Front-end
 FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
-    FE._bPopup = false;     // showing popup
-    FE.popupBlurBG = 0.5;   // blur 3D content on popup show, 0.0 to disable
+    FE._bPopup     = false;  // showing popup
+    FE.popupBlurBG = 0;      // blur 3D canvas on popup show (in pixels), 0 to disable
+    
     FE._userAuth = {};
 
     FE._bControlLight = false;
@@ -61,6 +62,9 @@ FE.realize = ()=>{
     // built-in base front-end parameters
     let ddens = ATON.FE.urlParams.get('d');
     if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
+
+    let dynd = ATON.FE.urlParams.get('dd');
+    if (dynd && dynd > 0) ATON.toggleDynamicDensity(true);
 };
 
 FE._handleHomeReq = ()=>{
@@ -750,9 +754,10 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 
     ATON._bListenKeyboardEvents = false;
 
-    if (FE.popupBlurBG > 0.0){
-        ATON._renderer.setPixelRatio( FE.popupBlurBG );
-        ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    if (FE.popupBlurBG > 0){
+        //ATON._renderer.setPixelRatio( FE.popupBlurBG );
+        ATON._renderer.domElement.style.filter = "blur("+FE.popupBlurBG+"px)"; //`blur(${blur * 5}px)`;
+        //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
     }
 
     ATON._bPauseQuery = true;
@@ -776,7 +781,10 @@ FE.popupClose = (bNoAnim)=>{
     //ATON.renderResume();
     ATON._bListenKeyboardEvents = true;
     
-    if (FE.popupBlurBG > 0.0) ATON.resetPixelDensity();
+    if (FE.popupBlurBG > 0){
+        //ATON.resetPixelDensity();
+        ATON._renderer.domElement.style.filter = "none";
+    }
 
     if (bNoAnim === true) $("#idPopup").hide();
     else $("#idPopup").fadeOut(FE.POPUP_DELAY);

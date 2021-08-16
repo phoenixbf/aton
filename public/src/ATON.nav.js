@@ -232,6 +232,22 @@ Nav.restorePreviousNavMode = ()=>{
     Nav.setNavMode(Nav._prevMode);
 };
 
+// Helper routine
+Nav._updCamera = (c)=>{
+    if (c === undefined) c = Nav._camera; 
+
+    if (ATON.FX.composer){
+        let PP = ATON.FX.composer.passes;
+        if (PP){
+            for (let p=0; p<PP.length; p++){
+                if (PP[p].camera) PP[p].camera = c;
+            }
+        }
+    }
+
+    ATON.Utils.updateTSetsCamera(c);
+};
+
 /**
 Set Orbit navigation mode (default)
 */
@@ -285,8 +301,8 @@ Nav.setOrbitControl = ()=>{
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
 
-    // Update TSets camera
-    ATON.Utils.updateTSetsCamera();
+    // Update camera
+    Nav._updCamera();
     
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -346,8 +362,8 @@ Nav.setFirstPersonControl = ()=>{
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
     
-    // Update TSets camera
-    ATON.Utils.updateTSetsCamera();
+    // Update camera
+    Nav._updCamera();
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -402,8 +418,8 @@ Nav.setDeviceOrientationControl = ()=>{
     // reparent audio listener
     if (ATON.AudioHub._listener && Nav._camera.children.length<1) Nav._camera.add( ATON.AudioHub._listener );
 
-    // Update TSets camera
-    ATON.Utils.updateTSetsCamera();
+    // Update camera
+    Nav._updCamera();
 
     Nav._controls.update();
     if (Nav._currPOV) Nav.syncCurrCamera();
@@ -748,6 +764,7 @@ Nav.requestPOVbyNode = (n, duration)=>{
     Nav.requestPOVbyBound(bs,duration);
 };
 
+// Internal routine to re-target on specific 3D point given optional normal
 Nav.requestRetarget = (point, normal, duration)=>{
     let M = new THREE.Vector3();
     if (normal === undefined){
@@ -761,10 +778,14 @@ Nav.requestRetarget = (point, normal, duration)=>{
         M.z = point.z + (normal.z * d);
     }
 
+    // Adjust DoF if FX enabled
+    let dd = point.distanceTo(M);
+    ATON.FX.setDOFfocus( dd );
+
     let pov = new ATON.POV().setPosition(M).setTarget(point).setFOV(Nav._currPOV.fov);
-    console.log(pov);
-    
     Nav.requestPOV(pov, duration);
+
+    console.log(pov);
 };
 
 

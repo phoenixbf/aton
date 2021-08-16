@@ -364,7 +364,8 @@ XR.onSessionStarted = ( session )=>{
         //console.log(session);
 
         let C = ATON._renderer.xr.getCamera();
-        ATON.Utils.updateTSetsCamera( C );
+        //ATON.Utils.updateTSetsCamera( C );
+        ATON.Nav._updCamera( C );
 
         // FIXME: needed bc selector 0.5 radius is not applied
         setTimeout( ()=>{
@@ -390,7 +391,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     ATON.Nav.requestHome();
 
-    ATON.Utils.updateTSetsCamera();
+    //ATON.Utils.updateTSetsCamera();
+    ATON.Nav._updCamera();
 
     console.log("Quit XR");
 };

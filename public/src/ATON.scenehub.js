@@ -194,6 +194,25 @@ SceneHub.initBaseParsers = ()=>{
         SceneHub.setDescription(descr);
     };
 
+    // FX / post-process
+    SceneHub._jsonParsers.fx = (fx)=>{
+        if (fx.ao){
+            ATON.FX.togglePass(ATON.FX.PASS_AO, true);
+            if (fx.ao.i) ATON.FX.setAOintensity( parseFloat(fx.ao.i));
+        }
+
+        if (fx.bloom){
+            ATON.FX.togglePass(ATON.FX.PASS_BLOOM, true);
+            if (fx.bloom.i) ATON.FX.setBloomStrength( parseFloat(fx.bloom.i));
+            if (fx.bloom.t) ATON.FX.setBloomThreshold( parseFloat(fx.bloom.t));
+        }
+
+        if (fx.dof){
+            ATON.FX.togglePass(ATON.FX.PASS_DOF, true);
+            if (fx.dof.f) ATON.FX.setDOFfocus( parseFloat(fx.dof.f) );
+        }
+    };
+
     // Environment
     SceneHub._jsonParsers.environment = (env)=>{
 
@@ -567,6 +586,9 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
 
     let jstr = JSON.stringify(O);
     //console.log(jstr);
+
+    patch = null;
+    O = null;
 
     $.ajax({
         url: ATON.PATH_RESTAPI+"edit/scene",

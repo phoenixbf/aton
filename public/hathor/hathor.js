@@ -611,6 +611,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='e'){
             let esemid = ATON._hoveredSemNode;
             if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
+            else HATHOR.popupEnvironment();
         }
 
         if (k==='m') HATHOR.measure();
@@ -679,7 +680,13 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='.') ATON.MediaRec.startMediaStreaming();
         //if (k==='r') ATON.MediaRec.startRecording();
 
-        if (k==='f') ATON.VRoadcast.setFocusStreaming(true);
+        if (k==='f'){
+            ATON.VRoadcast.setFocusStreaming(true);
+
+            if (ATON._queryDataScene){
+                ATON.FX.setDOFfocus( ATON._queryDataScene.d );
+            }
+        }
 
         //if (k==='.') ATON.FE.controlSelectorScale(true);
     });
@@ -692,7 +699,21 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='.') ATON.MediaRec.stopMediaStreaming();
         //if (k==='r') ATON.MediaRec.stopRecording();
 
-        if (k==='f') ATON.VRoadcast.setFocusStreaming(false);
+        if (k==='f'){
+            ATON.VRoadcast.setFocusStreaming(false);
+
+            if (ATON.FX.isPassEnabled(ATON.FX.PASS_DOF)){
+                let k = ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC);
+
+                ATON.SceneHub.sendEdit({
+                    fx:{ 
+                        dof:{
+                            f: k
+                        }
+                    }
+                }, ATON.SceneHub.MODE_ADD);
+            }
+        }
 
         if (k==='l'){
             ATON.FE.controlLight(false);
@@ -1367,6 +1388,31 @@ HATHOR.popupEnvironment = ()=>{
     htmlcontent += "<input id='idEnvRot' type='range' min='0.0' max='1.0' step='0.02' >";
     htmlcontent += "</div><br>";
 
+    // Advanced FX
+    if (ATON.FX.composer){
+        str = (ATON.FX.isPassEnabled(ATON.FX.PASS_AO))? "checked" : "";
+        htmlcontent += "<div class='atonOptionBlockShort' >";
+        htmlcontent += "<input type='checkbox' id='idFXPassSAO' "+str+"><b>Ambient Occlusion</b><br>";
+        htmlcontent += "Enable or disable real-time Ambient Occlusion<br><br>";
+        htmlcontent += "Intensity (<span id='idFXAOintVal'></span>)<br><input id='idFXAOint' type='range' min='0.1' max='0.5' step='0.05' >";
+        htmlcontent += "</div>";
+
+        str = (ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM))? "checked" : "";
+        htmlcontent += "<div class='atonOptionBlockShort' >";
+        htmlcontent += "<input type='checkbox' id='idFXPassBloom' "+str+"><b>Bloom</b><br>";
+        htmlcontent += "Enable or disable real-time bloom<br><br>";
+        htmlcontent += "Strength (<span id='idFXBloomStrengthVal'></span>)<br><input id='idFXBloomStrength' type='range' min='0.1' max='3.0' step='0.01' ><br>";
+        htmlcontent += "Threshold (<span id='idFXBloomThresholdVal'></span>)<br><input id='idFXBloomThreshold' type='range' min='0.1' max='1.0' step='0.01' ><br>";
+        htmlcontent += "</div>";
+
+        str = (ATON.FX.isPassEnabled(ATON.FX.PASS_DOF))? "checked" : "";
+        htmlcontent += "<div class='atonOptionBlockShort' >";
+        htmlcontent += "<input type='checkbox' id='idFXPassDOF' "+str+"><b>Depth of Field</b><br>";
+        htmlcontent += "Enable or disable real-time DOF<br><br>";
+        //htmlcontent += "Focus (<span id='idFXDOFfocusVal'></span>)<br><input id='idFXDOFfocus' type='range' min='0.1' max='50.0' step='0.02' ><br>";
+        htmlcontent += "</div>";
+    }
+
     htmlcontent += "</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -1378,8 +1424,69 @@ HATHOR.popupEnvironment = ()=>{
     $("#idExposure").val(ex);
     $("#idExpVal").html(ex);
 
+    let aoi = ATON.FX.getAOintensity();
+    $("#idFXAOint").val(aoi);
+    $("#idFXAOintVal").html(aoi);
+
+    let blooms = ATON.FX.getBloomStrength();
+    $("#idFXBloomStrength").val(blooms);
+    $("#idFXBloomStrengthVal").html(blooms);
+
+    let bloomt = ATON.FX.getBloomThreshold();
+    $("#idFXBloomThreshold").val(bloomt);
+    $("#idFXBloomThresholdVal").html(bloomt);
+
     if (bMainLight) $("#idOptShadows").show();
     else $("#idOptShadows").hide();
+
+    // FX
+    $("#idFXAOint").on("input change",()=>{
+        let k = parseFloat( $("#idFXAOint").val() );
+        ATON.FX.setAOintensity(k);
+        $("#idFXAOintVal").html(k);
+
+        if (!ATON.FX.isPassEnabled(ATON.FX.PASS_AO)) return;
+
+        ATON.SceneHub.sendEdit({
+            fx:{ 
+                ao:{ 
+                    i: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
+                }
+            }
+        }, ATON.SceneHub.MODE_ADD);
+    });
+
+    $("#idFXBloomStrength").on("input change",()=>{
+        let k = parseFloat( $("#idFXBloomStrength").val() );
+        ATON.FX.setBloomStrength(k);
+        $("#idFXBloomStrengthVal").html(k);
+
+        if (!ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM)) return;
+
+        ATON.SceneHub.sendEdit({
+            fx:{ 
+                bloom:{ 
+                    i: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
+                }
+            }
+        }, ATON.SceneHub.MODE_ADD);
+    });
+    $("#idFXBloomThreshold").on("input change",()=>{
+        let k = parseFloat( $("#idFXBloomThreshold").val() );
+        ATON.FX.setBloomThreshold(k);
+        $("#idFXBloomThresholdVal").html(k);
+
+        if (!ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM)) return;
+
+        ATON.SceneHub.sendEdit({
+            fx:{ 
+                bloom:{ 
+                    t: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
+                }
+            }
+        }, ATON.SceneHub.MODE_ADD);
+    });
+    
 
     $("#idExposure").on("input change",()=>{
         let e = parseFloat( $("#idExposure").val() );
@@ -1458,6 +1565,59 @@ HATHOR.popupEnvironment = ()=>{
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
     });
+
+    $("#idFXPassSAO").on("change",()=>{
+        let b = $("#idFXPassSAO").is(':checked');
+
+        ATON.FX.togglePass(ATON.FX.PASS_AO, b);
+
+        if (b){
+            ATON.SceneHub.sendEdit({
+                fx:{ 
+                    ao:{ 
+                        i: ATON.FX.getAOintensity().toPrecision(ATON.SceneHub.FLOAT_PREC)
+                    }
+                }
+            }, ATON.SceneHub.MODE_ADD);
+        }
+        else ATON.SceneHub.sendEdit({ fx:{ ao:{} } }, ATON.SceneHub.MODE_DEL);
+    });
+
+    $("#idFXPassBloom").on("change",()=>{
+        let b = $("#idFXPassBloom").is(':checked');
+
+        if (b){
+            ATON.SceneHub.sendEdit({
+                fx:{ 
+                    bloom:{ 
+                        i: ATON.FX.getBloomStrength().toPrecision(ATON.SceneHub.FLOAT_PREC),
+                        t: ATON.FX.getBloomThreshold().toPrecision(ATON.SceneHub.FLOAT_PREC)
+                    }
+                }
+            }, ATON.SceneHub.MODE_ADD);
+        }
+        else ATON.SceneHub.sendEdit({ fx:{ bloom:{} } }, ATON.SceneHub.MODE_DEL);
+
+        ATON.FX.togglePass(ATON.FX.PASS_BLOOM, b);
+    });
+
+    $("#idFXPassDOF").on("change",()=>{
+        let b = $("#idFXPassDOF").is(':checked');
+
+        if (b){
+            ATON.SceneHub.sendEdit({
+                fx:{ 
+                    dof:{
+                        f: ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC)
+                    }
+                }
+            }, ATON.SceneHub.MODE_ADD);
+        }
+        else ATON.SceneHub.sendEdit({ fx:{ dof:{} } }, ATON.SceneHub.MODE_DEL);
+
+        ATON.FX.togglePass(ATON.FX.PASS_DOF, b);
+    });
+    
 };
 
 HATHOR.popupScene = ()=>{
@@ -1774,7 +1934,7 @@ HATHOR.popupHelp = ()=>{
 
     htmlcontent += "</div>";
 
-    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+    if ( !ATON.FE.popupShow(htmlcontent,"atonPopupLarge") ) return;
 };
 
 HATHOR.popupSceneDelete = ()=>{

@@ -10,6 +10,21 @@
 
 import * as THREE from "three";
 
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
+import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js';
+import { SSAARenderPass } from 'three/examples/jsm/postprocessing/SSAARenderPass.js';
+//import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass.js';
+import { GammaCorrectionShader } from 'three/examples/jsm/shaders/GammaCorrectionShader.js';
+//import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass.js";
+import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+import { SobelOperatorShader } from 'three/examples/jsm/shaders/SobelOperatorShader.js';
+import { SSRPass } from 'three/examples/jsm/postprocessing/SSRPass.js';
+import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOrientationControls.js';
 //import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
@@ -30,7 +45,7 @@ import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerat
 import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 
 
-//import * as ThreeMeshUI from 'three-mesh-ui';
+//import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
 ///import { ThreeMeshUI, Block } from 'three-mesh-ui/src/three-mesh-ui.js';
 ///ThreeMeshUI.Block = Block;
 
@@ -48,6 +63,21 @@ THREE.Mesh.prototype.raycast = ThreeMeshBVH.acceleratedRaycast;
 THREE.OrbitControls             = OrbitControls;
 THREE.DeviceOrientationControls = DeviceOrientationControls;
 
+THREE.EffectComposer      = EffectComposer;
+THREE.RenderPass          = RenderPass;
+THREE.ShaderPass          = ShaderPass;
+THREE.FXAAShader          = FXAAShader;
+THREE.SMAAPass            = SMAAPass;
+THREE.SSAARenderPass      = SSAARenderPass;
+//THREE.TAARenderPass       = TAARenderPass;
+THREE.GammaCorrectionShader = GammaCorrectionShader;
+//THREE.SSAOPass            = SSAOPass;
+THREE.SAOPass             = SAOPass;
+//THREE.GTAOPass            = GTAOPass;
+THREE.SobelOperatorShader = SobelOperatorShader;
+THREE.SSRPass             = SSRPass;
+THREE.BokehPass           = BokehPass;
+
 THREE.GLTFLoader         = GLTFLoader;
 THREE.GLTFExporter       = GLTFExporter;
 THREE.OBJExporter        = OBJExporter;
@@ -60,6 +90,7 @@ THREE.BasisTextureLoader = BasisTextureLoader;
 //THREE.ConvexBufferGeometry = ConvexBufferGeometry;
 THREE.ConvexGeometry      = ConvexGeometry;
 THREE.BufferGeometryUtils = BufferGeometryUtils;
+THREE.UnrealBloomPass     = UnrealBloomPass;
 
 THREE.RGBELoader = RGBELoader;
 THREE.RoughnessMipmapper = RoughnessMipmapper;
@@ -70,6 +101,6 @@ THREE.LightProbeGenerator = LightProbeGenerator;
 window.THREE = THREE;
 
 //window.ThreeMeshUI  = ThreeMeshUI;
-window.ThreeMeshBVH  = ThreeMeshBVH;
+window.ThreeMeshBVH = ThreeMeshBVH;
 
 window.TILES = TILES;

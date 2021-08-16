@@ -36,6 +36,7 @@ import FE from "./ATON.fe.js";
 import MediaRec from "./ATON.mediarec.js";
 import GeoLoc from "./ATON.geoloc.js";
 import AppHub from "./ATON.apphub.js";
+import FX from "./ATON.fx.js";
 
 // Classes
 ATON.Node       = Node;
@@ -58,6 +59,7 @@ ATON.FE         = FE;
 ATON.MediaRec   = MediaRec;
 ATON.GeoLoc     = GeoLoc;
 ATON.AppHub     = AppHub;
+ATON.FX         = FX;
 
 //==============================================================
 // Consts
@@ -99,6 +101,7 @@ ATON.SHADOWS_SIZE = 15.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
 ATON.AMB_L = 0.1; // Ambient when using direct lighting
+
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -302,6 +305,13 @@ ATON._onResize = ()=>{
     ATON.Nav._camera.updateProjectionMatrix();
 
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
+
+    if (ATON.FX.composer){
+        ATON.FX.composer.setSize( window.innerWidth, window.innerHeight );
+        let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
+        if (UU) UU.resolution.value.set( (1/window.innerWidth), (1/window.innerHeight) );
+    }
+    
     console.log("onResize");
 };
 
@@ -431,7 +441,7 @@ ATON.realize = ()=>{
     const wglopts = {
         //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
-        alpha: true,
+        alpha: false, //true,
 
         powerPreference: "high-performance",
         ///pecision: "lowp", //"mediump"
@@ -442,10 +452,17 @@ ATON.realize = ()=>{
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
     //console.log(ATON._renderer);
 
-    ATON._stdpxd = 1.0; //window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
+    //ATON._renderer.domElement.style.filter = "blur(10px)";
+
+    // Capabilities from initialized renderer
+    ATON.Utils.profileRenderingCapabilities();
+
+    ATON._stdpxd = 1.0;
+    //ATON._stdpxd = window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
     ATON._renderer.setPixelRatio( ATON._stdpxd );
     //console.log(ATON._stdpxd);
 
+    // Framerate management
     ATON._fps = 60.0;
     ATON._dt  = 0.01;
     ATON._dtAccum     = 0.0;
@@ -453,7 +470,9 @@ ATON.realize = ()=>{
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
-    ATON._bDynamicDensity = false;
+    ATON._bDynamicDensity = false; //true;
+    ATON._dRenderBudgetMinFPS = 30.0;
+    ATON._dRenderBudgetMaxFPS = 55.0;
 
     ATON._aniMixers = [];
     
@@ -467,7 +486,7 @@ ATON.realize = ()=>{
     //ATON._bDirtyLP = false;
 
     ATON._maxAnisotropy = ATON._renderer.capabilities.getMaxAnisotropy();
-    console.log(ATON._renderer.capabilities);
+    //console.log(ATON._renderer.capabilities);
 
     THREE.Cache.enabled = true;
 
@@ -556,6 +575,10 @@ ATON.realize = ()=>{
     // GeoLoc
     ATON.GeoLoc.init();
 
+
+    // FX Composer setup
+    if (!ATON.device.lowGPU) ATON.FX.init();
+
     // Query / picked data
     ATON._queryDataScene = undefined;
     ATON._queryDataSem   = undefined;
@@ -642,7 +665,7 @@ ATON.getTimedGazeProgress = ()=>{
 };
 
 /**
-Get current elapsed time since ATON initialization
+Get current elapsed time (global clock) since ATON initialization
 @returns {number}
 */
 ATON.getElapsedTime = ()=>{
@@ -691,13 +714,17 @@ ATON.setDefaultPixelDensity(0.5)
 */
 ATON.setDefaultPixelDensity = (d)=>{
     ATON._stdpxd = d;
+
     ATON._renderer.setPixelRatio( d );
+
+    if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
 
     // WebXR density
     if (ATON._renderer.xr === undefined) return;
 
     if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.MOBILE_DENSITY_F);
     else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
+    //ATON._renderer.xr.setFramebufferScaleFactor(1.0);
 };
 
 /**
@@ -879,6 +906,12 @@ ATON._onAllReqsCompleted = ()=>{
             ATON._lps[0].setPosition(c.x, c.y, c.z).setNear(r);
         }
         console.log("Auto LP");
+    }
+
+    // Post FX
+    if (ATON.FX.composer){
+        // Estimate DOF aperture from bound radius
+        ATON.FX.setDOFaperture( 1.0 / (r*30.0));
     }
 
     //ATON.Utils.graphPostVisitor(ATON._rootVisible);
@@ -1315,8 +1348,12 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
 
     //ATON._dMainL.shadow.camera.updateProjectionMatrix();
 
-    ATON._dMainL.shadow.bias = -0.0005;
+    let shb = -(r / 5000.0);
+    if (shb < -0.0005) shb = -0.0005;
+
+    ATON._dMainL.shadow.bias = shb;
     //ATON._dMainL.shadow.normalBias = 0.05;
+    //ATON._dMainL.shadow.radius = 8;
 };
 
 
@@ -1429,25 +1466,74 @@ ATON._markFPS = ()=>{
 
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPScount = 0.0;
-    ATON._dtAccum = 0.0;
+    ATON._dtAccum     = 0.0;
 
-    // Dynamic density
-    if (!ATON._bDynamicDensity) return;
+    // Handle dynamic render profiles
+    ATON._handleDynamicRenderProfiles();
+};
+
+/**
+Enable or disable dynamic density for renderer
+@param {function} b - bool
+*/
+ATON.toggleDynamicDensity = (b)=>{
+    ATON._bDynamicDensity = b;
+};
+
+/**
+Set dynamic rendering FPS budgets. Default values are 30 and 55
+@param {number} minBudget - the lower bound to trigger a lower rendering profile
+@param {number} maxBudget - the upper bound to trigger a higher rendering profile
+*/
+ATON.setDynamicRenderingFPS = (minBudget, maxBudget)=>{
+    if (minBudget >= maxBudget) return;
+
+    if (minBudget) ATON._dRenderBudgetMinFPS = minBudget;
+    if (maxBudget) ATON._dRenderBudgetMaxFPS = maxBudget;
+};
+
+// Dynamic Render Profiles
+ATON._handleDynamicRenderProfiles = ()=>{
     let d = ATON._renderer.getPixelRatio();
 
-    if (ATON._fps < 30.0){
-        d *= 0.75;
-        if (d >= 0.1){
-            ATON._renderer.setPixelRatio( d );
-            console.log(d);
+    // We need lower RP
+    if (ATON._fps < ATON._dRenderBudgetMinFPS){
+
+        if (ATON._bDynamicDensity){ // Dynamic density
+            d *= 0.75;
+            if (d >= 0.1){
+                ATON._renderer.setPixelRatio( d );
+
+                // change res to each pass
+                //ATON.updateFXPassesResolution(d);
+                if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
+
+                console.log(d);
+            }
         }
-    } 
-    if (ATON._fps > 50.0){
-        d *= 1.33;
-        if (d <= ATON._stdpxd){
-            ATON._renderer.setPixelRatio( d );
-            console.log(d);
+
+        ATON.fireEvent("RequestLowerRender");
+        //console.log("Need lower render profile");
+    }
+
+    // Can go higher RP
+    if (ATON._fps > ATON._dRenderBudgetMaxFPS){
+
+        if (ATON._bDynamicDensity){ // Dynamic density
+            d *= 1.33;
+            if (d <= ATON._stdpxd){
+                ATON._renderer.setPixelRatio( d );
+
+                // change res to each pass
+                //ATON.updateFXPassesResolution(d);
+                if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
+
+                console.log(d);
+            }
         }
+
+        ATON.fireEvent("RequestHigherRender");
+        //console.log("Can request higher render profile");
     }
 };
 
@@ -1492,21 +1578,32 @@ ATON._onFrame = ()=>{
     // 3D models animations
     ATON._updateAniMixers();
 
-    //ATON.fireEvent("frame");
     ATON._updateRoutines();
 
     // TileSets
     ATON._updateTSets();
 
-    // Render
-    ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    // Render frame
+    if (!ATON.FX.composer || ATON.XR._bPresenting)
+        ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    else 
+        ATON.FX.composer.render();
+
+    //ATON.fireEvent("frame");
 };
 
+/**
+Add an update routine (continuosly executed)
+@param {function} U - function
+*/
 ATON.addUpdateRoutine = (U)=>{
     if (U === undefined) return;
     ATON._updRoutines.push(U);
 };
 
+/**
+Removes all update routines
+*/
 ATON.deleteAllUpdateRoutines = ()=>{
     ATON._updRoutines = [];
 };

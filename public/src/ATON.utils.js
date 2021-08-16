@@ -93,6 +93,21 @@ Utils.profileDevice = ()=>{
     }
 };
 
+
+Utils.profileRenderingCapabilities = ()=>{
+    if (ATON._renderer === undefined) return;
+
+    let rcc = ATON._renderer.capabilities;
+    if (rcc === undefined) return;
+
+    ATON.device.lowGPU = false;
+
+    if (!rcc.isWebGL2) ATON.device.lowGPU = true;
+    if (rcc.maxTextureSize < 8192) ATON.device.lowGPU = true;
+
+    console.log(rcc);
+};
+
 /**
 If current device is mobile (e.g. smartphone, tablet, Oculus Quest)
 @returns {boolean}
@@ -664,6 +679,18 @@ Utils.takeScreenshot = (size, filename)=>{
     
     ATON._renderer.setSize(size,size);
     ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+    let elDom = ATON._renderer.domElement;
+
+    // We have multi-pass FX composer enabled
+    if (ATON.FX.composer){
+        ATON.FX.composer.setSize(size,size);
+        let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
+        if (UU) UU.resolution.value.set( (1/size), (1/size) );
+
+        ATON.FX.composer.render();
+
+        elDom = ATON.FX.composer.renderer.domElement;
+    }
 
     let b64img = ATON._renderer.domElement.toDataURL();
     img.src = b64img;

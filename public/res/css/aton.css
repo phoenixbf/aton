@@ -111,11 +111,10 @@ body {
     
     /*font-family: 'atonfont';*/
 
-/*
     touch-action: none;
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-*/
+
     scrollbar-width: thin;
     scrollbar-color: var(--thumbBG) var(--scrollbarBG);
 }

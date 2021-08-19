@@ -17,7 +17,7 @@
     <!-- Add meta theme-color -->
     <meta name="theme-color" content="#000000" />
 
-    <title>ATON Sample</title>
+    <title>ATON FrontEnd</title>
     <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
 
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
@@ -32,30 +32,36 @@ window.addEventListener( 'load', ()=>{
     ATON.FE.realize();
 
     // Create some HTML UI
-	ATON.FE.uiAddButtonHome("idTopToolbar");
     ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
 
-	ATON.FE.addBasicLoaderEvents(); // Basic loading event handling
-
-	// We handle a sample keypress event
-	// When pressing 'x' we'll grab node with ID 'atoncube' and change color to red
-	ATON.on("KeyPress", function(k){
-		if (k === 'x') ATON.getSceneNode("atoncube").getMaterial().color = ATON.MatHub.colors.red;
-	});
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
 
 
-    // Sample scene with chaining
-    ATON.createSceneNode("ground")                                      // create our scene node with ID 'ground'
-        .load("samples/models/basic/ground.gltf")  // load a sample GLTF
-        .setScale(10.0)                                                 // scale "ground" node 10x
-        .attachToRoot();                                       // attach this node to main root
+    // We create our group node
+    ATON.createSceneNode("myGroup").attachToRoot();
 
-	// Create sample shape ("ATON cube") and assign it ID 'atoncube'
-	// then position it somewhere and attach to main root
-	ATON.Utils.createATONCube("atoncube").setPosition(-4.0,0.5,4.0).attachToRoot();
+    ATON.createSceneNode("ground")                      // create our scene node with ID 'ground'
+        .load("samples/models/basic/ground.gltf")       // load a sample GLTF from our local collection
+        .setScale(10.0)                                 // scale "ground" node 10x
+        .attachTo("myGroup");                           // attach the node to our group
+
+	
+    ATON.createSceneNode("skyphos")
+        .load("samples/models/skyphos/skyphos.gltf")
+        .setScale(4.0)
+        .setPosition(1.5,4.1,1.0)
+        .attachTo("myGroup");
+
+    ATON.createSceneNode("chrysippus")
+        .load("samples/models/chrysippus/50k_delighted.gltf")
+        .setScale(10.0)
+        .setPosition(10,1,1.0)
+        .attachTo("myGroup");
 
 	// Loads main panorama (equirectangular)
 	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
+
 });
 
 </script>
@@ -66,14 +72,22 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
 
     <!-- Bottom Toolbar -->
-    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom">
+        <div class='atonBTN' onclick="ATON.getSceneNode('myGroup').toggle()"><img src="/res/icons/layers.png">MAIN Group</div>
+        <div class='atonBTN' onclick="ATON.getSceneNode('ground').toggle()"><img src="/res/icons/collection-item.png">Ground</div>
+        <div class='atonBTN' onclick="ATON.getSceneNode('chrysippus').toggle()"><img src="/res/icons/collection-item.png">Chrysippus</div>
+        <div class='atonBTN' onclick="ATON.getSceneNode('skyphos').toggle()"><img src="/res/icons/collection-item.png">Skyphos</div>
+    </div>
 
 	<!-- Side Panel -->
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
-            In this sample we handle basic keyboard input.<br><br>
-            We start from <a href="../basic/">basic example</a> and add a "KeyPress" event to handle key <span class="atonKey">'X'</span>: when pressed, the cube will change material base color to red.
+            In this sample we test layers switching and scene-graph.<br><br>
+            A basic 3D scene is arranged by creating different ATON nodes ("ground","chrysippus" and "skyphos") loading different resources (GLTF models). We also create a main parent node called "myGroup".
+            <br><br>Each node can be individually toggled via <code>ATON.getSceneNode('node-id').toggle()</code>. Try switching on/off different nodes using buttons in the bottom toolbar.
+            <br><br>
+            These routines are useful for multi-temporal 3D scenes or architectrual visualization to interactively switch on/off reconstructions, hypotheses or portions of buildings or objects.
         </div>
         </div>
     </div>

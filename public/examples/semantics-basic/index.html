@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections
+
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
+
+    // Sample scene
+	ATON.setAutoLP(true); // Auto LP
+	ATON.SUI.setSelectorRadius(0.01);
+
+	// Loads main panorama (equirectangular) and set direct light
+	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
+	ATON.setMainLightDirection( new THREE.Vector3(-0.1,-1,-1) );
+
+    // Setup scene (load skyphos 3D model under "skyphos" node)
+    ATON.createSceneNode("skyphos")
+        .load("samples/models/skyphos/skyphos.gltf")
+        .attachToRoot();
+
+    // On 'x' key: toggle our skyphos 3D model
+    ATON.on("KeyPress", (k)=>{
+        if (k==='x') ATON.getSceneNode("skyphos").toggle();
+    });
+
+
+    // We create and setup here our semantic graph, using basic and complex shapes.
+    // Note this is a different graph holding basic 3D geometries that can be queried by users
+
+    // Default/highlight materials that we'll use for semantic nodes
+    let matSemDef = ATON.MatHub.materials.semanticShape;
+    let matSemHL  = ATON.MatHub.materials.semanticShapeHL;
+    
+    // Create a semantic node with id "handle" and attach it to semantic-graph root
+    ATON.createSemanticNode("handle").attachToRoot();
+
+    // Now create a basic spherical shape under "handle" providing location and radius
+    let handleLocation = new THREE.Vector3(0.02,-0.8,0.21);
+    let handleRadius   = 0.05;
+    ATON.SemFactory.createSphere("handle", handleLocation, handleRadius);
+
+    // ...or load existing semantic shapes (as basic GLTF models)
+    ATON.createSemanticNode("fill")                             // create the semantic node with ID "fill"
+        .load("samples/sem/skyphos-fill0.glb")                  // load external 3D model (shape)
+        .setDefaultAndHighlightMaterials(matSemDef, matSemHL)   // Setup default/highlight materials for this semantic node
+        .attachToRoot();                                        // attach the node to semantic-graph root
+
+    ATON.createSemanticNode("base")                 
+        .load("samples/sem/skyphos-base0.glb")      
+        .setDefaultAndHighlightMaterials(matSemDef, matSemHL)
+        .setOnHover(function(){ // We add some logic when hovering this specific node, to show simple HTML text (bottom)
+            $("#idSemText").html("This is the skyphos base");
+        })
+        .attachToRoot();
+
+    ATON.createSemanticNode("cracks")   // For "cracks" we load multiple shapes
+        .load("samples/sem/skyphos-cracks0.glb")
+        .load("samples/sem/skyphos-cracks1.glb")
+        .load("samples/sem/skyphos-cracks2.glb")
+        .setDefaultAndHighlightMaterials(matSemDef, matSemHL)
+        .setOnHover(function(){
+            $("#idSemText").html("These are some cracks");
+        })
+        .attachToRoot();
+
+
+    // General hover/leave events handling for all our semantic nodes.
+    ATON.on("SemanticNodeLeave", (semid)=>{ // When pointer leaves a semantic node...
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.restoreDefaultMaterial();
+
+        $("#idSemText").html(""); // clear html text (bottom)
+    });
+    
+    ATON.on("SemanticNodeHover", (semid)=>{ // When hovering a semantic node...
+        let S = ATON.getSemanticNode(semid);
+        if (S) S.highlight();
+    });
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+            <div id="idSemText" class="atonPopupTitle"></div>
+        <div class='descriptionText'>
+            In this sample we setup basic 3D semantic annotations and query.<br><br>
+            We first load a sample 3D model ("skyphos"), then we create multiple semantic nodes ("handle", "base", "fill" and "cracks") where we setup basic 3D shapes reacting to user hover or input.<br><br>
+
+            Use <span class="atonKey">'X'</span> key to show/hide "Skyphos" 3D model.<br><br>
+            
+            For "handle" we use built-in routine to create a spherical shape (providing location and radius), while for others we load existing 3D shapes (external GLTF models) that will react to our main pointer/selector. Note that for "cracks" we load multiple 3D shapes under the same semantic node.<br><br>
+            
+            For this sample we also create basic events to highlight a semantic node (on hover) and to show a text when hovering specific shapes: you can fully customize what happens on hover, leave or select events (popups with full descriptions, play audio, etc...).
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

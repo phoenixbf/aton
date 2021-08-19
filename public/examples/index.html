@@ -33,6 +33,11 @@ let getBaseFolder = ( filepath )=>{
     return '';
 };
 
+let createKeywordEl = (kw)=>{
+    let html = "<div class='atonKeyword atonKeywordActivable' onclick='searchTerm(\""+kw+"\")'>"+kw+"</div>";
+    return html;
+};
+
 let createExampleBlock = (dir, title, kwords)=>{
     let htmlcontent = "";
 
@@ -44,7 +49,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     // keywords
     htmlcontent += "<div>";
-    for (let k in kwds) htmlcontent += "<div class='atonKeyword atonKeywordActivable' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
+    for (let k in kwds) htmlcontent += createKeywordEl(kwds[k]); //"<div class='atonKeyword atonKeywordActivable' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
     htmlcontent += "</div>";
 
     htmlcontent += "</div>";
@@ -87,7 +92,10 @@ let searchTerm = (searchTerm)=>{
 
 window.addEventListener( 'load', ()=>{
     let htmlcontent = "";
-    //htmlcontent += "<div class='atonBlockTitle'>ATON Examples</div><br>";
+    
+    let htdescr = "This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "+createKeywordEl("basic")+", "+createKeywordEl("navigation")+", "+createKeywordEl("pbr")+", "+createKeywordEl("collaborative")+", etc... There is also an example of <a href='minimal/'>minimal setup</a> (the minimal html required to present an interactive 3D scene or model).";
+
+    $("#idDescr").html(htdescr);
 
     // Base
     htmlcontent += createExampleBlock("minimal", "Minimal", "basic minimal object");
@@ -96,25 +104,37 @@ window.addEventListener( 'load', ()=>{
     // Scenes
     htmlcontent += createExampleBlock("scene-basic", "Basic Scene", "basic scene");
 
+    // Layers
+    htmlcontent += createExampleBlock("layers-basic", "Scene Layers", "layers scenegraph graph node switch");
+
     // Events
     htmlcontent += createExampleBlock("events-basic", "Basic Events", "basic events");
     htmlcontent += createExampleBlock("events-custom", "Custom Events", "custom basic events picking query");
 
     // Nav
-    htmlcontent += createExampleBlock("navigation-basic", "Basic Navigation", "basic navigation");
-    htmlcontent += createExampleBlock("navigation-pov", "Navigation Viewpoints", "basic navigation pov object");
+    htmlcontent += createExampleBlock("navigation-basic", "Basic Navigation", "basic navigation first person orbit vr device orientation mobile");
+    htmlcontent += createExampleBlock("navigation-pov", "Viewpoints", "basic navigation pov viewpoint object");
+
+    // Semantics
+    htmlcontent += createExampleBlock("semantics-basic", "Semantic annotations", "semantic annotation query object shape");
 
     // PBR
-    htmlcontent += createExampleBlock("pbr-basic", "Basic PBR", "basic pbr lighting");
     htmlcontent += createExampleBlock("pbr-basic-object", "PBR Object", "basic pbr object lighting");
-    htmlcontent += createExampleBlock("lightprobes", "Light-Probes", "pbr shadows object lighting");
-    htmlcontent += createExampleBlock("pbr-shadows", "PBR Shadows", "pbr shadows lighting");
+    htmlcontent += createExampleBlock("pbr-basic-shadow", "PBR and Shadows", "basic pbr object lighting shadows");
+    htmlcontent += createExampleBlock("lightprobe", "Light-Probe", "pbr light probes lp");
+    htmlcontent += createExampleBlock("lightprobes", "Multiple Light-Probes", "pbr shadows object lighting light probes lp");
+    htmlcontent += createExampleBlock("pbr-lightprobes", "Multiple Light-Probes 2", "pbr lighting light probes lp");
+    htmlcontent += createExampleBlock("pbr-shadows", "Light-Probes and Shadows", "pbr shadows lighting ight probes lp");
+    htmlcontent += createExampleBlock("advanced-materials1", "Advanced Materials", "pbr shadows advanced material refraction ior volume");
 
     // SUI
     htmlcontent += createExampleBlock("sui-basic", "Spatial UI basics", "sui spatial ui basic");
 
     // Multi-res
-    //htmlcontent += createExampleBlock("multires", "Multi-Resolution", "multi-resolution tiles");
+    //htmlcontent += createExampleBlock("multires", "Multi-Resolution", "multi resolution tiles lod detail large paging");
+
+    // FX
+    htmlcontent += createExampleBlock("fx-object", "FX basics", "fx composer effect object pbr shadows bloom dof");
 
     // VRoadcast
     htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");
@@ -136,14 +156,12 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar" style="background-color: rgba(0,0,0, 0.5);">
         <a class='atonBTN' href='/'><img src='/res/icons/aton.png'></a>
         <div class='atonBTN' onclick="$('#idSearch').val(''); showAllBlocks();"><img src='/res/icons/search-clear.png'></div>
-        <input id="idSearch" type="text" size="12" >
+        <input id="idSearch" type="text" size="12" style="width:200px" >
     </div>
 
     <div style="text-align: center; margin-top: 60px">
         <div class="atonTitle" id='idUserTitle'>Examples</div>
-        <div class="descriptionText" style='background-color: rgba(0,0,0, 0.3); padding:16px'>This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "navigation", "pbr", "collaborative", etc...
-        There is also an example of <a href='minimal/'>minimal setup</a> (the minimal html required to present an interactive 3D scene or model).
-        </div><br>
+        <div id='idDescr' class="descriptionText" style='background-color: rgba(0,0,0, 0.3); padding:16px'></div><br>
         <div id='mainContent'></div>
     </div>
     

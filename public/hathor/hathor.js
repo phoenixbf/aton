@@ -1883,9 +1883,9 @@ HATHOR.popupHelp = ()=>{
     }
     else {
         htmlcontent += "<li><b>Double-click</b>: retarget on surface (orbit); locomotion (first-person navigation modes)</li>";
-        htmlcontent += "<li><b>'CTRL' + mouse wheel</b>: increase/decrease field-of-view</li>";
-        htmlcontent += "<li><b>'v'</b>: viewpoint</li>";
-        htmlcontent += "<li><b>'n'</b>: navigation modes</li>";
+        htmlcontent += "<li><span class='atonKey'>'CTRL' + mouse wheel</span>: increase/decrease field-of-view</li>";
+        htmlcontent += "<li><span class='atonKey'>'v'</span>: viewpoint</li>";
+        htmlcontent += "<li><span class='atonKey'>'n'</span>: navigation modes</li>";
     }
     htmlcontent += "</ul></div>";
 
@@ -1896,8 +1896,8 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>Tap</b>: move location of 3D selector</li>";
     }
     else {
-        htmlcontent += "<li><b>'SHIFT' + mouse wheel</b>: increase/decrease radius of selector</li>";
-        htmlcontent += "<li><b>'space'</b>: selector options</li>";
+        htmlcontent += "<li><span class='atonKey'>'SHIFT' + mouse wheel</span>: increase/decrease radius of selector</li>";
+        htmlcontent += "<li><span class='atonKey'>'space'</span>: selector options</li>";
     }
     htmlcontent += "</ul></div>";
 
@@ -1908,14 +1908,14 @@ HATHOR.popupHelp = ()=>{
         htmlcontent += "<li><b>Double-tap on annotation</b>: open associated content</li>";
     }
     else {
-        htmlcontent += "<li><b>'a'</b>: add basic annotation (sphere)</li>";
-        htmlcontent += "<li><b>'s'</b>: initiate convex shape annotation (add surface point)</li>";
-        htmlcontent += "<li><b>'ENTER'</b>: finalize convex shape annotation</li>";
-        htmlcontent += "<li><b>'ESC'</b>: cancel/stop current convex shape annotation</li>";
-        htmlcontent += "<li><b>'e'</b>: edit hovered annotation</li>";
-        htmlcontent += "<li><b>'CANC'</b>: delete hovered annotation</li>";
-        htmlcontent += "<li><b>'x'</b>: export (download) semantic shapes</li>";
-        htmlcontent += "<li><b>'m'</b>: add measurement point</li>";
+        htmlcontent += "<li><span class='atonKey'>'a'</span>: add basic annotation (sphere)</li>";
+        htmlcontent += "<li><span class='atonKey'>'s'</span>: initiate convex shape annotation (add surface point)</li>";
+        htmlcontent += "<li><span class='atonKey'>'ENTER'</span>: finalize convex shape annotation</li>";
+        htmlcontent += "<li><span class='atonKey'>'ESC'</span>: cancel/stop current convex shape annotation</li>";
+        htmlcontent += "<li><span class='atonKey'>'e'</span>: edit hovered annotation</li>";
+        htmlcontent += "<li><span class='atonKey'>'CANC'</span>: delete hovered annotation</li>";
+        htmlcontent += "<li><span class='atonKey'>'x'</span>: export (download) semantic shapes</li>";
+        htmlcontent += "<li><span class='atonKey'>'m'</span>: add measurement point</li>";
     }
     htmlcontent += "</ul></div>";
 
@@ -1926,7 +1926,7 @@ HATHOR.popupHelp = ()=>{
     else {
         htmlcontent += blblock+"<h3>Other</h3>";
         htmlcontent += "<ul>";
-        htmlcontent += "<li><b>'c'</b>: screenshot/capture</li>";
+        htmlcontent += "<li><span class='atonKey'>'c'</span>: screenshot/capture</li>";
         htmlcontent += "</ul></div>";
     }
 

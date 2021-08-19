@@ -443,6 +443,8 @@ Utils.modelVisitor = (parentNode, model)=>{
                     o.geometry.computeBoundsTree();
                     console.log("Computed semantic BVH");
                 }
+
+                //N.setDefaultAndHighlightMaterials(ATON.MatHub.materials.semanticShape, ATON.MatHub.materials.semanticShapeHL);
             }
 
             // Cascading material

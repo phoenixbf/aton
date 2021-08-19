@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+let posLP = new THREE.Vector3(0.0, 2.0, 0.0);
+
+let panoList = [
+    "samples/pano/bg-welcome.jpg",
+    "samples/pano/defsky-grass.jpg",
+    "samples/pano/side-rgb.jpg"
+];
+let currPano = 0;
+
+
+// Setup of our scene
+let setupScene = function(){
+
+    // Create ground node
+	ATON.createSceneNode("ground")
+        .load("samples/models/basic/aton-ground.gltf")
+        .setScale(10.0)
+        .attachToRoot();
+
+    // Set the first panorama from the list
+    ATON.setMainPanorama( panoList[0] );
+
+    // Add our cube and set its location
+    ATON.createSceneNode("item")
+        .load("samples/models/atoncube.glb")
+        .setPosition(posLP)
+        .attachToRoot();
+/*
+    ATON.createSceneNode("venus")
+        .load("samples/models/venus/venus.gltf")
+        .setScale(0.2)
+        .setPosition(3.0,-0.3,0.0)
+        .attachToRoot();
+*/
+
+    //ATON.setMainLightDirection( new THREE.Vector3(-0.1, -0.9, -0.9) );
+    //ATON.toggleShadows(true);
+};
+
+// Main
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // show LP icons in 3D space
+    ATON.SUI.enableLPIcons();
+    ATON.SUI.gLPIcons.hide();
+
+    // Some UI
+    ATON.FE.uiAddButtonVR("idTopToolbar");  // VR button will show up only on secure connections
+
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
+
+	ATON.on("KeyPress", function(k){
+        if (k === 'l') ATON.SUI.gLPIcons.toggle();
+        if (k === 'e'){
+            currPano = (currPano + 1) % panoList.length;
+            ATON.setMainPanorama( panoList[currPano] );
+        }
+	});
+
+    // We setup our scene
+    setupScene();
+
+    // We add a single light-probe with resolution = 128 and near = 0.1
+    // located inside our cube
+    ATON.addLightProbe( new ATON.LightProbe(128, 1.0).setPosition(posLP) );
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            This sample shows how to setup a single light-probe (LP).<br><br>
+
+            We setup a basic 3D scene, arranging a cube at 2m height. Then we add a single light-probe (LP): you can see its location and size by pressing <span class="atonKey">'L'</span> key.<br><br>
+
+            If you approach the cube, you can see how the cube it's reflecting not only the main panorama (360) but also surrounding 3D elements (ground). You can use <span class="atonKey">'E'</span> key to switch between different panoramas.
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

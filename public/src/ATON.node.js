@@ -722,15 +722,15 @@ exportAs( filename ){
     return this;
 }
 
-setOnHover( h ){
+setOnHover( f ){
     this.onHover = f;
     return this;
 }
-setOnLeave( h ){
+setOnLeave( f ){
     this.onLeave = f;
     return this;
 }
-setOnSelect( h ){
+setOnSelect( f ){
     this.onSelect = f;
     return this;
 }

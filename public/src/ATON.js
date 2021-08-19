@@ -990,7 +990,7 @@ ATON.setBackgroundColor = (bg)=>{
 };
 
 //==============================================================
-// LightProbes
+// LightProbes (LPs)
 //==============================================================
 ATON.setAutoLP = (b)=>{
     ATON._bAutoLP = b;
@@ -1158,6 +1158,8 @@ ATON._realizeOrUpdateMainPano = (tpano)=>{
     if (ATON._matMainPano !== undefined){
         ATON._matMainPano.map = tpano;
         //ATON._matMainPano.emissive = tpano;
+
+        ATON.updateLightProbes();
         return;
     }
 
@@ -1192,6 +1194,8 @@ ATON._realizeOrUpdateMainPano = (tpano)=>{
     }
 
     ATON._rootVisibleGlobal.add(ATON._mMainPano);
+    
+    ATON.updateLightProbes();
 };
 
 

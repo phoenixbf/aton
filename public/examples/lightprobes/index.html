@@ -33,6 +33,7 @@ let spC = undefined;
 
 let modelURL = SAMPLE_MODELS+"chrysippus/50k_delighted.gltf";
 
+// Set a few locations
 let pos_A = new THREE.Vector3(0.0, 0.0, 0.0);
 let pos_B = new THREE.Vector3(0.5, 0.0, 0.0);
 let pos_C = new THREE.Vector3(1.0, 0.0, 0.0);
@@ -45,6 +46,7 @@ let posLP_cylA = new THREE.Vector3(-0.16, 0.03, -0.12); // -0.06 // -0.12
 let posLP_cylB = new THREE.Vector3(0.32, 0.03, -0.12);
 let posLP_cylC = new THREE.Vector3(0.83, 0.03, -0.12);
 
+// Routine to arrange our light-probes
 let setupLPs = ()=>{
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_A) );
 	ATON.addLightProbe( new ATON.LightProbe(128, 0.1).setPosition(posLP_B) );
@@ -66,6 +68,7 @@ let setupLPs = ()=>{
     ATON.updateLightProbes();
 };
 
+// Main
 window.addEventListener( 'load', ()=>{
 
     // Realize the base front-end
@@ -119,12 +122,12 @@ window.addEventListener( 'load', ()=>{
             ATON.getRootScene().assignLightProbesByProximity();
             ATON.updateLightProbes();
         }
-
+/*
         if (k === 'm'){
-            ATON.setMainPanorama("samples/pano/redblue.jpg");
+            ATON.setMainPanorama("samples/pano/side-red-green.jpg");
             ATON.updateLightProbes();
         }
-
+*/
         if (k === '('){
             ATON._envMapInt -= 0.5;
             if (ATON._envMapInt < 0.5) ATON._envMapInt = 0.5;
@@ -231,9 +234,23 @@ window.addEventListener( 'load', ()=>{
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
 
-	<!-- Side Panel
-	<div id="idSidePanel" class="atonSidePanelRight">test test</div>
--->
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            This sample shows ATON support for multiple light-probes (LPs).<br><br>
+            We load a basic set and 3 instances of a 3D model ("Chrysippus head") and arrange several light-probes into the 3D space to better simulate local reflections and light bounces. You can see where light-probes are located (and their exents) by pressing <span class="atonKey">'L'</span> key.<br><br>
+
+            You can switch on/off different sections of the set and check how they affect overall lighting on the instances by pressing specific keys:<br>
+            <ul>
+            <li><span class="atonKey">'B'</span>: switch back panel</li>
+            <li><span class="atonKey">'1'</span>: switch first section</li>
+            <li><span class="atonKey">'2'</span>: switch second section</li>
+            <li><span class="atonKey">'3'</span>: switch third section</li>
+            </ul>
+        </div>
+        </div>
+    </div>
 
     <!-- Main Popup -->
     <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>

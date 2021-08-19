@@ -28,7 +28,8 @@
 <script>
 window.addEventListener( 'load', ()=>{
 
-    // This is our sample tileset url (from NASA "Dingo Gap Mars dataset": https://github.com/NASA-AMMOS/3DTilesSampleData)
+    // This is our sample tileset url
+    // from NASA "Dingo Gap Mars dataset": https://github.com/NASA-AMMOS/3DTilesSampleData
     const TS_URL = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize_tileset.json";
     //const TS_URL = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256/0528_0260184_to_s64o256/0528_0260184_to_s64o256_tileset.json";
 
@@ -69,6 +70,8 @@ window.addEventListener( 'load', ()=>{
     
     ATON.Nav.setHomePOV( new ATON.POV().setPosition(10*tsScale,10*tsScale,10*tsScale).setTarget(0, 0, 0) );
     //ATON.Nav.setHomePOV( new ATON.POV().setPosition(0,10*tsScale,0).setTarget(10*tsScale, 10*tsScale, 0) );
+
+    ATON.setMainPanorama("samples/pano/mars.jpg");
     
     ATON.Nav.requestHome();
 });
@@ -82,6 +85,19 @@ window.addEventListener( 'load', ()=>{
 
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            This sample shows how to load a single multiresolution dataset (3D Tiles standard).<br><br>
+            <img src="https://raw.githubusercontent.com/NASA-AMMOS/3DTilesRendererJS/master/images/header-mars.png"><br>
+            In this case we create a standard ATON node, and then load a remote 3D-tiles dataset ("Dingo Gap Mars dataset") directly from <a href="https://github.com/NASA-AMMOS">NASA AMMOS project</a>.<br><br>
+
+            Note that ATON can load multiple multiresolution datasets, and mix them with standard GLTF models or 360 content (static and videostreams).
+        </div>
+        </div>
+    </div>
 
     <!-- Main Popup -->
     <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>

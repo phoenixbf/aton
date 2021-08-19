@@ -82,6 +82,18 @@ window.addEventListener( 'load', ()=>{
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
 
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            In this sample we handle basic keyboard input and picking.<br><br>
+            We start from <a href="../basic/">basic example</a>. We create our custom event called "myEvent" that consumes a 3D location (p) where a new cube will be spawned. We add a "KeyPress" event to handle key <span class="atonKey">'X'</span>: when pressed, we fire "myEvent" using<br><br>
+            <code>ATON.fireEvent("myEvent", p)</code><br><br>
+            passing current world location (p) of pointer intersection with 3D scene (if any).
+        </div>
+        </div>
+    </div>
+
     <!-- Main Popup -->
     <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
 

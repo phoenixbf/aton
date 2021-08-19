@@ -38,17 +38,12 @@ window.addEventListener( 'load', ()=>{
     // Our events
 	ATON.FE.addBasicLoaderEvents();
 
-	ATON.on("KeyPress", function(k){
-		if (k === 'x') ATON.updateLightProbes();
-	});
-
     // Sample scene
 	ATON.setAutoLP(true); // Auto LP
 	ATON.SUI.setSelectorRadius(0.01);
 
-	// Loads main panorama (equirectangular)
+	// Loads main panorama (equirectangular) + setup direct light
 	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
-
 	ATON.setMainLightDirection( new THREE.Vector3(-0.1, -1, -1) );
 
     ATON.createSceneNode("skyphos")
@@ -66,9 +61,18 @@ window.addEventListener( 'load', ()=>{
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
 
-	<!-- Side Panel
-	<div id="idSidePanel" class="atonSidePanelRight">test test</div>
--->
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            In this sample we load a basic 3D model ("Skyphos") with PBR.<br><br>
+
+            See how the object reacts consistently to surrounding environment, and variable roughness on the surface can be appreciated.<br><br>
+
+            You can also try using a VR headset to immersively inspect the item and its reflections.
+        </div>
+        </div>
+    </div>
 
     <!-- Main Popup -->
     <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>

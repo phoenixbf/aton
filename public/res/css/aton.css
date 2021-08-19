@@ -298,6 +298,8 @@ canvas:active {
     z-index: 8;
 	position: absolute;
 
+    box-sizing: border-box;
+
     height: 100%;
     max-height: none;
  
@@ -326,17 +328,19 @@ canvas:active {
 
 @media screen and (orientation: portrait) {
     .atonSidePanelContainer {
-        width: auto;
-        max-width: none;
-        height: 40%;
+        width: 100%;
+        max-width: 100%;
+
+        height: 30%;
         max-height: 300px;
 
         padding-top: 10px;
+        padding-bottom: 20px;
 
         bottom: 0px;
         top: auto;
         
-        margin: auto;
+        margin: 0px;
         
         animation: 0.5s ease-out 0s 1 slideFromBottom;
     }
@@ -365,12 +369,16 @@ canvas:active {
 }
 
 .atonSidePanelContent {
+    display: block;
 /*
     padding: 10px;
     margin: auto;
 */
     width: 100%;
     height: 100%;
+
+    padding: 0px;
+    margin: 0px;
 
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
@@ -518,6 +526,7 @@ canvas:active {
     border-radius: 5px;
 
     font-size: smaller;
+    text-shadow: none;
 
     color: black;
     background-color: rgba(255, 255, 255, 0.5);
@@ -547,6 +556,28 @@ canvas:active {
     text-shadow: 0px 0px 4px black;
     text-align: center;
     padding: 8px;
+}
+
+.atonKey {
+    display: inline-block;
+    border-radius: 5px;
+
+    text-shadow: none;
+    font-weight: bold;
+
+    color: black;
+    background-color: rgba(255,255,255, 0.5);
+
+    box-shadow: 0 0px 5px rgba(0,0,0, 0.5);
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+
+    margin: 3px;
+    padding: 3px;
 }
 
 /* icon / button */
@@ -1353,14 +1384,27 @@ input[type="number"]:hover {
     padding: 10px;
     text-align: left;
 
-    -moz-user-select: auto !important;
-    -khtml-user-select: auto !important;
-    -webkit-user-select: auto !important;
-    -o-user-select: auto !important;
-    user-select:auto !important;
+    -moz-user-select: text !important;
+    -khtml-user-select: text !important;
+    -webkit-user-select: text !important;
+    -o-user-select: text !important;
+    user-select: text !important;
 
     touch-action: auto;
     -webkit-user-drag: auto;
+}
+
+code {
+    display: inline-block;
+    text-align: left;
+
+    overflow-x: auto;
+
+    color: white;
+    font-family: monospace;
+    background-color: rgba(0,0,0, 0.5);
+
+    padding: 7px;
 }
 
 .atonGradientBottomDark {

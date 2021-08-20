@@ -644,6 +644,9 @@ ATON.realize = ()=>{
 
     ATON._wappID = undefined;
 
+    // External API/services
+    ATON._extAPItokens = {};
+
     ATON.focusOn3DView();
 };
 
@@ -1963,6 +1966,12 @@ ATON._handleQueryUI = ()=>{
             ATON._tHover = ATON._clock.elapsedTime;
         }
     }
+};
+
+// Tokens for external API/services 
+// TODO:
+ATON.setSketchFabAPIToken = (tok)=>{
+    ATON._extAPItokens.sketchfab = tok;
 };
 
 

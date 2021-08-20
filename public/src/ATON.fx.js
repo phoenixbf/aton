@@ -124,9 +124,9 @@ FX.init = ()=>{
 
 
     // Order
-    //FX.composer.addPass( FX.passes[FX.PASS_AA] );
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
+    // tone-mapping passes here (if any)
     FX.composer.addPass( FX.passes[FX.PASS_GAMMA] );
     FX.composer.addPass( FX.passes[FX.PASS_AA] );
     //FX.composer.addPass( effectSobel );

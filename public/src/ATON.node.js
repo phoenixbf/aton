@@ -187,7 +187,7 @@ show(){
     ATON.Utils.setPicking(this, this.type, this.bPickable);
 
     if (ATON._renderer.shadowMap.enabled){
-        ATON._dMainL.shadow.needsUpdate = true;
+        if (ATON._dMainL!==undefined && ATON._dMainL.shadow!==undefined) ATON._dMainL.shadow.needsUpdate = true;
     }
 
     return this;

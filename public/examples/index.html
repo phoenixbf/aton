@@ -43,9 +43,9 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     let kwds = kwords.split(" ");
 
-    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px; background-color:rgba(0,0,0,0.0)'>";
+    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px; background-color:rgba(0,0,0,0.1); '>"; // background-image: url(\""+dir+"/cover.jpg\");
     htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
-    htmlcontent += "<div class='atonCover' style='margin:0px'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
+    htmlcontent += "<div class='atonCover' style='margin:0px;'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
 
     // keywords
     htmlcontent += "<div>";
@@ -93,7 +93,7 @@ let searchTerm = (searchTerm)=>{
 window.addEventListener( 'load', ()=>{
     let htmlcontent = "";
     
-    let htdescr = "This is a list of interactive examples built on top of ATON framework. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "+createKeywordEl("basic")+", "+createKeywordEl("navigation")+", "+createKeywordEl("pbr")+", "+createKeywordEl("collaborative")+", etc... There is also an example of <a href='minimal/'>minimal setup</a> (the minimal html required to present an interactive 3D scene or model).";
+    let htdescr = "This is a list of interactive examples built on top of ATON framework targeting developers. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like "+createKeywordEl("basic")+", "+createKeywordEl("navigation")+", "+createKeywordEl("pbr")+", "+createKeywordEl("collaborative")+", etc... There is also an example of <a href='minimal/'>minimal setup</a> (the minimal html required to present an interactive 3D scene or model).";
 
     $("#idDescr").html(htdescr);
 
@@ -103,6 +103,7 @@ window.addEventListener( 'load', ()=>{
 
     // Scenes
     htmlcontent += createExampleBlock("scene-basic", "Basic Scene", "basic scene");
+    htmlcontent += createExampleBlock("animation1", "Animated models", "basic object animation");
 
     // Layers
     htmlcontent += createExampleBlock("layers-basic", "Scene Layers", "layers scenegraph graph node switch");
@@ -124,7 +125,7 @@ window.addEventListener( 'load', ()=>{
     htmlcontent += createExampleBlock("lightprobe", "Light-Probe", "pbr light probes lp");
     htmlcontent += createExampleBlock("lightprobes", "Multiple Light-Probes", "pbr shadows object lighting light probes lp");
     htmlcontent += createExampleBlock("pbr-lightprobes", "Multiple Light-Probes 2", "pbr lighting light probes lp");
-    htmlcontent += createExampleBlock("pbr-shadows", "Light-Probes and Shadows", "pbr shadows lighting ight probes lp");
+    htmlcontent += createExampleBlock("pbr-shadows", "Light-Probes and Shadows", "pbr shadows lighting light probes lp");
     htmlcontent += createExampleBlock("advanced-materials1", "Advanced Materials", "pbr shadows advanced material refraction ior volume");
 
     // SUI
@@ -135,6 +136,7 @@ window.addEventListener( 'load', ()=>{
 
     // FX
     htmlcontent += createExampleBlock("fx-object", "FX basics", "fx composer effect object pbr shadows bloom dof");
+    htmlcontent += createExampleBlock("advanced-materials2", "Advanced Materials + FX", "pbr fx shadows advanced material refraction ior volume bloom lp light probes");
 
     // VRoadcast
     htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");

@@ -536,6 +536,7 @@ ATON.realize = ()=>{
     ATON._envMapInt = 1.0;
     //ATON._dirtyLPs = true;
     ATON._bShadowsFixedBound = false;
+    ATON._shadowsFixedBoundCenter = undefined;
 
     ATON._shadowsNear = ATON.SHADOWS_NEAR;
     ATON._shadowsFar  = ATON.SHADOWS_FAR;
@@ -899,7 +900,7 @@ ATON._onAllReqsCompleted = ()=>{
         ATON.adjustShadowsParamsFromSceneBounds();
 
         if (ATON._bShadowsFixedBound){
-            ATON.updateDirShadows(c);
+            ATON.updateDirShadows(/*c*/);
         }
     }
 
@@ -1319,6 +1320,8 @@ ATON.getExposure = ()=>{
 // Shadows
 // Smart adjustment of shadows params
 ATON.adjustShadowsParamsFromSceneBounds = ()=>{
+    if (ATON._dMainL === undefined) return;
+
     let r = ATON._rootVisible.getBound().radius;
     let c = ATON._rootVisible.getBound().center;
     
@@ -1330,6 +1333,7 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
     }
     else {
         ATON._bShadowsFixedBound = true;
+        ATON._shadowsFixedBoundCenter = c;
         ATON._shadowsSize = r * 1.5;
 
         //console.log(ATON._shadowsNear,ATON._shadowsFar);
@@ -1388,12 +1392,14 @@ ATON.toggleShadows = (b)=>{
 
         ATON.adjustShadowsParamsFromSceneBounds();
 
+        ATON.updateDirShadows();
+/*
         if (ATON._bShadowsFixedBound){
             let c = ATON._rootVisible.getBound().center;
             ATON.updateDirShadows(c);
         }
         else ATON.updateDirShadows();
-
+*/
         ATON._dMainL.shadow.needsUpdate = true;
 
         console.log("Shadows ON");
@@ -1405,8 +1411,10 @@ ATON.toggleShadows = (b)=>{
     }
 };
 
-ATON.updateDirShadows = (p)=>{
+ATON.updateDirShadows = (/*p*/)=>{
     if (ATON._dMainLdir === undefined) return;
+
+    let p = ATON._shadowsFixedBoundCenter;
 
     if (p === undefined){
         p = ATON.Nav.getCurrentEyeLocation();

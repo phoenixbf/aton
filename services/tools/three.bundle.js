@@ -24,6 +24,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { SobelOperatorShader } from 'three/examples/jsm/shaders/SobelOperatorShader.js';
 import { SSRPass } from 'three/examples/jsm/postprocessing/SSRPass.js';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+import { CSM } from 'three/examples/jsm/csm/CSM.js';
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOrientationControls.js';
@@ -77,6 +78,7 @@ THREE.SAOPass             = SAOPass;
 THREE.SobelOperatorShader = SobelOperatorShader;
 THREE.SSRPass             = SSRPass;
 THREE.BokehPass           = BokehPass;
+THREE.CSM                 = CSM;
 
 THREE.GLTFLoader         = GLTFLoader;
 THREE.GLTFExporter       = GLTFExporter;

@@ -1523,7 +1523,7 @@ HATHOR.popupEnvironment = ()=>{
             ATON.VRoadcast.fireEvent("AFE_LightSwitch", false);
         }
 
-        console.log(E);
+        //console.log(E);
 
         ATON.toggleMainLight(b);
     });

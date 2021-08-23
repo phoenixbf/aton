@@ -651,7 +651,8 @@ load(url, onComplete){
             ATON.Utils.ccExtract(data);
 
             resolve(model);
-            console.log("Model "+url+" loaded");
+            //console.log("Model "+url+" loaded");
+            console.log("Model loaded");
             
             /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
 
@@ -671,6 +672,7 @@ load(url, onComplete){
         (err)=>{
             //console.log(err);
             //reject(model);
+            console.log("Error loading model");
 
             /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
             if (onComplete) onComplete();

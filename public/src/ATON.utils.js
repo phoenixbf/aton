@@ -373,13 +373,14 @@ Utils.loadTileSet = (tsurl, N)=>{
 };
 
 // Helper visitor routine
-// Note: parentNode is not connected to model
-Utils.modelVisitor = (parentNode, model)=>{
-    if (!model) return this;
+// Note: N (parent node) is not yet connected to model
+Utils.modelVisitor = (N, model)=>{
+    if (model===undefined) return this;
+    if (N===undefined) return this;
 
     //model = Utils.mergeObject(model);
     
-    let N = parentNode;
+    //let N = parentNode;
     let type = N.type; // Differentiate visit depending on node type
 
     model.traverse( ( o ) => {

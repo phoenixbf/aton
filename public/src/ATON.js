@@ -954,6 +954,7 @@ ATON._postAllReqsCompleted = (R)=>{
         if (N && N.toggle){
             ATON._postAllReqsCompleted(N);
             N.toggle(N.visible);
+
             //if (N.bPickable !== undefined) N.setPickable(N.bPickable);
         }
     }
@@ -1359,10 +1360,10 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
 
     //ATON._dMainL.shadow.camera.updateProjectionMatrix();
 
-    let shb = -(r / 5000.0);
-    if (shb < -0.0005) shb = -0.0005;
-
+    let shb = -(r * 0.0002);
+    if (shb < -0.001) shb = -0.001; // -0.0005
     ATON._dMainL.shadow.bias = shb;
+
     //ATON._dMainL.shadow.normalBias = 0.05;
     //ATON._dMainL.shadow.radius = 8;
 };

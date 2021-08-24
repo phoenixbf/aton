@@ -471,7 +471,7 @@ ATON.realize = ()=>{
     ATON._avgFPS = 60.0;
 
     ATON._bDynamicDensity = false; //true;
-    ATON._dRenderBudgetMinFPS = 30.0;
+    ATON._dRenderBudgetMinFPS = 25.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
 
     ATON._aniMixers = [];
@@ -1468,11 +1468,12 @@ ATON.setGlobalAudio = (audioURL, bLoop)=>{
 // FPS monitoring
 ATON._markFPS = ()=>{
     if (ATON._numReqLoad > 0) return;
+    if (ATON._dt < 0.0) return;
 
     const fps = (1.0 / ATON._dt);
 
     ATON._avgFPScount += 1.0;
-    ATON._dtAccum += ATON._dt;
+    ATON._dtAccum     += ATON._dt;
     ATON._avgFPSaccum += fps;
 
     if (ATON._dtAccum < 1.0) return;
@@ -1516,8 +1517,8 @@ ATON._handleDynamicRenderProfiles = ()=>{
     if (ATON._fps < ATON._dRenderBudgetMinFPS){
 
         if (ATON._bDynamicDensity){ // Dynamic density
-            d *= 0.75;
-            if (d >= 0.1){
+            d *= 0.8;
+            if (d >= 0.2){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass
@@ -1528,6 +1529,8 @@ ATON._handleDynamicRenderProfiles = ()=>{
             }
         }
 
+        //ATON.toggleShadows(false);
+
         ATON.fireEvent("RequestLowerRender");
         //console.log("Need lower render profile");
     }
@@ -1536,7 +1539,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
     if (ATON._fps > ATON._dRenderBudgetMaxFPS){
 
         if (ATON._bDynamicDensity){ // Dynamic density
-            d *= 1.33;
+            d *= 1.25;
             if (d <= ATON._stdpxd){
                 ATON._renderer.setPixelRatio( d );
 

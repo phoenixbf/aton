@@ -45,7 +45,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px; background-color:rgba(0,0,0,0.1); '>"; // background-image: url(\""+dir+"/cover.jpg\");
     htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
-    htmlcontent += "<div class='atonCover' style='margin:0px;'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px'></a></div>";
+    htmlcontent += "<div class='atonCover' style='margin:0px;'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px; width:150px; height:auto'></a></div>";
 
     // keywords
     htmlcontent += "<div>";
@@ -118,6 +118,9 @@ window.addEventListener( 'load', ()=>{
 
     // Semantics
     htmlcontent += createExampleBlock("semantics-basic", "Semantic annotations", "semantic annotation query object shape");
+
+    // Measurements
+    htmlcontent += createExampleBlock("measure", "Measurements", "sui spatial ui basic measure scene");
 
     // PBR
     htmlcontent += createExampleBlock("pbr-basic-object", "PBR Object", "basic pbr object lighting");

@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
 
     <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
 
 <script>
 window.addEventListener( 'load', ()=>{
@@ -33,23 +33,17 @@ window.addEventListener( 'load', ()=>{
 
     // Create some HTML UI
 	ATON.FE.uiAddButtonHome("idTopToolbar");
-    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+    ATON.FE.uiAddButtonAR("idTopToolbar"); // AR button will show up only on secure connections
 
-    // Add basic event handlers
-    ATON.FE.addBasicLoaderEvents();
+    ATON.SUI.setSelectorRadius(0.01);
 
-    // We use built-in scene loader
-    // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network
-    ATON.FE.loadSceneID("samples/montebelluna");
+    // Our events
+	ATON.FE.addBasicLoaderEvents();
 
-    // Our keyboard event 'm' to add a measurement
-    ATON.on("KeyPress", function(k){
-        if (k === 'm'){
-            let P = ATON.getSceneQueriedPoint(); // We grab current queried point on our scene (surface)
-            ATON.SUI.addMeasurementPoint( P );   // We add a measurement point. Note each pair will generate a 3D measure
-        }
-    });
-
+    // Sample scene
+    ATON.createSceneNode("skyphos")
+        .load("samples/models/skyphos/skyphos.gltf")
+        .attachToRoot();
 });
 
 </script>
@@ -66,17 +60,9 @@ window.addEventListener( 'load', ()=>{
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
-            This sample showcases a basic measurement tool.<br><br>
+            This sample shows ATON support for AR.<br><br>
 
-            We first load a basic scene (like in <a href="../scene-basic/">this example</a>), then we handle keypress event <span class="atonKey">'M'</span> to add measurement points on current selector location using:<br>
-            <code>ATON.SUI.addMeasurementPoint( P )</code><br><br>
-            Where 'P' is location of the point: each pair creates a 3D measure in the virtual space, also compliant with immersive VR visualization.<br><br>
-
-            You can add as many measurements as you like.<br><br>
-
-            Note that 3D label also smartly adapts unit depending on measurement length (meters, centimeters, millimeters, etc.).<br>
-            You can customize <code>ATON.Utils.getHumanReadableDistance(d)</code> to redefine your own unit if necessary.
-
+            We load a basic 3D model ("skyphos") and add UI button to toggle AR mode (top toolbar).
         </div>
         </div>
     </div>

@@ -381,6 +381,8 @@ canvas:active {
     margin: 0px;
 
     overflow-y: auto;
+    overflow-x: hidden;
+
     -webkit-overflow-scrolling: touch;
 }
 
@@ -391,9 +393,9 @@ canvas:active {
 
     margin-bottom: 10px;
 
-    border-radius: 10px;
+    border-radius: 5px;
 
-    width: 250px;
+    width: 290px;
     height: auto;
 }
 
@@ -1397,6 +1399,8 @@ input[type="number"]:hover {
 code {
     display: inline-block;
     text-align: left;
+
+    vertical-align: middle;
 
     overflow-x: auto;
 

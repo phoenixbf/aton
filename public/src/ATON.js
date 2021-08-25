@@ -441,7 +441,7 @@ ATON.realize = ()=>{
     const wglopts = {
         //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
-        alpha: false, //true,
+        alpha: true, // required for AR
 
         powerPreference: "high-performance",
         ///pecision: "lowp", //"mediump"

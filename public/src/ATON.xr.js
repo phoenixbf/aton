@@ -418,6 +418,8 @@ XR.toggle = (sessiontype)=>{
 
                 //"high-refresh-rate",
                 //"high-fixed-foveation-level",
+
+                //"light-estimation" // AR
             ]
 
         };

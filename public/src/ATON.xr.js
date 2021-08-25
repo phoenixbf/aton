@@ -239,6 +239,8 @@ XR.onSessionStarted = ( session )=>{
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
 
+    if (XR._sessionType === "immersive-ar") ATON._renderer.xr.setReferenceSpaceType( 'local' );
+
     // Promised
 	ATON._renderer.xr.setSession( session ).then(()=>{
         XR.currSession = session;
@@ -418,11 +420,14 @@ XR.toggle = (sessiontype)=>{
 
                 //"high-refresh-rate",
                 //"high-fixed-foveation-level",
-
-                //"light-estimation" // AR
             ]
-
         };
+
+        if (XR._sessionType === "immersive-ar"){
+            sessionInit.optionalFeatures.push( 'dom-overlay' );
+            //sessionInit.optionalFeatures.push( 'light-estimation' );
+        }
+
         navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);
     }

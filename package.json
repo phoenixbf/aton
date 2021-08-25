@@ -20,10 +20,9 @@
     "type": "git",
     "url": "https://github.com/phoenixbf/aton.git"
   },
-
-  "keywords": [ 
-    "nodejs", 
-    "javascript", 
+  "keywords": [
+    "nodejs",
+    "javascript",
     "threejs",
     "webxr",
     "virtual-reality",
@@ -40,7 +39,6 @@
     "hmd",
     "head-mounted-display"
   ],
-
   "browserslist": [
     "since 2017-06"
   ],

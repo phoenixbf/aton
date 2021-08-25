@@ -46,7 +46,7 @@ import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerat
 import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 
 
-import ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
+import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
 ///import { ThreeMeshUI, Block } from 'three-mesh-ui/src/three-mesh-ui.js';
 ///ThreeMeshUI.Block = Block;

@@ -41,8 +41,9 @@ window.addEventListener( 'load', ()=>{
 	ATON.FE.addBasicLoaderEvents();
 
     // Sample scene
-    ATON.createSceneNode("skyphos")
-        .load("samples/models/skyphos/skyphos.gltf")
+    ATON.createSceneNode("item")
+        .load("samples/models/atoncube.glb")
+        .setPosition(0,0.55,0)
         .attachToRoot();
 });
 

@@ -424,7 +424,12 @@ XR.toggle = (sessiontype)=>{
         };
 
         if (XR._sessionType === "immersive-ar"){
+            let overlay = document.createElement('div');
+			overlay.style.display = 'none';
+			document.body.appendChild( overlay );
+
             sessionInit.optionalFeatures.push( 'dom-overlay' );
+            sessionInit.domOverlay = { root: overlay };
             //sessionInit.optionalFeatures.push( 'light-estimation' );
         }
 

@@ -424,6 +424,8 @@ XR.toggle = (sessiontype)=>{
         };
 
         if (XR._sessionType === "immersive-ar"){
+            sessionInit.requiredFeatures = [ 'hit-test' ];
+
             let overlay = document.createElement('div');
 			overlay.style.display = 'none';
 			document.body.appendChild( overlay );

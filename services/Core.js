@@ -125,6 +125,10 @@ Core.CONF_USERS = [
         username: "ra",
         admin: true,
         password: "ra2020"
+	},
+	{ 
+        username: "bastet",
+        password: "bas2020"
 	}
 ];
 

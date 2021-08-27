@@ -16,6 +16,7 @@ const url         = require('url');
 //const compression = require('compression');
 const path        = require('path');
 const cors        = require('cors');
+const chalk       = require('chalk');
 
 const glob   = require("glob");
 const nanoid = require("nanoid");
@@ -49,7 +50,6 @@ if (CONF.services.vroadcast.PORT)
 
 if (CONF.services.webdav && CONF.services.webdav.PORT)
 	PORT_WEBDAV = CONF.services.webdav.PORT;
-
 
 const pathCert = Core.getCertPath();
 const pathKey  = Core.getKeyPath();
@@ -177,28 +177,28 @@ app.use('/dav', createProxyMiddleware({
 
 // START
 //==================================
-
-//let bSSL = false;
-
-http.createServer(app).listen(PORT, ()=>{ 
-	console.log('ATON main service running on :' + PORT);
+http.createServer(app).listen(PORT, ()=>{
+	Core.logGreen("\nATON up and running!");
+	console.log("- OFFLINE: http://localhost:"+PORT);
+	for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): http://"+Core.nets[n][0]+":"+PORT);
 });
-    
 
 // HTTPS service
 if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 	let httpsOptions = {
 		key: fs.readFileSync(pathKey, 'utf8'),
 		cert: fs.readFileSync(pathCert, 'utf8')
-		};
-
-        //bSSL = true;
+	};
 
 	https.createServer(httpsOptions, app).listen(PORT_SECURE, ()=>{ 
-		console.log('HTTPS ATON main service running on :' + PORT_SECURE);
-		});
-	}
+		Core.logGreen("\nHTTPS ATON up and running!");
+		console.log("- OFFLINE: https://localhost:"+PORT_SECURE);
+		for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): https://"+Core.nets[n][0]+":"+PORT_SECURE);
+	});
+}
 else {
 	//bSSL = false;
 	console.log("SSL certs not found: "+pathKey+", "+pathCert);
 }
+
+console.log("\n");

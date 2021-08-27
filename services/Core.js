@@ -18,6 +18,9 @@ const fsx         = require('fs-extra');
 const axios       = require('axios');
 //const chokidar    = require('chokidar');
 const fg          = require('fast-glob');
+const chalk       = require('chalk');
+
+const { networkInterfaces } = require('os');
 
 // Authentication
 let passport = require('passport');
@@ -72,6 +75,13 @@ Core.realizeBaseAPI = BaseAPI;
 Core.passport       = passport; // set configured passport
 Core.maat           = Maat;
 
+// LOG Utils
+Core.logGreen = (str)=>{
+	console.log(chalk.green(str));
+};
+Core.logYellow = (str)=>{
+	console.log(chalk.yellow(str));
+};
 
 // Configs
 //========================================
@@ -164,6 +174,20 @@ Core.init = ()=>{
 	//Core._maatEP = "http://localhost:"+maatport+"/";
 
 	console.log("DB users: "+Core.users.length);
+
+	// Retrieve network interfaces
+	const nif  = networkInterfaces();
+	Core.nets = {};
+
+	for (const name of Object.keys(nif)) {
+		for (const net of nif[name]) {
+			// Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+			if (net.family === 'IPv4' && !net.internal){
+				if (!Core.nets[name]) Core.nets[name] = [];
+				Core.nets[name].push(net.address);
+			}
+		}
+	}
 
 	Core.maat.init();
 };

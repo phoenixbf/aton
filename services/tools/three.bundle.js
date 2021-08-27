@@ -37,6 +37,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
@@ -93,6 +94,7 @@ THREE.BasisTextureLoader = BasisTextureLoader;
 //THREE.ConvexBufferGeometry = ConvexBufferGeometry;
 THREE.ConvexGeometry      = ConvexGeometry;
 THREE.BufferGeometryUtils = BufferGeometryUtils;
+THREE.GeometryUtils       = GeometryUtils;
 THREE.UnrealBloomPass     = UnrealBloomPass;
 
 THREE.RGBELoader = RGBELoader;

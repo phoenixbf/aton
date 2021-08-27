@@ -1384,6 +1384,15 @@ HATHOR.popupEnvironment = ()=>{
     htmlcontent += "<input type='checkbox' id='idAutoLP' "+str+"><b>Auto Light-Probe</b><br>";
     htmlcontent += "<img src='"+ATON.FE.PATH_RES_ICONS+"lp.png' class='atonDefIcon' style='float:left'>this option estimates location and radius of a light-probe</div>";
 
+
+    // Pano
+    htmlcontent += "<br><br>";
+    htmlcontent += "<div style='text-align:center;'>";
+    htmlcontent += "Select panorama from collection or URL: <input id='idPanoURL' type='text' size='30'>";
+    htmlcontent += "<div id='idClearPano' class='atonBTN'><img src='"+ATON.FE.PATH_RES_ICONS+"search-clear.png'></div><div id='idSetPano' class='atonBTN atonBTN-green'>Set</div><br>";
+    htmlcontent += "<div id='idPanoPreview' style='margin:auto; width:200px; height:100px'></div>";
+    htmlcontent += "</div><br>";
+
     htmlcontent += "<div style='text-align:center;'>Panorama rotation (<span id='idEnvRotVal'></span>)<br>";
     htmlcontent += "<input id='idEnvRot' type='range' min='0.0' max='1.0' step='0.02' >";
     htmlcontent += "</div><br>";
@@ -1419,6 +1428,39 @@ HATHOR.popupEnvironment = ()=>{
 
     let E = {};
     E.environment = {};
+
+    ATON.FE.uiAttachCollectionItemsToInput("idPanoURL", "panoramas");
+
+    $("#idPanoURL").on("change", ()=>{
+        let ppath = $("#idPanoURL").val();
+        if (ppath && ppath.length > 0){
+            // fetch preview
+            if (!ppath.startsWith("http")) ppath = ATON.PATH_COLLECTION + ppath;
+
+            if (ATON.Utils.isVideo(ppath)) $("#idPanoPreview").html("<video src='"+ppath+"' autoplay='true' style='width:90%;height:auto'>");
+            else $("#idPanoPreview").html("<img src='"+ppath+"' style='width:90%;height:auto'>");
+        }
+        else {
+            $("#idPanoPreview").html("");
+        }
+    });
+
+    $("#idClearPano").click(()=>{
+        $("#idPanoURL").val("");
+        $("#idPanoPreview").html("");
+    });
+
+    $("#idSetPano").click(()=>{
+        let purl = $("#idPanoURL").val();
+
+        ATON.setMainPanorama(purl);
+
+        E.environment.mainpano = {};
+        E.environment.mainpano.url = purl;
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    });
 
     let ex = ATON.getExposure();
     $("#idExposure").val(ex);

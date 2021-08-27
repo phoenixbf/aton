@@ -504,6 +504,43 @@ FE.uiAddKeywordsArea = (idcontainer, kwList, onAddKeyword, onRemoveKeyword)=>{
     });
 };
 
+FE.uiAttachCollectionItemsToInput = (idinput, type)=>{
+    let htmlcontent = "";
+
+    $("#"+idinput).attr("list", idinput+"-list");
+    $("#"+idinput).attr("name", idinput+"-list");
+
+    $.getJSON( ATON.PATH_RESTAPI+"c/"+type+"/", ( data )=>{
+        //let folders = {};
+        //SHU._cModelDirs = {};
+        
+        htmlcontent += "<datalist id='"+idinput+"-list'>";
+
+        for (let m in data){
+            let ipath = data[m];
+            htmlcontent += "<option value='"+ipath+"'>"+ipath+"</option>";
+
+            //let F = SHU.getBaseFolder(ipath);
+            //if (SHU._cModelDirs[F] === undefined) SHU._cModelDirs[F] = [];
+            //SHU._cModelDirs[F].push(ipath)
+            
+            ///if (folders[F] === undefined) folders[F] = ipath;
+            ///else folders[F] += ","+ipath;
+        }
+
+        //console.log(SHU._cModelDirs);
+
+        ///for (let F in folders) htmlcontent += "<option value='"+folders[F]+"'>"+F+"*</option>";
+        ///for (let F in folders) htmlcontent += "<option value='"+F+"*'>"+F+"*</option>";
+        //for (let F in SHU._cModelDirs) htmlcontent += "<option value='"+F+"*'>"+F+"*</option>";
+
+        htmlcontent += "</datalist>";
+
+        $("#"+idinput).html(htmlcontent);
+    });
+};
+
+
 // Get css class from vrc ID
 FE.getVRCclassFromID = (uid)=>{
     let i = (uid%6);

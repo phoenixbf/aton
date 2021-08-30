@@ -26,6 +26,7 @@ Maat.init = ()=>{
 	Maat.needScan = {};
 	Maat.needScan.scenes      = true;
 	Maat.needScan.collections = {};
+	Maat.needScan.users       = true;
 	//Maat.needScan.models = {};
 	//Maat.needScan.panos  = {}
 
@@ -33,9 +34,10 @@ Maat.init = ()=>{
 	//Maat._bDirtyCollections = true;
 
 	Maat.db = {};
-	Maat.db.scenes = [];
-	Maat.db.kwords = {};
 
+	Maat.db.users       = [];
+	Maat.db.scenes      = [];
+	Maat.db.kwords      = {};
 	Maat.db.collections = {};
 
 	//Maat.scanScenes();
@@ -99,7 +101,6 @@ Maat.addSceneKeyword = (k)=>{
 	if (Maat.db.kwords[k] === undefined) Maat.db.kwords[k] = 1;
 	else Maat.db.kwords[k]++;
 };
-
 
 Maat.scanScenes = ()=>{
 	if (Maat.needScan.scenes === false) return;
@@ -200,6 +201,15 @@ Maat.scanPanoramas = (uid)=>{
 	CC[uid].panos = [];
 	for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
 };
+
+// TODO
+Maat.scanUsers = ()=>{
+	if (Maat.needScan.users === false) return;
+
+	Maat.db.users = []; // clear
+};
+
+
 
 // Scenes
 Maat.getAllScenes = ()=>{

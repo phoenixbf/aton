@@ -47,7 +47,6 @@ Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
 Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
 Core.DIR_COLLECTIONS  = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
 Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
-//Core.DIR_WAPPS        = path.join(Core.DIR_PUBLIC,"wapps/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
 Core.STD_SCENEFILE    = "scene.json";
 Core.STD_PUBFILE      = "pub.txt";
@@ -234,6 +233,7 @@ Core.createNewUser = (entry)=>{
 	// Add new entry into users json
 	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
 	Core.users.push(entry);
+	
 	let uconfig = path.join(Core.DIR_CONFIG + "users.json");
 	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
@@ -245,12 +245,24 @@ Core.createNewUser = (entry)=>{
 };
 
 //TODO:
-Core.deleteUser = (userid)=>{
-	if (userid === undefined) return false;
+Core.deleteUser = (username)=>{
+	if (username === undefined) return false;
 
 	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
-	
-	//
+	let num = Core.users.length;
+
+	for (let u=0; u<num; u++){
+		if (Core.users[u].username === username){
+			Core.users.splice(u,1);
+
+			let uconfig = path.join(Core.DIR_CONFIG + "users.json");
+			fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
+
+			return true;
+		}
+	}
+
+	return false;
 };
 
 
@@ -560,6 +572,9 @@ Core.createClientUserAuthResponse = (req)=>{
 	let U = {};
 	U.username = req.user.username;
 	U.admin    = req.user.admin;
+	U.webdav   = 8081;
+
+	if (Core.config.services.webdav && Core.config.services.webdav.PORT) U.webdav = Core.config.services.webdav.PORT;
 
 	return U;
 };
@@ -572,7 +587,10 @@ Core.initUsers = (configfile)=>{
 */
 
 Core.findByUsername = (username, cb)=>{
-	process.nextTick(function() {
+	process.nextTick( function(){
+		// Load
+		Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+
 		for (let i = 0, len = Core.users.length; i < len; i++){
 			let U = Core.users[i];
 
@@ -585,6 +603,8 @@ Core.findByUsername = (username, cb)=>{
 
 Core.findById = (id, cb)=>{
 	process.nextTick(()=>{
+		Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+
 		if (Core.users[id]) cb(null, Core.users[id]);
 		else cb( new Error('User ' + id + ' does not exist') );
 	});

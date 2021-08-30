@@ -594,7 +594,7 @@ app.get('/api/logout', (req, res)=>{
 });
 
 /**
-	* @api {get} /api/user User data
+	* @api {get} /api/user		User data
 	* @apiGroup Users
 	* @apiPermission user
 
@@ -610,7 +610,7 @@ app.get("/api/user", (req,res)=>{
 
 
 /**
-	* @api {get} /api/users
+	* @api {get} /api/users		List users
 	* @apiGroup Users
 	* @apiPermission admin
 
@@ -631,8 +631,13 @@ app.get("/api/users", (req,res)=>{
 
 
 /**
-	* @api {post} /api/new/user
+	* @api {post} /api/new/user		New user
 	* @apiGroup Users
+
+	* @apiParam {String} username	Username or uid
+	* @apiParam {String} password	Password
+	* @apiParam {String} admin		Administrator
+
 	* @apiPermission admin
 
 	* @apiDescription Create a new user (only admin)
@@ -648,16 +653,30 @@ app.post('/api/new/user', (req, res) => {
 
 	let b = Core.createNewUser(O);
 	res.send(b);
+});
 
-	// Add new entry into users json
-/*
-	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
-	Core.users.push(O);
-	let uconfig = path.join(Core.DIR_CONFIG + "users.json");
-	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
+/**
+	* @api {post} /api/delete/user	Delete user
+	* @apiGroup Users
 
-	res.send(true);
+	* @apiParam {String} username	Username or uid
+
+	* @apiPermission admin
+
+	* @apiDescription Delete user (only admin)
 */
+app.post('/api/delete/user', (req, res)=>{
+	if (req.user === undefined || !req.user.admin){
+		res.send(false);
+		return;
+	}
+
+	// TODO: handle self-removal
+
+	let O = req.body;
+
+	let b = Core.deleteUser(O.username);
+	res.send(b);
 });
 
 

@@ -168,9 +168,10 @@ app.use('/dav', createProxyMiddleware({
 	//target: CONF.services.webdav.address+":"+PORT_WEBDAV, 
 	target: "http://localhost:"+PORT_WEBDAV,
 	pathRewrite: { '^/dav': ''},
-	changeOrigin: true,
-	xfwd: true,
-	secure: true,
+	changeOrigin: false, //true,
+	//xfwd: true,
+	//secure: true,
+
 	//router: { "/dav" : "http://localhost:"+PORT_WEBDAV }
 }));
 */
@@ -181,6 +182,8 @@ http.createServer(app).listen(PORT, ()=>{
 	Core.logGreen("\nATON up and running!");
 	console.log("- OFFLINE: http://localhost:"+PORT);
 	for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): http://"+Core.nets[n][0]+":"+PORT);
+	
+	console.log("\n");
 });
 
 // HTTPS service
@@ -194,11 +197,11 @@ if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 		Core.logGreen("\nHTTPS ATON up and running!");
 		console.log("- OFFLINE: https://localhost:"+PORT_SECURE);
 		for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): https://"+Core.nets[n][0]+":"+PORT_SECURE);
+		
+		console.log("\n");
 	});
 }
 else {
-	//bSSL = false;
 	console.log("SSL certs not found: "+pathKey+", "+pathCert);
+	console.log("\n");
 }
-
-console.log("\n");

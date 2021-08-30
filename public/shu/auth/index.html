@@ -54,6 +54,28 @@ let renderAuthForm = (data)=>{
 
     if (data.username){
         htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
+        
+        if (data.webdav){
+            let base = window.location.protocol +"//"+ window.location.hostname;
+            let webdavurl = base+":"+data.webdav;
+
+            htmlcontent += "<br>";
+
+            if (data.admin){
+                htmlcontent += "Apps and Data folders (ALL users):<br><a class='atonBTN' style='width:70%' href='"+webdavurl+"'><img src='"+ATON.PATH_RES+"icons/db.png'>WebDav</a>";
+            }
+            else {
+                let webdavColl   = webdavurl + "/"+data.username+"-collection/";
+                let webdavScenes = webdavurl + "/"+data.username+"-scenes/";
+
+                htmlcontent += "Your Collection:<br><a class='atonBTN' style='width:70%' href='"+webdavColl+"'><img src='"+ATON.PATH_RES+"icons/collection.png'>WebDav</a>";
+                htmlcontent += "<br><br>";
+                htmlcontent += "Your Scenes:<br><a class='atonBTN' style='width:70%' href='"+webdavScenes+"'><img src='"+ATON.PATH_RES+"icons/scene.png'>WebDav</a>";
+            }
+
+            htmlcontent += "<br><br>";
+        }
+
         htmlcontent += "<div class='atonBTN atonBTN-red' style='width:90%' id='idLogoutBTN'>LOGOUT</div>";
         htmlcontent += "</div>";
 

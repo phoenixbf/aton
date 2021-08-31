@@ -20,7 +20,9 @@ HATHOR.SELACTION_ADDCONVEXPOINT = 2;
 HATHOR.SELACTION_MEASURE        = 3;
 
 
-window.addEventListener( 'load', ()=>{
+// Main Hathor init routine
+HATHOR.init = ()=>{
+
     ATON.FE.realize();
 
     HATHOR.paramSID   = ATON.FE.urlParams.get('s');
@@ -68,7 +70,7 @@ window.addEventListener( 'load', ()=>{
 
     //ATON._bPauseQuery = true;
     //ATON.setTimedGazeDuration(2.0);
-});
+};
 
 
 
@@ -340,8 +342,8 @@ HATHOR.suiSetup = ()=>{
 
 };
 
-// Front-end event handling
-//=======================
+// Event handling
+//====================================
 HATHOR.setupVRCEventHandlers = ()=>{
     if (HATHOR._bVRCsetup) return;
 
@@ -2077,8 +2079,6 @@ HATHOR.popupEmbed = ()=>{
     });
 };
 
-/*
-HATHOR.toggleSceneInfo = ()=>{
 
-};
-*/
+// Init Hathor onload
+//window.addEventListener( 'load', HATHOR.init );

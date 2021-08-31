@@ -853,7 +853,7 @@ FE.popupQR = ()=>{
 };
 
 FE.popupScreenShot = ()=>{
-    let cover = ATON.Utils.takeScreenshot(200);
+    let cover = ATON.Utils.takeScreenshot(256); // 200
 
     FE.checkAuth((r)=>{
 
@@ -862,7 +862,7 @@ FE.popupScreenShot = ()=>{
         htmlcontent += "<img src='"+cover.src+"'><br>";
         htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='200'>px<br>";
 
-        htmlcontent += "<div class='atonBTN atonBTN-green' id='btnScreenShot' style='width:90%'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT</div>";
+        htmlcontent += "<div class='atonBTN' id='btnScreenShot' style='width:90%'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT</div>";
 
         if (r.username !== undefined){
             htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover' style='width:90%'>Set as Cover</div>";

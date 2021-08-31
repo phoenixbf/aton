@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:14
 
 # Create main ATON folder
 WORKDIR /aton

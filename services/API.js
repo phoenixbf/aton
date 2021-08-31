@@ -13,6 +13,8 @@ const nanoid      = require('nanoid');
 const fsx         = require('fs-extra');
 const axios       = require('axios');
 const fg          = require('fast-glob');
+//const imagemin    = require('imagemin');
+//const imageminPngquant = require('imagemin-pngquant');
 
 let BaseAPI = (app)=>{
 

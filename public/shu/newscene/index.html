@@ -270,11 +270,11 @@ let addNodeBlock = (nid)=>{
 let addNewNodeBlock = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<div class='atonOptionBlock' style='display:block; width:auto; background-color:rgba(0,0,0, 0.2);'>";
-    htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:250px'>";
+    htmlcontent += "<br><div style='display:block; width:auto;'>";
+    htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:150px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
     htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
-    htmlcontent += "</div></div><br><br>";
+    htmlcontent += "</div></div><br>";
 /*
     htmlcontent += "<div class='atonOptionBlock' style='width:150px; height:150px; background-color:rgba(0,0,0, 0.2);'>";
     htmlcontent += "<br>Add new node:<br><input id='idAddNewNodeID' type='text' value='reconstruction' style='width:80%'><br>";
@@ -283,14 +283,14 @@ let addNewNodeBlock = ()=>{
     htmlcontent += "<img src='../../res/icons/add.png' style='width:64px; height:64px;'></div>";
     htmlcontent += "</div>";
 */
-    $("#idMainSGblocks").append(htmlcontent);
+    $("#idAddNodeBlock").append(htmlcontent);
 };
 
 let renderForm = ()=>{
     $("#idSID").html("('"+sid+"')");
 
-    addNewNodeBlock();
     addNodeBlock("main");
+    addNewNodeBlock();
 
     //SHU.appendPanoramasToSelect("panopath");
     SHU.uiAttachPanoramasToInputList("panopath");
@@ -403,6 +403,7 @@ window.addEventListener( 'load', ()=>{
                 <br>
 
                 <div id='idMainSGblocks'></div>
+                <div id='idAddNodeBlock'></div>
 <!--
                 Here you can select and add ('+') 3D models to the base scene (under a main node) from the collection. You can pick single 3D models (*.gltf or *.glb) or entire folders.
                 <br><br>

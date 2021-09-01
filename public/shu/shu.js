@@ -154,7 +154,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
                 htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
                 
                 htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
-                htmlcontent += "<img src='"+urlCover+"'>";
+                htmlcontent += "<img src='"+urlCover+"' style='width:200px; height:auto'>";
                 htmlcontent += "</a>";
 
                 // user

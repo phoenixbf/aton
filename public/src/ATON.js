@@ -159,7 +159,9 @@ ATON._setupBaseListeners = ()=>{
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
 
     // Generic pointer
+    // UNUSED - issues with aside-panel elements
     ATON._bPointerDown = false;
+/*
     window.addEventListener('pointerdown', (e)=>{
         ATON._bPointerDown = true;
         ATON._onUserInteraction();
@@ -187,6 +189,7 @@ ATON._setupBaseListeners = ()=>{
         ATON._updateScreenMove(e.touches[0]);
         ATON._handleQueries();
     });
+*/
 
 /*
     Hammer(el).on("press pressup", (ev)=>{
@@ -205,6 +208,8 @@ ATON._setupBaseListeners = ()=>{
     // Touch events
     Hammer(el).on("doubletap", (e)=>{
         ATON._bPointerDown = false;
+        ATON._onUserInteraction();
+
         ATON.fireEvent("DoubleTap", e.srcEvent);
         //console.log(e.srcEvent);
     });

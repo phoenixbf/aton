@@ -56,7 +56,7 @@ let renderAuthForm = (data)=>{
         htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
         
         if (data.webdav){
-            let base = window.location.protocol +"//"+ window.location.hostname;
+            let base = /*window.location.protocol +*/"http://"+ window.location.hostname;
             let webdavurl = base+":"+data.webdav;
 
             htmlcontent += "<br>";

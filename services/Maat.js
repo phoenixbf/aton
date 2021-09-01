@@ -284,4 +284,26 @@ Maat.getScenesKeywords = ()=>{
 	return Maat.db.kwords;
 };
 
+Maat.getStats = ()=>{
+	let R = {};
+
+	R.users  = 0;
+	R.models = 0;
+	R.panos  = 0;
+
+	R.scenes = Maat.db.scenes.length;
+	
+	for (let u in Maat.db.collections){
+		R.users++;
+
+		let U = Maat.db.collections[u];
+
+		R.models += U.models.length;
+		R.panos  += U.panos.length;
+	}
+
+	console.log(R);
+	return R;
+};
+
 module.exports = Maat;

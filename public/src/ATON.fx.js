@@ -22,9 +22,20 @@ FX.PASS_GAMMA = 6;
 
 // Initialization (main renderer must be initialized already)
 FX.init = ()=>{
-   if (ATON._renderer === undefined) return;
+    if (ATON._renderer === undefined) return;
 
-    FX.composer = new THREE.EffectComposer( ATON._renderer );
+    let pxr  = ATON._renderer.getPixelRatio();
+    let size = ATON._renderer.getSize( new THREE.Vector2() );
+
+    const renderTarget = new THREE.WebGLRenderTarget( size.width * pxr, size.height * pxr, {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        format: THREE.RGBAFormat,
+        encoding: THREE.sRGBEncoding
+    });
+    renderTarget.texture.name = 'EffectComposer.rt1';
+
+    FX.composer = new THREE.EffectComposer( ATON._renderer, renderTarget );
     FX.passes   = [];
 
     ATON._renderer.autoClear = false;
@@ -101,8 +112,8 @@ FX.init = ()=>{
     //console.log(FX.passes[FX.PASS_DOF]);
 
 
-    // Gamma correction
-    FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
+    // Gamma correction (no more needed)
+    //FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
 
     // Antialiasing
     FX.passes[FX.PASS_AA] = new THREE.ShaderPass( THREE.FXAAShader );
@@ -126,8 +137,10 @@ FX.init = ()=>{
     // Order
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
+    
     // tone-mapping passes here (if any)
-    FX.composer.addPass( FX.passes[FX.PASS_GAMMA] );
+    
+    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // not needed
     FX.composer.addPass( FX.passes[FX.PASS_AA] );
     //FX.composer.addPass( effectSobel );
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );

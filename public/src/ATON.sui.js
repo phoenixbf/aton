@@ -299,6 +299,41 @@ SUI.createToolbar = (buttonlist, color)=>{
     return T;
 };
 
+
+/**
+Create a UI Node with a textured panel from URL
+This can be arranged anywhere in the scene or attached to other UI nodes
+@param {string} suid - The SUI Node ID (e.g.: "myPanel")
+@param {string} url - URL to image
+@param {number} w - (Optional) width
+@param {number} h - (Optional) height
+@returns {Node}
+*/
+SUI.buildPanelNode = (suid, url, w,h)=>{
+    if (w === undefined) w = 1.0;
+    if (h === undefined) h = 1.0;
+
+    let suiNode = ATON.createUINode(suid);
+
+    let pmesh = new THREE.Mesh(
+        new THREE.PlaneGeometry( w, h, 2 ), 
+        ATON.MatHub.materials.fullyTransparent
+    );
+    suiNode.add( pmesh );
+
+    if (url !== undefined){
+        ATON.Utils.textureLoader.load(url, (texture) => {
+            pmesh.material = new THREE.MeshStandardMaterial({
+                map: texture,
+                transparent: true,
+                depthWrite: false
+            });
+        });
+    }
+
+    return suiNode;
+};
+
 // Measurements
 SUI.addMeasurementPoint = (P)=>{
     if (P === undefined) return undefined;

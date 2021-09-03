@@ -34,6 +34,7 @@ import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js"
+import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter.js';
 
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -88,6 +89,7 @@ THREE.OBJExporter        = OBJExporter;
 THREE.DRACOLoader        = DRACOLoader;
 //THREE.IFCLoader          = IFCLoader;
 THREE.BasisTextureLoader = BasisTextureLoader;
+THREE.USDZExporter       = USDZExporter;
 
 ///THREE.FirstPersonControls = FirstPersonControls;
 

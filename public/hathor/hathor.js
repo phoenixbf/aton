@@ -580,6 +580,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k === 'g') HATHOR.popupGraphs();
 
         if (k==='x') HATHOR.popupExportSemShapes();
+
         if (k==='u') ATON.FE.popupUser();
 
         if (k === '('){

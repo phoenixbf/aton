@@ -314,8 +314,14 @@ FE.uiAddButtonAR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
     //if (!ATON.Utils.isARsupported()) return; //Not showing on mobile
 
-    FE.uiAddButton(idcontainer, "ar", ()=>{ 
-        ATON.XR.toggle("immersive-ar");
+    FE.uiAddButton(idcontainer, "ar", ()=>{
+        if (ATON.Utils.isARsupported()){
+            ATON.XR.toggle("immersive-ar");
+        }
+        // Apple USDZ
+        else {
+            ATON.Utils.exportNode(ATON.getRootScene(), "scene.usdz");
+        }
     }, 
     "Immersive AR mode" );
 };

@@ -25,6 +25,7 @@ Utils.init = ()=>{
     // Export/Download utils
     Utils.exporterGLTF = undefined;
     Utils.exporterOBJ  = undefined;
+    Utils.exporterUSDZ = undefined;
 
     Utils._dlink = document.createElement('a');
     Utils._dlink.style.display = 'none';
@@ -726,6 +727,16 @@ Utils.exportNode = (node, filename)=>{
         let output = Utils.exporterOBJ.parse(node);
         //console.log(output);
         Utils.downloadText(output, filename);
+    }
+
+    // USDZ
+    if (ext === "usdz"){
+        if (Utils.exporterUSDZ === undefined) Utils.exporterUSDZ = new THREE.USDZExporter();
+        
+        Utils.exporterUSDZ.parse(node).then( (output)=>{
+            Utils.downloadArrayBuffer( output, filename);
+        });
+        
     }
 };
 

@@ -8,6 +8,13 @@
     - 3D Tiles Renderer (https://github.com/NASA-AMMOS/3DTilesRendererJS)
 ==================================================================================*/
 
+/*!
+fflate - fast JavaScript compression/decompression
+<https://101arrowz.github.io/fflate>
+Licensed under MIT. https://github.com/101arrowz/fflate/blob/master/LICENSE
+version 0.6.9
+*/
+
 /**
  * @license
  * Copyright 2010-2021 Three.js Authors

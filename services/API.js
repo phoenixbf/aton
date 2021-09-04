@@ -245,6 +245,27 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 	});
 });
 
+/**
+	* @api {get} /api/cover/:sid	Get scene cover (image)
+	* @apiGroup Scenes
+	* @apiPermission none
+
+	* @apiDescription Get cover image for given scene by providing Scene-ID
+*/
+app.get(/^\/api\/cover\/(.*)$/, (req,res,next)=>{
+	let sid = req.params[0];
+
+	let coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
+
+	if (!fs.existsSync(coverfile)){
+		return res.sendFile(Core.DIR_RES+"scenecover.png");
+	}
+
+	res.sendFile(coverfile);
+
+	//next();
+});
+
 
 /**
 	* @api {post} /api/edit/scene Patch (edit) scene
@@ -681,6 +702,16 @@ app.post('/api/delete/user', (req, res)=>{
 	res.send(b);
 });
 
+
+app.get("/api/stats", (req,res)=>{
+
+	if (req.user === undefined || !req.user.admin){
+		res.send({});
+		return;
+	}
+
+	res.send( Core.maat.getStats() );
+});
 
 };
 

@@ -81,19 +81,26 @@ app.use(cors({credentials: true, origin: true}));
 
 app.use(express.json({ limit: '50mb' }));
 
-/*
+// EJS
 app.set('view engine', 'ejs');
+app.set('views', __dirname+"/views/");
 
-app.get(/^\/s\/(.*)$/, (req,res,next)=>{
+app.get(/^\/h\/(.*)$/, (req,res,next)=>{
 	let d = {};
-	d.sid = req.params[0];
+	d.sid   = req.params[0];
+	d.title = d.sid;
+	d.appicon = "/hathor/appicon.png";
 
 	let S = Core.readSceneJSON(d.sid);
-	d.title = S.title? S.title : d.sid;
+	if (S){
+		if (S.title) d.title = S.title;
+		d.appicon = "/api/cover/"+d.sid;
+	}
 
-	res.render("hathor.ejs", d);
+	console.log(d)
+	res.render("hathor/index", d);
 });
-*/
+
 
 // Scenes redirect /s/<sid>
 app.get(/^\/s\/(.*)$/, function(req,res,next){

@@ -53,24 +53,33 @@ let renderAuthForm = (data)=>{
     let htmlcontent = "";
 
     if (data.username){
-        htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
+        htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:600px;'>";
         
         if (data.webdav){
             let base = /*window.location.protocol +*/"http://"+ window.location.hostname;
             let webdavurl = base+":"+data.webdav;
 
-            htmlcontent += "<br>";
+            htmlcontent += "<h2>Data</h2>";
+            htmlcontent += "You can copy and paste following URL(s) to remotely access your data using WebDav<br><br>";
 
             if (data.admin){
-                htmlcontent += "Apps and Data folders (ALL users):<br><a class='atonBTN' style='width:70%' href='"+webdavurl+"'><img src='"+ATON.PATH_RES+"icons/db.png'>WebDav</a>";
+                htmlcontent += "<div class='atonBlockRound' style='width:90%'>Apps and Data folders (ALL users):<br>";
+                htmlcontent += "<img class='atonDefIcon' src='"+ATON.PATH_RES+"icons/db.png'><input type='text' value='"+webdavurl+"' readonly style='width:70%'>";
+                //htmlcontent += "<a class='atonBTN' style='width:70%' href='"+webdavurl+"'><img src='"+ATON.PATH_RES+"icons/db.png'>WebDav</a>";
+                htmlcontent += "</div>";
             }
             else {
                 let webdavColl   = webdavurl + "/"+data.username+"-collection/";
                 let webdavScenes = webdavurl + "/"+data.username+"-scenes/";
 
-                htmlcontent += "Your Collection:<br><a class='atonBTN' style='width:70%' href='"+webdavColl+"'><img src='"+ATON.PATH_RES+"icons/collection.png'>WebDav</a>";
+                htmlcontent += "<div class='atonBlockRound' style='width:90%'>Your Collection:<br>";
+                htmlcontent += "<img class='atonDefIcon' src='"+ATON.PATH_RES+"icons/collection.png'><input type='text' value='"+webdavColl+"' readonly style='width:70%'>";
+                //htmlcontent += "<a class='atonBTN' style='width:70%' href='"+webdavColl+"'><img src='"+ATON.PATH_RES+"icons/collection.png'>WebDav</a>";
                 htmlcontent += "<br><br>";
-                htmlcontent += "Your Scenes:<br><a class='atonBTN' style='width:70%' href='"+webdavScenes+"'><img src='"+ATON.PATH_RES+"icons/scene.png'>WebDav</a>";
+                htmlcontent += "Your Scenes:<br>";
+                htmlcontent += "<img class='atonDefIcon' src='"+ATON.PATH_RES+"icons/scene.png'><input type='text' value='"+webdavScenes+"' readonly style='width:70%'>";
+                //htmlcontent += "<a class='atonBTN' style='width:70%' href='"+webdavScenes+"'><img src='"+ATON.PATH_RES+"icons/scene.png'>WebDav</a>";
+                htmlcontent += "</div>";
             }
 
             htmlcontent += "<br><br>";

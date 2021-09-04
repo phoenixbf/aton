@@ -39,6 +39,7 @@ Core = {};
 Core.DIR_DATA         = path.join(__dirname,"/../data/");
 Core.DIR_WAPPS        = path.join(__dirname,"/../wapps/");
 Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
+Core.DIR_RES          = path.join(Core.DIR_PUBLIC,"res/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
 Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
@@ -626,7 +627,7 @@ Core.setupPassport = ()=>{
         cb(null, Core.users.indexOf(user));
     });
 
-    passport.deserializeUser(function(id, cb) {
+    passport.deserializeUser((id, cb)=>{
         Core.findById(id, (err, user)=>{
             if (err) return cb(err);
 

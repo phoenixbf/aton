@@ -170,12 +170,13 @@ FE.loadSceneID = (sid)=>{
 
     ATON.SceneHub.load(reqstr, sid);
 
+/*
     $("meta[property=og\\:image]").attr("content", ATON.PATH_SCENES+sid+'/cover.png');
     $("meta[property=og\\:image\\:secure_url]").attr("content", ATON.PATH_SCENES+sid+'/cover.png');
     $("meta[property=og\\:image\\:type]").attr("content", "image/png");
-    $("meta[property=og\\:image\\:width]").attr("content", "200");
-    $("meta[property=og\\:image\\:height]").attr("content", "200");
-
+    $("meta[property=og\\:image\\:width]").attr("content", "256");
+    $("meta[property=og\\:image\\:height]").attr("content", "256");
+*/
     console.log(reqstr);
 };
 

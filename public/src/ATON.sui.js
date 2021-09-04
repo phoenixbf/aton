@@ -326,7 +326,8 @@ SUI.buildPanelNode = (suid, url, w,h)=>{
             pmesh.material = new THREE.MeshStandardMaterial({
                 map: texture,
                 transparent: true,
-                depthWrite: false
+                depthWrite: false,
+                side: THREE.DoubleSide
             });
         });
     }

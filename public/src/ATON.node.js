@@ -622,7 +622,7 @@ load(url, onComplete){
             if (onComplete) onComplete();
         });
 
-        console.log("HIT!");
+        //console.log("HIT!");
         return N;
     }
 
@@ -652,7 +652,7 @@ load(url, onComplete){
 
             resolve(model);
             //console.log("Model "+url+" loaded");
-            console.log("Model loaded");
+            console.log("%cModel loaded","color:green");
             
             /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
 
@@ -672,7 +672,7 @@ load(url, onComplete){
         (err)=>{
             //console.log(err);
             //reject(model);
-            console.log("Error loading model");
+            console.log("%cError loading model "+url, "color:red");
 
             /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
             if (onComplete) onComplete();

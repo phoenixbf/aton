@@ -21,11 +21,13 @@ HATHOR.SELACTION_MEASURE        = 3;
 
 
 // Main Hathor init routine
-HATHOR.init = ()=>{
+HATHOR.init = (sid)=>{
 
     ATON.FE.realize();
 
-    HATHOR.paramSID   = ATON.FE.urlParams.get('s');
+    if (sid === undefined || sid === null) sid = ATON.FE.urlParams.get('s');
+
+    HATHOR.paramSID   = sid;
     HATHOR.paramDDens = ATON.FE.urlParams.get('d');
     HATHOR.paramVRC   = ATON.FE.urlParams.get('vrc');
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');

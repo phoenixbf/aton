@@ -35,7 +35,7 @@ Maat.init = ()=>{
 
 	Maat.db = {};
 
-	Maat.db.users       = [];
+	Maat.db.users       = {};
 	Maat.db.scenes      = [];
 	Maat.db.kwords      = {};
 	Maat.db.collections = {};
@@ -107,6 +107,7 @@ Maat.scanScenes = ()=>{
 
 	Maat.db.scenes = []; // clear
 	Maat.db.kwords = {}; // clear global keywords
+	Maat.db.users  = {};
 	
 	console.log("Scanning scenes...");
 
@@ -118,6 +119,9 @@ Maat.scanScenes = ()=>{
 		let sid       = path.dirname(files[f]);
 		let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
 		let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
+	
+		let user = sid.split("/")[0];
+		if (user) Maat.db.users[user] = 1;
 
 		S.sid    = sid;
 		S.cover  = fs.existsSync(coverfile)? true : false;
@@ -206,7 +210,15 @@ Maat.scanPanoramas = (uid)=>{
 Maat.scanUsers = ()=>{
 	if (Maat.needScan.users === false) return;
 
-	Maat.db.users = []; // clear
+	Maat.db.users  = {};
+
+	//let uu = fg.sync("*/", Core.COLLECTIONS_GLOB_OPTS);
+	let uu = fs.readdirSync(Core.DIR_COLLECTIONS,{ withFileTypes: true }).filter(dirent => dirent.isDirectory());
+	console.log(uu)
+
+	setTimeout(()=>{
+		Maat.needScan.users = true;
+	}, Maat.INTERVAL);
 };
 
 
@@ -287,13 +299,18 @@ Maat.getScenesKeywords = ()=>{
 Maat.getStats = ()=>{
 	let R = {};
 
+	//Maat.scanUsers();
+	Maat.scanScenes();
+
 	R.users  = 0;
 	R.models = 0;
 	R.panos  = 0;
 
 	R.scenes = Maat.db.scenes.length;
 	
-	for (let u in Maat.db.collections){
+	for (let u in Maat.db.users){
+		Maat.scanCollection(u);
+		
 		R.users++;
 
 		let U = Maat.db.collections[u];

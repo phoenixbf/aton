@@ -86,6 +86,7 @@
     "recursive-copy": "^2.0.13",
     "replace": "^1.2.0",
     "session-file-store": "^1.5.0",
+    "sharp": "^0.29.0",
     "socket.io": "^4.2.0",
     "three": "0.131",
     "three-mesh-bvh": "0.4.3",

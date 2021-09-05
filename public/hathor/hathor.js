@@ -1712,10 +1712,17 @@ HATHOR.popupScene = ()=>{
 
         htmlcontent += "</div>";
 
+        // Only for auth users
         if (authUser){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
-            if (bYourScene) htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
+
+            if (!bYourScene){
+                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:40%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div>";
+            }
+            else {
+                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:40%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
+                htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
+            }
         }
 
         if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
@@ -2017,11 +2024,12 @@ HATHOR.popupNav = ()=>{
     htmlcontent += "</div>";
 
     if (ATON.Utils.isConnectionSecure()){
+/*
         htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
         htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMvr'></div>";
         htmlcontent +="<div style='text-align:left'>Immersive VR mode</div>";
         htmlcontent += "</div>";
-
+*/
         if (ATON.Utils.isMobile()){
             htmlcontent += "<div style='display:block; width:90%; min-height:50px; vertical-align:top'>";
             htmlcontent +="<div style='display:inline-block; width:60px; float:left' id='idNMdevori'></div>";
@@ -2036,7 +2044,7 @@ HATHOR.popupNav = ()=>{
 
     ATON.FE.uiAddButtonFirstPerson("idNMfp");
     ATON.FE.uiAddButtonDeviceOrientation("idNMdevori");
-    ATON.FE.uiAddButtonVR("idNMvr");
+    //ATON.FE.uiAddButtonVR("idNMvr");
 
     $('#btnDefNavMode').click(()=>{
         let E = {};

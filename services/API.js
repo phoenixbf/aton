@@ -14,7 +14,9 @@ const fsx         = require('fs-extra');
 const axios       = require('axios');
 const fg          = require('fast-glob');
 //const imagemin    = require('imagemin');
-//const imageminPngquant = require('imagemin-pngquant');
+//const imageminPNGquant = require('imagemin-pngquant');
+//const compress_images = require("compress-images")
+const sharp       = require("sharp");
 
 let BaseAPI = (app)=>{
 
@@ -237,11 +239,37 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 	img = img.replace(/^data:image\/png;base64,/, "");
 
-	let coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
+	let scenefolder = Core.getSceneFolder(sid);
+	let coverfile   = path.join(scenefolder, "cover-high.png");
 	console.log(coverfile);
 
 	fs.writeFile(coverfile, img, 'base64', (err)=>{
-		res.send(true);
+
+		// Optimize PNG size
+		sharp(coverfile)
+			.withMetadata()
+			.png({
+				quality: 90, // 0-100
+				//compression: 6, // this doesn't need to be set
+			})
+			.toFile( path.join(scenefolder,"cover.png"), (err)=>{
+				if (err) console.log(err);
+				else {
+					console.log('done');
+					res.send(true);
+				}
+		}); 
+
+/*
+		imagemin([coverfile], {
+			destination: scenefolder,
+			plugins: [ imageminPNGquant({ quality: [0.1, 0.1] }) ]
+		}).then(()=>{
+			console.log("Cover compressed");
+			res.send(true);
+		});
+*/
+		//res.send(true);
 	});
 });
 

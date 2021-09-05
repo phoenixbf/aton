@@ -82,10 +82,11 @@ app.use(cors({credentials: true, origin: true}));
 app.use(express.json({ limit: '50mb' }));
 
 // EJS
+//TODO: move into proper ejs setup routine
 app.set('view engine', 'ejs');
 app.set('views', __dirname+"/views/");
 
-app.get(/^\/h\/(.*)$/, (req,res,next)=>{
+app.get(/^\/s\/(.*)$/, (req,res,next)=>{
 	let d = {};
 	d.sid   = req.params[0];
 	d.title = d.sid;
@@ -103,6 +104,7 @@ app.get(/^\/h\/(.*)$/, (req,res,next)=>{
 
 
 // Scenes redirect /s/<sid>
+/*
 app.get(/^\/s\/(.*)$/, function(req,res,next){
 	let sid = req.params[0];
 
@@ -116,6 +118,7 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 
 	next();
 });
+*/
 
 // Data routing (advanced)
 //Core.setupDataRoute(app);

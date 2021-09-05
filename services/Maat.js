@@ -299,19 +299,19 @@ Maat.getScenesKeywords = ()=>{
 Maat.getStats = ()=>{
 	let R = {};
 
-	//Maat.scanUsers();
 	Maat.scanScenes();
 
 	R.users  = 0;
 	R.models = 0;
 	R.panos  = 0;
+	R.kwords = Maat.db.kwords;
 
 	R.scenes = Maat.db.scenes.length;
 	
 	for (let u in Maat.db.users){
 		Maat.scanCollection(u);
 		
-		R.users++;
+		R.users++; // active users
 
 		let U = Maat.db.collections[u];
 

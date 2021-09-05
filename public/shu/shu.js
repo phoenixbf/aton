@@ -187,6 +187,7 @@ SHU.uiAddMainToolbar = (idcontainer)=>{
         if (data.username && data.admin){
             htmlcode += "<a id='btn-t-users' class='atonBTN' href='../../shu/users/'><img src='"+ATON.PATH_RES+"icons/users.png'>Users</a>";
             htmlcode += "<a id='btn-t-wapps' class='atonBTN' href='../../shu/wapps/'><img src='"+ATON.PATH_RES+"icons/app.png'>Apps</a>";
+            htmlcode += "<a id='btn-t-wapps' class='atonBTN' href='../../shu/info/'><img src='"+ATON.PATH_RES+"icons/info.png'>Info</a>";
         }
 
         $("#"+idcontainer).append(htmlcode);

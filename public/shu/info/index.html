@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="../appicon.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Login">
+<link rel="apple-touch-icon" href="../appicon.png">
+<meta name="description" content="Login">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>Info</title>
+<link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
+<script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
+<script type="text/javascript" src="../shu.js"></script>
+
+<script>
+
+let renderForm = ()=>{
+    let htmlcontent = "";
+
+    $.getJSON( ATON.PATH_RESTAPI+"stats/", (data)=>{
+
+        htmlcontent += "<div style='text-shadow: 0px 0px 4px black; margin:10px'>";
+
+        if (data.users){
+            htmlcontent += "<div class='atonGalleryItem' style='width:200px; height:200px; background-color: rgba(0,0,0, 0.2)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>Active Users</div><br>";
+            htmlcontent += "<img src='"+ATON.PATH_RES+"icons/users.png'><br>";
+            htmlcontent += "<h2>"+data.users+"</h2>";
+            //htmlcontent += "This is the number of users with active data folders";
+            htmlcontent += "</div>";
+        }
+
+        if (data.scenes){
+            htmlcontent += "<div class='atonGalleryItem' style='width:200px; height:200px; background-color: rgba(0,0,0, 0.2)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>3D Scenes</div><br>";
+            htmlcontent += "<img src='"+ATON.PATH_RES+"icons/scene.png'><br>";
+            htmlcontent += "<h2>"+data.scenes+"</h2>";
+            htmlcontent += "</div>";
+        }
+
+        if (data.models){
+            htmlcontent += "<div class='atonGalleryItem' style='width:200px; height:200px; background-color: rgba(0,0,0, 0.2)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>3D Models</div><br>";
+            htmlcontent += "<img src='"+ATON.PATH_RES+"icons/collection.png'><br>";
+            htmlcontent += "<h2>"+data.models+"</h2>";
+            htmlcontent += "</div>";
+        }
+
+        if (data.panos){
+            htmlcontent += "<div class='atonGalleryItem' style='width:200px; height:200px; background-color: rgba(0,0,0, 0.2)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>Panoramic Content</div><br>";
+            htmlcontent += "<img src='"+ATON.PATH_RES+"icons/collection.png'><br>";
+            htmlcontent += "<h2>"+data.panos+"</h2>";
+            htmlcontent += "</div>";
+        }
+
+        htmlcontent += "</div>";
+
+        $("#idInfoBlock").html(htmlcontent);
+    });
+
+};
+
+window.addEventListener( 'load', ()=>{
+
+    SHU.uiAddMainToolbar("idTopToolbar");
+
+    ATON.Utils.checkAuth((data)=>{
+        if (data.username && data.admin){
+            renderForm();
+        }
+        else {
+            window.location.href = "/shu/auth/?url="+window.location.href;
+        }
+    });
+
+    SHU.uiBuildFooter("idFooter");
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
+
+    <div class='shuMainContainer'>
+        <div class="atonTitle">Instance Information</div>
+        <div class="atonBlockGroup" id="idInfoBlock"></div>
+    </div>
+
+    <!-- Footer -->
+    <div id= 'idFooter' class="atonToolbar atonToolbar-bottom shuFooter"></div>
+    
+</body>

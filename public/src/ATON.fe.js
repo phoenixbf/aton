@@ -16,7 +16,7 @@ let FE = {};
 FE.SEMSHAPE_SPHERE = 0;
 FE.SEMSHAPE_CONVEX = 1;
 
-FE.POPUP_DELAY = 300;
+FE.POPUP_DT = 500; //300;
 
 /**
 Initialize Front-end
@@ -25,6 +25,7 @@ FE.realize = ()=>{
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup     = false;  // showing popup
+    FE._tPopup     = undefined;
     FE.popupBlurBG = 0;      // blur 3D canvas on popup show (in pixels), 0 to disable
     
     FE._userAuth = {};
@@ -85,7 +86,10 @@ FE._handleHomeReq = ()=>{
 Add basic front-end events such as showing spinner while loading assets and home viewpoint setup
 */
 FE.addBasicLoaderEvents = ()=>{
-    ATON.on("NodeRequestFired", ()=>{ $("#idLoader").show(); });
+    ATON.on("NodeRequestFired", ()=>{
+        $("#idLoader").show();
+        //$('#idBGcover').show(); // TODO: is it worth? only first time
+    });
 
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.SceneHub.getDescription()) $("#btn-info").show();
@@ -94,6 +98,8 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         $("#idLoader").hide();
+        //$('#idBGcover').fadeOut("slow");
+
         if (ATON._ccModels.length>0) $("#btn-cc").show();
         
         FE.computeSelectorRanges();
@@ -784,19 +790,22 @@ Show a modal popup.
 FE.popupShow = (htmlcontent, cssClasses)=>{
     if (FE._bPopup) return false;
 
+    FE._tPopup = Date.now();
+
+    //console.log("SHOW");
+
     let clstr = "atonPopup ";
     if (cssClasses) clstr += cssClasses;
 
     let htcont = "<div id='idPopupContent' class='"+clstr+"'>";
     htcont += htmlcontent+"</div>"
 
+    FE._bPopup = true;
+    ATON._bListenKeyboardEvents = false;
+
     $('#idPopup').html(htcont);
     $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
-    $('#idPopup').fadeIn(FE.POPUP_DELAY);
-
-    FE._bPopup = true;
-
-    ATON._bListenKeyboardEvents = false;
+    $('#idPopup').show();
 
     if (FE.popupBlurBG > 0){
         //ATON._renderer.setPixelRatio( FE.popupBlurBG );
@@ -813,6 +822,8 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
     $("#idBottomRToolbar").hide();
     $("#idPoweredBy").hide();
 
+    //$("#idPopup").click( FE.popupClose );
+
     return true;
 };
 
@@ -820,7 +831,12 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
 Close current popup
 */
 FE.popupClose = (bNoAnim)=>{
+    let dt = Date.now() - FE._tPopup;
+    if (dt < FE.POPUP_DT) return; // Avoid capturing unwanted tap events
+
     FE._bPopup = false;
+
+    //console.log("CLOSE");
 
     //ATON.renderResume();
     ATON._bListenKeyboardEvents = true;
@@ -831,7 +847,7 @@ FE.popupClose = (bNoAnim)=>{
     }
 
     if (bNoAnim === true) $("#idPopup").hide();
-    else $("#idPopup").fadeOut(FE.POPUP_DELAY);
+    else $("#idPopup").hide();
     //$("#idPopup").empty();
 
     ATON._bPauseQuery = false;
@@ -846,7 +862,8 @@ FE.popupClose = (bNoAnim)=>{
 
 FE.subPopup = ( popupFunc )=>{
     ATON.FE.popupClose();
-    setTimeout( popupFunc, ATON.FE.POPUP_DELAY);
+    //setTimeout( popupFunc, FE.POPUP_DELAY);
+    popupFunc();
 };
 
 FE.popupQR = ()=>{

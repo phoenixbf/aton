@@ -20,7 +20,7 @@ HATHOR.SELACTION_ADDCONVEXPOINT = 2;
 HATHOR.SELACTION_MEASURE        = 3;
 
 
-// Main Hathor init routine
+// Main Hathor init routine, with optional Scene-ID
 HATHOR.init = (sid)=>{
 
     ATON.FE.realize();
@@ -72,6 +72,14 @@ HATHOR.init = (sid)=>{
 
     //ATON._bPauseQuery = true;
     //ATON.setTimedGazeDuration(2.0);
+
+    // TODO: Wait cover: is it worth?
+/*
+    $('#idBGcover').css("background-image", "url("+ATON.PATH_RESTAPI+"cover/"+HATHOR.paramSID+")");
+    $('#idBGcover').css("background-position", "top");
+    $('#idBGcover').css("background-repeat", "no-repeat");
+    $('#idBGcover').css("background-size", "cover");
+*/
 };
 
 

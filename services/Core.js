@@ -590,7 +590,7 @@ Core.initUsers = (configfile)=>{
 Core.findByUsername = (username, cb)=>{
 	process.nextTick( function(){
 		// Load
-		Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 		for (let i = 0, len = Core.users.length; i < len; i++){
 			let U = Core.users[i];
@@ -604,7 +604,7 @@ Core.findByUsername = (username, cb)=>{
 
 Core.findById = (id, cb)=>{
 	process.nextTick(()=>{
-		Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 		if (Core.users[id]) cb(null, Core.users[id]);
 		else cb( new Error('User ' + id + ' does not exist') );

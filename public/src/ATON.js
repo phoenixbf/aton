@@ -93,7 +93,7 @@ ATON.PATH_IFC_LIB       = window.location.origin + "/dist/ifc/";
 ATON.PATH_COLLECTION = window.location.origin + "/collections/"; // "../collection/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
 ATON.PATH_RES        = window.location.origin + "/res/"; // "../res/";
-ATON.PATH_FE         = window.location.origin + "/fe/"; // "../res/";
+ATON.PATH_FE         = window.location.origin + "/s/"; // "/fe/";
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0; //50.0;

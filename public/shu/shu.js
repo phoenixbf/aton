@@ -59,7 +59,7 @@ SHU.goToScene = (sid, vrc)=>{
     if (sid === undefined) return;
     if (sid.length < 2) return;
 
-    let feURL = ATON.PATH_FE+"?s="+sid;
+    let feURL = ATON.PATH_FE + sid; //"?s="+sid;
     if (vrc !== undefined) feURL += "&vrc="+vrc;
 
     window.location.href = feURL;

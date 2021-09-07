@@ -98,7 +98,7 @@ Atonizer.run = ()=>{
             console.log("Processing file "+filepath);
 
             if (Atonizer.args.pattern === "*.glb" || Atonizer.args.pattern === "*.gltf"){
-                processModel(outfolder, fBasename);
+                Atonizer.processModel(outfolder, fBasename);
             }
             else {
                 // for some reasons, generates wrong mipmappig

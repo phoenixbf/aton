@@ -77,7 +77,8 @@ SUI.init = ()=>{
     SUI.bShowInfo = true;
 
     // InfoNode scale
-    SUI._labelScale   = ATON.Utils.isMobile()? 50.0 : 60.0; //note: inverse. Orginally 1.2 : 1.0;
+    //SUI._labelScale   = ATON.Utils.isMobile()? 50.0 : 60.0; //note: inverse. Orginally 1.2 : 1.0;
+    SUI._labelScale   = ATON.Utils.isMobile()? 80.0 : 90.0; //note: inverse. Orginally 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
     ATON.on("SemanticNodeHover", (semid)=>{
@@ -526,7 +527,7 @@ SUI.update = ()=>{
         }
         // Default session
         else {
-            SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.2);
+            SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.5);
             const ls = ATON._queryDataSem.d * (ATON.Nav._currPOV.fov / SUI._labelScale);
             SUI.infoNode.setScale(ls);
         }

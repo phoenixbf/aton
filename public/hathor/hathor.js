@@ -1723,12 +1723,13 @@ HATHOR.popupScene = ()=>{
         // Only for auth users
         if (authUser){
             htmlcontent += "<br><br>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div><br>";
 
             if (!bYourScene){
-                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:40%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div>";
+                //
             }
             else {
-                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:40%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
+                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
                 htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
             }
         }

@@ -79,7 +79,7 @@ FX.init = ()=>{
     //FX.passes[FX.PASS_AO].params.saoKernelRadius = 200;
     
     //FX.passes[FX.PASS_AO].params.saoBlurStdDev = 10.0;
-    //FX.passes[FX.PASS_AO].params.saoBlurDepthCutoff = 0.2;
+    //FX.passes[FX.PASS_AO].params.saoBlurDepthCutoff = 10.0; //0.2;
     //FX.passes[FX.PASS_AO].params.saoMinResolution = 0.01;
 
     //console.log(FX.passes[FX.PASS_AO]);

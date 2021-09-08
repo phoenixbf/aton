@@ -353,7 +353,9 @@ ATON._stdActivation = ()=>{
 
     // Handle active immersive AR/VR session
     if (ATON.XR._bPresenting){
-        if (XR._sessionType === "immersive-vr") XR.teleportOnQueriedPoint();
+        if (Nav.requestTransitionToLocomotionNodeInSightIfAny(ATON.XR.STD_TELEP_DURATION)) return;
+
+        if (ATON.XR._sessionType === "immersive-vr") ATON.XR.teleportOnQueriedPoint();
         ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
         return;
     }
@@ -363,6 +365,8 @@ ATON._stdActivation = ()=>{
 
     // When first-person mode, teleport (non immersive)
     if (bFPtrans){
+        if (Nav.requestTransitionToLocomotionNodeInSightIfAny(0.5)) return;
+
         if (ATON.Nav.currentQueryValidForLocomotion()){
             let P = ATON._queryDataScene.p;
             //let N = ATON._queryDataScene.n;
@@ -1724,7 +1728,7 @@ ATON._handleQueries = ()=>{
     
     //ATON._handleQueryUI();
 
-    ATON.Nav.locomotionValidator();
+    if (ATON.Nav._bLocValidator) ATON.Nav.locomotionValidator();
 
     // Timed gaze input
     if (ATON._tgiDur === undefined) return;

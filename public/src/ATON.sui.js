@@ -73,6 +73,10 @@ SUI.init = ()=>{
     SUI.gPoints = ATON.createUINode();
     ATON._rootUI.add(SUI.gPoints);
 
+    // Loc-Nodes
+    SUI.gLocNodes = ATON.createUINode();
+    ATON._rootUI.add(SUI.gLocNodes);
+
     SUI.buildInfoNode();
     SUI.bShowInfo = true;
 

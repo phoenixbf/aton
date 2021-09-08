@@ -309,14 +309,16 @@ canvas:active {
 
     margin: 0px;
     padding: 10px;
-
-    padding-top: 45px;
 /*
+    padding-top: 45px;
+
     padding-right: 45px;
     padding-bottom: 45px;
 
     padding-top: 45px;
 */
+    padding-bottom: 20px;
+
     background-color: rgba(0,0,0, 0.5);
     box-shadow: 0px 0px 20px rgba(0,0,0, 1);
 
@@ -333,10 +335,10 @@ canvas:active {
 
         height: 30%;
         max-height: 300px;
-
+/*
         padding-top: 10px;
         padding-bottom: 20px;
-
+*/
         bottom: 0px;
         top: auto;
         
@@ -370,6 +372,7 @@ canvas:active {
 
 .atonSidePanelContent {
     display: block;
+    position: relative;
 /*
     padding: 10px;
     margin: auto;
@@ -411,6 +414,8 @@ canvas:active {
 }
 
 .descriptionText {
+    position: relative;
+
     text-shadow: 0px 0px 4px black;
     text-align: justify;
 /*

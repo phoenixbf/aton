@@ -30,6 +30,8 @@ AudioHub.playOnceGlobally = (audioURL)=>{
         //au.setPlaybackRate(0.9);
         au.play();
     });
+
+    return au;
 };
 
 /* TODO:

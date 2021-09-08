@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+
+let setupLocomotionGraph = ()=>{
+    ATON.Nav.addLocomotionNode(337,117,-117);
+    ATON.Nav.addLocomotionNode(341,117,-115);
+    ATON.Nav.addLocomotionNode(342,117,-119);
+    ATON.Nav.addLocomotionNode(345,117,-120);
+
+    // Disable default locomotion validator (surfaces)
+    ATON.Nav.toggleLocomotionValidator(false);
+};
+
+
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar");
+    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    // Set FirstPersone mode
+    ATON.Nav.setFirstPersonControl();
+
+    // We load our scene
+    ATON.FE.loadSceneID("samples/montebelluna");
+
+    // Setup our Locomotion-Graph
+    setupLocomotionGraph();
+
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        
+        // Hide some scene layers
+        ATON.getSceneNode("Build. 2").hide();
+        ATON.getSceneNode("Building 1").hide();
+        ATON.getSceneNode("Last period").hide();
+        ATON.getSceneNode("Last period Rec").hide();
+        ATON.getSceneNode("Build. 2 Rec").hide();
+    });
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            In this sample we load an existing 3D scene and setup a locomotion graph, for a constrained navigation.<br><br>
+            We add several locomotion nodes into the 3D space using <code>ATON.Nav.addLocomotionNode(x,y,z)</code><br><br>
+            
+            The navigation system automatically selects the next node in sight, and users can simply teleport by using a double tap/click on the screen (or main trigger on VR controllers). This is useful to constrain first-person navigation into specific hotspots.
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

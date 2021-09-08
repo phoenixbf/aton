@@ -21,6 +21,8 @@ Nav.STD_FAR  = 800.0; // 1000
 Nav.FP_EPS = 0.01;
 Nav.STD_POV_TRANS_DURATION = 2.0;
 
+Nav.STD_LOCNODE_SIZE = 0.3;
+
 // Non-immersive navigation controls
 Nav.MODE_ORBIT  = 0;
 Nav.MODE_FP     = 1;
@@ -37,6 +39,8 @@ Nav.init = ()=>{
     Nav._inertia       = 0.08; // 0.0 = disabled
 
     Nav._bControl = true; // user control
+
+    Nav._bLocValidator = true; // use locomotion validator
 
     Nav._bInteracting = false;
 
@@ -71,6 +75,9 @@ Nav.init = ()=>{
 
     // Queried scene location is valid for locomotion
     Nav._bValidLocomotion = false;
+
+    // Locomotion Graph
+    Nav._locNodes = [];
 };
 
 /**
@@ -158,6 +165,106 @@ Nav.locomotionValidator = ()=>{
 
     Nav._bValidLocomotion = true;
 }
+
+Nav.toggleLocomotionValidator = (b)=>{
+    if (b) Nav._bLocValidator = true;
+    else {
+        Nav._bLocValidator    = false;
+        Nav._bValidLocomotion = false;
+    }
+};
+
+// Locomotion Graph
+Nav.addLocomotionNode = (x,y,z)=>{
+    let p = undefined;
+    if (x instanceof THREE.Vector3){
+        Nav._locNodes.push(x);
+        p = x;
+    }
+    else {
+        p = new THREE.Vector3(x,y,z);
+        Nav._locNodes.push(p);
+    }
+
+    ATON.fireEvent("LocomotionNodeAdded",p);
+
+    if (ATON.SUI.gLocNodes === undefined) return;
+
+    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.materials.lp);
+    M.position.copy(p);
+    M.scale.set(Nav.STD_LOCNODE_SIZE,Nav.STD_LOCNODE_SIZE,Nav.STD_LOCNODE_SIZE);
+    ATON.SUI.gLocNodes.add( M );
+};
+
+Nav.getLocomotionNodeByIndex = (i)=>{
+    return Nav._locNodes[i];
+};
+
+Nav.clearLocomotionNodes = ()=>{
+    Nav._locNodes = [];
+    if (ATON.SUI.gLocNodes) ATON.SUI.gLocNodes.removeChildren();
+};
+
+Nav.getLocomotionNodeInSight = ()=>{
+    let numLN = Nav._locNodes.length;
+    if (numLN <= 0) return undefined;
+
+    if (Nav.isTransitioning()) return undefined;
+
+    let E = Nav._currPOV.pos;
+    let V = Nav._vDir;
+
+    let LN = undefined;
+    let mindist = undefined;
+
+    //if (Nav._posNode === undefined) Nav._posNode = new THREE.Vector3();
+    if (Nav._dirNode === undefined) Nav._dirNode = new THREE.Vector3();
+
+    for (let i=0; i<numLN; i++){
+        Nav._posNode = Nav._locNodes[i];
+
+        Nav._dirNode.x = Nav._posNode.x - E.x;
+        Nav._dirNode.y = Nav._posNode.y - E.y;
+        Nav._dirNode.z = Nav._posNode.z - E.z;
+        Nav._dirNode   = Nav._dirNode.normalize();
+
+        let v = Nav._dirNode.dot(V);
+        if (v > 0.8){
+            let d = E.distanceToSquared(Nav._posNode);
+
+            if (mindist === undefined || d < mindist){
+                mindist = d;
+                LN      = i;
+                //console.log(LN);
+            }
+        }
+    }
+
+    return LN;
+};
+
+/**
+Request transition to next locomotion node in sight, if any
+@param {boolean} duration - (optional) transition duration
+*/
+Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
+    let i = ATON.Nav.getLocomotionNodeInSight();
+    if (i === undefined) return false;
+
+    let ln = Nav._locNodes[i];
+
+    let currDir = ATON.Nav._vDir;
+    let POV = new ATON.POV()
+        .setPosition(ln)
+        .setTarget(ln.x+currDir.x, ln.y+currDir.y, ln.z+currDir.z)
+        .setFOV(Nav._currPOV.fov);
+
+    Nav.requestPOV(POV, duration);
+
+    ATON.fireEvent("LocomotionNodeRequested",i);
+    return true;
+};
+
 
 /**
 Enable/disable user navigation control

@@ -4,6 +4,7 @@
     author: bruno.fanini_AT_gmail.com
 
 ===========================================================*/
+import LocomotionNode from "./ATON.locnode.js";
 
 const COSINOIDAL_DIST = function(x){ return (1.0 - Math.cos(x * Math.PI)) / 2.0; };
 
@@ -27,6 +28,8 @@ Nav.STD_LOCNODE_SIZE = 0.3;
 Nav.MODE_ORBIT  = 0;
 Nav.MODE_FP     = 1;
 Nav.MODE_DEVORI = 2;
+
+Nav.LocomotionNode = LocomotionNode;
 
 
 //Initialize nav system
@@ -176,24 +179,11 @@ Nav.toggleLocomotionValidator = (b)=>{
 
 // Locomotion Graph
 Nav.addLocomotionNode = (x,y,z)=>{
-    let p = undefined;
-    if (x instanceof THREE.Vector3){
-        Nav._locNodes.push(x);
-        p = x;
-    }
-    else {
-        p = new THREE.Vector3(x,y,z);
-        Nav._locNodes.push(p);
-    }
+    let LN = new Nav.LocomotionNode().setLocation(x,y,z).realizeSUI();
+    Nav._locNodes.push(LN);
 
-    ATON.fireEvent("LocomotionNodeAdded",p);
-
-    if (ATON.SUI.gLocNodes === undefined) return;
-
-    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.materials.lp);
-    M.position.copy(p);
-    M.scale.set(Nav.STD_LOCNODE_SIZE,Nav.STD_LOCNODE_SIZE,Nav.STD_LOCNODE_SIZE);
-    ATON.SUI.gLocNodes.add( M );
+    ATON.fireEvent("LocomotionNodeAdded", LN);
+    return LN;
 };
 
 Nav.getLocomotionNodeByIndex = (i)=>{
@@ -217,20 +207,19 @@ Nav.getLocomotionNodeInSight = ()=>{
     let LN = undefined;
     let mindist = undefined;
 
-    //if (Nav._posNode === undefined) Nav._posNode = new THREE.Vector3();
-    if (Nav._dirNode === undefined) Nav._dirNode = new THREE.Vector3();
+    if (Nav._dirLNode === undefined) Nav._dirLNode = new THREE.Vector3();
 
     for (let i=0; i<numLN; i++){
-        Nav._posNode = Nav._locNodes[i];
+        Nav._posLNode = Nav._locNodes[i].pos;
 
-        Nav._dirNode.x = Nav._posNode.x - E.x;
-        Nav._dirNode.y = Nav._posNode.y - E.y;
-        Nav._dirNode.z = Nav._posNode.z - E.z;
-        Nav._dirNode   = Nav._dirNode.normalize();
+        Nav._dirLNode.x = Nav._posLNode.x - E.x;
+        Nav._dirLNode.y = Nav._posLNode.y - E.y;
+        Nav._dirLNode.z = Nav._posLNode.z - E.z;
+        Nav._dirLNode   = Nav._dirLNode.normalize();
 
-        let v = Nav._dirNode.dot(V);
+        let v = Nav._dirLNode.dot(V);
         if (v > 0.8){
-            let d = E.distanceToSquared(Nav._posNode);
+            let d = E.distanceToSquared(Nav._posLNode);
 
             if (mindist === undefined || d < mindist){
                 mindist = d;
@@ -244,6 +233,38 @@ Nav.getLocomotionNodeInSight = ()=>{
 };
 
 /**
+Request transition to a locomotion node
+@param {LocomotionNode} lnode - locomotion node object
+@param {boolean} duration - (optional) transition duration
+*/
+Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
+    if (lnode === undefined) return;
+    if (Nav._mode === Nav.MODE_ORBIT) return; // only first-person modes
+
+    let currDir = ATON.Nav._vDir;
+
+    let POV = new ATON.POV()
+        .setPosition(lnode.pos)
+        .setTarget(
+            lnode.pos.x + currDir.x,
+            lnode.pos.y + currDir.y, 
+            lnode.pos.z + currDir.z
+        )
+        .setFOV(Nav._currPOV.fov);
+
+    Nav.requestPOV(POV, duration);
+
+    // If any XPF associated
+    let xpfi = lnode.getAssociatedXPFindex();
+    if (xpfi !== undefined){
+        ATON.XPFNetwork.setCurrentXPF(xpfi);
+        ATON.fireEvent("XPFTransitionRequested", xpfi);
+    }
+
+    ATON.fireEvent("LocomotionNodeRequested", lnode);
+};
+
+/**
 Request transition to next locomotion node in sight, if any
 @param {boolean} duration - (optional) transition duration
 */
@@ -251,17 +272,9 @@ Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
     let i = ATON.Nav.getLocomotionNodeInSight();
     if (i === undefined) return false;
 
-    let ln = Nav._locNodes[i];
+    let lnode = Nav._locNodes[i];
+    Nav.requestTransitionToLocomotionNode(lnode);
 
-    let currDir = ATON.Nav._vDir;
-    let POV = new ATON.POV()
-        .setPosition(ln)
-        .setTarget(ln.x+currDir.x, ln.y+currDir.y, ln.z+currDir.z)
-        .setFOV(Nav._currPOV.fov);
-
-    Nav.requestPOV(POV, duration);
-
-    ATON.fireEvent("LocomotionNodeRequested",i);
     return true;
 };
 

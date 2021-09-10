@@ -21,6 +21,7 @@ import Node from "./ATON.node.js";
 import POV from "./ATON.pov.js";
 //import Period from "./ATON.period.js";
 import LightProbe from "./ATON.lightprobe.js";
+import XPF from "./ATON.xpf.js";
 
 import EventHub from "./ATON.eventhub.js";
 import MatHub from "./ATON.mathub.js";
@@ -37,11 +38,13 @@ import MediaRec from "./ATON.mediarec.js";
 import GeoLoc from "./ATON.geoloc.js";
 import AppHub from "./ATON.apphub.js";
 import FX from "./ATON.fx.js";
+import XPFNetwork from "./ATON.xpfnetwork.js";
 
 // Classes
 ATON.Node       = Node;
 ATON.POV        = POV;
 ATON.LightProbe = LightProbe;
+ATON.XPF        = XPF;
 //ATON.Period = Period;
 
 // NS
@@ -60,6 +63,7 @@ ATON.MediaRec   = MediaRec;
 ATON.GeoLoc     = GeoLoc;
 ATON.AppHub     = AppHub;
 ATON.FX         = FX;
+ATON.XPFNetwork = XPFNetwork;
 
 //==============================================================
 // Consts
@@ -584,6 +588,9 @@ ATON.realize = ()=>{
 
     // GeoLoc
     ATON.GeoLoc.init();
+
+    // XPF-Network
+    ATON.XPFNetwork.init();
 
 
     // FX Composer setup

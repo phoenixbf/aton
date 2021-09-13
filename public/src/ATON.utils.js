@@ -327,7 +327,7 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.onLoadModel = ( scene )=>{
         //Utils.modelVisitor( N, scene );
 
-        console.log(ts.lruCache.itemList.length);
+        //console.log(ts.lruCache.itemList.length);
 
         scene.traverse( c => {
             //c.layers.enable(N.type);
@@ -355,8 +355,6 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.onDisposeModel = (scene, tile)=>{
         Utils.cleanupVisitor(scene);
 
-        //console.log(scene);
-        //console.log(tile);
         scene = null;
         tile  = null;
 

@@ -264,35 +264,6 @@ Utils.updateTSetsCamera = (cam)=>{
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
 
-/*
-    // Immersive VR mode
-    if (ATON.XR._bPresenting){
-        //console.log(ATON._tsets)
-
-        for (let ts=0; ts<nts; ts++){
-            const TS = ATON._tsets[ts];
-
-            // remove all cameras so we can use the VR camera instead
-            TS.cameras.forEach( c => TS.deleteCamera( cam ) );
-
-            let currCamera = ATON._renderer.xr.getCamera(); // cam
-            if (currCamera){
-                TS.setCamera( currCamera );
-
-                TS.setResolution( currCamera, 8000, 8000 );
-
-                let leftCam = currCamera.cameras[0];
-                if ( leftCam ){
-                    //TS.setResolution( currCamera, leftCam.viewport.z, leftCam.viewport.w );
-                    //console.log(leftCam);
-                }
-            }
-        }
-
-        return;
-    }
-*/
-
     for (let ts=0; ts<nts; ts++){
         const TS = ATON._tsets[ts];   
 
@@ -301,8 +272,22 @@ Utils.updateTSetsCamera = (cam)=>{
 
         TS.setCamera( cam );
 
+        if (ATON._renderer.xr.isPresenting){
+            //TS.setCamera( cam );
+            
+            //let leftCam = cam.cameras[0];
+            //if (leftCam) tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
+            
+            TS.setResolutionFromRenderer( cam, ATON._renderer );
+            //TS.setResolution( cam, 200, 200 );
+        }
+        else {
+            //TS.setCamera( cam );
+            TS.setResolutionFromRenderer( cam, ATON._renderer );
+        }
+
         //TS.setResolutionFromRenderer( cam, ATON._renderer );
-        TS.setResolution( cam, 200, 200 );
+        //TS.setResolution( cam, 200, 200 );
     }
 };
 
@@ -311,37 +296,45 @@ Utils.loadTileSet = (tsurl, N)=>{
     let ts = new TILES.TilesRenderer(tsurl);
     if (!ts) return;
 
-    //ATON._assetReqNew(tsurl);
+    ATON._assetReqNew(tsurl);
 
+    // Options
     ts.fetchOptions.mode = 'cors';
+    ts.errorTarget     = 20.0; //40.0; // original: 6
+    ts.optimizeRaycast = true;
+    //ts.loadSiblings    = false; // a few hops / artifacts
+
+    //ts.lruCache.maxSize = 300;
+    //ts.lruCache.minSize = 100;
+    //ts.lruCache.unloadPercent = 0.2;
+
+    //console.log(ts);
+
+    const tloader = new THREE.GLTFLoader( ts.manager );
+	tloader.setDRACOLoader( ATON._dracoLoader );
 
     ts.setCamera( ATON.Nav._camera );
     ts.setResolutionFromRenderer( ATON.Nav._camera, ATON._renderer );
 
-    //ts.errorTarget = ;
+    ts.manager.addHandler( /\.gltf$/, /*ATON._aLoader*/ tloader );
 
-    let bFirst = false;
+    ts.onLoadTileSet = ()=>{
+        ATON._assetReqComplete(tsurl);
+        console.log("TileSet loaded");
+    };
 
-    //ATON._assetReqComplete(tsurl);
 
     ts.onLoadModel = ( scene )=>{
         //Utils.modelVisitor( N, scene );
-        //ATON._onAllReqsCompleted();
-
-        if (!bFirst){
-            ///ATON._assetReqComplete(tsurl);
-            ATON._onAllReqsCompleted();
-            bFirst = true;
-        }
 
         scene.traverse( c => {
             //c.layers.enable(N.type);
-
+/*
             if (c.isMesh){
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
             }
-
+*/
             if ( c.material ) {
                 //c.originalMaterial = c.material;
                 //c.material = wireMat;
@@ -354,21 +347,24 @@ Utils.loadTileSet = (tsurl, N)=>{
             }
         });
 
+    //console.log(ATON._renderer.info.memory);
     };
 
-    ts.onDisposeModel = (scene)=>{
-        scene.traverse( c => {
-            if ( c.isMesh ) {
-                c.material.dispose();
-            }
-        });
+    ts.onDisposeModel = (scene, tile)=>{
+        Utils.cleanupVisitor(scene);
+
+        //console.log(scene);
+        //console.log(tile);
+        scene = null;
+        tile  = null;
+
+        //console.log(ts.group);
+        //console.log("DISPOSE");
     };
+
 
     N.add(ts.group);
-
     Utils.setPicking(N, N.type, true);
-
-    //console.log(ts);
 
     ATON._tsets.push(ts);
 };
@@ -473,6 +469,41 @@ Utils.modelVisitor = (N, model)=>{
         Utils.modelVisitor(model, C);
     }
 */
+};
+
+Utils.cleanupVisitor = ( object )=>{
+    object.traverse( c => {
+        if ( c.material ){
+            if (c.material.length){
+                for (let i = 0; i < c.material.length; ++i){
+                    if (c.material[i].map)         c.material[i].map.dispose();
+                    if (c.material[i].envMap)      c.material[i].envMap.dispose();
+                    if (c.material[i].alphaMap)    c.material[i].alphaMap.dispose();
+                    if (c.material[i].emissiveMap) c.material[i].emissiveMap.dispose();
+                    if (c.material[i].lightMap)    c.material[i].lightMap.dispose();
+
+                    c.material[i].dispose();                               
+                }
+            }
+            else {
+                if (c.material.map)         c.material.map.dispose();
+                if (c.material.envMap)      c.material.envMap.dispose();
+                if (c.material.alphaMap)    c.material.alphaMap.dispose();
+                if (c.material.emissiveMap) c.material.emissiveMap.dispose();
+                if (c.material.lightMap)    c.material.lightMap.dispose();
+
+                c.material.dispose();                         
+            }
+        }
+
+        if (c.userData){
+            if (c.userData.cMat) c.userData.cMat.dispose();
+        }
+
+        if (c.geometry) c.geometry.dispose();
+    });
+
+    object = null;
 };
 
 Utils.registerAniMixers = (N, data)=>{

@@ -528,8 +528,9 @@ ATON.realize = ()=>{
     ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
     ATON._numReqLoad = 0;
     
+    // Config DRACO
     ATON._dracoLoader = new THREE.DRACOLoader();
-    ATON._dracoLoader.setDecoderConfig({type: "wasm"});
+    //ATON._dracoLoader.setDecoderConfig({type: "wasm"}); // Force
     ATON._dracoLoader.setDecoderPath( ATON.PATH_DRACO_LIB );
     ATON._dracoLoader.setWorkerLimit(2);
     ATON._dracoLoader.preload();
@@ -1652,10 +1653,19 @@ ATON._updateRoutines = ()=>{
 
 //================================================
 ATON._updateTSets = ()=>{
+    //if (ATON.Nav._bInteracting) return;
+    if (ATON.Nav.isTransitioning()) return;
+
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
 
     ATON.Nav._camera.updateMatrixWorld();
+/*
+    if (ATON.XR._bPresenting){
+        let C = ATON._renderer.xr.getCamera();
+        if (C) ATON.Utils.updateTSetsCamera(C);
+    }
+*/
     //if (Nav._camOrbit) Nav._camOrbit.updateMatrixWorld();
     //if (Nav._camFP) Nav._camFP.updateMatrixWorld();
 

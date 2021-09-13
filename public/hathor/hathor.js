@@ -1723,7 +1723,7 @@ HATHOR.popupScene = ()=>{
         // Only for auth users
         if (authUser){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div><br>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div><br>";
 
             if (!bYourScene){
                 //
@@ -1812,6 +1812,12 @@ HATHOR.popupScene = ()=>{
         $("#idSHUscenes").click(()=>{
             if (ATON.SceneHub.currID === undefined) return;
             window.open("/shu/scenes/?s="+ATON.SceneHub.currID, "_self");
+        });
+
+        $("#idSHUclone").click(()=>{
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"clone/scene", {sid: ATON.SceneHub.currID}, (newsid)=>{
+                if (newsid) window.location.href = "/s/"+newsid;
+            });
         });
 
         $("#btnPopEmbed").click(()=>{

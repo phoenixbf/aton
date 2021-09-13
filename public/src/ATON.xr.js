@@ -418,7 +418,7 @@ XR.toggle = (sessiontype)=>{
 
                 //"hand-tracking",
 
-                //"high-refresh-rate",
+                "high-refresh-rate",
                 //"high-fixed-foveation-level",
             ]
         };

@@ -272,6 +272,7 @@ Utils.updateTSetsCamera = (cam)=>{
 
         TS.setCamera( cam );
 
+/*
         if (ATON._renderer.xr.isPresenting){
             //TS.setCamera( cam );
             
@@ -279,15 +280,14 @@ Utils.updateTSetsCamera = (cam)=>{
             //if (leftCam) tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
             
             TS.setResolutionFromRenderer( cam, ATON._renderer );
-            //TS.setResolution( cam, 200, 200 );
         }
         else {
             //TS.setCamera( cam );
             TS.setResolutionFromRenderer( cam, ATON._renderer );
         }
+*/
 
-        //TS.setResolutionFromRenderer( cam, ATON._renderer );
-        //TS.setResolution( cam, 200, 200 );
+        TS.setResolution( cam, 200, 200 );
     }
 };
 

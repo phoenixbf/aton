@@ -304,9 +304,9 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.optimizeRaycast = true;
     //ts.loadSiblings    = false; // a few hops / artifacts
 
-    //ts.lruCache.maxSize = 300;
-    //ts.lruCache.minSize = 100;
-    //ts.lruCache.unloadPercent = 0.2;
+    ts.lruCache.maxSize = 300;
+    ts.lruCache.minSize = 200;
+    ts.lruCache.unloadPercent = 0.9;
 
     //console.log(ts);
 
@@ -326,6 +326,8 @@ Utils.loadTileSet = (tsurl, N)=>{
 
     ts.onLoadModel = ( scene )=>{
         //Utils.modelVisitor( N, scene );
+
+        console.log(ts.lruCache.itemList.length);
 
         scene.traverse( c => {
             //c.layers.enable(N.type);

@@ -501,7 +501,8 @@ ATON.realize = ()=>{
     ATON._maxAnisotropy = ATON._renderer.capabilities.getMaxAnisotropy();
     //console.log(ATON._renderer.capabilities);
 
-    THREE.Cache.enabled = true;
+    // NOTE: issues (can grow out of mem)
+    //THREE.Cache.enabled = true;
 
     ATON.userHeight = 1.7;
  

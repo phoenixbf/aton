@@ -287,7 +287,7 @@ Utils.updateTSetsCamera = (cam)=>{
         }
 */
 
-        TS.setResolution( cam, 200, 200 );
+        TS.setResolution( cam, 300,300 );
     }
 };
 
@@ -342,10 +342,12 @@ Utils.loadTileSet = (tsurl, N)=>{
                 //c.material = wireMat;
                 if (N.userData.cMat) c.material = N.userData.cMat;
 
+/*  CHECK: this forces mipmapping
                 if (c.material.map){
                     c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
                     c.material.map.magFilter = THREE.LinearFilter;
                 }
+*/
             }
         });
 

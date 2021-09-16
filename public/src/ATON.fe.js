@@ -107,16 +107,21 @@ FE.addBasicLoaderEvents = ()=>{
 
         FE._handleHomeReq();
     });
+
+    ATON.on("XR_support", (d)=>{
+        if (d.type==='immersive-vr'){
+            if (d.v) $("#btn-vr").show();
+            else $("#btn-vr").hide();
+        }
 /*
-    ATON.on("XR_support", (o)=>{
-        if (o.type === "immersive-vr"){
-            if (!o.v) $("#btn-vr").hide();
+        if (d.type==='immersive-ar'){
+            if (d.v) $("#btn-ar").show();
+            else $("#btn-ar").hide();
         }
-        if (o.type === "immersive-ar"){
-            if (!o.v) $("#btn-ar").hide();
-        }
-    });
 */
+    });
+
+
     //ATON.on("frame", FE._update);
     ATON.addUpdateRoutine(FE._update);
 };
@@ -305,12 +310,13 @@ Add immersive-VR button
 */
 FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
-    //if (!ATON.Utils.isVRsupported()) return; //Not showing on mobile
 
     FE.uiAddButton(idcontainer, "vr", ()=>{
         ATON.XR.toggle("immersive-vr");
     },
     "Immersive VR mode" );
+
+    if (!ATON.Utils.isVRsupported()) $("#btn-vr").hide();
 };
 
 /**
@@ -331,6 +337,8 @@ FE.uiAddButtonAR = (idcontainer)=>{
         }
     }, 
     "Immersive AR mode" );
+
+    //if (!ATON.Utils.isARsupported()) $("#btn-ar").hide();
 };
 
 /**

@@ -210,6 +210,23 @@ MatHub.addDefaults = ()=>{
         depthTest: false
     });
 
+    MatHub.materials.transWhite = new THREE.MeshBasicMaterial({ 
+        color: MatHub.colors.white, 
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        opacity: 0.2
+        //flatShading: true
+    });
+    MatHub.materials.transBlack = new THREE.MeshBasicMaterial({ 
+        color: MatHub.colors.black, 
+        transparent: true,
+        depthWrite: false,
+        side: THREE.DoubleSide,
+        opacity: 0.2
+        //flatShading: true
+    });
+
     MatHub.materials.lp = new THREE.ShaderMaterial({ 
         vertexShader: MatHub.getDefVertexShader(),
         fragmentShader:`

@@ -426,8 +426,14 @@ SceneHub.initBaseParsers = ()=>{
                 //else G.enablePicking();
 
                 if (N.material){
-                    let mat = new THREE.MeshStandardMaterial(N.material);
-                    G.setMaterial( mat );
+                    let mat = undefined;
+                    
+                    if (typeof N.material === 'string') mat = ATON.MatHub.materials[N.material];
+                    else mat = new THREE.MeshStandardMaterial(N.material);
+
+                    console.log(mat)
+                    
+                    if (mat) G.setMaterial( mat );
                 }
             }
         }

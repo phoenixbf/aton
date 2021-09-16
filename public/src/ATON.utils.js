@@ -765,9 +765,15 @@ Utils.exportNode = (node, filename)=>{
     // USDZ
     if (ext === "usdz"){
         if (Utils.exporterUSDZ === undefined) Utils.exporterUSDZ = new THREE.USDZExporter();
+
+        $("#idLoader").show();
+        //ATON._bPauseQuery = true;
         
         Utils.exporterUSDZ.parse(node).then( (output)=>{
             Utils.downloadArrayBuffer( output, filename);
+
+            //ATON._bPauseQuery = false;
+            $("#idLoader").hide();
         });
         
     }

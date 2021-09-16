@@ -227,6 +227,24 @@ MatHub.addDefaults = ()=>{
         //flatShading: true
     });
 
+    MatHub.materials.normSlope= new THREE.ShaderMaterial({ 
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+
+		    void main(){
+                vec4 A = vec4(0,1,0, 1.0);
+                vec4 B = vec4(1,0,0, 1.0);
+
+                float f;
+                f = dot(vNormalW, vec3(0,1,0));
+
+		        gl_FragColor = mix(B,A, f);
+		    }
+        `
+    });
+
     MatHub.materials.lp = new THREE.ShaderMaterial({ 
         vertexShader: MatHub.getDefVertexShader(),
         fragmentShader:`

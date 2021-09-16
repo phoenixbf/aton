@@ -1509,8 +1509,11 @@ label {
     margin: 10px;
     
     /*float: left; */
-    
+/*  
     background-color:rgba(128,255,128, 0.2);
+    box-shadow: 0px 0px 20px rgba(0,20,0, 1);
+*/
+    background-color:rgba(200,255,200, 0.2);
     box-shadow: 0px 0px 20px rgba(0,20,0, 1);
 }
 
@@ -1648,7 +1651,7 @@ label {
     position: relative;
 
     margin: 0px;
-    padding: 5px;
+    padding: 10px;
     width: 90%;
 
     background-color: rgba(0, 0, 0, 0.3);
@@ -1735,5 +1738,10 @@ tr:hover {
 }
 
 td {
+    padding: 5px;
+}
+
+summary {
+    cursor: pointer;
     padding: 5px;
 }

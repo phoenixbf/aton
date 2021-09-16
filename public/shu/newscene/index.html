@@ -36,6 +36,15 @@ let sid  = SHU.generateUserSID();
 console.log(sid);
 
 
+// Def mats
+let defMats = [
+    "wireframe",
+    "defUI",
+    "transWhite",
+    "transBlack"
+];
+
+
 
 //================================================
 let requestSceneCreation = ()=>{
@@ -194,6 +203,8 @@ let addNodeBlock = (nid)=>{
     let elNIDtformTrans = elNID+"-tf-t";
     let elNIDtformRot   = elNID+"-tf-r";
     let elNIDtformScale = elNID+"-tf-s";
+    let elNIDtformYup   = elNID+"-tf-yup";
+    let elNIDmat        = elNID+"-mat";
 
     htmlcontent += "<div id='"+elNID+"' class='shuBlockNode'>";
 
@@ -202,7 +213,7 @@ let addNodeBlock = (nid)=>{
     
     // Input field (add 3D models)
     htmlcontent += "Add 3D models:<br>";
-    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:300px'>";
+    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:250px'>";
     htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
 
     // item list
@@ -210,10 +221,26 @@ let addNodeBlock = (nid)=>{
     //htmlcontent += "<div id='"+elNIDList+"' style='margin:5px'></div>";
 
     // Transform
-    htmlcontent += "<br>Translation, Rotation, Scale<br>";
-    htmlcontent += "<input id='"+elNIDtformTrans+"' type='text' size='10' placeholder='x,y,z'>";
-    htmlcontent += "<input id='"+elNIDtformRot+"' type='text' size='10' placeholder='x,y,z'>";
-    htmlcontent += "<input id='"+elNIDtformScale+"' type='text' size='10' placeholder='x,y,z'>";
+    //htmlcontent += "<br>Translation, Rotation, Scale<br>";
+    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'>";
+    htmlcontent += "<details>";
+    htmlcontent += "<summary>Transform</summary>";
+    htmlcontent += "Translation:<input id='"+elNIDtformTrans+"' type='text' size='20' placeholder='x,y,z'><br>";
+    htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
+    htmlcontent += "Scale:<input id='"+elNIDtformScale+"' type='text' size='20' placeholder='x,y,z or single value'><br>";
+    htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'>From Z-up to Y-up</div>";
+    htmlcontent += "</details>";
+    htmlcontent += "</div>";
+
+    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'>";
+    htmlcontent += "<details>";
+    htmlcontent += "<summary>Overall Material</summary>";
+    htmlcontent += "<div class='select'><select id='"+elNIDmat+"'>";
+    htmlcontent += "<option value=''></option>";
+    for (let m in defMats) htmlcontent += "<option value='"+defMats[m]+"'>"+defMats[m]+"</option>";
+    htmlcontent += "</select><div class='selectArrow'></div></div>";
+    htmlcontent += "</details>";
+    htmlcontent += "</div>";
 
     // Del
     htmlcontent += "<br><div onclick='deleteNode(\""+nid+"\")' class='atonBTN atonBTN-red' style='width:90%'><img src='../../res/icons/trash.png'>Delete this node</div>";
@@ -221,13 +248,9 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "</div>";
 
     numLayers++;
-    //return htmlcontent;
 
-    $("#idMainSGblocks").append(htmlcontent);
-    SHU.uiAttachModelsInputList(elNIDAdd);
-
-    // Transform
-    $("#"+elNIDtformTrans).on("input change",()=>{
+    // Transform routines
+    let parseTrans = ()=>{
         let tformtrans = $("#"+elNIDtformTrans).val();
         let values = tformtrans.split(",");
         if (values.length !== 3) return;
@@ -237,23 +260,10 @@ let addNodeBlock = (nid)=>{
         if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
 
         sobj.scenegraph.nodes[nid].transform.position = values;
-        console.log(sobj.scenegraph.nodes[nid]);
-    });
+        console.log(sobj.scenegraph.nodes[nid]); 
+    };
 
-    $("#"+elNIDtformScale).on("input change",()=>{
-        let tformscale = $("#"+elNIDtformScale).val();
-        let values = tformscale.split(",");
-        if (values.length !== 3) return;
-        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return;
-
-        if (sobj.scenegraph.nodes[nid] === undefined) return;
-        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
-
-        sobj.scenegraph.nodes[nid].transform.scale = values;
-        console.log(sobj.scenegraph.nodes[nid]);
-    });
-
-    $("#"+elNIDtformRot).on("input change",()=>{
+    let parseRot = ()=>{
         let tformrot = $("#"+elNIDtformRot).val();
         let values = tformrot.split(",");
         if (values.length !== 3) return;
@@ -264,7 +274,49 @@ let addNodeBlock = (nid)=>{
 
         sobj.scenegraph.nodes[nid].transform.rotation = values;
         console.log(sobj.scenegraph.nodes[nid]);
+    };
+
+    let parseScale = ()=>{
+        let tformscale = $("#"+elNIDtformScale).val();
+        let values = tformscale.split(",");
+        if (values.length > 3) return;
+        if (values.length === 2) return;
+
+        if (values.length === 1){
+            values.push(values[0]);
+            values.push(values[0]);
+        }
+        if (values[0].length<1 || values[1].length<1 || values[2].length<1) return;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return;
+        if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+
+        sobj.scenegraph.nodes[nid].transform.scale = values;
+        console.log(sobj.scenegraph.nodes[nid]);
+    };
+
+
+    $("#idMainSGblocks").append(htmlcontent);
+    SHU.uiAttachModelsInputList(elNIDAdd);
+
+    $("#"+elNIDtformYup).click(()=>{
+        $("#"+elNIDtformRot).val("-1.57079632679,0.0,0.0");
+        parseRot();
     });
+
+    $("#"+elNIDmat).change(()=>{
+        let mat = $("#"+elNIDmat).val();
+        if (mat.length < 2) return;
+
+        if (sobj.scenegraph.nodes[nid] === undefined) return;
+        sobj.scenegraph.nodes[nid].material = mat;
+        console.log(sobj.scenegraph.nodes[nid]);
+    });
+
+    // Transform
+    $("#"+elNIDtformTrans).on("input change", parseTrans);
+    $("#"+elNIDtformScale).on("input change",parseScale);
+    $("#"+elNIDtformRot).on("input change", parseRot);
 };
 
 let addNewNodeBlock = ()=>{

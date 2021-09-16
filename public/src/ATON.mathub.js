@@ -226,6 +226,14 @@ MatHub.addDefaults = ()=>{
         opacity: 0.2
         //flatShading: true
     });
+    MatHub.materials.wireframe = new THREE.MeshBasicMaterial({ 
+        color: MatHub.colors.black, 
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.1,
+        wireframe: true
+        //flatShading: true
+    });
 
     MatHub.materials.normSlope= new THREE.ShaderMaterial({ 
         vertexShader: MatHub.getDefVertexShader(),

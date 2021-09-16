@@ -549,6 +549,9 @@ orientToCamera(){
     return this;
 }
 
+/**
+Orient this node from z-up to y-up
+*/
 setYup(){
     this.rotation.set(-1.57079632679,0.0,0.0);
     return this;  

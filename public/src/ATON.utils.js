@@ -321,6 +321,14 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.onLoadTileSet = ()=>{
         ATON._assetReqComplete(tsurl);
         console.log("TileSet loaded");
+
+        let bb = new THREE.Box3();
+        let bs = new THREE.Sphere();
+        ts.getBounds(bb);
+        bb.getBoundingSphere(bs);
+
+        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, bs);
+        //console.log(bs);
     };
 
 

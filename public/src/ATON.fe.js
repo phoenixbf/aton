@@ -71,6 +71,10 @@ FE.realize = ()=>{
 FE._handleHomeReq = ()=>{
     if (FE._bReqHome) return;
 
+    // Check we have a valid scene bs
+    let bs = ATON.getRootScene().getBound();
+    if (bs.radius <= 0.0) return;
+
     FE._bReqHome = true;
 
     if (ATON.Nav.homePOV === undefined){

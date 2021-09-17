@@ -915,10 +915,10 @@ Compute a default home, depending on visibile bounding sphere. Typically called 
 @example
 ATON.Nav.computeDefaultHome();
 */
-Nav.computeDefaultHome = (dv)=>{
+Nav.computeDefaultHome = (dv, sceneBS)=>{
     if (dv === undefined) dv = new THREE.Vector3(1,0.7,1);
 
-    let sceneBS = ATON.getRootScene().getBound();
+    if (sceneBS === undefined) sceneBS = ATON.getRootScene().getBound();
 
     let eye = new THREE.Vector3(
         sceneBS.center.x + (sceneBS.radius * dv.x * 1.5), 
@@ -929,6 +929,7 @@ Nav.computeDefaultHome = (dv)=>{
     Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(sceneBS.center);
 };
 
+
 /** 
 Set the home viewpoint (POV)
 @param {POV} pov - the home POV
@@ -937,8 +938,8 @@ Nav.setHomePOV = (pov)=>{
     Nav.homePOV = pov;
 };
 
-Nav.computeAndRequestDefaultHome = (duration, dv)=>{
-    Nav.computeDefaultHome(dv);
+Nav.computeAndRequestDefaultHome = (duration, dv, sceneBS)=>{
+    Nav.computeDefaultHome(dv, sceneBS);
     Nav.requestPOV(Nav.homePOV, duration);
 };
 

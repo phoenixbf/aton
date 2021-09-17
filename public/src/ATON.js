@@ -1676,6 +1676,16 @@ ATON._updateTSets = ()=>{
     }
 };
 
+ATON.setTSetsErrorTarget = (e)=>{
+    const nts = ATON._tsets.length;
+    if (nts <= 0) return;
+
+    for (let ts=0; ts<nts; ts++){
+        let TS = ATON._tsets[ts];
+        ts.errorTarget = e;
+    }
+};
+
 
 ATON._updateAniMixers = ()=>{
     let num = ATON._aniMixers.length;

@@ -143,6 +143,9 @@ let addToNode = (nid)=>{
 
     let htmlcontent = "";
 
+    let numPaths = N.urls.length;
+    console.log(numPaths)
+
     for (let i in paths){
         let p = paths[i].replace(uid+"/models","");
 
@@ -153,15 +156,18 @@ let addToNode = (nid)=>{
         //htmlcontent += "<div class='atonBTN' style='font-size:smaller; display:block; text-shadow:none; height:15px'>";
         
         htmlcontent += "<div class='atonBlockRound atonBTN-white' style='font-size:smaller; display:block; text-shadow:none;'>";
-        htmlcontent += "<img class='atonSmallIcon' src='../../res/icons/collection-item.png'>" + p;
-        htmlcontent += "</div>";
+        //htmlcontent += "<img class='atonSmallIcon' src='../../res/icons/collection-item.png'>" + p;
+        htmlcontent += p + "</div>";
 
         N.urls.push( paths[i] );
         numModels++;
+        numPaths++;
     }
 
     $("#nid-"+nid+"-list").append(htmlcontent);
     $("#nid-"+nid+"add").val(""); // clear field
+
+    $("#nid-"+nid+"-list-count").html( numPaths );
 
     console.log(sobj);
 };
@@ -196,9 +202,10 @@ let addNodeBlock = (nid)=>{
     //sobj.scenegraph.nodes[nid] = {};
     sobj = SHU.composer.addSceneNode(sobj, nid);
 
-    let elNID      = "nid-" + nid; //numLayers;
-    let elNIDList  = elNID+"-list";
-    let elNIDAdd   = elNID+"add";
+    let elNID            = "nid-" + nid; //numLayers;
+    let elNIDList        = elNID+"-list";
+    let elNIDListCounter = elNID+"-list-count";
+    let elNIDAdd         = elNID+"add";
     
     let elNIDtformTrans = elNID+"-tf-t";
     let elNIDtformRot   = elNID+"-tf-r";
@@ -212,12 +219,18 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "<div class='atonBlockSubTitle'>Node '"+nid+"'</div><br>";
     
     // Input field (add 3D models)
-    htmlcontent += "Add 3D models:<br>";
+    htmlcontent += "<span class='descriptionText'>Add 3D models:</span><br>";
     htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:250px'>";
     htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
 
     // item list
-    htmlcontent += "<div id='"+elNIDList+"' style='height:100px; margin:5px' class='scrollableY'></div>"; // background-color:rgba(255,255,255, 0.1);
+    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'>";
+    htmlcontent += "<details>";
+    htmlcontent += "<summary><img class='atonSmallIcon' src='../../res/icons/collection-item.png'>";
+    htmlcontent += "List <b><span class='atonCircledSmall' id='"+elNIDListCounter+"'>0</span></b></summary>";
+    htmlcontent += "<div id='"+elNIDList+"'>"; //style='height:200px; margin:5px' class='scrollableY' // background-color:rgba(255,255,255, 0.1);
+    //htmlcontent += "<div class='atonBTN atonBTN-red' style='width:100%;'>Clear</div>";
+    htmlcontent += "</div></details></div>";
     //htmlcontent += "<div id='"+elNIDList+"' style='margin:5px'></div>";
 
     // Transform
@@ -228,14 +241,14 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "Translation:<input id='"+elNIDtformTrans+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Scale:<input id='"+elNIDtformScale+"' type='text' size='20' placeholder='x,y,z or single value'><br>";
-    htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'>From Z-up to Y-up</div>";
+    htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'><img src='../../res/icons/axes.png'>From Z-up to Y-up</div>";
     htmlcontent += "</details>";
     htmlcontent += "</div>";
 
     htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'>";
     htmlcontent += "<details>";
     htmlcontent += "<summary>Overall Material</summary>";
-    htmlcontent += "<div class='select'><select id='"+elNIDmat+"'>";
+    htmlcontent += "<div class='select' style='width:100%'><select id='"+elNIDmat+"'>";
     htmlcontent += "<option value=''></option>";
     for (let m in defMats) htmlcontent += "<option value='"+defMats[m]+"'>"+defMats[m]+"</option>";
     htmlcontent += "</select><div class='selectArrow'></div></div>";
@@ -306,7 +319,10 @@ let addNodeBlock = (nid)=>{
 
     $("#"+elNIDmat).change(()=>{
         let mat = $("#"+elNIDmat).val();
-        if (mat.length < 2) return;
+        if (mat.length < 2){
+            if (sobj.scenegraph.nodes[nid] && sobj.scenegraph.nodes[nid].material) sobj.scenegraph.nodes[nid].material = undefined;
+            return;
+        }
 
         if (sobj.scenegraph.nodes[nid] === undefined) return;
         sobj.scenegraph.nodes[nid].material = mat;
@@ -488,7 +504,7 @@ window.addEventListener( 'load', ()=>{
             <di id='blockEnv' class="atonBlockCut">
                 <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
                     <div class='atonBlockSubTitle'>Panorama</div><br>
-                    <div class="descriptionText">You can pick here the main panorama (equirectangular image or video) from your collection</div>
+                    <div class="descriptionText">You can pick here the main panorama (equirectangular image or video) from your collection. This is intended as infinite distance panoramic content</div>
                     <input id="panopath" list="panopath-list" name="panopath-list" type="text" style="width:90%;">
 <!--
                     <div class='select'>
@@ -513,7 +529,7 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <br>
-        <div id="btn-createscene" class="atonBTN atonBTN-green" style="width:90%;" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
+        <div id="btn-createscene" class="atonBTN atonBTN-green atonBTN-horizontal" onclick="requestSceneCreation()"><img src='../../res/icons/scene.png'>Create Scene</div>
         <br><br>
     </div>
     

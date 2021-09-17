@@ -595,6 +595,14 @@ canvas:active {
     padding: 5%;
 }
 
+.atonCircledSmall {
+    display:inline-block;
+
+    border-radius: 50%;
+    background-color: rgba(0,0,0, 0.2);
+    padding: 10px;
+}
+
 .atonKey {
     display: inline-block;
     border-radius: 5px;
@@ -697,6 +705,10 @@ canvas:active {
 
     font-size: large;
     border-radius: 15px;
+}
+
+.atonBTN-horizontal {
+    display: block;
 }
 
 .atonBTN:hover {
@@ -1744,4 +1756,10 @@ td {
 summary {
     cursor: pointer;
     padding: 5px;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }

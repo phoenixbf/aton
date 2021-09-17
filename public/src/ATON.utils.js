@@ -272,22 +272,22 @@ Utils.updateTSetsCamera = (cam)=>{
 
         TS.setCamera( cam );
 
-/*
         if (ATON._renderer.xr.isPresenting){
             //TS.setCamera( cam );
             
             //let leftCam = cam.cameras[0];
             //if (leftCam) tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
             
-            TS.setResolutionFromRenderer( cam, ATON._renderer );
+            //TS.setResolutionFromRenderer( cam, ATON._renderer );
+            TS.setResolution( cam, 300,300 );
         }
         else {
             //TS.setCamera( cam );
             TS.setResolutionFromRenderer( cam, ATON._renderer );
         }
-*/
 
-        TS.setResolution( cam, 300,300 );
+
+        //TS.setResolution( cam, 300,300 );
     }
 };
 
@@ -328,7 +328,8 @@ Utils.loadTileSet = (tsurl, N)=>{
         bb.getBoundingSphere(bs);
 
         if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, bs);
-        //console.log(bs);
+
+        if (ATON.FX.composer) ATON.FX.setDOFaperture( 1.0 / (bs.radius*30.0));
     };
 
 

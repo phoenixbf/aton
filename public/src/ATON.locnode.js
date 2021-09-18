@@ -22,6 +22,14 @@ constructor(id){
     this._suiMesh = undefined;
 }
 
+/**
+Set location
+@param {number} x
+@param {number} y
+@param {number} z
+@example
+locnode.setLocation(10.0, 1.0, 4.0)
+*/
 setLocation(x,y,z){
     if (x instanceof THREE.Vector3) this.pos.copy(x);
     else this.pos.set(x,y,z);
@@ -55,21 +63,12 @@ realizeSUI(mat){
     return this;
 }
 
-toogleSUI(b){
+toggleSUI(b){
     if (this._suiMesh === undefined) return this;
 
     this._suiMesh.visible = b;
 
     return this;
-}
-
-associateToXPF(i){
-    this._iXPF = i;
-    return this;
-}
-
-getAssociatedXPFindex(){
-    return this._iXPF;
 }
 
 }

@@ -1620,6 +1620,9 @@ ATON._onFrame = ()=>{
     // TileSets
     ATON._updateTSets();
 
+    // XPF
+    ATON.XPFNetwork.update();
+
     // Render frame
     if (!ATON.FX.composer || ATON.XR._bPresenting)
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );

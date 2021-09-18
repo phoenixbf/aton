@@ -177,6 +177,20 @@ SceneHub.getJSONsemanticConvexShapes = (semid)=>{
     return CL;
 };
 
+// Apply JSON transform field to node
+SceneHub._applyJSONTransformToNode = (transform, G)=>{
+    if (transform === undefined) return;
+    if (G === undefined) return;
+
+    if (transform.position) G.setPosition(transform.position[0],transform.position[1],transform.position[2]);
+    if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
+    if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
+
+    if (transform.list && Array.isArray(transform.list)){
+        //TODO:
+    }
+};
+
 // Top-level scene-JSON parsers
 SceneHub.initBaseParsers = ()=>{
     SceneHub._jsonParsers = {};
@@ -336,6 +350,8 @@ SceneHub.initBaseParsers = ()=>{
             let G = ATON.getOrCreateSceneNode(nid).removeChildren();
 
             // Transform node
+            SceneHub._applyJSONTransformToNode(N.transform, G);
+/*
             let transform = N.transform;
             let tlist = undefined;
             if (transform){
@@ -347,7 +363,7 @@ SceneHub.initBaseParsers = ()=>{
                     //TODO:
                 }
             }
-            
+*/           
             // load models by urls list
             let urls = N.urls;
             if (urls){
@@ -566,6 +582,34 @@ SceneHub.initBaseParsers = ()=>{
             }
         }
 */
+    };
+
+    // XPF Network
+    SceneHub._jsonParsers.xpfnet = (xpfnetwork)=>{
+        let numXPFs = 0;
+        
+        // Build from inline list
+        if (xpfnetwork.list){
+            let L = xpfnetwork.list;
+            let len = L.length;
+
+            // Each XPF field
+            for (let i=0; i<len; i++){
+                let X = L[i]; // field
+
+                let xpf = new ATON.XPF();
+
+                if (X.location) xpf.setLocation(X.location[0],X.location[1],X.location[2]);
+                if (X.rotation) xpf.setRotation(X.rotation[0],X.rotation[1],X.rotation[2]);
+
+                if (X.baselayer) xpf.setBaseLayer(X.baselayer);
+
+                ATON.XPFNetwork.add( xpf );
+            }
+
+            // Check
+            ATON.Nav.setFirstPersonControl();
+        }
     };
 
 };

@@ -98,6 +98,12 @@ FE.addBasicLoaderEvents = ()=>{
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.SceneHub.getDescription()) $("#btn-info").show();
         if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(1.0);
+
+        // If we have an XPF network and no home set, move to first XPF
+        if (ATON.XPFNetwork._list.length>0 && ATON.Nav.homePOV === undefined){
+            ATON.XPFNetwork.setHomeXPF(0);
+            ATON.XPFNetwork.requestTransitionByIndex(0);
+        }
     });
 
     ATON.on("AllNodeRequestsCompleted", ()=>{ 

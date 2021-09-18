@@ -46,21 +46,29 @@ window.addEventListener( 'load', ()=>{
     // We use an offset for each panorama (XPF)
     let rotOffset = new THREE.Vector3(0.0, -(Math.PI * 0.5), 0.0);
 
-    // We add two XPF to our network
+    // We add a few XPFs to our network
     ATON.XPFNetwork.add(
         new ATON.XPF()
             .setBaseLayer("samples/pano/montebelluna/05a.jpg")
             .setRotation(rotOffset)
             .setLocation(341.41, 116.658, -116.65)
-        );
+    );
+
     ATON.XPFNetwork.add( 
         new ATON.XPF()
             .setBaseLayer("samples/pano/montebelluna/06a.jpg")
             .setRotation(rotOffset)
             .setLocation(341.23, 116.658, -120.51)
-        );
+    );
 
-    // Let's start from the first XPF
+    ATON.XPFNetwork.add( 
+        new ATON.XPF()
+            .setBaseLayer("samples/pano/montebelluna/07a.jpg")
+            .setRotation(rotOffset)
+            .setLocation(343.83, 116.658, -120.49)
+    );
+
+    // Let's set the first XPF as home
     ATON.XPFNetwork.setHomeXPF(0);
     ATON.XPFNetwork.requestTransitionByIndex(0);
 });

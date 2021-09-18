@@ -35,7 +35,7 @@ XPFNetwork.init = ()=>{
 
 // This is required to select closest (current) XPF to user location
 XPFNetwork.update = ()=>{
-    if (ATON.Nav.isTransitioning()) return;
+    //if (ATON.Nav.isTransitioning()) return;
     if (XPFNetwork._list.length < 1) return;
 
     let len = XPFNetwork._list.length;

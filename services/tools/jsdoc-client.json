@@ -1,5 +1,7 @@
 {
-    "plugins": ["plugins/markdown"],
+    "plugins": [
+        "plugins/markdown"
+    ],
     "recurseDepth": 10,
     "source": {
         "include": ["./public/src/"],
@@ -24,6 +26,25 @@
 
     "opts": {
         "destination": "./public/apidoc/client/",
-        "template": "_prv/foodoc/template"
+        "template": "_prv/clean-jsdoc-theme",
+        "recurse": true,
+        "theme_opts": {
+            "theme__": "dark",
+            "title": "<div style='text-align:center'><img src='/res/aton-logo.png' style='width:100px;height:auto'><br>ATON 3.0 API</div>",
+            "footer": "ATON 3.0 API",
+            "menu":[
+                {
+                    "title": "Official website",
+                    "link": "http://osiris.itabc.cnr.it/aton",
+                    "target": "_blank"
+                },
+                {
+                    "title": "GitHub",
+                    "link": "https://github.com/phoenixbf/aton",
+                    "target": "_blank"
+                }
+            ],
+            "menuLocation": "up"
+        }
     }
 }

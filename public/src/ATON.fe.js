@@ -277,6 +277,10 @@ FE.uiSwitchButton = (iconid, b)=>{
     else $("#btn-"+iconid).removeClass("switchedON");
 };
 
+FE.uiSetButtonHandler = (id, handler)=>{
+    $("#"+id).click( handler );
+};
+
 /**
 Add home button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
@@ -1182,7 +1186,7 @@ FE.computeSelectorRanges = ()=>{
     if (r <= 0.0) return;
 
     FE._selRanges[0] = r * 0.001;
-    FE._selRefRadius = r * 0.02;
+    FE._selRefRadius = r * 0.01;
     FE._selRanges[1] = r * 0.5;
 
     //console.log("3D Selector ranges: "+FE._selRanges[0]+", "+FE._selRanges[1]);

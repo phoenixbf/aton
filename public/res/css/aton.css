@@ -669,6 +669,11 @@ canvas:active {
     }
 }
 
+.atonBTN-text {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
 .atonBTN img {
     position: relative;
     vertical-align: middle;
@@ -1530,7 +1535,7 @@ label {
 }
 
 .shuBlockNode:hover {
-    box-shadow: 0px 0px 20px rgba(0,255,0, 0.5);
+    box-shadow: 0px 0px 20px rgba(255,255,255, 0.5);
 }
 
 .shuFooter {

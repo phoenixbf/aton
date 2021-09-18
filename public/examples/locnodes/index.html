@@ -49,6 +49,10 @@ window.addEventListener( 'load', ()=>{
     ATON.FE.uiAddButtonVR("idTopToolbar");
     ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
 
+    ATON.FE.uiSetButtonHandler("idSUInodes", ()=>{
+        ATON.SUI.gLocNodes.toggle();
+    });
+
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();
 
@@ -82,7 +86,9 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
 
     <!-- Bottom Toolbar -->
-    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom">
+        <div id='idSUInodes' class='atonBTN atonBTN-text'>Show/Hide locomotion nodes</div>
+    </div>
 
 	<!-- Side Panel -->
 	<div id="idPanel" class="atonSidePanelContainer">

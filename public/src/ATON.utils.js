@@ -163,7 +163,9 @@ Utils.isResourceURL = (s)=>{
     return false;
 };
 
-Utils.URLify =(string)=>{
+Utils.URLify = (string)=>{
+    if (typeof string !== 'string') return string;
+
     const urls = string.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
     if (urls){
         urls.forEach(function(url){
@@ -548,10 +550,13 @@ Utils.ccExtract = (data)=>{
 
     if (data.asset.copyright) cc.copyright = data.asset.copyright;
     if (data.asset.extras){
-        for (let e in data.asset.extras) cc[e] = data.asset.extras[e];
+        for (let e in data.asset.extras){
+            if (typeof data.asset.extras[e] === "string") cc[e] = data.asset.extras[e];
+        }
     }
     if (data.asset.generator) cc.generator = data.asset.generator;
 
+    // TODO: check for replicate entries
     if (data.asset.copyright || data.asset.extras) ATON._ccModels.push(cc);
     
     console.log(cc);

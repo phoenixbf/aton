@@ -256,7 +256,7 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "</div>";
 
     // Del
-    htmlcontent += "<br><div onclick='deleteNode(\""+nid+"\")' class='atonBTN atonBTN-red' style='width:90%'><img src='../../res/icons/trash.png'>Delete this node</div>";
+    htmlcontent += "<br><div onclick='deleteNode(\""+nid+"\")' class='atonBTN atonBTN-red atonBTN-horizontal'><img src='../../res/icons/trash.png'>Delete this node</div>";
 
     htmlcontent += "</div>";
 
@@ -502,7 +502,7 @@ window.addEventListener( 'load', ()=>{
         <div class="atonBlockGroup">
             <div class="atonBlockTitle" onclick="$('#blockEnv').toggle()">Environment</div>
             <di id='blockEnv' class="atonBlockCut">
-                <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
+                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
                     <div class='atonBlockSubTitle'>Panorama</div><br>
                     <div class="descriptionText">You can pick here the main panorama (equirectangular image or video) from your collection. This is intended as infinite distance panoramic content</div>
                     <input id="panopath" list="panopath-list" name="panopath-list" type="text" style="width:90%;">
@@ -514,7 +514,7 @@ window.addEventListener( 'load', ()=>{
                     <br><div id="idpanopreview"></div>
                 </div>
 
-                <div class="atonOptionBlock" style="max-width:400px; width:100%; background-color:rgba(255,255,255, 0.1);">
+                <div class="atonOptionBlock" style="max-width:400px; width:100%;">
                     <div class='atonBlockSubTitle'>Lighting</div><br>
                     <input id="autoLP" type="checkbox">Automatic LightProbe<br>
 <!--

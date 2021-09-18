@@ -16,7 +16,8 @@ XPFNetwork.STD_XPF_TRANSITION_DURATION = 1.0;
 
 
 XPFNetwork.init = ()=>{
-    XPFNetwork._list = [];
+    XPFNetwork._list  = [];
+    XPFNetwork._iCurr = undefined;
 
     XPFNetwork._group = new THREE.Group();
     ATON._rootVisibleGlobal.add( XPFNetwork._group );
@@ -24,7 +25,7 @@ XPFNetwork.init = ()=>{
     XPFNetwork._geom = undefined;
     XPFNetwork._mesh = undefined;
     XPFNetwork._mat  = undefined;
-    XPFNetwork._size = 50.0;
+    XPFNetwork._size = 20.0;
 
     XPFNetwork.realizeBaseGeometry();
 };
@@ -82,7 +83,7 @@ XPFNetwork.getMainGroup = ()=>{
     return XPFNetwork._group;
 };
 
-XPFNetwork.setCurrentXPF = (i)=>{
+XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     XPFNetwork._iCurr = i;
 
     let xpf = XPFNetwork._list[i];
@@ -102,18 +103,57 @@ XPFNetwork.setCurrentXPF = (i)=>{
 
         XPFNetwork._mesh.position.copy( xpf.getLocation() );
         XPFNetwork._mesh.rotation.set( xpf.getRotation().x, xpf.getRotation().y, xpf.getRotation().z );
+
+        if (onComplete) onComplete();
     });
 
     XPFNetwork._mesh.visible = true;
 };
 
+XPFNetwork.getCurrentXPFindex = ()=>{
+    return XPFNetwork._iCurr;
+};
+XPFNetwork.getCurrentXPF = ()=>{
+    if (XPFNetwork._iCurr === undefined) return undefined;
+    return XPFNetwork._list[XPFNetwork._iCurr];
+};
+
+
 XPFNetwork.requestTransitionByIndex = (i)=>{
     let xpf = XPFNetwork._list[i];
     if (xpf === undefined) return;
 
-    ATON.Nav.requestTransitionToLocomotionNode( xpf.getLocomotionNode(), XPFNetwork.STD_XPF_TRANSITION_DURATION );
+    let dur = XPFNetwork.STD_XPF_TRANSITION_DURATION;
+    if (ATON.XR._bPresenting) dur = 0.0;
 
-    XPFNetwork.setCurrentXPF(i);
+    //ATON.Nav.requestTransitionToLocomotionNode( xpf.getLocomotionNode(), XPFNetwork.STD_XPF_TRANSITION_DURATION );
+    XPFNetwork.setCurrentXPF(i, ()=>{
+        ATON.Nav.requestTransitionToLocomotionNode( xpf.getLocomotionNode(), dur );
+    });
+};
+
+XPFNetwork.setHomeXPF = (i)=>{
+    let xpf = XPFNetwork._list[i];
+    if (xpf === undefined) return;
+
+    let lnode = xpf.getLocomotionNode();
+
+    let POV = new ATON.POV()
+        .setPosition(lnode.pos)
+        .setTarget(
+            lnode.pos.x,
+            lnode.pos.y, 
+            lnode.pos.z + 1.0
+        )
+        //.setFOV(ATON.Nav._currPOV.fov);
+
+    //console.log(POV)
+    ATON.Nav.setHomePOV(POV);
+};
+
+// TODO: Sphera, OPK
+XPFNetwork.loadFromFile = (configfile)=>{
+
 };
 
 export default XPFNetwork;

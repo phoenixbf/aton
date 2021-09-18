@@ -195,6 +195,7 @@ Nav.clearLocomotionNodes = ()=>{
     if (ATON.SUI.gLocNodes) ATON.SUI.gLocNodes.removeChildren();
 };
 
+// index
 Nav.getLocomotionNodeInSight = ()=>{
     let numLN = Nav._locNodes.length;
     if (numLN <= 0) return undefined;
@@ -221,7 +222,7 @@ Nav.getLocomotionNodeInSight = ()=>{
         if (v > 0.8){
             let d = E.distanceToSquared(Nav._posLNode);
 
-            if (mindist === undefined || d < mindist){
+            if (d > 0.3 && (mindist === undefined || d < mindist)){
                 mindist = d;
                 LN      = i;
                 //console.log(LN);
@@ -273,7 +274,7 @@ Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
     if (i === undefined) return false;
 
     let lnode = Nav._locNodes[i];
-    Nav.requestTransitionToLocomotionNode(lnode);
+    Nav.requestTransitionToLocomotionNode(lnode, duration);
 
     return true;
 };

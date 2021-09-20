@@ -587,6 +587,8 @@ SceneHub.initBaseParsers = ()=>{
     // XPF Network
     SceneHub._jsonParsers.xpfnet = (xpfnetwork)=>{
         let numXPFs = 0;
+
+        ATON.Nav.setFirstPersonControl();
         
         // Build from inline list
         if (xpfnetwork.list){
@@ -606,9 +608,14 @@ SceneHub.initBaseParsers = ()=>{
 
                 ATON.XPFNetwork.add( xpf );
             }
+        }
 
-            // Check
-            ATON.Nav.setFirstPersonControl();
+        // Load from custom config files 
+        if (xpfnetwork.photoscanOPKfile){
+            XPFNetwork.loadFromPhotoscanFile(xpfnetwork.photoscanOPKfile, ()=>{
+                ATON.XPFNetwork.setHomeXPF(0);
+                ATON.XPFNetwork.requestTransitionByIndex(0);
+            });
         }
     };
 

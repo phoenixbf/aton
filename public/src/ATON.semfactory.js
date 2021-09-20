@@ -260,6 +260,9 @@ SemFactory.createSphere = (semid, location, radius)=>{
     sphere.scale.set(radius, radius, radius);
     sphere.add(M);
 
+    // XPF test
+    //sphere.xpf = ATON.XPFNetwork.getCurrentXPFindex();
+
     ATON.SUI.addSemIcon(semid, sphere);
 
     S.add( sphere );

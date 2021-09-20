@@ -13,6 +13,8 @@ ATON Utils
 let XPFNetwork = {};
 
 XPFNetwork.STD_XPF_TRANSITION_DURATION = 1.0;
+XPFNetwork.SEM_PREFIX      = "XPF";
+XPFNetwork.SEMGROUP_PREFIX = "GXPF";
 
 
 XPFNetwork.init = ()=>{
@@ -26,6 +28,8 @@ XPFNetwork.init = ()=>{
     XPFNetwork._mesh = undefined;
     XPFNetwork._mat  = undefined;
     XPFNetwork._size = 50.0;
+
+    XPFNetwork._gSem = [];
 
     XPFNetwork._txCache = {};
 
@@ -85,9 +89,13 @@ XPFNetwork.update = ()=>{
     }
 
     if (iclosest === XPFNetwork._iCurr) return;
+
+    // We change XPF
+    if (XPFNetwork._iCurr !== undefined) XPFNetwork._gSem[XPFNetwork._iCurr].hide();
+    
     XPFNetwork.setCurrentXPF(iclosest);
 
-    XPFNetwork._clearTexCache(); // We moved to another XPF, clear cached textures
+    XPFNetwork._clearTexCache(); // Clear cached textures
 
     ATON.fireEvent("CurrentXPF", iclosest);
     //console.log("Current XPF: "+iclosest);
@@ -139,12 +147,25 @@ XPFNetwork.add = (xpf)=>{
 
     //xpf._lnode.associateToXPF(i);
 
+    // If this XPF has custom mesh
     let m = xpf.getMesh();
     if (m) XPFNetwork._group.add( m );
+
+    // Sem group
+    let sem = ATON.getOrCreateSemanticNode(XPFNetwork.SEMGROUP_PREFIX+i); // e.g. "GXPF0"
+    XPFNetwork._gSem.push( sem );
+    sem.attachToRoot();
 
     if (i > 0) return;
     ATON.Nav.toggleLocomotionValidator(false);
     ATON._bqScene = true;
+};
+
+XPFNetwork.clear = ()=>{
+    for (let i=0; i<XPFNetwork._list.length; i++){
+        // TODO:
+    }
+
 };
 
 // Retrieve main XPF network group (transform or manipulate the entire network)
@@ -152,6 +173,17 @@ XPFNetwork.getMainGroup = ()=>{
     return XPFNetwork._group;
 };
 
+// Semantic Group
+XPFNetwork.getSemanticGroup = (i)=>{
+    return XPFNetwork._gSem[i];
+};
+XPFNetwork.getCurrentSemanticGroup = ()=>{
+    if (XPFNetwork._iCurr === undefined) return undefined;
+    return XPFNetwork._gSem[XPFNetwork._iCurr];
+};
+
+
+// Caching helper functions
 XPFNetwork._preloadBaseLayer = (i, onComplete)=>{
     if (XPFNetwork._txCache[i] !== undefined){
         return XPFNetwork._txCache[i];
@@ -165,7 +197,7 @@ XPFNetwork._preloadBaseLayer = (i, onComplete)=>{
         tex.generateMipmaps = true;
 
         XPFNetwork._txCache[i] = tex;
-        console.log("Preloaded XPF "+i);
+        //console.log("Preloaded XPF "+i);
 
         if (onComplete) onComplete(tex);
     });
@@ -198,6 +230,8 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
 
     XPFNetwork._iCurr = i;
     XPFNetwork._mesh.visible = true;
+
+    XPFNetwork._gSem[i].show();
 
     // hit
     if (XPFNetwork._txCache[i]){
@@ -260,8 +294,56 @@ XPFNetwork.setHomeXPF = (i)=>{
 };
 
 // TODO: Sphera, OPK
-XPFNetwork.loadFromFile = (configfile)=>{
+XPFNetwork.loadFromPhotoscanFile = (configfileurl, onComplete)=>{
+    if (configfileurl === undefined) return;
 
+    configfileurl = ATON.Utils.resolveCollectionURL(configfileurl);
+    let basefolder = ATON.Utils.getBaseFolder(configfileurl);
+
+    let numParsed = 0;
+
+    $.ajax({
+        url : configfileurl,
+        dataType: "text",
+        success : function(data){
+            data = data.split(/\r\n|\n/);
+
+            for (let i in data){
+                let line = data[i];
+                if ( !line.startsWith("#") ){
+                    let fields = line.split(/\s{2,}|\t/);
+
+                    if (fields.length > 10){ // should be = 16
+                        let xpf = new ATON.XPF();
+
+                        let baselayer = basefolder + fields[0];
+                        let x = parseFloat(fields[1]);
+                        let y = parseFloat(fields[2]);
+                        let z = parseFloat(fields[3]);
+
+                        // Omega,Phi,Kappa to radians
+                        let o = ATON.DEG2RAD * parseFloat(fields[4]);
+                        let p = ATON.DEG2RAD * parseFloat(fields[5]);
+                        let k = ATON.DEG2RAD * parseFloat(fields[6]);
+
+                        //console.log(o,p,k)
+
+                        xpf.setLocation(x,z,-y); // from Z-up to Y-up
+                        xpf.setBaseLayer(baselayer);
+                        //xpf.setRotation(0, -(Math.PI * 0.5), 0);
+                        xpf.setRotation(0, -o, 0);
+
+                        XPFNetwork.add(xpf);
+                        numParsed++;
+                    }
+                }
+            }
+
+            console.log("Num panoramas parsed: "+numParsed);
+
+            if (onComplete) onComplete();
+        }
+    });
 };
 
 export default XPFNetwork;

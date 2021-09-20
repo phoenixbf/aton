@@ -1,0 +1,29 @@
+{
+    "xpfnet": {
+        "list": [
+            {
+                "baselayer": "samples/pano/montebelluna/05a.jpg",
+                "rotation": [0,-1.57079632,0],
+                "location": [341.41,116.658,-116.65]
+            },
+            {
+                "baselayer": "samples/pano/montebelluna/06a.jpg",
+                "rotation": [0,-1.57079632,0],
+                "location": [341.23,116.658,-120.51]
+            },
+            {
+                "baselayer": "samples/pano/montebelluna/07a.jpg",
+                "rotation": [0,-1.57079632,0],
+                "location": [343.83,116.658,-120.49]
+            }
+        ]
+    },
+
+    "viewpoints":{
+        "home":{
+            "position": [341.41,116.658,-116.65],
+            "target": [341.23,116.658,-120.51],
+            "fov": 70.0
+        }
+    }
+}

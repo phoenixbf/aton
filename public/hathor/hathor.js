@@ -871,14 +871,20 @@ HATHOR._createPopupStdSem = (esemid)=>{
     // New ID
     if (esemid === undefined){
         htmlcontent += "ID:<input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
-        htmlcontent += "child of:";
-        htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
-        htmlcontent += "<option value='.'>root</option>";
-        for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
-        htmlcontent += "</select><div class='selectArrow'></div></div>";
+
+        let gSemXPF = ATON.XPFNetwork.getCurrentSemanticGroup();
+        if (gSemXPF === undefined){
+            htmlcontent += "child of:";
+            htmlcontent += "<div class='select' style='width:100px;'><select id='psemid'>";
+            htmlcontent += "<option value='.'>root</option>";
+            for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
+            htmlcontent += "</select><div class='selectArrow'></div></div>";
+        }
 
         htmlcontent += "<datalist id='semlist'>";
-        for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option>"+s+"</option>";
+        for (let s in ATON.semnodes){
+            if (s !== ATON.ROOT_NID && !s.startsWith(ATON.XPFNetwork.SEMGROUP_PREFIX)) htmlcontent += "<option>"+s+"</option>";
+        }
         htmlcontent += "</datalist>";
 
         htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
@@ -1013,6 +1019,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
 
         let semid  = $("#semid").val();
         let psemid = $("#psemid").val();
+
         let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
         //console.log(xxtmldescr);
 
@@ -1027,10 +1034,16 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
             if (semtype === ATON.FE.SEMSHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(semid);
             if (S === undefined) return;
 
-            let parS = ATON.getSemanticNode(psemid);
+            let gSemXPF = ATON.XPFNetwork.getCurrentSemanticGroup();
+            if (gSemXPF){
+                gSemXPF.add(S);
+            }
+            else {
+                let parS = ATON.getSemanticNode(psemid);
 
-            if (parS) parS.add(S); 
-            else ATON.getRootSemantics().add(S);
+                if (parS) parS.add(S); 
+                else ATON.getRootSemantics().add(S);
+            }
         }
         else {
             S = ATON.getSemanticNode(esemid);

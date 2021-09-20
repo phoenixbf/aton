@@ -932,6 +932,8 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
 
 // Add/Edit/Finalize semantic shape
 HATHOR.popupAddSemantic = (semtype, esemid)=>{
+    if (ATON._queryDataScene === undefined) return;
+
     let htmlcontent = HATHOR._createPopupStdSem(esemid);
 
     if (semtype === undefined) semtype = ATON.FE.SEMSHAPE_SPHERE;

@@ -32,8 +32,6 @@ XPFNetwork.init = ()=>{
     XPFNetwork._gSem = [];
 
     XPFNetwork._txCache = {};
-
-    XPFNetwork.realizeBaseGeometry();
 };
 
 
@@ -140,6 +138,8 @@ XPFNetwork.setBaseGeometry = (geom)=>{
 };
 
 XPFNetwork.add = (xpf)=>{
+    XPFNetwork.realizeBaseGeometry();
+
     if (xpf === undefined) return;
 
     let i = XPFNetwork._list.length;

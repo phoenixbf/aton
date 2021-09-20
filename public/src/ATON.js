@@ -1125,6 +1125,10 @@ ATON.setMainPanorama = (path)=>{
         ATON._mMainPano = new THREE.Mesh(ATON._gMainPano, ATON._matMainPano);
         ATON._mMainPano.frustumCulled = false;
         ATON._mMainPano.renderOrder = -100;
+
+        ATON._mMainPano.layers.disable(ATON.NTYPES.SCENE);
+        ATON._mMainPano.layers.disable(ATON.NTYPES.SEM);
+        ATON._mMainPano.layers.disable(ATON.NTYPES.UI);
         
         ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
         ///ATON.setMainPanoramaRadius(100.0);

@@ -306,6 +306,8 @@ HATHOR.suiSetup = ()=>{
     buttons.push( new ATON.SUI.Button("sui_annconvex") );
     buttons.push( new ATON.SUI.Button("sui_measure") );
     buttons.push( new ATON.SUI.Button("sui_talk") );
+    buttons.push( new ATON.SUI.Button("sui_home") );
+    buttons.push( new ATON.SUI.Button("sui_povnext") );
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
 
     let btnAnnConvex = ATON.getUINode("sui_annconvex");
@@ -317,6 +319,9 @@ HATHOR.suiSetup = ()=>{
                 btnAnnConvex.switch(true);
             }
             else {
+                let S = ATON.SemFactory.completeConvexShape();
+                if (S) ATON.getRootSemantics().add(S);
+
                 HATHOR.resetSelectionMode();
                 btnAnnConvex.switch(false);
             }
@@ -348,6 +353,18 @@ HATHOR.suiSetup = ()=>{
                 ATON.MediaRec.startMediaStreaming();
                 btnTalk.switch(true);
             }
+        };
+
+    ATON.getUINode("sui_home")
+        .setIcon(ATON.FE.PATH_RES_ICONS+"home.png")
+        .onSelect = ()=>{
+            ATON.Nav.requestHome();
+        };
+
+    ATON.getUINode("sui_povnext")
+        .setIcon(ATON.FE.PATH_RES_ICONS+"next.png")
+        .onSelect = ()=>{
+            HATHOR.povNext();
         };
 
     ATON.getUINode("sui_exitxr")
@@ -434,9 +451,15 @@ HATHOR.setupEventHandlers = ()=>{
         HATHOR.resetSelectionMode();
     });
 
-    //ATON.EventHub.clearEventHandlers("XRselectStart");
+    ATON.EventHub.clearEventHandlers("XRselectStart");
     ATON.on("XRselectStart", (c)=>{
+        if ( ATON._SUIactivation() ) return;
+
         if (c === ATON.XR.HAND_R){
+            if (HATHOR._selMode === HATHOR.SELACTION_STD){
+                ATON._stdActivation();
+            }
+
 /*
             if (HATHOR._selMode === HATHOR.SELACTION_STD){
                 ATON._stdActivation(); //ATON.XR.teleportOnQueriedPoint();
@@ -842,7 +865,9 @@ HATHOR.povNext = ()=>{
     HATHOR._cPOVind = (HATHOR._cPOVind + 1) % numpovs;
 
     let pov = HATHOR._povs[HATHOR._cPOVind];
-    ATON.Nav.requestPOV(pov, 1.0);
+
+    let dur = (ATON.XR._bPresenting)? ATON.XR.STD_TELEP_DURATION : 1.0;
+    ATON.Nav.requestPOV(pov, dur);
 };
 HATHOR.povPrev = ()=>{
     let numpovs = HATHOR._povs.length;
@@ -852,7 +877,9 @@ HATHOR.povPrev = ()=>{
     if (HATHOR._cPOVind<0) HATHOR._cPOVind = (numpovs-1);
 
     let pov = HATHOR._povs[HATHOR._cPOVind];
-    ATON.Nav.requestPOV(pov, 1.0);
+
+    let dur = (ATON.XR._bPresenting)? ATON.XR.STD_TELEP_DURATION : 1.0;
+    ATON.Nav.requestPOV(pov, dur);
 };
 
 HATHOR.uiUpdatePOVs = ()=>{

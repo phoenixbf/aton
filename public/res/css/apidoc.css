@@ -1,0 +1,25 @@
+
+h4 {
+    display: block; 
+
+    width: 100%; 
+    background-color:rgba(0,0,0, 0.1); 
+    
+    padding:15px;
+
+    padding-top:    20px;
+    padding-bottom: 20px;
+    
+    margin: 0px !important; 
+    margin-top: 20px; 
+    
+    border-radius: 5px;
+}
+
+.details {
+    display: none;
+}
+
+.method-member-container {
+    margin-bottom: 20px !important;
+}

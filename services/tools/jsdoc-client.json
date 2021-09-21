@@ -33,7 +33,7 @@
             "title": "<div style='text-align:center'><img src='/res/aton-logo.png' style='width:100px;height:auto'><br>ATON 3.0 API</div>",
             "footer": "ATON 3.0 API",
 
-            "create_style": "h4 { display:block; width:100%; background-color:rgba(0,0,0, 0.1); padding:10px; margin:0px; margin-top:20px; border-radius:5px; }",
+            "include_css": ["./public/res/css/apidoc.css"],
 
             "menu":[
                 {

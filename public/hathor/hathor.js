@@ -93,6 +93,7 @@ HATHOR.resetSelectionMode = ()=>{
     $("#btn-measure").removeClass("atonBTN-rec");
 
     ATON.getUINode("sui_measure").switch(false);
+    ATON.getUINode("sui_annconvex").switch(false);
 
     ATON.Nav.setUserControl(true);
     return;
@@ -115,6 +116,7 @@ HATHOR.setSelectionMode = (m)=>{
     if (m === HATHOR.SELACTION_ADDCONVEXPOINT){
         $("#btn-shape-convex").addClass("atonBTN-rec");
         $("#btn-shape-sphere").removeClass("atonBTN-rec");
+        ATON.getUINode("sui_annconvex").switch(true);
     }
 
     if (m === HATHOR.SELACTION_MEASURE){
@@ -301,9 +303,24 @@ HATHOR.suiSetup = ()=>{
     
     let buttons = [];
 
+    buttons.push( new ATON.SUI.Button("sui_annconvex") );
     buttons.push( new ATON.SUI.Button("sui_measure") );
     buttons.push( new ATON.SUI.Button("sui_talk") );
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
+
+    let btnAnnConvex = ATON.getUINode("sui_annconvex");
+    btnAnnConvex.setIcon(ATON.FE.PATH_RES_ICONS+"shape-convex.png")
+        //.setSwitchColor(ATON.MatHub.colors.green)
+        .onSelect = ()=>{
+            if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
+                HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
+                btnAnnConvex.switch(true);
+            }
+            else {
+                HATHOR.resetSelectionMode();
+                btnAnnConvex.switch(false);
+            }
+        };
 
     let btnMeasure = ATON.getUINode("sui_measure");
     btnMeasure.setIcon(ATON.FE.PATH_RES_ICONS+"measure.png")
@@ -435,6 +452,10 @@ HATHOR.setupEventHandlers = ()=>{
 
             if (HATHOR._selMode === HATHOR.SELACTION_MEASURE){
                 HATHOR.measure();
+            }
+
+            if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT){
+                ATON.SemFactory.addSurfaceConvexPoint();
             }
         }
     });

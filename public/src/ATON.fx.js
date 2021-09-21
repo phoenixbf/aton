@@ -6,7 +6,8 @@
 ===========================================================*/
 
 /**
-ATON post-process FX
+ATON post-process FX.
+This is the ATON component to enable advanced post-effects (bloom, depth-of-field, real-time ambient occlusion, ...)
 @namespace FX
 */
 let FX = {};
@@ -156,7 +157,13 @@ FX.init = ()=>{
     console.log(FX.composer);
 };
 
-// Switch on off passes
+/**
+Toggle FX pass
+@param {number} pass - pass ID (e.g. ATON.FX.PASS_AO)
+@param {boolean} b
+@example
+ATON.FX.togglePass(ATON.FX.PASS_AO, false)
+*/
 FX.togglePass = (pass, b)=>{
     if (FX.composer === undefined) return;
     if (ATON.device.lowGPU) return; // no fx passes on low GPU for now
@@ -168,6 +175,10 @@ FX.togglePass = (pass, b)=>{
     else FX.passes[pass].enabled = b;
 };
 
+/**
+Check if FX pass is enabled
+@param {number} pass - pass ID (e.g. ATON.FX.PASS_AO)
+*/
 FX.isPassEnabled = (pass)=>{
     if (FX.composer === undefined) return false;
 
@@ -181,6 +192,10 @@ FX.isPassEnabled = (pass)=>{
 // FX Passes params
 //======================================================
 
+/**
+Set Ambient Occlusion intensity
+@param {number} f
+*/
 FX.setAOintensity = (f)=>{
     if (FX.composer === undefined) return;
     if (FX.passes[FX.PASS_AO] === undefined) return;
@@ -193,6 +208,10 @@ FX.getAOintensity = ()=>{
     return FX.passes[FX.PASS_AO].params.saoIntensity;
 };
 
+/**
+Set Bloom strength
+@param {number} f
+*/
 FX.setBloomStrength = (f)=>{
     if (FX.composer === undefined) return;
     if (FX.passes[FX.PASS_BLOOM] === undefined) return;
@@ -205,6 +224,10 @@ FX.getBloomStrength = ()=>{
     return FX.passes[FX.PASS_BLOOM].strength;
 };
 
+/**
+Set Bloom threshold
+@param {number} f
+*/
 FX.setBloomThreshold = (f)=>{
     if (FX.composer === undefined) return;
     if (FX.passes[FX.PASS_BLOOM] === undefined) return;
@@ -217,6 +240,10 @@ FX.getBloomThreshold = ()=>{
     return FX.passes[FX.PASS_BLOOM].threshold;
 };
 
+/**
+Set Depth-of-Field focus
+@param {number} f
+*/
 FX.setDOFfocus = (f)=>{
     if (FX.composer === undefined) return;
     if (FX.passes[FX.PASS_DOF] === undefined) return;
@@ -236,6 +263,10 @@ FX.getDOFfocus = ()=>{
     return UU['focus'].value;
 };
 
+/**
+Set Depth-of-Field aperture
+@param {number} f
+*/
 FX.setDOFaperture = (f)=>{
     if (FX.composer === undefined) return;
     if (FX.passes[FX.PASS_DOF] === undefined) return;

@@ -1,13 +1,16 @@
 /*
-    ATON Utils
-    various utilities for device profiling, graph visiting, etc.
+    ATON XPF Network
+
+    Network manager of eXtended Panoramic Frames (XPFs)
+    formerly "DPF": http://osiris.itabc.cnr.it/scenebaker/index.php/projects/dpf/
 
     author: bruno.fanini_AT_gmail.com
 
 ===========================================================*/
 
 /**
-ATON Utils
+ATON XPF Network.
+The XPF Network component allows to handle several XPFs and their interconnections
 @namespace XPFNetwork
 */
 let XPFNetwork = {};
@@ -137,6 +140,15 @@ XPFNetwork.setBaseGeometry = (geom)=>{
     //xxx.geometry = geom;
 };
 
+/**
+Add a XPF to the Network
+@param {XPF} xpf - A XPF object
+@example
+ATON.XPFNetwork.add( myXPF )
+
+@example
+ATON.XPFNetwork.add( new ATON.XPF().setLocation(10,0,3).setBaseLayer("my/pano.jpg") )
+*/
 XPFNetwork.add = (xpf)=>{
     XPFNetwork.realizeBaseGeometry();
 
@@ -168,15 +180,27 @@ XPFNetwork.clear = ()=>{
 
 };
 
-// Retrieve main XPF network group (transform or manipulate the entire network)
+/**
+Get main XPF network group (to transform or manipulate the entire XPF network)
+@returns {THREE.Group}
+*/
 XPFNetwork.getMainGroup = ()=>{
     return XPFNetwork._group;
 };
 
-// Semantic Group
+/**
+Get semantic group for a given XPF
+@param {number} i - The XPF index
+@returns {Node} - The semantic ATON node holding all annotations
+*/
 XPFNetwork.getSemanticGroup = (i)=>{
     return XPFNetwork._gSem[i];
 };
+
+/**
+Get semantic group for current (active) XPF
+@returns {Node} - The semantic ATON node holding all annotations
+*/
 XPFNetwork.getCurrentSemanticGroup = ()=>{
     if (XPFNetwork._iCurr === undefined) return undefined;
     return XPFNetwork._gSem[XPFNetwork._iCurr];
@@ -249,15 +273,27 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     });
 };
 
+/**
+Get current (active) XPF index
+@returns {number}
+*/
 XPFNetwork.getCurrentXPFindex = ()=>{
     return XPFNetwork._iCurr;
 };
+
+/**
+Get current (active) XPF
+@returns {XPF}
+*/
 XPFNetwork.getCurrentXPF = ()=>{
     if (XPFNetwork._iCurr === undefined) return undefined;
     return XPFNetwork._list[XPFNetwork._iCurr];
 };
 
-
+/**
+Request a transition to a given XPF by index
+@param {number} i - The XPF index
+*/
 XPFNetwork.requestTransitionByIndex = (i)=>{
     let xpf = XPFNetwork._list[i];
     if (xpf === undefined) return;
@@ -274,6 +310,10 @@ XPFNetwork.requestTransitionByIndex = (i)=>{
 */
 };
 
+/**
+Set a given XPF location as home (Nav module)
+@param {number} i - The XPF index
+*/
 XPFNetwork.setHomeXPF = (i)=>{
     let xpf = XPFNetwork._list[i];
     if (xpf === undefined) return;

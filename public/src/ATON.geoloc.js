@@ -67,7 +67,7 @@ GeoLoc.disableTracking = ()=>{
 
 /**
 Set max error allowed for location tracking
-@param {number} - the error (meters)
+@param {number} r - the error (meters)
 */
 GeoLoc.setMaxError = (r)=>{
     if (r > 0.0) GeoLoc._maxError = r;

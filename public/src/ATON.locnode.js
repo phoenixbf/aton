@@ -6,11 +6,12 @@
 ===========================================================*/
 
 /**
-Class representing a locomotion node
+Class representing a locomotion node. 
+A Locomotion Node is useful to constrain first-person navigation into specific hotspots.
 @class LocomotionNode
 
 @example 
-let LP = new ATON.LocomotionNode()
+let locnode = new ATON.LocomotionNode()
 */
 class LocomotionNode {
 
@@ -43,10 +44,18 @@ setLocation(x,y,z){
     return this;
 }
 
+/**
+Get location
+@returns {THREE.Vector3}
+*/
 getLocation(){
     return this.pos;
 }
 
+/**
+Realize Spatial-UI element
+@param {THREE.Material} mat - (optional) THREE.Material
+*/
 realizeSUI(mat){
     if (ATON.SUI.gLocNodes === undefined) return this;
     if (this._suiMesh !== undefined) return this; // already realized
@@ -63,6 +72,12 @@ realizeSUI(mat){
     return this;
 }
 
+/**
+Toggle (show or hide) Spatial-UI for this locomotion node
+@param {boolean} b
+@example
+locnode.toggleSUI(false)
+*/
 toggleSUI(b){
     if (this._suiMesh === undefined) return this;
 

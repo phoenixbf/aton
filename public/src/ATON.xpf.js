@@ -9,7 +9,7 @@
 ===========================================================*/
 
 /**
-Class representing a single XPF (eXtended Panoramic Frame, formerly DPF)
+Class representing a single XPF (eXtended Panoramic Frame, formerly known as DPF: http://osiris.itabc.cnr.it/scenebaker/index.php/projects/dpf/)
 @class XPF
 @example 
 let XPF = new ATON.XPF()
@@ -70,10 +70,24 @@ getMesh(){
     return this._mesh;
 }
 
+/**
+Get current Locomotion Node for this XPF
+@returns {LocomotionNode}
+*/
 getLocomotionNode(){
     return this._lnode;
 }
 
+/**
+Set rotation for this XPF (Euler rx,ry,rz) in radians
+@param {number} rx
+@param {number} ry
+@param {number} rz
+@example
+myXPF.setRotation(3.0,2.0,1.0)
+@example
+myXPF.setRotation( new THREE.Vector3(3.0,2.0,1.0) )
+*/
 setRotation(rx,ry,rz){
     if (rx instanceof THREE.Vector3) this._rotation.copy(rx);
     else this._rotation.set(rx,ry,rz);
@@ -84,10 +98,24 @@ setRotation(rx,ry,rz){
     return this;
 }
 
+/**
+Get XPF rotation
+@returns {THREE.Vector3}
+*/
 getRotation(){
     return this._rotation;
 }
 
+/**
+Set location of this XPF
+@param {number} x
+@param {number} y
+@param {number} z
+@example
+myXPF.setLocation(1.0,3.0,0.0)
+@example
+myXPF.setLocation( new THREE.Vector3(1.0,3.0,0.0) )
+*/
 setLocation(x,y,z){
     if (x instanceof THREE.Vector3) this._location.copy(x);
     else this._location.set(x,y,z);
@@ -101,6 +129,10 @@ setLocation(x,y,z){
     return this;
 }
 
+/**
+Get XPF location
+@returns {THREE.Vector3}
+*/
 getLocation(){
     return this._location;
 }
@@ -109,6 +141,12 @@ hasGeometry(){
     return (this._geom !== undefined);
 }
 
+/**
+Set base layer for this XPF
+@param {string} path - path to image
+@example
+myXPF.setBaseLayer("samples/mypano.jpg")
+*/
 setBaseLayer(path){
     if (path === undefined) return this;
     

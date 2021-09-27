@@ -39,7 +39,7 @@ npm update
 npm start
 ```
 
-4) Open http://localhost:8080/examples/basic/ on your browser.
+4) Open http://localhost:8080 on your browser.
 
 # Citation
 You can cite ATON framework using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618387.svg)](https://doi.org/10.5281/zenodo.4618387), and the following BibTeX entry:

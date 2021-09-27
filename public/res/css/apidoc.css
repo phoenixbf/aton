@@ -1,3 +1,27 @@
+/*
+.main-content {
+    background-color: #BBB;
+
+    background-image: url("../../res/bg.jpg");
+
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: auto;
+
+    overflow-y: auto;
+}
+
+.container-overview {
+    background-color:rgba(255,255,255, 0.5);
+    
+    padding: 5px;
+    border-radius: 5px;
+}
+*/
+
+article {
+    text-align: justify; 
+}
 
 h4 {
     display: block;

@@ -244,7 +244,6 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 	console.log(coverfile);
 
 	fs.writeFile(coverfile, img, 'base64', (err)=>{
-
 		// Optimize PNG size
 		sharp(coverfile)
 			.withMetadata()

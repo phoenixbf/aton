@@ -28,6 +28,9 @@
         "destination": "./public/apidoc/client/",
         "template": "_prv/clean-jsdoc-theme",
         "recurse": true,
+        "encoding": "utf8",
+        "readme": "./services/tools/API.md",
+
         "theme_opts": {
             "theme__": "dark",
             "title": "<div style='text-align:center'><img src='/res/aton-logo.png' style='width:100px;height:auto'><br>ATON 3.0 API</div>",

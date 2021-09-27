@@ -17,11 +17,14 @@ AudioHub.init = ()=>{
 
     AudioHub._listener = new THREE.AudioListener();
     AudioHub._loader   = new THREE.AudioLoader();
+
+    AudioHub._bGenAuPlaying = false;
 };
 
-AudioHub.playOnceGlobally = (audioURL)=>{
+AudioHub.playOnceGlobally = (audioURL, bDontOverlap)=>{
+    if (bDontOverlap && AudioHub._bGenAuPlaying) return undefined;
+    
     audioURL = ATON.Utils.resolveCollectionURL(audioURL);
-
     let au = new THREE.Audio( ATON.AudioHub._listener );
 
     AudioHub._loader.load( audioURL, (buffer)=>{
@@ -29,7 +32,13 @@ AudioHub.playOnceGlobally = (audioURL)=>{
         //au.setVolume( 2.0 );
         //au.setPlaybackRate(0.9);
         au.play();
+
+        if (bDontOverlap) AudioHub._bGenAuPlaying = true;
     });
+
+    if (bDontOverlap) au.onEnded = ()=>{
+        AudioHub._bGenAuPlaying = false;
+    };
 
     return au;
 };

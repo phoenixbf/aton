@@ -50,8 +50,6 @@ import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoade
 
 import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
-///import { ThreeMeshUI, Block } from 'three-mesh-ui/src/three-mesh-ui.js';
-///ThreeMeshUI.Block = Block;
 
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 import * as ThreeMeshBVH from 'three-mesh-bvh';
@@ -105,9 +103,7 @@ THREE.LightProbeHelper = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
 
 
-window.THREE = THREE;
-
+window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;
 window.ThreeMeshBVH = ThreeMeshBVH;
-
-window.TILES = TILES;
+window.TILES        = TILES;

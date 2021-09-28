@@ -1670,8 +1670,11 @@ ATON._updateTSets = ()=>{
     ATON.Nav._camera.updateMatrixWorld();
 /*
     if (ATON.XR._bPresenting){
-        let C = ATON._renderer.xr.getCamera();
-        if (C) ATON.Utils.updateTSetsCamera(C);
+        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
+        if (C){
+            C.updateMatrixWorld();
+            ATON.Utils.updateTSetsCamera(C);
+        }
     }
 */
     //if (Nav._camOrbit) Nav._camOrbit.updateMatrixWorld();
@@ -1680,6 +1683,8 @@ ATON._updateTSets = ()=>{
     for (let ts=0; ts<nts; ts++){
         const TS = ATON._tsets[ts];   
         TS.update();
+
+        //console.log(TS.cameras[0].position);
     }
 };
 

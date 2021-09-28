@@ -181,6 +181,17 @@ Atonizer.processTextureFile = (imgPath)=>{
     let w = imSize(imgPath).width;
     let h = imSize(imgPath).height;
 
+/*
+    sharp(imgPath)
+        .withMetadata()
+        .png({
+            quality: Atonizer.args.texquality, // 0-100
+            //compression: 6, // this doesn't need to be set
+        })
+        .jpg({
+            quality: Atonizer.args.texquality
+        })
+*/
     if (w > 4096 || h > 4096){
         console.log("WARNING: Texture '"+imgPath+"' too large. Please reduce this texture resolution.");
         return;

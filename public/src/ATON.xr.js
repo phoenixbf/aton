@@ -365,7 +365,7 @@ XR.onSessionStarted = ( session )=>{
 
         //console.log(session);
 
-        let C = ATON._renderer.xr.getCamera();
+        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         //ATON.Utils.updateTSetsCamera( C );
         ATON.Nav._updCamera( C );
 

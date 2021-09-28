@@ -447,7 +447,7 @@ SceneHub.initBaseParsers = ()=>{
                     if (typeof N.material === 'string') mat = ATON.MatHub.materials[N.material];
                     else mat = new THREE.MeshStandardMaterial(N.material);
 
-                    console.log(mat)
+                    //console.log(mat)
                     
                     if (mat) G.setMaterial( mat );
                 }

@@ -113,7 +113,7 @@ FX.init = ()=>{
     //console.log(FX.passes[FX.PASS_DOF]);
 
 
-    // Gamma correction (no more needed)
+    // Gamma correction - CHECK
     //FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
 
     // Antialiasing
@@ -141,7 +141,7 @@ FX.init = ()=>{
     
     // tone-mapping passes here (if any)
     
-    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // not needed
+    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
     FX.composer.addPass( FX.passes[FX.PASS_AA] );
     //FX.composer.addPass( effectSobel );
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );

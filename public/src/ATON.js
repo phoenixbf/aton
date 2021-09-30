@@ -493,8 +493,9 @@ ATON.realize = ()=>{
     ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
     ATON._renderer.toneMappingExposure = 1.0;
 
-    ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
-    ATON._pmremGenerator.compileCubemapShader();
+    ATON._pmremGenerator = undefined;
+    //ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+    //ATON._pmremGenerator.compileCubemapShader();
 
     //console.log(ATON._renderer.getPixelRatio());
 
@@ -1046,6 +1047,7 @@ ATON.addLightProbe = (LP)=>{
 Update all LightProbes in the scene
 */
 ATON.updateLightProbes = ()=>{
+    if (ATON.XR._bPresenting) return; // CHECK
     if (ATON._lps.length === 0) return;
 
     for (let i in ATON._lps){
@@ -1079,12 +1081,10 @@ ATON.updateLightProbes = ()=>{
     ATON._rootVisible.traverse((o) => {
         let LP = o.userData.LP;
         if (LP !== undefined && LP instanceof ATON.LightProbe){
-            o.material.envMap = LP.getEnvTex();
+            o.material.envMap  = LP.getEnvTex();
             o.material.combine = THREE.AddOperation;
             o.material.envMapIntensity = ATON._envMapInt;
-
-            o.material.needsUpdate        = true;
-            //o.material.envMap.needsUpdate = true;
+            o.material.needsUpdate     = true;
             //console.log(LP)
         }
     });

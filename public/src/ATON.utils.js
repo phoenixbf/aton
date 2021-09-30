@@ -841,7 +841,7 @@ Utils.assignLightProbeToMesh = (LP, mesh)=>{
     if (mesh.noLP) return;
 
     mesh.userData.LP = LP;
-    console.log(LP)
+    //console.log(LP)
     //LP.update();
     //mesh.material.envMap = LP.getEnvTex();
     

@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
 
     <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
 
 <script>
 window.addEventListener( 'load', ()=>{
@@ -89,8 +89,8 @@ window.addEventListener( 'load', ()=>{
 	// We now create two light probes
 	// using specific capture resolution (128x128px), near (0.3m)
 	// we arrange them in correspondence of cube locations (consistent reflections)
-	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_A) );
-	ATON.addLightProbe( new ATON.LightProbe(128, 0.3).setPosition(pos_B) );
+	ATON.addLightProbe( new ATON.LightProbe(256, 0.3).setPosition(pos_A) );
+	ATON.addLightProbe( new ATON.LightProbe(256, 0.3).setPosition(pos_B) );
 });
 
 </script>

@@ -32,18 +32,18 @@ constructor(res, near, far){
     this._flipLP = false;
 */
     this._envtex = undefined;
-    this._prevCCtarget = undefined;
     this._CC = undefined;
+    
+    //this._prevCCtarget = undefined;
 /*
     this._LP = new THREE.LightProbe();
     this._LP.intensity = 10;
     ATON._mainRoot.add( this._LP );
 */
-/*
-    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
-    this._pmremGenerator.compileCubemapShader();
-*/
-    //this.realize();
+    if (ATON._pmremGenerator === undefined){
+        ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+        ATON._pmremGenerator.compileCubemapShader();
+    }
 }
 
 /*
@@ -95,7 +95,7 @@ setFar(far){
 }
 
 _createCCtarget(){
-    if (this._CCtarget) this._CCtarget.dispose();
+    if (this._CCtarget) return; //this._CCtarget.dispose();
 
     this._CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
         format: THREE.RGBEFormat, //THREE.RGBEFormat,
@@ -112,7 +112,7 @@ Can be called at runtime or whenever there is some change in the 3D scene
 LP.update()
 */
 update(){
-    if (this._envtex) this._envtex.dispose();
+    //if (this._envtex) this._envtex.dispose();
     //if (this._prevCCtarget) this._prevCCtarget.dispose();
 /*
     const CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {

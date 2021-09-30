@@ -364,7 +364,7 @@ XR.onSessionStarted = ( session )=>{
         if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
 
         //console.log(session);
-
+        
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         //ATON.Utils.updateTSetsCamera( C );
         ATON.Nav._updCamera( C );

@@ -142,7 +142,10 @@ update(){
 
 
     //CC.matrixAutoUpdate = false;
+
     //this._CC.position.copy(this.pos);
+
+    // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
 
     //this._CC.rotation.y = Math.PI;
@@ -162,11 +165,13 @@ update(){
 */
     //console.log(this._CC)
 
+
+    // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     ATON._mainRoot.scale.x = -1;
     this._CC.update( ATON._renderer, ATON._mainRoot );
     ATON._mainRoot.scale.x = 1;
 
-    ATON._dMainL.shadow.needsUpdate = true;
+    if (ATON._renderer.shadowMap.enabled) ATON._dMainL.shadow.needsUpdate = true;
 
     //this._CC.update( ATON._renderer, ATON._mainRoot);
     

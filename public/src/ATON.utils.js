@@ -270,16 +270,19 @@ Utils.updateTSetsCamera = (cam)=>{
         const TS = ATON._tsets[ts];   
 
         //console.log(TS.cameras);
-        for (let c in TS.cameras) TS.deleteCamera( TS.cameras[c] );
+        //for (let c=0; c<TS.cameras.length; c++) TS.deleteCamera( TS.cameras[c] );
 
         TS.setCamera( cam );
 
         if (ATON._renderer.xr.isPresenting){
             //TS.setCamera( cam );
-            
-            //let leftCam = cam.cameras[0];
-            //if (leftCam) tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
-            
+            /*
+            let leftCam = cam.cameras[0];
+            if (leftCam){
+                tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
+                console.log(leftCam)
+            }
+            */
             //TS.setResolutionFromRenderer( cam, ATON._renderer );
             TS.setResolution( cam, 300,300 );
         }
@@ -287,7 +290,6 @@ Utils.updateTSetsCamera = (cam)=>{
             //TS.setCamera( cam );
             TS.setResolutionFromRenderer( cam, ATON._renderer );
         }
-
 
         //TS.setResolution( cam, 300,300 );
     }
@@ -301,7 +303,9 @@ Utils.loadTileSet = (tsurl, N)=>{
     ATON._assetReqNew(tsurl);
 
     // Options
-    ts.fetchOptions.mode = 'cors';
+    ts.fetchOptions.mode  = 'cors';
+    //ts.fetchOptions.cache = 'no-store'; //'default';
+
     ts.errorTarget     = 20.0; //40.0; // original: 6
     ts.optimizeRaycast = true;
     //ts.loadSiblings    = false; // a few hops / artifacts
@@ -309,6 +313,8 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.lruCache.maxSize = 300;
     ts.lruCache.minSize = 200;
     ts.lruCache.unloadPercent = 0.9;
+
+    //ts.downloadQueue.maxJobs = 1000;
 
     //console.log(ts);
 
@@ -835,6 +841,7 @@ Utils.assignLightProbeToMesh = (LP, mesh)=>{
     if (mesh.noLP) return;
 
     mesh.userData.LP = LP;
+    console.log(LP)
     //LP.update();
     //mesh.material.envMap = LP.getEnvTex();
     

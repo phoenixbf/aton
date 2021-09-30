@@ -493,6 +493,9 @@ ATON.realize = ()=>{
     ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
     ATON._renderer.toneMappingExposure = 1.0;
 
+    ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+    ATON._pmremGenerator.compileCubemapShader();
+
     //console.log(ATON._renderer.getPixelRatio());
 
     ATON._renderer.setAnimationLoop( ATON._onFrame );
@@ -1060,6 +1063,7 @@ ATON.updateLightProbes = ()=>{
 */
     }
 
+/*
     // FIXME: indirect LP based on first LP (for now)
     if (ATON._lps[0]){
         if (ATON._indLP) ATON._mainRoot.remove(ATON._indLP);
@@ -1069,7 +1073,7 @@ ATON.updateLightProbes = ()=>{
 
         ATON._mainRoot.add( ATON._indLP );
     }
-
+*/
     //for (let i in ATON._lps) ATON._lps[i].update();
 
     ATON._rootVisible.traverse((o) => {
@@ -1078,6 +1082,10 @@ ATON.updateLightProbes = ()=>{
             o.material.envMap = LP.getEnvTex();
             o.material.combine = THREE.AddOperation;
             o.material.envMapIntensity = ATON._envMapInt;
+
+            o.material.needsUpdate        = true;
+            //o.material.envMap.needsUpdate = true;
+            //console.log(LP)
         }
     });
 
@@ -1200,6 +1208,7 @@ ATON._realizeOrUpdateMainPano = (tpano)=>{
         
         ///depthFunc: THREE.AlwaysDepth,
         //side: THREE.BackSide, // THREE.DoubleSide
+        //side: THREE.DoubleSide
     });
 
     ATON._mMainPano.material = ATON._matMainPano;
@@ -1683,6 +1692,14 @@ ATON._updateTSets = ()=>{
     for (let ts=0; ts<nts; ts++){
         const TS = ATON._tsets[ts];   
         TS.update();
+/*
+        let DQ = TS.downloadQueue.items;
+        let PQ = TS.parseQueue.items;
+        if (DQ.length>0) console.log("DQ:"+DQ.length);
+        if (PQ.length>0) console.log("PQ:"+PQ.length);
+*/
+        //console.log(TS.stats)
+        //console.log(TS.downloadQueue)
 
         //console.log(TS.cameras[0].position);
     }

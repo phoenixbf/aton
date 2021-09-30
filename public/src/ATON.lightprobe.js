@@ -33,14 +33,16 @@ constructor(res, near, far){
 */
     this._envtex = undefined;
     this._prevCCtarget = undefined;
+    this._CC = undefined;
 /*
     this._LP = new THREE.LightProbe();
     this._LP.intensity = 10;
     ATON._mainRoot.add( this._LP );
 */
-    
-    //this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
-
+/*
+    this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+    this._pmremGenerator.compileCubemapShader();
+*/
     //this.realize();
 }
 
@@ -92,6 +94,17 @@ setFar(far){
     return this;
 }
 
+_createCCtarget(){
+    if (this._CCtarget) this._CCtarget.dispose();
+
+    this._CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
+        format: THREE.RGBEFormat, //THREE.RGBEFormat,
+        generateMipmaps: true,
+        minFilter: THREE.LinearMipmapLinearFilter,
+        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
+    });
+}
+
 /**
 Update LP capture. Typically called when all 3D models are loaded and arranged into the scene.
 Can be called at runtime or whenever there is some change in the 3D scene
@@ -100,21 +113,80 @@ LP.update()
 */
 update(){
     if (this._envtex) this._envtex.dispose();
-    if (this._prevCCtarget) this._prevCCtarget.dispose();
-
-    let CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBEFormat, //THREE.RGBEFormat,
+    //if (this._prevCCtarget) this._prevCCtarget.dispose();
+/*
+    const CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
+        format: THREE.RGBFormat, //THREE.RGBEFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
         encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
     });
+    //CCtarget.texture.mapping = THREE.CubeRefractionMapping;
 
     let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
-    CC.position.copy(this.pos);
+*/
+
+    if (this._CC === undefined){
+        this._createCCtarget();
+
+        //console.log(this._CCtarget)
+
+        //this._CCtarget.texture.mapping = THREE.CubeUVRefractionMapping;
+        //this._CCtarget.texture.flipY = true;
+        //this._CCtarget.texture.needsUpdate = true;
+
+        this._CC = new THREE.CubeCamera( this._near, this._far, this._CCtarget );
+
+        //this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
+    }
+
+
+    //CC.matrixAutoUpdate = false;
+    //this._CC.position.copy(this.pos);
+    this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
+
+    //this._CC.rotation.y = Math.PI;
+    //this._CC.rotation.x = Math.PI;
+    //this._CC.rotation.z = -Math.PI;
+    //this._CC.scale.set(-1,1,1);
     //CC.layers.set(ATON.NTYPES.SCENE);
 
-    CC.update( ATON._renderer, ATON._rootVisibleGlobal/*ATON._mainRoot*/ );
-    this._envtex = CCtarget.texture;
+/*
+    //CC.children = CC.children.reverse();
+    for (let ccam in this._CC.children){
+        //this._CC.children[ccam].rotation.y = Math.PI;
+        if (ccam % 2 === 1) this._CC.children[ccam].scale.x = -1;
+        //this._CC.children[ccam].up.y = 1.0;
+        //console.log(this._CC.children[ccam].rotation)
+    }
+*/
+    //console.log(this._CC)
+
+    ATON._mainRoot.scale.x = -1;
+    this._CC.update( ATON._renderer, ATON._mainRoot );
+    ATON._mainRoot.scale.x = 1;
+
+    ATON._dMainL.shadow.needsUpdate = true;
+
+    //this._CC.update( ATON._renderer, ATON._mainRoot);
+    
+    //this._envtex = this._CCtarget.texture;
+    //return this;
+
+    let cctx = this._CCtarget.texture;
+    //cctx.flipY = false;
+    //cctx.needsUpdate = true;
+    //console.log(cctx)
+
+    //ATON._rootVisibleGlobal.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
+    //this._envtex = this._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
+    
+    this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
+
+    //this._envtex.rotation = Math.PI;
+    //console.log(this._pmremGenerator)
+
+    //console.log(CCtarget)
 
     // new
     //this._LP.copy( THREE.LightProbeGenerator.fromCubeRenderTarget(ATON._renderer, CCtarget) );
@@ -139,24 +211,8 @@ update(){
     this._envtex = this._pmremGenerator.fromCubemap(CCtargetX.texture).texture;
 */
 
-    this._prevCCtarget = CCtarget;
+    //this._prevCCtarget = CCtarget;
 
-
-/*
-    if (this._LP0 === undefined || this._LP1 === undefined) return this;
-
-    this._flipLP = !this._flipLP;
-    //ATON._flipLP = !ATON._flipLP;
-
-    if (this._flipLP){
-        this._LP0.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget0.texture;
-    }
-    else {
-        this._LP1.update( ATON._renderer, ATON._mainRoot );
-        this._envtex = this._LPtarget1.texture;
-    }
-*/
     return this;
 }
 

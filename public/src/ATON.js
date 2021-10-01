@@ -618,6 +618,9 @@ ATON.realize = ()=>{
     ATON._bqScene = false;
     ATON._bqSem   = false;
 
+    ATON._qSync    = 0;
+    ATON._qSyncInt = 1;
+
     // Timed Gaze Input
     ATON._tgiDur = undefined; // set to seconds (e.g. 2.0 to enable)
     ATON._tgiPer = undefined; // tgi percentage
@@ -627,9 +630,11 @@ ATON.realize = ()=>{
     ATON._bMainPanoInfinite = true;
     ATON._matMainPano = undefined;
     ATON._mMainPano   = undefined;
-
-    //window.setInterval(()=>{ if (!ATON._bPauseQuery) ATON._handleQueries(); }, 500 );
-
+/*
+    window.setInterval(()=>{
+        if (!ATON._bPauseQuery) ATON._handleQueries();
+    }, 100 );
+*/
 
     // IFC
 /*
@@ -654,12 +659,17 @@ ATON.realize = ()=>{
     // Ray casters
     ATON._rcScene = new THREE.Raycaster();
     ATON._rcScene.layers.set(ATON.NTYPES.SCENE);
+    ATON._rcScene.firstHitOnly = true;
+
     ATON._rcSemantics = new THREE.Raycaster();
     ATON._rcSemantics.layers.set(ATON.NTYPES.SEM);
+    ATON._rcSemantics.firstHitOnly = true;
+    
     ATON._rcUI = new THREE.Raycaster();
     ATON._rcUI.layers.set(ATON.NTYPES.UI);
+    ATON._rcUI.firstHitOnly = true;
 
-    ATON._registerRCS(); // not used for now
+    //ATON._registerRCS(); // not used for now
 
     ATON._setupBaseListeners();
 
@@ -1767,6 +1777,9 @@ ATON._registerRCS = ()=>{
 };
 
 ATON._handleQueries = ()=>{
+    ATON._qSync = (ATON._qSync + 1) % ATON._qSyncInt;
+    if (ATON._qSync !== 0) return;
+
     if (ATON._bPauseQuery) return;
     if (ATON.Nav._bInteracting) return;
     if (ATON._numReqLoad > 0) return;

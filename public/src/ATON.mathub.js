@@ -90,9 +90,10 @@ MatHub.addDefaults = ()=>{
                 f = dot(vNormalV, vec3(0,0,1));
 		        f = clamp(1.0-f, 0.2, 1.0);
 
-                vec3 col = mix(base,color, f);
+                //vec3 col = mix(base,color, f);
+		        //gl_FragColor = vec4(col, f * opacity);
 
-		        gl_FragColor = vec4(col, f * opacity);
+                gl_FragColor = vec4(color, f * opacity);
 		    }
         `,
         transparent: true,

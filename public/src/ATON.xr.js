@@ -364,7 +364,9 @@ XR.onSessionStarted = ( session )=>{
         if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
 
         //console.log(session);
-        
+
+        ATON._qSyncInt = 2; // Query interval (perf)
+
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         //ATON.Utils.updateTSetsCamera( C );
         ATON.Nav._updCamera( C );
@@ -387,6 +389,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
 
     ATON.fireEvent("XRmode", false);
+
+    ATON._qSyncInt = 1; // Query interval (perf)
 
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();

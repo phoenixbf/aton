@@ -57,10 +57,17 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     let numPoints = SemFactory.convexPoints.length;
 
     // Spatial UI
-    let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("semanticShapeEdit"));
-    M.position.copy(p);
-    M.scale.set(0.001,0.001,0.001);
-    ATON.SUI.gPoints.add( M );
+    //let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("semanticShapeEdit"));
+    //M.position.copy(p);
+    //M.scale.set(0.001,0.001,0.001);
+    //ATON.SUI.gPoints.add( M );
+
+    let iconP = new THREE.Sprite( ATON.SUI.getOrCreateSpritePointEdit() );
+    let ss = ATON.getSceneQueriedDistance() * 0.01;
+    if (ss === undefined) ss = 0.01;
+    iconP.position.copy(p);
+    iconP.scale.set(ss,ss,ss);
+    ATON.SUI.gPoints.add(iconP);
 
     if (numPoints < 4) return false;
 

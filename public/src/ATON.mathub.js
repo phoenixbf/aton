@@ -220,15 +220,17 @@ MatHub.addDefaults = ()=>{
         opacity: 0.5
         //flatShading: true
     });
-
-    MatHub.semIcon = new THREE.SpriteMaterial({ 
-        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-sem.png" ), 
-        //color: MatHub.colors.sem, // multiply
+/*
+    MatHub.materials.semanticPoint = new THREE.PointsMaterial({
+        size: 35,
+        color: MatHub.colors.orange,
+        sizeAttenuation: false,
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-point.png" ),
+        //alphaTest: 0.5, 
         transparent: true,
-        opacity: 1.0,
-        //depthWrite: false, 
         depthTest: false
     });
+*/
 
     MatHub.materials.transWhite = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.white, 
@@ -296,18 +298,9 @@ MatHub.addDefaults = ()=>{
         //flatShading: false
     }); 
 
-    MatHub.lpIcon = new THREE.SpriteMaterial({ 
-        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-lp.png" ), 
-        //color: MatHub.colors.sem, // multiply
-        transparent: true,
-        opacity: 1.0,
-        depthWrite: false, 
-        //depthTest: false
-    });
-
-    MatHub.semIcon.sizeAttenuation = false;
-    MatHub.lpIcon.sizeAttenuation  = false;
 };
+
+//MatHub.getOrCreateSpriteSem
 
 MatHub.addMaterial = (id, mat)=>{
     if (MatHub.materials[id]){

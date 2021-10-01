@@ -96,8 +96,61 @@ SUI.init = ()=>{
     });
 */
 
+    SUI.sprites = {};
+
     SUI._sync = 0;
 };
+
+// Sprites
+SUI.getOrCreateSpritePointEdit = ()=>{
+    if (SUI.sprites.pointEdit) return SUI.sprites.pointEdit;
+
+    SUI.sprites.pointEdit = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-point.png" ), 
+        color: ATON.MatHub.colors.orange,
+        transparent: true,
+        opacity: 1.0,
+        //depthWrite: false, 
+        depthTest: false
+    });
+
+    return SUI.sprites.pointEdit;
+};
+
+SUI.getOrCreateSpriteSemIcon = ()=>{
+    if (SUI.sprites.semIcon) return SUI.sprites.semIcon;
+
+    SUI.sprites.semIcon = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-sem.png" ), 
+        //color: ATON.MatHub.colors.sem, // multiply
+        transparent: true,
+        opacity: 1.0,
+        //depthWrite: false, 
+        depthTest: false
+    });
+
+    SUI.sprites.semIcon.sizeAttenuation = false;
+
+    return SUI.sprites.semIcon;
+};
+
+SUI.getOrCreateSpriteLP = ()=>{
+    if (SUI.sprites.lp) return SUI.sprites.lp;
+
+    SUI.sprites.lp = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-lp.png" ), 
+        //color: ATON.MatHub.colors.sem, // multiply
+        transparent: true,
+        opacity: 1.0,
+        depthWrite: false, 
+        //depthTest: false
+    });
+
+    SUI.sprites.lp.sizeAttenuation = false;
+
+    return SUI.sprites.lp;
+};
+
 
 // Realize main selector
 SUI.initSelector = ()=>{
@@ -188,7 +241,7 @@ SUI.addSemIcon = (semid, meshape)=>{
     bb.getBoundingSphere(bs);
 
     // icon sprite
-    let semicon = new THREE.Sprite( ATON.MatHub.semIcon );
+    let semicon = new THREE.Sprite( SUI.getOrCreateSpriteSemIcon() );
     semicon.position.copy(bs.center);
 
     let ss = 0.035; //bs.radius * 0.3;
@@ -204,7 +257,7 @@ SUI.addLPIcon = (LP)=>{
     let rn = LP._near;
     let isize = 0.1; //rn * 0.3;
 
-    let lpicon = new THREE.Sprite( ATON.MatHub.lpIcon );
+    let lpicon = new THREE.Sprite( SUI.getOrCreateSpriteLP() );
     lpicon.position.copy(LP.pos);
     lpicon.scale.set(isize,isize,isize);
 
@@ -217,8 +270,8 @@ SUI.addLPIcon = (LP)=>{
 };
 
 SUI.setSemIconsOpacity = (f)=>{
-    if (f === undefined) ATON.MatHub.semIcon.opacity = 1.0;
-    else ATON.MatHub.semIcon.opacity = f;
+    if (f === undefined) ATON.MatHub.spriteSemIcon.opacity = 1.0;
+    else ATON.MatHub.spriteSemIcon.opacity = f;
 };
 
 

@@ -22,15 +22,7 @@ constructor(res, near, far){
     this._res  = (res !== undefined)?  res  : 64;
     this._near = (near !== undefined)? near : 1.0;
     this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
-/*
-    this._LPtarget0 = undefined;
-    this._LPtarget1 = undefined;
 
-    this._LP0 = undefined;
-    this._LP1 = undefined;
-
-    this._flipLP = false;
-*/
     this._envtex = undefined;
     this._CC = undefined;
     
@@ -40,6 +32,8 @@ constructor(res, near, far){
     this._LP.intensity = 10;
     ATON._mainRoot.add( this._LP );
 */
+
+    // Realize PMREM generator if not there
     if (ATON._pmremGenerator === undefined){
         ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
         ATON._pmremGenerator.compileCubemapShader();
@@ -171,7 +165,7 @@ update(){
     this._CC.update( ATON._renderer, ATON._mainRoot );
     ATON._mainRoot.scale.x = 1;
 
-    if (ATON._renderer.shadowMap.enabled) ATON._dMainL.shadow.needsUpdate = true;
+    if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
 
     //this._CC.update( ATON._renderer, ATON._mainRoot);
     

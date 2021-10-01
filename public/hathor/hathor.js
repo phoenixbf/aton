@@ -635,6 +635,16 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='x') HATHOR.popupExportSemShapes();
 
+/*
+        if (k==='p'){
+            let qp = ATON.getSceneQueriedPoint();
+            if (qp === undefined) return;
+
+            ATON.addLightProbe( new ATON.LightProbe(64, ATON.SUI.getSelectorRadius()).setPosition(qp) );
+            ATON.getRootScene().assignLightProbesByProximity();
+            ATON.updateLightProbes();
+        }
+*/
         if (k==='u') ATON.FE.popupUser();
 
         if (k === '('){

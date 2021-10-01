@@ -54,7 +54,7 @@ MatHub.addDefaults = ()=>{
     MatHub.colors.blue   = new THREE.Color(0,0,1);
     MatHub.colors.orange = new THREE.Color(1,0.5,0);
 
-    MatHub.colors.defUI  = new THREE.Color(0,1,0.5);
+    MatHub.colors.defUI  = new THREE.Color(1,1,1); // 0,1,0.5
     
     MatHub.colors.sem     = new THREE.Color(0,1,0.5);
     MatHub.colors.darksem = new THREE.Color(0,0,0.1);
@@ -69,7 +69,8 @@ MatHub.addDefaults = ()=>{
     // Default UI
     MatHub.materials.defUI = new THREE.ShaderMaterial({
         uniforms: {
-            color: { type:'vec3', value: MatHub.colors.defUI },
+            color: { type:'vec3', value: MatHub.colors.black },
+            base: { type:'vec3', value: MatHub.colors.defUI },
             opacity: { type:'float', value: 0.8 }
         },
 
@@ -78,18 +79,20 @@ MatHub.addDefaults = ()=>{
             varying vec3 vPositionW;
 		    varying vec3 vNormalW;
             varying vec3 vNormalV;
-            uniform vec3 color;
+            uniform vec3 color, base;
             uniform float opacity;
 
 		    void main(){
 		        //vec3 viewDirectionW = normalize(cameraPosition - vPositionW);
 
                 float f;
-		        //f = dot(viewDirectionW, vNormalW);
+		        //f = dot(vNormalV, viewDirectionW);
                 f = dot(vNormalV, vec3(0,0,1));
-		        f = clamp(1.0 - f, 0.2, 1.0);
+		        f = clamp(1.0-f, 0.2, 1.0);
 
-		        gl_FragColor = vec4(color.rgb, f * opacity);
+                vec3 col = mix(base,color, f);
+
+		        gl_FragColor = vec4(col, f * opacity);
 		    }
         `,
         transparent: true,
@@ -97,7 +100,23 @@ MatHub.addDefaults = ()=>{
     }); 
     
     // Selector
-    MatHub.materials.selector = MatHub.materials.defUI.clone();
+    //MatHub.materials.selector = MatHub.materials.defUI.clone();
+    MatHub.materials.selector = new THREE.MeshBasicMaterial({
+        color: MatHub.colors.white,
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.2, 
+        //depthTest: false
+        //flatShading: true
+    });
+
+    MatHub.materials.outline = new THREE.MeshBasicMaterial({
+        color: MatHub.colors.black,
+        side: THREE.BackSide,
+        transparent: true,
+        depthWrite: false,
+        opacity: 0.2
+    });
 
 /*
     MatHub.materials.selector = new THREE.MeshBasicMaterial({
@@ -111,6 +130,7 @@ MatHub.addDefaults = ()=>{
     // XR/VR ray
     MatHub.materials.controllerRay = MatHub.materials.defUI.clone();
     MatHub.materials.controllerRay.uniforms.color.value = MatHub.colors.white;
+    MatHub.materials.controllerRay.uniforms.base.value  = MatHub.colors.white;
 /*
     MatHub.materials.controllerRay = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.white, 

@@ -14,6 +14,7 @@ ATON Spatial UI
 let SUI = {};
 
 SUI.STD_BTN_SIZE = 0.1;
+SUI.STD_SELECTOR_TICKNESS = 1.05;
 
 SUI.Button = Button;
 SUI.Label  = Label;
@@ -21,18 +22,9 @@ SUI.Label  = Label;
 
 //Initializes Spatial UI module
 SUI.init = ()=>{
-    SUI.mainSelector = ATON.createUINode();
-    SUI._mSelectorSphere = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") );
-    SUI._mSelectorSphere.renderOrder = 100;
-    SUI.mainSelector.add( SUI._mSelectorSphere );
-    SUI.mainSelector.disablePicking();
-
-    SUI.setSelectorRadius(0.05);
-    SUI.mainSelector.visible = false;
-    ATON._rootUI.add(SUI.mainSelector);
+    SUI.initSelector();
 
     SUI.fpTeleport = ATON.createUINode();
-    
     let gTeleport = new THREE.CylinderBufferGeometry(0.4,0.4, 0.9, 32,1, true);
     //let gTeleport = new THREE.CylinderGeometry(0.4,0.4, 0.9, 32,1, true);
 
@@ -107,6 +99,25 @@ SUI.init = ()=>{
     SUI._sync = 0;
 };
 
+// Realize main selector
+SUI.initSelector = ()=>{
+    SUI.mainSelector = ATON.createUINode();
+    SUI._mSelectorSphere = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") );
+    SUI._mSelectorSphere.renderOrder = 100;
+
+    let mSelBorder = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("outline"));
+    mSelBorder.scale.set(SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS);
+    mSelBorder.renderOrder = 100;
+
+    SUI.mainSelector.add( mSelBorder );
+    SUI.mainSelector.add( SUI._mSelectorSphere );
+    SUI.mainSelector.disablePicking();
+
+    SUI.setSelectorRadius(0.05);
+    SUI.mainSelector.visible = false;
+    ATON._rootUI.add(SUI.mainSelector);
+};
+
 // note: before adding LPs
 SUI.enableLPIcons = ()=>{
     SUI.gLPIcons = ATON.createUINode();
@@ -160,8 +171,12 @@ Set selector color
 @param {number} opacity - (optional) opacity 
 */
 SUI.setSelectorColor = (color, opacity)=>{
+    ATON.MatHub.materials.selector.color = color;
+    if (opacity !== undefined) ATON.MatHub.materials.selector.opacity = opacity;
+/*
     ATON.MatHub.materials.selector.uniforms.color.value = color;
     if (opacity !== undefined) ATON.MatHub.materials.selector.uniforms.opacity.value = opacity;
+*/
 };
 
 // Sem-shape icons

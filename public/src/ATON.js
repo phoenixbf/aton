@@ -493,10 +493,6 @@ ATON.realize = ()=>{
     ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
     ATON._renderer.toneMappingExposure = 1.0;
 
-    ATON._pmremGenerator = undefined;
-    //ATON._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
-    //ATON._pmremGenerator.compileCubemapShader();
-
     //console.log(ATON._renderer.getPixelRatio());
 
     ATON._renderer.setAnimationLoop( ATON._onFrame );
@@ -550,10 +546,14 @@ ATON.realize = ()=>{
     // Periods (TODO:)
     //ATON.periods = [];
 
-    ATON._lps = []; // lightprobes
+
+    // Light Probing
+    ATON._pmremGenerator = undefined;
+    ATON._lps = []; // list of lightprobes
     ATON._bAutoLP = false;
     ATON._envMapInt = 1.0;
-    //ATON._dirtyLPs = true;
+    
+    // Shadows
     ATON._bShadowsFixedBound = false;
     ATON._shadowsFixedBoundCenter = undefined;
 

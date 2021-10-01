@@ -36,6 +36,8 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js"
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter.js';
 
+//import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
@@ -102,6 +104,8 @@ THREE.RoughnessMipmapper = RoughnessMipmapper;
 THREE.LightProbeHelper = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
 
+//THREE.CSS3DRenderer = CSS3DRenderer;
+//THREE.CSS3DObject   = CSS3DObject;
 
 window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;

@@ -306,7 +306,7 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.fetchOptions.mode  = 'cors';
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
-    ts.errorTarget     = 20.0; //40.0; // original: 6
+    ts.errorTarget     = ATON._tsET;
     ts.optimizeRaycast = true;
     //ts.loadSiblings    = false; // a few hops / artifacts
 
@@ -340,23 +340,21 @@ Utils.loadTileSet = (tsurl, N)=>{
         if (ATON.FX.composer) ATON.FX.setDOFaperture( 1.0 / (bs.radius*30.0));
     };
 
-
+    // Tile loaded
     ts.onLoadModel = ( scene )=>{
-        //Utils.modelVisitor( N, scene );
-
         //console.log(ts.lruCache.itemList.length);
 
         scene.traverse( c => {
             //c.layers.enable(N.type);
-/*
+
             if (c.isMesh){
-                c.castShadow    = true; //N.castShadow;
-                c.receiveShadow = true; //N.receiveShadow;
+                //c.castShadow    = true; //N.castShadow;
+                //c.receiveShadow = true; //N.receiveShadow;
+
+                if (c.geometry) c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
             }
-*/
-            if ( c.material ) {
-                //c.originalMaterial = c.material;
-                //c.material = wireMat;
+
+            if ( c.material ){
                 if (N.userData.cMat) c.material = N.userData.cMat;
 
 /*  CHECK: this forces mipmapping

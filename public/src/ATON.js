@@ -567,6 +567,7 @@ ATON.realize = ()=>{
 
     // TileSets (3D Tiles)
     ATON._tsets = [];
+    ATON._tsET  = 20.0; //Error target (original: 6) // 40.0
 
     // Init audio hub
     ATON.AudioHub.init();
@@ -1680,11 +1681,11 @@ ATON._updateRoutines = ()=>{
 
 //================================================
 ATON._updateTSets = ()=>{
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav.isTransitioning()) return;
-
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
+
+    //if (ATON.Nav._bInteracting) return;
+    if (ATON.Nav.isTransitioning()) return;
 
     ATON.Nav._camera.updateMatrixWorld();
 /*
@@ -1692,6 +1693,8 @@ ATON._updateTSets = ()=>{
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         if (C){
             C.updateMatrixWorld();
+            C.updateProjectionMatrix();
+
             ATON.Utils.updateTSetsCamera(C);
         }
     }
@@ -1716,6 +1719,8 @@ ATON._updateTSets = ()=>{
 };
 
 ATON.setTSetsErrorTarget = (e)=>{
+    ATON._tsET = e;
+
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
 
@@ -1723,6 +1728,10 @@ ATON.setTSetsErrorTarget = (e)=>{
         let TS = ATON._tsets[ts];
         ts.errorTarget = e;
     }
+};
+
+ATON.getTSetsErrorTarget = ()=>{
+    return ATON._tsET;
 };
 
 
@@ -1777,8 +1786,9 @@ ATON._registerRCS = ()=>{
 };
 
 ATON._handleQueries = ()=>{
-    ATON._qSync = (ATON._qSync + 1) % ATON._qSyncInt;
-    if (ATON._qSync !== 0) return;
+    // NOT USED
+    //ATON._qSync = (ATON._qSync + 1) % ATON._qSyncInt;
+    //if (ATON._qSync !== 0) return;
 
     if (ATON._bPauseQuery) return;
     if (ATON.Nav._bInteracting) return;
@@ -1794,7 +1804,7 @@ ATON._handleQueries = ()=>{
     ATON._handleQueryUI();
 
     if (ATON._bqScene) ATON._handleQueryScene();
-    if (ATON._bqSem)   ATON._handleQuerySemantics();
+    if (ATON._bqSem) ATON._handleQuerySemantics();
     
     //ATON._handleQueryUI();
 

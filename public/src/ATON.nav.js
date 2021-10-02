@@ -367,6 +367,11 @@ Nav._updCamera = (c)=>{
         }
     }
 
+    if (Nav._currPOV){
+        c.fov = Nav._currPOV.fov;
+        c.updateProjectionMatrix();
+    }
+
     ATON.Utils.updateTSetsCamera(c);
 };
 

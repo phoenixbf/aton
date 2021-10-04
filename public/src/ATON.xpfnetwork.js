@@ -22,7 +22,9 @@ XPFNetwork.SEMGROUP_PREFIX = "GXPF";
 
 XPFNetwork.init = ()=>{
     XPFNetwork._list  = [];
+
     XPFNetwork._iCurr = undefined;
+    XPFNetwork._iNext = undefined;
 
     XPFNetwork._group = new THREE.Group();
     ATON._rootVisibleGlobal.add( XPFNetwork._group );
@@ -68,6 +70,7 @@ XPFNetwork.update = ()=>{
         }
 
         // Seek next in sight
+        // TODO: allow to provide custom routine
         if (i !== XPFNetwork._iCurr){
             XPFNetwork._dirLNode.x = xpf._location.x - E.x;
             XPFNetwork._dirLNode.y = xpf._location.y - E.y;
@@ -87,6 +90,9 @@ XPFNetwork.update = ()=>{
     if (inext){
         XPFNetwork._preloadBaseLayer(inext);
         //XPFNetwork._list[inext]._lnode.toggleSUI(true);
+
+        if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
+        XPFNetwork._iNext = inext;
     }
 
     if (iclosest === XPFNetwork._iCurr) return;
@@ -150,9 +156,9 @@ ATON.XPFNetwork.add( myXPF )
 ATON.XPFNetwork.add( new ATON.XPF().setLocation(10,0,3).setBaseLayer("my/pano.jpg") )
 */
 XPFNetwork.add = (xpf)=>{
-    XPFNetwork.realizeBaseGeometry();
-
     if (xpf === undefined) return;
+
+    XPFNetwork.realizeBaseGeometry();
 
     let i = XPFNetwork._list.length;
     XPFNetwork._list.push(xpf);
@@ -168,6 +174,7 @@ XPFNetwork.add = (xpf)=>{
     XPFNetwork._gSem.push( sem );
     sem.attachToRoot();
 
+    // Setup nav system
     if (i > 0) return;
     ATON.Nav.toggleLocomotionValidator(false);
     ATON._bqScene = true;
@@ -241,7 +248,7 @@ XPFNetwork._clearTexCache = ()=>{
 // TODO:
 XPFNetwork._setBaseLayerTexture = (xpf, tex)=>{
     XPFNetwork._mat.map = tex;
-    XPFNetwork._mat.map.needsUpdate = true;
+    //XPFNetwork._mat.map.needsUpdate = true;
     XPFNetwork._mat.needsUpdate     = true;
 
     XPFNetwork._mesh.position.copy( xpf.getLocation() );
@@ -288,6 +295,23 @@ Get current (active) XPF
 XPFNetwork.getCurrentXPF = ()=>{
     if (XPFNetwork._iCurr === undefined) return undefined;
     return XPFNetwork._list[XPFNetwork._iCurr];
+};
+
+/**
+Get next XPF in sight index
+@returns {number}
+*/
+XPFNetwork.getNextXPFindex = ()=>{
+    return XPFNetwork._iNext;
+};
+
+/**
+Get next XPF in sight
+@returns {XPF}
+*/
+XPFNetwork.getNextXPF = ()=>{
+    if (XPFNetwork._iNext === undefined) return undefined;
+    return XPFNetwork._list[XPFNetwork._iNext];
 };
 
 /**

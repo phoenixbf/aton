@@ -1,0 +1,200 @@
+{
+	"asset":
+	{
+		"version": "2.0",
+		"generator": "Unreal Engine 4.26.0 glTF Exporter 1.0.6"
+	},
+	"scene": 0,
+	"accessors": [
+		{
+			"bufferView": 0,
+			"count": 36,
+			"type": "SCALAR",
+			"componentType": 5121
+		},
+		{
+			"bufferView": 1,
+			"count": 24,
+			"type": "VEC3",
+			"componentType": 5126,
+			"min": [ 0,
+				-1.62920291e-08,
+				-0.100000232
+			],
+			"max": [ 4,
+				4,
+				0.100000411
+			]
+		},
+		{
+			"bufferView": 2,
+			"count": 24,
+			"type": "VEC3",
+			"componentType": 5120,
+			"normalized": true
+		},
+		{
+			"bufferView": 3,
+			"count": 24,
+			"type": "VEC4",
+			"componentType": 5120,
+			"normalized": true
+		},
+		{
+			"bufferView": 4,
+			"count": 24,
+			"type": "VEC2",
+			"componentType": 5126
+		},
+		{
+			"bufferView": 5,
+			"count": 24,
+			"type": "VEC2",
+			"componentType": 5126
+		}
+	],
+	"buffers": [
+		{
+			"uri": "aton-panel-glass.bin",
+			"byteLength": 900
+		}
+	],
+	"bufferViews": [
+		{
+			"buffer": 0,
+			"byteLength": 36,
+			"target": 34963
+		},
+		{
+			"buffer": 0,
+			"byteLength": 288,
+			"byteOffset": 36,
+			"target": 34962
+		},
+		{
+			"buffer": 0,
+			"byteLength": 96,
+			"byteOffset": 324,
+			"byteStride": 4,
+			"target": 34962
+		},
+		{
+			"buffer": 0,
+			"byteLength": 96,
+			"byteOffset": 420,
+			"target": 34962
+		},
+		{
+			"buffer": 0,
+			"byteLength": 192,
+			"byteOffset": 516,
+			"target": 34962
+		},
+		{
+			"buffer": 0,
+			"byteLength": 192,
+			"byteOffset": 708,
+			"target": 34962
+		}
+	],
+	"images": [
+		{
+			"uri": "aton-cube-trans.png"
+		},
+		{
+			"uri": "aton-cube-nrm.png"
+		}
+	],
+	"materials": [
+		{
+			"name": "M_atonCube-trans",
+			
+			"doubleSided" : false,
+			
+			"pbrMetallicRoughness":{
+				"baseColorTexture":
+				{
+					"index": 0
+				},
+				"metallicFactor": 0,
+				"roughnessFactor": 0.3
+			},
+            "extensions": {
+                "KHR_materials_transmission": {
+                    "transmissionFactor": 1.0
+                },
+                "KHR_materials_volume": {
+                    "attenuationColor": [1,1,1],
+                    "attenuationDistance": 0.155,
+                    "thicknessFactor": 0.5
+                }
+            },
+			"normalTexture":
+			{
+				"index": 1
+			}
+		}
+	],
+	"meshes": [
+		{
+			"name": "aton-panel-glass",
+			"primitives": [
+				{
+					"attributes":
+					{
+						"POSITION": 1,
+						"NORMAL": 2,
+						"TANGENT": 3,
+						"TEXCOORD_0": 4,
+						"TEXCOORD_1": 5
+					},
+					"indices": 0,
+					"material": 0
+				}
+			]
+		}
+	],
+	"nodes": [
+		{
+			"mesh": 0
+		}
+	],
+	"samplers": [
+		{
+			"name": "aton-cube-trans",
+			"minFilter": 9987,
+			"magFilter": 9729
+		},
+		{
+			"name": "aton-cube-nrm",
+			"minFilter": 9985,
+			"magFilter": 9729
+		}
+	],
+	"scenes": [
+		{
+			"nodes": [ 0 ]
+		}
+	],
+	"textures": [
+		{
+			"name": "aton-cube-trans",
+			"sampler": 0,
+			"source": 0
+		},
+		{
+			"name": "aton-cube-nrm",
+			"sampler": 1,
+			"source": 1
+		}
+	],
+	"extensionsUsed": [
+		"KHR_mesh_quantization",
+        "KHR_materials_transmission",
+        "KHR_materials_ior",
+        "KHR_materials_volume"
+	],
+	"extensionsRequired": [
+		"KHR_mesh_quantization"
+	]
+}

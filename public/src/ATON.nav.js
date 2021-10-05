@@ -268,9 +268,18 @@ Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
 
 /**
 Request transition to next locomotion node in sight, if any
+If we have an active XPF network, we use its logic 
 @param {boolean} duration - (optional) transition duration
 */
 Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
+    // If we have an active XPF network, use its logic
+    let x = ATON.XPFNetwork.getNextXPFindex();
+    if (x !== undefined){
+        Nav.requestTransitionToLocomotionNode(ATON.XPFNetwork._list[x]._lnode, duration);
+        return true;
+    }
+
+    // No XPF network
     let i = ATON.Nav.getLocomotionNodeInSight();
     if (i === undefined) return false;
 

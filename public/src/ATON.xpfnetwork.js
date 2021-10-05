@@ -37,6 +37,15 @@ XPFNetwork.init = ()=>{
     XPFNetwork._gSem = [];
 
     XPFNetwork._txCache = {};
+
+    XPFNetwork._pathMod = undefined;
+};
+
+XPFNetwork.setPathModifier = (f)=>{
+    if (f === undefined) return;
+
+    XPFNetwork._pathMod = f;
+    for (let x in XPFNetwork.list) XPFNetwork.list[x].setPathModifier(f);
 };
 
 
@@ -47,6 +56,7 @@ XPFNetwork.update = ()=>{
 
     let len = XPFNetwork._list.length;
     
+    // Get current viewpoint
     let E = ATON.Nav._currPOV.pos;
     let V = ATON.Nav._vDir;
 
@@ -60,7 +70,6 @@ XPFNetwork.update = ()=>{
 
     for (let i=0; i<len; i++){
         let xpf = XPFNetwork._list[i];
-        //xpf._lnode.toggleSUI(false);
 
         // Search closest
         let d = E.distanceToSquared(xpf._location);
@@ -70,7 +79,7 @@ XPFNetwork.update = ()=>{
         }
 
         // Seek next in sight
-        // TODO: allow to provide custom routine
+        // TODO: provide custom routine
         if (i !== XPFNetwork._iCurr){
             XPFNetwork._dirLNode.x = xpf._location.x - E.x;
             XPFNetwork._dirLNode.y = xpf._location.y - E.y;
@@ -87,9 +96,9 @@ XPFNetwork.update = ()=>{
     }
 
     //console.log(inext);
-    if (inext){
-        XPFNetwork._preloadBaseLayer(inext);
-        //XPFNetwork._list[inext]._lnode.toggleSUI(true);
+    if (inext !== undefined){
+        //XPFNetwork._preloadBaseLayer(inext);
+        ////XPFNetwork._list[inext]._lnode.toggleSUI(true);
 
         if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
         XPFNetwork._iNext = inext;
@@ -102,10 +111,9 @@ XPFNetwork.update = ()=>{
     
     XPFNetwork.setCurrentXPF(iclosest);
 
-    XPFNetwork._clearTexCache(); // Clear cached textures
+    //XPFNetwork._clearTexCache(); // Clear cached textures
 
     ATON.fireEvent("CurrentXPF", iclosest);
-    //console.log("Current XPF: "+iclosest);
 };
 
 XPFNetwork.realizeBaseGeometry = ()=>{
@@ -181,6 +189,9 @@ XPFNetwork.add = (xpf)=>{
 };
 
 XPFNetwork.clear = ()=>{
+    XPFNetwork._iCurr = undefined;
+    XPFNetwork._iNext = undefined;
+
     for (let i=0; i<XPFNetwork._list.length; i++){
         // TODO:
     }
@@ -222,7 +233,10 @@ XPFNetwork._preloadBaseLayer = (i, onComplete)=>{
 
     let xpf = XPFNetwork._list[i];
 
-    ATON.Utils.textureLoader.load(xpf._pathbaselayer, (tex)=>{
+    let pathbase = xpf._pathbaselayer;
+    if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
+
+    ATON.Utils.textureLoader.load(pathbase, (tex)=>{
         tex.encoding = THREE.sRGBEncoding;
         //tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = true;
@@ -248,22 +262,51 @@ XPFNetwork._clearTexCache = ()=>{
 // TODO:
 XPFNetwork._setBaseLayerTexture = (xpf, tex)=>{
     XPFNetwork._mat.map = tex;
-    //XPFNetwork._mat.map.needsUpdate = true;
-    XPFNetwork._mat.needsUpdate     = true;
+    XPFNetwork._mat.needsUpdate = true;
 
     XPFNetwork._mesh.position.copy( xpf.getLocation() );
     XPFNetwork._mesh.rotation.set( xpf.getRotation().x, xpf.getRotation().y, xpf.getRotation().z );
 };
 
-XPFNetwork.setCurrentXPF = (i, onComplete)=>{
-    let xpf = XPFNetwork._list[i];
+/**
+Update current XPF base layer (texture)
+@param {function} onComplete - (optional) routine to be called on completion
+*/
+XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
+    if (XPFNetwork._iCurr === undefined) return;
+
+    let xpf = XPFNetwork._list[XPFNetwork._iCurr];
     if (xpf === undefined) return;
+
+    let pathbase = xpf._pathbaselayer;
+    if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
+
+    ATON.Utils.textureLoader.load(pathbase, (tex)=>{
+        tex.encoding = THREE.sRGBEncoding;
+        //tex.minFilter = THREE.NearestFilter;
+        tex.generateMipmaps = true;
+
+        XPFNetwork._mat.map = tex;
+        XPFNetwork._mat.needsUpdate = true;
+
+        XPFNetwork._mesh.position.copy( xpf.getLocation() );
+        XPFNetwork._mesh.rotation.set( xpf.getRotation().x, xpf.getRotation().y, xpf.getRotation().z );
+
+        if (onComplete) onComplete(tex);
+    });
+};
+
+XPFNetwork.setCurrentXPF = (i, onComplete)=>{
+    //let xpf = XPFNetwork._list[i];
+    //if (xpf === undefined) return;
 
     XPFNetwork._iCurr = i;
     XPFNetwork._mesh.visible = true;
 
     XPFNetwork._gSem[i].show();
 
+    XPFNetwork.updateCurrentXPFbaseLayer( onComplete );
+/*
     // hit
     if (XPFNetwork._txCache[i]){
         //console.log("hit");
@@ -278,6 +321,16 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
         XPFNetwork._setBaseLayerTexture(xpf, tex);
         if (onComplete) onComplete();
     });
+*/
+};
+
+/**
+Get XPF by index
+@param {number} i - XPF index
+@returns {XPF}
+*/
+XPFNetwork.getXPFbyIndex = (i)=>{
+    return XPFNetwork._list[i];
 };
 
 /**
@@ -312,6 +365,23 @@ Get next XPF in sight
 XPFNetwork.getNextXPF = ()=>{
     if (XPFNetwork._iNext === undefined) return undefined;
     return XPFNetwork._list[XPFNetwork._iNext];
+};
+
+/**
+Utility to show locomotion SUI (if any) only for a given XPF
+@param {number} i - XPF index
+*/
+XPFNetwork.showSUIonlyForXPF = (i)=>{
+    let len = XPFNetwork._list.length;
+    if (len<1) return;
+
+    for (let k=0; k<len; k++){
+        let LN = XPFNetwork._list[k]._lnode;
+        if (LN){
+            if (k == i) LN.toggleSUI(true);
+            else LN.toggleSUI(false);
+        }
+    }
 };
 
 /**

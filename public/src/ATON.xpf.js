@@ -29,6 +29,8 @@ constructor(id){
     this._rotation = new THREE.Vector3(0,0,0);
 
     this._lnode = ATON.Nav.addLocomotionNode(this._location).realizeSUI();
+
+    this._pathMod = undefined;
 }
 
 // Custom geometry
@@ -141,6 +143,16 @@ hasGeometry(){
     return (this._geom !== undefined);
 }
 
+setPathModifier = (f)=>{
+    this._pathMod = f;
+    return this;
+};
+
+// TODO:
+updateBaseLayer(){
+
+}
+
 /**
 Set base layer for this XPF
 @param {string} path - path to image
@@ -154,6 +166,9 @@ setBaseLayer(path){
 
     this._pathbaselayer = ATON.Utils.resolveCollectionURL(path);
     let self = this;
+
+    // TODO: Apply path modifier
+    if (this._pathMod) this._pathbaselayer = this._pathMod(this._pathbaselayer);
 
     if ( !this.hasGeometry() ) return this;
 

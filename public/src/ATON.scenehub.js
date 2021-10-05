@@ -600,6 +600,7 @@ SceneHub.initBaseParsers = ()=>{
                 let X = L[i]; // field
 
                 let xpf = new ATON.XPF();
+                xpf.realizeSUI(); // check if enable custom icon/indicators
 
                 if (X.location) xpf.setLocation(X.location[0],X.location[1],X.location[2]);
                 if (X.rotation) xpf.setRotation(X.rotation[0],X.rotation[1],X.rotation[2]);

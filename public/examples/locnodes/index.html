@@ -28,10 +28,11 @@
 <script>
 
 let setupLocomotionGraph = ()=>{
-    ATON.Nav.addLocomotionNode(337,117,-117);
-    ATON.Nav.addLocomotionNode(341,117,-115);
-    ATON.Nav.addLocomotionNode(342,117,-119);
-    ATON.Nav.addLocomotionNode(345,117,-120);
+    // We add our locomotion nodes and for each we realize Spatial UI (base spherical indicator)
+    ATON.Nav.addLocomotionNode(337,117,-117, true);
+    ATON.Nav.addLocomotionNode(341,117,-115, true);
+    ATON.Nav.addLocomotionNode(342,117,-119, true);
+    ATON.Nav.addLocomotionNode(345,117,-120, true);
 
     // Disable default locomotion validator (surfaces)
     ATON.Nav.toggleLocomotionValidator(false);

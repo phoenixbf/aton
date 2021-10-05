@@ -177,19 +177,37 @@ Nav.toggleLocomotionValidator = (b)=>{
     }
 };
 
-// Locomotion Graph
-Nav.addLocomotionNode = (x,y,z)=>{
-    let LN = new Nav.LocomotionNode().setLocation(x,y,z).realizeSUI();
+/**
+Add a locomotion node
+They are useful to restrict or constrain navigation into specific 3D locations
+
+@param {number} x
+@param {number} y
+@param {number} z
+@param {boolean} bSUI - (optional) realize Spatial UI for this locomotion node
+*/
+Nav.addLocomotionNode = (x,y,z, bSUI)=>{
+    let LN = new Nav.LocomotionNode().setLocation(x,y,z);
+    if (bSUI) LN.realizeSUI();
+
     Nav._locNodes.push(LN);
 
     ATON.fireEvent("LocomotionNodeAdded", LN);
     return LN;
 };
 
+/**
+Get locomotion node by index
+@param {number} i - Locomotion Node index
+@returns {LocomotionNode}
+*/
 Nav.getLocomotionNodeByIndex = (i)=>{
     return Nav._locNodes[i];
 };
 
+/**
+Remove all locomotion nodes
+*/
 Nav.clearLocomotionNodes = ()=>{
     Nav._locNodes = [];
     if (ATON.SUI.gLocNodes) ATON.SUI.gLocNodes.removeChildren();
@@ -255,14 +273,6 @@ Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
 
     Nav.requestPOV(POV, duration);
 
-    // If any XPF associated - FIXME:
-/*
-    let xpfi = lnode.getAssociatedXPFindex();
-    if (xpfi !== undefined){
-        ATON.XPFNetwork.setCurrentXPF(xpfi);
-        ATON.fireEvent("XPFTransitionRequested", xpfi);
-    }
-*/
     ATON.fireEvent("LocomotionNodeRequested", lnode);
 };
 

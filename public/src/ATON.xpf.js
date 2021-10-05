@@ -28,7 +28,7 @@ constructor(id){
     this._location = new THREE.Vector3(0,0,0);
     this._rotation = new THREE.Vector3(0,0,0);
 
-    this._lnode = ATON.Nav.addLocomotionNode(this._location).realizeSUI();
+    this._lnode = ATON.Nav.addLocomotionNode(this._location);
 
     this._pathMod = undefined;
 }
@@ -36,6 +36,13 @@ constructor(id){
 // Custom geometry
 setSize(r){
     this._size = r;
+}
+
+realizeSUI(){
+    if (this._lnode === undefined) return this;
+    this._lnode.realizeSUI();
+
+    return this;
 }
 
 realizeGeometry(){

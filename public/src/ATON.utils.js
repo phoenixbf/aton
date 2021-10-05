@@ -849,6 +849,11 @@ Utils.assignLightProbeToMesh = (LP, mesh)=>{
     //console.log(mesh.userData);
 };
 
+Utils.vibrate = (d)=>{
+    if (d === undefined) d = 100;
+    window.navigator.vibrate(d);
+};
+
 Utils.createATONCube = (id)=>{
     let g = new THREE.BoxBufferGeometry( 1,1,1 );
 

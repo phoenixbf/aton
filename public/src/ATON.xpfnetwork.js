@@ -48,7 +48,6 @@ XPFNetwork.setPathModifier = (f)=>{
     for (let x in XPFNetwork.list) XPFNetwork.list[x].setPathModifier(f);
 };
 
-
 // This is required to select closest (current) XPF to user location
 XPFNetwork.update = ()=>{
     //if (ATON.Nav.isTransitioning()) return;
@@ -84,6 +83,7 @@ XPFNetwork.update = ()=>{
             XPFNetwork._dirLNode.x = xpf._location.x - E.x;
             XPFNetwork._dirLNode.y = xpf._location.y - E.y;
             XPFNetwork._dirLNode.z = xpf._location.z - E.z;
+            XPFNetwork._dirLNode   = XPFNetwork._dirLNode.normalize();
 
             let v = XPFNetwork._dirLNode.dot(V);
             if (v > 0.8){
@@ -96,6 +96,7 @@ XPFNetwork.update = ()=>{
     }
 
     //console.log(inext);
+/*
     if (inext !== undefined){
         //XPFNetwork._preloadBaseLayer(inext);
         ////XPFNetwork._list[inext]._lnode.toggleSUI(true);
@@ -103,6 +104,9 @@ XPFNetwork.update = ()=>{
         if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
         XPFNetwork._iNext = inext;
     }
+*/
+    if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
+    XPFNetwork._iNext = inext;
 
     if (iclosest === XPFNetwork._iCurr) return;
 
@@ -301,6 +305,8 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     //if (xpf === undefined) return;
 
     XPFNetwork._iCurr = i;
+    XPFNetwork._iNext = undefined;
+    
     XPFNetwork._mesh.visible = true;
 
     XPFNetwork._gSem[i].show();

@@ -30,6 +30,7 @@ XR.init = ()=>{
     XR._bPresenting = false;
     XR.currSession = null;
     XR._sessionType = "immersive-vr";
+    XR._bReqPresenting = false;
 
     XR.rig = new THREE.Group();
     //XR.rig.position.set(0,0,0);
@@ -229,6 +230,7 @@ XR._setupControllerL = (C, bAddRep)=>{
 // On XR session started
 XR.onSessionStarted = ( session )=>{
     if (XR.currSession) return; // Already running
+    XR._bReqPresenting = false;
 
 	session.addEventListener( 'end', XR.onSessionEnded );
 
@@ -384,13 +386,15 @@ XR.onSessionEnded = ( /*event*/ )=>{
     XR.currSession.removeEventListener( 'end', XR.onSessionEnded );
     XR.currSession = null;
 
+    XR._bReqPresenting = false;
+
     XR._bPresenting = false;
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
 
     ATON.fireEvent("XRmode", false);
 
-    ATON._qSyncInt = 1; // Query interval (perf)
+    ATON._qSyncInt = 1; // Query interval (unused)
 
     // If any streaming is ongoing, terminate it
     ATON.MediaRec.stopMediaStreaming();
@@ -439,6 +443,7 @@ XR.toggle = (sessiontype)=>{
             //sessionInit.optionalFeatures.push( 'light-estimation' );
         }
 
+        XR._bReqPresenting = true;
         navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);
     }

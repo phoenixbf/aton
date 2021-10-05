@@ -1686,6 +1686,7 @@ ATON._updateTSets = ()=>{
 
     //if (ATON.Nav._bInteracting) return;
     if (ATON.Nav.isTransitioning()) return;
+    if (ATON.XR._bReqPresenting) return;
 
     ATON.Nav._camera.updateMatrixWorld();
 /*

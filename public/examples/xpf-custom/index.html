@@ -29,35 +29,47 @@
 // This is our custom icon
 let iconIndicator = undefined;
 
-// We create a variable to handle current period (0 = past, 1 = present)
-let period = 0;
+// We create a variable to handle current period ('a' = past, 'm' = present)
+// Note: we can extend also to multiple periods/layers
+let period = "a";
+
+let switchPeriod = ()=>{
+    // Filp between past and present
+    if (period === "a") period = "m";
+    else period = "a";
+
+    // Update base layer of current XPF
+    ATON.XPFNetwork.updateCurrentXPFbaseLayer();
+};
 
 
 let setupEvents = ()=>{
     // Change period on key 's'
     ATON.on("KeyPress", k =>{
-        if (k==='s'){
-            period = (period+1)%2; // flip between 0 and 1
-            ATON.XPFNetwork.updateCurrentXPFbaseLayer();
-        }
+        if (k==='s') switchPeriod();
     });
 
-    // We subscribe to next XPF selection
-    // In this case we show Spatial UI only for the next XPF identified (locomotion node)
+    // We subscribe to next XPF detected
     ATON.on("NextXPF", i =>{
+        // No next XPF detected, hide the indicator 
         if (i === undefined){
             iconIndicator.visible = false;
-            console.log(" no next");
             return;
         }
+        // Next XPF detected, show indicator and update its location
         let xpf = ATON.XPFNetwork.getXPFbyIndex(i);
 
         iconIndicator.visible = true;
         iconIndicator.position.copy( xpf.getLocation() );
     });
 
+    // When we request a locomotion node transition, hide indicator
     ATON.on("LocomotionNodeRequested", locnode => {
         iconIndicator.visible = false;
+    });
+
+    ATON.FE.uiSetButtonHandler("idSUIswitch", ()=>{
+        switchPeriod();
     });
 };
 
@@ -134,8 +146,7 @@ window.addEventListener( 'load', ()=>{
     // We set our path modifier
     // In this case, depending on period variable we postfix a different pattern
     ATON.XPFNetwork.setPathModifier((path)=>{
-        if (period < 1) return path + "a.jpg";
-        return path + "m.jpg";
+        return path + period + ".jpg";
     });
 });
 
@@ -147,7 +158,9 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
 
     <!-- Bottom Toolbar -->
-    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom">
+        <div id='idSUIswitch' class='atonBTN atonBTN-text'>Switch</div>
+    </div>
 
 	<!-- Side Panel -->
 	<div id="idPanel" class="atonSidePanelContainer">
@@ -155,9 +168,9 @@ window.addEventListener( 'load', ()=>{
         <div class='descriptionText'>
             In this sample we showcase <b>XPF (eXtended Panoramic Frame)</b> customization.<br><br>
             
-            This is similar to the <a href="../xpf-basic/">basic XPF example</a>. In this case we customize the icon used for the locations of locomotion nodes and its visibility (only next in sight becomes visible).<br><br>
+            This is similar to the <a href="../xpf-basic/">basic XPF example</a>. In this case we customize the icon used for the locations of locomotion nodes and its visibility (only next locomotion node in sight becomes visible).<br><br>
             
-            We also setup a custom path modifier to load two different layers (present and past) by using different postfixes, by pressing <span class="atonKey">'S'</span> key.
+            We also setup a custom path modifier to load two different layers (present and past) by using different postfixes, by pressing <span class="atonKey">'S'</span> key or using bottom switch.
         </div>
         </div>
     </div>

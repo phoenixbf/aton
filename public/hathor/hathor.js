@@ -88,8 +88,8 @@ HATHOR.init = (sid)=>{
 //=======================
 HATHOR.resetSelectionMode = ()=>{
     HATHOR._selMode = HATHOR.SELACTION_STD;
-    $("#btn-shape-convex").removeClass("atonBTN-rec");
-    $("#btn-shape-sphere").removeClass("atonBTN-rec");
+    $("#btn-ann-convex").removeClass("atonBTN-rec");
+    $("#btn-ann-sphere").removeClass("atonBTN-rec");
     $("#btn-measure").removeClass("atonBTN-rec");
 
     ATON.getUINode("sui_measure").switch(false);
@@ -106,42 +106,52 @@ HATHOR.setSelectionMode = (m)=>{
     }
 
     HATHOR._selMode = m;
-    console.log(m);
 
     if (m === HATHOR.SELACTION_ADDSPHERESHAPE){
-        $("#btn-shape-sphere").addClass("atonBTN-rec");
-        $("#btn-shape-convex").removeClass("atonBTN-rec");
+        $("#btn-ann-sphere").addClass("atonBTN-rec");
+        $("#btn-ann-convex").removeClass("atonBTN-rec");
+        $("#btn-measure").removeClass("atonBTN-rec");
     }
 
     if (m === HATHOR.SELACTION_ADDCONVEXPOINT){
-        $("#btn-shape-convex").addClass("atonBTN-rec");
-        $("#btn-shape-sphere").removeClass("atonBTN-rec");
+        $("#btn-ann-convex").addClass("atonBTN-rec");
+        $("#btn-ann-sphere").removeClass("atonBTN-rec");
+        $("#btn-measure").removeClass("atonBTN-rec");
+        
         ATON.getUINode("sui_annconvex").switch(true);
     }
 
     if (m === HATHOR.SELACTION_MEASURE){
-        ATON.getUINode("sui_measure").switch(true);
         $("#btn-measure").addClass("atonBTN-rec");
+        $("#btn-ann-sphere").removeClass("atonBTN-rec");
+        $("#btn-ann-convex").removeClass("atonBTN-rec");
+        
+        ATON.getUINode("sui_measure").switch(true);
     }
 };
 
-// Hathor UI Profiles
-HATHOR.uiBase = ()=>{
-    $("#idTopToolbar").html(""); // clear
-
-    if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
-    ATON.FE.uiAddButtonUser("idTopToolbar");
-    
-    ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
-    ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
+// Hathor UI buttons
+HATHOR.uiAddButtonMeasure = (idcontainer)=>{
+    ATON.FE.uiAddButton(idcontainer, "measure", ()=>{
+        if (HATHOR._selMode !== HATHOR.SELACTION_MEASURE){
+            HATHOR.setSelectionMode(HATHOR.SELACTION_MEASURE);
+            //ATON.Nav.setUserControl(false);
+            //$("#btn-cancel").show();
+        }
+        else {
+            HATHOR.resetSelectionMode();
+        }
+    }, "Measure");
 };
 
-HATHOR.uiAddBaseSem = ()=>{
-    ATON.FE.uiAddButton("idTopToolbar", "shape-sphere", ()=>{
+HATHOR.uiAddButtonAnnSphere = (idcontainer)=>{
+    ATON.FE.uiAddButton(idcontainer, "ann-sphere", ()=>{
         HATHOR.setSelectionMode(HATHOR.SELACTION_ADDSPHERESHAPE);
-    });
+    }, "Annotate using basic sphere shape");
+};
 
-    ATON.FE.uiAddButton("idTopToolbar", "shape-convex", ()=>{
+HATHOR.uiAddButtonAnnConvex = (idcontainer)=>{
+    ATON.FE.uiAddButton(idcontainer, "ann-convex", ()=>{
         if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
             HATHOR.setSelectionMode(HATHOR.SELACTION_ADDCONVEXPOINT);
             ATON.Nav.setUserControl(false);
@@ -151,20 +161,90 @@ HATHOR.uiAddBaseSem = ()=>{
             HATHOR.resetSelectionMode();
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
         }
-    });
+    }, "Annotate using convex shape");
+};
 
-    ATON.FE.uiAddButton("idTopToolbar", "cancel", ()=>{
+HATHOR.uiAddButtonTaskCancel = (idcontainer)=>{
+    ATON.FE.uiAddButton(idcontainer, "cancel", ()=>{
         HATHOR.cancelCurrentTask();
     });
 
     $("#btn-cancel").hide();
 };
 
+
+// Hathor UI Profiles
+HATHOR.uiBase = ()=>{
+    $("#idTopToolbar").html(""); // clear
+
+    if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
+    ATON.FE.uiAddButtonUser("idTopToolbar");
+};
+
+HATHOR.uiAddBaseSem = ()=>{
+    HATHOR.uiAddButtonAnnSphere("idTopToolbar");
+    HATHOR.uiAddButtonAnnConvex("idTopToolbar");
+    HATHOR.uiAddButtonTaskCancel("idTopToolbar");
+};
+
 // Create UI Profiles
 HATHOR.buildUIProfiles = ()=>{
 
+    // Standard
+    ATON.FE.uiAddProfile("default", ()=>{
+        $("#idTopToolbar").html(""); // clear
+
+        ATON.SceneHub._bEdit = false;
+
+        HATHOR.uiBase();
+
+        ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
+        ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
+
+        //ATON.FE.uiAddButtonNav("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
+        ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
+        ATON.FE.uiAddButtonVR("idTopToolbar");
+        //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+
+        ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    });
+
+    // Editor
+    ATON.FE.uiAddProfile("editor", ()=>{
+        $("#idTopToolbar").html("");
+
+        ATON.SceneHub._bEdit = false;
+
+        HATHOR.uiBase();
+
+        ATON.FE.checkAuth((r)=>{
+            let authUser = r.username;
+            let bYourScene = (ATON.SceneHub.currID)? ATON.SceneHub.currID.startsWith(authUser) : false;
+
+            if (!authUser || !bYourScene) return;
+
+            ATON.SceneHub._bEdit = true;
+
+            ATON.FE.uiAddButtonEditMode("idTopToolbar");
+            ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
+            ATON.FE.uiAddButton("idTopToolbar","light", HATHOR.popupEnvironment, "Environment");
+            ATON.FE.uiAddButton("idTopToolbar", "list", HATHOR.popupGraphs, "Scene Layers");
+    /*
+            ATON.FE.uiAddButton("idTopToolbar", "selector", ()=>{
+                ATON.FE.popupSelector();
+            }, "3D Selector");
+    */
+            HATHOR.uiAddButtonMeasure("idTopToolbar");
+            HATHOR.uiAddBaseSem();
+        });
+    });
+
     ATON.FE.uiAddProfile("minimal", ()=>{
         $("#idTopToolbar").html(""); // clear
+
+        ATON.SceneHub._bEdit = false;
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButtonVR("idTopToolbar");
@@ -189,6 +269,8 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("expo", ()=>{
         $("#idTopToolbar").html(""); // clear
 
+        ATON.SceneHub._bEdit = false;
+
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButtonVR("idTopToolbar");
         ATON.FE.uiAddButtonQR("idTopToolbar");
@@ -199,41 +281,17 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("xr", ()=>{
         $("#idTopToolbar").html(""); // clear
 
+        ATON.SceneHub._bEdit = false;
+
         ATON.FE.uiAddButtonVR("idTopToolbar");
         ATON.FE.uiAddButtonAR("idTopToolbar");
         ATON.FE.uiAddButtonQR("idTopToolbar");
         //ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
     });
 
-    
-
-    // Standard
-    ATON.FE.uiAddProfile("default", ()=>{
-        HATHOR.uiBase();
-
-        //ATON.FE.uiAddButtonNav("idTopToolbar");
-        ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
-        ATON.FE.uiAddButtonVR("idTopToolbar");
-        //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
-
-        ATON.FE.uiAddButtonFullScreen("idTopToolbar");
-        ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
-    });
-
-    // Editor
-    ATON.FE.uiAddProfile("editor", ()=>{
-        HATHOR.uiBase();
-
-        ATON.FE.uiAddButton("idTopToolbar", "selector", ()=>{
-            ATON.FE.popupSelector();
-        });
-
-        HATHOR.uiAddBaseSem();
-    });
-
     // Collaborate
 /*
-    ATON.FE.uiAddProfile("collaborate", ()=>{
+    ATON.FE.uiAddProfile("Collaborate", ()=>{
         $("#idTopToolbar").html(""); // clear
 
         ATON.FE.uiAddButtonVRC("idTopToolbar");
@@ -311,7 +369,7 @@ HATHOR.suiSetup = ()=>{
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
 
     let btnAnnConvex = ATON.getUINode("sui_annconvex");
-    btnAnnConvex.setIcon(ATON.FE.PATH_RES_ICONS+"shape-convex.png")
+    btnAnnConvex.setIcon(ATON.FE.PATH_RES_ICONS+"ann-convex.png")
         //.setSwitchColor(ATON.MatHub.colors.green)
         .onSelect = ()=>{
             if (HATHOR._selMode !== HATHOR.SELACTION_ADDCONVEXPOINT){
@@ -1274,15 +1332,23 @@ HATHOR.popupPOV = ()=>{
 
     let htmlcontent = "<div class='atonPopupTitle'>Viewpoint</div>";
 
-    htmlcontent += "<div style='text-align:left;'>";
-    htmlcontent += "<strong>Position</strong>: "+pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3)+"<br>";
-    htmlcontent += "<strong>Target</strong>: "+pov.target.x.toPrecision(3)+","+pov.target.y.toPrecision(3)+","+pov.target.z.toPrecision(3)+"<br>";
-    htmlcontent += "<strong>FoV</strong>: "+pov.fov+"<br>";
-    htmlcontent += "</div>";
-    htmlcontent += "<br>";
+    htmlcontent += "<div style='text-align:right;'>";
 
-    htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%;' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set current viewpoint as Home</div>";
-    htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%;' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
+    let strCurrEye = pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3);
+    let strCurrTgt = pov.target.x.toPrecision(3)+","+pov.target.y.toPrecision(3)+","+pov.target.z.toPrecision(3);
+
+    //htmlcontent += "<strong>Position</strong>: "+pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3)+"<br>";
+    //htmlcontent += "<strong>Target</strong>: "+pov.target.x.toPrecision(3)+","+pov.target.y.toPrecision(3)+","+pov.target.z.toPrecision(3)+"<br>";
+    //htmlcontent += "<strong>FoV</strong>: "+pov.fov+"<br>";
+    htmlcontent += "<strong>Position</strong>: <input id='idPOVeye' type='text' size='20' placeholder='x,y,z' value='"+strCurrEye+"'><br>";
+    htmlcontent += "<strong>Target</strong>: <input id='idPOVtgt' type='text' size='20' placeholder='x,y,z' value='"+strCurrTgt+"'><br>";
+    htmlcontent += "<strong>FoV</strong>: <input id='idPOVfov' type='text' size='20' placeholder='f' value='"+pov.fov+"'><br>";
+
+    htmlcontent += "</div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnPOVgo'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Go</div><br>";
+    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set current viewpoint as Home</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
 /*
     htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'>&nbsp;";
     htmlcontent += "<div class='select' style='width:250px;'><select id='idPOVmode'>";
@@ -1303,6 +1369,32 @@ HATHOR.popupPOV = ()=>{
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
     let povid = undefined;
+
+    $("#btnPOVgo").click(()=>{
+        let eye = $("#idPOVeye").val();
+        let tgt = $("#idPOVtgt").val();
+        let fov = $("#idPOVfov").val();
+
+        eye = eye.split(",");
+        tgt = tgt.split(",");
+
+        if (eye.length !== 3 || tgt.length !== 3) return;
+ 
+        let goPOV = new ATON.POV();
+        goPOV.setPosition(
+            parseFloat(eye[0]),
+            parseFloat(eye[1]),
+            parseFloat(eye[2])
+        );
+        goPOV.setTarget( 
+            parseFloat(tgt[0]),
+            parseFloat(tgt[1]),
+            parseFloat(tgt[2])
+        );
+        goPOV.setFOV( parseFloat(fov) );
+
+        ATON.Nav.requestPOV( goPOV );
+    });
 
     $("#btnPOVsetHome").click(()=>{
         povid = "home";
@@ -1406,16 +1498,15 @@ HATHOR.popupGraphs = ()=>{
 
     // Scene
     htmlcontent += dBlock;
-    htmlcontent += "<div style='text-align:center'><b>VISIBLE</b></div><br>";
-    //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnAddNode' style='width:100%'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div>";
+    htmlcontent += "<div style='text-align:center'><b>STANDARD</b></div><br>";
     htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SCENE);
+    //htmlcontent += "<div id='idNewNID' class='atonBTN atonBTN-green atonBTN-horizontal'>NEW</div>";
     htmlcontent += "</div>";
 
     // Semantics
     if (Object.keys(ATON.semnodes).length > 1){
         htmlcontent += dBlock;
         htmlcontent += "<div style='text-align:center'><b>SEMANTIC</b></div><br>";
-        //htmlcontent += "<div class='atonBTN atonBTN-green' id='btnAddSemNode' style='width:100%'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'></div>";
         htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SEM);
         htmlcontent += "</div>";
     }
@@ -1439,6 +1530,12 @@ HATHOR.popupGraphs = ()=>{
         E.measurements = {};
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
         ATON.VRoadcast.fireEvent("AFE_ClearMeasurements");
+    });
+
+    $("#idNewNID").click(()=>{
+        ATON.FE.subPopup(()=>{
+            ATON.FE.popupNewNode(ATON.NTYPES.SCENE);
+        });
     });
 
 };
@@ -1472,19 +1569,23 @@ HATHOR.popupEnvironment = ()=>{
 
 
     // Pano
-    htmlcontent += "<br><br>";
-    htmlcontent += "<div style='text-align:center;'>";
-    htmlcontent += "Select panorama from collection or URL: <input id='idPanoURL' type='text' size='30'>";
-    htmlcontent += "<div id='idClearPano' class='atonBTN'><img src='"+ATON.FE.PATH_RES_ICONS+"search-clear.png'></div><div id='idSetPano' class='atonBTN atonBTN-green'>Set</div><br>";
-    htmlcontent += "<div id='idPanoPreview' style='margin:auto; width:200px; height:100px'></div>";
-    htmlcontent += "</div><br>";
+    if (ATON.FE.getCurrentUIP()==="editor"){
+        htmlcontent += "<br><br>";
+        htmlcontent += "<div style='text-align:center;'>";
+        htmlcontent += "Select panorama from collection or URL: <input id='idPanoURL' type='text' size='30'>";
+        htmlcontent += "<div id='idClearPano' class='atonBTN'><img src='"+ATON.FE.PATH_RES_ICONS+"search-clear.png'></div><div id='idSetPano' class='atonBTN atonBTN-green'>Set</div><br>";
+        htmlcontent += "<div id='idPanoPreview' style='margin:auto; width:200px; height:100px'></div>";
+        htmlcontent += "</div><br>";
 
-    htmlcontent += "<div style='text-align:center;'>Panorama rotation (<span id='idEnvRotVal'></span>)<br>";
-    htmlcontent += "<input id='idEnvRot' type='range' min='0.0' max='1.0' step='0.02' >";
-    htmlcontent += "</div><br>";
+        htmlcontent += "<div style='text-align:center;'>Panorama rotation (<span id='idEnvRotVal'></span>)<br>";
+        htmlcontent += "<input id='idEnvRot' type='range' min='0.0' max='1.0' step='0.02' >";
+        htmlcontent += "</div><br>";
+    }
 
     // Advanced FX
     if (ATON.FX.composer){
+        htmlcontent += "<details><summary><b>Advanced Effects</b></summary>";
+
         str = (ATON.FX.isPassEnabled(ATON.FX.PASS_AO))? "checked" : "";
         htmlcontent += "<div class='atonOptionBlockShort' >";
         htmlcontent += "<input type='checkbox' id='idFXPassSAO' "+str+"><b>Ambient Occlusion</b><br>";
@@ -1506,6 +1607,8 @@ HATHOR.popupEnvironment = ()=>{
         htmlcontent += "Enable or disable real-time DOF<br><br>";
         //htmlcontent += "Focus (<span id='idFXDOFfocusVal'></span>)<br><input id='idFXDOFfocus' type='range' min='0.1' max='50.0' step='0.02' ><br>";
         htmlcontent += "</div>";
+
+        htmlcontent += "</details>";
     }
 
     htmlcontent += "</div>";
@@ -1748,28 +1851,87 @@ HATHOR.popupEnvironment = ()=>{
     
 };
 
+HATHOR.popupShare = ()=>{
+    let htmlcontent = "<div class='atonPopupTitle'>Share</div>";
+    htmlcontent += "<div class='atonQRcontainer' id='idQRcode'></div><br><br>";
+
+    htmlcontent += "<details><summary><b>Embed this Scene</b></summary>";
+    htmlcontent += "Copy and paste this HTML code in your blog or website to embed an interactive 3D component for this scene<br><br>";
+    htmlcontent += "<input id='idEmbStaticCover' type='checkbox'>Use static cover<br>";
+    htmlcontent += "<textarea id='idEmbed' style='width:90%; height:100px; resize:none;' readonly ></textarea><br>";
+    //htmlcontent += "<div id='idEmbed' class='atonCode'></div>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='btnEmbedCopy'>Copy</div>";
+    htmlcontent += "</details>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    let url = window.location.href;
+    new QRCode(document.getElementById("idQRcode"), url);
+
+    let iframecode = "<iframe style='height:500px; margin:0;' src='"+window.location.href+"' width='100%' height='500px' frameborder='0' allowfullscreen='1'></iframe>";
+    let istaticcode = "<a href='"+window.location.href+"'><img src='"+ATON.PATH_SCENES+ATON.SceneHub.currID+"/cover.png'></a>";
+
+    $('#idEmbed').val(iframecode);
+    //$('#idEmbed').text(iframecode);
+
+    $("#btnEmbedCopy").click(()=>{
+        let copyText = document.getElementById("idEmbed");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+
+        ATON.FE.popupClose();
+    });
+
+    $("#idEmbStaticCover").on("change", ()=>{
+        let b = $("#idEmbStaticCover").is(':checked');
+
+        if (b) $('#idEmbed').val(istaticcode);
+        else $('#idEmbed').val(iframecode);
+    });
+};
+
+
 HATHOR.popupScene = ()=>{
+    if (ATON.SceneHub.currID === undefined) return;
+
     let title = (ATON.SceneHub.getTitle())? ATON.SceneHub.getTitle() : ATON.SceneHub.currID;
 
     let htmlcontent = "<div class='atonPopupTitle'>"+title+"</div>";
-
     if (ATON.SceneHub.getTitle()) htmlcontent += ATON.SceneHub.currID+"<br>";
-    htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:200px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
+
+    // Keywords
+    if (ATON.SceneHub.currData){
+        let kwds = ATON.SceneHub.currData.kwords;
+        if (kwds){
+            htmlcontent += "<div>";
+            for (let k in kwds) htmlcontent += "<span class='atonKeyword'>"+k+"</span>"
+            htmlcontent += "</div><br>";
+        }
+    }
+    
+    //htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:200px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
+
+    htmlcontent += "<div id='btnCover' class='atonCover'>";
+    htmlcontent += "<img src='"+ATON.PATH_RESTAPI+"cover/"+ATON.SceneHub.currID+"' style='width:200px; height:auto'></div>";
 
     //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";
 
     ATON.FE.checkAuth((r)=>{
-        let authUser = r.username;
-        let bYourScene = (ATON.SceneHub.currID)? ATON.SceneHub.currID.startsWith(authUser) : false;
+        let authUser   = r.username;
+        let bYourScene = ATON.SceneHub.currID.startsWith(authUser);
 
         htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; max-width:300px; text-align:center'>";
 
         // Authenticated
         if (authUser && bYourScene){
+/*
             if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN switchedON' style='width:80%' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Persistent changes</div>";
             else htmlcontent += "<div class='atonBTN' style='width:250px' id='btnSchanges'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Temporary changes</div>";
 
             htmlcontent += "<br><br>";
+*/
 /*
             let pe = (ATON.SceneHub._bEdit)? "checked" : "";
             htmlcontent += "<input type='checkbox' id='idSchanges' "+pe+">Persistent scene changes<br>";
@@ -1779,31 +1941,35 @@ HATHOR.popupScene = ()=>{
             ///htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Set Cover</div>";
             //htmlcontent += "<div class='atonBTN atonBTN-green' id='idPopSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot / Cover</div>";
 
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnInfo'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'>Edit info</div>";
 
             //htmlcontent += "<br>";
         }
 
         // Common scene options
-        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
-        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
-        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEnv'><img src='"+ATON.FE.PATH_RES_ICONS+"light.png'>Environment</div>";
-        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEmbed'><img src='"+ATON.FE.PATH_RES_ICONS+"embed.png'>Embed</div>";
-        htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopEnv'><img src='"+ATON.FE.PATH_RES_ICONS+"light.png'>Environment</div>";
+        //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEmbed'><img src='"+ATON.FE.PATH_RES_ICONS+"embed.png'>Embed</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot</div>";
+
+        if (ATON.FE.getCurrentUIP()==="editor"){
+            htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
+        }
 
         htmlcontent += "</div>";
 
         // Only for auth users
-        if (authUser){
+        if (authUser && ATON.FE.getCurrentUIP()==="editor"){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this scene</div><br>";
+            htmlcontent += "<div class='atonBTN atonBTN-orange atonBTN-horizontal atonBTN-text' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this Scene</div>";
 
             if (!bYourScene){
                 //
             }
             else {
-                htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:90%' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this scene</div>";
-                htmlcontent += "<br><div class='atonBTN atonBTN-red' style='width:90%' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
+                htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscene'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this Scene</div>";
+                htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage my Scenes</div>";
+                htmlcontent += "<br><div class='atonBTN atonBTN-red atonBTN-horizontal atonBTN-text' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
             }
         }
 
@@ -1811,11 +1977,12 @@ HATHOR.popupScene = ()=>{
 
         if (ATON.SceneHub._bEdit) $('#btnInfo').show();
         else $('#btnInfo').hide();
-
+/*
         // Build QR
         let url = window.location.href;
         new QRCode(document.getElementById("idQRcode"), url);
-
+*/
+/*
         $('#btnSchanges').click(()=>{
             ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
 
@@ -1834,7 +2001,7 @@ HATHOR.popupScene = ()=>{
                 console.log("Scene edits are now temporary"); 
             }
         });
-
+*/
 /*
         if (ATON.SceneHub._bEdit) $('#idEditMode').val('1');
         else $('#idEditMode').val('0');
@@ -1875,26 +2042,30 @@ HATHOR.popupScene = ()=>{
 
         $("#btnSShot").click(()=>{
             ATON.FE.subPopup( ATON.FE.popupScreenShot );
-        });   
+        });
+        $("#btnCover").click(()=>{
+            ATON.FE.subPopup( ATON.FE.popupScreenShot );
+        });
 
 /*
         $("#idPopQR").click(()=>{
 
         });
 */
-        $("#idSHUscenes").click(()=>{
+        $("#idSHUscene").click(()=>{
             if (ATON.SceneHub.currID === undefined) return;
             window.open("/shu/scenes/?s="+ATON.SceneHub.currID, "_self");
+        });
+
+        $("#idSHUscenes").click(()=>{
+            if (ATON.SceneHub.currID === undefined) return;
+            window.open("/shu/scenes/", "_self");
         });
 
         $("#idSHUclone").click(()=>{
             ATON.Utils.postJSON(ATON.PATH_RESTAPI+"clone/scene", {sid: ATON.SceneHub.currID}, (newsid)=>{
                 if (newsid) window.location.href = "/s/"+newsid;
             });
-        });
-
-        $("#btnPopEmbed").click(()=>{
-            ATON.FE.subPopup( HATHOR.popupEmbed );
         });
 
         $("#idDelScene").click(()=>{

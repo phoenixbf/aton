@@ -678,15 +678,26 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "edit", ()=>{
         FE.checkAuth((data)=>{
             if (data.username !== undefined){
-                ATON.SceneHub._bEdit = !ATON.SceneHub._bEdit;
-                FE.uiSwitchButton("edit",ATON.SceneHub._bEdit);
+                if (ATON.SceneHub._bEdit){
+                    ATON.SceneHub._bEdit = false;
+                    FE.uiSwitchButton("edit",false);
+                }
+                else {
+                    ATON.SceneHub._bEdit = true;
+                    FE.uiSwitchButton("edit",true);
+                }
+
+                console.log("Persistent Edit Mode: "+ATON.SceneHub._bEdit);
             }
 
             else {
                 FE.popupUser();  
             }
         });
-    });
+    }, "Persistent Edit Mode");
+
+    if (ATON.SceneHub._bEdit) FE.uiSwitchButton("edit",true);
+    else FE.uiSwitchButton("edit",false);
 };
 
 /**
@@ -711,6 +722,10 @@ FE.uiLoadProfile = (id)=>{
     f();
     FE._uiCurrProfile = id;
     console.log("Loaded UI Profile: "+FE._uiCurrProfile);
+};
+
+FE.getCurrentUIP = ()=>{
+    return FE._uiCurrProfile;
 };
 
 FE.attachHandlerToButton = (idbutton, h)=>{
@@ -755,6 +770,8 @@ FE.uiCreateGraph = (type)=>{
         
         let chk = N.visible? "checked" : "";
         if (nid !== ".") htmlcontent += "<input type='checkbox' "+chk+" onchange=\"ATON.FE.switchNode('"+nid+"',this.checked,"+type+");\">"+nid+"<br>";
+
+        //htmlcontent += "<div class='atonBTN atonBTN-text'></div>";
     }
 
     return htmlcontent;
@@ -901,14 +918,14 @@ FE.popupQR = ()=>{
 };
 
 FE.popupScreenShot = ()=>{
-    let cover = ATON.Utils.takeScreenshot(256); // 200
+    let cover = ATON.Utils.takeScreenshot(256);
 
     FE.checkAuth((r)=>{
 
         let htmlcontent = "<div class='atonPopupTitle'>Screenshot</div>";
         htmlcontent += "This is a preview of what your screenshot will look like:<br><br>";
         htmlcontent += "<img src='"+cover.src+"'><br>";
-        htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='200'>px<br>";
+        htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='256'>px<br>";
 
         htmlcontent += "<div class='atonBTN' id='btnScreenShot' style='width:90%'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT</div>";
 
@@ -924,9 +941,11 @@ FE.popupScreenShot = ()=>{
         if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
         $("#btnScreenShot").click(()=>{
+            let s = parseInt( $('#isShotSize').val() );
+            if (s < 100) return;
+
             ATON.FE.popupClose();
 
-            let s = parseInt( $('#isShotSize').val() );
             let img = ATON.Utils.takeScreenshot(s,"shot.png");
         });
 
@@ -1055,6 +1074,17 @@ FE.checkAuth = (onReceive)=>{
 };
 */
 
+/*
+FE.logout = ( onSuccess )=>{
+    $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
+        ATON.SceneHub.setEditMode(false);
+        ATON.fireEvent("Logout");
+        
+        if (onSuccess) onSuccess();
+    });
+};
+*/
+
 FE.popupUser = ()=>{
 
     FE.checkAuth((r)=>{
@@ -1085,7 +1115,10 @@ FE.popupUser = ()=>{
             $("#idLogoutBTN").click(()=>{
                 $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
                     console.log(r);
+                    
                     ATON.SceneHub.setEditMode(false);
+                    FE.uiSwitchButton("edit",false);
+
                     ATON.fireEvent("Logout");
                     $("#btn-user").removeClass("switchedON");
                 });
@@ -1250,7 +1283,30 @@ FE.popupNav = ()=>{
     FE.uiAddButtonFirstPerson("idNMfp");
     FE.uiAddButtonDeviceOrientation("idNMdevori");
     FE.uiAddButtonVR("idNMvr");
+};
 
+FE.popupNewNode = (type)=>{
+    if (type === undefined) type = ATON.NTYPES.SCENE;
+
+    let htmlcontent = "";
+
+    if (type === ATON.NTYPES.SCENE) htmlcontent = "<div class='atonPopupTitle'>New Scene Node</div>";
+    if (type === ATON.NTYPES.SEM) htmlcontent = "<div class='atonPopupTitle'>New Semantic Node</div>";
+
+    htmlcontent += "<strong>ID</strong>: <input id='idNID' type='text' size='20' placeholder='node-id'><br>";
+    htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnNewNID'><img src='"+ATON.FE.PATH_RES_ICONS+"add.png'>Add</div><br>";
+
+    if ( !FE.popupShow(htmlcontent) ) return;
+
+    $("#btnNewNID").click(()=>{
+        let nnid = $("#idNID").val().trim();
+        if (nnid === undefined || nnid.length<3) return;
+
+        let N = new ATON.Node(nnid, type);
+        N.attachToRoot();
+
+        // TODO: send graph edits
+    });
 };
 
 export default FE;

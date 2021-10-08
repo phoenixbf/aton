@@ -674,7 +674,10 @@ app.get("/api/users", (req,res)=>{
 	}
 
 	let uu = [];
-	for (let u in Core.users) uu.push(Core.users[u].username);
+	for (let u in Core.users) uu.push({
+		username: Core.users[u].username,
+		admin: Core.users[u].admin
+	});
 
 	res.send(uu);
 });

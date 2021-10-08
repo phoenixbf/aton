@@ -26,28 +26,47 @@
 
 <script>
 
+// TODO:
+let deleteUser = (username)=>{
+    ATON.Utils.postJSON(ATON.PATH_RESTAPI+"new/user/", u, 
+        (r)=>{
+            console.log(r);
+            if (r){
+                $("#idResponse").html("User "+username+" successfully deleted");
+
+                location.reload();
+            }
+            else $("#idResponse").html("Failed to delete "+username);
+        }, 
+        ()=>{ // fail
+            $("#idResponse").html("Failed to delete "+username);
+        }
+    );
+};
+
 let renderForm = ()=>{
     let htmlcontent = "";
 
     $.getJSON( ATON.PATH_RESTAPI+"users/", (data)=>{
 
         htmlcontent += "<div class='atonBlockRound'>";
-        htmlcontent += "<div style='white-space:nowrap; display:inline'>username:<input id='idNewUsername' type='text' maxlength='15' size='15' autocomplete='off'></div>";
+        htmlcontent += "<div style='white-space:nowrap; display:inline'>username:<input id='idNewUsername' type='text' maxlength='15' size='15' autocomplete='off'></div><br>";
         htmlcontent += "<div style='white-space:nowrap; display:inline'>password:<input id='idNewPassword' type='password' maxlength='15' size='15' autocomplete='off'></div><br>";
-        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='"+ATON.PATH_RES+"icons/user.png'>Add User</div>";
-        htmlcontent += "<br><div id='idResponse'></div>";
+        htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='idNewUser'><img src='"+ATON.PATH_RES+"icons/user.png'>Add User</div>";
+        htmlcontent += "<div id='idResponse'></div>";
         htmlcontent += "</div><br><br>";
 
         htmlcontent += "<table>";
-        htmlcontent += "<tr><th>#</th><th>Username</th><th>Password</th><th>Actions</th></tr>";
+        htmlcontent += "<tr><th>#</th><th>Username</th><th>Role</th><th>Password</th><th>Actions</th></tr>";
 
         for (let u in data){
-            let username = data[u];
+            let U = data[u];
 
             htmlcontent += "<tr>";
 
             htmlcontent += "<td>"+u+"</td>";
-            htmlcontent += "<td>"+username+"</td>";
+            htmlcontent += "<td>"+U.username+"</td>";
+            htmlcontent += (U.admin)? "<td>Admin</td>" : "<td>Default</td>";
             htmlcontent += "<td><div class='atonBTN' style='width:100px'><img src='"+ATON.PATH_RES+"icons/edit.png'>change</div></td>";
             htmlcontent += "<td>";
             htmlcontent += "<div class='atonBTN atonBTN-red' style='width:150px'><img src='"+ATON.PATH_RES+"icons/trash.png'>delete</div>";

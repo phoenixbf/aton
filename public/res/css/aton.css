@@ -279,6 +279,10 @@ canvas:active {
     text-align: right;
 }
 
+.atonToolbar-bg-edit {
+    background-color:rgba(255, 128, 0, 0.2);
+}
+
 .scrollableX {
     overflow-x: auto;
     overflow-y: hidden;
@@ -553,6 +557,8 @@ canvas:active {
 .atonKeyword {
     display: inline-block;
     border-radius: 5px;
+
+    text-decoration: none;
 
     font-size: smaller;
     text-shadow: none;

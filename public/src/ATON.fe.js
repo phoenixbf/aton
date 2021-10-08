@@ -670,6 +670,14 @@ FE.uiAddButtonUser = (idcontainer)=>{
     });
 };
 
+FE.uiSetEditMode = (b, idcontainer)=>{
+    ATON.SceneHub._bEdit = b;
+    FE.uiSwitchButton("edit", b);
+
+    if (b) $("#"+idcontainer).addClass("atonToolbar-bg-edit");
+    else $("#"+idcontainer).removeClass("atonToolbar-bg-edit");
+};
+
 /**
 Add persistent editing mode button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
@@ -679,12 +687,10 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
         FE.checkAuth((data)=>{
             if (data.username !== undefined){
                 if (ATON.SceneHub._bEdit){
-                    ATON.SceneHub._bEdit = false;
-                    FE.uiSwitchButton("edit",false);
+                    FE.uiSetEditMode(false, idcontainer);
                 }
                 else {
-                    ATON.SceneHub._bEdit = true;
-                    FE.uiSwitchButton("edit",true);
+                    FE.uiSetEditMode(true, idcontainer);
                 }
 
                 console.log("Persistent Edit Mode: "+ATON.SceneHub._bEdit);
@@ -1103,7 +1109,7 @@ FE.popupUser = ()=>{
                 htmlcontent += "</select><div class='selectArrow'></div></div><br><br>";
             }
 
-            htmlcontent += "<div class='atonBTN atonBTN-red' id='idLogoutBTN' style='width:90%'>LOGOUT</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-text atonBTN-horizontal' id='idLogoutBTN'>LOGOUT</div>";
 
             if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
@@ -1115,7 +1121,7 @@ FE.popupUser = ()=>{
             $("#idLogoutBTN").click(()=>{
                 $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
                     console.log(r);
-                    
+
                     ATON.SceneHub.setEditMode(false);
                     FE.uiSwitchButton("edit",false);
 
@@ -1147,7 +1153,7 @@ FE.popupUser = ()=>{
             htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
             htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-            htmlcontent += "<div class='atonBTN atonBTN-green' id='idLoginBTN' style='width:90%'>LOGIN</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-text atonBTN-horizontal' id='idLoginBTN'>LOGIN</div>";
 
             if ( !ATON.FE.popupShow(htmlcontent) ) return;
 

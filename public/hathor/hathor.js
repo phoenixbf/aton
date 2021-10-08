@@ -194,7 +194,7 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("default", ()=>{
         $("#idTopToolbar").html(""); // clear
 
-        ATON.SceneHub._bEdit = false;
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
         HATHOR.uiBase();
 
@@ -215,17 +215,18 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("editor", ()=>{
         $("#idTopToolbar").html("");
 
-        ATON.SceneHub._bEdit = false;
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
         HATHOR.uiBase();
 
         ATON.FE.checkAuth((r)=>{
-            let authUser = r.username;
+            let authUser   = r.username;
             let bYourScene = (ATON.SceneHub.currID)? ATON.SceneHub.currID.startsWith(authUser) : false;
 
+            // In order to allow editing, must be authenticated + our scene
             if (!authUser || !bYourScene) return;
 
-            ATON.SceneHub._bEdit = true;
+            ATON.FE.uiSetEditMode(true, "idTopToolbar");
 
             ATON.FE.uiAddButtonEditMode("idTopToolbar");
             ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
@@ -244,7 +245,7 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("minimal", ()=>{
         $("#idTopToolbar").html(""); // clear
 
-        ATON.SceneHub._bEdit = false;
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButtonVR("idTopToolbar");
@@ -269,7 +270,7 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("expo", ()=>{
         $("#idTopToolbar").html(""); // clear
 
-        ATON.SceneHub._bEdit = false;
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButtonVR("idTopToolbar");
@@ -281,7 +282,7 @@ HATHOR.buildUIProfiles = ()=>{
     ATON.FE.uiAddProfile("xr", ()=>{
         $("#idTopToolbar").html(""); // clear
 
-        ATON.SceneHub._bEdit = false;
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
         ATON.FE.uiAddButtonVR("idTopToolbar");
         ATON.FE.uiAddButtonAR("idTopToolbar");
@@ -572,6 +573,8 @@ HATHOR.setupEventHandlers = ()=>{
     });
     ATON.on("Logout", ()=>{
         $('#idAuthTools').hide();
+
+        ATON.FE.uiSetEditMode(false, "idTopToolbar");
     });
 
     // Immersive Sessions
@@ -1906,7 +1909,7 @@ HATHOR.popupScene = ()=>{
         let kwds = ATON.SceneHub.currData.kwords;
         if (kwds){
             htmlcontent += "<div>";
-            for (let k in kwds) htmlcontent += "<span class='atonKeyword'>"+k+"</span>"
+            for (let k in kwds) htmlcontent += "<a class='atonKeyword atonKeywordActivable' href='/?q="+k+"'>"+k+"</a>";
             htmlcontent += "</div><br>";
         }
     }

@@ -32,6 +32,8 @@ Utils.init = ()=>{
     document.body.appendChild( Utils._dlink ); // Firefox workaround, see #6594
 
     Utils.textureLoader = new THREE.TextureLoader();
+
+    Utils._bShowBVHbounds = false;
 };
 
 Utils.generateID = (prefix)=>{
@@ -52,6 +54,11 @@ If current connection is secure
 Utils.isConnectionSecure = ()=>{
     return window.isSecureContext;
 }
+
+// Utility
+Utils.setBVHboundsVisible = ()=>{
+    Utils._bShowBVHbounds = true;
+};
 
 
 // Profile device capabilities
@@ -351,7 +358,15 @@ Utils.loadTileSet = (tsurl, N)=>{
                 //c.castShadow    = true; //N.castShadow;
                 //c.receiveShadow = true; //N.receiveShadow;
 
-                if (c.geometry) c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
+                if (c.geometry){
+                    c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
+
+                    if (Utils._bShowBVHbounds){
+                        let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(c, 5);
+                        BVHVis.update();
+                        c.parent.add(BVHVis);
+                    }
+                }
             }
 
             if ( c.material ){
@@ -429,11 +444,11 @@ Utils.modelVisitor = (N, model)=>{
                     console.log("Computed visible BVH");
 
                     // visualize BVH bounds
-/*
-                    let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
-                    BVHVis.update();
-                    o.parent.add(BVHVis);
-*/
+                    if (Utils._bShowBVHbounds){
+                        let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
+                        BVHVis.update();
+                        o.parent.add(BVHVis);
+                    }
                 }
 
                 // Fix mipmapping

@@ -124,7 +124,7 @@
                     "transmissionFactor": 1.0
                 },
                 "KHR_materials_volume": {
-                    "attenuationColor": [1,1,1],
+                    "attenuationColor": [1,1,0.5],
                     "attenuationDistance": 0.155,
                     "thicknessFactor": 0.5
                 }

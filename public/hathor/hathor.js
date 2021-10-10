@@ -70,6 +70,9 @@ HATHOR.init = (sid)=>{
     // Load scene
     ATON.FE.loadSceneID(HATHOR.paramSID);
 
+    // Show BVH
+    //ATON.Utils.setBVHboundsVisible();
+
     //ATON._bPauseQuery = true;
     //ATON.setTimedGazeDuration(2.0);
 

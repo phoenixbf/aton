@@ -217,13 +217,22 @@ Core.touchCollectionFolder = (user)=>{
 
 	let dirColl = path.join( Core.DIR_COLLECTIONS, user.username );
 
-	if (!fs.existsSync(dirColl)) makeDir.sync(dirColl);
+	if (!fs.existsSync(dirColl)){
+		try {
+			makeDir.sync(dirColl);
+		} catch (e){
+			console.log(e);
+			return;
+		}
+	}
 
+/*
 	let dirModels = path.join(dirColl,"/models/");
 	let dirPano   = path.join(dirColl,"/pano/");
 
 	if (!fs.existsSync(dirModels)) makeDir.sync(dirModels);
 	if (!fs.existsSync(dirPano)) makeDir.sync(dirPano);
+*/
 };
 
 Core.touchUserCollectionFolders = ()=>{

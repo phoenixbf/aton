@@ -1919,7 +1919,7 @@ HATHOR.popupScene = ()=>{
     
     //htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:200px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
 
-    htmlcontent += "<div id='btnCover' class='atonCover'>";
+    htmlcontent += "<div id='btnCover' class='atonCover' style='margin:5px'>";
     htmlcontent += "<img src='"+ATON.PATH_RESTAPI+"cover/"+ATON.SceneHub.currID+"' style='width:200px; height:auto'></div>";
 
     //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";

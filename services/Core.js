@@ -170,6 +170,8 @@ Core.init = ()=>{
 	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
+	Core.touchUserCollectionFolders();
+
 	//const maatport = (Core.config.services.maat)? Core.config.services.maat.PORT : 8891;
 	//Core._maatEP = "http://localhost:"+maatport+"/";
 
@@ -210,6 +212,29 @@ Core.loadConfigFile = (jsonfile, defconf)=>{
 
 };
 
+Core.touchCollectionFolder = (user)=>{
+	if (user === undefined) return;
+
+	let dirColl = path.join( Core.DIR_COLLECTIONS, user.username );
+
+	if (!fs.existsSync(dirColl)) makeDir.sync(dirColl);
+
+	let dirModels = path.join(dirColl,"/models/");
+	let dirPano   = path.join(dirColl,"/pano/");
+
+	if (!fs.existsSync(dirModels)) makeDir.sync(dirModels);
+	if (!fs.existsSync(dirPano)) makeDir.sync(dirPano);
+};
+
+Core.touchUserCollectionFolders = ()=>{
+	let len = Core.users.length;
+	for (let i = 0; i < len; i++){
+		let U = Core.users[i];
+
+		Core.touchCollectionFolder( U );
+	}
+};
+
 
 // SSL certs
 Core.getCertPath = ()=>{
@@ -238,7 +263,7 @@ Core.createNewUser = (entry)=>{
 	let uconfig = path.join(Core.DIR_CONFIG + "users.json");
 	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
-	// Create collection & scenes TODO:
+	Core.touchCollectionFolder(entry);
 
 	console.log("Created new user: "+entry);
 

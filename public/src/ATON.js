@@ -449,6 +449,9 @@ ATON.realize = ()=>{
     // Timing
     ATON._clock = new THREE.Clock(true);
 
+    // Bounds
+    ATON.bounds = {};
+
     ATON._bFS = false; // fullscreen
 
     const wglopts = {
@@ -917,6 +920,9 @@ ATON._assetReqComplete = (url)=>{
 };
 
 ATON._onAllReqsCompleted = ()=>{
+
+    ATON.recomputeSceneBounds();
+/*
     // Bounds
     let c = ATON._rootVisible.getBound().center;
     let r = ATON._rootVisible.getBound().radius;
@@ -933,7 +939,7 @@ ATON._onAllReqsCompleted = ()=>{
         ATON.adjustShadowsParamsFromSceneBounds();
 
         if (ATON._bShadowsFixedBound){
-            ATON.updateDirShadows(/*c*/);
+            ATON.updateDirShadows();
         }
     }
 
@@ -955,6 +961,7 @@ ATON._onAllReqsCompleted = ()=>{
 
     // re-center main pano
     if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
+*/
 
     ATON.getRootScene().assignLightProbesByProximity();
     //ATON.updateLightProbes();
@@ -991,6 +998,49 @@ ATON._postAllReqsCompleted = (R)=>{
             //if (N.bPickable !== undefined) N.setPickable(N.bPickable);
         }
     }
+};
+
+ATON.recomputeSceneBounds = ()=>{
+
+    ATON.bounds.center = ATON._rootVisible.getBound().center;
+    ATON.bounds.radius = ATON._rootVisible.getBound().radius;
+
+    //console.log(ATON.bounds);
+
+    if (ATON.bounds.radius <= 0.0) return;
+
+    // Shadows
+    if (ATON._renderer.shadowMap.enabled){
+        ATON._rootVisible.traverse((o) => {
+            if (o.isMesh){
+                o.castShadow = true;
+                o.receiveShadow = true;
+            }
+        });
+
+        ATON.adjustShadowsParamsFromSceneBounds();
+
+        if (ATON._bShadowsFixedBound){
+            ATON.updateDirShadows(/*c*/);
+        }
+    }
+
+    // Auto-LP
+    if (ATON._bAutoLP){
+        if (ATON._lps[0] === undefined) ATON.addLightProbe( new ATON.LightProbe().setPosition(ATON.bounds.center).setNear(ATON.bounds.radius) );
+        else {
+            ATON._lps[0].setPosition(ATON.bounds.center).setNear(ATON.bounds.radius);
+        }
+        console.log("Auto LP");
+    }
+
+    if (ATON.FX.composer){
+        // Estimate DOF aperture from bound radius
+        ATON.FX.setDOFaperture( 1.0 / (ATON.bounds.radius * 30.0));
+    }
+
+    // re-center main pano
+    if (ATON._mMainPano) ATON._mMainPano.position.copy(ATON.bounds.center);
 };
 
 
@@ -1436,13 +1486,7 @@ ATON.toggleShadows = (b)=>{
         ATON.adjustShadowsParamsFromSceneBounds();
 
         ATON.updateDirShadows();
-/*
-        if (ATON._bShadowsFixedBound){
-            let c = ATON._rootVisible.getBound().center;
-            ATON.updateDirShadows(c);
-        }
-        else ATON.updateDirShadows();
-*/
+
         ATON._dMainL.shadow.needsUpdate = true;
 
         console.log("Shadows ON");

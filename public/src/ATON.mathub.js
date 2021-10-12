@@ -130,7 +130,7 @@ MatHub.addDefaults = ()=>{
         //flatShading: true
     });
 */
-    // XR/VR ray
+    // Controller XR ray
     MatHub.materials.controllerRay = MatHub.materials.defUI.clone();
     MatHub.materials.controllerRay.uniforms.color.value = MatHub.colors.white;
     //MatHub.materials.controllerRay.uniforms.base.value  = MatHub.colors.white;
@@ -143,6 +143,13 @@ MatHub.addDefaults = ()=>{
         //flatShading: true
     });
 */
+
+    // X-ray
+    MatHub.materials.xray = MatHub.materials.defUI.clone();
+    MatHub.materials.xray.uniforms.color.value   = MatHub.colors.white;
+    MatHub.materials.xray.uniforms.opacity.value = 0.5;
+    //MatHub.materials.xray.side = THREE.DoubleSide;
+
     // Teleport locator
     MatHub.materials.teleportLoc = new THREE.MeshBasicMaterial({ 
         transparent: true, 

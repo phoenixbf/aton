@@ -303,6 +303,7 @@ Utils.updateTSetsCamera = (cam)=>{
 };
 
 Utils.loadTileSet = (tsurl, N)=>{
+    if (N === undefined) return;
 
     let ts = new TILES.TilesRenderer(tsurl);
     if (!ts) return;
@@ -333,23 +334,33 @@ Utils.loadTileSet = (tsurl, N)=>{
 
     ts.manager.addHandler( /\.gltf$/, /*ATON._aLoader*/ tloader );
 
+    N.add(ts.group);
+
+    const MIN_TILES = 2; // min number of tiles for tileset to be considered loaded
+    let tflip = 0;
+
+    // JSON loaded
     ts.onLoadTileSet = ()=>{
-        ATON._assetReqComplete(tsurl);
+        //ATON._assetReqComplete(tsurl);
         console.log("TileSet loaded");
 
-        let bb = new THREE.Box3();
-        let bs = new THREE.Sphere();
-        ts.getBounds(bb);
-        bb.getBoundingSphere(bs);
-
-        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, bs);
-
-        if (ATON.FX.composer) ATON.FX.setDOFaperture( 1.0 / (bs.radius*30.0));
+        //ATON.recomputeSceneBounds();
+        //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
     };
-
+    
     // Tile loaded
     ts.onLoadModel = ( scene )=>{
         //console.log(ts.lruCache.itemList.length);
+
+        if (tflip < MIN_TILES) tflip++;
+        else if (tflip === MIN_TILES){
+            ATON._assetReqComplete(tsurl);
+            tflip++;
+
+            ATON.recomputeSceneBounds();
+            if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+        }
+
 
         scene.traverse( c => {
             //c.layers.enable(N.type);
@@ -394,8 +405,6 @@ Utils.loadTileSet = (tsurl, N)=>{
         //console.log("DISPOSE");
     };
 
-
-    N.add(ts.group);
     Utils.setPicking(N, N.type, true);
 
     ATON._tsets.push(ts);

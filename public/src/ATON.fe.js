@@ -1225,8 +1225,9 @@ FE.popupSceneInfo = ()=>{
 };
 
 FE.computeSelectorRanges = ()=>{
-    let sceneBS = ATON.getRootScene().getBound();
-    let r = sceneBS.radius;
+    //let sceneBS = ATON.getRootScene().getBound();
+    //let r = sceneBS.radius;
+    let r = ATON.bounds.radius;
 
     if (r <= 0.0) return;
 

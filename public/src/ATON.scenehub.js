@@ -667,6 +667,15 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
     });
 };
 
+SceneHub.currSceneHasHomeConfig = ()=>{
+    if (SceneHub.currData === undefined) return false;
+    if (SceneHub.currData.viewpoints === undefined) return false;
+    if (SceneHub.currData.viewpoints.home === undefined) return false;
+
+    return true;
+};
+
+// FIXME:
 SceneHub.setTitle = (title)=>{
     SceneHub._title = title;
 };

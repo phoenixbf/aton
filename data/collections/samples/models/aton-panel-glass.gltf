@@ -117,7 +117,7 @@
 					"index": 0
 				},
 				"metallicFactor": 0,
-				"roughnessFactor": 0.3
+				"roughnessFactor": 0.5
 			},
             "extensions": {
                 "KHR_materials_transmission": {

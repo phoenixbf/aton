@@ -142,6 +142,7 @@ update(){
     // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
 
+
     //this._CC.rotation.y = Math.PI;
     //this._CC.rotation.x = Math.PI;
     //this._CC.rotation.z = -Math.PI;
@@ -176,41 +177,16 @@ update(){
     //cctx.flipY = false;
     //cctx.needsUpdate = true;
     //console.log(cctx)
-
-    //ATON._rootVisibleGlobal.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
-    //this._envtex = this._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
     
     this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
 
-    //this._envtex.rotation = Math.PI;
-    //console.log(this._pmremGenerator)
-
-    //console.log(CCtarget)
-
-    // new
-    //this._LP.copy( THREE.LightProbeGenerator.fromCubeRenderTarget(ATON._renderer, CCtarget) );
-    //this._envtex = this._LP;
-    
-    
 /*
-    console.log(CC);
-    console.log(CCtarget);
-
-    let CCtargetX = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        //generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    let CCX = new THREE.CubeCamera( this._near, this._far, CCtargetX );
-    CCX.position.copy(this.pos);
-
-    CCX.update( ATON._renderer, ATON._rootVisible );
-    this._envtex = this._pmremGenerator.fromCubemap(CCtargetX.texture).texture;
+    ATON._mainRoot.position.set(-this.pos.x,this.pos.y,-this.pos.z);
+    this._envtex = ATON._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
+    ATON._mainRoot.position.set(0,0,0);
 */
+    //console.log(ATON._rootVisibleGlobal)
 
-    //this._prevCCtarget = CCtarget;
 
     return this;
 }

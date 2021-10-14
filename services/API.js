@@ -18,6 +18,10 @@ const fg          = require('fast-glob');
 //const compress_images = require("compress-images")
 const sharp       = require("sharp");
 
+sharp.cache(false);
+
+
+
 let BaseAPI = (app)=>{
 
 // Misc
@@ -239,11 +243,14 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 	img = img.replace(/^data:image\/png;base64,/, "");
 
-	let scenefolder = Core.getSceneFolder(sid);
-	let coverfile   = path.join(scenefolder, "cover-high.png");
+	let scenefolder  = Core.getSceneFolder(sid);
+	let coverfile    = path.join(scenefolder, "cover-high.png");
+	let coverfileOpt = path.join(scenefolder,"cover.png");
 	console.log(coverfile);
 
 	fs.writeFile(coverfile, img, 'base64', (err)=>{
+		//if (fs.existsSync(coverfileOpt)) fs.unlinkSync(coverfileOpt);
+
 		// Optimize PNG size
 		sharp(coverfile)
 			.withMetadata()
@@ -251,7 +258,7 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 				quality: 90, // 0-100
 				//compression: 6, // this doesn't need to be set
 			})
-			.toFile( path.join(scenefolder,"cover.png"), (err)=>{
+			.toFile(coverfileOpt, (err)=>{
 				if (err) console.log(err);
 				else {
 					console.log('done');

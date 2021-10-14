@@ -216,7 +216,7 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "<div id='"+elNID+"' class='shuBlockNode'>";
 
     // Layer title
-    htmlcontent += "<div class='atonBlockSubTitle'>Node '"+nid+"'</div><br>";
+    htmlcontent += "<div class='atonBlockSubTitle'>'"+nid+"'</div><br>";
     
     // Input field (add 3D models)
     htmlcontent += "<span class='descriptionText'>Add 3D models:</span><br>";
@@ -224,7 +224,7 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
 
     // item list
-    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'><details>";
+    htmlcontent += "<div class='atonBlockRound' style='display:block; text-align:right;'><details>";
     htmlcontent += "<summary>";
     htmlcontent += "List <b><span class='atonCircledSmall' id='"+elNIDListCounter+"'>0</span></b></summary>"; // <img class='atonSmallIcon' src='../../res/icons/collection-item.png'>
     htmlcontent += "<div id='"+elNIDList+"'>"; //style='height:200px; margin:5px' class='scrollableY' // background-color:rgba(255,255,255, 0.1);
@@ -234,7 +234,7 @@ let addNodeBlock = (nid)=>{
 
     // Transform
     //htmlcontent += "<br>Translation, Rotation, Scale<br>";
-    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'><details>";
+    htmlcontent += "<div class='atonBlockRound' style='display:block; text-align:right'><details>";
     htmlcontent += "<summary>Transform</summary>";
     htmlcontent += "Translation:<input id='"+elNIDtformTrans+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
@@ -243,7 +243,7 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "</details>";
     htmlcontent += "</div>";
 
-    htmlcontent += "<div class='atonBlockRound' style='width:90%; text-align:right'><details>";
+    htmlcontent += "<div class='atonBlockRound' style='display:block; text-align:right'><details>";
     htmlcontent += "<summary>Overall Material</summary>";
     htmlcontent += "<div class='select' style='width:100%'><select id='"+elNIDmat+"'>";
     htmlcontent += "<option value=''></option>";
@@ -335,8 +335,8 @@ let addNodeBlock = (nid)=>{
 let addNewNodeBlock = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<br><div style='display:block; width:auto;'>";
-    htmlcontent += "Add new node:<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:150px'>";
+    htmlcontent += "<br><div class='atonBlockRound' style='background-color:rgba(0,255,0, 0.1);'>";
+    htmlcontent += "Add new node (ID):<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:150px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
     htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
     htmlcontent += "</div></div><br>";

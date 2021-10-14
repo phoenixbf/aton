@@ -1338,6 +1338,7 @@ HATHOR.popupPOV = ()=>{
 
     let htmlcontent = "<div class='atonPopupTitle'>Viewpoint</div>";
 
+    htmlcontent += "<div class='atonBlockRound' style='padding:2px; display:block; background-color:rgba(0,255,0, 0.1)'>";
     htmlcontent += "<div style='text-align:right;'>";
 
     let strCurrEye = pov.pos.x.toPrecision(3)+","+pov.pos.y.toPrecision(3)+","+pov.pos.z.toPrecision(3);
@@ -1352,9 +1353,13 @@ HATHOR.popupPOV = ()=>{
 
     htmlcontent += "</div>";
 
-    htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnPOVgo'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Go</div><br>";
-    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set current viewpoint as Home</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnPOVgo'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Go</div>";
+    htmlcontent += "</div><br>";
+
+    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set as Home</div><br>";
+    htmlcontent += "<div class='atonBlockRound' style='padding:2px; display:block; background-color:rgba(255,255,2555, 0.1)'>";
     htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
+    htmlcontent += "as: <input id='idPOVid' type='text' size='15' placeholder='Viewpoint-ID' value='"+ATON.Utils.generateID("pov")+"'></div>";
 /*
     htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'>&nbsp;";
     htmlcontent += "<div class='select' style='width:250px;'><select id='idPOVmode'>";
@@ -1423,8 +1428,12 @@ HATHOR.popupPOV = ()=>{
     });
 
     $("#btnPOVadd").click(()=>{
-        povid = ATON.Utils.generateID("pov");
+        povid = $("#idPOVid").val().trim(); //ATON.Utils.generateID("pov");
+        if (povid.length < 3) return;
+
         pov.as(povid);
+
+        //console.log(pov)
 
         ATON.Nav.addPOV(pov);
         HATHOR.uiUpdatePOVs();

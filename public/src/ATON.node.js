@@ -376,6 +376,21 @@ assignLightProbesByProximity(){
     return this;
 };
 
+clearLightProbing(){
+    this.traverse((o) => {
+        if (o.isMesh && o.geometry){
+            ATON.Utils.clearLightProbeFromMesh( o );
+
+            if (o.material){
+                o.material.envMap.dispose();
+                o.material.needsUpdate = true;
+            }
+        }
+    });
+
+    return this;
+}
+
 // Find & update all LPs under this subgraph
 // FIXME: not working
 updateLightProbes = ()=>{
@@ -388,6 +403,7 @@ updateLightProbes = ()=>{
                 o.material.envMap = LP.getEnvTex();
                 //o.material.envMapIntensity = 5.0;
                 //console.log("x");
+                o.material.needsUpdate = true;
             }
         }
     });

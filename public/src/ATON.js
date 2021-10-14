@@ -450,7 +450,7 @@ ATON.realize = ()=>{
     ATON._clock = new THREE.Clock(true);
 
     // Bounds
-    ATON.bounds = {};
+    ATON.bounds = new THREE.Sphere();
 
     ATON._bFS = false; // fullscreen
 
@@ -1000,12 +1000,18 @@ ATON._postAllReqsCompleted = (R)=>{
     }
 };
 
-ATON.recomputeSceneBounds = ()=>{
+ATON.recomputeSceneBounds = ( plist )=>{
 
-    ATON.bounds.center = ATON._rootVisible.getBound().center;
-    ATON.bounds.radius = ATON._rootVisible.getBound().radius;
+    let BS = ATON._rootVisible.getBound();
 
-    //console.log(ATON.bounds);
+    if (plist){
+        for (let p in plist) BS.expandByPoint( plist[p] );
+    }
+
+    ATON.bounds.center = BS.center;
+    ATON.bounds.radius = BS.radius;
+
+    console.log(ATON.bounds);
 
     if (ATON.bounds.radius <= 0.0) return;
 

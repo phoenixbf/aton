@@ -341,11 +341,30 @@ Utils.loadTileSet = (tsurl, N)=>{
 
     // JSON loaded
     ts.onLoadTileSet = ()=>{
-        //ATON._assetReqComplete(tsurl);
         console.log("TileSet loaded");
+/*
+        let plist = undefined;
+        if (ts.tileSets[tsurl]){
+            let TT = ts.tileSets[tsurl];
+            if (TT.root && TT.root.boundingVolume && TT.root.boundingVolume.box){
+                let BB = TT.root.boundingVolume.box;
 
-        //ATON.recomputeSceneBounds();
-        //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+                plist = [];
+                plist.push( new THREE.Vector3( BB[0],BB[1],BB[2] ) );
+                plist.push( new THREE.Vector3( BB[3],BB[4],BB[5] ) );
+                plist.push( new THREE.Vector3( BB[6],BB[7],BB[8] ) );
+                plist.push( new THREE.Vector3( BB[9],BB[10],BB[11] ) );
+
+                console.log(plist)
+            }
+
+        }
+
+        ATON.recomputeSceneBounds( plist );
+        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, ATON.bounds);
+
+        ATON._assetReqComplete(tsurl);
+*/
     };
     
     // Tile loaded
@@ -361,13 +380,12 @@ Utils.loadTileSet = (tsurl, N)=>{
             if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
         }
 
-
         scene.traverse( c => {
             //c.layers.enable(N.type);
 
             if (c.isMesh){
-                //c.castShadow    = true; //N.castShadow;
-                //c.receiveShadow = true; //N.receiveShadow;
+                c.castShadow    = true; //N.castShadow;
+                c.receiveShadow = true; //N.receiveShadow;
 
                 if (c.geometry){
                     c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
@@ -381,7 +399,9 @@ Utils.loadTileSet = (tsurl, N)=>{
             }
 
             if ( c.material ){
-                if (N.userData.cMat) c.material = N.userData.cMat;
+                if (N.userData.cMat){
+                    c.material = N.userData.cMat;
+                }
 
 /*  CHECK: this forces mipmapping
                 if (c.material.map){
@@ -871,6 +891,13 @@ Utils.assignLightProbeToMesh = (LP, mesh)=>{
     //mesh.material.needsUpdate = true;
 
     //console.log(mesh.userData);
+};
+
+Utils.clearLightProbeFromMesh = (mesh)=>{
+    if (mesh === undefined) return;
+    if (mesh.noLP) return;
+
+    mesh.userData.LP = null;
 };
 
 Utils.vibrate = (d)=>{

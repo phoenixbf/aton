@@ -1239,6 +1239,19 @@ ATON.setMainPanorama = (path)=>{
     }
     // Static Panorama
     else {
+        if (path.endsWith(".hdr")){
+            new THREE.RGBELoader().setDataType( THREE.UnsignedByteType ).load(path, (hdr)=>{
+                hdr.generateMipmaps = true;
+                hdr.minFilter = THREE.LinearMipmapLinearFilter;
+                hdr.magFilter = THREE.LinearMipmapLinearFilter;
+
+                ATON._realizeOrUpdateMainPano(hdr);
+                return;
+            });
+
+            //return;
+        }
+
         /*
         tpano = new THREE.TextureLoader().load(path);
         tpano.encoding = THREE.sRGBEncoding;
@@ -1411,6 +1424,7 @@ ATON.isMainLightEnabled = ()=>{
 
 ATON.setExposure = (d)=>{
     ATON._renderer.toneMappingExposure = d;
+    ATON.updateLightProbes();
 };
 ATON.getExposure = ()=>{
     return ATON._renderer.toneMappingExposure;

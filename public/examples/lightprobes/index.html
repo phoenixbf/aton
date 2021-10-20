@@ -79,9 +79,24 @@ window.addEventListener( 'load', ()=>{
     // POVs
     let currpov = 0;
 	let povs = [];
-	povs.push( new ATON.POV("A").setPosition(posLP_A.x-0.15, posLP_A.y-0.05, posLP_A.z + 0.25).setTarget(posLP_A).setFOV(60.0) );
-	povs.push( new ATON.POV("B").setPosition(posLP_B.x-0.15, posLP_B.y-0.05, posLP_B.z + 0.25).setTarget(posLP_B).setFOV(60.0) );
-	povs.push( new ATON.POV("C").setPosition(posLP_C.x-0.15, posLP_C.y-0.05, posLP_C.z + 0.25).setTarget(posLP_C).setFOV(60.0) );
+	povs.push( 
+        new ATON.POV("A")
+            .setPosition(posLP_A.x-0.15, posLP_A.y-0.05, posLP_A.z + 0.25)
+            .setTarget(posLP_A.x, posLP_A.y-0.05, posLP_A.z)
+            .setFOV(60.0)
+        );
+	povs.push( 
+        new ATON.POV("B")
+            .setPosition(posLP_B.x-0.15, posLP_B.y-0.05, posLP_B.z + 0.25)
+            .setTarget(posLP_B.x, posLP_B.y-0.05, posLP_B.z)
+            .setFOV(60.0)
+        );
+	povs.push( 
+        new ATON.POV("C")
+            .setPosition(posLP_C.x-0.15, posLP_C.y-0.05, posLP_C.z + 0.25)
+            .setTarget(posLP_C.x, posLP_C.y-0.05, posLP_C.z)
+            .setFOV(60.0)
+        );
 
     ATON.Nav.setHomePOV( povs[0] );
 

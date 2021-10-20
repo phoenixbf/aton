@@ -23,7 +23,7 @@
         "nodes": {
             "main": {
                 "urls": [
-                    "samples/models/chrysippus/50k_delighted.gltf"
+                    "samples/models/chrysippus/50k_delighted-4k.gltf"
                 ]
             }
         },

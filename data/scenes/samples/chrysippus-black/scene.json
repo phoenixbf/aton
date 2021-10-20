@@ -1,0 +1,41 @@
+{
+    "status": "complete",
+    "environment": {
+        "bgcolor": [
+            0,
+            0,
+            0
+        ],
+        "lightprobes": {
+            "auto": true
+        },
+        "mainlight": {
+            "direction": [
+                0.6722486090252205,
+                -0.34492439682570775,
+                -0.6550640946793511
+            ],
+            "shadows": true
+        },
+        "exposure": 1.7
+    },
+    "scenegraph": {
+        "nodes": {
+            "main": {
+                "urls": [
+                    "samples/models/chrysippus/50k_delighted.gltf"
+                ]
+            }
+        },
+        "edges": {
+            ".": [
+                "main"
+            ]
+        }
+    },
+    "fx": {
+        "ao": {
+            "i": "0.20000"
+        }
+    }
+}

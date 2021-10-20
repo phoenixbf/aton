@@ -1174,21 +1174,6 @@ ATON.setMainPanorama = (path)=>{
 
     path = ATON.Utils.resolveCollectionURL(path);
 
-    //const pmremGenerator = new THREE.PMREMGenerator( ATON._renderer );
-    //pmremGenerator.compileEquirectangularShader();
-/*
-    if (path.endsWith(".hdr")){
-        new THREE.RGBELoader().setDataType( THREE.UnsignedByteType ).load(path, (hdr)=>{
-            //const envMap = pmremGenerator.fromEquirectangular( hdr ).texture;
-            
-            tpano = hdr;
-            if (ATON._matMainPano) ATON._matMainPano.map = hdr;
-        });
-
-        //return;
-    }
-*/
-
     // Geometry
     if (ATON._mMainPano === undefined){
         ATON._gMainPano = new THREE.SphereBufferGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
@@ -1243,7 +1228,7 @@ ATON.setMainPanorama = (path)=>{
             new THREE.RGBELoader().setDataType( THREE.UnsignedByteType ).load(path, (hdr)=>{
                 hdr.generateMipmaps = true;
                 hdr.minFilter = THREE.LinearMipmapLinearFilter;
-                hdr.magFilter = THREE.LinearMipmapLinearFilter;
+                hdr.magFilter = THREE.LinearFilter;
 
                 ATON._realizeOrUpdateMainPano(hdr);
                 return;

@@ -1564,7 +1564,7 @@ HATHOR.popupEnvironment = ()=>{
     let bShadows = ATON._renderer.shadowMap.enabled;
 
     htmlcontent += "<div style='text-align:center;'>Exposure (<span id='idExpVal'></span>)<br>";
-    htmlcontent += "<input id='idExposure' type='range' min='0.1' max='3.0' step='0.1' >";
+    htmlcontent += "<input id='idExposure' type='range' min='0.05' max='5.0' step='0.05' >";
     htmlcontent += "</div><br>";
 
     let str = (bMainLight)? "checked" : "";

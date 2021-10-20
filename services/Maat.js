@@ -198,7 +198,7 @@ Maat.scanPanoramas = (uid)=>{
 	globopts.follow = true;
 */
 	//let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
-	let files = fg.sync("{"+uid+",samples}/pano/**/{*.jpg,*.hdr,*.mp4,*.webm}", Core.COLLECTIONS_GLOB_OPTS);
+	let files = fg.sync("{"+uid+",samples}/pano/**/{*.jpg,*.hdr,*.exr,*.mp4,*.webm}", Core.COLLECTIONS_GLOB_OPTS);
 
 	if (files.length < 1) return;
 

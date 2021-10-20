@@ -1231,10 +1231,21 @@ ATON.setMainPanorama = (path)=>{
                 hdr.magFilter = THREE.LinearFilter;
 
                 ATON._realizeOrUpdateMainPano(hdr);
-                return;
             });
 
-            //return;
+            return;
+        }
+
+        if (path.endsWith(".exr")){
+            new THREE.EXRLoader().setDataType( THREE.UnsignedByteType ).load(path, (exr)=>{
+                exr.generateMipmaps = true;
+                exr.minFilter = THREE.LinearMipmapLinearFilter;
+                exr.magFilter = THREE.LinearFilter;
+
+                ATON._realizeOrUpdateMainPano(exr);
+            });
+
+            return;
         }
 
         /*

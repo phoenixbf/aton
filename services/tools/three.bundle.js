@@ -43,6 +43,7 @@ import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtil
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js';
 import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
@@ -100,8 +101,9 @@ THREE.GeometryUtils       = GeometryUtils;
 THREE.UnrealBloomPass     = UnrealBloomPass;
 
 THREE.RGBELoader = RGBELoader;
-THREE.RoughnessMipmapper = RoughnessMipmapper;
-THREE.LightProbeHelper = LightProbeHelper;
+THREE.EXRLoader  = EXRLoader;
+THREE.RoughnessMipmapper  = RoughnessMipmapper;
+THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
 
 //THREE.CSS3DRenderer = CSS3DRenderer;

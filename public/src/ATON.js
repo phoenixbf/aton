@@ -571,6 +571,7 @@ ATON.realize = ()=>{
     // TileSets (3D Tiles)
     ATON._tsets = [];
     ATON._tsET  = 20.0; //Error target (original: 6) // 40.0
+    ATON.Utils.estimateTSErrorTarget();
 
     // Init audio hub
     ATON.AudioHub.init();
@@ -922,6 +923,9 @@ ATON._assetReqComplete = (url)=>{
 ATON._onAllReqsCompleted = ()=>{
 
     ATON.recomputeSceneBounds();
+
+    //console.log(Utils.stats.numTris);
+
 /*
     // Bounds
     let c = ATON._rootVisible.getBound().center;
@@ -1001,12 +1005,14 @@ ATON._postAllReqsCompleted = (R)=>{
 };
 
 ATON.recomputeSceneBounds = ( plist )=>{
-
-    let BS = ATON._rootVisible.getBound();
+    let BS = undefined;
 
     if (plist){
+        BS = new THREE.Sphere();
         for (let p in plist) BS.expandByPoint( plist[p] );
+        console.log(BS)
     }
+    else BS = ATON._rootVisible.getBound();
 
     ATON.bounds.center = BS.center;
     ATON.bounds.radius = BS.radius;
@@ -1787,7 +1793,7 @@ ATON.setTSetsErrorTarget = (e)=>{
 
     for (let ts=0; ts<nts; ts++){
         let TS = ATON._tsets[ts];
-        ts.errorTarget = e;
+        TS.errorTarget = e;
     }
 };
 
@@ -1911,11 +1917,12 @@ ATON._handleQueryScene = ()=>{
     const h = ATON._hitsScene[0];
 
     ATON._queryDataScene = {};
-    ATON._queryDataScene.p = h.point;
-    ATON._queryDataScene.d = h.distance;
-    ATON._queryDataScene.o = h.object;
+    ATON._queryDataScene.p  = h.point;
+    ATON._queryDataScene.d  = h.distance;
+    ATON._queryDataScene.o  = h.object;
+    ATON._queryDataScene.uv = h.uv;
     
-    //console.log(ATON._queryDataScene.o);
+    //console.log(ATON._queryDataScene.uv);
 
     // Normals
     if (!ATON._bQueryNormals) return;

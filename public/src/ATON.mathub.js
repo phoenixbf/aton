@@ -54,7 +54,7 @@ MatHub.addDefaults = ()=>{
     MatHub.colors.blue   = new THREE.Color(0,0,1);
     MatHub.colors.orange = new THREE.Color(1,0.5,0);
 
-    MatHub.colors.defUI  = new THREE.Color(0.7,1,0.9); // 0,1,0.5
+    MatHub.colors.defUI  = new THREE.Color(0.85,1,0.95); // 0,1,0.5
     
     MatHub.colors.sem     = new THREE.Color(0,1,0.5);
     MatHub.colors.darksem = new THREE.Color(0,0,0.1);
@@ -89,7 +89,7 @@ MatHub.addDefaults = ()=>{
                 float f;
 		        //f = dot(vNormalV, viewDirectionW);
                 f = dot(vNormalV, vec3(0,0,1));
-		        f = clamp(1.0-f, 0.2, 1.0);
+		        f = clamp(1.0-f, 0.0, 1.0);
 
                 //vec3 col = mix(base,color, f);
 		        //gl_FragColor = vec4(col, f * opacity);

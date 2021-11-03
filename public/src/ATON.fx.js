@@ -143,7 +143,9 @@ FX.init = ()=>{
     
     //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
     FX.composer.addPass( FX.passes[FX.PASS_AA] );
-    //FX.composer.addPass( effectSobel );
+    
+    ///FX.composer.addPass( effectSobel );
+    
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );
 
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );

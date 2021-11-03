@@ -36,6 +36,12 @@ XPFNetwork.init = ()=>{
 
     XPFNetwork._gSem = [];
 
+    // img-based
+    XPFNetwork._semIMGMasks = {};
+    XPFNetwork._semCanvas = undefined;
+    XPFNetwork._semCTX = undefined;
+    XPFNetwork._semCurr = undefined;
+
     XPFNetwork._txCache = {};
 
     XPFNetwork._pathMod = undefined;
@@ -108,6 +114,8 @@ XPFNetwork.update = ()=>{
     if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
     XPFNetwork._iNext = inext;
 
+    XPFNetwork.querySemanticMasks();
+
     if (iclosest === XPFNetwork._iCurr) return;
 
     // We change XPF
@@ -130,6 +138,59 @@ XPFNetwork.realizeBaseGeometry = ()=>{
     XPFNetwork._geom.castShadow    = false;
     XPFNetwork._geom.receiveShadow = false;
 
+    XPFNetwork._uniforms = {
+        tBase: { type:'t' /*, value: 0*/ },
+        tSem: { type:'t' /*, value: 0*/ },
+        opacity: { type:'float', value: 1.0 }
+    };
+
+    XPFNetwork._mat = new THREE.ShaderMaterial({
+        uniforms: XPFNetwork._uniforms,
+
+        vertexShader:`
+            varying vec3 vPositionW;
+            varying vec3 vNormalW;
+            varying vec3 vNormalV;
+            varying vec2 vUv;
+
+            void main(){
+                vUv = uv;
+
+                vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
+                vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
+                vNormalV   = normalize( vec3( normalMatrix * normal ));
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        `,
+        
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+            varying vec2 vUv;
+
+            uniform sampler2D tBase;
+            uniform sampler2D tSem;
+            //uniform sampler2D tDepth;
+
+            uniform float opacity;
+
+		    void main(){
+                vec4 frag = texture2D(tBase, vUv);
+
+                frag += texture2D(tSem, vUv);
+
+                frag.a = opacity;
+
+                gl_FragColor = frag;
+		    }
+        `,
+
+        depthTest: false,
+        depthWrite: false
+    });
+/*
     XPFNetwork._mat = new THREE.MeshBasicMaterial({ 
         //map: tpano,
         ///emissive: tpano,
@@ -141,7 +202,7 @@ XPFNetwork.realizeBaseGeometry = ()=>{
         ///depthFunc: THREE.AlwaysDepth,
         //side: THREE.BackSide, // THREE.DoubleSide
     });
-
+*/
     XPFNetwork._mesh = new THREE.Mesh(XPFNetwork._geom, XPFNetwork._mat);
     XPFNetwork._mesh.frustumCulled = false;
     XPFNetwork._mesh.renderOrder   = -100;
@@ -292,6 +353,7 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
 
         XPFNetwork._mat.map = tex;
         XPFNetwork._mat.needsUpdate = true;
+        XPFNetwork._uniforms.tBase.value = tex;
 
         XPFNetwork._mesh.position.copy( xpf.getLocation() );
         XPFNetwork._mesh.rotation.set( xpf.getRotation().x, xpf.getRotation().y, xpf.getRotation().z );
@@ -312,6 +374,7 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     XPFNetwork._gSem[i].show();
 
     XPFNetwork.updateCurrentXPFbaseLayer( onComplete );
+
 /*
     // hit
     if (XPFNetwork._txCache[i]){
@@ -328,6 +391,31 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
         if (onComplete) onComplete();
     });
 */
+
+    // sem-masks
+    XPFNetwork.loadSemanticMasksIfAny(i);
+};
+
+XPFNetwork.loadSemanticMasksIfAny = (i)=>{
+    let xpf = XPFNetwork._list[i];
+    if (xpf === undefined) return;
+
+    // Clear
+    XPFNetwork._semIMGMasks = {};
+
+    for (let s in xpf._semMasks){
+        // We realize ctx if not there
+        if (XPFNetwork._semCanvas === undefined){
+            XPFNetwork._semCanvas = document.createElement('canvas');
+            XPFNetwork._semCTX = XPFNetwork._semCanvas.getContext('2d');
+        }
+
+        let semimgurl = xpf._semMasks[s];
+        let img = new Image();
+        img.src = semimgurl;
+
+        XPFNetwork._semIMGMasks[s] = img;
+    }
 };
 
 /**
@@ -432,6 +520,50 @@ XPFNetwork.setHomeXPF = (i)=>{
     //console.log(POV)
     ATON.Nav.setHomePOV(POV);
 };
+
+// Image-based queries
+//=====================================================
+XPFNetwork.querySemanticMasks = ()=>{
+    if (XPFNetwork._semCTX === undefined) return;
+    if (ATON._queryDataScene === undefined) return;
+    if (ATON._queryDataScene.uv === undefined) return;
+
+    let ctx = XPFNetwork._semCTX;
+    let uv  = ATON._queryDataScene.uv;
+
+    let ss = undefined;
+    
+    for (let semid in XPFNetwork._semIMGMasks){
+        let img = XPFNetwork._semIMGMasks[semid];
+
+        let x = img.width * uv.x;
+        let y = img.height * (1.0 - uv.y);
+        //console.log(x,y)
+
+        ctx.drawImage(img, 0, 0);
+        let col = ctx.getImageData(x,y, 1, 1).data;
+
+        if (col[0] > 127) ss = semid;
+    }
+
+    // No mask queried
+    if (ss === undefined){
+        if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
+        XPFNetwork._semCurr = undefined;
+
+        //XPFNetwork._uniforms.tSem.value = 0;
+        //XPFNetwork._mat.needsUpdate = true;
+        return;
+    }
+
+    // We are querying a sem mask
+    if (XPFNetwork._semCurr !== ss) ATON.fireEvent("SemanticMaskHover", ss);
+    XPFNetwork._semCurr = ss;
+
+    //XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( XPFNetwork._list[XPFNetwork._iCurr]._semMasks[ss] );
+    //XPFNetwork._mat.needsUpdate = true;
+};
+
 
 // TODO: Sphera, OPK
 XPFNetwork.loadFromPhotoscanFile = (configfileurl, onComplete)=>{

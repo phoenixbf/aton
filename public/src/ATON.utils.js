@@ -34,6 +34,22 @@ Utils.init = ()=>{
     Utils.textureLoader = new THREE.TextureLoader();
 
     Utils._bShowBVHbounds = false;
+
+    Utils.stats = {};
+    Utils.stats.numVertices = 0;
+    Utils.stats.numTris     = 0;
+
+    // TSets
+    Utils.tsSchedCB = func => {
+        setTimeout( func, 50);
+/*
+        if ( ATON.XR._bPresenting ){
+            //ATON.XR.currSession.requestAnimationFrame( func );
+            setTimeout( func, 50);
+        }
+        else requestAnimationFrame( func );
+*/
+    };
 };
 
 Utils.generateID = (prefix)=>{
@@ -208,6 +224,25 @@ Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     });
 };
 
+// From https://bit.ly/2neWfJ2
+// runAsync( longRunningFunction ).then(console.log);
+Utils.runAsync = fn => {
+    const worker = new Worker(
+        URL.createObjectURL(new Blob([`postMessage((${fn})());`]), {
+            type: 'application/javascript; charset=utf-8'
+        })
+    );
+    return new Promise((res, rej) => {
+        worker.onmessage = ({
+            data
+        }) => {
+            res(data), worker.terminate();
+        };
+        worker.onerror = err => {
+            rej(err), worker.terminate();
+        };
+    });
+};
 
 Utils.mergeObject = ( object )=>{
     object.updateMatrixWorld( true );
@@ -302,6 +337,18 @@ Utils.updateTSetsCamera = (cam)=>{
     }
 };
 
+Utils.estimateTSErrorTarget = ()=>{
+    let tse = 10;
+
+    if (ATON.device.lowGPU || ATON.device.isMobile) tse += 4.0;
+    if (ATON.XR._bPresenting) tse += 7.0;
+
+    if (tse > 25.0) tse = 25.0;
+
+    console.log("Estimated TSet error target: "+tse);
+    ATON.setTSetsErrorTarget(tse);
+};
+
 Utils.loadTileSet = (tsurl, N)=>{
     if (N === undefined) return;
 
@@ -315,12 +362,15 @@ Utils.loadTileSet = (tsurl, N)=>{
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
     ts.errorTarget     = ATON._tsET;
-    ts.optimizeRaycast = true;
+    ts.optimizeRaycast = false; // We already use BVH
     //ts.loadSiblings    = false; // a few hops / artifacts
 
-    ts.lruCache.maxSize = 300;
+    ts.lruCache.maxSize = 400; //300;
     ts.lruCache.minSize = 200;
-    ts.lruCache.unloadPercent = 0.9;
+    ts.lruCache.unloadPercent = 0.8;
+
+    ts.downloadQueue.schedulingCallback = Utils.tsSchedCB;
+    ts.parseQueue.schedulingCallback    = Utils.tsSchedCB;
 
     //ts.downloadQueue.maxJobs = 1000;
 
@@ -339,6 +389,8 @@ Utils.loadTileSet = (tsurl, N)=>{
     const MIN_TILES = 2; // min number of tiles for tileset to be considered loaded
     let tflip = 0;
 
+    let mBS = undefined;
+
     // JSON loaded
     ts.onLoadTileSet = ()=>{
         console.log("TileSet loaded");
@@ -354,16 +406,33 @@ Utils.loadTileSet = (tsurl, N)=>{
                 plist.push( new THREE.Vector3( BB[3],BB[4],BB[5] ) );
                 plist.push( new THREE.Vector3( BB[6],BB[7],BB[8] ) );
                 plist.push( new THREE.Vector3( BB[9],BB[10],BB[11] ) );
-
                 console.log(plist)
+*/
+/*
+                let bs = new THREE.Sphere();
+                bs.setFromPoints(plist);
+
+                let geom = new THREE.SphereGeometry( bs.radius, 6,6 );
+                mBS = new THREE.Mesh( geom );
+                mBS.position.x = bs.center.x;
+                mBS.position.y = bs.center.y;
+                mBS.position.z = bs.center.z;
+
+                N.add( mBS );
+*/
+/*
             }
-
         }
+*/
+/*
+        ATON.recomputeSceneBounds();
+        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
 
-        ATON.recomputeSceneBounds( plist );
-        if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, ATON.bounds);
+        //ATON.recomputeSceneBounds( plist );
+        //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, ATON.bounds);
 
         ATON._assetReqComplete(tsurl);
+        N.remove(mBS);
 */
     };
     
@@ -381,7 +450,7 @@ Utils.loadTileSet = (tsurl, N)=>{
         }
 
         scene.traverse( c => {
-            //c.layers.enable(N.type);
+            c.layers.enable(N.type);
 
             if (c.isMesh){
                 c.castShadow    = true; //N.castShadow;
@@ -403,12 +472,12 @@ Utils.loadTileSet = (tsurl, N)=>{
                     c.material = N.userData.cMat;
                 }
 
-/*  CHECK: this forces mipmapping
+
                 if (c.material.map){
                     c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
                     c.material.map.magFilter = THREE.LinearFilter;
                 }
-*/
+
             }
         });
 
@@ -459,8 +528,9 @@ Utils.modelVisitor = (N, model)=>{
         //o.matrixAutoUpdate = false;
 
         if (o.isMesh){
-            //let numVertices = o.geometry.attributes.position.count;
-            //console.log(numVertices);
+            let numVertices = o.geometry.attributes.position.count;
+            console.log(numVertices);
+            //Utils.stats.numVertices += numVertices;
 
             if (type === ATON.NTYPES.SCENE){
                 // TODO: 

@@ -85,6 +85,12 @@ SUI.init = ()=>{
         if (SUI.gSemIcons) SUI.gSemIcons.show();
     });
 
+    ATON.on("SemanticMaskHover", semid => {
+        SUI.setInfoNodeText(semid);
+    });
+    ATON.on("SemanticMaskLeave", semid => {
+    });
+
     //SUI.setSemIconsOpacity(0.5);
 
 /*
@@ -610,7 +616,16 @@ SUI.update = ()=>{
         if (!ATON.VRoadcast._bStreamFocus) SUI.mainSelector.visible = false;
     }
     else {
-        SUI.infoNode.visible = false;
+        if (SUI.bShowInfo && ATON._queryDataScene && ATON.XPFNetwork._semCurr !== undefined){
+            SUI.infoNode.position.lerpVectors(ATON._queryDataScene.p, ATON.Nav._currPOV.pos, 0.5);
+
+            const ls = ATON._queryDataScene.d * (ATON.Nav._currPOV.fov / SUI._labelScale);
+            SUI.infoNode.setScale(ls);
+            SUI.infoNode.orientToCamera();
+
+            SUI.infoNode.visible = true;
+        }
+        else SUI.infoNode.visible = false;
     }
 
     if (SUI.mainSelector.visible && ATON.VRoadcast._bStreamFocus){

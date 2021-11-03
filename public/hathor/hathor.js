@@ -681,7 +681,7 @@ HATHOR.setupEventHandlers = ()=>{
 */
 
         // Space
-        if (k === ' ' || k === 'Space') ATON.FE.popupSelector();
+        if (k === ' ' || k === 'Space') HATHOR.popupSettings();
 
         // Current tasks
         if (k === 'Enter')  HATHOR.finalizeCurrentTask();
@@ -721,6 +721,17 @@ HATHOR.setupEventHandlers = ()=>{
             ATON._envMapInt += 0.5;
             console.log(ATON._envMapInt);
             ATON.updateLightProbes();
+        }
+
+        if (k === '['){
+            let et = ATON._tsET - 1.0;
+            if (et >= 1.0) ATON.setTSetsErrorTarget( et );
+            console.log(ATON._tsET);
+        }
+        if (k === ']'){
+            let et = ATON._tsET + 1.0;
+            ATON.setTSetsErrorTarget( et );
+            console.log(ATON._tsET);
         }
 
         //if (k==='w'){
@@ -2364,6 +2375,48 @@ HATHOR.popupEmbed = ()=>{
     });
 };
 
+HATHOR.popupSettings = ()=>{
+    const divBlock = "<div style='display:inline-block; min-width:300px; max-width:800px; min-height:50px; vertical-align:top; padding:10px;'>"; // white-space: nowrap;
 
-// Init Hathor onload
-//window.addEventListener( 'load', HATHOR.init );
+    let htmlcontent = "<div class='atonPopupTitle'>Hathor Settings</div>";
+
+    let rad = ATON.SUI.getSelectorRadius();
+    let hr  = ATON.Utils.getHumanReadableDistance( rad );
+
+    ATON.FE.computeSelectorRanges();
+
+    htmlcontent += divBlock;
+    htmlcontent += "<b>3D selector radius (<span id='idSelRadTxt'>"+hr+"</span>)</b>:<br>";
+    //htmlcontent += ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[0])+"&nbsp;";
+    htmlcontent += "<input id='idSelRad' type='range' min='"+ATON.FE._selRanges[0]+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
+    //htmlcontent += "&nbsp;"+ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[1]);
+    htmlcontent += "</div>";
+
+    if (ATON._tsets.length > 0){
+        htmlcontent += divBlock;
+        htmlcontent += "<b>Multiresolution error target (<span id='idTSerrTxt'>"+ATON._tsET+"</span>)</b>:<br>";
+        htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:50%' type='range' min='1.0' max='50.0' step='1.0'>&nbsp;Less detail";
+        htmlcontent += "</div>";
+    }
+
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+
+    $("#idSelRad").val(rad);
+    $("#idTSerr").val(ATON._tsET);
+
+    $("#idSelRad").on("input change",()=>{
+        let r = parseFloat( $("#idSelRad").val() );
+
+        ATON.SUI.setSelectorRadius(r);
+        $("#idSelRadTxt").html( ATON.Utils.getHumanReadableDistance(r) );
+    });
+
+    $("#idTSerr").on("input change",()=>{
+        let e = parseFloat( $("#idTSerr").val() );
+
+        if (e <= 0.0) return;
+
+        ATON.setTSetsErrorTarget(e);
+        $("#idTSerrTxt").html( ATON._tsET );
+    });
+}

@@ -31,6 +31,8 @@ constructor(id){
     this._lnode = ATON.Nav.addLocomotionNode(this._location);
 
     this._pathMod = undefined;
+
+    this._semMasks = {};
 }
 
 // Custom geometry
@@ -200,6 +202,14 @@ setBaseLayer(path){
     return this;
 }
 
+setSemanticMask(semid, imgpath){
+    this._semMasks[semid] = ATON.Utils.resolveCollectionURL(imgpath);
+    return this;
+}
+
+getSemanticMaskURL(semid){
+    return this._semMasks[semid];
+}
 
 }
 

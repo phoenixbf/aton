@@ -225,9 +225,23 @@ window.addEventListener( 'load', ()=>{
     ATON.Utils.createATONCubePBR("atoncube_B").setPosition(posLP_B).setScale(0.1).attachToRoot();
     ATON.Utils.createATONCubePBR("atoncube_C").setPosition(posLP_C).setScale(0.1).attachToRoot();
 */
-    ATON.createSceneNode("A").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_A).attachToRoot();
-    ATON.createSceneNode("B").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_B).attachToRoot();
-    ATON.createSceneNode("C").setCloneOnLoadHit(false).load(modelURL).setPosition(pos_C).attachToRoot();
+    ATON.createSceneNode("A")
+        .setCloneOnLoadHit(false)
+        .load(modelURL)
+        .setPosition(pos_A)
+        .attachToRoot();
+
+    ATON.createSceneNode("B")
+        .setCloneOnLoadHit(false)
+        .load(modelURL)
+        .setPosition(pos_B)
+        .attachToRoot();
+
+    ATON.createSceneNode("C")
+        .setCloneOnLoadHit(false)
+        .load(modelURL)
+        .setPosition(pos_C)
+        .attachToRoot();
 
     setupLPs();
 

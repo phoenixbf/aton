@@ -576,6 +576,7 @@ XPFNetwork.querySemanticMasks = ()=>{
         XPFNetwork._mat.needsUpdate = true;
 
         ATON.fireEvent("SemanticMaskHover", ss);
+        if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
     }
     
     XPFNetwork._semCurr = ss;

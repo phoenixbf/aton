@@ -356,7 +356,7 @@ ATON._stdActivation = ()=>{
     if (!ATON.Nav._bControl) return;
 
     if (XPFNetwork._semCurr !== undefined){
-        ATON.fireEvent("SemanticMaskSelect");
+        ATON.fireEvent("SemanticMaskSelect", XPFNetwork._semCurr);
     }
 
     // Handle active immersive AR/VR session

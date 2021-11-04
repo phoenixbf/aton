@@ -64,13 +64,19 @@ window.addEventListener( 'load', ()=>{
     ATON.XPFNetwork.setHomeXPF(0);
     ATON.XPFNetwork.requestTransitionByIndex(0);
 
+    // Our custom events
     ATON.on("SemanticMaskHover", semid => {
         console.log("Hovering "+semid);
         $("#"+semid).addClass("switchedON");
     });
+
     ATON.on("SemanticMaskLeave", semid => {
         console.log("Leaving "+semid);
         $("#"+semid).removeClass("switchedON");
+    });
+
+    ATON.on("SemanticMaskSelect", semid => {
+        console.log("Selecting "+semid);
     });
 });
 
@@ -92,16 +98,24 @@ window.addEventListener( 'load', ()=>{
             <img src="/collections/samples/pano/montebelluna/05a.jpg">
             
             then set a few semantic masks assigned to semantic IDs <b>"doors"</b>,<b>"forge"</b>,<b>"worker"</b> and <b>"tools"</b>:<br><br>
-            <img id='doors' src="/collections/samples/pano/montebelluna/05a-sem-doors.png" style="width:50%;height:auto;">
-            <img id='forge' src="/collections/samples/pano/montebelluna/05a-sem-forge.png" style="width:50%;height:auto;">
-            <img id='worker' src="/collections/samples/pano/montebelluna/05a-sem-worker.jpg" style="width:50%;height:auto;">
-            <img id='tools' src="/collections/samples/pano/montebelluna/05a-sem-tools.jpg" style="width:50%;height:auto;">
+            <div style="text-align:center;">
+            doors<br><img id='doors' src="/collections/samples/pano/montebelluna/05a-sem-doors.png" style="width:50%;height:auto; display:block;">
+            forge<br><img id='forge' src="/collections/samples/pano/montebelluna/05a-sem-forge.png" style="width:50%;height:auto; display:block;">
+            worker<br><img id='worker' src="/collections/samples/pano/montebelluna/05a-sem-worker.jpg" style="width:50%;height:auto; display:block;">
+            tools<br><img id='tools' src="/collections/samples/pano/montebelluna/05a-sem-tools.jpg" style="width:50%;height:auto; display:block;">
+            </div>
+            
             These semantic masks images can be created very easily through common 2D software tools (see <a href="https://diglib.eg.org/handle/10.2312/gch20161380" target="_blank">this paper</a>), with lower resolutions and using different formats (png, jpg).<br><br>
             
             We can also subscribe to semantic masks events via:<br>
-            <code>ATON.on("SemanticMaskHover", (semid)=>{ ... })</code><br>
-            <code>ATON.on("SemanticMaskLeave", (semid)=>{ ... })</code><br>
-            to customize how the app will react to semantic queries.
+            <code>
+                ATON.on("SemanticMaskHover", (semid)=>{ ... })<br>
+                ATON.on("SemanticMaskLeave", (semid)=>{ ... })<br>
+                ATON.on("SemanticMaskSelect", (semid)=>{ ... })
+            </code><br>
+            to customize how the app will react to panoramic semantic queries.<br><br>
+
+            Panorama created by E. Demetrescu (CNR ISPC)
         </div>
         </div>
     </div>

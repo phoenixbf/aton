@@ -141,6 +141,7 @@ XPFNetwork.realizeBaseGeometry = ()=>{
     XPFNetwork._uniforms = {
         tBase: { type:'t' /*, value: 0*/ },
         tSem: { type:'t' /*, value: 0*/ },
+        semHL: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.15) },
         opacity: { type:'float', value: 1.0 }
     };
 
@@ -174,12 +175,15 @@ XPFNetwork.realizeBaseGeometry = ()=>{
             uniform sampler2D tSem;
             //uniform sampler2D tDepth;
 
+            uniform vec4 semHL;
             uniform float opacity;
 
 		    void main(){
                 vec4 frag = texture2D(tBase, vUv);
+                vec4 sem  = texture2D(tSem, vUv);
 
-                frag += texture2D(tSem, vUv);
+                //frag.g += (sem.r * 0.2);
+                frag = mix(frag, semHL, (sem.r * semHL.a));
 
                 frag.a = opacity;
 
@@ -405,8 +409,12 @@ XPFNetwork.loadSemanticMasksIfAny = (i)=>{
 
     for (let s in xpf._semMasks){
         // We realize ctx if not there
+        // Max allowed res for semantic masks is 2048 x 2048
         if (XPFNetwork._semCanvas === undefined){
             XPFNetwork._semCanvas = document.createElement('canvas');
+            XPFNetwork._semCanvas.width  = 2048;
+            XPFNetwork._semCanvas.height = 2048;
+
             XPFNetwork._semCTX = XPFNetwork._semCanvas.getContext('2d');
         }
 
@@ -536,14 +544,19 @@ XPFNetwork.querySemanticMasks = ()=>{
     for (let semid in XPFNetwork._semIMGMasks){
         let img = XPFNetwork._semIMGMasks[semid];
 
-        let x = img.width * uv.x;
-        let y = img.height * (1.0 - uv.y);
+        let x = parseInt( img.width * uv.x );
+        let y = parseInt( img.height * (1.0 - uv.y) );
         //console.log(x,y)
 
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0,0);
         let col = ctx.getImageData(x,y, 1, 1).data;
 
-        if (col[0] > 127) ss = semid;
+        let k = col[0]; //Math.max( Math.max(col[0],col[1]), col[2] );
+
+        if (k > 10){
+            ss = semid;
+            break;
+        }
     }
 
     // No mask queried
@@ -551,17 +564,21 @@ XPFNetwork.querySemanticMasks = ()=>{
         if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
         XPFNetwork._semCurr = undefined;
 
-        //XPFNetwork._uniforms.tSem.value = 0;
-        //XPFNetwork._mat.needsUpdate = true;
+        XPFNetwork._uniforms.tSem.value = 0;
+        XPFNetwork._mat.needsUpdate = true;
         return;
     }
 
     // We are querying a sem mask
-    if (XPFNetwork._semCurr !== ss) ATON.fireEvent("SemanticMaskHover", ss);
-    XPFNetwork._semCurr = ss;
+    if (XPFNetwork._semCurr !== ss){
+        let semurl = XPFNetwork._list[XPFNetwork._iCurr]._semMasks[ss];
+        XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( semurl );
+        XPFNetwork._mat.needsUpdate = true;
 
-    //XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( XPFNetwork._list[XPFNetwork._iCurr]._semMasks[ss] );
-    //XPFNetwork._mat.needsUpdate = true;
+        ATON.fireEvent("SemanticMaskHover", ss);
+    }
+    
+    XPFNetwork._semCurr = ss;
 };
 
 

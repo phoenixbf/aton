@@ -346,7 +346,7 @@ ATON._SUIactivation = ()=>{
     return true;
 };
 
-
+// Common routine for std activation/trigger
 ATON._stdActivation = ()=>{
     //if (!ATON.Nav._bControl) return;
 
@@ -354,6 +354,10 @@ ATON._stdActivation = ()=>{
     if (ATON._SUIactivation()) return;
 
     if (!ATON.Nav._bControl) return;
+
+    if (XPFNetwork._semCurr !== undefined){
+        ATON.fireEvent("SemanticMaskSelect");
+    }
 
     // Handle active immersive AR/VR session
     if (ATON.XR._bPresenting){
@@ -400,8 +404,6 @@ ATON._stdActivation = ()=>{
     if (ATON._queryDataScene){
         ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.5);
     }
-
-    // TODO: go POV in sight if any (panorama only mode)
 };
 
 // Default retarget from screen coordinates (eg.: on double tap)

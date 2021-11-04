@@ -308,6 +308,7 @@ SUI.buildInfoNode = ()=>{
         fontSize: 0.02,
         fontColor: ATON.MatHub.colors.white
     });
+
     SUI.infoContainer.add(SUI.infoNodeText);
     //SUI.infoNode.scale.set(0.07,0.07,0.07);
 

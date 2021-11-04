@@ -202,11 +202,26 @@ setBaseLayer(path){
     return this;
 }
 
+
+/**
+Set (or replace) semantic mask for a given ID
+@param {string} semid - semantic ID
+@param {string} imgpath - path to image (semantic mask) as local path to collection or absolute URL
+@example
+myXPF.setSemanticMask("door", "path/to/maskdoor.png")
+*/
 setSemanticMask(semid, imgpath){
+    if (semid === undefined) return this;
+
     this._semMasks[semid] = ATON.Utils.resolveCollectionURL(imgpath);
     return this;
 }
 
+/**
+Get semantic mask url for a given ID
+@param {string} semid - semantic ID
+@returns {string}
+*/
 getSemanticMaskURL(semid){
     return this._semMasks[semid];
 }

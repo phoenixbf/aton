@@ -45,6 +45,81 @@ XPFNetwork.init = ()=>{
     XPFNetwork._txCache = {};
 
     XPFNetwork._pathMod = undefined;
+
+    XPFNetwork._realizeBaseMat();
+};
+
+XPFNetwork._realizeBaseMat = ()=>{
+    XPFNetwork._uniforms = {
+        tBase: { type:'t' /*, value: 0*/ },
+        tSem: { type:'t' /*, value: 0*/ },
+        semHL: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.15) },
+        opacity: { type:'float', value: 1.0 }
+    };
+
+
+    XPFNetwork._mat = new THREE.ShaderMaterial({
+        uniforms: XPFNetwork._uniforms,
+
+        vertexShader:`
+            varying vec3 vPositionW;
+            varying vec3 vNormalW;
+            varying vec3 vNormalV;
+            varying vec2 vUv;
+
+            void main(){
+                vUv = uv;
+
+                vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
+                vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
+                vNormalV   = normalize( vec3( normalMatrix * normal ));
+
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        `,
+        
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+            varying vec2 vUv;
+
+            uniform sampler2D tBase;
+            uniform sampler2D tSem;
+            //uniform sampler2D tDepth;
+
+            uniform vec4 semHL;
+            uniform float opacity;
+
+		    void main(){
+                vec4 frag = texture2D(tBase, vUv);
+                vec4 sem  = texture2D(tSem, vUv);
+
+                //frag.g += (sem.r * 0.2);
+                frag = mix(frag, semHL, (sem.r * semHL.a));
+
+                frag.a = opacity;
+
+                gl_FragColor = frag;
+		    }
+        `,
+
+        depthTest: false,
+        depthWrite: false
+    });
+/*
+    XPFNetwork._mat = new THREE.MeshBasicMaterial({ 
+        //map: tpano,
+        ///emissive: tpano,
+        //fog: false,
+        
+        depthTest: false,
+        depthWrite: false,
+        
+        ///depthFunc: THREE.AlwaysDepth,
+        //side: THREE.BackSide, // THREE.DoubleSide
+    });
+*/
 };
 
 XPFNetwork.setPathModifier = (f)=>{
@@ -128,6 +203,7 @@ XPFNetwork.update = ()=>{
     ATON.fireEvent("CurrentXPF", iclosest);
 };
 
+
 XPFNetwork.realizeBaseGeometry = ()=>{
     if (XPFNetwork._geom !== undefined) return; // already realized
 
@@ -138,75 +214,6 @@ XPFNetwork.realizeBaseGeometry = ()=>{
     XPFNetwork._geom.castShadow    = false;
     XPFNetwork._geom.receiveShadow = false;
 
-    XPFNetwork._uniforms = {
-        tBase: { type:'t' /*, value: 0*/ },
-        tSem: { type:'t' /*, value: 0*/ },
-        semHL: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.15) },
-        opacity: { type:'float', value: 1.0 }
-    };
-
-    XPFNetwork._mat = new THREE.ShaderMaterial({
-        uniforms: XPFNetwork._uniforms,
-
-        vertexShader:`
-            varying vec3 vPositionW;
-            varying vec3 vNormalW;
-            varying vec3 vNormalV;
-            varying vec2 vUv;
-
-            void main(){
-                vUv = uv;
-
-                vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
-                vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
-                vNormalV   = normalize( vec3( normalMatrix * normal ));
-
-                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-            }
-        `,
-        
-        fragmentShader:`
-            varying vec3 vPositionW;
-		    varying vec3 vNormalW;
-            varying vec3 vNormalV;
-            varying vec2 vUv;
-
-            uniform sampler2D tBase;
-            uniform sampler2D tSem;
-            //uniform sampler2D tDepth;
-
-            uniform vec4 semHL;
-            uniform float opacity;
-
-		    void main(){
-                vec4 frag = texture2D(tBase, vUv);
-                vec4 sem  = texture2D(tSem, vUv);
-
-                //frag.g += (sem.r * 0.2);
-                frag = mix(frag, semHL, (sem.r * semHL.a));
-
-                frag.a = opacity;
-
-                gl_FragColor = frag;
-		    }
-        `,
-
-        depthTest: false,
-        depthWrite: false
-    });
-/*
-    XPFNetwork._mat = new THREE.MeshBasicMaterial({ 
-        //map: tpano,
-        ///emissive: tpano,
-        //fog: false,
-        
-        depthTest: false,
-        depthWrite: false,
-        
-        ///depthFunc: THREE.AlwaysDepth,
-        //side: THREE.BackSide, // THREE.DoubleSide
-    });
-*/
     XPFNetwork._mesh = new THREE.Mesh(XPFNetwork._geom, XPFNetwork._mat);
     XPFNetwork._mesh.frustumCulled = false;
     XPFNetwork._mesh.renderOrder   = -100;
@@ -531,6 +538,50 @@ XPFNetwork.setHomeXPF = (i)=>{
 
 // Image-based queries
 //=====================================================
+
+/**
+Get semantic mask url given XPF index and semantic ID
+@param {number} i - The XPF index
+@param {string} semid - semantic ID
+@returns {string}
+*/
+XPFNetwork.getSemanticMaskURLfromXPFindex = (i, semid)=>{
+    let x = XPFNetwork._list[i];
+    if (x === undefined) return undefined;
+
+    return x.getSemanticMaskURL(semid);
+};
+
+/**
+Get semantic mask url from current XPF given semantic ID
+@param {string} semid - semantic ID
+@returns {string}
+*/
+XPFNetwork.getSemanticMaskURLfromCurrentXPF = (semid)=>{
+    if (XPFNetwork._iCurr === undefined) return undefined;
+
+    return XPFNetwork.getSemanticMaskURLfromXPFindex(XPFNetwork._iCurr, semid);
+};
+
+/**
+Set semantic color overlay
+@param {THREE.Color} color - color
+@param {number} opacity - (optional) opacity
+*/
+XPFNetwork.setSemanticColor = (color, opacity)=>{
+    if (opacity === undefined) opacity = 0.15;
+    XPFNetwork._uniforms.semHL.value = new THREE.Vector4(color.r,color.g,color.b, opacity);
+};
+
+/**
+Set semantic color overlay opacity
+@param {number} opacity
+*/
+XPFNetwork.setSemanticOpacity = (opacity)=>{
+    XPFNetwork._uniforms.semHL.value.w = opacity;
+};
+
+
 XPFNetwork.querySemanticMasks = ()=>{
     if (XPFNetwork._semCTX === undefined) return;
     if (ATON._queryDataScene === undefined) return;
@@ -553,7 +604,7 @@ XPFNetwork.querySemanticMasks = ()=>{
 
         let k = col[0]; //Math.max( Math.max(col[0],col[1]), col[2] );
 
-        if (k > 10){
+        if (k > 127){
             ss = semid;
             break;
         }
@@ -571,7 +622,7 @@ XPFNetwork.querySemanticMasks = ()=>{
 
     // We are querying a sem mask
     if (XPFNetwork._semCurr !== ss){
-        let semurl = XPFNetwork._list[XPFNetwork._iCurr]._semMasks[ss];
+        let semurl = XPFNetwork.getSemanticMaskURLfromCurrentXPF(ss);
         XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( semurl );
         XPFNetwork._mat.needsUpdate = true;
 

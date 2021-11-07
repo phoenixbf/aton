@@ -41,14 +41,8 @@ Utils.init = ()=>{
 
     // TSets
     Utils.tsSchedCB = func => {
-        setTimeout( func, 50);
-/*
-        if ( ATON.XR._bPresenting ){
-            //ATON.XR.currSession.requestAnimationFrame( func );
-            setTimeout( func, 50);
-        }
-        else requestAnimationFrame( func );
-*/
+        //setTimeout( func, 50);
+        ATON._tsTasks.push( func );
     };
 };
 
@@ -365,12 +359,15 @@ Utils.loadTileSet = (tsurl, N)=>{
     ts.optimizeRaycast = false; // We already use BVH
     //ts.loadSiblings    = false; // a few hops / artifacts
 
-    ts.lruCache.maxSize = 400; //300;
-    ts.lruCache.minSize = 200;
-    ts.lruCache.unloadPercent = 0.8;
+    ts.lruCache.maxSize = 500; // 300
+    ts.lruCache.minSize = 300; // 200
+    ts.lruCache.unloadPercent = 0.5;
 
+    // Download/Parse queues
     ts.downloadQueue.schedulingCallback = Utils.tsSchedCB;
     ts.parseQueue.schedulingCallback    = Utils.tsSchedCB;
+    ts.downloadQueue.maxJobs = 2;
+    ts.parseQueue.maxJobs    = 2;
 
     //ts.downloadQueue.maxJobs = 1000;
 

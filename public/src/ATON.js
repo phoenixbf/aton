@@ -573,6 +573,8 @@ ATON.realize = ()=>{
     // TileSets (3D Tiles)
     ATON._tsets = [];
     ATON._tsET  = 20.0; //Error target (original: 6) // 40.0
+    ATON._tsTasks = [];
+    ATON._tsTasksFF = 0;
     ATON.Utils.estimateTSErrorTarget();
 
     // Init audio hub
@@ -1757,33 +1759,20 @@ ATON._updateTSets = ()=>{
     if (ATON.XR._bReqPresenting) return;
 
     ATON.Nav._camera.updateMatrixWorld();
-/*
-    if (ATON.XR._bPresenting){
-        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-        if (C){
-            C.updateMatrixWorld();
-            C.updateProjectionMatrix();
 
-            ATON.Utils.updateTSetsCamera(C);
-        }
+    // Tasks
+    //console.log(ATON._tsTasks.length);
+    let T = ATON._tsTasks.shift(); 
+    if (T !== undefined){
+        T();
+        T = null;
     }
-*/
-    //if (Nav._camOrbit) Nav._camOrbit.updateMatrixWorld();
-    //if (Nav._camFP) Nav._camFP.updateMatrixWorld();
+    //ATON._tsTasksFF = 0;
 
-    for (let ts=0; ts<nts; ts++){
-        const TS = ATON._tsets[ts];   
+    for (let ts=0; ts < nts; ts++){
+        const TS = ATON._tsets[ts];
+
         TS.update();
-/*
-        let DQ = TS.downloadQueue.items;
-        let PQ = TS.parseQueue.items;
-        if (DQ.length>0) console.log("DQ:"+DQ.length);
-        if (PQ.length>0) console.log("PQ:"+PQ.length);
-*/
-        //console.log(TS.stats)
-        //console.log(TS.downloadQueue)
-
-        //console.log(TS.cameras[0].position);
     }
 };
 

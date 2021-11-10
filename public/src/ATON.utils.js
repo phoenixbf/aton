@@ -525,8 +525,8 @@ Utils.modelVisitor = (N, model)=>{
         //o.matrixAutoUpdate = false;
 
         if (o.isMesh){
-            let numVertices = o.geometry.attributes.position.count;
-            console.log(numVertices);
+            //let numVertices = o.geometry.attributes.position.count;
+            //console.log(numVertices);
             //Utils.stats.numVertices += numVertices;
 
             if (type === ATON.NTYPES.SCENE){
@@ -552,7 +552,6 @@ Utils.modelVisitor = (N, model)=>{
                 if ( o.material.map !== null){
                     //console.log(object.material.map);
                     
-                    // Why do I have to do this?
                     o.material.map.generateMipmaps = true;
                     o.material.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
                     o.material.map.minFilter  = THREE.LinearMipmapLinearFilter;

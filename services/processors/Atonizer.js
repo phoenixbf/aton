@@ -44,6 +44,10 @@ Atonizer.processingTextures = {};
 
 Atonizer.run = ()=>{
     if (!Atonizer.args.infolder || !Atonizer.args.outfolder) return;
+
+    if (!Atonizer.args.infolder.endsWith(path.sep))  Atonizer.args.infolder  += path.sep;
+    if (!Atonizer.args.outfolder.endsWith(path.sep)) Atonizer.args.outfolder += path.sep;
+
     if (Atonizer.args.pattern === undefined) Atonizer.args.pattern = "*.obj";
     if (Atonizer.args.outformat === undefined) Atonizer.args.outformat = "gltf";
     if (Atonizer.args.inup === undefined) Atonizer.args.inup = "Z";

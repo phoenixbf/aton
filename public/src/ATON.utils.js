@@ -306,28 +306,22 @@ Utils.updateTSetsCamera = (cam)=>{
         const TS = ATON._tsets[ts];   
 
         //console.log(TS.cameras);
-        //for (let c=0; c<TS.cameras.length; c++) TS.deleteCamera( TS.cameras[c] );
+        for (let c=0; c<TS.cameras.length; c++) TS.deleteCamera( TS.cameras[c] );
 
         TS.setCamera( cam );
 
         if (ATON._renderer.xr.isPresenting){
-            //TS.setCamera( cam );
-            /*
-            let leftCam = cam.cameras[0];
-            if (leftCam){
-                tiles.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
-                console.log(leftCam)
-            }
-            */
-            //TS.setResolutionFromRenderer( cam, ATON._renderer );
+
+            //const leftCam = cam.cameras[ 0 ];
+            //if ( leftCam ) TS.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
+
             TS.setResolution( cam, 300,300 );
+            //TS.setResolutionFromRenderer( cam, ATON._renderer );            
         }
         else {
-            //TS.setCamera( cam );
             TS.setResolutionFromRenderer( cam, ATON._renderer );
         }
 
-        //TS.setResolution( cam, 300,300 );
     }
 };
 
@@ -335,7 +329,7 @@ Utils.estimateTSErrorTarget = ()=>{
     let tse = 10;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse += 4.0;
-    if (ATON.XR._bPresenting) tse += 7.0;
+    if (ATON.XR._bPresenting) tse += 3.0;
 
     if (tse > 25.0) tse = 25.0;
 

@@ -1216,7 +1216,11 @@ ATON.setMainPanorama = (path)=>{
             ATON._elPanoVideo.playsinline = true;
             ATON._elPanoVideo.style.cssText = "display:none;";
             //ATON._elPanoVideo.src = path;
-            ATON._elPanoVideo.autoplay = true;
+
+            //ATON._elPanoVideo.autoplay = "autoplay";
+            //ATON._elPanoVideo.muted = true;
+
+            //ATON._elPanoVideo.play();
 
             ATON._elPanoVideo.onplaying = ()=>{
                 console.log("VideoPano playing");
@@ -1231,6 +1235,7 @@ ATON.setMainPanorama = (path)=>{
         //console.log(ATON._elPanoVideo);
 
         ATON._realizeOrUpdateMainPano(tpano);
+        ATON.fireEvent("MainPanoVideo");
     }
     // Static Panorama
     else {
@@ -1241,6 +1246,7 @@ ATON.setMainPanorama = (path)=>{
                 hdr.magFilter = THREE.LinearFilter;
 
                 ATON._realizeOrUpdateMainPano(hdr);
+                ATON.fireEvent("MainPanoHDR");
             });
 
             return;
@@ -1253,6 +1259,7 @@ ATON.setMainPanorama = (path)=>{
                 exr.magFilter = THREE.LinearFilter;
 
                 ATON._realizeOrUpdateMainPano(exr);
+                ATON.fireEvent("MainPanoHDR");
             });
 
             return;
@@ -1270,7 +1277,9 @@ ATON.setMainPanorama = (path)=>{
 		    tex.generateMipmaps = true;
 
             ATON._realizeOrUpdateMainPano(tex);
+            ATON.fireEvent("MainPano");
         });
+
     }
 };
 

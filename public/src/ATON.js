@@ -127,7 +127,10 @@ ATON.setPathScenes = (path)=>{
 // For resuming suspended audio/video streams
 ATON._onUserInteraction = ()=>{
     if (ATON._elPanoVideo && !ATON._vpanoPlaying) ATON._elPanoVideo.play();
-    if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
+
+    if (ATON.AudioHub._listener && ATON.AudioHub._listener.context){
+        if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
+    }
 };
 
 ATON._setupBaseListeners = ()=>{
@@ -1231,6 +1234,12 @@ ATON.setMainPanorama = (path)=>{
                 console.log("VideoPano paused");
                 ATON._vpanoPlaying = false;
             };
+
+            ATON._elPanoVideo.addEventListener('touchstart', function () {
+                ATON._elPanoVideo.play();
+            });
+
+            enableInlineVideo(ATON._elPanoVideo);
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );

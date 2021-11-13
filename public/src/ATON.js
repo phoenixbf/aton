@@ -1226,6 +1226,11 @@ ATON.setMainPanorama = (path)=>{
                 console.log("VideoPano playing");
                 ATON._vpanoPlaying = true;
             };
+
+            ATON._elPanoVideo.onpause = ()=>{
+                console.log("VideoPano paused");
+                ATON._vpanoPlaying = false;
+            };
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );

@@ -437,6 +437,30 @@ FE.uiAddButtonStreamFocus = (idcontainer)=>{
 };
 
 /**
+Add main videopano control button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+*/
+FE.uiAddButtonMainVideoPanoPlayPause = (idcontainer)=>{
+    FE.uiAddButton(idcontainer, "playpause", ()=>{
+        if (ATON._vpanoPlaying){
+            if (ATON._elPanoVideo){
+                ATON._elPanoVideo.pause();
+                //FE.uiSwitchButton("playpause",false);
+            }
+        }
+        else {
+            if (ATON._elPanoVideo){
+                ATON._elPanoVideo.play();
+                //FE.uiSwitchButton("playpause",true);
+            }
+        }
+    }, "360 Video play/pause");
+
+    if (ATON._elPanoVideo) $("#btn-playpause").show();
+    else $("#btn-playpause").hide();
+};
+
+/**
 Add QR-code button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */

@@ -182,6 +182,8 @@ HATHOR.uiBase = ()=>{
 
     if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
+
+    ATON.FE.uiAddButtonMainVideoPanoPlayPause("idBottomToolbar");
 };
 
 HATHOR.uiAddBaseSem = ()=>{
@@ -571,8 +573,11 @@ HATHOR.setupEventHandlers = ()=>{
     });
 
     // Auth
-    ATON.on("Login", ()=>{
-        $('#idAuthTools').show();
+    ATON.on("Login", (d)=>{
+        //$('#idAuthTools').show();
+        
+        if (HATHOR.paramVRC === undefined) return;
+        ATON.VRoadcast.setUsername(d.username);
     });
     ATON.on("Logout", ()=>{
         $('#idAuthTools').hide();
@@ -878,10 +883,8 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==="Control") ATON.Nav.setUserControl(true);
     });
 
-    ATON.on("Login", (d)=>{
-        
-        if (HATHOR.paramVRC === undefined) return;
-        ATON.VRoadcast.setUsername(d.username);
+    ATON.on("MainPanoVideo", ()=>{
+        $("#btn-playpause").show();
     });
 
     //ATON.on("frame", HATHOR._update);

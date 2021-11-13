@@ -1211,20 +1211,31 @@ ATON.setMainPanorama = (path)=>{
     if (ATON.Utils.isVideo(path)){
         // First time
         if (ATON._elPanoVideo === undefined){
+  
+            let htvid = "<video id='idPanoVideo' loop crossOrigin='anonymous' playsinline style='display:none'>";          
+            if (path.endsWith("mp4")) htvid += "<source src='"+path+"' type='video/mp4'>"; // ; codecs='avc1.42E01E, mp4a.40.2'
+            htvid += "</video>";
+
+            $(htvid).appendTo('body');
+
+            ATON._elPanoVideo = document.getElementById("idPanoVideo");
+/*
             ATON._elPanoVideo = document.createElement('video');
+
             ATON._elPanoVideo.id = "idPanoVideo";
             ATON._elPanoVideo.innerHTML = "<source src='"+path+"'>";
             ATON._elPanoVideo.crossOrigin = "anonymous";
             ATON._elPanoVideo.loop = true;
             ATON._elPanoVideo.playsinline = true;
             ATON._elPanoVideo.style.cssText = "display:none;";
+            ATON._elPanoVideo.style = "display:none;";
             //ATON._elPanoVideo.src = path;
 
             //ATON._elPanoVideo.autoplay = "autoplay";
             //ATON._elPanoVideo.muted = true;
 
             //ATON._elPanoVideo.play();
-
+*/
             ATON._elPanoVideo.onplaying = ()=>{
                 console.log("VideoPano playing");
                 ATON._vpanoPlaying = true;
@@ -1239,6 +1250,7 @@ ATON.setMainPanorama = (path)=>{
                 ATON._elPanoVideo.play();
             });
 
+            // CHECK: tweak required for Apple
             enableInlineVideo(ATON._elPanoVideo);
         }
 

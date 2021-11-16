@@ -16,7 +16,7 @@ const gltfPipeline = require('gltf-pipeline');
 const processGltf = gltfPipeline.processGltf;
 
 const Jimp   = require('jimp');
-//const sharp  = require('sharp');
+const sharp  = require('sharp');
 const imSize = require('image-size');
 
 
@@ -145,39 +145,50 @@ Atonizer.isPNG = (imgPath)=>{
 
 
 // With sharp
-/*
-let processTextureFile = (imgPath)=>{
+Atonizer.processTextureFile = (imgPath)=>{
     if (Atonizer.processingTextures[imgPath] !== undefined) return;
 
     Atonizer.processingTextures[imgPath] = true;
 
     let w = imSize(imgPath).width;
     let h = imSize(imgPath).height;
-
+/*
     if (w > 4096 || h > 4096){
         console.log("ERROR: Texture "+imgPath+" too large.");
         return;
     }
+*/
 
     let im = sharp(imgPath);
 
     let bNeedResize = false;
-    if (w > texMaxSize){ bNeedResize=true; w=texMaxSize; }
-    if (h > texMaxSize){ bNeedResize=true; h=texMaxSize; }
+
+    if (w > Atonizer.args.texsize){
+        bNeedResize = true;
+        w=Atonizer.args.texsize; 
+    }
+    if (h > Atonizer.args.texsize){
+        bNeedResize = true;
+        h=Atonizer.args.texsize; 
+    }
 
     if (bNeedResize) im = im.resize(w,h);
 
-    if (isJPEG(imgPath)) im = im.jpeg({ quality: Atonizer.args.texquality });
-    if (isPNG(imgPath))  im = im.png({ quality: Atonizer.args.texquality });
+    if (Atonizer.isJPEG(imgPath)) im = im.jpeg({ quality: Atonizer.args.texquality });
+    if (Atonizer.isPNG(imgPath))  im = im.png({ quality: Atonizer.args.texquality });
+  
+    im.toBuffer((err,buffer)=>{
+        if (err !== null) console.log(err);
 
-    im = im.toFile(imgPath).then(()=>{
-        console.log("Texture "+imgPath+" processed.");
+        fs.writeFile(imgPath, buffer, (e)=>{
+            if (err !== null) console.log(e);
+
+            console.log("Texture "+imgPath+" processed.");
+        });
     });
-
 };
-*/
 
-Atonizer.processTextureFile = (imgPath)=>{
+Atonizer.processTextureFileJIMP = (imgPath)=>{
     if (Atonizer.processingTextures[imgPath] !== undefined) return;
 
     Atonizer.processingTextures[imgPath] = true;

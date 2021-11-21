@@ -44,9 +44,11 @@ let onLoginSuccess = (r)=>{
 };
 
 // Failed
-let onLoginFail = ()=>{
-    $("#idLoginBTN").html("Login FAILED");
-    $("#idLoginBTN").attr("class","atonBTN atonBTN-red");
+const onLoginFail = ()=>{
+    $("#error").addClass("error");
+    $("#error").removeClass("hide");
+    //Reset form
+    $("#loginForm")[0].reset();
 };
 
 let renderAuthForm = (data)=>{
@@ -102,28 +104,33 @@ let renderAuthForm = (data)=>{
     }
     else {
 
-        htmlcontent += "<div class='atonBlockRound' style='width:80%; max-width:500px;'>";
+        htmlcontent += "<div class='hide' id='error'>Wrong user name and/or password</div>";
+        htmlcontent += "<form method='GET' class='atonBlockRound' id='loginForm' style='width:80%; max-width:500px;'>";
         htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
         htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
 
-        htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idLoginBTN'>LOGIN</div>";
-        htmlcontent += "</div>";
+        htmlcontent += "<button class='atonBTN atonBTN-green' style='width:90%' id='idLoginBTN'>LOGIN</button>";
+        htmlcontent += "</form>";
 
         $("#idUserTitle").html("Authentication");
         $("#idAuth").html(htmlcontent);
 
-        $("#idLoginBTN").click(()=>{
-            let o = {
-                username: $("#idUsername").val(), 
-                password: $("#idPassword").val()
-            };
+	// On form submit, prevent default so page is not reloaded
+	document.querySelector('#loginForm').
+		addEventListener('submit', (e) => {
+		    e.preventDefault();
+        	    let o = {
+                	username: $("#idUsername").val(), 
+	                password: $("#idPassword").val()
+            	     };
 
-            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"login/", o, onLoginSuccess, onLoginFail );
-        });
+            	    ATON.Utils.postJSON(ATON.PATH_RESTAPI+"login/", o, onLoginSuccess, onLoginFail );
+		});
+	
     }
 };
 
-window.addEventListener( 'load', ()=>{
+window.addEventListener('load', ()=>{
 
     SHU.uiAddMainToolbar("idTopToolbar");
 

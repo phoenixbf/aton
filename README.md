@@ -42,7 +42,21 @@ npm start
 4) Open http://localhost:8080 on your browser.
 
 # Citation
-You can cite ATON framework using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618387.svg)](https://doi.org/10.5281/zenodo.4618387), and the following BibTeX entry:
+You can cite ATON framework using [this open-access publication](https://www.mdpi.com/2076-3417/11/22/11062) with the following BibTeX entry:
+```
+@article{fanini2021aton,
+  title={ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage},
+  author={Fanini, Bruno and Ferdani, Daniele and Demetrescu, Emanuel and Berto, Simone and d’Annibale, Enzo},
+  journal={Applied Sciences},
+  volume={11},
+  number={22},
+  pages={11062},
+  year={2021},
+  publisher={Multidisciplinary Digital Publishing Institute}
+}
+```
+
+or - as software - using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4618387.svg)](https://doi.org/10.5281/zenodo.4618387) with the following BibTeX entry:
 ```
 @software{aton2020_4618387,
   author       = {Bruno Fanini},
@@ -58,6 +72,7 @@ You can cite ATON framework using the Zenodo DOI [![DOI](https://zenodo.org/badg
 # Publications
 Here is a list of publications where ATON (including previous versions) was employed:
 
+* Fanini, B., Ferdani, D., Demetrescu, E., Berto, S., & d’Annibale, E. (2021). [ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage](https://www.mdpi.com/2076-3417/11/22/11062). Applied Sciences, 11(22), 11062.
 * Fanini, B., Ferdani, D., & Demetrescu, E. (2021). Temporal Lensing: An Interactive and Scalable Technique for Web3D/WebXR Applications in Cultural Heritage. Heritage, 4(2), 710-724.
 * Luigini, A., Fanini, B., Basso, A., & Basso, D. (2020). Heritage education through serious games. A web-based proposal for primary schools to cope with distance learning. VITRUVIO-International Journal of Architectural Technology and Sustainability, 5(2), 73-85.
 * B. Fanini, L. Cinque (2020). Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue "Emerging Artificial Intelligence (AI) Technologies for Learning"

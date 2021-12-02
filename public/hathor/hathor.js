@@ -183,6 +183,7 @@ HATHOR.uiBase = ()=>{
     if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
 
+    $("#btn-playpause").remove();
     ATON.FE.uiAddButtonMainVideoPanoPlayPause("idBottomToolbar");
 };
 

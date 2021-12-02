@@ -15,9 +15,9 @@ mkdir %OUTDIR%
 cd ..
 
 FOR %%A IN (%*) DO (
-	echo processing %%A
+	echo === PROCESSING FOLDER %%A ===
 	node %ATONIZER% -i %%A -o %OUTDIR% --outformat glb --merge
-	echo %%A done.
+	echo === FOLDER %%A DONE ===
 )
 
 PAUSE

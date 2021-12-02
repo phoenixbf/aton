@@ -111,7 +111,7 @@ Atonizer.run = ()=>{
 
                     const data = Buffer.from(JSON.stringify(gltf));
                     fs.writeFileSync(outfilepath, data);
-                    console.log("Model "+outfilepath+" written.");
+                    console.log("Model "+outfilepath+" written");
 
                     if (Atonizer.args.compression > 0) Atonizer.processModel(outfolder, fBasename);
                 });
@@ -146,18 +146,12 @@ Atonizer.isPNG = (imgPath)=>{
 
 // With sharp
 Atonizer.processTextureFile = (imgPath)=>{
-    if (Atonizer.processingTextures[imgPath] !== undefined) return;
+    if (Atonizer.processingTextures[imgPath] !== undefined) return; // already processing
 
     Atonizer.processingTextures[imgPath] = true;
 
     let w = imSize(imgPath).width;
     let h = imSize(imgPath).height;
-/*
-    if (w > 4096 || h > 4096){
-        console.log("ERROR: Texture "+imgPath+" too large.");
-        return;
-    }
-*/
 
     let im = sharp(imgPath);
 
@@ -183,11 +177,12 @@ Atonizer.processTextureFile = (imgPath)=>{
         fs.writeFile(imgPath, buffer, (e)=>{
             if (err !== null) console.log(e);
 
-            console.log("Texture "+imgPath+" processed.");
+            console.log("Texture "+imgPath+" processed");
         });
     });
 };
 
+// DEPRECATED
 Atonizer.processTextureFileJIMP = (imgPath)=>{
     if (Atonizer.processingTextures[imgPath] !== undefined) return;
 
@@ -208,7 +203,7 @@ Atonizer.processTextureFileJIMP = (imgPath)=>{
         })
 */
     if (w > 4096 || h > 4096){
-        console.log("WARNING: Texture '"+imgPath+"' too large. Please reduce this texture resolution.");
+        console.log("WARNING: Texture '"+imgPath+"' too large. Please reduce this texture resolution");
         return;
     }
 
@@ -228,7 +223,7 @@ Atonizer.processTextureFileJIMP = (imgPath)=>{
         image = image.quality( Atonizer.args.texquality );
 
         image.write(imgPath);
-        console.log("Texture "+imgPath+" processed.");
+        console.log("Texture "+imgPath+" processed");
     });
 };
 
@@ -265,7 +260,7 @@ Atonizer.processModel = (outfolder, basename)=>{
                 }
             }
 
-            console.log("GLTF draconized.");
+            console.log("GLTF draconized. Compression: "+Atonizer.args.compression);
         });
 };
 

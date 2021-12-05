@@ -32,7 +32,8 @@ constructor(id){
 
     this._pathMod = undefined;
 
-    this._semMasks = {};
+    this._semMasksURLs = {};
+    this._semHintURL   = undefined;
 }
 
 // Custom geometry
@@ -213,17 +214,43 @@ myXPF.setSemanticMask("door", "path/to/maskdoor.png")
 setSemanticMask(semid, imgpath){
     if (semid === undefined) return this;
 
-    this._semMasks[semid] = ATON.Utils.resolveCollectionURL(imgpath);
+    this._semMasksURLs[semid] = ATON.Utils.resolveCollectionURL(imgpath);
     return this;
 }
 
 /**
-Get semantic mask url for a given ID
+Remove a semantic mask from this XPF
+@param {string} semid - semantic ID
+@example
+myXPF.removeSemanticMask("door")
+*/
+removeSemanticMask(semid){
+    if (semid === undefined) return this;
+
+    this._semMasksURLs[semid] = undefined;
+    return this;
+}
+
+/**
+Get semantic mask url for a given ID. If not found returns undefined
 @param {string} semid - semantic ID
 @returns {string}
 */
 getSemanticMaskURL(semid){
-    return this._semMasks[semid];
+    return this._semMasksURLs[semid];
+}
+
+/**
+Set semantic hint-map. This map (image) is useful to provide visual hints about semantic areas
+@param {string} imgpath - path to image (semantic hint map) as local path to collection or absolute URL
+@example
+myXPF.setSemanticHintMap("path/to/mysemhintmap.png")
+*/
+setSemanticHintMap(imgpath){
+    if (imgpath === undefined) return this;
+
+    this._semHintURL = ATON.Utils.resolveCollectionURL(imgpath);
+    return this;
 }
 
 }

@@ -656,14 +656,13 @@ ATON.realize = ()=>{
 
     // Basis
 /*
-    ATON._basisLoader = new BasisTextureLoader();
+    ATON._basisLoader = new THREE.BasisTextureLoader();
     ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
     ATON._basisLoader.detectSupport( ATON._renderer );
     
     // Register BasisTextureLoader for .basis extension.
     THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
 */
-
 
     // Mouse/Touch screen coords
     ATON._screenPointerCoords = new THREE.Vector2(0.0,0.0);

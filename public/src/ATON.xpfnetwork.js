@@ -42,6 +42,8 @@ XPFNetwork.init = ()=>{
     XPFNetwork._semCTX = undefined;
     XPFNetwork._semCurr = undefined;
 
+    XPFNetwork._semUnifData = new Uint8Array(256 * 128 * 4);
+
     XPFNetwork._txCache = {};
 
     XPFNetwork._pathMod = undefined;
@@ -53,8 +55,11 @@ XPFNetwork._realizeBaseMat = ()=>{
     XPFNetwork._uniforms = {
         tBase: { type:'t' /*, value: 0*/ },
         tSem: { type:'t' /*, value: 0*/ },
+        tSemHint: { type:'t' /*, value: 0*/ },
         semHL: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.15) },
-        opacity: { type:'float', value: 1.0 }
+        opacity: { type:'float', value: 1.0 },
+        opacitySemHint: { type:'float', value: 0.2 },
+        time: { type:'float', value: 0.0 },
     };
 
 
@@ -84,19 +89,28 @@ XPFNetwork._realizeBaseMat = ()=>{
             varying vec3 vNormalV;
             varying vec2 vUv;
 
+            uniform float time;
             uniform sampler2D tBase;
             uniform sampler2D tSem;
+            uniform sampler2D tSemHint;
             //uniform sampler2D tDepth;
 
             uniform vec4 semHL;
             uniform float opacity;
+            uniform float opacitySemHint;
 
 		    void main(){
                 vec4 frag = texture2D(tBase, vUv);
                 vec4 sem  = texture2D(tSem, vUv);
+                vec4 semH = texture2D(tSemHint, vUv);
+                float shv = max( max(semH.r,semH.g), semH.b);
 
-                //frag.g += (sem.r * 0.2);
+                float t = (1.0 * cos(time*2.0));
+                t = clamp(t, 0.0,1.0);
+
                 frag = mix(frag, semHL, (sem.r * semHL.a));
+
+                frag.b = mix(frag.b, semH.b, (t * shv * opacitySemHint));
 
                 frag.a = opacity;
 
@@ -145,6 +159,9 @@ XPFNetwork.update = ()=>{
 
     let nxdist   = undefined;
     let inext    = undefined;
+
+    // update dtime
+    XPFNetwork._uniforms.time.value += ATON._dt;
 
     if (XPFNetwork._dirLNode === undefined) XPFNetwork._dirLNode = new THREE.Vector3();
 
@@ -413,8 +430,13 @@ XPFNetwork.loadSemanticMasksIfAny = (i)=>{
 
     // Clear
     XPFNetwork._semIMGMasks = {};
+    XPFNetwork._uniforms.tSemHint.value = 0;
 
-    for (let s in xpf._semMasks){
+    if (xpf._semHintURL !== undefined){
+        XPFNetwork._uniforms.tSemHint.value = ATON.Utils.textureLoader.load( xpf._semHintURL );
+    }
+
+    for (let s in xpf._semMasksURLs){
         // We realize ctx if not there
         // Max allowed res for semantic masks is 2048 x 2048
         if (XPFNetwork._semCanvas === undefined){
@@ -425,7 +447,7 @@ XPFNetwork.loadSemanticMasksIfAny = (i)=>{
             XPFNetwork._semCTX = XPFNetwork._semCanvas.getContext('2d');
         }
 
-        let semimgurl = xpf._semMasks[s];
+        let semimgurl = xpf._semMasksURLs[s];
         let img = new Image();
         img.src = semimgurl;
 
@@ -578,9 +600,46 @@ Set semantic color overlay opacity
 @param {number} opacity
 */
 XPFNetwork.setSemanticOpacity = (opacity)=>{
+    if (opacity === undefined) opacity = 0.15;
     XPFNetwork._uniforms.semHL.value.w = opacity;
 };
 
+/**
+Set semantic hint map opacity
+@param {number} opacity
+*/
+XPFNetwork.setSemanticHintMapOpacity = (opacity)=>{
+    if (opacity === undefined) opacity = 0.2;
+    XPFNetwork._uniforms.opacitySemHint.value = opacity;
+};
+
+
+// TODO:
+/*
+XPFNetwork.updateSemanticUnifiedIMG = ()=>{
+    if (XPFNetwork._semCTX === undefined) return;
+
+    let ctx = XPFNetwork._semCTX;
+
+    for (let semid in XPFNetwork._semIMGMasks){
+        let img = XPFNetwork._semIMGMasks[semid];
+        ctx.drawImage(img, 0,0);
+
+        for (let i=0; i<256; i++){
+            for (let j=0; j<128; j++){
+
+                let x = parseInt( img.width * (i/256.0) );
+                let y = parseInt( img.height * (1.0 - (j/128.0)) );
+
+                let col = ctx.getImageData(x,y, 1, 1).data;
+
+                //XPFNetwork._semUnifData
+            }
+        }
+    }
+
+};
+*/
 
 XPFNetwork.querySemanticMasks = ()=>{
     if (XPFNetwork._semCTX === undefined) return;

@@ -59,8 +59,12 @@ window.addEventListener( 'load', ()=>{
             .setSemanticMask("forge", "samples/pano/montebelluna/05a-sem-forge.png")
             .setSemanticMask("worker", "samples/pano/montebelluna/05a-sem-worker.jpg")
             .setSemanticMask("tools", "samples/pano/montebelluna/05a-sem-tools.jpg")
+            .setSemanticHintMap("samples/pano/montebelluna/05a-semhint-cont.jpg") // we add a semantic hint map
             .realizeSUI()
     );
+
+    // Set opacity for semantic hints overlay
+    ATON.XPFNetwork.setSemanticHintMapOpacity(0.3);
 
     // Let's set the first XPF as home
     ATON.XPFNetwork.setHomeXPF(0);

@@ -134,6 +134,8 @@ XPFNetwork._realizeBaseMat = ()=>{
         //side: THREE.BackSide, // THREE.DoubleSide
     });
 */
+
+    XPFNetwork.setSemanticHintMapOpacity(0.2);
 };
 
 XPFNetwork.setPathModifier = (f)=>{
@@ -610,6 +612,8 @@ Set semantic hint map opacity
 */
 XPFNetwork.setSemanticHintMapOpacity = (opacity)=>{
     if (opacity === undefined) opacity = 0.2;
+
+    XPFNetwork._shOpacity = opacity;
     XPFNetwork._uniforms.opacitySemHint.value = opacity;
 };
 
@@ -675,6 +679,8 @@ XPFNetwork.querySemanticMasks = ()=>{
         XPFNetwork._semCurr = undefined;
 
         XPFNetwork._uniforms.tSem.value = 0;
+        XPFNetwork._uniforms.opacitySemHint.value = XPFNetwork._shOpacity;
+
         XPFNetwork._mat.needsUpdate = true;
         return;
     }
@@ -686,6 +692,9 @@ XPFNetwork.querySemanticMasks = ()=>{
         XPFNetwork._mat.needsUpdate = true;
 
         ATON.fireEvent("SemanticMaskHover", ss);
+
+        XPFNetwork._uniforms.opacitySemHint.value = 0.0;
+
         if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
     }
     

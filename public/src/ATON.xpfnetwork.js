@@ -392,6 +392,15 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
     });
 };
 
+XPFNetwork.updateCurrentXPFsemLayer = ( xpf )=>{
+    let i = XPFNetwork._list.indexOf(xpf);
+    
+    if (i < 0) return;
+    if (i !== XPFNetwork._iCurr) return;
+
+    XPFNetwork.loadSemanticMasksIfAny(XPFNetwork._iCurr);
+};
+
 XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     //let xpf = XPFNetwork._list[i];
     //if (xpf === undefined) return;

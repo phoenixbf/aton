@@ -215,6 +215,7 @@ setSemanticMask(semid, imgpath){
     if (semid === undefined) return this;
 
     this._semMasksURLs[semid] = ATON.Utils.resolveCollectionURL(imgpath);
+    ATON.XPFNetwork.updateCurrentXPFsemLayer(this);
     return this;
 }
 
@@ -228,6 +229,7 @@ removeSemanticMask(semid){
     if (semid === undefined) return this;
 
     this._semMasksURLs[semid] = undefined;
+    ATON.XPFNetwork.updateCurrentXPFsemLayer(this);
     return this;
 }
 
@@ -250,6 +252,8 @@ setSemanticHintMap(imgpath){
     if (imgpath === undefined) return this;
 
     this._semHintURL = ATON.Utils.resolveCollectionURL(imgpath);
+
+    ATON.XPFNetwork.updateCurrentXPFsemLayer(this);
     return this;
 }
 

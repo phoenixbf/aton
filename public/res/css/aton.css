@@ -189,7 +189,10 @@ canvas:active {
     cursor: -webkit-grabbing;
 }
 
-
+/* convenience class to hide elements  */
+.hide {
+    display: none;
+}
 /*
 .infoContainer {
     position: absolute;
@@ -629,6 +632,18 @@ canvas:active {
 
     margin: 3px;
     padding: 3px;
+}
+
+/* status messages */
+.error {
+    padding: 0.8rem 0;
+    background-color: rgba(127, 0, 0, 0.5);
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    text-align: center;
 }
 
 /* icon / button */

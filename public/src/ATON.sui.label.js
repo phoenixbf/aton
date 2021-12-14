@@ -8,22 +8,22 @@
 import Node from "./ATON.node.js";
 
 /**
-Class representing a SpatialUI Button.
+Class representing a SpatialUI Label.
 Constructor requires a uiid (UI Node ID)
 @class Label
 @example 
-new ATON.SUI.Button("myButton")
+new ATON.SUI.Label().setText("Hello")
 */
 class Label extends Node {
 
-constructor(uiid){
+constructor(uiid, w,h){
     super(uiid, ATON.NTYPES.UI);
 
     this.baseColor = ATON.MatHub.colors.black;
 
     this.container = new ThreeMeshUI.Block({
-        width: 0.2,
-        height: 0.05,
+        width: (w)? w : 0.2,
+        height: (h)? h: 0.05,
         padding: 0.001,
         borderRadius: 0.01,
         backgroundColor: this.baseColor,

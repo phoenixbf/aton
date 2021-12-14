@@ -48,7 +48,7 @@
   "dependencies": {
     "3d-tiles-renderer": "^0.3.4",
     "axios": "^0.24.0",
-    "body-parser": "^1.19.0",
+    "body-parser": "^1.19.1",
     "chalk": "^4.1.2",
     "child_process": "^1.0.2",
     "chokidar": "^3.5.2",
@@ -61,7 +61,7 @@
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
-    "express-basic-auth": "^1.2.0",
+    "express-basic-auth": "^1.2.1",
     "express-session": "^1.17.1",
     "fast-glob": "^3.2.7",
     "fast-json-patch": "^3.1.0",

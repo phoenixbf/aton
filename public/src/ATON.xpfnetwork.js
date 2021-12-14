@@ -510,6 +510,23 @@ XPFNetwork.getNextXPF = ()=>{
 };
 
 /**
+Get distance to XPF by index
+@param {number} i - XPF index
+@returns {number}
+*/
+XPFNetwork.getDistanceToXPFindex = (i)=>{
+    if (i === undefined) return undefined;
+
+    let xpf = XPFNetwork._list[i];
+    if (xpf === undefined) return undefined;
+
+    let E = ATON.Nav._currPOV.pos;
+    let d = E.distanceTo( xpf.getLocation() );
+
+    return d;
+};
+
+/**
 Utility to show locomotion SUI (if any) only for a given XPF
 @param {number} i - XPF index
 */

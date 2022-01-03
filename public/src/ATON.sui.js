@@ -230,12 +230,13 @@ Set selector color
 @param {number} opacity - (optional) opacity 
 */
 SUI.setSelectorColor = (color, opacity)=>{
-    ATON.MatHub.materials.selector.color = color;
-    if (opacity !== undefined) ATON.MatHub.materials.selector.opacity = opacity;
-/*
-    ATON.MatHub.materials.selector.uniforms.color.value = color;
-    if (opacity !== undefined) ATON.MatHub.materials.selector.uniforms.opacity.value = opacity;
-*/
+    let matSel = ATON.MatHub.materials.selector;
+
+    //ATON.MatHub.materials.selector.color = color;
+    //if (opacity !== undefined) ATON.MatHub.materials.selector.opacity = opacity;
+
+    matSel.uniforms.color.value = color;
+    if (opacity !== undefined) matSel.uniforms.opacity.value = opacity;
 };
 
 // Sem-shape icons
@@ -286,12 +287,12 @@ SUI.buildInfoNode = ()=>{
     SUI.infoNode.attachToRoot();
 
     SUI.infoContainer = new ThreeMeshUI.Block({
-        width: 0.15,
+        width: 0.2,
         height: 0.05, //0.07,
         padding: 0.01,
         borderRadius: 0.02,
         backgroundColor: ATON.MatHub.colors.black, //darksem,
-        //backgroundOpacity: 0.2,
+        backgroundOpacity: 0.4,
 
         fontFamily: SUI.PATH_FONT_JSON,
         fontTexture: SUI.PATH_FONT_TEX,

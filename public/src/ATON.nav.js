@@ -5,6 +5,7 @@
 
 ===========================================================*/
 import LocomotionNode from "./ATON.locnode.js";
+import DevOri from "./ATON.devori.js";
 
 const COSINOIDAL_DIST = function(x){ return (1.0 - Math.cos(x * Math.PI)) / 2.0; };
 
@@ -468,7 +469,7 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._prevMode = Nav._mode; // store previous nav mode
 
-    if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5); // we (re)set selector radius to 50cm
+    if (ATON.SUI.getSelectorRadius()>0.1) ATON.SUI.setSelectorRadius(0.1); // we (re)set selector radius to 10cm
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
@@ -552,8 +553,9 @@ Nav.setDeviceOrientationControl = ()=>{
         Nav._camDevOri = new THREE.PerspectiveCamera( Nav.STD_FOV, window.innerWidth / window.innerHeight, Nav.STD_NEAR, Nav.STD_FAR );
         Nav._camDevOri.layers.enableAll();
 
-        Nav._cDevOri = new THREE.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
-        //Nav._cDevOri = new Nav.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
+        Nav._cDevOri = new DevOri(Nav._camDevOri, ATON._renderer.domElement);
+        //Nav._cDevOri = new THREE.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
+        ///Nav._cDevOri = new Nav.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
 
         Nav._cDevOri.alphaOffset = 0.0; //The alpha offset in radians
     }

@@ -95,7 +95,7 @@ _createCCtarget(){
         format: THREE.RGBEFormat, //THREE.RGBEFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
+        encoding: ATON._stdEncoding // prevent the material's shader from recompiling every frame
     });
 }
 

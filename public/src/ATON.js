@@ -104,7 +104,7 @@ ATON.SHADOWS_FAR  = 50.0; //50.0;
 ATON.SHADOWS_SIZE = 15.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
-ATON.AMB_L = 0.1; // Ambient when using direct lighting
+ATON.AMB_L = 0.2; // 0.1 - Ambient for shadowed areas (without LPs)
 
 
 /**
@@ -497,9 +497,18 @@ ATON.realize = ()=>{
 
     ATON._aniMixers = [];
     
-    ATON._renderer.outputEncoding = THREE.sRGBEncoding;
-    ATON._renderer.toneMapping = THREE.LinearToneMapping; // THREE.ACESFilmicToneMapping
+    ATON._stdEncoding = THREE.LinearEncoding; // THREE.sRGBEncoding;
+
+    ATON._renderer.outputEncoding = ATON._stdEncoding;
+    
+    ATON._renderer.toneMapping = THREE.LinearToneMapping;
+    //ATON._renderer.toneMapping = THREE.CineonToneMapping;
+    //ATON._renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    
     ATON._renderer.toneMappingExposure = 1.0;
+    //ATON._renderer.gammaOutput = true;
+    //ATON._renderer.gammaFactor = 2.2;
+    //ATON._renderer.physicallyCorrectLights = true;
 
     //console.log(ATON._renderer.getPixelRatio());
 
@@ -612,7 +621,8 @@ ATON.realize = ()=>{
 
 
     // FX Composer setup
-    if (!ATON.device.lowGPU) ATON.FX.init();
+    if (!ATON.device.lowGPU && !ATON.device.isMobile) ATON.FX.init();
+    //ATON.FX.init();
 
     // Query / picked data
     ATON._queryDataScene = undefined;
@@ -1087,6 +1097,7 @@ ATON.initGraphs = ()=>{
 
     // Uniform lighting
     ATON.ambLight = new THREE.AmbientLight( new THREE.Color(1,1,1) /*ATON._mainRoot.background*/ );
+    //ATON.ambLight.intensity = 1.5;
     ATON._rootVisibleGlobal.add(ATON.ambLight);
 };
 
@@ -1113,9 +1124,11 @@ Add a LightProbe to the scene
 ATON.addLightProbe = (LP)=>{
     if (LP === undefined) return;
 
-    if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
+    //if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
 
     ATON._lps.push(LP);
+
+    ATON.setNeutralAmbientLight(0.0);
 
     // SUI
     if (ATON.SUI.gLPIcons === undefined) return;
@@ -1161,7 +1174,7 @@ ATON.updateLightProbes = ()=>{
         let LP = o.userData.LP;
         if (LP !== undefined && LP instanceof ATON.LightProbe){
             o.material.envMap  = LP.getEnvTex();
-            o.material.combine = THREE.AddOperation;
+            //o.material.combine = THREE.AddOperation;
             o.material.envMapIntensity = ATON._envMapInt;
             o.material.needsUpdate     = true;
             //console.log(LP)
@@ -1254,7 +1267,8 @@ ATON.setMainPanorama = (path)=>{
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );
-        tpano.encoding = THREE.sRGBEncoding;
+        tpano.encoding = ATON._stdEncoding;
+        
         //tpano.minFilter = THREE.NearestFilter;
 		//tpano.generateMipmaps = false;
         //console.log(ATON._elPanoVideo);
@@ -1265,10 +1279,11 @@ ATON.setMainPanorama = (path)=>{
     // Static Panorama
     else {
         if (path.endsWith(".hdr")){
-            new THREE.RGBELoader().setDataType( THREE.UnsignedByteType ).load(path, (hdr)=>{
-                hdr.generateMipmaps = true;
+            new THREE.RGBELoader().load(path, (hdr)=>{ //setDataType( THREE.UnsignedByteType )
+                //hdr.generateMipmaps = true;
                 hdr.minFilter = THREE.LinearMipmapLinearFilter;
                 hdr.magFilter = THREE.LinearFilter;
+                hdr.encoding  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(hdr);
                 ATON.fireEvent("MainPanoHDR");
@@ -1278,10 +1293,11 @@ ATON.setMainPanorama = (path)=>{
         }
 
         if (path.endsWith(".exr")){
-            new THREE.EXRLoader().setDataType( THREE.UnsignedByteType ).load(path, (exr)=>{
-                exr.generateMipmaps = true;
+            new THREE.EXRLoader().load(path, (exr)=>{ // .setDataType( THREE.UnsignedByteType )
+                //exr.generateMipmaps = true;
                 exr.minFilter = THREE.LinearMipmapLinearFilter;
                 exr.magFilter = THREE.LinearFilter;
+                exr.encoding  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(exr);
                 ATON.fireEvent("MainPanoHDR");
@@ -1290,14 +1306,9 @@ ATON.setMainPanorama = (path)=>{
             return;
         }
 
-        /*
-        tpano = new THREE.TextureLoader().load(path);
-        tpano.encoding = THREE.sRGBEncoding;
-        //tpano.minFilter = THREE.NearestFilter;
-		tpano.generateMipmaps = true;
-        */
         ATON.Utils.textureLoader.load(path, (tex)=>{
-            tex.encoding = THREE.sRGBEncoding;
+            tex.encoding = ATON._stdEncoding;
+            
             //tex.minFilter = THREE.NearestFilter;
 		    tex.generateMipmaps = true;
 
@@ -1447,12 +1458,19 @@ ATON.getMainLightDirection = ()=>{
 ATON.toggleMainLight = (b)=>{
     if (ATON._dMainL === undefined) return;
     ATON._dMainL.visible = b;
+
+    let numLPs = ATON._lps.length;
     
     if (b){
-        ATON.setNeutralAmbientLight(ATON.AMB_L);
+        if (numLPs > 0) ATON.setNeutralAmbientLight(0.0);
+        else ATON.setNeutralAmbientLight(ATON.AMB_L);
+        
         ATON.updateDirShadows();
     }
-    else ATON.setNeutralAmbientLight(1.0);
+    else {
+        if (numLPs > 0) ATON.setNeutralAmbientLight(0.0);
+        ATON.setNeutralAmbientLight(1.0);
+    }
 };
 
 ATON.isMainLightEnabled = ()=>{
@@ -1751,11 +1769,13 @@ ATON._onFrame = ()=>{
     // XPF
     ATON.XPFNetwork.update();
 
+
     // Render frame
     if (!ATON.FX.composer || ATON.XR._bPresenting)
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
     else 
         ATON.FX.composer.render();
+
 
     //ATON.fireEvent("frame");
 };

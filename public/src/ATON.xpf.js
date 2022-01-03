@@ -187,7 +187,7 @@ setBaseLayer(path){
     }
     else {
         ATON.Utils.textureLoader.load(self._pathbaselayer, (tex)=>{
-            tex.encoding = THREE.sRGBEncoding;
+            tex.encoding = ATON._stdEncoding;
             //tex.minFilter = THREE.NearestFilter;
             tex.generateMipmaps = true;
 

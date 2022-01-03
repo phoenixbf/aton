@@ -25,6 +25,9 @@ FX.PASS_GAMMA = 6;
 FX.init = ()=>{
     if (ATON._renderer === undefined) return;
 
+    //let bFull = true;
+    //if (ATON.device.lowGPU && ATON.device.isMobile) bFull = false;
+
     let pxr  = ATON._renderer.getPixelRatio();
     let size = ATON._renderer.getSize( new THREE.Vector2() );
 
@@ -32,7 +35,7 @@ FX.init = ()=>{
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat,
-        encoding: THREE.sRGBEncoding
+        encoding: ATON._stdEncoding
     });
     renderTarget.texture.name = 'EffectComposer.rt1';
 
@@ -112,7 +115,6 @@ FX.init = ()=>{
     });
     //console.log(FX.passes[FX.PASS_DOF]);
 
-
     // Gamma correction - CHECK
     //FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
 
@@ -138,7 +140,7 @@ FX.init = ()=>{
     // Order
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
-    
+
     // tone-mapping passes here (if any)
     
     //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK

@@ -27,7 +27,7 @@ import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
 import { CSM } from 'three/examples/jsm/csm/CSM.js';
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOrientationControls.js';
+//import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOrientationControls.js';
 //import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
@@ -66,7 +66,7 @@ THREE.Mesh.prototype.raycast = ThreeMeshBVH.acceleratedRaycast;
 
 // THREE components
 THREE.OrbitControls             = OrbitControls;
-THREE.DeviceOrientationControls = DeviceOrientationControls;
+//THREE.DeviceOrientationControls = DeviceOrientationControls;
 
 THREE.EffectComposer      = EffectComposer;
 THREE.RenderPass          = RenderPass;

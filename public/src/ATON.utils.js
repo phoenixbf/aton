@@ -467,6 +467,7 @@ Utils.loadTileSet = (tsurl, N)=>{
                 if (c.material.map){
                     c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
                     c.material.map.magFilter = THREE.LinearFilter;
+                    c.material.map.encoding  = THREE.LinearEncoding; //THREE.sRGBEncoding;
                 }
 
             }
@@ -550,6 +551,7 @@ Utils.modelVisitor = (N, model)=>{
                     o.material.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
                     o.material.map.minFilter  = THREE.LinearMipmapLinearFilter;
                     o.material.map.magFilter  = THREE.LinearFilter;
+                    o.material.map.encoding   = ATON._stdEncoding;
                     //o.material.map.needsUpdate = true;
                 }
             }
@@ -664,10 +666,35 @@ Utils.ccExtract = (data)=>{
     }
     if (data.asset.generator) cc.generator = data.asset.generator;
 
-    // TODO: check for replicate entries
-    if (data.asset.copyright || data.asset.extras) ATON._ccModels.push(cc);
+    if (data.asset.copyright || data.asset.extras){
+
+        // TODO: check for replicate entries
+        for (let e in ATON._ccModels){
+            let o = ATON._ccModels[e];
+
+            if ( Utils.ccCompare(cc, o) ) return;
+        }
+
+        ATON._ccModels.push(cc);
+    }
     
     console.log(cc);
+};
+
+// Shallow copyright obj compare
+Utils.ccCompare = (A,B)=>{
+    if (A === undefined || B === undefined) return false;
+
+    const keysA = Object.keys(A);
+    const keysB = Object.keys(B);
+
+    if (keysA.length !== keysB.length) return false;
+
+    for (let k of keysA){
+        if (A[k] !== B[k]) return false;
+    }
+
+    return true;
 };
 
 Utils.parseTransformString = (tstr)=>{
@@ -971,7 +998,7 @@ Utils.createATONCube = (id)=>{
     let mat = new THREE.MeshStandardMaterial();
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube.jpg"), (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         mat.map = tex;
     });
 
@@ -991,18 +1018,18 @@ Utils.createATONCubePBR = (id)=>{
     mat.metalness = 1.0;
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube.jpg"), (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         mat.map = tex;
     });
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube-pbr.jpg"), (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         mat.metalnessMap = tex;
         mat.roughnessMap = tex;
     });
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube-nrm.png"), (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding  = ATON._stdEncoding;
         mat.normalMap = tex;
 
         //mat.bumpMap.anisotropy = ATON._maxAnisotropy;
@@ -1027,7 +1054,7 @@ Utils.createGround = (texture, dx,dz)=>{
 
     let mat = new THREE.MeshStandardMaterial();
     if (texture !== undefined) Utils.textureLoader.load(texture, (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         mat.map = tex;
     });
 

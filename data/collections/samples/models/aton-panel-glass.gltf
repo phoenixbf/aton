@@ -109,7 +109,8 @@
 		{
 			"name": "M_atonCube-trans",
 			
-			"doubleSided" : false,
+			"doubleSided" : true,
+			"alphaMode": "BLEND",
 			
 			"pbrMetallicRoughness":{
 				"baseColorTexture":
@@ -117,14 +118,14 @@
 					"index": 0
 				},
 				"metallicFactor": 0,
-				"roughnessFactor": 0.5
+				"roughnessFactor": 0.4
 			},
             "extensions": {
                 "KHR_materials_transmission": {
                     "transmissionFactor": 1.0
                 },
                 "KHR_materials_volume": {
-                    "attenuationColor": [1,1,0.5],
+                    "attenuationColor": [1,0.8,0.5],
                     "attenuationDistance": 0.155,
                     "thicknessFactor": 0.5
                 }

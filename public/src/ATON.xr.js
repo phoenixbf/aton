@@ -362,8 +362,8 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.fireEvent("XRmode", true);
 
-        // for immersive sessions we (re)set selector radius to 50cm
-        if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
+        // for immersive sessions we (re)set selector radius to 10cm
+        if (ATON.SUI.getSelectorRadius()>0.1) ATON.SUI.setSelectorRadius(0.1);
 
         //console.log(session);
 
@@ -378,7 +378,7 @@ XR.onSessionStarted = ( session )=>{
         // FIXME: needed bc selector 0.5 radius is not applied
         setTimeout( ()=>{
             //ATON.Utils.updateTSetsCamera();
-            if (ATON.SUI.getSelectorRadius()>0.5) ATON.SUI.setSelectorRadius(0.5);
+            if (ATON.SUI.getSelectorRadius()>0.1) ATON.SUI.setSelectorRadius(0.1);
         }, 2000);
     });
 };

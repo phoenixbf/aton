@@ -332,7 +332,7 @@ XPFNetwork._preloadBaseLayer = (i, onComplete)=>{
     if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
 
     ATON.Utils.textureLoader.load(pathbase, (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         //tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = true;
 
@@ -377,7 +377,7 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
     if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
 
     ATON.Utils.textureLoader.load(pathbase, (tex)=>{
-        tex.encoding = THREE.sRGBEncoding;
+        tex.encoding = ATON._stdEncoding;
         //tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = true;
 

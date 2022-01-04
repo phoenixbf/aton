@@ -569,6 +569,7 @@ ATON.realize = ()=>{
     ATON._lps = []; // list of lightprobes
     ATON._bAutoLP = false;
     ATON._envMapInt = 1.0;
+    ATON._numLPbounces = 2;
     
     // Shadows
     ATON._bShadowsFixedBound = false;
@@ -622,7 +623,12 @@ ATON.realize = ()=>{
 
     // FX Composer setup
     if (!ATON.device.lowGPU && !ATON.device.isMobile) ATON.FX.init();
-    //ATON.FX.init();
+    
+    if (!ATON.FX.composer){
+        ATON._render = ()=>{
+            ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
+        }
+    }
 
     // Query / picked data
     ATON._queryDataScene = undefined;
@@ -1135,30 +1141,12 @@ ATON.addLightProbe = (LP)=>{
     SUI.addLPIcon(LP);
 };
 
-/**
-Update all LightProbes in the scene
-*/
-ATON.updateLightProbes = ()=>{
-    if (ATON.XR._bPresenting) return; // CHECK
-    if (ATON._lps.length === 0) return;
-
-    for (let i in ATON._lps){
-        ATON._lps[i].update();
-/*
-        if (ATON._indLPs === undefined) ATON._indLPs = [];
-        if (ATON._indLPs[i]) ATON._mainRoot.remove(ATON._indLPs[i]);
-
-        ATON._indLPs[i] = THREE.LightProbeGenerator.fromCubeRenderTarget( ATON._renderer, ATON._lps[i]._prevCCtarget );
-        ATON._indLPs[i].intensity = 1.0;
-
-        ATON._mainRoot.add( ATON._indLPs[i] );
-
-        console.log(ATON._mainRoot);
-*/
-    }
+// Internal routine to update LPs
+ATON._updLP = ()=>{
+    for (let i in ATON._lps) ATON._lps[i].update();
 
 /*
-    // FIXME: indirect LP based on first LP (for now)
+    // OLD: indirect LP based on first LP (for now)
     if (ATON._lps[0]){
         if (ATON._indLP) ATON._mainRoot.remove(ATON._indLP);
 
@@ -1168,7 +1156,6 @@ ATON.updateLightProbes = ()=>{
         ATON._mainRoot.add( ATON._indLP );
     }
 */
-    //for (let i in ATON._lps) ATON._lps[i].update();
 
     ATON._rootVisible.traverse((o) => {
         let LP = o.userData.LP;
@@ -1180,6 +1167,25 @@ ATON.updateLightProbes = ()=>{
             //console.log(LP)
         }
     });
+}
+
+/**
+Set the number of LightProbes bounces
+@param {number} n - num bounces (default 2)
+*/
+ATON.setLightProbesNumBounces = (n)=>{
+    if (n < 1) return;
+    ATON._numLPbounces = n;
+};
+
+/**
+Update all LightProbes in the scene
+*/
+ATON.updateLightProbes = ()=>{
+    if (ATON.XR._bPresenting) return; // CHECK
+    if (ATON._lps.length === 0) return;
+
+    for (let p=0; p<ATON._numLPbounces; p++) ATON._updLP(); // multi-bounce LP captures
 
     console.log("LPs updated.");
 };
@@ -1771,13 +1777,16 @@ ATON._onFrame = ()=>{
 
 
     // Render frame
-    if (!ATON.FX.composer || ATON.XR._bPresenting)
+    ATON._render();
+
+    //ATON.fireEvent("frame");
+};
+
+ATON._render = ()=>{
+    if ( !ATON.FX.composer || ATON.XR._bPresenting)
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
     else 
         ATON.FX.composer.render();
-
-
-    //ATON.fireEvent("frame");
 };
 
 /**

@@ -89,13 +89,13 @@ setFar(far){
 }
 
 _createCCtarget(){
-    if (this._CCtarget) return; //this._CCtarget.dispose();
+    if (this._CCtarget) return;
 
     this._CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
         format: THREE.RGBEFormat, //THREE.RGBEFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: ATON._stdEncoding // prevent the material's shader from recompiling every frame
+        encoding: ATON._stdEncoding
     });
 }
 
@@ -106,7 +106,7 @@ Can be called at runtime or whenever there is some change in the 3D scene
 LP.update()
 */
 update(){
-    //if (this._envtex) this._envtex.dispose();
+    if (this._envtex) this._envtex.dispose();
     //if (this._prevCCtarget) this._prevCCtarget.dispose();
 /*
     const CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
@@ -119,6 +119,7 @@ update(){
 
     let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
 */
+
 
     if (this._CC === undefined){
         this._createCCtarget();
@@ -134,13 +135,13 @@ update(){
         //this._pmremGenerator = new THREE.PMREMGenerator(ATON._renderer);
     }
 
+    //this._CCtarget.clear(...);
+
 
     //CC.matrixAutoUpdate = false;
 
     //this._CC.position.copy(this.pos);
 
-    // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
-    this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
 
 
     //this._CC.rotation.y = Math.PI;
@@ -160,6 +161,11 @@ update(){
 */
     //console.log(this._CC)
 
+/*  
+    // OLD MIRRORING FIX (scale)
+
+    // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
+    //this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
 
     // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     ATON._mainRoot.scale.x = -1;
@@ -180,13 +186,19 @@ update(){
     
     this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
 
-/*
-    ATON._mainRoot.position.set(-this.pos.x,this.pos.y,-this.pos.z);
-    this._envtex = ATON._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
-    ATON._mainRoot.position.set(0,0,0);
 */
-    //console.log(ATON._rootVisibleGlobal)
 
+    // fromScene method
+    ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
+    //ATON._mainRoot.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
+    ATON._render();
+    this._envtex = ATON._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
+    //ATON._mainRoot.position.set(0,0,0);
+    ATON._rootVisibleGlobal.position.set(0,0,0);
+
+    if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
+
+    //console.log(ATON._rootVisibleGlobal)
 
     return this;
 }

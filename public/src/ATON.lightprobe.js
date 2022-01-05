@@ -24,14 +24,7 @@ constructor(res, near, far){
     this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
 
     this._envtex = undefined;
-    this._CC = undefined;
-    
-    //this._prevCCtarget = undefined;
-/*
-    this._LP = new THREE.LightProbe();
-    this._LP.intensity = 10;
-    ATON._mainRoot.add( this._LP );
-*/
+    this._CC     = undefined;
 
     // Realize PMREM generator if not there
     if (ATON._pmremGenerator === undefined){
@@ -107,19 +100,28 @@ LP.update()
 */
 update(){
     if (this._envtex) this._envtex.dispose();
-    //if (this._prevCCtarget) this._prevCCtarget.dispose();
-/*
-    const CCtarget = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat, //THREE.RGBEFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
-    });
-    //CCtarget.texture.mapping = THREE.CubeRefractionMapping;
 
-    let CC = new THREE.CubeCamera( this._near, this._far, CCtarget );
+    //CC.matrixAutoUpdate = false;
+
+    //this._CC.position.copy(this.pos);
+
+    //this._CC.rotation.y = Math.PI;
+    //this._CC.rotation.x = Math.PI;
+    //this._CC.rotation.z = -Math.PI;
+    //this._CC.scale.set(-1,1,1);
+    //CC.layers.set(ATON.NTYPES.SCENE);
+
+/*
+    //CC.children = CC.children.reverse();
+    for (let ccam in this._CC.children){
+        //this._CC.children[ccam].rotation.y = Math.PI;
+        if (ccam % 2 === 1) this._CC.children[ccam].scale.x = -1;
+        //this._CC.children[ccam].up.y = 1.0;
+        //console.log(this._CC.children[ccam].rotation)
+    }
 */
 
+/*  // OLD MIRRORING FIX (scale)
 
     if (this._CC === undefined){
         this._createCCtarget();
@@ -137,32 +139,7 @@ update(){
 
     //this._CCtarget.clear(...);
 
-
-    //CC.matrixAutoUpdate = false;
-
-    //this._CC.position.copy(this.pos);
-
-
-
-    //this._CC.rotation.y = Math.PI;
-    //this._CC.rotation.x = Math.PI;
-    //this._CC.rotation.z = -Math.PI;
-    //this._CC.scale.set(-1,1,1);
-    //CC.layers.set(ATON.NTYPES.SCENE);
-
-/*
-    //CC.children = CC.children.reverse();
-    for (let ccam in this._CC.children){
-        //this._CC.children[ccam].rotation.y = Math.PI;
-        if (ccam % 2 === 1) this._CC.children[ccam].scale.x = -1;
-        //this._CC.children[ccam].up.y = 1.0;
-        //console.log(this._CC.children[ccam].rotation)
-    }
-*/
     //console.log(this._CC)
-
-/*  
-    // OLD MIRRORING FIX (scale)
 
     // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     //this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
@@ -192,7 +169,7 @@ update(){
     ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
     //ATON._mainRoot.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
     ATON._render();
-    this._envtex = ATON._pmremGenerator.fromScene(ATON._rootVisibleGlobal, 0, this._near, this._far).texture;
+    this._envtex = ATON._pmremGenerator.fromScene(ATON._mainRoot, 0, this._near, this._far).texture;
     //ATON._mainRoot.position.set(0,0,0);
     ATON._rootVisibleGlobal.position.set(0,0,0);
 

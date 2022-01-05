@@ -263,7 +263,26 @@ SceneHub.initBaseParsers = ()=>{
 
         let lps = env.lightprobes;
         if (lps){
-            if (lps.auto) ATON.setAutoLP(true);
+            if (lps.auto !== undefined) ATON.setAutoLP(lps.auto);
+            if (lps.list){
+                for (let k in lps.list){
+                    let lp = lps.list[k];
+
+                    let LP = new ATON.LightProbe();
+
+                    if (lp.pos) LP.setPosition(
+                        parseFloat(lp.pos[0]),
+                        parseFloat(lp.pos[1]),
+                        parseFloat(lp.pos[2])
+                    );
+
+                    if (lp.near) LP.setNear( parseFloat(lp.near) );
+                    if (lp.far)  LP.setFar( parseFloat(lp.far) );
+
+                    ATON.addLightProbe( LP );
+                    console.log(LP)
+                }
+            }
         }
 
         if (env.exposure) ATON.setExposure(env.exposure);

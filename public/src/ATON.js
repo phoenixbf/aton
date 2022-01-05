@@ -570,6 +570,7 @@ ATON.realize = ()=>{
     ATON._bAutoLP = false;
     ATON._envMapInt = 1.0;
     ATON._numLPbounces = 2;
+    ATON._lpbCount = 0;
     
     // Shadows
     ATON._bShadowsFixedBound = false;
@@ -1109,6 +1110,7 @@ ATON.initGraphs = ()=>{
 
 ATON.setBackgroundColor = (bg)=>{
     ATON._mainRoot.background = bg;
+    //ATON.ambLight = new THREE.AmbientLight( bg );
     //ATON._mainRoot.fog = new THREE.Fog(bg, 5, 200);
 };
 
@@ -1129,8 +1131,6 @@ Add a LightProbe to the scene
 */
 ATON.addLightProbe = (LP)=>{
     if (LP === undefined) return;
-
-    //if (ATON._lps.length === 0) ATON.setNeutralAmbientLight(ATON.AMB_L);
 
     ATON._lps.push(LP);
 
@@ -1178,6 +1178,11 @@ ATON.setLightProbesNumBounces = (n)=>{
     ATON._numLPbounces = n;
 };
 
+ATON.dirtyLightProbes = (n)=>{
+    if (n === undefined) n = ATON._numLPbounces;
+    ATON._lpbCount = n;
+};
+
 /**
 Update all LightProbes in the scene
 */
@@ -1186,6 +1191,7 @@ ATON.updateLightProbes = ()=>{
     if (ATON._lps.length === 0) return;
 
     for (let p=0; p<ATON._numLPbounces; p++) ATON._updLP(); // multi-bounce LP captures
+    //ATON._updLP();
 
     console.log("LPs updated.");
 };
@@ -1779,6 +1785,12 @@ ATON._onFrame = ()=>{
     // Render frame
     ATON._render();
 
+/*
+    if (ATON._lpbCount > 0){
+        ATON.updateLightProbes();
+        ATON._lpbCount--;
+    }
+*/
     //ATON.fireEvent("frame");
 };
 

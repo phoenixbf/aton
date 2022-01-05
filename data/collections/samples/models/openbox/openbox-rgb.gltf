@@ -396,28 +396,38 @@
 	],
 	"images": [
 		{
-			"uri": "panel-red.png"
+			"uri": "panel-r.jpg"
 		},
 		{
-			"uri": "panel-green.png"
+			"uri": "panel-g.jpg"
 		},
 		{
-			"uri": "panel-white.png"
+			"uri": "panel-w.jpg"
 		},
 		{
-			"uri": "panel-blue.png"
+			"uri": "panel-b.jpg"
+		},
+		{
+			"uri": "panel-em.jpg"
 		}
 	],
 	"materials": [
 		{
-			"name": "M_tint",
+			"name": "M_tintR",
 			"pbrMetallicRoughness":
 			{
 				"baseColorTexture":
 				{
 					"index": 0
 				},
-				"metallicFactor": 0
+				
+				"metallicFactor": 0,
+				"roughnessFactor": 1
+			},
+
+			"emissiveFactor": [1.0, 0.0, 0.0],	
+			"emissiveTexture": {
+				"index": 4
 			}
 		},
 		{
@@ -428,7 +438,13 @@
 				{
 					"index": 1
 				},
-				"metallicFactor": 0
+				"metallicFactor": 0,
+				"roughnessFactor": 1
+			},
+
+			"emissiveFactor": [0.0, 1.0, 0.0],
+			"emissiveTexture": {
+				"index": 4
 			}
 		},
 		{
@@ -439,7 +455,13 @@
 				{
 					"index": 2
 				},
-				"metallicFactor": 0
+				"metallicFactor": 0,
+				"roughnessFactor": 1
+			},
+
+			"emissiveFactor": [1.0, 1.0, 1.0],	
+			"emissiveTexture": {
+				"index": 4
 			}
 		},
 		{
@@ -450,7 +472,13 @@
 				{
 					"index": 3
 				},
-				"metallicFactor": 0
+				"metallicFactor": 0,
+				"roughnessFactor": 1
+			},
+
+			"emissiveFactor": [0.0, 0.0, 1.0],
+			"emissiveTexture": {
+				"index": 4
 			}
 		}
 	],
@@ -538,6 +566,11 @@
 			"name": "MI_tintB_BaseColor",
 			"minFilter": 9987,
 			"magFilter": 9729
+		},
+		{
+			"name": "MI_tintEM",
+			"minFilter": 9987,
+			"magFilter": 9729
 		}
 	],
 	"scenes": [
@@ -565,6 +598,11 @@
 			"name": "MI_tintB_BaseColor",
 			"sampler": 3,
 			"source": 3
+		},
+		{
+			"name": "MI_tintEM",
+			"sampler": 4,
+			"source": 4
 		}
 	],
 	"extensionsUsed": [

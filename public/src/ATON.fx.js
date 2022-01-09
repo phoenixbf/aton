@@ -66,10 +66,8 @@ FX.init = ()=>{
 
     FX.passes[ATON.FXPASS_SSR].thickness = 0.018;
     FX.passes[ATON.FXPASS_SSR].infiniteThick = false; //true;
-    FX.passes[ATON.FXPASS_SSR].maxDistance = 1.0; //0.1;
+    FX.passes[ATON.FXPASS_SSR].maxDistance = 0.1; //0.1;
     console.log(FX.passes[ATON.FXPASS_SSR]);
-
-    FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );
 */
 
 
@@ -140,6 +138,7 @@ FX.init = ()=>{
     // Order
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
+    //FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );
 
     // tone-mapping passes here (if any)
     

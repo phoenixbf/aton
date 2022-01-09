@@ -375,7 +375,7 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.Utils.estimateTSErrorTarget();
 
-        // FIXME: needed bc selector 0.5 radius is not applied
+        // FIXME: needed bc selector radius is not applied
         setTimeout( ()=>{
             //ATON.Utils.updateTSetsCamera();
             if (ATON.SUI.getSelectorRadius()>0.1) ATON.SUI.setSelectorRadius(0.1);

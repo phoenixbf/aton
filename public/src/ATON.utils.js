@@ -21,6 +21,7 @@ Utils.init = ()=>{
 
     //Utils.geomUnitSphere = new THREE.SphereBufferGeometry( 1.0, 16, 16 );
     Utils.geomUnitSphere = new THREE.SphereGeometry( 1.0, 16, 16 );
+    Utils.geomUnitCube   = new THREE.BoxGeometry();
 
     // Export/Download utils
     Utils.exporterGLTF = undefined;
@@ -467,7 +468,7 @@ Utils.loadTileSet = (tsurl, N)=>{
                 if (c.material.map){
                     c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
                     c.material.map.magFilter = THREE.LinearFilter;
-                    c.material.map.encoding  = THREE.LinearEncoding; //THREE.sRGBEncoding;
+                    c.material.map.encoding  = ATON._stdEncoding; //THREE.LinearEncoding;
                 }
 
             }
@@ -542,8 +543,8 @@ Utils.modelVisitor = (N, model)=>{
                     }
                 }
 
-                // Fix mipmapping
-
+                Utils.processMaterial( o.material );
+/*
                 if ( o.material.map !== null){
                     //console.log(object.material.map);
                     
@@ -552,8 +553,14 @@ Utils.modelVisitor = (N, model)=>{
                     o.material.map.minFilter  = THREE.LinearMipmapLinearFilter;
                     o.material.map.magFilter  = THREE.LinearFilter;
                     o.material.map.encoding   = ATON._stdEncoding;
+                    o.material.onBeforeCompile = ( shader )=>{
+                        shader.fragmentShader.replace
+                        
+                        //console.log(shader.fragmentShader)
+                    }
                     //o.material.map.needsUpdate = true;
                 }
+*/
             }
 
             if (type === ATON.NTYPES.SEM){
@@ -592,6 +599,28 @@ Utils.modelVisitor = (N, model)=>{
         Utils.modelVisitor(model, C);
     }
 */
+};
+
+Utils.processMaterial = (M)=>{
+    if (M === undefined) return;
+
+/*
+    M.onBeforeCompile = ( shader )=>{
+        //shader.fragmentShader.replace()
+        
+        console.log(shader.fragmentShader)
+    }
+*/
+    if (M.map === null || M.map === undefined) return;
+
+    // Force mipmapping
+    M.map.generateMipmaps = true;
+    
+    M.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
+    M.map.minFilter  = THREE.LinearMipmapLinearFilter;
+    M.map.magFilter  = THREE.LinearFilter;
+    M.map.encoding   = ATON._stdEncoding;
+    //M.map.needsUpdate = true;
 };
 
 Utils.cleanupVisitor = ( object )=>{

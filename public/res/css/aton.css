@@ -163,19 +163,11 @@ canvas:active {
     cursor: -webkit-grabbing;
 }
 
-/*
-.view3D {
-    position: absolute !important;
-    width: 100%;
-    height: 100%;
-
-    -moz-user-select: none;
-    -khtml-user-select: none;
-    -webkit-user-select: none;
-    -o-user-select: none;
-    user-select: none;
+.edit {
+    -webkit-box-shadow: inset 0 0 30px #fa0;
+    -moz-box-shadow: inset 0 0 30px #fa0;
+    box-shadow: inset 0 0 30px #fa0;
 }
-*/
 
 .grabbable {
     cursor: move; /* fallback if grab cursor is unsupported */

@@ -912,6 +912,22 @@ Nav.requestPOVbyNode = (n, duration)=>{
     Nav.requestPOVbyBound(bs,duration);
 };
 
+/**
+Request transition to a viewpoint by ID
+@param {Node} povid - the POV ID
+@param {number} duration - duration of transition in seconds (optional), otherwise use standard duration
+@example
+ATON.Nav.requestPOVbyID("entrance");
+*/
+Nav.requestPOVbyID = (povid, duration)=>{
+    if (povid === undefined) return;
+
+    let pov = Nav.povlist[povid];
+    if (pov === undefined) return;
+
+    Nav.requestPOV(pov, duration);
+};
+
 // Internal routine to re-target on specific 3D point given optional normal
 Nav.requestRetarget = (point, normal, duration)=>{
     let M = new THREE.Vector3();

@@ -555,8 +555,8 @@ HATHOR.setupEventHandlers = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC){
-            if (HATHOR.paramVRC.length > 4) ATON.FE._vrcAddr = HATHOR.paramVRC;
-            ATON.VRoadcast.connect(ATON.FE._vrcAddr);
+            if (HATHOR.paramVRC.length > 4) ATON.VRoadcast.setAddress( HATHOR.paramVRC );
+            ATON.VRoadcast.connect();
         }
         if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
 
@@ -625,11 +625,17 @@ HATHOR.setupEventHandlers = ()=>{
     // Semantic
     ATON.on("SemanticNodeLeave", (semid)=>{
         let S = ATON.getSemanticNode(semid);
-        if (S) S.restoreDefaultMaterial();
+        if (S === undefined) return;
+
+        S.restoreDefaultMaterial();
+        //$('canvas').css({ cursor: 'default' });
     });
     ATON.on("SemanticNodeHover", (semid)=>{
         let S = ATON.getSemanticNode(semid);
-        if (S) S.highlight();
+        if (S === undefined) return;
+
+        S.highlight();
+        //$('canvas').css({ cursor: 'crosshair' });
     });
 /*
     ATON.on("MouseRightButton", ()=>{
@@ -705,16 +711,6 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='x') HATHOR.popupExportSemShapes();
 
-/*
-        if (k==='p'){
-            let qp = ATON.getSceneQueriedPoint();
-            if (qp === undefined) return;
-
-            ATON.addLightProbe( new ATON.LightProbe(64, ATON.SUI.getSelectorRadius()).setPosition(qp) );
-            ATON.getRootScene().assignLightProbesByProximity();
-            ATON.updateLightProbes();
-        }
-*/
         if (k==='u') ATON.FE.popupUser();
 
         if (k === '('){
@@ -751,6 +747,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='s'){
             ATON.SemFactory.addSurfaceConvexPoint();
         }
+
 /*
         if (k==='S'){
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
@@ -781,6 +778,11 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='l'){
             ATON.FE.controlLight(true);
         }
+
+        if (k==='p'){
+            HATHOR.addLightProbe();
+        }
+
 /*
         if (k==='L'){
             let D = ATON.Nav.getCurrentDirection();
@@ -800,6 +802,8 @@ HATHOR.setupEventHandlers = ()=>{
 
 
         if (k==='n') HATHOR.popupNav();
+
+        //if (k==='h') ATON.setWorldScale( ATON._worldScale * 0.5 );
 
         //if (k==='^') ATON.Nav.setFirstPersonControl();
 
@@ -994,6 +998,35 @@ HATHOR.uiUpdatePOVs = ()=>{
         $("#btn-prev").hide();
         $("#btn-next").hide();
     }
+};
+
+HATHOR.addLightProbe = ()=>{
+    if (!ATON.SUI.mainSelector.visible) return;
+    let P = ATON.SUI.mainSelector.position;
+
+    let r = ATON.SUI.getSelectorRadius();
+
+    ATON.addLightProbe( new ATON.LightProbe().setPosition(P).setNear(r) );
+
+    ATON.getRootScene().assignLightProbesByProximity();
+    ATON.updateLightProbes();
+
+    ATON.Utils.setVectorPrecision(P,4);
+
+    let E = {};
+    E.environment = {};
+    E.environment.lightprobes = {};
+    E.environment.lightprobes.list = {};
+
+    let idlp = ATON.Utils.generateID("LP");
+    E.environment.lightprobes.list[idlp] = {};
+    E.environment.lightprobes.list[idlp].pos  = [P.x,P.y,P.z];
+    E.environment.lightprobes.list[idlp].near = r;
+
+    //console.log(E);
+
+    ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+    ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
 };
 
 // Popups
@@ -1604,7 +1637,7 @@ HATHOR.popupEnvironment = ()=>{
         htmlcontent += "<div style='text-align:center;'>";
         htmlcontent += "Select panorama from collection or URL: <input id='idPanoURL' type='text' size='30'>";
         htmlcontent += "<div id='idClearPano' class='atonBTN'><img src='"+ATON.FE.PATH_RES_ICONS+"search-clear.png'></div><div id='idSetPano' class='atonBTN atonBTN-green'>Set</div><br>";
-        htmlcontent += "<div id='idPanoPreview' style='margin:auto; width:200px; height:100px'></div>";
+        htmlcontent += "<div id='idPanoPreview' style='margin:auto;'></div>"; // width:200px; height:100px
         htmlcontent += "</div><br>";
 
         htmlcontent += "<div style='text-align:center;'>Panorama rotation (<span id='idEnvRotVal'></span>)<br>";
@@ -1803,6 +1836,8 @@ HATHOR.popupEnvironment = ()=>{
         //if (ld) E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+
+        ATON.updateLightProbes();
     });
 
     $("#idEnvRot").on("input change",()=>{
@@ -1819,7 +1854,9 @@ HATHOR.popupEnvironment = ()=>{
     $("#idAutoLP").on("change",()=>{
         let b = $("#idAutoLP").is(':checked');
         ATON.setAutoLP(b);
-        ATON.updateLightProbes();
+        
+        if (b) ATON.updateLightProbes();
+        //else TODO:
 
         E.environment.lightprobes = {};
         E.environment.lightprobes.auto = b;
@@ -1989,13 +2026,15 @@ HATHOR.popupScene = ()=>{
         htmlcontent += "</div>";
 
         // Only for auth users
-        if (authUser && ATON.FE.getCurrentUIP()==="editor"){
+        if (authUser /*&& ATON.FE.getCurrentUIP()==="editor"*/){
             htmlcontent += "<br><br>";
             htmlcontent += "<div class='atonBTN atonBTN-orange atonBTN-horizontal atonBTN-text' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this Scene</div>";
 
+            // Not my scene
             if (!bYourScene){
                 //
             }
+            // My scene
             else {
                 htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscene'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this Scene</div>";
                 htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage my Scenes</div>";
@@ -2196,7 +2235,7 @@ HATHOR.popupHelp = ()=>{
 
     // Toolbar
     //let sp = "<br>";
-    let iblock = "<div style='width:210px; display:inline-block; margin:5px; vertical-align:top;'>";
+    let iblock = "<div style='width:200px; display:inline-block; margin:5px; vertical-align:top;'>";
     htmlcontent += "<h3>Icons</h3>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' class='atonDefIcon'> User authentication</div>";
@@ -2389,16 +2428,31 @@ HATHOR.popupSettings = ()=>{
 
     ATON.FE.computeSelectorRanges();
 
+    // Selector
     htmlcontent += divBlock;
-    htmlcontent += "<b>3D selector radius (<span id='idSelRadTxt'>"+hr+"</span>)</b>:<br>";
+    htmlcontent += "<div class='atonBlockSubTitle'>3D Selector</div><br>";
+    htmlcontent += "Radius (<span id='idSelRadTxt'>"+hr+"</span>):<br>";
     //htmlcontent += ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[0])+"&nbsp;";
     htmlcontent += "<input id='idSelRad' type='range' min='"+ATON.FE._selRanges[0]+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
     //htmlcontent += "&nbsp;"+ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[1]);
+
+    htmlcontent += "Offset X: <span id='idSeldxTxt'>"+ATON.SUI._selOffset.x.toPrecision(3)+"</span><br>";
+    htmlcontent += "<input id='idSeldx' type='range' min='"+(-ATON.FE._selRanges[1])+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
+
+    htmlcontent += "Offset Y: <span id='idSeldyTxt'>"+ATON.SUI._selOffset.y.toPrecision(3)+"</span><br>";
+    htmlcontent += "<input id='idSeldy' type='range' min='"+(-ATON.FE._selRanges[1])+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
+
+    htmlcontent += "Offset Z: <span id='idSeldzTxt'>"+ATON.SUI._selOffset.z.toPrecision(3)+"</span><br>";
+    htmlcontent += "<input id='idSeldz' type='range' min='"+(-ATON.FE._selRanges[1])+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
+
+    htmlcontent += "<div id='idSelOffReset' class='atonBTN atonBTN-text atonBTN-yellow atonBTN-horizontal'>Reset offsets</div>";
     htmlcontent += "</div>";
 
+    // Multires
     if (ATON._tsets.length > 0){
         htmlcontent += divBlock;
-        htmlcontent += "<b>Multiresolution error target (<span id='idTSerrTxt'>"+ATON._tsET+"</span>)</b>:<br>";
+        htmlcontent += "<div class='atonBlockSubTitle'>Multiresolution</div><br>";
+        htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON._tsET+"</span>):<br>";
         htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:50%' type='range' min='1.0' max='50.0' step='1.0'>&nbsp;Less detail";
         htmlcontent += "</div>";
     }
@@ -2415,6 +2469,24 @@ HATHOR.popupSettings = ()=>{
         $("#idSelRadTxt").html( ATON.Utils.getHumanReadableDistance(r) );
     });
 
+    $("#idSeldx").on("input change", ()=>{
+        let v = parseFloat( $("#idSeldx").val() );
+        ATON.SUI.setSelectorOffset(v, undefined, undefined);
+        $("#idSeldxTxt").html(v.toPrecision(3));
+    });
+
+    $("#idSeldy").on("input change", ()=>{
+        let v = parseFloat( $("#idSeldy").val() );
+        ATON.SUI.setSelectorOffset(undefined, v, undefined);
+        $("#idSeldyTxt").html(v.toPrecision(3));
+    });
+
+    $("#idSeldz").on("input change", ()=>{
+        let v = parseFloat( $("#idSeldz").val() );
+        ATON.SUI.setSelectorOffset(undefined, undefined, v);
+        $("#idSeldzTxt").html(v.toPrecision(3));
+    });
+
     $("#idTSerr").on("input change",()=>{
         let e = parseFloat( $("#idTSerr").val() );
 
@@ -2422,5 +2494,15 @@ HATHOR.popupSettings = ()=>{
 
         ATON.setTSetsErrorTarget(e);
         $("#idTSerrTxt").html( ATON._tsET );
+    });
+
+    $("#idSelOffReset").click(()=>{
+        ATON.SUI.setSelectorOffset(0.0,0.0,0.0);
+        $("#idSeldxTxt").val(0.0);
+        $("#idSeldyTxt").val(0.0);
+        $("#idSeldzTxt").val(0.0);
+        $("#idSeldxTxt").html("0");
+        $("#idSeldyTxt").html("0");
+        $("#idSeldzTxt").html("0");
     });
 }

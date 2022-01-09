@@ -36,7 +36,7 @@ import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaRec from "./ATON.mediarec.js";
 import GeoLoc from "./ATON.geoloc.js";
-import AppHub from "./ATON.apphub.js";
+import App from "./ATON.app.js";
 import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 
@@ -61,7 +61,7 @@ ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaRec   = MediaRec;
 ATON.GeoLoc     = GeoLoc;
-ATON.AppHub     = AppHub;
+ATON.App        = App;
 ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
 
@@ -443,7 +443,7 @@ Main ATON initialization, it will take care of all sub-components initialization
 @example
 ATON.realize()
 */
-ATON.realize = ()=>{
+ATON.realize = ( bNoRender )=>{
     console.log("Initialize ATON...");
 
     ATON.Utils.init();
@@ -456,6 +456,7 @@ ATON.realize = ()=>{
 
     // Bounds
     ATON.bounds = new THREE.Sphere();
+    ATON._worldScale = 1.0;
 
     ATON._bFS = false; // fullscreen
 
@@ -512,7 +513,7 @@ ATON.realize = ()=>{
 
     //console.log(ATON._renderer.getPixelRatio());
 
-    ATON._renderer.setAnimationLoop( ATON._onFrame );
+    if (!bNoRender) ATON._renderer.setAnimationLoop( ATON._onFrame );
     //ATON._bDirtyLP = false;
 
     ATON._maxAnisotropy = ATON._renderer.capabilities.getMaxAnisotropy();
@@ -523,10 +524,11 @@ ATON.realize = ()=>{
 
     ATON.userHeight = 1.7;
  
-    document.body.appendChild( ATON._renderer.domElement );
+    if (!bNoRender) document.body.appendChild( ATON._renderer.domElement );
     //console.log(ATON._renderer);
     
     let canvas = ATON._renderer.domElement;
+    canvas.id = "idView3D";
     canvas.style.outline = "none";
     canvas.style.border  = "none";
     //canvas.style.padding = "0px";
@@ -612,8 +614,8 @@ ATON.realize = ()=>{
     // Semantic Factory
     ATON.SemFactory.init();
 
-    // App Hub
-    ATON.AppHub.init();
+    // App
+    ATON.App.init();
 
     // GeoLoc
     ATON.GeoLoc.init();
@@ -672,14 +674,12 @@ ATON.realize = ()=>{
 */
 
     // Basis
-/*
     ATON._basisLoader = new THREE.BasisTextureLoader();
     ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
     ATON._basisLoader.detectSupport( ATON._renderer );
     
     // Register BasisTextureLoader for .basis extension.
     THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
-*/
 
     // Mouse/Touch screen coords
     ATON._screenPointerCoords = new THREE.Vector2(0.0,0.0);
@@ -928,6 +928,18 @@ Get root of UI graph
 */
 ATON.getRootUI = ()=>{
     return ATON._rootUI;
+};
+
+// TODO:
+ATON.setWorldScale = (ws)=>{
+    ATON._rootVisible.scale.set(ws,ws,ws);
+    ATON._rootSem.scale.set(ws,ws,ws);
+    ///ATON._rootUI.scale.set(ws,ws,ws);
+    ATON._worldScale = ws;
+};
+
+ATON.getWorldScale = ()=>{
+    return ATON._worldScale;
 };
 
 // Asset loading routines
@@ -1494,7 +1506,7 @@ ATON.isMainLightEnabled = ()=>{
 
 ATON.setExposure = (d)=>{
     ATON._renderer.toneMappingExposure = d;
-    ATON.updateLightProbes();
+    //ATON.updateLightProbes();
 };
 ATON.getExposure = ()=>{
     return ATON._renderer.toneMappingExposure;
@@ -1794,6 +1806,7 @@ ATON._onFrame = ()=>{
     //ATON.fireEvent("frame");
 };
 
+// Render frame
 ATON._render = ()=>{
     if ( !ATON.FX.composer || ATON.XR._bPresenting)
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
@@ -2035,6 +2048,24 @@ ATON.getSceneQueriedNormal = ()=>{
     return ATON._queryDataScene.n;
 };
 
+/**
+Set query range
+@param {number} near - near distance (default: 0.0)
+@param {number} far - far distance (default: Infinity) 
+@param {number} type - type of query (ATON.NTYPES.SCENE, ATON.NTYPES.SEM). If undefined, all ray casters are set
+@example
+ATON.setQueryRange(0.0,3.0, ATON.NTYPES.SCENE);
+*/
+ATON.setQueryRange = (near, far, type)=>{
+    if (type === undefined || type === ATON.NTYPES.SCENE){
+        ATON._rcScene.near = near;
+        ATON._rcScene.far  = far;
+    }
+    if (type === undefined || type === ATON.NTYPES.SEM){
+        ATON._rcSemantics.near = near;
+        ATON._rcSemantics.far  = far;
+    }
+};
 
 // Ray casting semantic-graph
 ATON._handleQuerySemantics = ()=>{

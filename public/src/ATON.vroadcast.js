@@ -34,6 +34,7 @@ VRoadcast.init = ()=>{
 
     VRoadcast.socket = undefined;
     VRoadcast._connected = false;
+    VRoadcast._reqSSID = undefined;
 
     VRoadcast._username = undefined;
 
@@ -230,7 +231,7 @@ VRoadcast.joinSession = (ssid)=>{
         return;
     }
 
-    console.log("Joining VRC session "+ssid+"...");
+    console.log("Joining VRC session '"+ssid+"'...");
     VRoadcast.socket.emit("SENTER", ssid );
 };
 
@@ -248,14 +249,26 @@ VRoadcast.setAvatarsVisibility = (b)=>{
 };
 
 /**
+Set address for VRoadcast service. Default is same server where main service is running.
+This is used if the service is running on a remote server/node
+@param {string} address - the address of the service.
+@example
+ATON.VRoadcast.setAddress();
+*/
+VRoadcast.setAddress = (address)=>{
+    if (address) VRoadcast.address = address;
+}
+
+/**
 Connect to VRoadcast service
-@param {string} address - the address of the service (optional). Default is same server where main service is running
+@param {string} ssid - the session ID to join after successfully connected (optional). Default is current scene-ID (if any loaded)
 @example
 ATON.VRoadcast.connect();
 */
-VRoadcast.connect = (address)=>{
+VRoadcast.connect = (ssid)=>{
     if (VRoadcast._connected) return;
-    if (address) VRoadcast.address = address;
+
+    VRoadcast._reqSSID = ssid;
 
     let opts = {};
 
@@ -324,10 +337,9 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('connect', ()=>{
         VRoadcast._connected = true;
 
-        // If we have a valid Scene ID join corresponding session
-        if (ATON.SceneHub.currID !== undefined){
-            VRoadcast.joinSession();
-        }
+        // Join session
+        if (VRoadcast._reqSSID !== undefined) VRoadcast.joinSession(VRoadcast._reqSSID);
+        else VRoadcast.joinSession(ATON.SceneHub.currID);
         
         console.log("Connected to VRC service!");
         ATON.fireEvent("VRC_Connected");

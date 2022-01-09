@@ -16,15 +16,16 @@
             "rotation": 1.0
         },
         "xlightprobes": {
-            "auto": true
+            "list": {
+                "LP0": {
+                    "pos": [342,116,-118.5],
+                    "near": 0.35
+                }
+            }
         },
         "mainlight": {
-            "xshadows": true,
-            "direction": [
-                -0.303,
-                -0.868,
-                -0.392
-            ]
+            "shadows": true,
+            "direction": [-0.303,-0.868,-0.392]
         }
 	},
 
@@ -101,6 +102,25 @@
         },
         "edges": {
             ".": ["Attuale", "Build. 2", "Building 1", "Last period", "Last period Rec","Build. 2 Rec"]
+        }
+    },
+
+    "viewpoints": {
+        "pov-entrance": {
+            "position": [341.40,117.09,-114.92],
+            "target": [341.44,116.92,-115.91],
+            "fov": 57
+        },
+        "pov-anvil": {
+            "position": [341.073,117.0,-120.42
+            ],
+            "target": [341.38,116.49,-119.62],
+            "fov": 57
+        },
+        "pov-forge": {
+            "position": [342.97,117.0,-117.85],
+            "target": [342.96,116.49,-118.71],
+            "fov": 57
         }
     }
 }

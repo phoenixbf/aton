@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON App remote control</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
+<script>
+window.onload = ()=>{
+    // Realize our App
+    let myApp = ATON.App.realize();
+
+    // Setup: this is executed once (App initialization)
+    // This may include UI setup (HTML), events handling, etc.
+    myApp.setup = ()=>{
+        ATON.FE.realize(); // Realize the base front-end
+        ATON.FE.addBasicLoaderEvents(); // Add basic front-end events (loading spinner, automatic home, ...)
+
+        // Create and load a scene
+        ATON.FE.loadSceneID("samples/montebelluna");
+
+        // Lets connect and join VRC session "sample-wapp-remote"
+        ATON.VRoadcast.connect("sample-wapp-remote");
+
+        // Setup incoming communications from control App
+        // Remote request for transition to a specific viewpoint
+        ATON.VRoadcast.on("POV", (id)=>{
+            ATON.Nav.requestPOVbyID( id );
+        });
+
+        // Generate QR-code for remote control App
+        let url = window.location.origin + "/examples/app-remote/control.html";
+        new QRCode(document.getElementById("idQRcontrol"), url);
+    };
+
+    // Ok, let's run our App!
+    myApp.run();
+};
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            In this sample we showcase <b>remote control</b> (viewpoints) between web-apps using VRoadcast.<br><br>
+            
+            We setup a first 3D App (this one) like <a href="../app-basic/">App basic sample</a>, where we load a scene with some viewpoints (POVs). Then we create a second App for remote control.<br><br>
+            You can open this second App by clicking, tapping or using this QR-code (for instance in another device, like a smartphone):<br>
+            <a href="control.html" target="_blank"><div class="atonQRcodeContainer" id='idQRcontrol' style="background-color: white; padding:30px;"></div></a>
+
+            <br><br>
+            Both apps join a VRoadcast session named "sample-wapp-remote" via:
+            <code>
+                ATON.VRoadcast.connect("sample-wapp-remote")
+            </code><br><br>
+            The control App can send custom events to this one (in this simple case, viewpoints requests named "POV"), via:
+            <code>
+                ATON.VRoadcast.fireEvent("POV", id)
+            </code><br><br>
+            The 3D App (this one), handles incoming viewpoints requests via:
+            <code>
+                ATON.VRoadcast.on("POV", function(id){...})
+            </code><br><br>
+
+            Note that depending on where the framework is deployed, everyone in same network can remotely request viewpoints. If the server is public, remote people can request specific viewpoints (or handle your own custom logic)! You can try it also on HMDs
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

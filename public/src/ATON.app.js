@@ -10,19 +10,24 @@
 
 /**
 ATON App Hub
-@namespace AppHub
+@namespace App
 */
-let AppHub = {};
+let App = {};
 
 // Realize the hub
-AppHub.init = ()=>{
-    AppHub._appid   = $("meta[name='aton\\:appid']").attr("content");
-    AppHub._appdata = {};
+App.init = ()=>{
+    App._id   = $("meta[name='aton\\:appid']").attr("content");
+    App._data = {};
+
+    App.setup  = undefined;
+    App.update = undefined;
+
+    App._bRunning = false;
 };
 
 // Send JSON patch
 // TODO: https://tools.ietf.org/html/rfc6902
-AppHub._sendDataPatch = (id, patch, mode)=>{
+App._sendDataPatch = (id, patch, mode)=>{
     return new Promise((resolve, reject)=>{
         if (id === undefined){
             reject("No storage ID specified");
@@ -36,7 +41,7 @@ AppHub._sendDataPatch = (id, patch, mode)=>{
             reject("No storage patch");
             return;
         }
-        if (AppHub._appid === undefined){
+        if (App._id === undefined){
             reject("No app-ID");
             return;
         }
@@ -44,7 +49,7 @@ AppHub._sendDataPatch = (id, patch, mode)=>{
         if (mode === undefined) mode = ATON.PATCH_ADD;
 
         let O = {};
-        O.wappid = AppHub._appid;
+        O.wappid = App._id;
         O.fid    = id;
         O.data   = patch;
         O.mode   = (mode === ATON.PATCH_DEL)? "DEL" : "ADD";
@@ -65,7 +70,7 @@ AppHub._sendDataPatch = (id, patch, mode)=>{
                     return;
                 }
 
-                AppHub._appdata[id] = r;
+                App._data[id] = r;
                 resolve(r);
             }
         });
@@ -76,8 +81,8 @@ AppHub._sendDataPatch = (id, patch, mode)=>{
 Get current web-app ID
 @returns {string} - web-app ID
 */
-AppHub.getAppID = ()=>{
-    return AppHub._appid;
+App.getAppID = ()=>{
+    return App._id;
 };
 
 /**
@@ -85,11 +90,11 @@ Add data to persistent, server-side storage of current web-app
 @param {object} id - server-side storage ID
 @param {object} patch - a javascript object patch
 @example
-ATON.AppHub.addToStorage("myStorage", {score: 20}).then(...)
+ATON.App.addToStorage("myStorage", {score: 20}).then(...)
 */
-AppHub.addToStorage = (id, patch)=>{
-    //AppHub._sendDataPatch(id, patch, ATON.PATCH_ADD, onComplete);
-    return AppHub._sendDataPatch(id, patch, ATON.PATCH_ADD);
+App.addToStorage = (id, patch)=>{
+    //App._sendDataPatch(id, patch, ATON.PATCH_ADD, onComplete);
+    return App._sendDataPatch(id, patch, ATON.PATCH_ADD);
 };
 
 /**
@@ -97,22 +102,22 @@ Delete data from server-side storage of current web-app
 @param {object} id - server-side storage ID
 @param {object} patch - a javascript object patch
 @example
-ATON.AppHub.deleteFromStorage("myStorage", {score: {}}).then(...)
+ATON.App.deleteFromStorage("myStorage", {score: {}}).then(...)
 */
-AppHub.deleteFromStorage = (id, patch)=>{
-    //AppHub._sendDataPatch(id, patch, ATON.PATCH_DEL, onComplete);
-    return AppHub._sendDataPatch(id, patch, ATON.PATCH_DEL);
+App.deleteFromStorage = (id, patch)=>{
+    //App._sendDataPatch(id, patch, ATON.PATCH_DEL, onComplete);
+    return App._sendDataPatch(id, patch, ATON.PATCH_DEL);
 };
 
 /**
 Get content of server-side storage for current web-app
 @param {object} id - server-side storage ID
 @example
-ATON.AppHub.getStorage("myStorage").then((s)=>{ console.log(s); })
+ATON.App.getStorage("myStorage").then((s)=>{ console.log(s); })
 */
-AppHub.getStorage = (id)=>{
+App.getStorage = (id)=>{
     return new Promise((resolve, reject)=>{
-        if (AppHub._appid === undefined){
+        if (App._id === undefined){
             reject();
             return;
         }
@@ -121,14 +126,49 @@ AppHub.getStorage = (id)=>{
             return;
         }
 
-        $.getJSON( ATON.PATH_WAPPS+AppHub._appid+"/data/"+id+".json", (data)=>{
+        $.getJSON( ATON.PATH_WAPPS+App._id+"/data/"+id+".json", (data)=>{
             console.log(data);
-            AppHub._appdata[id] = data;
+            App._data[id] = data;
             resolve(data);
         });
     });
+};
 
+// Craft an App object
+App.realize = (setup, update)=>{
+    let A = {};
+
+    A.setup  = setup;
+    A.update = update;
+
+    A.run = ()=>{
+        App.run( A );
+    };
+
+    A.params = new URLSearchParams(window.location.search);
+
+    return A;
+};
+
+App.realizeAndRun = (setup, update)=>{
+    let A = App.realize(setup, update);
+    App.run(A);
 };
 
 
-export default AppHub;
+App.run = ( A )=>{
+    if (App._bRunning) return;
+
+    App._bRunning = true;
+
+    if (A.setup) A.setup();
+    else {
+        ATON.FE.realize();
+        console.log("App [Warn]: you App should define a setup() routine");
+    }
+
+    if (A.update) ATON.addUpdateRoutine( A.update );
+};
+
+
+export default App;

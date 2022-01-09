@@ -143,7 +143,10 @@ window.addEventListener( 'load', ()=>{
     htmlcontent += createExampleBlock("sui-basic", "Spatial UI basics", "sui spatial ui basic");
 
     // Multi-res
-    //htmlcontent += createExampleBlock("multires", "Multi-Resolution", "multi resolution tiles lod detail large paging");
+    //htmlcontent += createExampleBlock("multires", "Multi-Resolution", "multi resolution tiles lod detail large paging cesium");
+
+    // App
+    htmlcontent += createExampleBlock("app-basic", "Basic App", "app basic web-app setup update");
 
     // FX
     htmlcontent += createExampleBlock("fx-object", "FX basics", "fx composer effect object pbr shadows bloom dof");
@@ -152,6 +155,7 @@ window.addEventListener( 'load', ()=>{
     // VRoadcast
     htmlcontent += createExampleBlock("vroadcast-basic", "Basic Collaborative", "vroadcast collaborative scene");
     htmlcontent += createExampleBlock("vroadcast-populate", "Collaborative Scene Population", "vroadcast collaborative scene populate picking query");
+    htmlcontent += createExampleBlock("app-remote", "Remote Control", "vroadcast collaborative scene remote control app");
 
     $("#mainContent").html(htmlcontent);
 

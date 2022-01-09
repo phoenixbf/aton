@@ -33,29 +33,6 @@ constructor(res, near, far){
     }
 }
 
-/*
-realize(){
-    this._LPtarget0 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding // prevent the material's shader from recompiling every frame
-    });
-
-    this._LPtarget1 = new THREE.WebGLCubeRenderTarget( this._res, {
-        format: THREE.RGBFormat,
-        generateMipmaps: true,
-        minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: THREE.sRGBEncoding
-    });
-
-    this._LP0 = new THREE.CubeCamera( this._near, this._far, this._LPtarget0 );
-    this._LP1 = new THREE.CubeCamera( this._near, this._far, this._LPtarget1 );
-
-    return this;
-}
-*/
-
 /**
 Set LP position
 @example

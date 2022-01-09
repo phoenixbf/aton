@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON App sample</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
+<script>
+window.onload = ()=>{
+    // Realize our App
+    let myApp = ATON.App.realize();
+
+    // Setup: this is executed once (App initialization)
+    // This may include UI setup (HTML), events handling, etc.
+    myApp.setup = ()=>{
+        ATON.FE.realize(); // Realize the base front-end
+        ATON.FE.addBasicLoaderEvents(); // Add basic front-end events (loading spinner, automatic home, ...)
+
+        // Create and load a sample 3D model
+        ATON.createSceneNode("acube").load("samples/models/atoncube.gltf").attachToRoot();
+
+        // Set sample panorama
+        ATON.setMainPanorama("samples/pano/bg-welcome.jpg");
+
+        // Setup a lightprobe centered in the 3D model
+        ATON.addLightProbe( new ATON.LightProbe().setPosition(0,0,0).setNear(1.0) );
+    };
+
+    // Update: this is executed continuously
+    myApp.update = ()=>{
+        let t = ATON.getElapsedTime();
+
+        let N = ATON.getSceneNode("acube");
+        if (N){
+            N.scale.y = 1.2 + (Math.cos(t) * 0.5); // stretch the node along y axis depending on current time
+        }
+    };
+
+    // Ok, let's run our App!
+    myApp.run();
+};
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

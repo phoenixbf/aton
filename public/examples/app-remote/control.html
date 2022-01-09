@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON App remote control</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
+<script>
+window.onload = ()=>{
+    // Realize our App
+    let myApp = ATON.App.realize();
+
+    // Setup: this is executed once (App initialization)
+    // This may include UI setup (HTML), events handling, etc.
+    myApp.setup = ()=>{
+        ATON.realize(true); // We setup ATON without renderer
+        
+        // Lets connect and join VRC session "sample-wapp-remote"
+        ATON.VRoadcast.bSendState = false; // We dont want to send our state since there is no virtual 3D representation for this app 
+        ATON.VRoadcast.connect("sample-wapp-remote");
+
+        // Initial status message (our HTML stuff)
+        setStatus(false);
+
+        // We handle connect/disconnect to change status message
+        ATON.on("VRC_Connected", ()=>{
+            setStatus(true);
+        });
+        ATON.on("VRC_Disconnected", ()=>{
+            setStatus(false);
+        });
+    };
+
+    // Ok, let's run our App!
+    myApp.run();
+};
+
+// Broadcast request for specific viewpoint by ID.
+// We define our custom event called "POV", with ID of the viewpoint
+let reqPOV = (id)=>{
+    ATON.VRoadcast.fireEvent("POV", id);
+};
+
+// Helper function to set status message
+let setStatus = (b)=>{
+    if (b){
+        let numUsers = ATON.VRoadcast.getNumUsers();
+
+        if (numUsers <= 1) $("#idStatus").html("Connected (just you!)");
+        else $("#idStatus").html("Connected ("+numUsers+" users)");
+        
+        $("#idStatus").css("background-color","rgba(0,150,0, 0.3)");
+    }
+    else {
+        $("#idStatus").html("Disconnected<br>is VRoadcast service up and running?");
+        $("#idStatus").css("background-color","rgba(150,0,0, 0.3)");
+    }
+};
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+
+    <div class="atonTitle">App Control</div>
+    <div id='idStatus' class="descriptionText" style='text-align:center; padding:16px'></div><br>
+
+    <div class='atonGalleryItem' style='padding:10px; min-width:200px; background-color: rgba(0,0,0, 0.2)'>
+        <div class='atonBlockSubTitle'>Viewpoints</div><br>
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-entrance')">Entrance</div>
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-anvil')">Anvil</div>
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-forge')">Forge</div>
+    </div>
+
+
+    <!-- Footer -->
+    <div id= 'idFooter' class="atonToolbar atonToolbar-bottom shuFooter">
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

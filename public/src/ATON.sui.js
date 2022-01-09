@@ -175,6 +175,8 @@ SUI.initSelector = ()=>{
     SUI.setSelectorRadius(0.05);
     SUI.mainSelector.visible = false;
     ATON._rootUI.add(SUI.mainSelector);
+
+    SUI._selOffset = new THREE.Vector3();
 };
 
 // note: before adding LPs
@@ -202,12 +204,45 @@ SUI.setSelectorRadius = (r)=>{
 };
 
 /**
+Set selector offset
+@param {number} dx
+@param {number} dy
+@param {number} dz
+*/
+SUI.setSelectorOffset = (dx,dy,dz)=>{
+    if (dx !== undefined){
+        SUI._selOffset.x = dx;
+    }
+    if (dy !== undefined){
+        SUI._selOffset.y = dy;
+    }
+    if (dz !== undefined){
+        SUI._selOffset.z = dz;
+    }
+
+    let p = ATON.getSceneQueriedPoint();
+    if (p === undefined) return;
+
+    SUI.mainSelector.position.x = p.x + SUI._selOffset.x;
+    SUI.mainSelector.position.y = p.y + SUI._selOffset.y;
+    SUI.mainSelector.position.z = p.z + SUI._selOffset.z;
+}
+
+/**
 Get selector current radius
 @returns {number}
 */
 SUI.getSelectorRadius = ()=>{
     //return SUI.mainSelector.scale.x;
     return SUI._selectorRad;
+};
+
+/**
+Get selector current location
+@returns {THREE.Vector3}
+*/
+SUI.getSelectorLocation = ()=>{
+    return SUI.mainSelector.position;
 };
 
 /**
@@ -456,12 +491,12 @@ SUI.addMeasurementPoint = (P)=>{
     s *= d;
     linetick *= d;
 
-    let A = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
+    let A = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
     A.position.copy(SUI._prevMPoint);
     A.scale.set(s,s,s);
     SUI.gMeasures.add(A);
 
-    let B = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("measurement"));
+    let B = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
     B.position.copy(P);
     B.scale.set(s,s,s);
     SUI.gMeasures.add(B);
@@ -543,7 +578,10 @@ SUI.update = ()=>{
     // Selector
     if (ATON._queryDataScene && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
-        SUI.mainSelector.position.copy(ATON._queryDataScene.p);
+
+        SUI.mainSelector.position.x = ATON._queryDataScene.p.x + SUI._selOffset.x;
+        SUI.mainSelector.position.y = ATON._queryDataScene.p.y + SUI._selOffset.y;
+        SUI.mainSelector.position.z = ATON._queryDataScene.p.z + SUI._selOffset.z;
     }
     else {
         SUI.mainSelector.visible = false;

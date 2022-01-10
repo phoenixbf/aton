@@ -34,7 +34,7 @@ Utils.init = ()=>{
 
     Utils.textureLoader = new THREE.TextureLoader();
 
-    Utils._bShowBVHbounds = false;
+    Utils._bvhBounds = 0;
 
     Utils.stats = {};
     Utils.stats.numVertices = 0;
@@ -67,8 +67,18 @@ Utils.isConnectionSecure = ()=>{
 }
 
 // Utility
-Utils.setBVHboundsVisible = ()=>{
-    Utils._bShowBVHbounds = true;
+Utils.showBVHbounds = (level)=>{
+    if (level > 0) Utils._bvhBounds = level;
+};
+
+Utils._addBVHbounds = (c, level)=>{
+    if (c === undefined) return;
+
+    let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(c, level);
+    BVHVis.displayParents = true;
+    BVHVis.update();
+
+    c.parent.add(BVHVis);
 };
 
 
@@ -451,11 +461,7 @@ Utils.loadTileSet = (tsurl, N)=>{
                 if (c.geometry){
                     c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
 
-                    if (Utils._bShowBVHbounds){
-                        let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(c, 5);
-                        BVHVis.update();
-                        c.parent.add(BVHVis);
-                    }
+                    if (Utils._bvhBounds>0) Utils._addBVHbounds(c, Utils._bvhBounds);
                 }
             }
 
@@ -464,6 +470,9 @@ Utils.loadTileSet = (tsurl, N)=>{
                     c.material = N.userData.cMat;
                 }
 
+                //c.castShadow    = true;
+				//c.receiveShadow = true;
+                //c.material.shadowSide = 2;
 
                 if (c.material.map){
                     c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
@@ -536,11 +545,7 @@ Utils.modelVisitor = (N, model)=>{
                     console.log("Computed visible BVH");
 
                     // visualize BVH bounds
-                    if (Utils._bShowBVHbounds){
-                        let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(o, 10);
-                        BVHVis.update();
-                        o.parent.add(BVHVis);
-                    }
+                    if (Utils._bvhBounds>0) Utils._addBVHbounds(o, Utils._bvhBounds);
                 }
 
                 Utils.processMaterial( o.material );

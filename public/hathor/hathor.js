@@ -40,6 +40,9 @@ HATHOR.init = (sid)=>{
         console.error = ATON.VRoadcast.log;
         console.warn  = ATON.VRoadcast.log;
     }
+
+    let bvhParam = ATON.FE.urlParams.get('bvh');
+    if (bvhParam) ATON.Utils.showBVHbounds( parseInt(bvhParam) );
     
     HATHOR._bVRCsetup = false;
     HATHOR._bVRCreq   = false;

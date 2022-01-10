@@ -453,6 +453,7 @@ ATON.realize = ( bNoRender )=>{
 
     // Timing
     ATON._clock = new THREE.Clock(true);
+    //TODO: ATON._time = window.performance.now()
 
     // Bounds
     ATON.bounds = new THREE.Sphere();

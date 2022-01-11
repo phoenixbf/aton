@@ -50,6 +50,8 @@ import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerat
 
 import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 
+import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
+
 
 import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
@@ -105,6 +107,8 @@ THREE.EXRLoader  = EXRLoader;
 THREE.RoughnessMipmapper  = RoughnessMipmapper;
 THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
+
+THREE.TransformControls = TransformControls;
 
 //THREE.CSS3DRenderer = CSS3DRenderer;
 //THREE.CSS3DObject   = CSS3DObject;

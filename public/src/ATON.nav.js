@@ -25,6 +25,8 @@ Nav.STD_POV_TRANS_DURATION = 2.0;
 
 Nav.STD_LOCNODE_SIZE = 0.3;
 
+Nav.MIN_LOC_VALID_DIST = 1.5; // Locomotion validator default distance to consider "too close"
+
 // Non-immersive navigation controls
 Nav.MODE_ORBIT  = 0;
 Nav.MODE_FP     = 1;
@@ -154,15 +156,23 @@ Nav.locomotionValidator = ()=>{
         return;
     }
 
-    let P = ATON._queryDataScene.p;
-    let N = ATON._queryDataScene.n;
+    let qs = ATON._queryDataScene;
 
-    if (!N){
+    let P = qs.p;
+    let N = qs.n;
+    let d = qs.d;
+
+    if (d <= Nav.MIN_LOC_VALID_DIST){ // too close
+        Nav._bValidLocomotion = false;
+        return;     
+    }
+
+    if (!N){ // invalid normal
         Nav._bValidLocomotion = false;
         return;  
     }
 
-    if (N.y <= 0.7){
+    if (N.y <= 0.7){ // slope
         Nav._bValidLocomotion = false;
         return;
     }
@@ -391,6 +401,8 @@ Nav._updCamera = (c)=>{
         c.fov = Nav._currPOV.fov;
         c.updateProjectionMatrix();
     }
+
+    ATON._setupGizmo();
 
     ATON.Utils.updateTSetsCamera(c);
 };

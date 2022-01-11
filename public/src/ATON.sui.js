@@ -671,6 +671,14 @@ SUI.update = ()=>{
     if (SUI.mainSelector.visible && ATON.VRoadcast._bStreamFocus){
         let ss = SUI._selectorRad * (1.0 + (Math.cos(ATON._clock.elapsedTime*10.0) * 0.2) );
         SUI.mainSelector.scale.set(ss,ss,ss);
+
+        let fp = ATON.getSceneFocalPoint();
+        if (fp !== undefined){
+            ATON.enablePointLight();
+            ATON.plight.position.copy( fp );
+            ATON.plight.distance = SUI._selectorRad * 2.0;
+            fp = null;
+        }
     }
 
 };

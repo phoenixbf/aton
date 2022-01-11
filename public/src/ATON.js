@@ -451,9 +451,9 @@ ATON.realize = ( bNoRender )=>{
     
     //THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1); // mismatches WebXR y-up
 
-    // Timing
+    // Global time
+    // uses performance.now() if it is available, otherwise the less accurate Date.now().
     ATON._clock = new THREE.Clock(true);
-    //TODO: ATON._time = window.performance.now()
 
     // Bounds
     ATON.bounds = new THREE.Sphere();
@@ -703,6 +703,10 @@ ATON.realize = ( bNoRender )=>{
     ATON._setupBaseListeners();
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
+
+    // Gizmo transforms
+    ATON._gizmo  = undefined;
+    ATON._bGizmo = false;
 
     ATON._wappID = undefined;
 
@@ -1098,8 +1102,8 @@ ATON.initGraphs = ()=>{
     ATON._mainRoot.background = new THREE.Color( 0.7,0.7,0.7 );
     //ATON._mainRoot.fog = new THREE.Fog(new THREE.Color( 0.7,0.7,0.7 ), 5, 200);
 
-    // visible scene-graph
-    ATON._rootVisibleGlobal = new THREE.Group();
+    // Main scene-graph
+    ATON._rootVisibleGlobal = new THREE.Group(); //new THREE.Scene();
     ATON._mainRoot.add(ATON._rootVisibleGlobal);
 
     ATON._rootVisible = ATON.createSceneNode().setAsRoot();
@@ -1119,6 +1123,23 @@ ATON.initGraphs = ()=>{
     ATON.ambLight = new THREE.AmbientLight( new THREE.Color(1,1,1) /*ATON._mainRoot.background*/ );
     //ATON.ambLight.intensity = 1.5;
     ATON._rootVisibleGlobal.add(ATON.ambLight);
+
+    // Point light
+    ATON.plight = new THREE.PointLight();
+    ATON.plight.intensity = 0.0;
+    ATON._rootVisibleGlobal.add(ATON.plight);
+
+};
+
+ATON.enablePointLight = ()=>{
+    ATON.plight.intensity = 2.0;
+
+    //if (pos) ATON.plight.position.copy(pos);
+    //if (rad) ATON.plight.distance = rad;
+};
+
+ATON.disablePointLight = ()=>{
+    ATON.plight.intensity = 0.0;
 };
 
 ATON.setBackgroundColor = (bg)=>{
@@ -1126,6 +1147,17 @@ ATON.setBackgroundColor = (bg)=>{
     //ATON.ambLight = new THREE.AmbientLight( bg );
     //ATON._mainRoot.fog = new THREE.Fog(bg, 5, 200);
 };
+
+/*
+ATON.setOverrideMaterial = (mat)=>{
+    if (mat === undefined) return;
+    ATON._rootVisibleGlobal.overrideMaterial = mat;
+}
+
+ATON.removeOverrideMaterial = ()=>{
+    ATON._rootVisibleGlobal.overrideMaterial = null;
+};
+*/
 
 //==============================================================
 // LightProbes (LPs)
@@ -1811,8 +1843,12 @@ ATON._onFrame = ()=>{
 ATON._render = ()=>{
     if ( !ATON.FX.composer || ATON.XR._bPresenting)
         ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
-    else 
+    else {
+        //if (ATON.Nav._bInteracting) ATON.FX.togglePass(ATON.FX.PASS_AA, false);
+        //else ATON.FX.togglePass(ATON.FX.PASS_AA, true);
+
         ATON.FX.composer.render();
+    }
 };
 
 /**
@@ -2011,6 +2047,25 @@ ATON._handleQueryScene = ()=>{
 
     ATON._queryDataScene.matrixWorld = new THREE.Matrix3().getNormalMatrix( h.object.matrixWorld );
     ATON._queryDataScene.n = h.face.normal.clone().applyMatrix3( ATON._queryDataScene.matrixWorld ).normalize();
+};
+
+/**
+Get location of current focal point, taking into account a small surface offset
+If no surface is actually queried, return undefined
+@returns {THREE.Vector3}
+@example
+let fp = ATON.getSceneFocalPoint()
+*/
+ATON.getSceneFocalPoint = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+
+    let p = ATON._queryDataScene.p;
+    //let d = ATON._queryDataScene.d;
+
+    let FP = new THREE.Vector3();
+    FP.lerpVectors(p, ATON.Nav._currPOV.pos, 0.02); // Apply small offset wrt current eye location
+
+    return FP;
 };
 
 /**
@@ -2241,6 +2296,45 @@ ATON.setSketchFabAPIToken = (tok)=>{
     ATON._extAPItokens.sketchfab = tok;
 };
 
+/*
+    Built-in gizmos
+================================================*/
+ATON.useGizmo = (b)=>{
+    ATON._bGizmo = b;
+
+    ATON._setupGizmo();
+};
+
+ATON._setupGizmo = ()=>{
+    if (!ATON._bGizmo){
+        if (ATON._gizmo) ATON._gizmo.detach();
+        return;
+    }
+
+    if (ATON.Nav._camera === undefined) return;
+    if (ATON._renderer === undefined) return;
+
+    if (ATON._gizmo === undefined){
+        ATON._gizmo = new THREE.TransformControls( ATON.Nav._camera, ATON._renderer.domElement );
+        ATON._rootUI.add(ATON._gizmo);
+
+        ATON._gizmo.addEventListener('dragging-changed', function( event ){
+            let bDrag = event.value;
+
+            ATON.Nav.setUserControl(!bDrag);
+            ATON._bPauseQuery = bDrag;
+
+            if (!bDrag){
+                ATON.recomputeSceneBounds();
+                ATON.updateLightProbes();
+            }
+        });
+    }
+    else {
+        ATON._gizmo.camera = ATON.Nav._camera;
+        ATON._gizmo.detach();
+    }
+};
 
 export default ATON;
 

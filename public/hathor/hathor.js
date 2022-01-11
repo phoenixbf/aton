@@ -41,6 +41,7 @@ HATHOR.init = (sid)=>{
         console.warn  = ATON.VRoadcast.log;
     }
 
+    // Enable BVH bounds visualziation
     let bvhParam = ATON.FE.urlParams.get('bvh');
     if (bvhParam) ATON.Utils.showBVHbounds( parseInt(bvhParam) );
     
@@ -547,6 +548,7 @@ HATHOR.setupEventHandlers = ()=>{
 
             if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT){
                 ATON.SemFactory.addSurfaceConvexPoint();
+                //TODO: ...or addConvecPoint() on selector location
             }
         }
     });
@@ -1557,6 +1559,8 @@ HATHOR.popupPOV = ()=>{
 
 HATHOR.popupGraphs = ()=>{
     let htmlcontent= "<div class='atonPopupTitle'>Layers</div>";
+
+    ATON.useGizmo(true);
 
     htmlcontent += "<div>";
     

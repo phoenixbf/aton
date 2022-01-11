@@ -12,13 +12,13 @@ This is the ATON component to enable advanced post-effects (bloom, depth-of-fiel
 */
 let FX = {};
 
-FX.PASS_BASE  = 0;
-FX.PASS_AA    = 1;
-FX.PASS_AO    = 2;
-FX.PASS_SSR   = 3;
-FX.PASS_BLOOM = 4;
-FX.PASS_DOF   = 5;
-FX.PASS_GAMMA = 6;
+FX.PASS_BASE  = "p_base";
+FX.PASS_AA    = "p_aa";
+FX.PASS_AO    = "p_ao";
+FX.PASS_SSR   = "p_ssr";
+FX.PASS_BLOOM = "p_bloom";
+FX.PASS_DOF   = "p_dof";
+FX.PASS_GAMMA = "p_gamma";
 
 
 // Initialization (main renderer must be initialized already)
@@ -40,7 +40,7 @@ FX.init = ()=>{
     renderTarget.texture.name = 'EffectComposer.rt1';
 
     FX.composer = new THREE.EffectComposer( ATON._renderer, renderTarget );
-    FX.passes   = [];
+    FX.passes   = {};
 
     ATON._renderer.autoClear = false;
 
@@ -89,15 +89,13 @@ FX.init = ()=>{
     // Sobel
 /*
     const effectSobel = new THREE.ShaderPass( THREE.SobelOperatorShader );
-    effectSobel.uniforms[ 'resolution' ].value.x = window.innerWidth * ATON._stdpxd;
-    effectSobel.uniforms[ 'resolution' ].value.y = window.innerHeight * ATON._stdpxd;
+    effectSobel.uniforms[ 'resolution' ].value.set(CW,CH);
 */
-
     // Bloom
     FX.passes[FX.PASS_BLOOM] = new THREE.UnrealBloomPass( new THREE.Vector2( CW,CH ), 1.5, 0.4, 0.85 );
     FX.passes[FX.PASS_BLOOM].threshold = 0.9
     FX.passes[FX.PASS_BLOOM].strength  = 1.0; //0.5;
-    FX.passes[FX.PASS_BLOOM].radius    = 0.0;
+    FX.passes[FX.PASS_BLOOM].radius    = 1.2;
     //console.log(FX.passes[FX.PASS_BLOOM])
 
 
@@ -116,26 +114,30 @@ FX.init = ()=>{
     // Gamma correction - CHECK
     //FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
 
-    // Antialiasing
+    // Antialiasing (FXAA)
     FX.passes[FX.PASS_AA] = new THREE.ShaderPass( THREE.FXAAShader );
     //FX.passes[FX.PASS_AA].renderToScreen = false;
     let UU = FX.passes[FX.PASS_AA].material.uniforms;
     UU.resolution.value.set( (1/CW), (1/CH) );
+
+    // SSAA (more intensive)
 /*
     FX.passes[FX.PASS_AA] = new THREE.SSAARenderPass( ATON._mainRoot, ATON.Nav._camera, 0x000000, 0);
-    FX.passes[FX.PASS_AA].sampleLevel = 4;
+    FX.passes[FX.PASS_AA].sampleLevel = 2; //4;
     FX.passes[FX.PASS_AA].unbiased = true;
     FX.passes[FX.PASS_AA].setSize(CW,CH);
 */
 /*
     FX.passes[FX.PASS_AA] = new THREE.TAARenderPass( ATON._mainRoot, ATON.Nav._camera );
 	FX.passes[FX.PASS_AA].unbiased   = true;
-    FX.passes[FX.PASS_AA].accumulate = false;
+    //FX.passes[FX.PASS_AA].accumulate = false;
+    FX.passes[FX.PASS_AA].sampleLevel = 0;
 */
     //FX.passes[FX.PASS_AA] = new THREE.SMAAPass( CW,CH );
 
 
     // Order
+    FX.composer.addPass( FX.passes[FX.PASS_AA] );
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
     //FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );
@@ -143,13 +145,13 @@ FX.init = ()=>{
     // tone-mapping passes here (if any)
     
     //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
-    FX.composer.addPass( FX.passes[FX.PASS_AA] );
-    
-    ///FX.composer.addPass( effectSobel );
+    ///FX.composer.addPass( FX.passes[FX.PASS_AA] );
     
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );
 
-    //FX.composer.addPass( FX.passes[FX.PASS_AA] );
+    ///FX.composer.addPass( FX.passes[FX.PASS_AA] );
+
+    //FX.composer.addPass( effectSobel );
 
     // Defaults
     FX.togglePass(FX.PASS_AO, false);

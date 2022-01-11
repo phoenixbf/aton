@@ -16,6 +16,8 @@ constructor(uid){
     this.userid   = uid;
     this.username = undefined; //"User #"+uid;
     this.message  = "...";
+
+    this.color = ATON.VRoadcast.ucolors[this.userid % ATON.VRoadcast.ucolors.length];
     
     //this.bTalking = false;
 
@@ -47,6 +49,10 @@ constructor(uid){
     //console.log(this);
 
     this.realize();
+}
+
+getColor(){
+    return this.color;
 }
 
 setTalkDistance(r){
@@ -113,7 +119,7 @@ realize(){
         content: "User #"+this.userid,
         fontSize: 0.09,
         //fontColor: ATON.MatHub.colors.white
-        fontColor: ATON.VRoadcast.ucolors[this.userid % ATON.VRoadcast.ucolors.length]
+        fontColor: this.color
     });
     this.usernametext.position.y = 0.0;
 
@@ -142,6 +148,7 @@ realize(){
 };
 
 // TODO:
+/*
 destroy(){
     if (this.usermaterial) this.usermaterial.dispose();
     if (this.usermeshnode) this.usermeshnode.dispose();
@@ -157,6 +164,7 @@ destroy(){
 
     this.dispose();
 }
+*/
 
 // Loads custom avatar representation (3D model)
 loadRepresentation(url){
@@ -228,6 +236,11 @@ requestFocus(fp){
     this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
 
     this.userfpnode.visible = true;
+
+    ATON.enablePointLight();
+    ATON.plight.color = this.color;
+    ATON.plight.position.copy(this._tgtFocusPos);
+    ATON.plight.distance = this._tgtFocusRad;
 }
 
 handleFocusTransition(){
@@ -247,11 +260,12 @@ handleFocusTransition(){
         this.userfpnode.visible = true;
 
         //console.log(this.userfpnode.position);
-
         return;
     }
 
     this.userfpnode.position.lerpVectors(this._currFocusPos, this._tgtFocusPos, t);
+    
+    ATON.plight.position.copy(this.userfpnode.position);
 
     //let s = this._tgtFocusRad;
     //this.userfpnode.scale.set(s,s,s);
@@ -306,8 +320,14 @@ update(){
         this.handleFocusTransition();
 
         let s = this.userfpnode.scale.x;
-        if (s>0.001) this.userfpnode.scale.set(s*0.99,s*0.99,s*0.99);
-        else this.userfpnode.visible = false;
+        if (s>0.001){
+            this.userfpnode.scale.set(s*0.99,s*0.99,s*0.99);
+            ATON.plight.intensity *= 0.99;
+        }
+        else {
+            this.userfpnode.visible = false;
+            ATON.disablePointLight();
+        }
     }
 
     let cam  = ATON.Nav._camera;

@@ -39,6 +39,7 @@ VRoadcast.init = ()=>{
     VRoadcast._username = undefined;
 
     VRoadcast.uid = undefined; // my userID (0,1,....)
+    VRoadcast.color = ATON.MatHub.colors.white;
     VRoadcast._bStreamFocus = false; // stream focal point
     
     VRoadcast._numUsers = 1;
@@ -300,6 +301,10 @@ VRoadcast.disconnect = ()=>{
     VRoadcast._numUsers = 1;
 
     VRoadcast.socket.disconnect();
+    
+    VRoadcast.color   = ATON.MatHub.colors.white;
+    ATON.plight.color = ATON.MatHub.colors.white;
+
     VRoadcast._connected = false;
 };
 
@@ -371,6 +376,7 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('ID', (data)=>{
         console.log("Your ID is " + data);
         VRoadcast.uid = data;
+        VRoadcast.color = VRoadcast.ucolors[VRoadcast.uid % VRoadcast.ucolors.length];
 
         if (VRoadcast._bShowAvaG) VRoadcast.avaGroup.show();
 
@@ -618,8 +624,9 @@ VRoadcast.setFocusStreaming = (b)=>{
 
     if (b){
         if (!VRoadcast._bStreamFocus){
-
             ATON.fireEvent("VRC_FocusStreamingStarted");
+            ATON.enablePointLight();
+            ATON.plight.color = ATON.VRoadcast.color;
         }
 
         VRoadcast._bStreamFocus = true;
@@ -627,8 +634,8 @@ VRoadcast.setFocusStreaming = (b)=>{
     }
     else {
         if (VRoadcast._bStreamFocus){
-
             ATON.fireEvent("VRC_FocusStreamingStopped");
+            ATON.disablePointLight();
         }
 
         // Restore selector radius
@@ -649,15 +656,16 @@ VRoadcast.sendState = ()=>{
     //console.log(cpov);
 
     // Focus streaming
-    let fp = ATON.getSceneQueriedPoint();
+    let fp = ATON.getSceneFocalPoint();
     if (VRoadcast._bStreamFocus && fp !== undefined){
-        //let F = new THREE.Vector3();
-        let fx = (fp.x /*- cpov.pos.x*/).toPrecision(5);
-        let fy = (fp.y /*- cpov.pos.y*/).toPrecision(5);
-        let fz = (fp.z /*- cpov.pos.z*/).toPrecision(5);
+        let fx = (fp.x).toPrecision(5);
+        let fy = (fp.y).toPrecision(5);
+        let fz = (fp.z).toPrecision(5);
         let r  = ATON.SUI.getSelectorRadius().toPrecision(5);
         
         VRoadcast.socket.emit("UFOCUS", [fx,fy,fz, r]);
+
+        //fp = null;
     }
 
     // Compose state

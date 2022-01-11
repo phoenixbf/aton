@@ -146,6 +146,16 @@ FE.controlSelectorScale = (b)=>{
     ATON.Nav.setUserControl(!b);
 };
 
+// Gizmo transforms
+FE.attachGizmoToNode = (nid)=>{
+    if (ATON._gizmo === undefined) return;
+
+    let N = ATON.getSceneNode(nid);
+    if (N === undefined) return;
+
+    ATON._gizmo.attach( N );
+};
+
 FE.useMouseWheelToScaleSelector = (f)=>{
     if (f === undefined) f = 0.9; 
 
@@ -220,6 +230,19 @@ FE._update = ()=>{
         ATON.setMainLightDirection(FE._cLightDir);
         //ATON.updateDirShadows();
     }
+
+    if (ATON.XR._bPresenting){
+        let v = ATON.XR.getAxisValue(ATON.XR.HAND_R);
+        
+        if (!ATON.VRoadcast._bStreamFocus){
+            let s = ATON.SUI._selectorRad;
+            s += (v.y * 0.01);
+
+            if (s > 0.001) ATON.SUI.setSelectorRadius(s);
+        }
+    }
+
+
 /*
     if (FE._bControlSelScale){
         //const sx = ATON._screenPointerCoords.x;
@@ -615,8 +638,10 @@ FE._setupVRCevents = ()=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
 
         // Selector color
+        //let col = ATON.VRoadcast.ucolors[uid%6];
         //ATON.MatHub.materials.selector.color = ATON.VRoadcast.ucolors[uid%6];
-        ATON.SUI.setSelectorColor(ATON.VRoadcast.ucolors[uid%6]);
+        ATON.SUI.setSelectorColor( ATON.VRoadcast.color );
+        ATON.plight.color = ATON.VRoadcast.color;
 
         FE.checkAuth((data)=>{
             if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
@@ -798,7 +823,14 @@ FE.uiCreateGraph = (type)=>{
         let N = nodes[nid];
         
         let chk = N.visible? "checked" : "";
-        if (nid !== ".") htmlcontent += "<input type='checkbox' "+chk+" onchange=\"ATON.FE.switchNode('"+nid+"',this.checked,"+type+");\">"+nid+"<br>";
+        if (nid !== "."){
+            htmlcontent += "<input type='checkbox' "+chk+" onchange=\"ATON.FE.switchNode('"+nid+"',this.checked,"+type+");\">"+nid;
+            
+            //TODO: gizmos
+            //htmlcontent += "<div class='atonBTN atonSmallIcon' onclick=\"ATON.FE.attachGizmoToNode('"+nid+"');\"><img src='"+FE.PATH_RES_ICONS+"axes.png'></div>";
+            
+            htmlcontent += "<br>";
+        }
 
         //htmlcontent += "<div class='atonBTN atonBTN-text'></div>";
     }

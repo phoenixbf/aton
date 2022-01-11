@@ -15,7 +15,8 @@ XR.STD_TELEP_DURATION = 0.03;
 XR.HAND_R = 0;
 XR.HAND_L = 1;
 
-XR.MOBILE_DENSITY_F = 0.5;
+XR.MOBILE_DENSITY_F   = 0.5;
+XR.MAX_QUERY_DISTANCE = 20.0; // Max distance query in first person (XR session)
 
 
 //Initializes XR component
@@ -77,7 +78,11 @@ XR.init = ()=>{
     });
 
     ATON.on("XRsqueezeStart", (c)=>{
-        console.log("Squeeze "+c);
+        if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(true);
+        //console.log("Squeeze "+c);
+    });
+    ATON.on("XRsqueezeEnd", (c)=>{
+        if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(false);
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
@@ -273,9 +278,11 @@ XR.onSessionStarted = ( session )=>{
                 C.addEventListener( 'connected', (e) => {
                     //console.log( e.data.handedness );
                     let hand = e.data.handedness;
+                    C.gm = e.data.gamepad;
                     
                     //console.log(e.data);
                     console.log("Hand "+hand);
+                    console.log("GamePad "+C.gm);
 
                     if (hand === "left")  XR._setupControllerL(C, true);
                     else {
@@ -373,6 +380,8 @@ XR.onSessionStarted = ( session )=>{
         //ATON.Utils.updateTSetsCamera( C );
         ATON.Nav._updCamera( C );
 
+        ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
+
         ATON.Utils.estimateTSErrorTarget();
 
         // FIXME: needed bc selector radius is not applied
@@ -405,6 +414,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     //ATON.Utils.updateTSetsCamera();
     ATON.Nav._updCamera();
+
+    ATON.setQueryRange(0.0, Infinity);
 
     ATON.Utils.estimateTSErrorTarget();
 
@@ -688,5 +699,25 @@ XR.update = ()=>{
 */
 };
 
+// Get VR controller axes values
+XR.getAxisValue = (c)=>{
+    let V = new THREE.Vector2(0.0,0.0);
+
+    let C = (c === XR.HAND_L)? XR.controller1 : XR.controller0;
+    if (C === undefined) return V;
+
+    if (C.gm === undefined || C.gm.axes === undefined) return V;
+
+    let x0 = C.gm.axes[0];
+    let x1 = C.gm.axes[2];
+
+    let y0 = C.gm.axes[1];
+    let y1 = C.gm.axes[3];
+
+    V.x = (x0 > 0.0)? -x0 : x1;
+    V.y = (y0 > 0.0)? y0 : -y1;
+
+    return V;
+};
 
 export default XR;

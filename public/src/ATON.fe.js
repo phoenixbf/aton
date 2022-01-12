@@ -109,7 +109,7 @@ FE.addBasicLoaderEvents = ()=>{
         $("#idLoader").hide();
         //$('#idBGcover').fadeOut("slow");
 
-        if (ATON._ccModels.length>0) $("#btn-cc").show();
+        if ( ATON.CC.anyCopyrightFound() ) $("#btn-cc").show();
         
         FE.computeSelectorRanges();
         if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );
@@ -722,8 +722,16 @@ FE.uiSetEditMode = (b, idcontainer)=>{
     ATON.SceneHub._bEdit = b;
     FE.uiSwitchButton("edit", b);
 
-    if (b) $("#"+idcontainer).addClass("atonToolbar-bg-edit");
-    else $("#"+idcontainer).removeClass("atonToolbar-bg-edit");
+    let canvas = ATON._renderer.domElement;
+
+    if (b){
+        //$("body").addClass("edit");
+        $("#"+idcontainer).addClass("atonToolbar-bg-edit");
+    }
+    else {
+        //$("body").removeClass("edit");
+        $("#"+idcontainer).removeClass("atonToolbar-bg-edit");
+    }
 };
 
 /**

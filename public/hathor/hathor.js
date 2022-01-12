@@ -44,6 +44,9 @@ HATHOR.init = (sid)=>{
     // Enable BVH bounds visualziation
     let bvhParam = ATON.FE.urlParams.get('bvh');
     if (bvhParam) ATON.Utils.showBVHbounds( parseInt(bvhParam) );
+
+    let tsb = ATON.FE.urlParams.get("tsb");
+    if (tsb) ATON.setTSetsDisplayBounds( Boolean(tsb) );
     
     HATHOR._bVRCsetup = false;
     HATHOR._bVRCreq   = false;
@@ -79,14 +82,6 @@ HATHOR.init = (sid)=>{
 
     //ATON._bPauseQuery = true;
     //ATON.setTimedGazeDuration(2.0);
-
-    // TODO: Wait cover: is it worth?
-/*
-    $('#idBGcover').css("background-image", "url("+ATON.PATH_RESTAPI+"cover/"+HATHOR.paramSID+")");
-    $('#idBGcover').css("background-position", "top");
-    $('#idBGcover').css("background-repeat", "no-repeat");
-    $('#idBGcover').css("background-size", "cover");
-*/
 };
 
 
@@ -1370,15 +1365,20 @@ HATHOR.popupSceneInfo = ()=>{
 HATHOR.popupCC = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Assets Copyright</div>";
 
+    let numCC = ATON.CC.list.length;
+
     htmlcontent += "<div style='text-align:left;'>";
-    for (let cc in ATON._ccModels){
-        let CC = ATON._ccModels[cc];
+    htmlcontent += "Assets referenced in this scene contain "+numCC+" copyright information<br>";
+    for (let cc in ATON.CC.list){
+        let CC = ATON.CC.list[cc];
+
+        htmlcontent += "<div class='atonBlockRound' style='display:block; max-width:400px'>";
 
         for (let e in CC){
             htmlcontent += "<strong>"+e+"</strong>: "+ ATON.Utils.URLify(CC[e]) + "<br>";
         }
 
-        htmlcontent += "<br>";
+        htmlcontent += "</div>";
     }
     htmlcontent += "</div>";
 
@@ -1653,6 +1653,10 @@ HATHOR.popupEnvironment = ()=>{
     }
 
     // Advanced FX
+    if (ATON.getNumLightProbes()>0){
+        htmlcontent += "<br><div id='idUpdLPs' class='atonBTN atonBTN-text atonBTN-green'><img src='"+ATON.FE.PATH_RES_ICONS+"lp.png'>Update all LightProbes</div><br>";
+    }
+
     if (ATON.FX.composer){
         htmlcontent += "<details><summary><b>Advanced Effects</b></summary>";
 
@@ -1719,6 +1723,10 @@ HATHOR.popupEnvironment = ()=>{
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    });
+
+    $("#idUpdLPs").click(()=>{
+        ATON.updateLightProbes();
     });
 
     let ex = ATON.getExposure();

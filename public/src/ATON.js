@@ -39,6 +39,7 @@ import GeoLoc from "./ATON.geoloc.js";
 import App from "./ATON.app.js";
 import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
+import CC from "./ATON.cc.js";
 
 // Classes
 ATON.Node       = Node;
@@ -50,6 +51,7 @@ ATON.XPF        = XPF;
 // NS
 ATON.EventHub   = EventHub;
 ATON.Utils      = Utils;
+ATON.CC         = CC;
 ATON.SceneHub   = SceneHub;
 ATON.MatHub     = MatHub;
 ATON.Nav        = Nav;
@@ -557,9 +559,6 @@ ATON.realize = ( bNoRender )=>{
     ATON._dracoLoader.preload();
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
 
-    // CC Manager
-    ATON._ccModels = [];
-
     // Update routines
     ATON._updRoutines = [];
 
@@ -589,10 +588,14 @@ ATON.realize = ( bNoRender )=>{
 
     // TileSets (3D Tiles)
     ATON._tsets = [];
-    ATON._tsET  = 20.0; //Error target (original: 6) // 40.0
+    ATON._tsET  = 20.0;   // Error target (original: 6)
+    ATON._tsB   = false;  // Show/Hide tiles bounds
     ATON._tsTasks = [];
     ATON._tsTasksFF = 0;
     ATON.Utils.estimateTSErrorTarget();
+
+    // Copyright manager
+    ATON.CC.init();
 
     // Init audio hub
     ATON.AudioHub.init();
@@ -1184,6 +1187,10 @@ ATON.addLightProbe = (LP)=>{
     // SUI
     if (ATON.SUI.gLPIcons === undefined) return;
     SUI.addLPIcon(LP);
+};
+
+ATON.getNumLightProbes = ()=>{
+    return ATON._lps.length;
 };
 
 // Internal routine to update LPs
@@ -1875,6 +1882,7 @@ ATON._updateRoutines = ()=>{
 };
 
 //================================================
+// TileSet (Cesium 3D Tiles)
 ATON._updateTSets = ()=>{
     const nts = ATON._tsets.length;
     if (nts <= 0) return;
@@ -1917,7 +1925,21 @@ ATON.getTSetsErrorTarget = ()=>{
     return ATON._tsET;
 };
 
+// Show or hide display tiles bounds
+ATON.setTSetsDisplayBounds = (b)=>{
+    ATON._tsB = b;
 
+    const nts = ATON._tsets.length;
+    if (nts <= 0) return;
+
+    for (let ts=0; ts<nts; ts++){
+        let TS = ATON._tsets[ts];
+        TS.displayBoxBounds = b; // FIXME: not working
+    }
+};
+
+
+// Animations
 ATON._updateAniMixers = ()=>{
     let num = ATON._aniMixers.length;
     if (num < 1) return;

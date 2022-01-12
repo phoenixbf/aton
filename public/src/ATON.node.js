@@ -666,8 +666,8 @@ load(url, onComplete){
             // animations
             ATON.Utils.registerAniMixers(N, data);
 
-            // CC manager
-            ATON.Utils.ccExtract(data);
+            // Copyrigth extraction
+            ATON.CC.extract(data);
 
             resolve(model);
             //console.log("Model "+url+" loaded");

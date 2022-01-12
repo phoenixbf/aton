@@ -197,7 +197,7 @@ Utils.URLify = (string)=>{
     const urls = string.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
     if (urls){
         urls.forEach(function(url){
-            string = string.replace(url, '<a target="_blank" href="' + url + '">' + url + "</a>");
+            string = string.replace(url, "<a target='_blank' href='" + url + "'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/link.png'></a>");
         });
     }
 
@@ -357,6 +357,8 @@ Utils.loadTileSet = (tsurl, N)=>{
     ATON._assetReqNew(tsurl);
 
     // Options
+    ts.displayBoxBounds = ATON._tsB;
+
     ts.fetchOptions.mode  = 'cors';
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
@@ -685,52 +687,18 @@ Utils.registerAniMixers = (N, data)=>{
     N._aniMixers.push(mixer);
 };
 
-// Copyright extraction
-Utils.ccExtract = (data)=>{
-    if (data === undefined) return;
-    if (data.asset === undefined) return;
-
-    let cc = {};
-
-    if (data.asset.copyright) cc.copyright = data.asset.copyright;
-    if (data.asset.extras){
-        for (let e in data.asset.extras){
-            if (typeof data.asset.extras[e] === "string") cc[e] = data.asset.extras[e];
-        }
-    }
-    if (data.asset.generator) cc.generator = data.asset.generator;
-
-    if (data.asset.copyright || data.asset.extras){
-
-        // TODO: check for replicate entries
-        for (let e in ATON._ccModels){
-            let o = ATON._ccModels[e];
-
-            if ( Utils.ccCompare(cc, o) ) return;
-        }
-
-        ATON._ccModels.push(cc);
-    }
-    
-    console.log(cc);
-};
-
-// Shallow copyright obj compare
-Utils.ccCompare = (A,B)=>{
-    if (A === undefined || B === undefined) return false;
-
-    const keysA = Object.keys(A);
-    const keysB = Object.keys(B);
-
-    if (keysA.length !== keysB.length) return false;
-
-    for (let k of keysA){
-        if (A[k] !== B[k]) return false;
-    }
-
-    return true;
-};
-
+/**
+Utility to parse transform string, with space-separated values.
+The transform string is in the form: "x y z rx ry rz sx sy sz"
+with translation (x,y,z), rotation (rx,ry,rz) and scale (sx,sy,sz)
+rotation and scale triplets are optional.
+@param {string} tstr - the string representing the transform
+@returns {THREE.Group}
+@example
+ATON.Utils.parseTransformString("0.1 2.0 0.0");
+@example
+ATON.Utils.parseTransformString("0.1 2.0 0.0 0.0 3.1416 0.0 2 2 2");
+*/
 Utils.parseTransformString = (tstr)=>{
     let T = new THREE.Group();
 

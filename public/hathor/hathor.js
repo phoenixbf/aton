@@ -726,14 +726,8 @@ HATHOR.setupEventHandlers = ()=>{
         }
 
         if (k === '['){
-            let et = ATON._tsET - 1.0;
-            if (et >= 1.0) ATON.setTSetsErrorTarget( et );
-            console.log(ATON._tsET);
         }
         if (k === ']'){
-            let et = ATON._tsET + 1.0;
-            ATON.setTSetsErrorTarget( et );
-            console.log(ATON._tsET);
         }
 
         //if (k==='w'){
@@ -2464,10 +2458,10 @@ HATHOR.popupSettings = ()=>{
     htmlcontent += "</div>";
 
     // Multires
-    if (ATON._tsets.length > 0){
+    if (ATON.MRes._tsets.length > 0){
         htmlcontent += divBlock;
         htmlcontent += "<div class='atonBlockSubTitle'>Multiresolution</div><br>";
-        htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON._tsET+"</span>):<br>";
+        htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON.MRes._tsET+"</span>):<br>";
         htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:50%' type='range' min='1.0' max='50.0' step='1.0'>&nbsp;Less detail";
         htmlcontent += "</div>";
     }
@@ -2475,7 +2469,7 @@ HATHOR.popupSettings = ()=>{
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
     $("#idSelRad").val(rad);
-    $("#idTSerr").val(ATON._tsET);
+    $("#idTSerr").val(ATON.MRes._tsET);
 
     $("#idSelRad").on("input change",()=>{
         let r = parseFloat( $("#idSelRad").val() );
@@ -2507,8 +2501,8 @@ HATHOR.popupSettings = ()=>{
 
         if (e <= 0.0) return;
 
-        ATON.setTSetsErrorTarget(e);
-        $("#idTSerrTxt").html( ATON._tsET );
+        ATON.MRes.setTSetsErrorTarget(e);
+        $("#idTSerrTxt").html( ATON.MRes._tsET );
     });
 
     $("#idSelOffReset").click(()=>{

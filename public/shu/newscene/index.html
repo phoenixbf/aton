@@ -211,6 +211,7 @@ let addNodeBlock = (nid)=>{
     let elNIDtformRot   = elNID+"-tf-r";
     let elNIDtformScale = elNID+"-tf-s";
     let elNIDtformYup   = elNID+"-tf-yup";
+    let elNIDac         = elNID+"-ac";
     let elNIDmat        = elNID+"-mat";
 
     htmlcontent += "<div id='"+elNID+"' class='shuBlockNode'>";
@@ -239,7 +240,8 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "Translation:<input id='"+elNIDtformTrans+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Scale:<input id='"+elNIDtformScale+"' type='text' size='20' placeholder='x,y,z or single value'><br>";
-    htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'><img src='../../res/icons/axes.png'>From Z-up to Y-up</div>";
+    htmlcontent += "<input id='"+elNIDac+"' type='checkbox'>AutoCenter";
+    htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'><img src='../../res/icons/axes.png'>Z-up &#8594; Y-up</div>";
     htmlcontent += "</details>";
     htmlcontent += "</div>";
 
@@ -312,6 +314,27 @@ let addNodeBlock = (nid)=>{
     $("#"+elNIDtformYup).click(()=>{
         $("#"+elNIDtformRot).val("-1.57079632679,0.0,0.0");
         parseRot();
+    });
+
+    $("#"+elNIDac).click(()=>{
+        let bAC = $("#"+elNIDac).is(":checked");
+        if (bAC){
+            $("#"+elNIDtformTrans).prop( "disabled", true );
+            $("#"+elNIDtformTrans).val("");
+
+            if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+            sobj.scenegraph.nodes[nid].transform.autocenter = true;
+
+            if (sobj.scenegraph.nodes[nid].transform.position === undefined) return;
+
+            sobj.scenegraph.nodes[nid].transform.position = undefined;
+        }
+        else {
+            $("#"+elNIDtformTrans).prop( "disabled", false );
+
+            if (sobj.scenegraph.nodes[nid].transform === undefined) return;
+            if (sobj.scenegraph.nodes[nid].transform.autocenter !== undefined) sobj.scenegraph.nodes[nid].transform.autocenter = false;
+        }
     });
 
     $("#"+elNIDmat).change(()=>{

@@ -348,19 +348,34 @@ Nav.isUserControlEnabled = ()=>{
 Return true if the navigation system is in Orbit mode
 @returns {boolean}
 */
-Nav.isOrbit = ()=>{ return (Nav._mode === Nav.MODE_ORBIT); };
+Nav.isOrbit = ()=>{
+    if (ATON.XR._bPresenting) return false;
+
+    if (Nav._mode === Nav.MODE_ORBIT) return true;
+    return false;
+};
 
 /**
 Return true if the navigation system is in First-person mode
 @returns {boolean}
 */
-Nav.isFirstPerson = ()=>{ return (Nav._mode === Nav.MODE_FP); };
+Nav.isFirstPerson = ()=>{
+    if (ATON.XR._bPresenting) return false;
+
+    if (Nav._mode === Nav.MODE_FP) return true;
+    return false;
+};
 
 /**
 Return true if the navigation system is in Device-orientation mode
 @returns {boolean}
 */
-Nav.isDevOri = ()=>{ return (Nav._mode === Nav.MODE_DEVORI); };
+Nav.isDevOri = ()=>{
+    if (ATON.XR._bPresenting) return false;
+
+    if (Nav._mode === Nav.MODE_DEVORI) return true;
+    return false;
+};
 
 /**
 Set Navigation mode
@@ -404,7 +419,7 @@ Nav._updCamera = (c)=>{
 
     ATON._setupGizmo();
 
-    ATON.Utils.updateTSetsCamera(c);
+    ATON.MRes.updateTSetsCamera(c);
 };
 
 /**

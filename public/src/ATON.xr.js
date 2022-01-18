@@ -79,10 +79,12 @@ XR.init = ()=>{
 
     ATON.on("XRsqueezeStart", (c)=>{
         if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(true);
+        //if (c === XR.HAND_L) ATON._bPauseQuery = true;
         //console.log("Squeeze "+c);
     });
     ATON.on("XRsqueezeEnd", (c)=>{
         if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(false);
+        //if (c === XR.HAND_L) ATON._bPauseQuery = false;
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
@@ -377,7 +379,6 @@ XR.onSessionStarted = ( session )=>{
         ATON._qSyncInt = 2; // Query interval (perf)
 
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-        //ATON.Utils.updateTSetsCamera( C );
         ATON.Nav._updCamera( C );
 
         ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);

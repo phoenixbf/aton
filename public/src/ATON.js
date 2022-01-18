@@ -40,6 +40,7 @@ import App from "./ATON.app.js";
 import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
+import MRes from "./ATON.mres.js";
 
 // Classes
 ATON.Node       = Node;
@@ -66,6 +67,7 @@ ATON.GeoLoc     = GeoLoc;
 ATON.App        = App;
 ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
+ATON.MRes       = MRes;
 
 //==============================================================
 // Consts
@@ -291,13 +293,8 @@ ATON._setupBaseListeners = ()=>{
         }
 
         if (k==='PageUp'){
-            let r = ATON.SUI.mainSelector.scale.x + 0.02;
-            ATON.SUI.setSelectorRadius(r);
         }
         if (k==='PageDown'){
-            let r = ATON.SUI.mainSelector.scale.x - 0.02;
-            r = Math.max(r, 0.01);
-            ATON.SUI.setSelectorRadius(r); 
         }
     });
 
@@ -550,6 +547,21 @@ ATON.realize = ( bNoRender )=>{
     ATON._assetsManager = {};
     ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
     ATON._numReqLoad = 0;
+
+    // IFC
+/*
+    ATON._ifcLoader = new IFCLoader();
+    ATON._ifcLoader.setWasmPath( ATON.PATH_IFC_LIB );
+*/
+
+    // Basis
+    ATON._basisLoader = new THREE.BasisTextureLoader();
+    ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
+    ATON._basisLoader.detectSupport( ATON._renderer );
+
+    ATON._ktx2Loader = new THREE.KTX2Loader();
+    ATON._ktx2Loader.setTranscoderPath( ATON.PATH_BASIS_LIB );
+	ATON._ktx2Loader.detectSupport( ATON._renderer );
     
     // Config DRACO
     ATON._dracoLoader = new THREE.DRACOLoader();
@@ -558,6 +570,11 @@ ATON.realize = ( bNoRender )=>{
     ATON._dracoLoader.setWorkerLimit(2);
     ATON._dracoLoader.preload();
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
+    ATON._aLoader.setKTX2Loader( ATON._ktx2Loader );
+
+    // Register BasisTextureLoader for .basis extension.
+    THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
+    THREE.DefaultLoadingManager.addHandler( /\.ktx2$/, ATON._ktx2Loader );
 
     // Update routines
     ATON._updRoutines = [];
@@ -586,13 +603,8 @@ ATON.realize = ( bNoRender )=>{
     ATON.initGraphs();
     ATON.SceneHub.init();
 
-    // TileSets (3D Tiles)
-    ATON._tsets = [];
-    ATON._tsET  = 20.0;   // Error target (original: 6)
-    ATON._tsB   = false;  // Show/Hide tiles bounds
-    ATON._tsTasks = [];
-    ATON._tsTasksFF = 0;
-    ATON.Utils.estimateTSErrorTarget();
+    // Multi-res component
+    ATON.MRes.init();
 
     // Copyright manager
     ATON.CC.init();
@@ -670,20 +682,6 @@ ATON.realize = ( bNoRender )=>{
         if (!ATON._bPauseQuery) ATON._handleQueries();
     }, 100 );
 */
-
-    // IFC
-/*
-    ATON._ifcLoader = new IFCLoader();
-    ATON._ifcLoader.setWasmPath( ATON.PATH_IFC_LIB );
-*/
-
-    // Basis
-    ATON._basisLoader = new THREE.BasisTextureLoader();
-    ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
-    ATON._basisLoader.detectSupport( ATON._renderer );
-    
-    // Register BasisTextureLoader for .basis extension.
-    THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
 
     // Mouse/Touch screen coords
     ATON._screenPointerCoords = new THREE.Vector2(0.0,0.0);
@@ -969,47 +967,6 @@ ATON._onAllReqsCompleted = ()=>{
 
     //console.log(Utils.stats.numTris);
 
-/*
-    // Bounds
-    let c = ATON._rootVisible.getBound().center;
-    let r = ATON._rootVisible.getBound().radius;
-
-    if (ATON._renderer.shadowMap.enabled){
-
-        ATON._rootVisible.traverse((o) => {
-            if (o.isMesh){
-                o.castShadow = true;
-                o.receiveShadow = true;
-            }
-        });
-
-        ATON.adjustShadowsParamsFromSceneBounds();
-
-        if (ATON._bShadowsFixedBound){
-            ATON.updateDirShadows();
-        }
-    }
-
-    if (ATON._bAutoLP){
-        if (ATON._lps[0] === undefined) ATON.addLightProbe( new ATON.LightProbe().setPosition(c).setNear(r) );
-        else {
-            ATON._lps[0].setPosition(c.x, c.y, c.z).setNear(r);
-        }
-        console.log("Auto LP");
-    }
-
-    // Post FX
-    if (ATON.FX.composer){
-        // Estimate DOF aperture from bound radius
-        ATON.FX.setDOFaperture( 1.0 / (r*30.0));
-    }
-
-    //ATON.Utils.graphPostVisitor(ATON._rootVisible);
-
-    // re-center main pano
-    if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
-*/
-
     ATON.getRootScene().assignLightProbesByProximity();
     //ATON.updateLightProbes();
 
@@ -1047,19 +1004,32 @@ ATON._postAllReqsCompleted = (R)=>{
     }
 };
 
-ATON.recomputeSceneBounds = ( plist )=>{
-    let BS = undefined;
+ATON.recomputeSceneBounds = ( ubs )=>{
+    //let BS = undefined;
 
+    if (ubs){
+        ATON.bounds.union( ubs );
+        //console.log("custom BS")
+    }
+    else {
+        ATON.bounds.center.copy( ATON._rootVisible.getBound().center );
+        ATON.bounds.radius = ATON._rootVisible.getBound().radius;
+        //console.log("BS")
+    }
+/*
     if (plist){
         BS = new THREE.Sphere();
         for (let p in plist) BS.expandByPoint( plist[p] );
         console.log(BS)
     }
+*/
+/*
+    if (forcebs) BS = forcebs;
     else BS = ATON._rootVisible.getBound();
 
     ATON.bounds.center = BS.center;
     ATON.bounds.radius = BS.radius;
-
+*/
     console.log(ATON.bounds);
 
     if (ATON.bounds.radius <= 0.0) return;
@@ -1103,10 +1073,9 @@ ATON.initGraphs = ()=>{
     // Global root
     ATON._mainRoot = new THREE.Scene();
     ATON._mainRoot.background = new THREE.Color( 0.7,0.7,0.7 );
-    //ATON._mainRoot.fog = new THREE.Fog(new THREE.Color( 0.7,0.7,0.7 ), 5, 200);
 
     // Main scene-graph
-    ATON._rootVisibleGlobal = new THREE.Group(); //new THREE.Scene();
+    ATON._rootVisibleGlobal = new THREE.Scene(); // new THREE.Group();
     ATON._mainRoot.add(ATON._rootVisibleGlobal);
 
     ATON._rootVisible = ATON.createSceneNode().setAsRoot();
@@ -1148,7 +1117,19 @@ ATON.disablePointLight = ()=>{
 ATON.setBackgroundColor = (bg)=>{
     ATON._mainRoot.background = bg;
     //ATON.ambLight = new THREE.AmbientLight( bg );
-    //ATON._mainRoot.fog = new THREE.Fog(bg, 5, 200);
+};
+
+// TODO:
+ATON.setFog = (color, distance)=>{
+    if (color === undefined) return;
+    if (distance === undefined) distance = 200.0;
+
+    ATON._rootVisibleGlobal.fog = new THREE.Fog( color, 1.0, distance );
+    ATON.setBackgroundColor(color);
+};
+
+ATON.disableFog = ()=>{
+    ATON._rootVisibleGlobal.fog = null;
 };
 
 /*
@@ -1827,8 +1808,8 @@ ATON._onFrame = ()=>{
 
     ATON._updateRoutines();
 
-    // TileSets
-    ATON._updateTSets();
+    // Multi-res
+    ATON.MRes.update();
 
     // XPF
     ATON.XPFNetwork.update();
@@ -1879,63 +1860,6 @@ ATON._updateRoutines = ()=>{
     if (n <= 0) return;
 
     for (let u=0; u<n; u++) ATON._updRoutines[u]();
-};
-
-//================================================
-// TileSet (Cesium 3D Tiles)
-ATON._updateTSets = ()=>{
-    const nts = ATON._tsets.length;
-    if (nts <= 0) return;
-
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav.isTransitioning()) return;
-    if (ATON.XR._bReqPresenting) return;
-
-    ATON.Nav._camera.updateMatrixWorld();
-
-    // Tasks
-    //console.log(ATON._tsTasks.length);
-    let T = ATON._tsTasks.shift(); 
-    if (T !== undefined){
-        T();
-        T = null;
-    }
-    //ATON._tsTasksFF = 0;
-
-    for (let ts=0; ts < nts; ts++){
-        const TS = ATON._tsets[ts];
-
-        TS.update();
-    }
-};
-
-ATON.setTSetsErrorTarget = (e)=>{
-    ATON._tsET = e;
-
-    const nts = ATON._tsets.length;
-    if (nts <= 0) return;
-
-    for (let ts=0; ts<nts; ts++){
-        let TS = ATON._tsets[ts];
-        TS.errorTarget = e;
-    }
-};
-
-ATON.getTSetsErrorTarget = ()=>{
-    return ATON._tsET;
-};
-
-// Show or hide display tiles bounds
-ATON.setTSetsDisplayBounds = (b)=>{
-    ATON._tsB = b;
-
-    const nts = ATON._tsets.length;
-    if (nts <= 0) return;
-
-    for (let ts=0; ts<nts; ts++){
-        let TS = ATON._tsets[ts];
-        TS.displayBoxBounds = b; // FIXME: not working
-    }
 };
 
 
@@ -2314,8 +2238,8 @@ ATON._handleQueryUI = ()=>{
 
 // Tokens for external API/services 
 // TODO:
-ATON.setSketchFabAPIToken = (tok)=>{
-    ATON._extAPItokens.sketchfab = tok;
+ATON.setAPIToken = (servicename, tok)=>{
+    ATON._extAPItokens[servicename] = tok;
 };
 
 /*
@@ -2340,6 +2264,8 @@ ATON._setupGizmo = ()=>{
         ATON._gizmo = new THREE.TransformControls( ATON.Nav._camera, ATON._renderer.domElement );
         ATON._rootUI.add(ATON._gizmo);
 
+        ATON._gizmo.setMode("rotate");
+
         ATON._gizmo.addEventListener('dragging-changed', function( event ){
             let bDrag = event.value;
 
@@ -2349,6 +2275,7 @@ ATON._setupGizmo = ()=>{
             if (!bDrag){
                 ATON.recomputeSceneBounds();
                 ATON.updateLightProbes();
+                console.log(ATON._gizmo.object)
             }
         });
     }

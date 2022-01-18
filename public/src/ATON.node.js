@@ -56,6 +56,10 @@ constructor(id, type){
     this.castShadow    = false;
     this.receiveShadow = false;
 
+    this._bs = new THREE.Sphere();
+
+    this.autocenter = false;
+
     // Local handlers
     this.onHover  = undefined;
     this.onLeave  = undefined;
@@ -504,11 +508,21 @@ Return bounding sphere of this node
 let bs = myNode.getBound()
 */
 getBound(){
+/*
     let bb = new THREE.Box3().setFromObject( this );
     let bs = new THREE.Sphere();
     bb.getBoundingSphere(bs);
 
     return bs;
+*/
+    this.dirtyBound();
+    return this._bs;
+}
+
+dirtyBound(){
+    let bb = new THREE.Box3().setFromObject( this );
+    bb.getBoundingSphere( this._bs );
+    return this;
 }
 
 /**
@@ -611,7 +625,7 @@ load(url, onComplete){
     let N = this;
 
     if (url.endsWith("tileset.json")){
-        ATON.Utils.loadTileSet(url, N);
+        ATON.MRes.loadTileSetFromURL(url, N);
         ATON._bqScene = true;
         if (onComplete) onComplete();
         return N;
@@ -684,6 +698,8 @@ load(url, onComplete){
 
             //
             if (N.bPickable) N.enablePicking();
+
+            N.dirtyBound();
 
             if (onComplete) onComplete();
         },

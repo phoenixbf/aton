@@ -49,6 +49,7 @@ import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js
 import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
 
 import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
+import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
@@ -92,6 +93,7 @@ THREE.OBJExporter        = OBJExporter;
 THREE.DRACOLoader        = DRACOLoader;
 //THREE.IFCLoader          = IFCLoader;
 THREE.BasisTextureLoader = BasisTextureLoader;
+THREE.KTX2Loader         = KTX2Loader;
 THREE.USDZExporter       = USDZExporter;
 
 ///THREE.FirstPersonControls = FirstPersonControls;

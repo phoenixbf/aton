@@ -177,12 +177,16 @@ SceneHub.getJSONsemanticConvexShapes = (semid)=>{
     return CL;
 };
 
-// Apply JSON transform field to node
+// Apply JSON transform field to node G
 SceneHub._applyJSONTransformToNode = (transform, G)=>{
     if (transform === undefined) return;
     if (G === undefined) return;
 
-    if (transform.position) G.setPosition(transform.position[0],transform.position[1],transform.position[2]);
+    if (transform.autocenter){
+        G.autocenter = true;
+    }
+    else if (transform.position) G.setPosition(transform.position[0],transform.position[1],transform.position[2]);
+
     if (transform.rotation) G.setRotation(transform.rotation[0],transform.rotation[1],transform.rotation[2]);
     if (transform.scale)    G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
 
@@ -237,7 +241,9 @@ SceneHub.initBaseParsers = ()=>{
         }
 
         if (env.bgcolor){
-            ATON.setBackgroundColor( new THREE.Color(env.bgcolor[0],env.bgcolor[1],env.bgcolor[2]) );
+            let bgcol = new THREE.Color(env.bgcolor[0],env.bgcolor[1],env.bgcolor[2]);
+            ATON.setBackgroundColor( bgcol );
+            //ATON.setFog( bgcol );
         }
 
         let L = env.mainlight;
@@ -388,12 +394,18 @@ SceneHub.initBaseParsers = ()=>{
             if (urls){
                 if (Array.isArray(urls)){
                     urls.forEach(u => {
-                        ATON.createSceneNode().load(u).attachTo(G);
+                        //ATON.createSceneNode().load(u).attachTo(G);
+                        G.load(u);
                     });
                 }
                 else {
                     G.load(urls);
                 }
+            }
+
+            if ( N["cesium.ion"] ){
+                let cesiumAssID = N["cesium.ion"];
+                ATON.MRes.loadCesiumIONAsset(cesiumAssID, G);
             }
 
             // FIXME: not working
@@ -507,7 +519,8 @@ SceneHub.initBaseParsers = ()=>{
             if (urls){
                 if (Array.isArray(urls)){
                     urls.forEach(u => {
-                        ATON.createSemanticNode().load(u).attachTo(G);
+                        //ATON.createSemanticNode().load(u).attachTo(G);
+                        G.load(u);
                     });
                 }
                 else {

@@ -383,7 +383,7 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
 
-        ATON.Utils.estimateTSErrorTarget();
+        ATON.MRes.estimateTSErrorTarget();
 
         // FIXME: needed bc selector radius is not applied
         setTimeout( ()=>{

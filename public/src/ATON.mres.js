@@ -12,6 +12,8 @@ ATON Copyright Hub
 */
 let MRes = {};
 
+MRes.REST_API_CESIUMION_DEF_TOKEN = "https://api.cesium.com/v2/tokens/default";
+
 
 MRes.init = ()=>{
 
@@ -29,6 +31,10 @@ MRes.init = ()=>{
     };
 
     MRes.estimateTSErrorTarget();
+
+    MRes._tsuSync = 0;
+
+    //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); });
 };
 
 MRes.getTSetsErrorTarget = ()=>{
@@ -106,7 +112,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     let ts = new TILES.TilesRenderer(tsurl);
     if (!ts) return;
 
-    //ATON._assetReqNew(tsurl);
+    ATON._assetReqNew(tsurl);
 
     // Options
     ts.displayBoxBounds = MRes._tsB;
@@ -133,7 +139,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.lruCache.maxSize = 500; //350;
     ts.lruCache.minSize = 300; //150;
-    ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
+    ts.lruCache.unloadPercent = 0.1; //0.6; // The maximum percentage of minSize to unload during a given frame
 
     // Download/Parse queues
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
@@ -245,6 +251,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             ATON.recomputeSceneBounds();
             if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
+
+            ATON._assetReqComplete(tsurl);
         }
 
         scene.traverse( (c)=>{
@@ -254,9 +262,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
 
+                // Build accelerated raycasting for tile
                 if (c.geometry){
-                    c.geometry.computeBoundsTree(); // Build accelerated raycasting for tile
-
+                    c.geometry.computeBoundsTree();
                     if (ATON.Utils._bvhBounds>0) ATON.Utils._addBVHbounds(c, ATON.Utils._bvhBounds);
                 }
             }
@@ -270,10 +278,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 //c.receiveShadow = true;
                 //c.material.shadowSide = 2;
 
-                if (c.material.map){
-                    c.material.map.minFilter = THREE.LinearMipmapLinearFilter;
-                    c.material.map.magFilter = THREE.LinearFilter;
-                    c.material.map.encoding  = ATON._stdEncoding; //THREE.LinearEncoding;
+                let tex = c.material.map;
+                if (tex){
+                    tex.minFilter = THREE.LinearMipmapLinearFilter;
+                    tex.magFilter = THREE.LinearFilter;
+                    tex.encoding  = ATON._stdEncoding;
                 }
 
             }
@@ -331,16 +340,34 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
         });
 };
 
+/*
+$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
+    console.log(data)
+
+    // Unauthorized
+    if (data.token === undefined){
+        console.log(data.message);
+        return;
+    }
+    // We retrieve a valid token
+    else {
+        let tok = data.token;
+    }
+*/
+
 // Main update (view-dependent LoD)
 MRes.update = ()=>{
+    //MRes._tsuSync++;
+    //if ((MRes._tsuSync % 10) !== 0) return;
+
     const nts = MRes._tsets.length;
     if (nts <= 0) return;
 
     //if (ATON.Nav._bInteracting) return;
     if (ATON.Nav.isTransitioning()) return;
-    if (ATON.XR._bReqPresenting) return;
+    //if (ATON.XR._bReqPresenting) return;
 
-    ATON.Nav._camera.updateMatrixWorld();
+    //ATON.Nav._camera.updateMatrixWorld();
 
     // Tasks
     //console.log(MRes._tsTasks.length);
@@ -353,7 +380,6 @@ MRes.update = ()=>{
 
     for (let ts=0; ts < nts; ts++){
         const TS = MRes._tsets[ts];
-
         TS.update();
     }
 };

@@ -1355,6 +1355,30 @@ FE.popupNav = ()=>{
     FE.uiAddButtonVR("idNMvr");
 };
 
+// experimental
+FE.popupModalToken = (msg, func)=>{
+    if (func === undefined) return;
+
+    ATON.FE.popupClose(); // Close any existing popup
+
+    let htmlcontent = "<div class='atonPopupTitle'>Token Required</div>";
+    if (msg) htmlcontent += msg;
+    htmlcontent += "<br><input id='idTokStr' style='width:90%' type='text' placeholder='paste your token here'><br>";
+
+    htmlcontent += "<br><div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnTokenOK'>OK</div>";
+
+    if ( !FE.popupShow(htmlcontent) ) return;
+
+    $("#btnTokenOK").click(()=>{
+        let tok = $("#idTokStr").val();
+        if (tok === undefined || tok.length <2) return;
+
+        ATON.FE.popupClose();
+
+        func(tok);
+    });
+};
+
 FE.popupNewNode = (type)=>{
     if (type === undefined) type = ATON.NTYPES.SCENE;
 

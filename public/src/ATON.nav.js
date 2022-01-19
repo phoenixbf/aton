@@ -804,8 +804,8 @@ Nav.handleXRtransition = ()=>{
         //ATON.XR.setRefSpaceLocation(Nav._reqXRpos);
         ATON.XR._currPos.copy(ATON.XR._reqPos);
 
-        console.log("XR height"+ATON.XR._currPos.y);
-        console.log("HMD height"+Nav._currPOV.pos.y);
+        //console.log("XR height"+ATON.XR._currPos.y);
+        //console.log("HMD height"+Nav._currPOV.pos.y);
 
         ATON.fireEvent("POVTransitionCompleted", Nav._reqPOV.id);
         return;

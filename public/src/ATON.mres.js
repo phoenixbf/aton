@@ -335,7 +335,14 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
         let tok = prompt("Please enter a valid Cesium ION token:");
         if (tok == null || tok == "") return;
 
-        ATON._extAPItokens["cesium.ion"] = tok;
+        ATON._extAPItokens["cesium.ion"] = tok
+/*
+        ATON.FE.popupModalToken("Please enter a valid Cesium ION token:", (tok)=>{
+            ATON._extAPItokens["cesium.ion"] = tok;
+
+            MRes.loadCesiumIONAsset(ionAssID, N);
+        });
+*/
     }
 
     let url = new URL( `https://api.cesium.com/v1/assets/${ionAssID}/endpoint` );

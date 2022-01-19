@@ -463,11 +463,12 @@ ATON.realize = ( bNoRender )=>{
     const wglopts = {
         //canvas: document.getElementById("View3D"),
         antialias: true, //ATON.device.isMobile? false : true,
-        alpha: true, // required for AR
+        alpha: true,     // required for AR
 
-        powerPreference: "high-performance",
+        //powerPreference: "high-performance",
+
         ///pecision: "lowp", //"mediump"
-        //preserveDrawingBuffer: true
+        preserveDrawingBuffer: true
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);

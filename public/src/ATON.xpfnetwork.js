@@ -414,6 +414,8 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
 
     XPFNetwork.updateCurrentXPFbaseLayer( onComplete );
 
+    ATON.fireEvent("NextXPF", undefined);
+
 /*
     // hit
     if (XPFNetwork._txCache[i]){

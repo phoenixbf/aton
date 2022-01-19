@@ -67,6 +67,11 @@ let setupEvents = ()=>{
     ATON.on("LocomotionNodeRequested", locnode => {
         iconIndicator.visible = false;
     });
+    /*
+    ATON.on("POVTransitionCompleted", ()=>{
+        iconIndicator.visible = false;
+    })
+    */
 
     ATON.FE.uiSetButtonHandler("idSUIswitch", ()=>{
         switchPeriod();

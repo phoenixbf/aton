@@ -22,6 +22,8 @@ MRes.init = ()=>{
 
     MRes._tsET = 20.0;   // Global tilesets error target (original: 6)
     MRes._tsB  = false;  // Show/Hide tiles bounds
+    
+    MRes._bTileBVH = true; // Build per-tile BVH
 
     MRes._tsTasks = [];  // Tileset tasks
 
@@ -34,7 +36,7 @@ MRes.init = ()=>{
 
     MRes._tsuSync = 0;
 
-    //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); });
+    //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
 };
 
 MRes.getTSetsErrorTarget = ()=>{
@@ -134,17 +136,19 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     }
 
     ts.errorTarget     = MRes._tsET;
-    ts.optimizeRaycast = false; // We already use BVH
+    //ts.errorThreshold  = 100;
     //ts.loadSiblings    = false; // a few hops / artifacts
+
+    ts.optimizeRaycast = false; // We already use BVH
 
     ts.lruCache.maxSize = 500; //350;
     ts.lruCache.minSize = 300; //150;
-    ts.lruCache.unloadPercent = 0.1; //0.6; // The maximum percentage of minSize to unload during a given frame
+    ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
 
     // Download/Parse queues
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
-    ts.downloadQueue.maxJobs = 6; //2
+    ts.downloadQueue.maxJobs = 4; //2
     ts.parseQueue.maxJobs    = 2; //2
 
 /*
@@ -227,6 +231,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 //else if (ATON.Nav.homePOV === undefined) ATON.Nav.computeDefaultHome(undefined, bs );
                 ///else ATON.recomputeSceneBounds( bs );
             }
+/*
+            if (ATON.Nav.homePOV === undefined){
+                let H = new ATON.POV();
+
+                if (!N.autoCenter){
+                    H.setTarget(bs.center);
+                }
+
+                ATON.Nav.setHomePOV( H );
+            }
+*/
         }
 
         //console.log(N)
@@ -262,9 +277,16 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
 
-                // Build accelerated raycasting for tile
-                if (c.geometry){
-                    c.geometry.computeBoundsTree();
+                // Build accelerated raycasting for this tile
+                if (MRes._bTileBVH && c.geometry){
+                    //console.time( 'computing bounds tree' );
+                    c.geometry.computeBoundsTree({
+                        //maxLeafTris: 2,
+                        //strategy: parseFloat( ThreeMeshBVH.SAH )
+                    });
+                    //c.geometry.boundsTree.splitStrategy = ThreeMeshBVH.SAH;
+                    //console.timeEnd( 'computing bounds tree' );
+
                     if (ATON.Utils._bvhBounds>0) ATON.Utils._addBVHbounds(c, ATON.Utils._bvhBounds);
                 }
             }
@@ -357,15 +379,16 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
 
 // Main update (view-dependent LoD)
 MRes.update = ()=>{
+    if (ATON.Nav.isTransitioning()) return;
+    //if (ATON.Nav._bInteracting) return;
+    //if (ATON.XR._bReqPresenting) return;
+
     //MRes._tsuSync++;
     //if ((MRes._tsuSync % 10) !== 0) return;
 
     const nts = MRes._tsets.length;
-    if (nts <= 0) return;
+    if (nts < 1) return;
 
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav.isTransitioning()) return;
-    //if (ATON.XR._bReqPresenting) return;
 
     //ATON.Nav._camera.updateMatrixWorld();
 

@@ -475,7 +475,10 @@ Utils.cleanupVisitor = ( object )=>{
             if (c.userData.cMat) c.userData.cMat.dispose();
         }
 
-        if (c.geometry) c.geometry.dispose();
+        if (c.geometry){
+            c.geometry.disposeBoundsTree();
+            c.geometry.dispose();
+        }
     });
 
     object = null;

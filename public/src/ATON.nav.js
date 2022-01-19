@@ -75,6 +75,10 @@ Nav.init = ()=>{
     Nav._vDir = new THREE.Vector3(1,0,0);
     Nav._qOri = new THREE.Quaternion();
 
+    // TODO: delta motions
+    //Nav._lastPos = new THREE.Vector3(0,0,0);
+    //Nav._lastOri = new THREE.Quaternion();
+
     // Motion
     Nav._motionAmt = 0.0;
     Nav._motionDir = new THREE.Vector3(0,1,0);

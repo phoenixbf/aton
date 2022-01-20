@@ -2238,7 +2238,7 @@ HATHOR.popupEditSceneInfo = ()=>{
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Hathor <img src='"+ATON.FE.PATH_RES_ICONS+"hathor.png' class='atonDefIcon'> help</div>";
     
-    htmlcontent += "<i>Hathor</i> is the official ATON front-end<br>";
+    htmlcontent += "<i>Hathor</i> is the official ATON front-end. <div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><br>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
@@ -2326,6 +2326,10 @@ HATHOR.popupHelp = ()=>{
     htmlcontent += "</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent,"atonPopupLarge") ) return;
+
+    $("#idSettings").click(()=>{
+        ATON.FE.subPopup( HATHOR.popupSettings );
+    });
 };
 
 HATHOR.popupSceneDelete = ()=>{
@@ -2460,13 +2464,13 @@ HATHOR.popupSettings = ()=>{
     // Multires
     if (ATON.MRes._tsets.length > 0){
         htmlcontent += divBlock;
-        htmlcontent += "<div class='atonBlockSubTitle'>Multiresolution</div><br>";
+        htmlcontent += "<div class='atonBlockSubTitle'>Multiresolution detail</div><br>";
         htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON.MRes._tsET+"</span>):<br>";
-        htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:50%' type='range' min='1.0' max='50.0' step='1.0'>&nbsp;Less detail";
+        htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:40%' type='range' min='1.0' max='25.0' step='0.5'>&nbsp;Less detail";
         htmlcontent += "</div>";
     }
 
-    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+    if ( !ATON.FE.popupShow(htmlcontent/*, "atonPopupLarge"*/) ) return;
 
     $("#idSelRad").val(rad);
     $("#idTSerr").val(ATON.MRes._tsET);

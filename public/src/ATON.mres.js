@@ -96,7 +96,7 @@ MRes.updateTSetsCamera = (cam)=>{
 };
 
 MRes.estimateTSErrorTarget = ()=>{
-    let tse = 10;
+    let tse = 6.0; //10;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse += 4.0;
     if (ATON.XR._bPresenting) tse += 3.0;

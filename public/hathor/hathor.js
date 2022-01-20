@@ -1945,7 +1945,7 @@ HATHOR.popupShare = ()=>{
     let url = window.location.href;
     new QRCode(document.getElementById("idQRcode"), url);
 
-    let iframecode = "<iframe style='height:500px; margin:0;' src='"+window.location.href+"' width='100%' height='500px' frameborder='0' allowfullscreen='1'></iframe>";
+    let iframecode = "<iframe style='height:500px; margin:0;' src='"+window.location.href+"' width='100%' height='500px' frameborder='0' allow='autoplay; fullscreen; xr-spatial-tracking' xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share allowfullscreen mozallowfullscreen='true' webkitallowfullscreen='true'></iframe>";
     let istaticcode = "<a href='"+window.location.href+"'><img src='"+ATON.PATH_SCENES+ATON.SceneHub.currID+"/cover.png'></a>";
 
     $('#idEmbed').val(iframecode);

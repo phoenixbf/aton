@@ -42,15 +42,14 @@ window.addEventListener( 'load', ()=>{
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();
 
-    let N = ATON.createSceneNode("sample-cesium");
-    N.setScale(0.05);
-    N.attachToRoot();
-
     // Cesium ION sample token
     //ATON.setAPIToken("cesium.ion", "<your-token-here>" );
 
-    // We load a Cesium ION providing asset-ID and our node
-    ATON.MRes.loadCesiumIONAsset(cesiumAssID, N);
+    // We create an ATON node and load a Cesium ION asset
+    ATON.createSceneNode("sample-cesium")
+        .setScale(0.05)
+        .loadCesiumIONAsset(cesiumAssID)
+        .attachToRoot();
 
     ATON.Nav.setHomePOV( new ATON.POV().setPosition(-25.353, 4.715, -12.625).setTarget(-13.11, -0.64, -1.67));
     ATON.Nav.requestHome();

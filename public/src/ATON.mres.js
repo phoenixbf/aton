@@ -329,13 +329,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 };
 
 MRes.loadCesiumIONAsset = (ionAssID, N)=>{
-    if (ATON._extAPItokens["cesium.ion"] === undefined){
+    let tok = ATON.getAPIToken("cesium.ion");
+
+    if (tok == null){
         console.log("A valid Cesium ION token is required");
 
-        let tok = prompt("Please enter a valid Cesium ION token:");
+        tok = prompt("Please enter a valid Cesium ION token:");
         if (tok == null || tok == "") return;
-
-        ATON._extAPItokens["cesium.ion"] = tok
 /*
         ATON.FE.popupModalToken("Please enter a valid Cesium ION token:", (tok)=>{
             ATON._extAPItokens["cesium.ion"] = tok;
@@ -346,7 +346,7 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
     }
 
     let url = new URL( `https://api.cesium.com/v1/assets/${ionAssID}/endpoint` );
-	url.searchParams.append( 'access_token', ATON._extAPItokens["cesium.ion"] );
+	url.searchParams.append( 'access_token', tok );
 
     fetch( url, { mode: 'cors' } )
         .then( ( res ) => {
@@ -366,6 +366,7 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
             });
 
             ATON._bqScene = true;
+            ATON.setAPIToken("cesium.ion", tok);
         });
 };
 

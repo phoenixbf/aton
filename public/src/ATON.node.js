@@ -772,6 +772,64 @@ setOnSelect( f ){
     return this;
 }
 
+/**
+Load a Cesium ION asset. If not set, a prompt will ask for a valid token
+@param {string} ionAssID - the asset ID on Cesium ION
+@example
+myNode.loadCesiumIONAsset("354759")
+*/
+loadCesiumIONAsset( ionAssID ){
+    ATON.MRes.loadCesiumIONAsset( ionAssID, this );
+    return this;
+}
+
+/**
+Load a Sketchfab asset. If not set, a prompt will ask for a valid token
+@param {string} ionAssID - the asset ID on Cesium ION
+@example
+myNode.loadCesiumIONAsset("354759")
+*/
+loadSketchfabAsset( skfAssID ){
+    let tok = ATON.getAPIToken("sketchfab");
+    let N = this;
+
+    if (tok == null){
+        console.log("A valid Sketchfab token is required");
+
+        tok = prompt("Please enter a valid Sketchfab token:");
+        if (tok == null || tok == "") return this;
+    }
+
+    console.log(tok)
+
+    let url = "https://api.sketchfab.com/v3/models/"+skfAssID+"/download";
+    let options = {
+        method: 'GET',
+        headers: {
+            //Authorization: 'Bearer '+tok,
+            Authorization: 'Token ' + tok
+        },
+        mode: 'cors'
+    };
+
+    fetch(url, options)
+        .then(function(response){
+            return response.json();
+        }).then(function(data){
+            ATON.setAPIToken("sketchfab",tok);
+            console.log(data);
+
+            if (data.gltf){
+                let zipurl = data.gltf.url;
+                // TODO:
+                //N.load(...);
+                return N;
+            }
+        });
+
+    return this;
+}
+
 // Assign a period to this node
 // TODO: 
 /*

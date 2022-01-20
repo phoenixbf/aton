@@ -712,8 +712,7 @@ ATON.realize = ( bNoRender )=>{
 
     ATON._wappID = undefined;
 
-    // External API/services
-    ATON._extAPItokens = {};
+    //ATON._extAPItokens = {};
 
     ATON.focusOn3DView();
 };
@@ -2238,9 +2237,18 @@ ATON._handleQueryUI = ()=>{
 };
 
 // Tokens for external API/services 
-// TODO:
 ATON.setAPIToken = (servicename, tok)=>{
-    ATON._extAPItokens[servicename] = tok;
+    //ATON._extAPItokens[servicename] = tok;
+    window.sessionStorage.setItem("ATON.tokens."+servicename, tok);
+};
+
+ATON.getAPIToken = (servicename)=>{
+    let tok = window.sessionStorage.getItem("ATON.tokens."+servicename);
+    return tok;
+};
+
+ATON.clearToken = (servicename)=>{
+    window.sessionStorage.removeItem("ATON.tokens."+servicename);
 };
 
 /*

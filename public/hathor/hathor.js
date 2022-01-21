@@ -2443,7 +2443,7 @@ HATHOR.popupSettings = ()=>{
 
     // Selector
     htmlcontent += divBlock;
-    htmlcontent += "<div class='atonBlockSubTitle'>3D Selector</div><br>";
+    htmlcontent += "<div class='atonBlockSubTitle'><img class='atonDefIcon' src='"+ATON.FE.PATH_RES_ICONS+"selector.png'>3D Selector</div><br>";
     htmlcontent += "Radius (<span id='idSelRadTxt'>"+hr+"</span>):<br>";
     //htmlcontent += ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[0])+"&nbsp;";
     htmlcontent += "<input id='idSelRad' type='range' min='"+ATON.FE._selRanges[0]+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
@@ -2464,13 +2464,13 @@ HATHOR.popupSettings = ()=>{
     // Multires
     if (ATON.MRes._tsets.length > 0){
         htmlcontent += divBlock;
-        htmlcontent += "<div class='atonBlockSubTitle'>Multiresolution detail</div><br>";
+        htmlcontent += "<div class='atonBlockSubTitle'><img class='atonDefIcon' src='"+ATON.FE.PATH_RES_ICONS+"multires.png'>Multiresolution</div><br>";
         htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON.MRes._tsET+"</span>):<br>";
         htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:40%' type='range' min='1.0' max='25.0' step='0.5'>&nbsp;Less detail";
         htmlcontent += "</div>";
     }
 
-    if ( !ATON.FE.popupShow(htmlcontent/*, "atonPopupLarge"*/) ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
     $("#idSelRad").val(rad);
     $("#idTSerr").val(ATON.MRes._tsET);

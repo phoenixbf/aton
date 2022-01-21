@@ -96,7 +96,7 @@ MRes.updateTSetsCamera = (cam)=>{
 };
 
 MRes.estimateTSErrorTarget = ()=>{
-    let tse = 6.0; //10;
+    let tse = 8.0; //10;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse += 4.0;
     if (ATON.XR._bPresenting) tse += 3.0;
@@ -137,7 +137,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.errorTarget     = MRes._tsET;
     //ts.errorThreshold  = 100;
-    //ts.loadSiblings    = false; // a few hops / artifacts
+    //ts.loadSiblings    = false; // a few hops
 
     ts.optimizeRaycast = false; // We already use BVH
 
@@ -148,6 +148,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     // Download/Parse queues
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
+
     ts.downloadQueue.maxJobs = 4; //2
     ts.parseQueue.maxJobs    = 2; //2
 
@@ -166,33 +167,43 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     N.add( ts.group );
     //console.log(N)
 
+    // CC extract
+    $.getJSON( tsurl, ( data )=>{
+        ATON.CC.extract(data);
+    });
+
     const MIN_TILES = 2; // min number of tiles for tileset to be considered loaded
     let tflip = 0;
 
+    let bb = new THREE.Box3();
+    let bs = new THREE.Sphere();
+
+    const matrix = new THREE.Matrix4();
+    let position = new THREE.Vector3();
 
     // JSON loaded
     ts.onLoadTileSet = ()=>{
         console.log("TileSet loaded");
+        //console.log(ts)
 
         // Cesium ION
         if (cesiumReq){
-            const box    = new THREE.Box3();
-            const sphere = new THREE.Sphere();
-            const matrix = new THREE.Matrix4();
+            //const box    = new THREE.Box3();
+            //const sphere = new THREE.Sphere();
+            //const matrix = new THREE.Matrix4();
+            //let position;
 
-            let position;
             let distanceToEllipsoidCenter;
 
-            if ( ts.getOrientedBounds( box, matrix ) ) {
+            if ( ts.getOrientedBounds( bb, matrix ) ) {
 
-                position = new THREE.Vector3().setFromMatrixPosition( matrix );
+                position.setFromMatrixPosition( matrix );
                 distanceToEllipsoidCenter = position.length();
 
-            } else if ( ts.getBoundingSphere( sphere ) ) {
+            } else if ( ts.getBoundingSphere( bs ) ) {
 
-                position = sphere.center.clone();
+                position = bs.center.clone();
                 distanceToEllipsoidCenter = position.length();
-
             }
 
             const surfaceDirection = position.normalize();
@@ -209,9 +220,6 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         // Default URL
         else {
-            let bb = new THREE.Box3();
-            let bs = new THREE.Sphere();
-
             if ( ts.getBounds(bb) ){
                 bb.getBoundingSphere( bs );
 

@@ -59,6 +59,7 @@ import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
 
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 import * as ThreeMeshBVH from 'three-mesh-bvh';
+//import { GenerateMeshBVHWorker } from 'three-mesh-bvh/src/workers/GenerateMeshBVHWorker.js';
 
 import * as TILES from '3d-tiles-renderer';
 
@@ -114,6 +115,8 @@ THREE.TransformControls = TransformControls;
 
 //THREE.CSS3DRenderer = CSS3DRenderer;
 //THREE.CSS3DObject   = CSS3DObject;
+
+//window.GenerateMeshBVHWorker = GenerateMeshBVHWorker;
 
 window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;

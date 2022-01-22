@@ -395,31 +395,29 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
 
 // Main update (view-dependent LoD)
 MRes.update = ()=>{
-    if (ATON.Nav.isTransitioning()) return;
-    //if (ATON.Nav._bInteracting) return;
-    //if (ATON.XR._bReqPresenting) return;
-
     //MRes._tsuSync++;
     //if ((MRes._tsuSync % 10) !== 0) return;
 
     const nts = MRes._tsets.length;
     if (nts < 1) return;
 
-
     //ATON.Nav._camera.updateMatrixWorld();
-
-    // Tasks
-    //console.log(MRes._tsTasks.length);
-    let T = MRes._tsTasks.shift(); 
-    if (T !== undefined){
-        T();
-        T = null;
-    }
     //MRes._tsTasksFF = 0;
 
     for (let ts=0; ts < nts; ts++){
         const TS = MRes._tsets[ts];
         TS.update();
+    }
+
+    // Tasks (intensive)
+    if (ATON.Nav.isTransitioning()) return;
+    if (ATON.Nav._bInteracting) return;
+    //console.log(MRes._tsTasks);
+
+    let T = MRes._tsTasks.pop(); //.shift(); 
+    if (T !== undefined){
+        T();
+        T = null;
     }
 };
 

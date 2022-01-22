@@ -86,8 +86,8 @@ FX.init = ()=>{
 
     //console.log(FX.passes[FX.PASS_AO]);
 
-    // Sobel
 /*
+    // Sobel
     const effectSobel = new THREE.ShaderPass( THREE.SobelOperatorShader );
     effectSobel.uniforms[ 'resolution' ].value.set(CW,CH);
 */

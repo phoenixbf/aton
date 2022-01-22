@@ -365,6 +365,8 @@ XR.onSessionStarted = ( session )=>{
         console.log(ATON.Nav._currPOV.pos);
 
         XR._bPresenting = true;
+        ATON.Nav._bInteracting = false;
+
         console.log("XR now presenting");
 
         //XR.setupControllersUI();
@@ -401,6 +403,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
     XR._bReqPresenting = false;
 
     XR._bPresenting = false;
+    ATON.Nav._bInteracting = false;
+    
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
 

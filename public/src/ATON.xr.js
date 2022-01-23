@@ -404,7 +404,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     XR._bPresenting = false;
     ATON.Nav._bInteracting = false;
-    
+
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
 

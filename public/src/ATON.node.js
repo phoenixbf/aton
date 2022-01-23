@@ -783,12 +783,7 @@ loadCesiumIONAsset( ionAssID ){
     return this;
 }
 
-/**
-Load a Sketchfab asset. If not set, a prompt will ask for a valid token
-@param {string} ionAssID - the asset ID on Cesium ION
-@example
-myNode.loadCesiumIONAsset("354759")
-*/
+// TODO:
 loadSketchfabAsset( skfAssID ){
     let tok = ATON.getAPIToken("sketchfab");
     let N = this;

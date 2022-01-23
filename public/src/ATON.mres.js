@@ -13,8 +13,10 @@ ATON Copyright Hub
 let MRes = {};
 
 MRes.REST_API_CESIUMION_DEF_TOKEN = "https://api.cesium.com/v2/tokens/default";
+MRes.THRES_ORI = 0.01;
 
 
+// Setup
 MRes.init = ()=>{
 
     // Cesium Tilesets
@@ -412,6 +414,7 @@ MRes.update = ()=>{
     // Tasks (intensive)
     if (ATON.Nav.isTransitioning()) return;
     if (ATON.Nav._bInteracting) return;
+    if (ATON.Nav._dOri > MRes.THRES_ORI) return;
     //console.log(MRes._tsTasks);
 
     let T = MRes._tsTasks.pop(); //.shift(); 

@@ -76,8 +76,11 @@ Nav.init = ()=>{
     Nav._qOri = new THREE.Quaternion();
 
     // TODO: delta motions
-    //Nav._lastPos = new THREE.Vector3(0,0,0);
-    //Nav._lastOri = new THREE.Quaternion();
+    Nav._lastPos = new THREE.Vector3(0,0,0);
+    Nav._lastOri = new THREE.Quaternion();
+
+    Nav._dOri = 0.0;
+    Nav._dPos = 0.0;
 
     // Motion
     Nav._motionAmt = 0.0;
@@ -663,6 +666,16 @@ Nav.getFOV = ()=>{
 };
 
 
+// Compute delta-motions
+Nav._deltaMotions = ()=>{
+    Nav._dOri = Nav._lastOri.angleTo( ATON.Nav._qOri );
+    Nav._dPos = Nav._lastPos.distanceToSquared( Nav._currPOV.pos );
+
+    Nav._lastPos.copy( Nav._currPOV.pos );
+    Nav._lastOri.copy( ATON.Nav._qOri );
+};
+
+
 // Retrieve currPOV from camera and controls
 Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
@@ -674,6 +687,7 @@ Nav.syncCurrPOV = ()=>{
         ATON.XR._cam.getWorldQuaternion( Nav._qOri );
         ATON.XR._cam.getWorldDirection( Nav._vDir );
 
+        Nav._deltaMotions();
 
         //Nav._currPOV.pos.copy(ATON.XR._cam.position);
         //Nav._qOri.copy(ATON.XR._cam.quaternion);
@@ -696,6 +710,8 @@ Nav.syncCurrPOV = ()=>{
 
     cam.getWorldDirection(Nav._vDir);
     cam.getWorldQuaternion(Nav._qOri);
+
+    Nav._deltaMotions();
 
     if (Nav._mode === Nav.MODE_DEVORI){
         Nav._currPOV.pos.copy(cam.position);

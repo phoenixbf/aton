@@ -70,7 +70,7 @@
     "gltf-bounding-box": "^0.4.1",
     "gltf-pipeline": "^3.0.4",
     "http": "0.0.0",
-    "http-proxy-middleware": "^2.0.1",
+    "http-proxy-middleware": "^2.0.2",
     "https": "^1.0.0",
     "image-size": "^1.0.1",
     "iphone-inline-video": "^2.2.2",

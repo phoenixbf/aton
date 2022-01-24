@@ -134,7 +134,14 @@ App.getStorage = (id)=>{
     });
 };
 
-// Craft an App object
+/**
+Create an App object 
+@param {function} setup - setup routine
+@param {function} update - update (or tick) routine
+@returns {object} - web-app object, to be started with run() method
+@example
+ATON.App.realize( mySetupRoutine )
+*/
 App.realize = (setup, update)=>{
     let A = {};
 
@@ -164,7 +171,7 @@ App.run = ( A )=>{
     if (A.setup) A.setup();
     else {
         ATON.FE.realize();
-        console.log("App [Warn]: you App should define a setup() routine");
+        console.log("App [Warn]: your App should define a setup() routine");
     }
 
     if (A.update) ATON.addUpdateRoutine( A.update );

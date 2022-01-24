@@ -41,17 +41,17 @@ CC.extract = (data)=>{
     }
     if (data.asset.generator) cc.generator = data.asset.generator;
 
-    if (data.asset.copyright || data.asset.extras){
+    // Empty cc object
+    if (Object.keys(cc).length === 0) return;
 
-        // check for replicate entries
-        for (let e in CC.list){
-            let o = CC.list[e];
+    // check for replicate entries
+    for (let e in CC.list){
+        let o = CC.list[e];
 
-            if ( CC.compare(cc, o) ) return;
-        }
-
-        CC.list.push(cc);
+        if ( CC.compare(cc, o) ) return;
     }
+
+    CC.list.push(cc); // Add to cc list
     
     console.log(cc);
 };

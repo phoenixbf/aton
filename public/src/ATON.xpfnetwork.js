@@ -548,12 +548,13 @@ XPFNetwork.showSUIonlyForXPF = (i)=>{
 /**
 Request a transition to a given XPF by index
 @param {number} i - The XPF index
+@param {number} dur - transition duration (optional)
 */
-XPFNetwork.requestTransitionByIndex = (i)=>{
+XPFNetwork.requestTransitionByIndex = (i, dur)=>{
     let xpf = XPFNetwork._list[i];
     if (xpf === undefined) return;
 
-    let dur = XPFNetwork.STD_XPF_TRANSITION_DURATION;
+    if (dur === undefined) dur = XPFNetwork.STD_XPF_TRANSITION_DURATION;
     if (ATON.XR._bPresenting) dur = 0.0;
 
     ATON.Nav.requestTransitionToLocomotionNode( xpf.getLocomotionNode(), dur );

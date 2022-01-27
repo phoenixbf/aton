@@ -39,10 +39,11 @@ CC.extract = (data)=>{
             if (typeof data.asset.extras[e] === "string") cc[e] = data.asset.extras[e];
         }
     }
-    if (data.asset.generator) cc.generator = data.asset.generator;
 
     // Empty cc object
     if (Object.keys(cc).length === 0) return;
+
+    if (data.asset.generator) cc.generator = data.asset.generator;
 
     // check for replicate entries
     for (let e in CC.list){

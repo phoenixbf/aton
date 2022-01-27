@@ -556,10 +556,11 @@ ATON.realize = ( bNoRender )=>{
 */
 
     // Basis
+/*
     ATON._basisLoader = new THREE.BasisTextureLoader();
     ATON._basisLoader.setTranscoderPath( ATON.PATH_BASIS_LIB );
     ATON._basisLoader.detectSupport( ATON._renderer );
-
+*/
     ATON._ktx2Loader = new THREE.KTX2Loader();
     ATON._ktx2Loader.setTranscoderPath( ATON.PATH_BASIS_LIB );
 	ATON._ktx2Loader.detectSupport( ATON._renderer );
@@ -574,7 +575,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._aLoader.setKTX2Loader( ATON._ktx2Loader );
 
     // Register BasisTextureLoader for .basis extension.
-    THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader );
+    //THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader ); // deprecated
     THREE.DefaultLoadingManager.addHandler( /\.ktx2$/, ATON._ktx2Loader );
 
     // Update routines

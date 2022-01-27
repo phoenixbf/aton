@@ -44,11 +44,11 @@ import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
-import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
+//import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js';
 import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
 
-import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
+//import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
@@ -93,7 +93,7 @@ THREE.GLTFExporter       = GLTFExporter;
 THREE.OBJExporter        = OBJExporter;
 THREE.DRACOLoader        = DRACOLoader;
 //THREE.IFCLoader          = IFCLoader;
-THREE.BasisTextureLoader = BasisTextureLoader;
+//THREE.BasisTextureLoader = BasisTextureLoader;
 THREE.KTX2Loader         = KTX2Loader;
 THREE.USDZExporter       = USDZExporter;
 
@@ -107,7 +107,7 @@ THREE.UnrealBloomPass     = UnrealBloomPass;
 
 THREE.RGBELoader = RGBELoader;
 THREE.EXRLoader  = EXRLoader;
-THREE.RoughnessMipmapper  = RoughnessMipmapper;
+//THREE.RoughnessMipmapper  = RoughnessMipmapper;
 THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
 

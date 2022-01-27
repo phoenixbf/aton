@@ -219,7 +219,7 @@ XPFNetwork.update = ()=>{
 
     //XPFNetwork._clearTexCache(); // Clear cached textures
 
-    ATON.fireEvent("CurrentXPF", iclosest);
+    //ATON.fireEvent("CurrentXPF", iclosest);
 };
 
 
@@ -414,6 +414,7 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
 
     XPFNetwork.updateCurrentXPFbaseLayer( onComplete );
 
+    ATON.fireEvent("CurrentXPF", i);
     ATON.fireEvent("NextXPF", undefined);
 
 /*

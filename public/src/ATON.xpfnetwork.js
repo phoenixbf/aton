@@ -147,7 +147,7 @@ XPFNetwork.setPathModifier = (f)=>{
 
 // This is required to select closest (current) XPF to user location
 XPFNetwork.update = ()=>{
-    //if (ATON.Nav.isTransitioning()) return;
+    if (ATON.Nav.isTransitioning()) return;
     if (XPFNetwork._list.length < 1) return;
 
     let len = XPFNetwork._list.length;
@@ -557,6 +557,7 @@ XPFNetwork.requestTransitionByIndex = (i, dur)=>{
     if (dur === undefined) dur = XPFNetwork.STD_XPF_TRANSITION_DURATION;
     if (ATON.XR._bPresenting) dur = 0.0;
 
+    XPFNetwork.setCurrentXPF(i);
     ATON.Nav.requestTransitionToLocomotionNode( xpf.getLocomotionNode(), dur );
 
 /*

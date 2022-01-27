@@ -138,6 +138,12 @@ window.addEventListener( 'load', ()=>{
             .setLocation(343.83, 116.658, -120.49)
     );
 
+    // We set our path modifier
+    // In this case, depending on period variable we postfix a different pattern
+    ATON.XPFNetwork.setPathModifier((path)=>{
+        return path + period + ".jpg";
+    });
+
     // Let's set the first XPF as home
     ATON.XPFNetwork.setHomeXPF(0);
     ATON.XPFNetwork.requestTransitionByIndex(0);
@@ -147,12 +153,6 @@ window.addEventListener( 'load', ()=>{
 
     // Setup our events
     setupEvents();
-
-    // We set our path modifier
-    // In this case, depending on period variable we postfix a different pattern
-    ATON.XPFNetwork.setPathModifier((path)=>{
-        return path + period + ".jpg";
-    });
 });
 
 </script>

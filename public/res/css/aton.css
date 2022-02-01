@@ -431,7 +431,7 @@ canvas:active {
     position: relative;
 
     text-shadow: 0px 0px 4px black;
-    text-align: justify;
+    text-align: left;
 /*
     padding: 8px;
 */
@@ -1489,7 +1489,6 @@ input[type="number"]:hover {
     color: #FFF;
     text-shadow: 0px 0px 4px #000000;
     font-size: 70%;
-    text-shadow: 0px 0px 4px #000000;
 
     padding: 5px;
 

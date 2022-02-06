@@ -1,6 +1,6 @@
 # ATON 3.0 framework
 
-[![Join the chat at https://gitter.im/phoenixbf/ATON](https://badges.gitter.im/phoenixbf/ATON.svg)](https://gitter.im/phoenixbf/ATON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the dev chat at https://gitter.im/phoenixbf/ATON](https://badges.gitter.im/phoenixbf/ATON.svg)](https://gitter.im/phoenixbf/ATON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ![Header](./public/res/aton-header.jpg)
 

@@ -16,7 +16,7 @@ XR.HAND_R = 0;
 XR.HAND_L = 1;
 
 XR.MOBILE_DENSITY_F   = 0.5;
-XR.MAX_QUERY_DISTANCE = 20.0; // Max distance query in first person (XR session)
+XR.MAX_QUERY_DISTANCE = 40.0; // Max distance query in first person (XR session)
 
 
 //Initializes XR component
@@ -383,7 +383,8 @@ XR.onSessionStarted = ( session )=>{
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         ATON.Nav._updCamera( C );
 
-        ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
+        if (ATON.XPFNetwork.getNumXPFs()>0) ATON.setQueryRange(0.0, 100.0);
+        else ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
 
         ATON.MRes.estimateTSErrorTarget();
 

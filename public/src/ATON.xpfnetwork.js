@@ -229,7 +229,7 @@ XPFNetwork.realizeBaseGeometry = ()=>{
     if (XPFNetwork._geom !== undefined) return; // already realized
 
     // Default geometry
-    XPFNetwork._geom = new THREE.SphereBufferGeometry( 1.0, 60,60 );
+    XPFNetwork._geom = new THREE.SphereBufferGeometry( 1.0, 40,40 );
     XPFNetwork._geom.scale( -XPFNetwork._size, XPFNetwork._size, XPFNetwork._size );
         
     XPFNetwork._geom.castShadow    = false;
@@ -292,7 +292,14 @@ XPFNetwork.clear = ()=>{
     for (let i=0; i<XPFNetwork._list.length; i++){
         // TODO:
     }
+};
 
+/**
+Get number of XPFs in the network
+@returns {number}
+*/
+XPFNetwork.getNumXPFs = ()=>{
+    return XPFNetwork._list.length;
 };
 
 /**

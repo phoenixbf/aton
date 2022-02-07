@@ -65,8 +65,9 @@ window.addEventListener( 'load', ()=>{
 
     // We add a semantic hint map
     xpf.setSemanticHintMap("samples/pano/montebelluna/05a-semhint.png");
-    // ...and set opacity
+    // ...and set opacity and color
     ATON.XPFNetwork.setSemanticHintMapOpacity(0.3);
+    ATON.XPFNetwork.setSemanticHintMapColor( new THREE.Color(1,0.5,0) );
 
     // Let's set the first XPF as home
     ATON.XPFNetwork.setHomeXPF(0);

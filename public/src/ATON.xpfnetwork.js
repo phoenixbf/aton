@@ -42,6 +42,9 @@ XPFNetwork.init = ()=>{
     XPFNetwork._semCTX = undefined;
     XPFNetwork._semCurr = undefined;
 
+    XPFNetwork._shColor   = new THREE.Color(0,0,1);
+    XPFNetwork._shOpacity = 0.2;
+
     XPFNetwork._semUnifData = new Uint8Array(256 * 128 * 4);
 
     XPFNetwork._txCache = {};
@@ -58,7 +61,7 @@ XPFNetwork._realizeBaseMat = ()=>{
         tSemHint: { type:'t' /*, value: 0*/ },
         semHL: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.15) },
         opacity: { type:'float', value: 1.0 },
-        opacitySemHint: { type:'float', value: 0.2 },
+        shColor: { type:'vec4', value: new THREE.Vector4(0,0,1, 0.2) },
         time: { type:'float', value: 0.0 },
     };
 
@@ -95,9 +98,8 @@ XPFNetwork._realizeBaseMat = ()=>{
             uniform sampler2D tSemHint;
             //uniform sampler2D tDepth;
 
-            uniform vec4 semHL;
+            uniform vec4 semHL, shColor;
             uniform float opacity;
-            uniform float opacitySemHint;
 
 		    void main(){
                 vec4 frag = texture2D(tBase, vUv);
@@ -110,7 +112,7 @@ XPFNetwork._realizeBaseMat = ()=>{
 
                 frag = mix(frag, semHL, (sem.r * semHL.a));
 
-                frag.b = mix(frag.b, semH.b, (t * shv * opacitySemHint));
+                frag = mix(frag, shColor, (t * shv * shColor.a));
 
                 frag.a = opacity;
 
@@ -645,7 +647,24 @@ XPFNetwork.setSemanticHintMapOpacity = (opacity)=>{
     if (opacity === undefined) opacity = 0.2;
 
     XPFNetwork._shOpacity = opacity;
-    XPFNetwork._uniforms.opacitySemHint.value = opacity;
+    XPFNetwork._uniforms.shColor.value.w = opacity;
+};
+
+/**
+Set semantic hint map color
+@param {THREE.Color} color - color
+@param {number} opacity - (optional) opacity
+*/
+XPFNetwork.setSemanticHintMapColor = (color, opacity)=>{
+    if (color === undefined) return;
+
+    XPFNetwork._shColor = color;
+    XPFNetwork._uniforms.shColor.value.x = color.r;
+    XPFNetwork._uniforms.shColor.value.y = color.g;
+    XPFNetwork._uniforms.shColor.value.z = color.b;
+
+    if (opacity === undefined) return;
+    XPFNetwork.setSemanticHintMapOpacity(opacity);
 };
 
 
@@ -710,7 +729,7 @@ XPFNetwork.querySemanticMasks = ()=>{
         XPFNetwork._semCurr = undefined;
 
         XPFNetwork._uniforms.tSem.value = 0;
-        XPFNetwork._uniforms.opacitySemHint.value = XPFNetwork._shOpacity;
+        XPFNetwork._uniforms.shColor.value.w = XPFNetwork._shOpacity;
 
         XPFNetwork._mat.needsUpdate = true;
         return;
@@ -724,7 +743,7 @@ XPFNetwork.querySemanticMasks = ()=>{
 
         ATON.fireEvent("SemanticMaskHover", ss);
 
-        XPFNetwork._uniforms.opacitySemHint.value = 0.0;
+        XPFNetwork._uniforms.shColor.value.w = 0.0;
 
         if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
     }

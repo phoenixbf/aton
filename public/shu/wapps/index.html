@@ -29,8 +29,10 @@
 let renderForm = ()=>{
     let htmlcontent = "";
 
+    let divItem = "<div class='atonGalleryItem' style='width:270px; height:270px; background-color: rgba(0,0,0, 0.1)'>";
+
     // Hathor
-    htmlcontent += "<div class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+    htmlcontent += divItem;
     htmlcontent += "<div class='atonBlockSubTitle'>hathor</div><br>";
     htmlcontent += "<a href='/s/'>";
     htmlcontent += "<img src='/fe/appicon.png' style='width:200px; height:auto'>";
@@ -42,7 +44,7 @@ let renderForm = ()=>{
             let wappid = A.wappid;
             let appicon = (A.icon)? ATON.PATH_WAPPS+wappid+"/appicon.png" : ATON.PATH_WAPPS+"app_template/appicon.png";
 
-            htmlcontent += "<div class='atonGalleryItem' style='width:256px; height:256px; background-color: rgba(0,0,0, 0.1)'>";
+            htmlcontent += divItem;
             htmlcontent += "<div class='atonBlockSubTitle'>"+wappid+"</div><br>";
             htmlcontent += "<a href='"+ATON.PATH_WAPPS+wappid+"' >";
             htmlcontent += "<img src='"+appicon+"' style='width:200px; height:auto'>";
@@ -51,17 +53,6 @@ let renderForm = ()=>{
 
         $("#idWApps").html(htmlcontent);
     });
-
-/*
-    htmlcontent += "<div class='atonBlockRound'>";
-    htmlcontent += "username:<input id='idUsername' type='text' maxlength='15' size='15' ><br>";
-    htmlcontent += "password:<input id='idPassword' type='password' maxlength='15' size='15' ><br>";
-    htmlcontent += "<div class='atonBTN atonBTN-green' style='width:90%' id='idNewUser'><img src='../../res/icons/add.png'>New User</div>";
-    htmlcontent += "<br><div id='idResponse'></div>";
-    htmlcontent += "</div>";
-*/
-
-
 };
 
 window.addEventListener( 'load', ()=>{

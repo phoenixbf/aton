@@ -647,7 +647,7 @@ SceneHub.initBaseParsers = ()=>{
         if (xpfnetwork.photoscanOPKfile){
             XPFNetwork.loadFromPhotoscanFile(xpfnetwork.photoscanOPKfile, ()=>{
                 ATON.XPFNetwork.setHomeXPF(0);
-                ATON.XPFNetwork.requestTransitionByIndex(0);
+                ATON.XPFNetwork.requestTransitionByIndex(0, 0.0);
             });
         }
     };

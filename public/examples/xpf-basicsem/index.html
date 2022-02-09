@@ -67,7 +67,7 @@ window.addEventListener( 'load', ()=>{
 
     // Let's set the first XPF as home
     ATON.XPFNetwork.setHomeXPF(0);
-    ATON.XPFNetwork.requestTransitionByIndex(0);
+    ATON.XPFNetwork.requestTransitionByIndex(0, 0.0);
 
     // Our custom events
     ATON.on("SemanticMaskHover", semid => {

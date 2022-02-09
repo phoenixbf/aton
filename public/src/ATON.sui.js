@@ -337,6 +337,8 @@ SUI.buildInfoNode = ()=>{
         alignContent: 'center', // could be 'center' or 'left'
         justifyContent: 'center', // could be 'center' or 'start'
     });
+
+    SUI.infoContainer.position.y = 0.03; // vertical offset
     SUI.infoNode.add(SUI.infoContainer);
 
     SUI.infoNodeText = new ThreeMeshUI.Text({ 

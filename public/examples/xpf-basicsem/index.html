@@ -99,15 +99,22 @@ window.addEventListener( 'load', ()=>{
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
+            <div style="display: block">
             In this sample we showcase XPF <i>semantic masks</i>. We first create and setup a single XPF, loading the base layer:<br>
             <img src="/collections/samples/pano/montebelluna/05a.jpg">
+            </div><br>
             
             then set a few semantic masks assigned to semantic IDs <b>"doors"</b>,<b>"forge"</b>,<b>"worker"</b> and <b>"tools"</b>:<br><br>
             <div style="text-align:center;">
-            doors<br><img id='doors' src="/collections/samples/pano/montebelluna/05a-sem-doors.png" style="width:50%;height:auto; display:block;">
-            forge<br><img id='forge' src="/collections/samples/pano/montebelluna/05a-sem-forge.png" style="width:50%;height:auto; display:block;">
-            worker<br><img id='worker' src="/collections/samples/pano/montebelluna/05a-sem-worker.jpg" style="width:50%;height:auto; display:block;">
-            tools<br><img id='tools' src="/collections/samples/pano/montebelluna/05a-sem-tools.jpg" style="width:50%;height:auto; display:block;">
+
+            <div style="display:inline-block; text-align:center; width:150px;">doors<br>
+                <img id='doors' src="/collections/samples/pano/montebelluna/05a-sem-doors.png" style="width:100%;height:auto;"></div>
+            <div style="display:inline-block; text-align:center; width:150px;">forge<br>
+                <img id='forge' src="/collections/samples/pano/montebelluna/05a-sem-forge.png" style="width:100%;height:auto;"></div>
+            <div style="display:inline-block; text-align:center; width:150px;">worker<br>
+                <img id='worker' src="/collections/samples/pano/montebelluna/05a-sem-worker.jpg" style="width:100%;height:auto;"></div>
+            <div style="display:inline-block; text-align:center; width:150px;">tools<br>
+                <img id='tools' src="/collections/samples/pano/montebelluna/05a-sem-tools.jpg" style="width:100%;height:auto;"></div>
             </div>
             
             These semantic masks images can be created very easily through common 2D software tools (see <a href="https://diglib.eg.org/handle/10.2312/gch20161380" target="_blank">this paper</a>), with lower resolutions and using different formats (png, jpg).<br><br>

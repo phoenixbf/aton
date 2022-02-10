@@ -157,6 +157,23 @@ SUI.getOrCreateSpriteLP = ()=>{
     return SUI.sprites.lp;
 };
 
+SUI.getOrCreateSpriteWalk = ()=>{
+    if (SUI.sprites.walk) return SUI.sprites.walk;
+
+    SUI.sprites.walk = new THREE.SpriteMaterial({ 
+        map: new THREE.TextureLoader().load( ATON.PATH_RES+"sui-walk.png" ), 
+        transparent: true,
+        opacity: 1.0,
+        depthWrite: false, 
+        //depthTest: false
+        //depthFunc: THREE.GreaterDepth
+    });
+
+    //SUI.sprites.walk.sizeAttenuation = false;
+
+    return SUI.sprites.walk;
+};
+
 
 // Realize main selector
 SUI.initSelector = ()=>{

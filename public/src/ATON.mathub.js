@@ -306,7 +306,7 @@ MatHub.addDefaults = ()=>{
         transparent: true,
         depthWrite: false,
         //flatShading: false
-    }); 
+    });
 
 };
 

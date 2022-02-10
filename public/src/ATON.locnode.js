@@ -20,7 +20,7 @@ constructor(id){
     this.id    = id;
     this._iXPF = undefined;
 
-    this._suiMesh = undefined;
+    this._sui = undefined;
 }
 
 /**
@@ -35,8 +35,8 @@ setLocation(x,y,z){
     if (x instanceof THREE.Vector3) this.pos.copy(x);
     else this.pos.set(x,y,z);
 
-    if (this._suiMesh){
-        this._suiMesh.position.copy(this.pos);
+    if (this._sui){
+        this._sui.position.copy(this.pos);
     }
 
     //console.log(this.pos);
@@ -58,17 +58,26 @@ Realize Spatial-UI element
 */
 realizeSUI(mat){
     if (ATON.SUI.gLocNodes === undefined) return this;
-    if (this._suiMesh !== undefined) return this; // already realized
+
+    this._sui = new THREE.Sprite( ATON.SUI.getOrCreateSpriteWalk() );
+
+    this._sui.position.copy(this.pos);
+    this._sui.scale.set(ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE);
+
+    ATON.SUI.gLocNodes.add( this._sui );
+    
+/*
+    if (this._sui !== undefined) return this; // already realized
 
     if (mat === undefined) mat = ATON.MatHub.materials.lp;
 
-    this._suiMesh = new THREE.Mesh( ATON.Utils.geomUnitSphere, mat);
+    this._sui = new THREE.Mesh( ATON.Utils.geomUnitSphere, mat);
 
-    this._suiMesh.position.copy(this.pos);
-    this._suiMesh.scale.set(ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE);
+    this._sui.position.copy(this.pos);
+    this._sui.scale.set(ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE, ATON.Nav.STD_LOCNODE_SIZE);
 
-    ATON.SUI.gLocNodes.add( this._suiMesh );
-
+    ATON.SUI.gLocNodes.add( this._sui );
+*/
     return this;
 }
 
@@ -79,9 +88,9 @@ Toggle (show or hide) Spatial-UI for this locomotion node
 locnode.toggleSUI(false)
 */
 toggleSUI(b){
-    if (this._suiMesh === undefined) return this;
+    if (this._sui === undefined) return this;
 
-    this._suiMesh.visible = b;
+    this._sui.visible = b;
 
     return this;
 }

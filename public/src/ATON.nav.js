@@ -23,7 +23,7 @@ Nav.STD_FAR  = 800.0; // 1000
 Nav.FP_EPS = 0.01;
 Nav.STD_POV_TRANS_DURATION = 2.0;
 
-Nav.STD_LOCNODE_SIZE = 0.3;
+Nav.STD_LOCNODE_SIZE = 0.5; //0.3;
 
 Nav.MIN_LOC_VALID_DIST = 1.5; // Locomotion validator default distance to consider "too close"
 
@@ -91,6 +91,7 @@ Nav.init = ()=>{
 
     // Locomotion Graph
     Nav._locNodes = [];
+    Nav._prevLN = undefined;
 };
 
 /**
@@ -289,7 +290,12 @@ Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
         )
         .setFOV(Nav._currPOV.fov);
 
+    lnode.toggleSUI(false);
+    if (Nav._prevLN !== undefined) Nav._prevLN.toggleSUI(true);
+
     Nav.requestPOV(POV, duration);
+
+    Nav._prevLN = lnode;
 
     ATON.fireEvent("LocomotionNodeRequested", lnode);
 };

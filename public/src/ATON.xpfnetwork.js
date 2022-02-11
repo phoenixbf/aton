@@ -207,7 +207,11 @@ XPFNetwork.update = ()=>{
         XPFNetwork._iNext = inext;
     }
 */
-    if (inext !== XPFNetwork._iNext) ATON.fireEvent("NextXPF", inext);
+    if (inext !== XPFNetwork._iNext){
+        XPFNetwork.toggleSUI(inext, true);
+        ATON.fireEvent("NextXPF", inext);
+    }
+
     XPFNetwork._iNext = inext;
 
     XPFNetwork.querySemanticMasks();
@@ -223,6 +227,8 @@ XPFNetwork.update = ()=>{
 
     //ATON.fireEvent("CurrentXPF", iclosest);
 };
+
+
 
 
 XPFNetwork.realizeBaseGeometry = ()=>{
@@ -414,6 +420,8 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
     //let xpf = XPFNetwork._list[i];
     //if (xpf === undefined) return;
 
+    XPFNetwork.toggleSUI(i, false);
+
     XPFNetwork._iCurr = i;
     XPFNetwork._iNext = undefined;
     
@@ -445,6 +453,15 @@ XPFNetwork.setCurrentXPF = (i, onComplete)=>{
 
     // sem-masks
     XPFNetwork.loadSemanticMasksIfAny(i);
+};
+
+// Toggle SUI indicator for a given xpf index
+XPFNetwork.toggleSUI = (i, b)=>{
+    if (i === undefined) return;
+    let xpf = XPFNetwork._list[i];
+
+    if (xpf === undefined) return;
+    xpf._lnode.toggleSUI(b);
 };
 
 XPFNetwork.loadSemanticMasksIfAny = (i)=>{

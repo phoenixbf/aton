@@ -1183,7 +1183,7 @@ canvas:active {
     font-size: larger;
     vertical-align: middle;
 
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0,0,0, 0.5);
     border-radius: 10px;
 
     box-shadow: 0px 0px 10px rgba(0,0,0, 0.5);
@@ -1192,6 +1192,9 @@ canvas:active {
     margin: 0px;
 
     height: 30px;
+    min-width: 60px;
+
+    /*transform-origin: top;*/
 }
 
 

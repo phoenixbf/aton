@@ -77,6 +77,7 @@ SUI.init = ()=>{
     SUI._labelScale   = ATON.Utils.isMobile()? 80.0 : 90.0; //note: inverse. Orginally 1.2 : 1.0;
     SUI._labelScaleVR = 2.0;
 
+/*
     ATON.on("SemanticNodeHover", (semid)=>{
         SUI.setInfoNodeText(semid);
         if (SUI.gSemIcons) SUI.gSemIcons.hide();
@@ -90,7 +91,7 @@ SUI.init = ()=>{
     });
     ATON.on("SemanticMaskLeave", semid => {
     });
-
+*/
     //SUI.setSemIconsOpacity(0.5);
 
 /*
@@ -650,6 +651,8 @@ SUI.update = ()=>{
 
         // Immersive Session
         if (ATON.XR._bPresenting){
+            if (SUI.bShowInfo) SUI.infoNode.visible = true;
+
             if (ATON.XR.controller0){
                 SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
                 SUI.infoNode.position.x -= (ATON.XR.controller0dir.x * 0.1);
@@ -661,7 +664,10 @@ SUI.update = ()=>{
                 SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.5);
                 SUI.infoNode.setScale(ATON._queryDataSem.d * SUI._labelScaleVR);
             }
+
+            SUI.infoNode.orientToCamera();
         }
+/*
         // Default session
         else {
             SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.5);
@@ -671,11 +677,11 @@ SUI.update = ()=>{
         SUI.infoNode.orientToCamera();
 
         if (SUI.bShowInfo) SUI.infoNode.visible = true;
-        
+*/      
         if (!ATON.VRoadcast._bStreamFocus) SUI.mainSelector.visible = false;
     }
     else {
-        if (SUI.bShowInfo && ATON._queryDataScene && ATON.XPFNetwork._semCurr !== undefined){
+        if (ATON.XR._bPresenting && SUI.bShowInfo && ATON._queryDataScene && ATON.XPFNetwork._semCurr !== undefined){
             SUI.infoNode.position.lerpVectors(ATON._queryDataScene.p, ATON.Nav._currPOV.pos, 0.5);
 
             const ls = ATON._queryDataScene.d * (ATON.Nav._currPOV.fov / SUI._labelScale);

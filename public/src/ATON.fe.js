@@ -65,6 +65,10 @@ FE.realize = ()=>{
 
     let dynd = ATON.FE.urlParams.get('dd');
     if (dynd && dynd > 0) ATON.toggleDynamicDensity(true);
+
+    FE._canvas = ATON._renderer.domElement;
+    
+    FE._bSem = false;
 };
 
 FE._handleHomeReq = ()=>{
@@ -130,9 +134,56 @@ FE.addBasicLoaderEvents = ()=>{
 */
     });
 
+    // Semantic
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S === undefined) return;
+
+        FE.hideSemLabel();
+        FE._bSem = false;
+
+        S.restoreDefaultMaterial();
+        //$('canvas').css({ cursor: 'default' });
+
+        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
+    });
+    ATON.on("SemanticNodeHover", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S === undefined) return;
+
+        FE.showSemLabel(semid);
+        FE._bSem = true;
+
+        S.highlight();
+        //$('canvas').css({ cursor: 'crosshair' });
+
+        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
+    });
+
+    ATON.on("SemanticMaskHover", semid => {
+        FE.showSemLabel(semid);
+        FE._bSem = true;
+    });
+    ATON.on("SemanticMaskLeave", semid => {
+        FE.hideSemLabel();
+        FE._bSem = false;
+    });
+
 
     //ATON.on("frame", FE._update);
     ATON.addUpdateRoutine(FE._update);
+};
+
+FE.showSemLabel = (txt)=>{
+    $("#idPopupLabel").html(txt);
+    $("#idPopupLabel").show();
+
+    ATON.SUI.setInfoNodeText(txt);
+};
+
+FE.hideSemLabel = ()=>{
+    $("#idPopupLabel").hide();
+    $("#idPopupLabel").html("");
 };
 
 FE.controlLight = (b)=>{
@@ -231,6 +282,7 @@ FE._update = ()=>{
         //ATON.updateDirShadows();
     }
 
+    // Immersive VR/AR
     if (ATON.XR._bPresenting){
         let v = ATON.XR.getAxisValue(ATON.XR.HAND_R);
         
@@ -239,6 +291,19 @@ FE._update = ()=>{
             s += (v.y * 0.01);
 
             if (s > 0.001) ATON.SUI.setSelectorRadius(s);
+        }
+    }
+    // Std
+    else {
+        if (ATON.Nav.isTransitioning() || ATON.Nav._bInteracting || ATON._bPauseQuery) $("#idPopupLabel").hide();
+        else if (FE._bSem){
+            $("#idPopupLabel").show();
+
+            let x = ((ATON._screenPointerCoords.x)*0.5) * FE._canvas.width;
+            let y = ((1.0 - ATON._screenPointerCoords.y)*0.5) * FE._canvas.height;
+            y -= 60;
+
+            $("#idPopupLabel").css('transform', "translate("+x+"px, "+y+"px)");
         }
     }
 
@@ -268,6 +333,9 @@ FE.uiBasicSetup = ()=>{
 FE._uiSetupBase = ()=>{
     $("#idPopup").click( FE.popupClose );
     $("#idLoader").html("<img src='"+ATON.PATH_RES+"loader.png'>");
+
+    $("body").prepend("<div class='atonPopupLabelContainer'><div id='idPopupLabel' class='atonPopupLabel'></div></div>");
+    FE.hideSemLabel();
 };
 
 /**

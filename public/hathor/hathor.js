@@ -622,7 +622,7 @@ HATHOR.setupEventHandlers = ()=>{
         //console.log(E);
     });
 
-    // Semantic
+/*
     ATON.on("SemanticNodeLeave", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S === undefined) return;
@@ -637,6 +637,7 @@ HATHOR.setupEventHandlers = ()=>{
         S.highlight();
         //$('canvas').css({ cursor: 'crosshair' });
     });
+*/
 /*
     ATON.on("MouseRightButton", ()=>{
         if (ATON._hoveredSemNode) HATHOR.popupSemDescription(ATON._hoveredSemNode);

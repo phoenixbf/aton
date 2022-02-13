@@ -135,18 +135,6 @@ FE.addBasicLoaderEvents = ()=>{
     });
 
     // Semantic
-    ATON.on("SemanticNodeLeave", (semid)=>{
-        let S = ATON.getSemanticNode(semid);
-        if (S === undefined) return;
-
-        FE.hideSemLabel();
-        FE._bSem = false;
-
-        S.restoreDefaultMaterial();
-        //$('canvas').css({ cursor: 'default' });
-
-        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
-    });
     ATON.on("SemanticNodeHover", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S === undefined) return;
@@ -155,18 +143,32 @@ FE.addBasicLoaderEvents = ()=>{
         FE._bSem = true;
 
         S.highlight();
-        //$('canvas').css({ cursor: 'crosshair' });
+        $('canvas').css({ cursor: 'crosshair' });
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
+    });
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S === undefined) return;
+
+        FE.hideSemLabel();
+        FE._bSem = false;
+
+        S.restoreDefaultMaterial();
+        $('canvas').css({ cursor: 'grab' });
+
+        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
     });
 
     ATON.on("SemanticMaskHover", semid => {
         FE.showSemLabel(semid);
         FE._bSem = true;
+        $('canvas').css({ cursor: 'crosshair' });
     });
     ATON.on("SemanticMaskLeave", semid => {
         FE.hideSemLabel();
         FE._bSem = false;
+        $('canvas').css({ cursor: 'grab' });
     });
 
 
@@ -293,7 +295,7 @@ FE._update = ()=>{
             if (s > 0.001) ATON.SUI.setSelectorRadius(s);
         }
     }
-    // Std
+    // Default
     else {
         if (ATON.Nav.isTransitioning() || ATON.Nav._bInteracting || ATON._bPauseQuery) $("#idPopupLabel").hide();
         else if (FE._bSem){

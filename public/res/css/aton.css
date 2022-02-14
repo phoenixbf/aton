@@ -340,6 +340,8 @@ canvas:active {
     right: 0%;
 
     animation: 0.5s ease-out 0s 1 slideFromRight;
+
+    backdrop-filter: blur(6px);
 }
 
 @media screen and (orientation: portrait) {
@@ -1013,6 +1015,8 @@ canvas:active {
 
     margin: 0px;
     padding: 0px;
+
+    /*backdrop-filter: blur(6px);*/
 }
 
 .atonPopup {
@@ -1045,6 +1049,8 @@ canvas:active {
     
     transform-origin: center;
     animation: 0.2s ease-out 0s 1 popupAnimation;
+
+    backdrop-filter: blur(6px);
 }
 
 @media screen and (orientation: portrait){
@@ -1187,6 +1193,8 @@ canvas:active {
     border-radius: 10px;
 
     box-shadow: 0px 0px 10px rgba(0,0,0, 0.5);
+
+    backdrop-filter: blur(6px);
 
     padding: 12px;
     margin: 0px;

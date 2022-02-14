@@ -301,9 +301,9 @@ FE._update = ()=>{
         else if (FE._bSem){
             $("#idPopupLabel").show();
 
-            let x = ((ATON._screenPointerCoords.x)*0.5) * FE._canvas.width;
-            let y = ((1.0 - ATON._screenPointerCoords.y)*0.5) * FE._canvas.height;
-            y -= 60;
+            let x = ((ATON._screenPointerCoords.x)*0.5) * window.innerWidth; //FE._canvas.width;
+            let y = ((1.0 - ATON._screenPointerCoords.y)*0.5) * window.innerHeight; //FE._canvas.height;
+            y -= 55;
 
             $("#idPopupLabel").css('transform', "translate("+x+"px, "+y+"px)");
         }

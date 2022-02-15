@@ -46,6 +46,9 @@ let search = ()=>{
     searchTerm = searchTerm.split(" ")[0];
 
     searchByTerm(searchTerm);
+
+    if (searchTerm.includes("/")) $("#btn-go").show();
+    else $("#btn-go").hide();
 };
 
 let searchByTerm = (searchTerm)=>{
@@ -117,6 +120,8 @@ let onLandingData = (data)=>{
 
         SHU.createPubScenesGallery("idPubGallery", data.samples);
     }
+
+    $("#btn-go").hide();
 };
 
 window.addEventListener( 'load', ()=>{

@@ -94,7 +94,7 @@ let onLandingData = (data)=>{
         htmlcontent += "<a href='shu/scenes/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'></a>";
         htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
         htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='"+ATON.PATH_RES+"icons/play.png'></div>";
-        if (data.samples) htmlcontent += "<a href='examples/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/samples.png'></a>";
+        if (data.samples === undefined || data.samples === true) htmlcontent += "<a href='examples/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/samples.png'></a>";
         htmlcontent += "<br><br>";
 
         htmlcontent += "<div class='atonBlockTitle'>Public Scenes</div><br>";

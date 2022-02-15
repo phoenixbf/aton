@@ -103,11 +103,6 @@
 
 /*=========================================================*/
 
-html {
-    --scrollbarBG: #333333;
-    --thumbBG: #ffffff;
-}
-
 body {
     margin: 0px;
     padding: 0px;
@@ -131,7 +126,7 @@ body {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 
     scrollbar-width: thin;
-    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    scrollbar-color: #FFF #333;
 }
 
 a {
@@ -1211,20 +1206,20 @@ canvas:active {
 /*
     Scrollbars
 ==========================*/
-::-webkit-scrollbar {
+*::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
-::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
     background-color: rgba(0, 0, 0, 0.2);
     border-left: 0px solid #000;
     border-radius: 4px;
 }
-::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
     background-color: #FFF;
     border-radius: 4px;
 }
-::-webkit-scrollbar-thumb:hover {
+*::-webkit-scrollbar-thumb:hover {
     background-color: #FFF;
     box-shadow: 0px 0px 10px rgba(255,255,255, 0.9);
 }

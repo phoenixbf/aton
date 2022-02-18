@@ -90,6 +90,13 @@ let onLandingData = (data)=>{
         return;
     }
 
+    if (data.header){
+        htmlcontent += "<div class='atonHeader'>";
+        htmlcontent += data.header;
+        htmlcontent += "</div>";
+    }
+    else htmlcontent += "<img src='/res/aton-logo.png' style='width:100px; height:auto;'><br>";
+
     if (data.gallery){
         htmlcontent += "<a href='shu/scenes/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'></a>";
         htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
@@ -133,8 +140,6 @@ window.addEventListener( 'load', ()=>{
 </head>
 
 <body class="atonDefaultBody">
-        <img src="/res/aton-logo.png" style="width:100px; height:auto;"><br>
-        
         <div id='idMainContent'></div>
 <!--
         <div class='select' style='width:50%;'>

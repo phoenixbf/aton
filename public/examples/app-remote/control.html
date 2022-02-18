@@ -63,7 +63,7 @@ let reqPOV = (id)=>{
 // Helper function to set status message
 let setStatus = (b)=>{
     if (b){
-        let numUsers = ATON.VRoadcast.getNumUsers();
+        let numUsers = ATON.VRoadcast.getNumUsers(); // Retrieve current number of connected users
 
         if (numUsers <= 1) $("#idStatus").html("Connected (just you!)");
         else $("#idStatus").html("Connected ("+numUsers+" users)");
@@ -86,9 +86,12 @@ let setStatus = (b)=>{
 
     <div class='atonGalleryItem' style='padding:10px; min-width:200px; background-color: rgba(0,0,0, 0.2)'>
         <div class='atonBlockSubTitle'>Viewpoints</div><br>
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-entrance')">Entrance</div>
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-anvil')">Anvil</div>
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-forge')">Forge</div>
+        <!-- 
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('home')"><img src="../../res/icons/home.png">Home</div><br>
+        -->
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-entrance')"><img src="../../res/icons/pov.png">Entrance</div>
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-anvil')"><img src="../../res/icons/pov.png">Anvil</div>
+        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-forge')"><img src="../../res/icons/pov.png">Forge</div>
     </div>
 
 

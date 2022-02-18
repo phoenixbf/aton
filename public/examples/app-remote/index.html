@@ -49,7 +49,8 @@ window.onload = ()=>{
 
         // Generate QR-code for remote control App
         let url = window.location.origin + "/examples/app-remote/control.html";
-        new QRCode(document.getElementById("idQRcontrol"), url);
+        if (url.startsWith("http://localhost")) $("#idQRcontrol").html("<b>To use another device for remote control, you have to use local network address or public IP (not localhost)</b>");
+        else new QRCode( document.getElementById("idQRcontrol"), url);
     };
 
     // Ok, let's run our App!
@@ -73,7 +74,9 @@ window.onload = ()=>{
             
             We setup a first 3D App (this one) like <a href="../app-basic/">App basic sample</a>, where we load a scene with some viewpoints (POVs). Then we create a second App for remote control.<br><br>
             You can open this second App by clicking, tapping or using this QR-code (for instance in another device, like a smartphone):<br>
-            <a href="control.html" target="_blank"><div class="atonQRcodeContainer" id='idQRcontrol' style="background-color: white; padding:30px;"></div></a>
+            <a href="control.html" target="_blank">
+                <div class="atonQRcodeContainer" id='idQRcontrol' style="background-color: white; color:black; padding:30px; display:inline-block; max-width:250px;"></div>
+            </a>
 
             <br><br>
             Both apps join a VRoadcast session named "sample-wapp-remote" via:

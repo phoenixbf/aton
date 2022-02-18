@@ -1615,6 +1615,8 @@ label {
 .shuTopToobar {
     background-color: rgba(0,0,0, 0.8);
     box-shadow: 0px 0px 15px rgba(0,0,0, 1);
+
+    backdrop-filter: blur(6px);
 }
 
 .shuBlockNode {
@@ -1651,6 +1653,8 @@ label {
 
     background-color:rgba(0,0,0, 0.4);
     box-shadow: 0px 0px 20px rgba(0,0,0, 0.5);
+
+    backdrop-filter: blur(6px);
 }
 
 .atonTitle {

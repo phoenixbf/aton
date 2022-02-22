@@ -102,8 +102,6 @@ VRoadcast.initMaterials = ()=>{
     let MM = ATON.MatHub.materials;
     MM.avatars = [];
 
-    let mat = ATON.MatHub.materials.defUI.clone();
-    mat.uniforms.color.value = VRoadcast.ucolors[0];
 /*
     let mat = new THREE.MeshBasicMaterial({
         color: VRoadcast.ucolors[0], 
@@ -113,10 +111,9 @@ VRoadcast.initMaterials = ()=>{
         flatShading: true
     });
 */
-    MM.avatars.push(mat);
 
-    for (let c=1; c<VRoadcast.ucolors.length; c++){
-        let M = mat.clone();
+    for (let c=0; c<VRoadcast.ucolors.length; c++){
+        let M = ATON.MatHub.materials.defUI.clone();
         //M.color = VRoadcast.ucolors[c];
         M.uniforms.color.value = VRoadcast.ucolors[c];
 
@@ -428,11 +425,10 @@ VRoadcast._registerSocketHandlers = ()=>{
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
+        if (ATON._numReqLoad>0) return; // check / fixme
         if (!VRoadcast._bShowAvaG) return;
 
         let S = VRoadcast.decodeState(data);
-
-        //console.log(data);
 
         let uid = S.userid;
         let A = VRoadcast.touchAvatar(uid);

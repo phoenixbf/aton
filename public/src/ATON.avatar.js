@@ -133,7 +133,7 @@ realize(){
 
     this.labelcontainer.add(this.usernametext);
     this.labelcontainer.add(this.usermessagetext);
-    
+ 
     this.add(this.usermeshnode);
     this.add(this.userlabelnode);
     this.add(this.userauinode);
@@ -224,6 +224,7 @@ hideFocalPoint(){
 }
 
 requestFocus(fp){
+    if (fp === undefined) return;
     if (this._tFocCall >= 0.0) return; // already requested
 
     this._tFocCall = ATON._clock.elapsedTime;

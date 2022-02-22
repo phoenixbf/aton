@@ -9,4 +9,5 @@ module.exports = {
     path: path.resolve(__dirname, '../../public/dist'),
     filename: 'THREE.bundle.js',
   },
+  //optimization: { minimize: false },
 };

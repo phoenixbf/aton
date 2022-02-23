@@ -641,7 +641,6 @@ ATON.realize = ( bNoRender )=>{
     // XPF-Network
     ATON.XPFNetwork.init();
 
-
     // FX Composer setup
     if (!ATON.device.lowGPU && !ATON.device.isMobile) ATON.FX.init();
     

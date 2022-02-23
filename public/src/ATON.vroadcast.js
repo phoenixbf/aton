@@ -82,13 +82,29 @@ VRoadcast.getNumUsers = ()=>{
 // Register materials (avatars/users)
 VRoadcast.initMaterials = ()=>{
 
+    VRoadcast.ucolorhex = [];
+    VRoadcast.ucolorhex.push("#F00");
+    VRoadcast.ucolorhex.push("#FF0");
+    VRoadcast.ucolorhex.push("#0F0");
+    VRoadcast.ucolorhex.push("#0FF");
+    VRoadcast.ucolorhex.push("#00F");
+    VRoadcast.ucolorhex.push("#F0F");
+
     VRoadcast.ucolors = [];
+/*
     VRoadcast.ucolors.push( new THREE.Color(1,0,0) );
     VRoadcast.ucolors.push( new THREE.Color(1,1,0) );
     VRoadcast.ucolors.push( new THREE.Color(0,1,0) );
     VRoadcast.ucolors.push( new THREE.Color(0,1,1) );
     VRoadcast.ucolors.push( new THREE.Color(0,0,1) );
     VRoadcast.ucolors.push( new THREE.Color(1,0,1) );
+*/
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[0]) );
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[1]) );
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[2]) );
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[3]) );
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[4]) );
+    VRoadcast.ucolors.push( new THREE.Color(VRoadcast.ucolorhex[5]) );
 
     VRoadcast.ucolorsdark = [];
     VRoadcast.ucolorsdark.push( new THREE.Color(0.2,0.0,0.0) );
@@ -97,14 +113,6 @@ VRoadcast.initMaterials = ()=>{
     VRoadcast.ucolorsdark.push( new THREE.Color(0.0,0.2,0.2) );
     VRoadcast.ucolorsdark.push( new THREE.Color(0.0,0.0,0.2) );
     VRoadcast.ucolorsdark.push( new THREE.Color(0.2,0.0,0.2) );
-
-    VRoadcast.ucolorhex = [];
-    VRoadcast.ucolorhex.push("#F00");
-    VRoadcast.ucolorhex.push("#FF0");
-    VRoadcast.ucolorhex.push("#0F0");
-    VRoadcast.ucolorhex.push("#0FF");
-    VRoadcast.ucolorhex.push("#00F");
-    VRoadcast.ucolorhex.push("#F0F");
 
     let MM = ATON.MatHub.materials;
     MM.avatars = [];
@@ -593,16 +601,20 @@ VRoadcast.decodeState = (binData)=>{
     );
 */
     VRoadcast._decS.quaternion.set(
-        view[16] / 128.0,
-        view[17] / 128.0,
-        view[18] / 128.0,
-        view[19] / 128.0
+        parseFloat(view[16]) / 128.0,
+        parseFloat(view[17]) / 128.0,
+        parseFloat(view[18]) / 128.0,
+        parseFloat(view[19]) / 128.0
     );
 
     // Now decode floats
     view = new Float32Array(binData);
     //VRoadcast._decS.position = new THREE.Vector3(view[0],view[1],view[2]);
-    VRoadcast._decS.position.set(view[0],view[1],view[2]);
+    VRoadcast._decS.position.set(
+        parseFloat(view[0]),
+        parseFloat(view[1]),
+        parseFloat(view[2])
+    );
     //S.scale = A[3];
 
 /*
@@ -690,14 +702,8 @@ VRoadcast.sendState = ()=>{
         //fp = null;
     }
 
-    // Compose state
-    let S = {};
-    S.position = new THREE.Vector3();
-    S.quaternion = new THREE.Quaternion();
-
-    S.position.copy(cpov.pos);
-    S.quaternion.copy(ATON.Nav._qOri);
-    S.userid = VRoadcast.uid;
+    if (!cpov.pos) return;
+    if (!ATON.Nav._qOri) return;
 
     // Save bandwidth
     if (VRoadcast._lastStateSent !== undefined){
@@ -710,10 +716,21 @@ VRoadcast.sendState = ()=>{
         if ( dPos < VRoadcast.THRES_STATE_POS && dOri < VRoadcast.THRES_STATE_ORI) return;
     }
 
+    // Compose state
+    if (VRoadcast._lastStateSent === undefined){
+        VRoadcast._lastStateSent = {};
+        VRoadcast._lastStateSent.position   = new THREE.Vector3();
+        VRoadcast._lastStateSent.quaternion = new THREE.Quaternion();
+    }
+
+    VRoadcast._lastStateSent.position.copy(cpov.pos);
+    VRoadcast._lastStateSent.quaternion.copy(ATON.Nav._qOri);
+    VRoadcast._lastStateSent.userid = VRoadcast.uid;
+
     // Encode and send
-    let binData = VRoadcast.encodeState(S);
+    let binData = VRoadcast.encodeState( VRoadcast._lastStateSent );
     VRoadcast.socket.emit("USTATE", binData/*.buffer*/ );
-    VRoadcast._lastStateSent = S;
+    //VRoadcast._lastStateSent = S;
 
     //console.log("State sent");
 };

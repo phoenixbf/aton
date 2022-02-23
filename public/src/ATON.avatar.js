@@ -38,7 +38,7 @@ constructor(uid){
     // Focal point
     this._tFocCall = -1.0;
     this._currFocusPos = new THREE.Vector3();
-    this._tgtFocusPos  = undefined;
+    this._tgtFocusPos  = new THREE.Vector3();
 
     // States
     this._currState = {
@@ -52,6 +52,7 @@ constructor(uid){
     };
 
     //console.log(this);
+    this.userlabelnode = undefined;
 
     this.realize();
 }
@@ -73,47 +74,22 @@ getAvatarMaterialByUID(uid){
     return avaMats[mi];
 }
 
-realize(){
-    // build minimal representation
-    let g = new THREE.SphereGeometry( 0.2, 16, 16 );
-
-    this.usermaterial = this.getAvatarMaterialByUID(this.userid);
-
-    let smesh = new THREE.Mesh( g, this.usermaterial );
-
-    this.usermeshnode = ATON.createUINode();
-    this.usermeshnode.add(smesh);
-    this.usermeshnode.setMaterial(this.usermaterial);
-
-    // CHECK / FIXME: this is to avoid cloning of the same mesh when using same representation for all avatars
-    this.usermeshnode.setCloneOnLoadHit(false);
-
-    // Talk UI
-    this.userauinode = new THREE.Sprite( ATON.VRoadcast.uspritemats[this.userid % ATON.VRoadcast.uspritemats.length] );
-    this.userauinode.position.set(0,0,0);
-    this.userauinode.visible = false;
-
-    // Focus
-    this.userfpnode = new THREE.Sprite( ATON.VRoadcast.ufocmats[this.userid % ATON.VRoadcast.ufocmats.length] );
-    this.userfpnode.position.set(0,0,0);
-    //this.userfpnode.scale.set(10,10,10);
-    this.userfpnode.visible = false;
-
-    // Build Label
+_buildLabel(){
     this.userlabelnode = ATON.createUINode();
+
     this.labelcontainer = new ThreeMeshUI.Block({
         width: 0.7,
         height: 0.25,
         padding: 0.03,
         borderRadius: 0.05,
-        //backgroundColor: ATON.VRoadcast.ucolorsdark[this.userid % ATON.VRoadcast.ucolorsdark.length],
+
         backgroundColor: ATON.MatHub.colors.black,
 
-        fontFamily: ATON.PATH_RES+"fonts/custom-msdf.json", //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.json',
-        fontTexture: ATON.PATH_RES+"fonts/custom.png" //ATON.PATH_MODS+'three-mesh-ui/examples/assets/Roboto-msdf.png',
+        fontFamily: ATON.SUI.PATH_FONT_JSON,
+        fontTexture: ATON.SUI.PATH_FONT_TEX,
 
-        //alignContent: 'right', // could be 'center' or 'left'
-        //justifyContent: 'end', // could be 'center' or 'start'
+        justifyContent: 'center',
+        alignContent: 'center'
     });
 
     this.userlabelnode.position.y = 0.4;
@@ -130,7 +106,7 @@ realize(){
 
     // message text
     this.usermessagetext = new ThreeMeshUI.Text({ 
-        content: "\nHello World!",
+        content: "\n...",
         fontSize: 0.03,
         fontColor: ATON.MatHub.colors.white
     });
@@ -139,9 +115,42 @@ realize(){
     this.labelcontainer.add(this.usernametext);
     this.labelcontainer.add(this.usermessagetext);
  
-    this.add(this.usermeshnode);
     this.add(this.userlabelnode);
+
+    ThreeMeshUI.update();
+}
+
+realize(){
+    // build minimal representation
+    let g = new THREE.SphereGeometry( 0.2, 16, 16 );
+
+    this.usermaterial = this.getAvatarMaterialByUID(this.userid);
+
+    let smesh = new THREE.Mesh( g, this.usermaterial );
+
+    this.usermeshnode = ATON.createUINode();
+    this.usermeshnode.add(smesh);
+    this.usermeshnode.setMaterial(this.usermaterial);
+
+    // CHECK / FIXME: this is to avoid cloning of the same mesh when using same representation for all avatars
+    this.usermeshnode.setCloneOnLoadHit(false);
+
+    this.add(this.usermeshnode);
+
+
+    // Talk UI
+    this.userauinode = new THREE.Sprite( ATON.VRoadcast.uspritemats[this.userid % ATON.VRoadcast.uspritemats.length] );
+    this.userauinode.position.set(0,0,0);
+    this.userauinode.visible = false;
+
     this.add(this.userauinode);
+
+
+    // Focus
+    this.userfpnode = new THREE.Sprite( ATON.VRoadcast.ufocmats[this.userid % ATON.VRoadcast.ufocmats.length] );
+    this.userfpnode.position.set(0,0,0);
+    //this.userfpnode.scale.set(10,10,10);
+    this.userfpnode.visible = false;
 
     //this.add(this.userfpnode);
     
@@ -150,6 +159,8 @@ realize(){
         ATON.VRoadcast._focNodes[this.userid] = this.userfpnode;
         ATON.VRoadcast.focGroup.add( this.userfpnode );
     }
+
+    this._buildLabel();
 };
 
 // TODO:
@@ -185,12 +196,15 @@ loadRepresentation(url){
 }
 
 setUsername(username){
+    if (this.userlabelnode === undefined) return this;
+
     this.username = username;
 
     this.usernametext.set({ 
         content: username
     });
 
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -201,6 +215,8 @@ getUsername(){
 }
 
 setMessage(msg){
+    if (this.userlabelnode === undefined) return this;
+
     this.message = msg;
 
     // TODO: check for text length
@@ -208,6 +224,7 @@ setMessage(msg){
         content: "\n"+msg
     });
 
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -236,7 +253,7 @@ requestFocus(fp){
 
     this._currFocusPos.copy(this.userfpnode.position);
 
-    this._tgtFocusPos = new THREE.Vector3( parseFloat(fp[0]), parseFloat(fp[1]), parseFloat(fp[2]));
+    this._tgtFocusPos.set( parseFloat(fp[0]), parseFloat(fp[1]), parseFloat(fp[2]) );
     this._tgtFocusRad = parseFloat(fp[3])*2.0;
 
     this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
@@ -355,7 +372,7 @@ update(){
     //this.userlabelnode.setRotationFromMatrix(cam.matrix); // quaternion.setFromRotationMatrix( cam.matrix );
     //this.userlabelnode.rotation.copy(cam.rotation);
 
-    this.userlabelnode.orientToCamera(); //quaternion.copy( ATON.Nav._qOri );
+    if (this.userlabelnode) this.userlabelnode.orientToCamera();
 
     // Talk UI
     //this._handleTalk();

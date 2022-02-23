@@ -556,7 +556,7 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC){
             if (HATHOR.paramVRC.length > 4) ATON.VRoadcast.setAddress( HATHOR.paramVRC );
-            //ATON.VRoadcast.connect();
+            ATON.VRoadcast.connect();
             //HATHOR._bVRCreq = true;
         }
         //if (HATHOR._bVRCreq) ATON.VRoadcast.connect();

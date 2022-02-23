@@ -62,6 +62,13 @@ VRoadcast.init = ()=>{
 
     console.log("VRoadcast initialized");
     VRoadcast.enableChatLog();
+
+    VRoadcast._decS = {
+        quaternion: new THREE.Quaternion(),
+        position: new THREE.Vector3()
+
+    };
+    //VRoadcast._encS = 
 };
 
 VRoadcast.enableChatLog = ()=>{
@@ -114,9 +121,19 @@ VRoadcast.initMaterials = ()=>{
 
     for (let c=0; c<VRoadcast.ucolors.length; c++){
         let M = ATON.MatHub.materials.defUI.clone();
-        //M.color = VRoadcast.ucolors[c];
-        M.uniforms.color.value = VRoadcast.ucolors[c];
+        M.color = VRoadcast.ucolors[c];
 
+        //M.uniforms.tint.value.set(VRoadcast.ucolors[c].r, VRoadcast.ucolors[c].g, VRoadcast.ucolors[c].b);
+        M.uniforms.tint.value = VRoadcast.ucolors[c];
+/*
+        let M = new THREE.MeshBasicMaterial({
+            color: VRoadcast.ucolors[c],
+            transparent: true,
+            depthWrite: false,
+            opacity: 0.2 
+            //flatShading: true
+        });
+*/
         MM.avatars.push(M);
     }
 
@@ -425,7 +442,7 @@ VRoadcast._registerSocketHandlers = ()=>{
     });
 
     VRoadcast.socket.on('USTATE', (data)=>{
-        if (ATON._numReqLoad>0) return; // check / fixme
+        //if (ATON._numReqLoad>0) return; // check / fixme
         if (!VRoadcast._bShowAvaG) return;
 
         let S = VRoadcast.decodeState(data);
@@ -558,16 +575,24 @@ VRoadcast.encodeState = (S)=>{
 
 // Decode state
 VRoadcast.decodeState = (binData)=>{
-    let S = {};
+    //let S = {};
     let view = new Int8Array(binData);
 
     //S.userid = binData[20];
-    S.userid = view[20];
+    VRoadcast._decS.userid = view[20];
 
     //console.log(view);
 
     // First decode quat
-    S.quaternion = new THREE.Quaternion(
+/*
+    VRoadcast._decS.quaternion = new THREE.Quaternion(
+        view[16] / 128.0,
+        view[17] / 128.0,
+        view[18] / 128.0,
+        view[19] / 128.0
+    );
+*/
+    VRoadcast._decS.quaternion.set(
         view[16] / 128.0,
         view[17] / 128.0,
         view[18] / 128.0,
@@ -576,7 +601,8 @@ VRoadcast.decodeState = (binData)=>{
 
     // Now decode floats
     view = new Float32Array(binData);
-    S.position = new THREE.Vector3(view[0],view[1],view[2]);
+    //VRoadcast._decS.position = new THREE.Vector3(view[0],view[1],view[2]);
+    VRoadcast._decS.position.set(view[0],view[1],view[2]);
     //S.scale = A[3];
 
 /*
@@ -597,7 +623,7 @@ VRoadcast.decodeState = (binData)=>{
 
     //S.scale = A[3];
 */
-    return S;
+    return VRoadcast._decS;
 }
 
 
@@ -701,13 +727,13 @@ VRoadcast.getAvatar = (uid)=>{
 VRoadcast.touchAvatar = (uid)=>{
     // First time
     if (VRoadcast.avatarList[uid] === undefined){
-        let A = new VRoadcast.Avatar(uid);
-        A.attachTo(VRoadcast.avaGroup);
+        let ava = new VRoadcast.Avatar(uid);
+        ava.attachTo(VRoadcast.avaGroup);
         
-        A.loadRepresentation(ATON.PATH_RES+"models/vrc/head.gltf");
+        ava.loadRepresentation(ATON.PATH_RES+"models/vrc/head.gltf");
         //console.log(VRoadcast.avaGroup);
 
-        VRoadcast.avatarList[uid] = A;
+        VRoadcast.avatarList[uid] = ava;
 
         //console.log(VRoadcast.avatarList);
         //console.log(ATON.MatHub.materials.avatars);
@@ -715,6 +741,8 @@ VRoadcast.touchAvatar = (uid)=>{
         
         //VRoadcast._numUsers++;
         //ATON.fireEvent("VRC_UserEnter", uid);
+
+        //console.log(ava)
     }
 
     let A = VRoadcast.avatarList[uid];

@@ -40,11 +40,16 @@ constructor(uid){
     this._currFocusPos = new THREE.Vector3();
     this._tgtFocusPos  = undefined;
 
-    this._currState  = {};
-    this._currState.position   = new THREE.Vector3();
-    this._currState.quaternion = new THREE.Quaternion();
+    // States
+    this._currState = {
+        position: new THREE.Vector3(),
+        quaternion: new THREE.Quaternion()
+    };
 
-    this._tgtState = undefined;
+    this._tgtState = {
+        position: new THREE.Vector3(),
+        quaternion: new THREE.Quaternion()
+    };
 
     //console.log(this);
 
@@ -277,13 +282,18 @@ handleFocusTransition(){
 
 requestStateTransition(S){
     if (this._tStateCall >= 0.0) return; // already requested
+    if (S === undefined) return;
+    //if (S.position === undefined || S.position === null) return;
+    //if (S.quaternion === undefined || S.quaternion === null) return;
 
     this._tStateCall = ATON._clock.elapsedTime;
 
     this._currState.position.copy(this.position);
     this._currState.quaternion.copy(this.quaternion);
 
-    this._tgtState = S;
+    //this._tgtState = S;
+    this._tgtState.position.copy(S.position);
+    this._tgtState.quaternion.copy(S.quaternion);
     
     //this._sDistance = this.position.distanceTo(S.position);
 }
@@ -298,6 +308,8 @@ handleStateTransition(){
 
     let cs = this._currState;
     let ts = this._tgtState;
+
+    //if (!ts.position || !cs.position) return;
 
     // End
     if (this._tProgress >= 1.0){
@@ -317,10 +329,13 @@ handleStateTransition(){
 
 update(){
     this.handleStateTransition();
-    if (this.userfpnode.visible){
+
+    // handle focus transitions
+    if (this.userfpnode && this.userfpnode.visible){
         this.handleFocusTransition();
 
         let s = this.userfpnode.scale.x;
+
         if (s>0.001){
             this.userfpnode.scale.set(s*0.99,s*0.99,s*0.99);
             ATON.plight.intensity *= 0.99;

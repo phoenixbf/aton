@@ -713,8 +713,6 @@ ATON.realize = ( bNoRender )=>{
 
     ATON._wappID = undefined;
 
-    //ATON._extAPItokens = {};
-
     ATON.focusOn3DView();
 };
 
@@ -1624,6 +1622,7 @@ ATON.toggleShadows = (b)=>{
 
 ATON.updateDirShadows = (/*p*/)=>{
     if (ATON._dMainLdir === undefined) return;
+    if (ATON._dMainLpos === undefined) return;
 
     let p = ATON._shadowsFixedBoundCenter;
 

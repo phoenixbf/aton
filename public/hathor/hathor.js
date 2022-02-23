@@ -556,9 +556,10 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC){
             if (HATHOR.paramVRC.length > 4) ATON.VRoadcast.setAddress( HATHOR.paramVRC );
-            ATON.VRoadcast.connect();
+            //ATON.VRoadcast.connect();
+            //HATHOR._bVRCreq = true;
         }
-        if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
+        //if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
 
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
 
@@ -569,9 +570,17 @@ HATHOR.setupEventHandlers = ()=>{
         //if (ATON.SceneHub.currData.description) $('meta[name="description"]').attr("content", ATON.SceneHub.currData.description);
     });
 
-    ATON.on("NodeRequestFired", ()=>{ 
-        $("#idLoader").show();
+    /*
+    ATON.on("AllNodeRequestsCompleted", ()=>{
+        if (HATHOR._bVRCreq){
+            HATHOR._bVRCreq = false;
+
+            setTimeout(()=>{
+                ATON.VRoadcast.connect();
+            }, 1000);
+        }
     });
+    */
 
     // Auth
     ATON.on("Login", (d)=>{

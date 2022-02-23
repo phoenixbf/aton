@@ -69,7 +69,7 @@ MatHub.addDefaults = ()=>{
     // Default UI
     MatHub.materials.defUI = new THREE.ShaderMaterial({
         uniforms: {
-            color: { type:'vec3', value: MatHub.colors.defUI },
+            tint: { type:'vec3', value: MatHub.colors.defUI },
             //base: { type:'vec3', value: MatHub.colors.defUI },
             opacity: { type:'float', value: 0.8 }
         },
@@ -79,7 +79,7 @@ MatHub.addDefaults = ()=>{
             varying vec3 vPositionW;
 		    varying vec3 vNormalW;
             varying vec3 vNormalV;
-            uniform vec3 color;
+            uniform vec3 tint;
             //uniform vec3 base;
             uniform float opacity;
 
@@ -91,10 +91,10 @@ MatHub.addDefaults = ()=>{
                 f = dot(vNormalV, vec3(0,0,1));
 		        f = clamp(1.0-f, 0.0, 1.0);
 
-                //vec3 col = mix(base,color, f);
+                //vec3 col = mix(base,tint, f);
 		        //gl_FragColor = vec4(col, f * opacity);
 
-                gl_FragColor = vec4(color, f * opacity);
+                gl_FragColor = vec4(tint, f * opacity);
 		    }
         `,
         transparent: true,
@@ -132,8 +132,7 @@ MatHub.addDefaults = ()=>{
 */
     // Controller XR ray
     MatHub.materials.controllerRay = MatHub.materials.defUI.clone();
-    MatHub.materials.controllerRay.uniforms.color.value = MatHub.colors.white;
-    //MatHub.materials.controllerRay.uniforms.base.value  = MatHub.colors.white;
+    MatHub.materials.controllerRay.uniforms.tint.value = MatHub.colors.white;
 /*
     MatHub.materials.controllerRay = new THREE.MeshBasicMaterial({ 
         color: MatHub.colors.white, 
@@ -146,7 +145,7 @@ MatHub.addDefaults = ()=>{
 
     // X-ray
     MatHub.materials.xray = MatHub.materials.defUI.clone();
-    MatHub.materials.xray.uniforms.color.value   = MatHub.colors.white;
+    MatHub.materials.xray.uniforms.tint.value    = MatHub.colors.white;
     MatHub.materials.xray.uniforms.opacity.value = 0.5;
     //MatHub.materials.xray.side = THREE.DoubleSide;
 

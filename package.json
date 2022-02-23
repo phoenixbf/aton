@@ -65,7 +65,7 @@
     "express-session": "^1.17.2",
     "fast-glob": "^3.2.11",
     "fast-json-patch": "^3.1.0",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^10.0.1",
     "glob": "^7.2.0",
     "gltf-bounding-box": "^0.4.1",
     "gltf-pipeline": "^3.0.4",

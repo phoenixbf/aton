@@ -288,7 +288,7 @@ SUI.setSelectorColor = (color, opacity)=>{
     //ATON.MatHub.materials.selector.color = color;
     //if (opacity !== undefined) ATON.MatHub.materials.selector.opacity = opacity;
 
-    matSel.uniforms.color.value = color;
+    matSel.uniforms.tint.value = color;
     if (opacity !== undefined) matSel.uniforms.opacity.value = opacity;
 };
 
@@ -699,11 +699,11 @@ SUI.update = ()=>{
         SUI.mainSelector.scale.set(ss,ss,ss);
 
         let fp = ATON.getSceneFocalPoint();
-        if (fp !== undefined){
+        if (fp !== undefined && ATON.plight !== undefined){
             ATON.enablePointLight();
             ATON.plight.position.copy( fp );
             ATON.plight.distance = SUI._selectorRad * 2.0;
-            fp = null;
+            //fp = null;
         }
     }
 

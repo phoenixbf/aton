@@ -368,7 +368,7 @@ SUI.buildInfoNode = ()=>{
     SUI.infoContainer.add(SUI.infoNodeText);
     //SUI.infoNode.scale.set(0.07,0.07,0.07);
 
-    //ThreeMeshUI.update();
+    ThreeMeshUI.update();
 };
 
 /**
@@ -432,6 +432,8 @@ SUI.createToolbar = (buttonlist, color)=>{
     }
 
     T.add(cont);
+
+    ThreeMeshUI.update();
     return T;
 };
 
@@ -579,7 +581,7 @@ SUI.update = ()=>{
         //console.log("sync");
     } 
 */
-    ThreeMeshUI.update();
+    //ThreeMeshUI.update();
 
     // Meas-line indicator
     if (SUI._prevMPoint){

@@ -74,6 +74,8 @@ constructor(uiid, ratio=1.0, fsize=1.0){
     };
 
     this.enablePicking();
+
+    ThreeMeshUI.update();
 }
 
 /**
@@ -83,6 +85,8 @@ Set base color of the button
 setBaseColor(c){
     this.baseColor = c;
     if (!this._bSwitched) this.container.set({ backgroundColor: this.baseColor });
+
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -93,12 +97,16 @@ Set button switch color (when activated)
 setSwitchColor(c){
     this.switchColor = c;
     if (this._bSwitched) this.container.set({ backgroundColor: this.switchColor });
+
+    ThreeMeshUI.update();
     return this;
 }
 
 setBackgroundOpacity(f){
     this.container.set({ backgroundOpacity: f });
     this.baseOpacity = f;
+
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -108,6 +116,8 @@ Set button text
 */
 setText(text){
     this.uiText.set({ content: text });
+
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -120,6 +130,7 @@ switch(b){
     if (b) this.container.set({ backgroundColor: this.switchColor });
     else this.container.set({ backgroundColor: this.baseColor });
     
+    ThreeMeshUI.update();
     return this;
 }
 
@@ -151,6 +162,7 @@ setIcon(url, bNoBackground){
         this.uiText.position.set(0,-0.035,0);
     });
 
+    ThreeMeshUI.update();
     return this;
 }
 

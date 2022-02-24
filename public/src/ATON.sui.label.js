@@ -78,12 +78,14 @@ Set base color of the label
 setBaseColor(c){
     this.baseColor = c;
     this.container.set({ backgroundColor: this.baseColor });
+
     ThreeMeshUI.update();
     return this;
 }
 
 setTextColor(c){
     this.uiText.set({ fontColor: c });
+
     ThreeMeshUI.update();
     return this;
 }
@@ -94,6 +96,7 @@ Set button text
 */
 setText(text){
     this.uiText.set({ content: text });
+    
     ThreeMeshUI.update();
     return this;
 }

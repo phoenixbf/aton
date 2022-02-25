@@ -803,7 +803,8 @@ HATHOR.setupEventHandlers = ()=>{
 */
 
         if (k==='v') HATHOR.popupPOV();
-
+        if (k==='ArrowRight') HATHOR.povNext();
+        if (k==='ArrowLeft') HATHOR.povPrev();
 
         if (k==='n') HATHOR.popupNav();
 
@@ -842,6 +843,10 @@ HATHOR.setupEventHandlers = ()=>{
             if (ATON._queryDataScene){
                 ATON.FX.setDOFfocus( ATON._queryDataScene.d );
             }
+        }
+
+        if (k ==='5'){
+            // TODO: switch perspective/ortho cam
         }
 
         //if (k==='.') ATON.FE.controlSelectorScale(true);

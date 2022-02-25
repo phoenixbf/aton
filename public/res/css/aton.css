@@ -1627,10 +1627,12 @@ label {
     padding: 5px;
     border-radius: 20px;
 
+    width: 90%;
+
     max-width: 500px;
     min-width: 250px;
     
-    margin: 10px;
+    margin: auto;
     
     /*float: left; */
 

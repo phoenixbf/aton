@@ -182,6 +182,12 @@ SceneHub._applyJSONTransformToNode = (transform, G)=>{
     if (transform === undefined) return;
     if (G === undefined) return;
 
+    if (transform.bUseGeoCoords){
+        G.bUseGeoCoords = true;
+        if (transform.scale) G.setScale(transform.scale[0],transform.scale[1],transform.scale[2]);
+        return;
+    }
+
     if (transform.autocenter){
         G.autocenter = true;
     }

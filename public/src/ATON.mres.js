@@ -189,7 +189,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         //console.log(ts)
 
         // Cesium ION
-        if (cesiumReq){
+        if (cesiumReq || N.bUseGeoCoords){
+            console.log("TileSet using GeoCoords");
+
             //const box    = new THREE.Box3();
             //const sphere = new THREE.Sphere();
             //const matrix = new THREE.Matrix4();

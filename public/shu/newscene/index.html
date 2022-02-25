@@ -212,6 +212,7 @@ let addNodeBlock = (nid)=>{
     let elNIDtformScale = elNID+"-tf-s";
     let elNIDtformYup   = elNID+"-tf-yup";
     let elNIDac         = elNID+"-ac";
+    let elNIDgeo        = elNID+"-geo";
     let elNIDmat        = elNID+"-mat";
 
     htmlcontent += "<div id='"+elNID+"' class='shuBlockNode'>";
@@ -221,7 +222,7 @@ let addNodeBlock = (nid)=>{
     
     // Input field (add 3D models)
     htmlcontent += "<span class='descriptionText'>Add 3D models:</span><br>";
-    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:250px'>";
+    htmlcontent += "<input id='"+elNIDAdd+"' type='text' list='"+elNIDAdd+"-list' name='"+elNIDAdd+"-list' style='width:calc(100% - 100px)'>";
     htmlcontent += "<div onclick='addToNode(\""+nid+"\")' class='atonBTN atonBTN-green'><img src='../../res/icons/add.png'></div><br>";
 
     // item list
@@ -241,6 +242,7 @@ let addNodeBlock = (nid)=>{
     htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Scale:<input id='"+elNIDtformScale+"' type='text' size='20' placeholder='x,y,z or single value'><br>";
     htmlcontent += "<input id='"+elNIDac+"' type='checkbox'>AutoCenter";
+    htmlcontent += "<input id='"+elNIDgeo+"' type='checkbox'>Use Geo Coords";
     htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'><img src='../../res/icons/axes.png'>Z-up &#8594; Y-up</div>";
     htmlcontent += "</details>";
     htmlcontent += "</div>";
@@ -326,7 +328,6 @@ let addNodeBlock = (nid)=>{
             sobj.scenegraph.nodes[nid].transform.autocenter = true;
 
             if (sobj.scenegraph.nodes[nid].transform.position === undefined) return;
-
             sobj.scenegraph.nodes[nid].transform.position = undefined;
         }
         else {
@@ -335,6 +336,31 @@ let addNodeBlock = (nid)=>{
             if (sobj.scenegraph.nodes[nid].transform === undefined) return;
             if (sobj.scenegraph.nodes[nid].transform.autocenter !== undefined) sobj.scenegraph.nodes[nid].transform.autocenter = false;
         }
+    });
+
+    $("#"+elNIDgeo).click(()=>{
+        let bGeo = $("#"+elNIDgeo).is(":checked");
+        if (bGeo){
+            $("#"+elNIDtformTrans).prop( "disabled", true );
+            $("#"+elNIDtformTrans).val("");
+            $("#"+elNIDtformRot).prop( "disabled", true );
+            $("#"+elNIDtformRot).val("");
+
+            if (sobj.scenegraph.nodes[nid].transform === undefined) sobj.scenegraph.nodes[nid].transform = {};
+            sobj.scenegraph.nodes[nid].transform.bUseGeoCoords = true;
+
+            if (sobj.scenegraph.nodes[nid].transform.position !== undefined) sobj.scenegraph.nodes[nid].transform.position = undefined;
+            if (sobj.scenegraph.nodes[nid].transform.rotation !== undefined) sobj.scenegraph.nodes[nid].transform.rotation = undefined;
+        }
+        else {
+            $("#"+elNIDtformTrans).prop( "disabled", true );
+            $("#"+elNIDtformRot).prop( "disabled", true );
+
+            if (sobj.scenegraph.nodes[nid].transform === undefined) return;
+            if (sobj.scenegraph.nodes[nid].transform.bUseGeoCoords !== undefined) sobj.scenegraph.nodes[nid].transform.bUseGeoCoords = false;
+        }
+
+        console.log(sobj.scenegraph.nodes[nid].transform)
     });
 
     $("#"+elNIDmat).change(()=>{
@@ -358,11 +384,11 @@ let addNodeBlock = (nid)=>{
 let addNewNodeBlock = ()=>{
     let htmlcontent = "";
 
-    htmlcontent += "<br><div class='atonBlockRound' style='background-color:rgba(0,255,0, 0.1);'>";
+    htmlcontent += "<br><div class='atonBlockRound' style='background-color:rgba(0,255,0, 0.1); display:block'>";
     htmlcontent += "Add new node (ID):<input id='idAddNewNodeID' type='text' value='reconstruction' style='width:70%; max-width:150px'>";
     htmlcontent += "<div onclick='addNodeBlock()' class='atonBTN atonBTN-green'>";
     htmlcontent += "<img src='../../res/icons/graph-child.png'></div>";
-    htmlcontent += "</div></div><br>";
+    htmlcontent += "</div></div>";
 /*
     htmlcontent += "<div class='atonOptionBlock' style='width:150px; height:150px; background-color:rgba(0,0,0, 0.2);'>";
     htmlcontent += "<br>Add new node:<br><input id='idAddNewNodeID' type='text' value='reconstruction' style='width:80%'><br>";

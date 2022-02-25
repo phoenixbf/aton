@@ -283,14 +283,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         }
 
         scene.traverse( (c)=>{
-            c.layers.enable(N.type);
+            //console.log(c)
 
             if (c.isMesh){
+                c.layers.enable(N.type); // avoid point-clouds queries for now
+
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
 
                 // Build accelerated raycasting for this tile
                 if (MRes._bTileBVH && c.geometry){
+
                     //console.time( 'computing bounds tree' );
                     c.geometry.computeBoundsTree({
                         //maxLeafTris: 2,

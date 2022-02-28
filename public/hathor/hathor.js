@@ -2370,6 +2370,8 @@ HATHOR.popupSceneDelete = ()=>{
 };
 
 HATHOR.popupNav = ()=>{
+    let eye = ATON.Nav.copyCurrentPOV().pos;
+
     let htmlcontent = "<div class='atonPopupTitle'>Navigation</div>";
 
     //htmlcontent += "<div id='idNavModes'></div>";
@@ -2394,7 +2396,11 @@ HATHOR.popupNav = ()=>{
         }
     }
 
-    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN' id='btnDefNavMode' style='width:90%'>Set current navigation mode as default</div>";
+    if (ATON.SceneHub._bEdit){
+        htmlcontent += "<div class='atonBTN atonBTN-horizontal' id='btnDefNavMode'>Set current navigation mode as default</div>";
+
+        htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='btnAddLocNode'>Add Locomotion Node here</div>";
+    }
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
@@ -2406,6 +2412,26 @@ HATHOR.popupNav = ()=>{
         let E = {};
         E.navmode = ATON.Nav._mode;
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+
+        ATON.FE.popupClose();
+    });
+
+    $("#btnAddLocNode").click(()=>{
+        lnid = ATON.Utils.generateID("ln");
+
+        ATON.Nav.addLocomotionNode(eye.x,eye.y,eye.z, true);
+
+        let E = {};
+        E.locomotionGraph = {};
+        E.locomotionGraph[lnid] = {};
+        E.locomotionGraph[lnid].pos = [
+            eye.x.toPrecision(3),
+            eye.y.toPrecision(3), 
+            eye.z.toPrecision(3)
+        ];
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
 
         ATON.FE.popupClose();
     });

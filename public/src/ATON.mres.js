@@ -38,6 +38,8 @@ MRes.init = ()=>{
 
     MRes._tsuSync = 0;
 
+    MRes._bPCs = false; // Any PointCloud
+
     //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
 };
 
@@ -183,6 +185,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     const matrix = new THREE.Matrix4();
     let position = new THREE.Vector3();
 
+    let bPointCloud = false;
+
     // JSON loaded
     ts.onLoadTileSet = ()=>{
         console.log("TileSet loaded");
@@ -284,10 +288,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         scene.traverse( (c)=>{
             //console.log(c)
+            c.layers.enable(N.type);
 
             if (c.isMesh){
-                c.layers.enable(N.type); // avoid point-clouds queries for now
-
                 c.castShadow    = true; //N.castShadow;
                 c.receiveShadow = true; //N.receiveShadow;
 
@@ -305,12 +308,38 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     if (ATON.Utils._bvhBounds>0) ATON.Utils._addBVHbounds(c, ATON.Utils._bvhBounds);
                 }
             }
+            // Point clouds
+            else {
+                bPointCloud = true;
+                MRes._bPCs  = true;
+
+                c.layers.disable(N.type); // avoid point-clouds queries for now
+
+                c.material = ATON.MatHub.materials.point;
+/*
+                // BVH Mesh creation
+                if (MRes._bTileBVH && c.geometry){
+                    const indices = [];
+                    const bvhGeometry = c.geometry.clone();
+                    bvhGeometry.center();
+
+                    let verticesLength = bvhGeometry.attributes.position.count;
+                    for ( let i = 0, l = verticesLength; i < l; i ++ ) indices.push( i, i, i );
+
+                    bvhGeometry.setIndex( indices );
+                    let bvhMesh = new THREE.Mesh( bvhGeometry );
+
+                    console.time( 'computeBoundsTree points' );
+                    bvhMesh.geometry.computeBoundsTree();
+                    console.timeEnd( 'computeBoundsTree points' );
+                }
+*/
+            }
+
+            // Apply node cascading material
+            if (N.userData.cMat) c.material = N.userData.cMat;
 
             if ( c.material ){
-                if (N.userData.cMat){
-                    c.material = N.userData.cMat;
-                }
-
                 //c.castShadow    = true;
                 //c.receiveShadow = true;
                 //c.material.shadowSide = 2;
@@ -329,7 +358,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     };
 
     ts.onDisposeModel = (scene, tile)=>{
-        ATON.Utils.cleanupVisitor(scene);
+        ATON.Utils.cleanupVisitor( scene );
 
         scene = null;
         tile  = null;
@@ -338,7 +367,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         //console.log("DISPOSE");
     };
 
-    ATON.Utils.setPicking(N, N.type, true);
+    if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);
 
     MRes._tsets.push(ts);
 };

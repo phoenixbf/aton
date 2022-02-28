@@ -307,6 +307,34 @@ MatHub.addDefaults = ()=>{
         //flatShading: false
     });
 
+/*
+    let texPoint = new THREE.TextureLoader().load( ATON.PATH_RES+"point-mask.png");
+    texPoint.generateMipmaps = false;
+    //texPoint.premultiplyAlpha = true;
+    texPoint.magFilter = THREE.NearestFilter;
+    texPoint.minFilter = THREE.NearestFilter;
+    texPoint.alphaTest = 0.9;
+*/
+    MatHub.materials.point = new THREE.PointsMaterial({
+        vertexColors: true,
+        
+        //alphaMap: texPoint,
+        
+        depthTest: true,
+        transparent: false,
+
+        //transparent: true,
+        //depthWrite: false, 
+        //opacity: 0.3,
+
+        size: 8.0,
+        sizeAttenuation: false,
+/*
+        size: 0.05,
+        sizeAttenuation: true
+*/
+    });
+
 };
 
 //MatHub.getOrCreateSpriteSem

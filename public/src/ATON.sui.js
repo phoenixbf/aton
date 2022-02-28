@@ -532,6 +532,17 @@ SUI.addMeasurementPoint = (P)=>{
 
     let L = new SUI.Label();
     L.setBaseColor(ATON.MatHub.colors.white).setTextColor(ATON.MatHub.colors.black);
+    
+    L.userData.vStart = new THREE.Vector3();
+    L.userData.vEnd   = new THREE.Vector3();
+    L.userData.vStart.copy(SUI._prevMPoint);
+    L.userData.vEnd.copy(P);
+
+    L.userData.vSEdir = new THREE.Vector3();
+    L.userData.vSEdir.x = L.userData.vStart.x - L.userData.vEnd.x;
+    L.userData.vSEdir.y = L.userData.vStart.y - L.userData.vEnd.y;
+    L.userData.vSEdir.z = L.userData.vStart.z - L.userData.vEnd.z;
+    L.userData.vSEdir.normalize();
 
     L.setPosition(
         (SUI._prevMPoint.x + P.x)*0.5,
@@ -547,8 +558,8 @@ SUI.addMeasurementPoint = (P)=>{
 
     // return obj
     let R = {};
-    R.A = SUI._prevMPoint.clone();
-    R.B = P.clone();
+    R.A = L.userData.vStart; //SUI._prevMPoint.clone();
+    R.B = L.userData.vEnd;   //P.clone();
 
     SUI._prevMPoint = undefined;
 
@@ -563,9 +574,36 @@ SUI.clearMeasurements = ()=>{
 SUI._updateMeasurements = ()=>{
     if (SUI._measLabels.length <= 0) return;
 
+    const eye = ATON.Nav.getCurrentEyeLocation();
+    let v  = new THREE.Vector3();
+    let dn = new THREE.Vector3();
+    let op = new THREE.Vector3();
+
+    // Orientation based on segment - TODO: improve
     for (let ml in SUI._measLabels){
-        SUI._measLabels[ml].orientToCamera();
+        let L = SUI._measLabels[ml];
+        
+        let A = L.userData.vStart;
+        let B = L.userData.vEnd;
+        let D = L.userData.vSEdir;
+
+        v.crossVectors(D, ATON.Nav._vDir);
+        dn.crossVectors(D, v);
+
+        op.set(
+            L.position.x + dn.x,
+            L.position.y + dn.y,
+            L.position.z + dn.z
+        );
+
+        L.lookAt(op);
+
+        //L.orientToCamera();
     }
+
+    v = null;
+    dn = null;
+    op = null;
 };
 
 // Main update routine
@@ -581,7 +619,6 @@ SUI.update = ()=>{
         //console.log("sync");
     } 
 */
-    //ThreeMeshUI.update();
 
     // Meas-line indicator
     if (SUI._prevMPoint){

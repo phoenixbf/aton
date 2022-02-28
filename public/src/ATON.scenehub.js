@@ -317,6 +317,25 @@ SceneHub.initBaseParsers = ()=>{
         ATON.Nav.setNavMode(navmode);
     };
 
+    // LocomotionGraph
+    SceneHub._jsonParsers.locomotionGraph = (lograph)=>{
+        if (lograph === undefined) return;
+
+        for (let id in lograph){
+            let jLN = lograph[id];
+
+            if (jLN.pos) ATON.Nav.addLocomotionNode( 
+                parseFloat(jLN.pos[0]), 
+                parseFloat(jLN.pos[1]), 
+                parseFloat(jLN.pos[2]), 
+                true
+            );
+        }
+
+        ATON.Nav.setFirstPersonControl();
+        ATON.Nav.toggleLocomotionValidator(false);
+    };
+
     // Measurements
     SceneHub._jsonParsers.measurements = (M)=>{
         if (M === undefined) return;

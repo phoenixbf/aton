@@ -995,6 +995,19 @@ canvas:active {
 }
 */
 
+.atonScreenshotContainer {
+    max-width: 300px;
+    padding: 0px;
+    margin: auto;
+}
+
+.atonScreenshotContainer img {
+    width: 100%;
+    height: auto;
+
+    border-radius: 5px;
+}
+
 /*
     Popups
 ==========================*/

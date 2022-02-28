@@ -35,7 +35,7 @@ constructor(uiid, w,h){
         justifyContent: 'center',
         alignContent: 'center'
     });
-    this.container.position.z = 0.05;
+    this.container.position.z = 0.03;
     this.add(this.container);
 
     this.uiText = new ThreeMeshUI.Text({ 

@@ -38,14 +38,14 @@ XPFNetwork.init = ()=>{
 
     // img-based
     XPFNetwork._semIMGMasks = {};
-    XPFNetwork._semCanvas = undefined;
-    XPFNetwork._semCTX = undefined;
-    XPFNetwork._semCurr = undefined;
+    XPFNetwork._semCanvas   = undefined;
+    XPFNetwork._semCTX      = undefined;
+    XPFNetwork._semCurr     = undefined;
 
     XPFNetwork._shColor   = new THREE.Color(0,0,1);
     XPFNetwork._shOpacity = 0.2;
 
-    XPFNetwork._semUnifData = new Uint8Array(256 * 128 * 4);
+    //XPFNetwork._semUnifData = new Uint8Array(256 * 128 * 4);
 
     XPFNetwork._txCache = {};
 
@@ -295,9 +295,17 @@ XPFNetwork.clear = ()=>{
     XPFNetwork._iCurr = undefined;
     XPFNetwork._iNext = undefined;
 
+    XPFNetwork._semCurr = undefined;
+
     for (let i=0; i<XPFNetwork._list.length; i++){
-        // TODO:
+        let xpf = XPFNetwork._list[i];
+        xpf = null;
+
+        if (XPFNetwork._gSem[i]) XPFNetwork._gSem[i] = null;
     }
+
+    XPFNetwork._gSem = [];
+    XPFNetwork._list = [];
 };
 
 /**

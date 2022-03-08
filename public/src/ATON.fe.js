@@ -245,21 +245,14 @@ Load a scene.
 You can use ATON.on("SceneJSONLoaded", ...) to perform additional tasks when the scene JSON is fully loaded
 @param {string} sid - the scene ID (e.g.: 'sample/venus')
 */
-FE.loadSceneID = (sid)=>{
+FE.loadSceneID = (sid, onSuccess)=>{
     if (sid === undefined) return;
 
     let reqstr = ATON.PATH_RESTAPI_SCENE + sid;
     //if (ATON.SceneHub._bEdit) reqstr += ",edit";
 
-    ATON.SceneHub.load(reqstr, sid);
+    ATON.SceneHub.load(reqstr, sid, onSuccess);
 
-/*
-    $("meta[property=og\\:image]").attr("content", ATON.PATH_SCENES+sid+'/cover.png');
-    $("meta[property=og\\:image\\:secure_url]").attr("content", ATON.PATH_SCENES+sid+'/cover.png');
-    $("meta[property=og\\:image\\:type]").attr("content", "image/png");
-    $("meta[property=og\\:image\\:width]").attr("content", "256");
-    $("meta[property=og\\:image\\:height]").attr("content", "256");
-*/
     console.log(reqstr);
 };
 

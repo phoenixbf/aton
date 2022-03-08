@@ -82,6 +82,39 @@ SceneHub.load = (reqpath, sid, onSuccess/*, onFail*/)=>{
 */
 };
 
+// Clear routines
+SceneHub.clearScene = ()=>{
+    ATON._rootVisible.removeChildren();
+
+    for (let i in ATON.snodes){
+        ATON.snodes[i] = null;
+    }
+
+    ATON.snodes = {};
+
+    ATON.MRes.clear();
+
+    ATON.XPFNetwork.clear();
+};
+
+SceneHub.clearSemantics = ()=>{
+    ATON._rootSem.removeChildren();
+
+    for (let i in ATON.semnodes){
+        ATON.semnodes[i] = null;
+    }
+
+    ATON.semnodes = {};
+};
+
+// Clears everything
+SceneHub.clear = ()=>{
+    SceneHub.clearScene();
+    SceneHub.clearSemantics();
+
+    ATON.Nav.clear();
+};
+
 // Parse JSON scene obj
 SceneHub.parseScene = (sobj)=>{
     sobj = (sobj === undefined)? SceneHub.currData : sobj;

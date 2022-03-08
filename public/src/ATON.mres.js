@@ -43,6 +43,13 @@ MRes.init = ()=>{
     //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
 };
 
+MRes.clear = ()=>{
+    for (let t in MRes._tsets) MRes._tsets[t] = null;
+    MRes._tsets = [];
+
+    MRes._bPCs = false;
+};
+
 MRes.getTSetsErrorTarget = ()=>{
     return MRes._tsET;
 };

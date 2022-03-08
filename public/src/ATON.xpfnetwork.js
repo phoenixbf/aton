@@ -26,8 +26,8 @@ XPFNetwork.init = ()=>{
     XPFNetwork._iCurr = undefined;
     XPFNetwork._iNext = undefined;
 
-    XPFNetwork._group = new THREE.Group();
-    ATON._rootVisibleGlobal.add( XPFNetwork._group );
+    //XPFNetwork._group = new THREE.Group();
+    //ATON._rootVisibleGlobal.add( XPFNetwork._group );
 
     XPFNetwork._geom = undefined;
     XPFNetwork._mesh = undefined;
@@ -234,6 +234,9 @@ XPFNetwork.update = ()=>{
 XPFNetwork.realizeBaseGeometry = ()=>{
     if (XPFNetwork._geom !== undefined) return; // already realized
 
+    XPFNetwork._group = new THREE.Group();
+    ATON._rootVisibleGlobal.add( XPFNetwork._group );
+
     // Default geometry
     XPFNetwork._geom = new THREE.SphereBufferGeometry( 1.0, 40,40 );
     XPFNetwork._geom.scale( -XPFNetwork._size, XPFNetwork._size, XPFNetwork._size );
@@ -301,7 +304,10 @@ XPFNetwork.clear = ()=>{
         let xpf = XPFNetwork._list[i];
         xpf = null;
 
-        if (XPFNetwork._gSem[i]) XPFNetwork._gSem[i] = null;
+        if (XPFNetwork._gSem[i]){
+            XPFNetwork._gSem[i].removeChildren();
+            XPFNetwork._gSem[i] = null;
+        }
     }
 
     XPFNetwork._gSem = [];

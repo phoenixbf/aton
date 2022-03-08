@@ -129,11 +129,28 @@ Nav.copyCurrentPOV = ()=>{
     return pov;
 };
 
+/**
+Add a viewpoint (POV)
+
+@param {POV} pov - the POV object
+@param {string} id - (optional) assign an ID to this POV
+*/
 Nav.addPOV = (pov, id)=>{
     if (pov === undefined) return;
 
     pov.as(id);
     return pov;
+};
+
+/**
+Clear all viewpoints (POVs)
+*/
+Nav.clearPOVs = ()=>{
+    for (let p in ATON.Nav.povlist){
+        Nav.povlist[p] = null;
+    }
+
+    Nav.povlist = {};
 };
 
 /**
@@ -229,6 +246,8 @@ Remove all locomotion nodes
 */
 Nav.clearLocomotionNodes = ()=>{
     Nav._locNodes = [];
+    Nav._prevLN = undefined;
+    
     if (ATON.SUI.gLocNodes) ATON.SUI.gLocNodes.removeChildren();
 };
 
@@ -1056,6 +1075,12 @@ Set and request home viewpoint
 Nav.setAndRequestHomePOV = (pov, duration)=>{
     Nav.setHomePOV(pov);
     Nav.requestPOV(pov, duration);
+};
+
+// CLear everything
+Nav.clear = ()=>{
+    Nav.clearPOVs();
+    Nav.clearLocomotionNodes();
 };
 
 

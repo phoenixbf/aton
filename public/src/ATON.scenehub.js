@@ -84,11 +84,11 @@ SceneHub.load = (reqpath, sid, onSuccess/*, onFail*/)=>{
 
 // Clear routines
 SceneHub.clearScene = ()=>{
+    if (ATON._rootVisible.children.length <= 0) return;
+
     ATON._rootVisible.removeChildren();
 
-    for (let i in ATON.snodes){
-        ATON.snodes[i] = null;
-    }
+    for (let i in ATON.snodes) ATON.snodes[i] = null;
 
     ATON.snodes = {};
 
@@ -98,11 +98,11 @@ SceneHub.clearScene = ()=>{
 };
 
 SceneHub.clearSemantics = ()=>{
+    if (ATON._rootSem.children.length <= 0) return;
+
     ATON._rootSem.removeChildren();
 
-    for (let i in ATON.semnodes){
-        ATON.semnodes[i] = null;
-    }
+    for (let i in ATON.semnodes) ATON.semnodes[i] = null;
 
     ATON.semnodes = {};
 };

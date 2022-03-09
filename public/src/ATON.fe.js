@@ -68,7 +68,8 @@ FE.realize = ()=>{
 
     FE._canvas = ATON._renderer.domElement;
     
-    FE._bSem = false;
+    FE._bSem = false; // hovering semantic node or mask
+    FE._bShowSemLabel = true;
 };
 
 FE._handleHomeReq = ()=>{
@@ -177,6 +178,8 @@ FE.addBasicLoaderEvents = ()=>{
 };
 
 FE.showSemLabel = (txt)=>{
+    if (!FE._bShowSemLabel) return;
+
     $("#idPopupLabel").html(txt);
     $("#idPopupLabel").show();
 
@@ -290,8 +293,12 @@ FE._update = ()=>{
     }
     // Default
     else {
-        if (ATON.Nav.isTransitioning() || ATON.Nav._bInteracting || ATON._bPauseQuery) $("#idPopupLabel").hide();
-        else if (FE._bSem){
+        if (ATON.Nav.isTransitioning() || ATON.Nav._bInteracting || ATON._bPauseQuery){
+            $("#idPopupLabel").hide();
+            return;
+        }
+
+        if (FE._bSem && FE._bShowSemLabel){
             $("#idPopupLabel").show();
 
             let x = ((ATON._screenPointerCoords.x)*0.5) * window.innerWidth; //FE._canvas.width;
@@ -300,6 +307,7 @@ FE._update = ()=>{
 
             $("#idPopupLabel").css('transform', "translate("+x+"px, "+y+"px)");
         }
+        else $("#idPopupLabel").hide();
     }
 
 

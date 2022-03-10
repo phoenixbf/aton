@@ -717,16 +717,19 @@ canvas:active {
     height: 16px;
     width: 16px;
     vertical-align: middle;
+    margin: 4px;
 }
 .atonDefIcon {
     height: 32px;
     width: 32px;
     vertical-align: middle;
+    margin: 4px;
 }
 .atonBigIcon {
     height: 64px;
     width: 64px;
     vertical-align: middle;
+    margin: 8px;
 }
 
 .atonBTN-large {

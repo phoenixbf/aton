@@ -1354,6 +1354,7 @@ FE.popupSceneInfo = ()=>{
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
     $("#btnOK").click(()=>{
+        ATON._onUserInteraction();
         ATON.FE.popupClose();
     });
 };

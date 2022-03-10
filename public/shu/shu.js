@@ -122,7 +122,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
     let htmlcontent = "";
 
     let coversizex = 250;
-    let coversizey = 300;
+    let coversizey = 320;
 
     if (bSamples === undefined) bSamples = true;
 
@@ -164,7 +164,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
                 htmlcontent += "</a>";
 
                 // user
-                htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>&nbsp;"+user+"</div>";
+                if (user === "samples") htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/samples.png'>samples</div>";
+                else htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>"+user+"</div>";
                 //htmlcontent += htskw;
                 htmlcontent += "</div>";
                 

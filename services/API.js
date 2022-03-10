@@ -245,7 +245,7 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 	let scenefolder  = Core.getSceneFolder(sid);
 	let coverfile    = path.join(scenefolder, "cover-high.png");
-	let coverfileOpt = path.join(scenefolder,"cover.png");
+	let coverfileOpt = path.join(scenefolder, "cover.png");
 	console.log(coverfile);
 
 	fs.writeFile(coverfile, img, 'base64', (err)=>{
@@ -253,6 +253,7 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 		// Optimize PNG size
 		sharp(coverfile)
+			//.resize({ width: 256, height: 256 })
 			.withMetadata()
 			.png({
 				quality: 90, // 0-100
@@ -550,7 +551,7 @@ app.get("/api/wapps/", (req,res,next)=>{
 
 	let wapps = [];
 
-	let files = fg.sync("**/index.html", O);
+	let files = fg.sync("*/app.webmanifest", O); // index.html
 	for (let f in files){
 		let wid = path.dirname(files[f]);
 		let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");

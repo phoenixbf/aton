@@ -83,6 +83,10 @@ _prv
 /data/scenes/*
 !/data/scenes/samples/
 
+# Custom
+/public/custom/*
+!/public/custom/README.txt
+
 # Collections
 /data/collections/*
 !/data/collections/samples/

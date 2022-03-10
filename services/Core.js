@@ -124,7 +124,7 @@ Core.CONF_MAIN = {
     landing: {
         gallery: true,		// Show gallery (public scenes) in the landing page
 		samples: true,		// Show samples (def true)
-		//header: "",		// Header content (HTML)
+		//header: "",		// Custom header HTML5 snippet
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
     }
 };

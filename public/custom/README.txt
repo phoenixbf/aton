@@ -1,0 +1,1 @@
+This is a folder where you can place HTML5 elements and resources to customize appearance of the framework

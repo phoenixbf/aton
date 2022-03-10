@@ -613,8 +613,9 @@ Nav.setDeviceOrientationControl = ()=>{
         Nav._camDevOri.layers.enableAll();
 
         Nav._cDevOri = new DevOri(Nav._camDevOri, ATON._renderer.domElement);
+        //Nav._cDevOri = new Nav.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
+        
         //Nav._cDevOri = new THREE.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
-        ///Nav._cDevOri = new Nav.DeviceOrientationControls(Nav._camDevOri, ATON._renderer.domElement);
 
         Nav._cDevOri.alphaOffset = 0.0; //The alpha offset in radians
     }
@@ -636,6 +637,12 @@ Nav.setDeviceOrientationControl = ()=>{
     ATON.toggleCenteredQuery(true);
     
     ATON.fireEvent("NavMode", Nav._mode);
+};
+
+Nav.useAbsoluteOrientation = (b)=>{
+    if (Nav._cDevOri === undefined) return;
+
+    // TODO:
 };
 
 /**

@@ -39,20 +39,33 @@ let createKeywordEl = (kw)=>{
 };
 
 let createExampleBlock = (dir, title, kwords)=>{
-    let htmlcontent = "";
+    let coversizex = 250;
+    let coversizey = 350;
 
     let kwds = kwords.split(" ");
+    let urlCover = dir+"/cover.jpg";
 
-    htmlcontent += "<div id='"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='width:200px; min-height:280px; padding:4px; background-color:rgba(0,0,0,0); '>"; // background-image: url(\""+dir+"/cover.jpg\");
+    let htmlcontent = "";
+
+    htmlcontent += "<div id='sid-"+dir+"' class='atonGalleryItem' data-search-term='"+kwords+"' style='background-color:rgba(255,255,255, 0.0); margin:8px' >";
+
+    // gallery item bg
+    htmlcontent += "<div class='atonBlurBG' style='width:"+coversizex+"px; height:"+coversizey+"px; background-image: url(\""+urlCover+"\")'></div>";
+
+    // gallery item content
+    htmlcontent += "<div style='width:"+coversizex+"px; height:"+coversizey+"px; position:absolute; top:0; left:0'>";
     htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
-    htmlcontent += "<div class='atonCover' style='margin:0px;'><a href='"+dir+"/'><img src='"+dir+"/cover.jpg' style='margin:0px; width:150px; height:auto'></a></div>";
+
+    htmlcontent += "<a class='atonCover' href='"+dir+"/'>";
+    htmlcontent += "<img src='"+urlCover+"' style='width:200px; height:auto'>";
+    htmlcontent += "</a><br>";
 
     // keywords
     htmlcontent += "<div>";
     for (let k in kwds) htmlcontent += createKeywordEl(kwds[k]); //"<div class='atonKeyword atonKeywordActivable' onclick='searchTerm(\""+kwds[k]+"\")'>"+kwds[k]+"</div>";
     htmlcontent += "</div>";
 
-    htmlcontent += "</div>";
+    htmlcontent += "</div></div>";
 
     return htmlcontent
 };

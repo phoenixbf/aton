@@ -87,8 +87,7 @@ SceneHub.clearScene = ()=>{
     if (ATON._rootVisible.children.length <= 0) return;
 
     ATON._rootVisible.removeChildren();
-
-    for (let i in ATON.snodes) ATON.snodes[i] = null;
+    for (let i in ATON.snodes) if (i !== ATON.ROOT_NID) ATON.snodes[i] = null;
 
     ATON.snodes = {};
 
@@ -101,8 +100,7 @@ SceneHub.clearSemantics = ()=>{
     if (ATON._rootSem.children.length <= 0) return;
 
     ATON._rootSem.removeChildren();
-
-    for (let i in ATON.semnodes) ATON.semnodes[i] = null;
+    for (let i in ATON.semnodes) if (i !== ATON.ROOT_NID) ATON.semnodes[i] = null;
 
     ATON.semnodes = {};
 };

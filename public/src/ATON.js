@@ -357,8 +357,8 @@ ATON._stdActivation = ()=>{
 
     if (!ATON.Nav._bControl) return;
 
-    if (XPFNetwork._semCurr !== undefined){
-        ATON.fireEvent("SemanticMaskSelect", XPFNetwork._semCurr);
+    if (ATON.XPFNetwork._semCurr !== undefined){
+        ATON.fireEvent("SemanticMaskSelect", ATON.XPFNetwork._semCurr);
     }
 
     // Handle active immersive AR/VR session
@@ -390,11 +390,13 @@ ATON._stdActivation = ()=>{
             );
 
             let POV = new ATON.POV().setPosition(feye).setTarget(ftgt).setFOV(ATON.Nav._currPOV.fov);
-
             ATON.Nav.requestPOV(POV, 0.5);
         }
         return;
     }
+
+    // TODO: leave this and disable requestPOVbyNode
+    //if (ATON._hoveredSemNode) ATON.fireEvent("SemanticNodeSelect", ATON._hoveredSemNode);
 
     // In orbit mode, focus on selected SemNode...
     let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
@@ -402,6 +404,7 @@ ATON._stdActivation = ()=>{
         ATON.Nav.requestPOVbyNode( hsn, 0.5);
         return;
     }
+
     // ...or perform standard retarget on picked surface point
     if (ATON._queryDataScene){
         ATON.Nav.requestRetarget(ATON._queryDataScene.p, /*ATON._queryDataScene.n*/undefined, 0.5);

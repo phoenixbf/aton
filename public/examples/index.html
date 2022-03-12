@@ -40,7 +40,7 @@ let createKeywordEl = (kw)=>{
 
 let createExampleBlock = (dir, title, kwords)=>{
     let coversizex = 250;
-    let coversizey = 350;
+    let coversizey = 400;
 
     let kwds = kwords.split(" ");
     let urlCover = dir+"/cover.jpg";
@@ -58,7 +58,7 @@ let createExampleBlock = (dir, title, kwords)=>{
 
     htmlcontent += "<a class='atonCover' href='"+dir+"/'>";
     htmlcontent += "<img src='"+urlCover+"' style='width:200px; height:auto'>";
-    htmlcontent += "</a><br>";
+    htmlcontent += "</a><br><br>";
 
     // keywords
     htmlcontent += "<div>";

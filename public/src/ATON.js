@@ -131,6 +131,7 @@ ATON.setPathScenes = (path)=>{
 // For resuming suspended audio/video streams
 ATON._onUserInteraction = ()=>{
     if (ATON._elPanoVideo && !ATON._vpanoPlaying) ATON._elPanoVideo.play();
+    if (ATON.XPFNetwork._elVid && !ATON.XPFNetwork._vidPlaying) ATON.XPFNetwork._elVid.play();
 
     if (ATON.AudioHub._listener && ATON.AudioHub._listener.context){
         if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
@@ -1271,7 +1272,8 @@ ATON.setMainPanorama = (path)=>{
         if (ATON._elPanoVideo === undefined){
   
             let htvid = "<video id='idPanoVideo' loop crossOrigin='anonymous' playsinline style='display:none'>";          
-            if (path.endsWith("mp4")) htvid += "<source src='"+path+"' type='video/mp4'>"; // ; codecs='avc1.42E01E, mp4a.40.2'
+            if (path.endsWith("mp4"))  htvid += "<source src='"+path+"' type='video/mp4'>";   // ; codecs='avc1.42E01E, mp4a.40.2'
+            if (path.endsWith("webm")) htvid += "<source src='"+path+"' type='video/webm'>";
             htvid += "</video>";
 
             $(htvid).appendTo('body');

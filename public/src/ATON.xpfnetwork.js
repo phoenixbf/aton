@@ -52,6 +52,9 @@ XPFNetwork.init = ()=>{
     XPFNetwork._pathMod = undefined;
 
     XPFNetwork._realizeBaseMat();
+
+    XPFNetwork._elVid = undefined;
+    XPFNetwork._vidPlaying = false;
 };
 
 XPFNetwork._realizeBaseMat = ()=>{
@@ -405,6 +408,52 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
     let pathbase = xpf._pathbaselayer;
     if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
 
+    // Video stream
+    if (ATON.Utils.isVideo(pathbase)){
+        if (XPFNetwork._elVid === undefined){
+            let htvid = "<video id='idXPFVideo' loop crossOrigin='anonymous' playsinline style='display:none'>";          
+            //if (path.endsWith("mp4")) htvid += "<source src='"+path+"' type='video/mp4'>"; // ; codecs='avc1.42E01E, mp4a.40.2'
+            htvid += "<source src='"+pathbase+"'>";
+            htvid += "</video>";
+
+            $(htvid).appendTo('body');
+
+            XPFNetwork._elVid = document.getElementById("idXPFVideo");
+
+            XPFNetwork._elVid.onplaying = ()=>{
+                console.log("XPF VideoPano playing");
+                XPFNetwork._vidPlaying = true;
+            };
+
+            XPFNetwork._elVid.onpause = ()=>{
+                console.log("XPF VideoPano paused");
+                XPFNetwork._vidPlaying = false;
+            };
+
+            XPFNetwork._elVid.addEventListener('touchstart', function () {
+                XPFNetwork._elVid.play();
+            });
+
+            // CHECK: tweak required for Apple
+            enableInlineVideo(XPFNetwork._elVid);
+        }
+
+        let tex = new THREE.VideoTexture( XPFNetwork._elVid );
+        tex.encoding = ATON._stdEncoding;
+
+        XPFNetwork._mat.map = tex;
+        XPFNetwork._mat.needsUpdate = true;
+        XPFNetwork._uniforms.tBase.value = tex;
+
+        XPFNetwork._mesh.position.copy( xpf.getLocation() );
+        XPFNetwork._mesh.rotation.set( xpf.getRotation().x, xpf.getRotation().y, xpf.getRotation().z );
+
+        if (onComplete) onComplete(tex);
+
+        return;
+    }
+
+    // Static panorama
     ATON.Utils.textureLoader.load(pathbase, (tex)=>{
         tex.encoding = ATON._stdEncoding;
         //tex.minFilter = THREE.NearestFilter;
@@ -419,6 +468,14 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
 
         if (onComplete) onComplete(tex);
     });
+};
+
+XPFNetwork.playOrPauseXPFVideoStream = ()=>{
+    if (XPFNetwork._elVid === undefined) return;
+
+    if (!XPFNetwork._vidPlaying) XPFNetwork._elVid.play();
+    else XPFNetwork._elVid.pause();
+
 };
 
 XPFNetwork.updateCurrentXPFsemLayer = ( xpf )=>{

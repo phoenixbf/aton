@@ -113,8 +113,10 @@ THREE.LightProbeGenerator = LightProbeGenerator;
 
 THREE.TransformControls = TransformControls;
 
-//THREE.CSS3DRenderer = CSS3DRenderer;
-//THREE.CSS3DObject   = CSS3DObject;
+/*
+THREE.CSS3DRenderer = CSS3DRenderer;
+THREE.CSS3DObject   = CSS3DObject;
+*/
 
 //window.GenerateMeshBVHWorker = GenerateMeshBVHWorker;
 

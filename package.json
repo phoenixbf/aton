@@ -46,7 +46,7 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "3d-tiles-renderer": "^0.3.6",
+    "3d-tiles-renderer": "^0.3.7",
     "axios": "^0.26.1",
     "body-parser": "^1.19.2",
     "chalk": "4.1.2",
@@ -70,7 +70,7 @@
     "gltf-bounding-box": "^0.4.1",
     "gltf-pipeline": "^3.0.4",
     "http": "0.0.0",
-    "http-proxy-middleware": "^2.0.3",
+    "http-proxy-middleware": "^2.0.4",
     "https": "^1.0.0",
     "image-size": "^1.0.1",
     "iphone-inline-video": "^2.2.2",

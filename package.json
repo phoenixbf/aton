@@ -64,7 +64,7 @@
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.17.2",
     "fast-glob": "^3.2.11",
-    "fast-json-patch": "^3.1.0",
+    "fast-json-patch": "^3.1.1",
     "fs-extra": "^10.0.1",
     "glob": "^7.2.0",
     "gltf-bounding-box": "^0.4.1",
@@ -90,7 +90,7 @@
     "sharp": "^0.30.3",
     "socket.io": "^4.4.1",
     "three": "0.138.3",
-    "three-mesh-bvh": "0.5.6",
+    "three-mesh-bvh": "0.5.7",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

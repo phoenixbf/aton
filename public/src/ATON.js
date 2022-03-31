@@ -553,6 +553,8 @@ ATON.realize = ( bNoRender )=>{
     ATON._aLoader = new THREE.GLTFLoader(/*ATON._loadManager*/);
     ATON._numReqLoad = 0;
 
+    ATON._collMod = undefined; // collection url modifier
+
     // IFC
 /*
     ATON._ifcLoader = new IFCLoader();
@@ -717,6 +719,14 @@ ATON.realize = ( bNoRender )=>{
     ATON._wappID = undefined;
 
     ATON.focusOn3DView();
+};
+
+/**
+Set ATON collection path modifier
+@param {function} f - ...
+*/
+ATON.setCollectionPathModifier = (f)=>{
+    ATON._collMod = f;
 };
 
 /**

@@ -185,6 +185,10 @@ Utils.getBaseFolder = ( filepath )=>{
     return '';
 };
 
+Utils.getFilename = (filepath)=>{
+    return filepath.split(/(\\|\/)/g).pop();
+};
+
 Utils.isResourceURL = (s)=>{
     if (s.startsWith("http://"))  return true;
     if (s.startsWith("https://")) return true;

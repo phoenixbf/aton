@@ -147,10 +147,8 @@ Clear all viewpoints (POVs)
 */
 Nav.clearPOVs = ()=>{
     for (let p in ATON.Nav.povlist){
-        Nav.povlist[p] = null;
+        delete Nav.povlist[p];
     }
-
-    Nav.povlist = {};
 };
 
 /**

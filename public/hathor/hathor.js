@@ -1120,7 +1120,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
     // Not yet a valid convex shape
     if (semtype === ATON.FE.SEMSHAPE_CONVEX && !ATON.SemFactory.bConvexBuilding) return;
 
-    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupCompact") ) return;
+    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
     $("#btnRichContent").click(()=>{
         $("#idSemDescCont").toggle();
@@ -2400,6 +2400,7 @@ HATHOR.popupNav = ()=>{
         htmlcontent += "<div class='atonBTN atonBTN-horizontal' id='btnDefNavMode'>Set current navigation mode as default</div>";
 
         htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='btnAddLocNode'>Add Locomotion Node here</div>";
+        if (ATON.Nav._locNodes.length>0) htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-horizontal' id='btnDelLocNodes'>Remove all Locomotion Nodes</div>";
     }
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
@@ -2432,6 +2433,18 @@ HATHOR.popupNav = ()=>{
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
         ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+
+        ATON.FE.popupClose();
+    });
+
+    $("#btnDelLocNodes").click(()=>{
+        ATON.Nav.clearLocomotionNodes();
+
+        let E = {};
+        E.locomotionGraph = {};
+
+        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+        ATON.VRoadcast.fireEvent("AFE_ClearLocNodes"); // TODO:
 
         ATON.FE.popupClose();
     });

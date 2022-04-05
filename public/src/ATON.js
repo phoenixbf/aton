@@ -1601,6 +1601,8 @@ ATON.toggleShadows = (b)=>{
     if (ATON._dMainL === undefined) return;
 
     if (b){
+        if (ATON.XR.isPresenting()) return; // do not enable for XR
+
         ATON._dMainL.castShadow = true;
         ATON._renderer.shadowMap.enabled = true;
 

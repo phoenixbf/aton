@@ -107,6 +107,8 @@ SceneHub.clearSemantics = ()=>{
             delete ATON.semnodes[i];
         }
     }
+
+    if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.removeChildren();
 };
 
 // Clears everything

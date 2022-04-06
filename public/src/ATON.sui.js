@@ -133,10 +133,10 @@ SUI.getOrCreateSpriteSemIcon = ()=>{
         transparent: true,
         opacity: 1.0,
         //depthWrite: false, 
-        depthTest: true, //false
+        depthTest: false
     });
 
-    SUI.sprites.semIcon.sizeAttenuation = false;
+    //SUI.sprites.semIcon.sizeAttenuation = false;
 
     return SUI.sprites.semIcon;
 };
@@ -304,7 +304,8 @@ SUI.addSemIcon = (semid, meshape)=>{
     let semicon = new THREE.Sprite( SUI.getOrCreateSpriteSemIcon() );
     semicon.position.copy(bs.center);
 
-    let ss = 0.06; // 0.035; //bs.radius * 0.3;
+    //let ss = 0.06; // 0.035; //bs.radius * 0.3;
+    let ss = 0.8;
     semicon.scale.set(ss,ss,1.0);
     semicon.name = semid;
 

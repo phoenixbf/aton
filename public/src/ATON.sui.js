@@ -132,7 +132,7 @@ SUI.getOrCreateSpriteSemIcon = ()=>{
         //color: ATON.MatHub.colors.sem, // multiply
         transparent: true,
         opacity: 1.0,
-        //depthWrite: false, 
+        depthWrite: false, 
         depthTest: false
     });
 

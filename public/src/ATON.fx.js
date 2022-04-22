@@ -115,12 +115,13 @@ FX.init = ()=>{
     // Gamma correction - CHECK
     //FX.passes[FX.PASS_GAMMA] = new THREE.ShaderPass( THREE.GammaCorrectionShader );
 
-    // Antialiasing (FXAA)
+    // Antialiasing (FXAA) - artifacts
+/*
     FX.passes[FX.PASS_AA] = new THREE.ShaderPass( THREE.FXAAShader );
     //FX.passes[FX.PASS_AA].renderToScreen = false;
     let UU = FX.passes[FX.PASS_AA].material.uniforms;
     UU.resolution.value.set( (1/CW), (1/CH) );
-
+*/
     // SSAA (more intensive)
 /*
     FX.passes[FX.PASS_AA] = new THREE.SSAARenderPass( ATON._mainRoot, ATON.Nav._camera, 0x000000, 0);
@@ -138,7 +139,7 @@ FX.init = ()=>{
 
 
     // Order
-    FX.composer.addPass( FX.passes[FX.PASS_AA] );
+    //FX.composer.addPass( FX.passes[FX.PASS_AA] );
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
     //FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );

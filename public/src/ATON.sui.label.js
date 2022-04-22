@@ -32,8 +32,8 @@ constructor(uiid, w,h){
         fontFamily: ATON.SUI.PATH_FONT_JSON,
         fontTexture: ATON.SUI.PATH_FONT_TEX,
 
-        justifyContent: 'center',
-        alignContent: 'center'
+        justifyContent: 'center', // could be 'center' or 'left'
+        textAlign: 'center',
     });
     this.container.position.z = 0.03;
     this.add(this.container);

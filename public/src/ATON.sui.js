@@ -353,8 +353,8 @@ SUI.buildInfoNode = ()=>{
         //fontFamily: "mainFont",
         //fontTexture: "mainFont",
 
-        alignContent: 'center', // could be 'center' or 'left'
-        justifyContent: 'center', // could be 'center' or 'start'
+        justifyContent: 'center', // could be 'center' or 'left'
+        textAlign: 'center',
     });
 
     SUI.infoContainer.position.y = 0.03; // vertical offset
@@ -416,8 +416,8 @@ SUI.createToolbar = (buttonlist, color)=>{
         fontFamily: SUI.PATH_FONT_JSON,
         fontTexture: SUI.PATH_FONT_TEX,
 
-        alignContent: 'center', // could be 'center' or 'left'
-        justifyContent: 'center', // could be 'center' or 'start'
+        justifyContent: 'center', // could be 'center' or 'left'
+        textAlign: 'center',
     });
     //cont.position.set(0,0,0);
 

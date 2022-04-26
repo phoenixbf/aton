@@ -320,8 +320,11 @@ ATON._onResize = ()=>{
 
     if (ATON.FX.composer){
         ATON.FX.composer.setSize( window.innerWidth, window.innerHeight );
-        let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
-        if (UU) UU.resolution.value.set( (1/window.innerWidth), (1/window.innerHeight) );
+        
+        if (ATON.FX.passes[ATON.FX.PASS_AA]){
+            let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
+            if (UU) UU.resolution.value.set( (1/window.innerWidth), (1/window.innerHeight) );
+        }
     }
     
     console.log("onResize");

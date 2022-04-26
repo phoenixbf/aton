@@ -769,8 +769,11 @@ Utils.takeScreenshot = (size, filename)=>{
     // We have multi-pass FX composer enabled
     if (ATON.FX.composer){
         ATON.FX.composer.setSize(size,size);
-        let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
-        if (UU) UU.resolution.value.set( (1/size), (1/size) );
+
+        if (ATON.FX.passes[ATON.FX.PASS_AA]){
+            let UU = ATON.FX.passes[ATON.FX.PASS_AA].material.uniforms;
+            if (UU) UU.resolution.value.set( (1/size), (1/size) );
+        }
 
         ATON.FX.composer.render();
 

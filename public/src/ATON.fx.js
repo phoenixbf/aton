@@ -140,6 +140,7 @@ FX.init = ()=>{
 
     // Order
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );
+
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
     //FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );
@@ -147,11 +148,11 @@ FX.init = ()=>{
     // tone-mapping passes here (if any)
     
     //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
-    ///FX.composer.addPass( FX.passes[FX.PASS_AA] );
+    //FX.composer.addPass( FX.passes[FX.PASS_AA] );
     
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );
 
-    ///FX.composer.addPass( FX.passes[FX.PASS_AA] );
+    //FX.composer.addPass( FX.passes[FX.PASS_AA] );
 
     //FX.composer.addPass( effectSobel );
 

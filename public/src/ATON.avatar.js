@@ -89,7 +89,7 @@ _buildLabel(){
         fontTexture: ATON.SUI.PATH_FONT_TEX,
 
         justifyContent: 'center',
-        alignContent: 'center'
+        textAlign: 'center',
     });
 
     this.userlabelnode.position.y = 0.4;

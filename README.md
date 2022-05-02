@@ -1,13 +1,12 @@
 # ATON 3.0 framework
 
-[![Join the dev chat at https://gitter.im/phoenixbf/ATON](https://badges.gitter.im/phoenixbf/ATON.svg)](https://gitter.im/phoenixbf/ATON?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 ![Header](./public/res/aton-header.jpg)
 
 ATON 3.0 framework - developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for final users. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
 * Real-time collaborative multi-user features (*VRoadcast* module)
 * Immersive VR (WebXR) for 3-DOF and 6-DOF devices
+* Multi-resolution for massive 3D datasets through OGC standards
 * Multi-touch interfaces
 * Spatial UI (3D labels, buttons, etc...) targeting immersive XR sessions
 * Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*

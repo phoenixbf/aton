@@ -63,6 +63,9 @@ import * as ThreeMeshBVH from 'three-mesh-bvh';
 
 import * as TILES from '3d-tiles-renderer';
 
+//import { Loader3DTiles } from 'three-loader-3dtiles';
+
+
 // Add the extension functions
 THREE.BufferGeometry.prototype.computeBoundsTree = ThreeMeshBVH.computeBoundsTree;
 THREE.BufferGeometry.prototype.disposeBoundsTree = ThreeMeshBVH.disposeBoundsTree;
@@ -124,3 +127,5 @@ window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;
 window.ThreeMeshBVH = ThreeMeshBVH;
 window.TILES        = TILES;
+
+//window.Loader3DTiles = Loader3DTiles;

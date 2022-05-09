@@ -160,8 +160,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-    ts.downloadQueue.maxJobs = 4; //2
-    ts.parseQueue.maxJobs    = 2; //2
+    ts.downloadQueue.maxJobs = 6; //2
+    ts.parseQueue.maxJobs    = 1; //2
 
 /*
     const tloader = new THREE.GLTFLoader( ts.manager );

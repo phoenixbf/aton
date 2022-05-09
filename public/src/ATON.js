@@ -719,8 +719,6 @@ ATON.realize = ( bNoRender )=>{
     ATON._gizmo  = undefined;
     ATON._bGizmo = false;
 
-    ATON._wappID = undefined;
-
     ATON.focusOn3DView();
 };
 

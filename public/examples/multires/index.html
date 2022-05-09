@@ -58,14 +58,6 @@ window.addEventListener( 'load', ()=>{
     ATON.getSceneNode("ts").setMaterial(wireMat);
 */
 
-/*
-    ATON.createSceneNode("venus")
-        .load("samples/models/venus/venus.gltf")
-        .setScale(0.3)
-        .setPosition(0,-0.5,0)
-		.rotateY(Math.PI * 0.5)
-        .attachToRoot();
-*/
     //ATON.Nav.setHomePOV( new ATON.POV().setPosition(26,40,20).setTarget(24, 0.03, 8.66) );
     
     ATON.Nav.setHomePOV( new ATON.POV().setPosition(10*tsScale,10*tsScale,10*tsScale).setTarget(0, 0, 0) );
@@ -92,9 +84,9 @@ window.addEventListener( 'load', ()=>{
         <div class='descriptionText'>
             This sample shows how to load a single multiresolution dataset (3D Tiles standard).<br><br>
             <img src="https://raw.githubusercontent.com/NASA-AMMOS/3DTilesRendererJS/master/images/header-mars.png"><br>
-            In this case we create a standard ATON node, and then load a remote 3D-tiles dataset ("Dingo Gap Mars dataset") directly from <a href="https://github.com/NASA-AMMOS">NASA AMMOS project</a>.<br><br>
+            In this case we create a standard ATON node, and then load a remote 3D-tiles dataset ("Dingo Gap" Mars dataset) directly from <a href="https://github.com/NASA-AMMOS">NASA AMMOS project</a>.<br><br>
 
-            Note that ATON can load multiple multiresolution datasets, and mix them with standard GLTF models or 360 content (static and videostreams).
+            Note that ATON can load multiple multiresolution datasets (from local collection or remote hosts), and mix them with standard GLTF models or 360 content (static or dynamic).
         </div>
         </div>
     </div>

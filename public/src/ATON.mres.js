@@ -153,7 +153,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.optimizeRaycast = false; // We already use BVH
 
     ts.lruCache.maxSize = 500; //350;
-    ts.lruCache.minSize = 300; //150;
+    ts.lruCache.minSize = 150; //150;
     ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
 
     // Download/Parse queues

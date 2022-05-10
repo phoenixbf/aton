@@ -2005,8 +2005,8 @@ ATON._handleQueryScene = ()=>{
 
     // Normals
     if (!ATON._bQueryNormals) return;
-    if (h.face === null) return;
-    if (h.face.normal === undefined) return;
+    if (!h.face) return;
+    if (!h.face.normal) return;
 
     ATON._queryDataScene.matrixWorld = new THREE.Matrix3().getNormalMatrix( h.object.matrixWorld );
     ATON._queryDataScene.n = h.face.normal.clone().applyMatrix3( ATON._queryDataScene.matrixWorld ).normalize();

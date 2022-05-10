@@ -41,6 +41,11 @@ MRes.init = ()=>{
 
     MRes._bPCs = false; // Any PointCloud
 
+    // Shared queues
+    MRes._pqLRU       = undefined;
+    MRes._pqDownload  = undefined;
+    MRes._pqParse     = undefined;
+
     //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
 };
 
@@ -153,16 +158,28 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.optimizeRaycast = false; // We already use BVH
 
-    ts.lruCache.maxSize = 500; //350;
-    ts.lruCache.minSize = 150; //150;
-    ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
+    if (MRes._pqLRU === undefined){
+        ts.lruCache.maxSize = 500; //350;
+        ts.lruCache.minSize = 150; //150;
+        ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
 
-    // Download/Parse queues
-    ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
-    ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
+        // Download/Parse queues
+        ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
+        ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-    ts.downloadQueue.maxJobs = 6; //2
-    ts.parseQueue.maxJobs    = 1; //2
+        ts.downloadQueue.maxJobs = 6; // 6
+        ts.parseQueue.maxJobs    = 1; // 1
+
+        MRes._pqLRU      = ts.lruCache;
+        MRes._pqDownload = ts.downloadQueue;
+        MRes._pqParse    = ts.parseQueue;
+    }
+    else {
+        ts.lruCache      = MRes._pqLRU;
+        ts.downloadQueue = MRes._pqDownload;
+        ts.parseQueue    = MRes._pqParse;
+    }
+
 
 /*
     const tloader = new THREE.GLTFLoader( ts.manager );

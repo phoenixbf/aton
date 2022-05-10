@@ -14,6 +14,7 @@ let MRes = {};
 
 MRes.REST_API_CESIUMION_DEF_TOKEN = "https://api.cesium.com/v2/tokens/default";
 MRes.THRES_ORI = 0.01;
+MRes.THRES_POS = 0.000001;
 
 
 // Setup
@@ -436,11 +437,8 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
     }
 */
 
-// Main update (view-dependent LoD)
+// Main update (view-dependent tile processing)
 MRes.update = ()=>{
-    //MRes._tsuSync++;
-    //if ((MRes._tsuSync % 10) !== 0) return;
-
     const nts = MRes._tsets.length;
     if (nts < 1) return;
 
@@ -453,9 +451,17 @@ MRes.update = ()=>{
     }
 
     // Tasks (intensive)
+    if (ATON._renderer.xr.isPresenting){
+        MRes._tsuSync++;
+        if ((MRes._tsuSync % 4) !== 0) return;
+        MRes._tsuSync = 0;
+    }
+
     if (ATON.Nav.isTransitioning()) return;
     if (ATON.Nav._bInteracting) return;
     if (ATON.Nav._dOri > MRes.THRES_ORI) return;
+    if (ATON.Nav._dPos > MRes.THRES_POS) return;
+
     //console.log(MRes._tsTasks);
 
     let T = MRes._tsTasks.pop(); //.shift(); 

@@ -475,7 +475,7 @@ MRes.update = ()=>{
     }
 
     if (ATON.Nav.isTransitioning()) return;
-    if (ATON.Nav._bInteracting) return;
+    //if (ATON.Nav._bInteracting) return;
     if (ATON.Nav._dOri > MRes.THRES_ORI) return;
     if (ATON.Nav._dPos > MRes.THRES_POS) return;
 

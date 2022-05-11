@@ -624,9 +624,18 @@ load(url, onComplete){
 
     let N = this;
 
-    if (url.endsWith("tileset.json")){
+    // Tileset
+    if ( url.endsWith(".json") ){
         ATON.MRes.loadTileSetFromURL(url, N);
         ATON._bqScene = true;
+        if (onComplete) onComplete();
+        return N;
+    }
+
+    // IFC
+    if ( url.endsWith(".ifc") ){
+        //TODO:
+        //ATON._bqScene = true;
         if (onComplete) onComplete();
         return N;
     }

@@ -1,0 +1,27 @@
+{
+    "name": "ATON",
+    "stack": "heroku-20",
+    "website": "https://github.com/phoenixbf/aton",
+    "repository": "https://github.com/phoenixbf/aton",
+    "logo": "https://raw.githubusercontent.com/phoenixbf/aton/master/public/res/aton-logo.png",
+    "keywords": [
+        "nodejs",
+        "javascript",
+        "threejs",
+        "webxr",
+        "virtual-reality",
+        "vr",
+        "immersive",
+        "html5",
+        "web3d",
+        "heritage",
+        "digital-heritage",
+        "3d",
+        "collaborative",
+        "social-vr",
+        "infrastructure",
+        "hmd",
+        "head-mounted-display"
+    ],
+    "description": "ATON is a framework to create Web3D/WebXR apps (presenters, applied games, tools, etc.) interacting with CH objects and 3D scenes on the Web. It adopts a 'develop once, deploy everywhere' approach, without requiring any installation for final users, with its front-end automatically adapting to the device (mobile, desktop/kiosk or immersive VR)."
+  }

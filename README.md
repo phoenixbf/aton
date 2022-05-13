@@ -1,6 +1,8 @@
 # ATON 3.0 framework
 
 [Official ATON website](http://osiris.itabc.cnr.it/aton/) | 
+[Telegram open-group](https://t.me/ATON_Framework) | 
+[Live examples](https://aton.ispc.cnr.it/examples/) | 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/phoenixbf/aton)
 
 ![Header](./public/res/aton-header.jpg)
@@ -74,21 +76,8 @@ or - as software - using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.
 ```
 
 # Publications
-Here is a list of publications where ATON (including previous versions) was employed:
+Main reference of the framework (open access) is:
 
-* Fanini, B., Ferdani, D., Demetrescu, E., Berto, S., & d’Annibale, E. (2021). [ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage](https://www.mdpi.com/2076-3417/11/22/11062). Applied Sciences, 11(22), 11062.
-* Fanini, B., Ferdani, D., & Demetrescu, E. (2021). Temporal Lensing: An Interactive and Scalable Technique for Web3D/WebXR Applications in Cultural Heritage. Heritage, 4(2), 710-724.
-* Luigini, A., Fanini, B., Basso, A., & Basso, D. (2020). Heritage education through serious games. A web-based proposal for primary schools to cope with distance learning. VITRUVIO-International Journal of Architectural Technology and Sustainability, 5(2), 73-85.
-* B. Fanini, L. Cinque (2020). Encoding, Exchange and Manipulation of Captured Immersive VR Sessions for Learning Environments: the PRISMIN Framework. Applied Sciences 2020, 10, 2026. Special Issue "Emerging Artificial Intelligence (AI) Technologies for Learning"
-* B. Fanini (2020). Applications of a compact session encoding for immersive WebVR/XR analytics. Chapter 6 in Digital & Documentation – Digital strategies for Cultural Heritage. Vol. 2
-* M. Lo Turco, P. Piumatti, M. Calvano, E. C. Giovannini, N. Mafrici, A. Tomalini, B. Fanini (2020). Interactive Digital Environments for Cultural Heritage and Museums. Building a digital ecosystem to display hidden collections. DISEGNARECON – ISSN 1828 5961
-* Fanini, B., & Cinque, L. (2019). Encoding immersive sessions for online, interactive VR analytics. Virtual Reality, 1-16.
-* Fanini, B., Pescarin, S., & Palombini, A. (2019). A cloud-based architecture for processing and dissemination of 3D landscapes online. Digital Applications in Archaeology and Cultural Heritage, e00100.
-* Fanini, B., & Cinque, L. (2019, July). An Image-Based Encoding to Record and Track Immersive VR Sessions. In International Conference on Computational Science and Its Applications (pp. 299-310). Springer, Cham.
-* Barsanti, S. G., Malatesta, S. G., Lella, F., Fanini, B., Sala, F., Dodero, E., & Petacco, L. (2018). The Winckelmann300 Project: Dissemination of Culture with Virtual Reality at the Capitoline Museum in Rome. International Archives of the Photogrammetry, Remote Sensing & Spatial Information Sciences, 42(2).
-* Palombini, A., Fanini, B., Pagano, A. (2018, July). The Virtual Museum of the Upper Calore Valley. In International and Interdisciplinary Conference on Digital Environments for Education, Arts and Heritage (pp. 726-736). Springer, Cham.
-* Fanini, B., Cinque, L. (2018, October). Encoding VR sessions: image-based techniques to record and inspect immersive experiences. In 2018 3rd Digital Heritage International Congress (Digital Heritage) held jointly with 2018 24th International Conference on Virtual Systems & Multimedia (VSMM 2018) (pp. 1-8). IEEE.
-* Meghini, C., Scopigno, R., Richards, J., Fanini, B., Wright, H., Geser, G., Cuy, S. et al. (2017). ARIADNE: a research infrastructure for archaeology. Journal on Computing and Cultural Heritage (JOCCH), 10(3), 18.
-* Hollander, H. S., Aloia, N., Binding, C., Cuy, S., Doerr, M., Fanini, B., Meghini, C. et al. (2017). Enabling European Archaeological Research: The ARIADNE E-Infrastructure. Internet Archaeology, 17(43).
-* Fanini, B., d'Annibale, E. (2016, October). A framework for compact and improved panoramic VR dissemination. In EUROGRAPHICS Workshop on Graphics and Cultural Heritage (pp. 33-42).
-* Antal, A. and Bota, E. and Demetrescu, E. and Ciongradi, C. and and Fanini, B. and d'Annibale, E. and Dima, C. and Ferdani D. (2016). A complete workflow from the data collection on the field to the deployment of a Virtual Museum: the case of Virtual Sarmizegetusa.
+Fanini, B., Ferdani, D., Demetrescu, E., Berto, S., & d’Annibale, E. (2021). [ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage](https://www.mdpi.com/2076-3417/11/22/11062). Applied Sciences, 11(22), 11062.
+
+While [here](http://osiris.itabc.cnr.it/aton/index.php/publications/) you can find a complete list of publications where ATON (including previous versions) was employed.

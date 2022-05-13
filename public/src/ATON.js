@@ -580,6 +580,8 @@ ATON.realize = ( bNoRender )=>{
     ATON._dracoLoader.setDecoderPath( ATON.PATH_DRACO_LIB );
     ATON._dracoLoader.setWorkerLimit(2);
     ATON._dracoLoader.preload();
+
+    // glTF
     ATON._aLoader.setDRACOLoader( ATON._dracoLoader );
     ATON._aLoader.setKTX2Loader( ATON._ktx2Loader );
 

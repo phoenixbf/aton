@@ -158,6 +158,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.optimizeRaycast = false; // We already use BVH
 
+    // Init p-queues
     if (MRes._pqLRU === undefined){
         ts.lruCache.maxSize = 500; //350;
         ts.lruCache.minSize = 150; //150;
@@ -174,22 +175,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         MRes._pqDownload = ts.downloadQueue;
         MRes._pqParse    = ts.parseQueue;
     }
+    // Shared p-queues
     else {
         ts.lruCache      = MRes._pqLRU;
         ts.downloadQueue = MRes._pqDownload;
         ts.parseQueue    = MRes._pqParse;
     }
 
-
-/*
-    const tloader = new THREE.GLTFLoader( ts.manager );
-	tloader.setDRACOLoader( ATON._dracoLoader );
-    tloader.setKTX2Loader( ATON._ktx2Loader );
-*/
     ts.setCamera( ATON.Nav._camera );
     ts.setResolutionFromRenderer( ATON.Nav._camera, ATON._renderer );
 
-    ts.manager.addHandler( /\.gltf$/, ATON._aLoader /*tloader*/ );
+    ts.manager.addHandler( /\.gltf$/, ATON._aLoader );
     ts.manager.addHandler( /\.ktx2$/, ATON._ktx2Loader );
     //ts.manager.addHandler( /\.basis$/, ATON._basisLoader );
 

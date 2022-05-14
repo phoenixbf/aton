@@ -327,7 +327,7 @@ MatHub.addDefaults = ()=>{
         //depthWrite: false, 
         //opacity: 0.3,
 
-        size: 4.0,
+        size: 2.0,
         sizeAttenuation: false,
 /*
         size: 0.05,

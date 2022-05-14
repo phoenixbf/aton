@@ -328,6 +328,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
                     if (ATON.Utils._bvhBounds>0) ATON.Utils._addBVHbounds(c, ATON.Utils._bvhBounds);
                 }
+
+                ATON._bqScene = true;
             }
             // Point clouds
             else {
@@ -430,7 +432,7 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
                 v: version
             });
 
-            ATON._bqScene = true;
+            //ATON._bqScene = true;
             ATON.setAPIToken("cesium.ion", tok);
         });
 };

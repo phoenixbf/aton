@@ -627,7 +627,7 @@ load(url, onComplete){
     // Tileset
     if ( url.endsWith(".json") ){
         ATON.MRes.loadTileSetFromURL(url, N);
-        ATON._bqScene = true;
+        //ATON._bqScene = true;
         if (onComplete) onComplete();
         return N;
     }

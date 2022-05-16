@@ -425,7 +425,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     ATON.setQueryRange(0.0, Infinity);
 
-    ATON.Utils.estimateTSErrorTarget();
+    ATON.MRes.estimateTSErrorTarget();
 
     console.log("Quit XR");
 };

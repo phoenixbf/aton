@@ -86,20 +86,30 @@ Atonizer.run = ()=>{
 
     console.log(Atonizer.args);
 
-    glob(Atonizer.args.infolder + Atonizer.args.pattern, undefined, (er, files)=>{
+    let fpattern = Atonizer.args.pattern;
+    
+    let gopts = {};
+	gopts.cwd = Atonizer.args.infolder;
+
+    glob(fpattern, gopts, (err, files)=>{
+    //fg(fpattern).then((files)=>{
         let outfolder = Atonizer.args.outfolder;
         //let outfolder = path.join(Atonizer.args.outfolder, "uncomp/");
         //if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
 
+        if (err) console.log(err);
+
+        let nitems = files.length;
+
         for (let i in files){
-            let filepath = files[i];
+            let filepath = Atonizer.args.infolder + files[i];
 
             let IFile     = path.parse(filepath);
             let fBasename = IFile.name;    // IFile.dir+
             let fExt      = IFile.ext;     // eg: .obj
             let fName     = IFile.name + IFile.ext; // model.obj
 
-            console.log("Processing file "+filepath);
+            console.log("Processing file ("+i+"/"+nitems+"): "+filepath);
 
             if (Atonizer.args.pattern === "*.glb" || Atonizer.args.pattern === "*.gltf"){
                 Atonizer.processModel(outfolder, fBasename);

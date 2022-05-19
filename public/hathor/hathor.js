@@ -752,11 +752,6 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.SemFactory.addSurfaceConvexPoint();
         }
 
-/*
-        if (k==='S'){
-            HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_CONVEX);
-        }
-*/
         if (k==='e'){
             let esemid = ATON._hoveredSemNode;
             if (esemid !== undefined) HATHOR.popupAddSemantic(undefined, esemid);
@@ -766,6 +761,8 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='m') HATHOR.measure();
 
         if (k==='c') ATON.FE.popupScreenShot();
+
+        if (k==='b') ATON.SUI.showSelector( !ATON.SUI._bShowSelector );
 
         if (k==='#'){
             let bShadows = !ATON._renderer.shadowMap.enabled;

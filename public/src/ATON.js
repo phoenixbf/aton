@@ -1380,6 +1380,42 @@ ATON.setMainPanorama = (path)=>{
     }
 };
 
+/**
+Play main videopanorama (if any loaded)
+@example
+ATON.playMainPano();
+*/
+ATON.playMainPano = ()=>{
+    if (!ATON._elPanoVideo) return;
+    if (ATON._vpanoPlaying) return;
+
+    ATON._elPanoVideo.play();
+}
+
+/**
+Pause main videopanorama (if any loaded)
+@example
+ATON.pauseMainPano();
+*/
+ATON.pauseMainPano = ()=>{
+    if (!ATON._elPanoVideo) return;
+    if (!ATON._vpanoPlaying) return;
+    
+    ATON._elPanoVideo.pause();
+}
+
+/**
+Play or pause main videopanorama (if any loaded)
+@example
+ATON.playOrPauseMainPano();
+*/
+ATON.playOrPauseMainPano = ()=>{
+    if (!ATON._elPanoVideo) return;
+
+    if (ATON._vpanoPlaying) ATON._elPanoVideo.pause();
+    else ATON._elPanoVideo.play();
+}
+
 ATON._realizeOrUpdateMainPano = (tpano)=>{
     // We already created a main pano
     if (ATON._matMainPano !== undefined){
@@ -2255,7 +2291,19 @@ ATON._handleQueryUI = ()=>{
     }
 };
 
-// Tokens for external API/services 
+/**
+Get currently hovered semantic node (if any)
+@returns {Node}
+*/
+ATON.getHoveredSemanticNode = ()=>{
+    if (ATON._hoveredSemNode === undefined) return undefined;
+
+    let S = ATON.getSemanticNode(ATON._hoveredSemNode);
+    return S;
+};
+
+// Tokens for external API/services
+//=============================================
 ATON.setAPIToken = (servicename, tok)=>{
     //ATON._extAPItokens[servicename] = tok;
     window.sessionStorage.setItem("ATON.tokens."+servicename, tok);

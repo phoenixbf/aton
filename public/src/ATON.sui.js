@@ -195,6 +195,8 @@ SUI.initSelector = ()=>{
     ATON._rootUI.add(SUI.mainSelector);
 
     SUI._selOffset = new THREE.Vector3();
+
+    SUI._bShowSelector = true;
 };
 
 // note: before adding LPs
@@ -209,6 +211,14 @@ SUI.enableSemIcons = ()=>{
     SUI.gSemIcons = ATON.createUINode();
     SUI.gSemIcons.disablePicking();
     ATON._rootUI.add(SUI.gSemIcons);
+};
+
+/**
+Show or hide selector
+@param {boolean} b
+*/
+SUI.showSelector = (b)=>{
+    SUI._bShowSelector = b;
 };
 
 /**
@@ -636,7 +646,7 @@ SUI.update = ()=>{
     else SUI._measLine.visible = false;
 
     // Selector
-    if (ATON._queryDataScene && !ATON.Nav._bInteracting){
+    if (ATON._queryDataScene && SUI._bShowSelector && !ATON.Nav._bInteracting){
         SUI.mainSelector.visible = true;
 
         SUI.mainSelector.position.x = ATON._queryDataScene.p.x + SUI._selOffset.x;

@@ -7,7 +7,7 @@
 ===========================================================*/
 
 /**
-ATON Copyright Hub
+ATON MultiRes Hub
 @namespace MRes
 */
 let MRes = {};

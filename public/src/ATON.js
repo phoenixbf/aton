@@ -586,7 +586,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._aLoader.setKTX2Loader( ATON._ktx2Loader );
 
     // Register BasisTextureLoader for .basis extension.
-    //THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._basisLoader ); // deprecated
+    //THREE.DefaultLoadingManager.addHandler( /\.basis$/, ATON._ktx2Loader ); // deprecated
     THREE.DefaultLoadingManager.addHandler( /\.ktx2$/, ATON._ktx2Loader );
 
     // Update routines
@@ -1383,9 +1383,9 @@ ATON.setMainPanorama = (path)=>{
 /**
 Play main videopanorama (if any loaded)
 @example
-ATON.playMainPano();
+ATON.playMainPanorama();
 */
-ATON.playMainPano = ()=>{
+ATON.playMainPanorama = ()=>{
     if (!ATON._elPanoVideo) return;
     if (ATON._vpanoPlaying) return;
 
@@ -1395,9 +1395,9 @@ ATON.playMainPano = ()=>{
 /**
 Pause main videopanorama (if any loaded)
 @example
-ATON.pauseMainPano();
+ATON.pauseMainPanorama();
 */
-ATON.pauseMainPano = ()=>{
+ATON.pauseMainPanorama = ()=>{
     if (!ATON._elPanoVideo) return;
     if (!ATON._vpanoPlaying) return;
     
@@ -1407,9 +1407,9 @@ ATON.pauseMainPano = ()=>{
 /**
 Play or pause main videopanorama (if any loaded)
 @example
-ATON.playOrPauseMainPano();
+ATON.playOrPauseMainPanorama();
 */
-ATON.playOrPauseMainPano = ()=>{
+ATON.playOrPauseMainPanorama = ()=>{
     if (!ATON._elPanoVideo) return;
 
     if (ATON._vpanoPlaying) ATON._elPanoVideo.pause();

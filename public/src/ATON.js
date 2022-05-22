@@ -96,7 +96,7 @@ ATON.PATH_MODS          = window.location.origin + "/mods/"; // "../mods/";
 //ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = window.location.origin + "/dist/draco/"; //ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = window.location.origin + "/dist/basis/"; //ATON.PATH_THREE+"examples/js/libs/basis/";
-ATON.PATH_IFC_LIB       = window.location.origin + "/dist/ifc/";
+ATON.PATH_IFC_LIB       = "ifc/"; //window.location.origin + "/dist/ifc/";
 
 ATON.PATH_COLLECTION = window.location.origin + "/collections/"; // "../collection/";
 ATON.PATH_SCENES     = window.location.origin + "/scenes/"; // "../scenes/";
@@ -561,7 +561,7 @@ ATON.realize = ( bNoRender )=>{
     // IFC
 /*
     ATON._ifcLoader = new IFCLoader();
-    ATON._ifcLoader.setWasmPath( ATON.PATH_IFC_LIB );
+    ATON._ifcLoader.ifcManager.setWasmPath( ATON.PATH_IFC_LIB );
 */
 
     // Basis

@@ -177,7 +177,7 @@ Maat.scanModels = (uid)=>{
 	globopts.follow = true;
 */
 	//let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
-	let files = fg.sync("{"+uid+",samples}/models/**/{*.gltf,*.glb,*.json}", Core.COLLECTIONS_GLOB_OPTS);
+	let files = fg.sync("{"+uid+",samples}/models/**/{*.gltf,*.glb,*.json,*.ifc}", Core.COLLECTIONS_GLOB_OPTS);
 
 	if (files.length < 1) return;
 

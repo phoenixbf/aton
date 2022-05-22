@@ -65,6 +65,8 @@ import * as TILES from '3d-tiles-renderer';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
+//import { IFCLoader } from "web-ifc-three/IFCLoader";
+
 
 // Add the extension functions
 THREE.BufferGeometry.prototype.computeBoundsTree = ThreeMeshBVH.computeBoundsTree;
@@ -127,5 +129,6 @@ window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;
 window.ThreeMeshBVH = ThreeMeshBVH;
 window.TILES        = TILES;
+//window.IFCLoader    = IFCLoader;
 
 //window.Loader3DTiles = Loader3DTiles;

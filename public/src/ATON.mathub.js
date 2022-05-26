@@ -328,12 +328,11 @@ MatHub.addDefaults = ()=>{
         //depthWrite: false, 
         //opacity: 0.3,
 
-        size: 2.0,
-        sizeAttenuation: false,
-/*
-        size: 0.05,
+        //size: 2.0,
+        //sizeAttenuation: false,
+
+        size: 0.005,
         sizeAttenuation: true
-*/
     });
 
 };

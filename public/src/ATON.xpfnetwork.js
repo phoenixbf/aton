@@ -831,6 +831,8 @@ XPFNetwork.querySemanticMasks = ()=>{
     }
 
     // We are querying a sem mask
+    XPFNetwork.highlightSemanticMaskInCurrentXPF(ss);
+    /*
     if (XPFNetwork._semCurr !== ss){
         let semurl = XPFNetwork.getSemanticMaskURLfromCurrentXPF(ss);
         XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( semurl );
@@ -842,8 +844,28 @@ XPFNetwork.querySemanticMasks = ()=>{
 
         if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
     }
-    
+*/
     XPFNetwork._semCurr = ss;
+};
+
+/**
+Highlight a specific semantic mask in current XPF.
+You should disable ATON queries via ATON.toggleQueries(false) to use this routine
+@param {string} semid - Semantic mask ID
+*/
+XPFNetwork.highlightSemanticMaskInCurrentXPF = (semid)=>{
+    if (semid === undefined) return;
+    if (XPFNetwork._semCurr === semid) return;
+
+    let semurl = XPFNetwork.getSemanticMaskURLfromCurrentXPF(semid);
+    XPFNetwork._uniforms.tSem.value = ATON.Utils.textureLoader.load( semurl );
+    XPFNetwork._mat.needsUpdate = true;
+
+    ATON.fireEvent("SemanticMaskHover", semid);
+
+    XPFNetwork._uniforms.shColor.value.w = 0.0;
+
+    if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
 };
 
 

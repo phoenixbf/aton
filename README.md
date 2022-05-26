@@ -76,7 +76,7 @@ or - as software - using the Zenodo DOI [![DOI](https://zenodo.org/badge/DOI/10.
 ```
 
 # Publications
-Main reference of the framework (open access) is:
+Main bibliographical reference (open access) of the framework is:
 
 *Fanini, B., Ferdani, D., Demetrescu, E., Berto, S., & d’Annibale, E. (2021). [ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage](https://www.mdpi.com/2076-3417/11/22/11062). Applied Sciences, 11(22), 11062.*
 

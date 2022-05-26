@@ -671,6 +671,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._hoveredSemNode = undefined;
     ATON._hoveredUI      = undefined;
 
+    ATON._bq = true;
     ATON._bQuerySemOcclusion = true;
     ATON._bQueryNormals  = true;
     ATON._bPauseQuery    = false;
@@ -1962,6 +1963,15 @@ ATON.toggleCenteredQuery = (b)=>{
 //==============================================================
 // Query rountines
 //==============================================================
+
+/**
+Enable or disable queries
+@param {boolean} b
+*/
+ATON.toggleQueries = (b)=>{
+    ATON._bq = b;
+};
+
 ATON._registerRCS = ()=>{
     ATON._rcRR = 0;
     ATON._rcHandlers = [];
@@ -1976,6 +1986,7 @@ ATON._handleQueries = ()=>{
     //ATON._qSync = (ATON._qSync + 1) % ATON._qSyncInt;
     //if (ATON._qSync !== 0) return;
 
+    if (!ATON._bq) return;
     if (ATON._bPauseQuery) return;
     if (ATON.Nav._bInteracting) return;
     if (ATON._numReqLoad > 0) return;

@@ -546,6 +546,8 @@ ATON.realize = ( bNoRender )=>{
     //canvas.style.width   = "100%";
     //canvas.style.height  = "100%";
 
+    ATON.UI.init();
+
     // Multimedia
     ATON._vpanoPlaying = false;
     ATON._bUserInts = 0;

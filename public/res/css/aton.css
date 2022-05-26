@@ -721,6 +721,10 @@ canvas:active {
     */
 }
 
+.atonBTN span {
+    padding: 0 5px;
+}
+
 .atonSmallIcon {
     height: 16px;
     width: 16px;

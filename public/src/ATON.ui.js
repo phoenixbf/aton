@@ -47,27 +47,22 @@ UI._setupBase = ()=>{
     $(UI._elPopup).click( UI.popupClose );
 
 
-    // Loader TODO:
-/*
+    // Loader
     UI._elLoader = document.getElementById("idLoader");
     if (!UI._elLoader){
         UI._elLoader = document.createElement('div');
         UI._elLoader.className = "atonCenterLoader";
         UI._elLoader.style.display = "none";
         UI._elLoader.id = "idLoader";
-        document.body.append(UI._elLoader);
+        document.body.prepend(UI._elLoader);
     }
 
-    UI._elLoader.innerHTML("<img src='"+ATON.PATH_RES+"loader.png'>");
-*/
-    // Label
+    UI._elLoader.innerHTML = "<img src='"+ATON.PATH_RES+"loader.png'>";
 
-/*
-    
-
+    // 2D Label
     $("body").prepend("<div class='atonPopupLabelContainer'><div id='idPopupLabel' class='atonPopupLabel'></div></div>");
-    FE.hideSemLabel();
-*/
+    UI._elLabel = document.getElementById("idPopupLabel");
+    UI.hideSemLabel();
 };
 
 UI.basicSetup = ()=>{
@@ -77,6 +72,16 @@ UI.basicSetup = ()=>{
 
     UI.addButton("idBottomToolbar","home", ()=>{ ATON.Nav.requestHome(0.1); });
 */
+};
+
+// Semantic 2D Label
+UI.showSemLabel = (text)=>{
+    $(UI._elLabel).html(text); 
+    $(UI._elLabel).show();
+};
+UI.hideSemLabel = ()=>{
+    $(UI._elLabel).hide();
+    $(UI._elLabel).html("");
 };
 
 //
@@ -100,6 +105,20 @@ UI.button = (options)=>{
     return el;
 };
 
+// TODO:
+UI.buttonFullscreen = ()=>{
+    //return el;
+};
+
+UI.disclosureWidget = (options)=>{
+    let domEL = document.createElement('details');
+    let el = $(domEL);
+    el.append(options.content);
+    el.prepend("<summary>"+options.summary+"</summary>");
+
+    return el;
+};
+
 // POPUPs
 //=========
 UI.popupShow = (options)=>{
@@ -108,11 +127,14 @@ UI.popupShow = (options)=>{
     UI._tPopup = Date.now();
 
     UI._elPopupContent.innerHTML = "";
+
+    //if (options.bgcolor) UI._elPopupContent.
+
     $(UI._elPopupContent).append( "<div class='atonPopupTitle'>"+options.title+"</div>" );
     $(UI._elPopupContent).append( options.content );
     $(UI._elPopup).show();
 
-    if (UI.popupBlurBG > 0){
+    if (ATON._renderer && ATON._renderer.domElement && UI.popupBlurBG > 0){
         //ATON._renderer.setPixelRatio( FE.popupBlurBG );
         ATON._renderer.domElement.style.filter = "blur("+UI.popupBlurBG+"px)"; //`blur(${blur * 5}px)`;
         //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
@@ -137,7 +159,7 @@ UI.popupClose = ()=>{
     //ATON.renderResume();
     ATON._bListenKeyboardEvents = true;
     
-    if (UI.popupBlurBG > 0){
+    if (ATON._renderer && ATON._renderer.domElement && UI.popupBlurBG > 0){
         //ATON.resetPixelDensity();
         ATON._renderer.domElement.style.filter = "none";
     }

@@ -1900,9 +1900,16 @@ td {
     padding: 5px;
 }
 
+details {
+    text-align: left;
+    padding: 5px;
+}
+
 summary {
     cursor: pointer;
-    padding: 5px;
+    
+    padding-bottom: 5px;
+    padding-top: 5px;
 
     -moz-user-select: none;
     -khtml-user-select: none;

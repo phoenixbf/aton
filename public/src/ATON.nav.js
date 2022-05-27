@@ -933,6 +933,7 @@ Nav.requestPOV = (pov, duration)=>{
     ATON.fireEvent("POVTransitionRequested", pov.id);
 
     if (duration !== undefined) Nav.POVtransitionDuration = duration;
+    else Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
     
     //Nav._controls.enabled = false;
 

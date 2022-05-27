@@ -18,15 +18,57 @@ UI.POPUP_DT = 500; //300;
 UI.init = ()=>{
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
-    UI._bPopup = false;     // modal popup
-    UI.popupBlurBG = 0;     // blur 3D canvas on popup show (in pixels), 0 to disable
-
-    $('#idPopupContent').click((e)=>{ e.stopPropagation(); });
-    UI._elPopup = document.createElement('div');
-    UI._elPopup.classList.add("atonPopup");
-    UI._elPopup.id = "idPopupContent";
+    UI._setupBase();
 };
 
+UI._setupBase = ()=>{
+
+    document.body.oncontextmenu = ()=>{ return false; };
+
+    // Modal popup
+    UI._bPopup = false;
+    UI.popupBlurBG = 0; // blur 3D canvas on popup show (in pixels), 0 to disable
+
+    UI._elPopup = document.getElementById("idPopup");
+    if (!UI._elPopup){
+        UI._elPopup = document.createElement('div');
+        UI._elPopup.classList.add("atonPopupContainer");
+        UI._elPopup.style.display = "none";
+        UI._elPopup.id = "idPopup";
+        document.body.prepend(UI._elPopup);
+    }
+
+    UI._elPopupContent = document.createElement('div');
+    UI._elPopupContent.classList.add("atonPopup");
+    
+    $(UI._elPopupContent).click((e)=>{ e.stopPropagation(); });
+    UI._elPopup.appendChild(UI._elPopupContent);
+
+    $(UI._elPopup).click( UI.popupClose );
+
+
+    // Loader TODO:
+/*
+    UI._elLoader = document.getElementById("idLoader");
+    if (!UI._elLoader){
+        UI._elLoader = document.createElement('div');
+        UI._elLoader.className = "atonCenterLoader";
+        UI._elLoader.style.display = "none";
+        UI._elLoader.id = "idLoader";
+        document.body.append(UI._elLoader);
+    }
+
+    UI._elLoader.innerHTML("<img src='"+ATON.PATH_RES+"loader.png'>");
+*/
+    // Label
+
+/*
+    
+
+    $("body").prepend("<div class='atonPopupLabelContainer'><div id='idPopupLabel' class='atonPopupLabel'></div></div>");
+    FE.hideSemLabel();
+*/
+};
 
 UI.basicSetup = ()=>{
 /*
@@ -65,8 +107,9 @@ UI.popupShow = (options)=>{
 
     UI._tPopup = Date.now();
 
-    $(UI._elPopup).append( options.title );
-    $(UI._elPopup).append( options.content );
+    UI._elPopupContent.innerHTML = "";
+    $(UI._elPopupContent).append( "<div class='atonPopupTitle'>"+options.title+"</div>" );
+    $(UI._elPopupContent).append( options.content );
     $(UI._elPopup).show();
 
     if (UI.popupBlurBG > 0){

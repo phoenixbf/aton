@@ -666,6 +666,40 @@ XPFNetwork.requestTransitionByIndex = (i, dur)=>{
 };
 
 /**
+Request a viewpoint transition to a given target point, in the current XPF
+@param {THREE.Vector3} p - The target location
+@param {number} fov - field of view (optional)
+@param {number} dur - transition duration in seconds (optional)
+*/
+XPFNetwork.requestTransitionToTarget = (p, fov, dur)=>{
+    if (p === undefined) return;
+
+    let P = new ATON.POV();
+    P.setTarget(p);
+    P.setPosition(ATON.Nav._currPOV.pos);
+    if (fov) P.setFOV(fov);
+
+    ATON.Nav.requestPOV(P, dur);
+};
+
+/**
+Request a viewpoint transition to a given view direction, in the current XPF
+@param {THREE.Vector3} d - The target direction
+@param {number} fov - field of view (optional)
+@param {number} dur - transition duration in seconds (optional)
+*/
+XPFNetwork.requestTransitionToDirection = (d, fov, dur)=>{
+    if (d === undefined) return;
+
+    let p = new THREE.Vector3();
+    p.x = d.x + ATON.Nav._currPOV.pos.x;
+    p.y = d.y + ATON.Nav._currPOV.pos.y;
+    p.z = d.z + ATON.Nav._currPOV.pos.z;
+
+    XPFNetwork.requestTransitionToTarget(p, fov, dur);
+};
+
+/**
 Set a given XPF location as home (Nav module)
 @param {number} i - The XPF index
 */

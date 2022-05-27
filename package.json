@@ -80,7 +80,7 @@
     "nanoid": "^3.3.4",
     "obj2gltf": "^3.1.4",
     "object-delete-key": "^3.1.5",
-    "passport": "^0.5.3",
+    "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "performance-now": "^2.1.0",
@@ -89,7 +89,7 @@
     "session-file-store": "^1.5.0",
     "sharp": "^0.30.5",
     "socket.io": "^4.5.1",
-    "three": "0.140.2",
+    "three": "0.141.0",
     "three-mesh-bvh": "0.5.11",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

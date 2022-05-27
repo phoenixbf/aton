@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+    ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar");
+    ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    // We add a few XPFs to our network
+    ATON.FE.loadSceneID("samples/xpfnet");
+
+    // Setup bottom buttons to dynamically change POVs
+    ATON.FE.uiSetButtonHandler("povA",()=>{
+        ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(-0.6,-0.07,-0.8), 50.0 );
+    });
+    ATON.FE.uiSetButtonHandler("povB",()=>{
+        ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(0.99,0.0,-0.11), 100.0 );
+    });
+    ATON.FE.uiSetButtonHandler("povC",()=>{
+        ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(0.3,-0.1,-0.92), 70.0, 5 );
+    });
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom">
+        <div id='povA' class='atonBTN atonBTN-text'>Tools</div>
+        <div id='povB' class='atonBTN atonBTN-text'>Right door</div>
+        <div id='povC' class='atonBTN atonBTN-text'>Worker (5s)</div>
+    </div>
+
+	<!-- Side Panel -->
+	<div id="idPanel" class="atonSidePanelContainer">
+        <div class='atonSidePanelContent'>
+        <div class='descriptionText'>
+            In this sample we showcase viewpoint transitions in XPF network<br><br>
+            
+            We load a scene containing an XPF network (see <a href="../xpf-scene/">this example</a>), then we setup 3 different viewpoints using buttons via:<br>
+            <code>ATON.XPFNetwork.requestTransitionToDirection()</code><br><br>
+
+            Note that we use different durations and also different field-of-views while requesting a given viewpoint.
+        </div>
+        </div>
+    </div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/aton/" target="_blank">ATON</a>
+    </div>
+</body>

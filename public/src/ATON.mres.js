@@ -466,12 +466,13 @@ MRes.update = ()=>{
     }
 
     // Tasks (intensive)
+/*
     if (ATON._renderer.xr.isPresenting){
         MRes._tsuSync++;
         if ((MRes._tsuSync % 4) !== 0) return;
         MRes._tsuSync = 0;
     }
-
+*/
     if (ATON.Nav.isTransitioning()) return;
     //if (ATON.Nav._bInteracting) return;
     if (ATON.Nav._dOri > MRes.THRES_ORI) return;

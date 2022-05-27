@@ -1596,6 +1596,7 @@ code {
 
     color: white;
     font-family: monospace;
+    font-size: smaller;
     background-color: rgba(0,0,0, 0.5);
 
     padding: 7px;
@@ -1907,7 +1908,7 @@ details {
 
 summary {
     cursor: pointer;
-    
+
     padding-bottom: 5px;
     padding-top: 5px;
 

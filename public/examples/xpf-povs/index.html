@@ -39,18 +39,44 @@ window.addEventListener( 'load', ()=>{
     // Add basic event handlers
     ATON.FE.addBasicLoaderEvents();
 
-    // We add a few XPFs to our network
-    ATON.FE.loadSceneID("samples/xpfnet");
+    // Disable queries & popup labels
+    ATON.toggleQueries(false);
+    ATON.FE._bShowSemLabel = false;
+
+    // Set FirstPersone mode
+    ATON.Nav.setFirstPersonControl();
+    ATON.Nav.setFOV(70.0);
+
+    let rotOffset = new THREE.Vector3(0.0, -(Math.PI * 0.5), 0.0);
+
+    let xpf = new ATON.XPF()
+        .setBaseLayer("samples/pano/montebelluna/05a.jpg")
+        .setRotation(rotOffset)
+        .setLocation(341.41, 116.658, -116.65)
+        .setSemanticMask("doors", "samples/pano/montebelluna/05a-sem-doors.png")
+        .setSemanticMask("forge", "samples/pano/montebelluna/05a-sem-forge.png")
+        .setSemanticMask("worker", "samples/pano/montebelluna/05a-sem-worker.jpg")
+        .setSemanticMask("tools", "samples/pano/montebelluna/05a-sem-tools.jpg");
+
+    ATON.XPFNetwork.add( xpf );
+
+    // Let's set the first XPF as home
+    ATON.XPFNetwork.setHomeXPF(0);
+    ATON.XPFNetwork.requestTransitionByIndex(0, 0.0);
+
 
     // Setup bottom buttons to dynamically change POVs
     ATON.FE.uiSetButtonHandler("povA",()=>{
         ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(-0.6,-0.07,-0.8), 50.0 );
+        ATON.XPFNetwork.highlightSemanticMaskInCurrentXPF("tools");
     });
     ATON.FE.uiSetButtonHandler("povB",()=>{
         ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(0.99,0.0,-0.11), 100.0 );
+        ATON.XPFNetwork.highlightSemanticMaskInCurrentXPF("doors");
     });
     ATON.FE.uiSetButtonHandler("povC",()=>{
         ATON.XPFNetwork.requestTransitionToDirection( new THREE.Vector3(0.3,-0.1,-0.92), 70.0, 5 );
+        ATON.XPFNetwork.highlightSemanticMaskInCurrentXPF("worker");
     });
 });
 
@@ -72,12 +98,18 @@ window.addEventListener( 'load', ()=>{
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
-            In this sample we showcase viewpoint transitions in XPF network<br><br>
+            In this sample we showcase viewpoint transitions and semantic highlighting in XPF network<br><br>
             
-            We load a scene containing an XPF network (see <a href="../xpf-scene/">this example</a>), then we setup 3 different viewpoints using buttons via:<br>
+            We first create an XPF with semantic masks (see <a href="../xpf-basicsem/">this example</a>), then we setup 3 different viewpoints using buttons via:<br>
             <code>ATON.XPFNetwork.requestTransitionToDirection()</code><br><br>
 
-            Note that we use different durations and also different field-of-views while requesting a given viewpoint.
+            We also highlight specific semantic masks when pressing the buttons via:<br>
+            <code>ATON.XPFNetwork.highlightSemanticMaskInCurrentXPF()</code><br><br>
+
+            Since we are programmatically highlighting semantics, we disable ATON queries via:
+            <code>ATON.toggleQueries(false)</code><br><br>
+
+            Note also we are using different durations and different field-of-views while requesting a given viewpoint.
         </div>
         </div>
     </div>

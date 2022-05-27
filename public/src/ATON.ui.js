@@ -25,6 +25,8 @@ UI._setupBase = ()=>{
 
     document.body.oncontextmenu = ()=>{ return false; };
 
+    return;
+
     // Modal popup
     UI._bPopup = false;
     UI.popupBlurBG = 0; // blur 3D canvas on popup show (in pixels), 0 to disable

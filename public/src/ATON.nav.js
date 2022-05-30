@@ -214,7 +214,6 @@ Nav.toggleLocomotionValidator = (b)=>{
 /**
 Add a locomotion node
 They are useful to restrict or constrain navigation into specific 3D locations
-
 @param {number} x
 @param {number} y
 @param {number} z
@@ -290,7 +289,7 @@ Nav.getLocomotionNodeInSight = ()=>{
 /**
 Request transition to a locomotion node
 @param {LocomotionNode} lnode - locomotion node object
-@param {boolean} duration - (optional) transition duration
+@param {number} duration - (optional) transition duration in seconds
 */
 Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
     if (lnode === undefined) return;
@@ -320,7 +319,7 @@ Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
 /**
 Request transition to next locomotion node in sight, if any
 If we have an active XPF network, we use its logic 
-@param {boolean} duration - (optional) transition duration
+@param {number} duration - (optional) transition duration in seconds
 */
 Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
     // If we have an active XPF network, use its logic
@@ -338,6 +337,31 @@ Nav.requestTransitionToLocomotionNodeInSightIfAny = (duration)=>{
     Nav.requestTransitionToLocomotionNode(lnode, duration);
 
     return true;
+};
+
+/**
+Request delta rotation of current viewpoint, typically used in first person mode
+@param {number} hor - factor [-1,1] for horizontal delta rotation (positive: right, negative: left)
+@param {number} vert - factor [-1,1] for vertical delta rotation (positive: up, negative: down)
+@param {number} duration - (optional) transition duration in seconds
+*/
+Nav.requestDeltaRotation = (hor,vert, duration)=>{
+    if (ATON.XR._bPresenting) return;
+
+    let S = new THREE.Vector3();
+    let T = new THREE.Vector3();
+
+    S.crossVectors(Nav._vDir, THREE.Object3D.DefaultUp); // Nav._camera.up
+
+    T.x = Nav._currPOV.target.x + (S.x * hor);
+    T.y = Nav._currPOV.target.y + vert;
+    T.z = Nav._currPOV.target.z + (S.z * hor);
+
+    let P = new ATON.POV();
+    P.setTarget(T);
+    P.setPosition(ATON.Nav._currPOV.pos);
+
+    ATON.Nav.requestPOV(P, duration);
 };
 
 

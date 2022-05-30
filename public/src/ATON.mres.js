@@ -480,7 +480,8 @@ MRes.update = ()=>{
 
     //console.log(MRes._tsTasks);
 
-    let T = MRes._tsTasks.pop(); //.shift(); 
+    //let T = MRes._tsTasks.pop();
+    let T = MRes._tsTasks.shift();
     if (T !== undefined){
         T();
         T = null;

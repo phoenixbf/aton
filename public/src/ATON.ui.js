@@ -177,5 +177,81 @@ UI.popupClose = ()=>{
 
     ATON.focusOn3DView();
 };
+/**
+ * Create a search input field with autocomplete
+ * to search in collections.
+ *
+ * @param {object} options - The options object
+ * @returns {HTMLElement}
+ *
+ * @example
+ * const options = {id:'idScenes',listId:'sidlist',placeholder:'My placeholder'};
+ * const search = UI.createSearch(options);
+ *
+ * document.body.appendChild(search);
+ */
+UI.createSearch = async (options) => {
+    const _populateList = (list, data) => {
+        data.forEach(d => {
+            let option = document.createElement("option");
+            option.setAttribute("value", d.sid);
+            list.appendChild(option); 
+        });
+    }
+    // Use defaults if option values not defined
+    let id = options.id ?? 'idScenes';
+    let className = options.className ?? '';
+    let listId = options.datalist ?? 'sidlist';
+    let placeholder = options.placeholder ?? 'Search by term, user or paste a scene-ID...';
+
+    let wrapper = document.createElement('div');
+    wrapper.id = id;
+    wrapper.className = className;
+
+    let sInput = document.createElement('input');
+    sInput.type = 'text';
+    sInput.list = listId;
+    sinput.placeholder = placeholder;
+
+    let datalist = document.createElement('datalist');
+    datalist.id = listId;
+
+    wrapper.appendChild(sInput);
+
+    const apiPath = ATON.PATH_RESTAPI;
+
+    // Alternative to jQuery: fetch() or axios
+    // TODO check first if fetch() is function
+    // for compatibility with older browsers
+    await UI._fetchData(`${apiPath}scenes`)
+        .then(data => _populateList(datalist, data))
+        .catch(/*Callback on network error*/);
+
+    wrapper.appendChild(datalist);
+
+    // Return a jQuery object (same as native DOM element?)
+    return $(wrapper);
+}
+// TODO move to another module??
+/**
+ * Use the Fetch API to retrieve data
+ * from a remote endpoint
+ *
+ * @param {string} endpoint The fully qualified endpoint URL
+ * @param {object} options Request options object (optional)
+ *
+ * @returns {object} The JS object resulting from parsing the response body as JSON
+ */
+UI._fetchData = async (endPoint, options = null) => {
+
+    let req = new Request(endPoint);
+    if (options !== null) { req = new Request(req, options); }
+
+    let response = await fetch(req);
+    let data = await response.json();
+
+    return data;
+}
+
 
 export default UI;

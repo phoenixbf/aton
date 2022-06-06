@@ -98,7 +98,7 @@ SHU.getScenesSelect = (idselect)=>{
 };
 
 SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput, onData)=>{
-    let htmlcontent = "<input id='sid' type='text' list='sidlist' style='width:100%'>";
+    let htmlcontent = "<input id='sid' type='text' list='sidlist'>";
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         htmlcontent += "<datalist id='sidlist'>";

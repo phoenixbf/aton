@@ -1926,3 +1926,47 @@ video::-webkit-media-controls-start-playback-button {
     pointer-events: none;
     width: 5px;
 }
+
+/* Landing page */
+#idScenes {
+    width:50%;
+    max-width:500px;
+    margin: 1rem auto;
+}
+
+#sid {
+    width: 80%;
+    display:inline-block;
+}
+
+#go-btn {
+    width: 15%;
+    display: inline-block;
+}
+
+#atonLogo {
+	width: 100px;
+	height: auto;
+	display: block;
+	margin: 1rem auto;
+}
+
+.landing-nav {
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+}
+    
+.landing-nav a {
+    display: inline-block;
+}
+
+a[href="/examples"] {
+    background-image: url('/res/icons/samples.png');
+    background-size: contain;
+}
+
+a[href="/shu/scenes"] {
+    background-image: url('/res/icons/user.png');
+    background-size: contain;
+}

@@ -18,6 +18,8 @@ FE.SEMSHAPE_CONVEX = 1;
 
 FE.POPUP_DT = 500; //300;
 
+FE.STD_SEL_RAD = 0.05;
+
 /**
 Initialize Front-end
 */
@@ -117,7 +119,8 @@ FE.addBasicLoaderEvents = ()=>{
         if ( ATON.CC.anyCopyrightFound() ) $("#btn-cc").show();
         
         FE.computeSelectorRanges();
-        if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );
+        //if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );
+        ATON.SUI.setSelectorRadius( Math.min(FE.STD_SEL_RAD,FE._selRefRadius) );
 
         FE._handleHomeReq();
     });

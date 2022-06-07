@@ -885,10 +885,21 @@ XPFNetwork.querySemanticMasks = ()=>{
 /**
 Highlight a specific semantic mask in current XPF.
 You should disable ATON queries via ATON.toggleQueries(false) to use this routine
-@param {string} semid - Semantic mask ID
+@param {string} semid - Semantic mask ID (if undefined clear semantic highlight)
 */
 XPFNetwork.highlightSemanticMaskInCurrentXPF = (semid)=>{
-    if (semid === undefined) return;
+    if (semid === undefined){
+        if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
+
+        XPFNetwork._semCurr = undefined;
+
+        XPFNetwork._uniforms.tSem.value = 0;
+        XPFNetwork._uniforms.shColor.value.w = XPFNetwork._shOpacity;
+
+        XPFNetwork._mat.needsUpdate = true;
+        return;
+    }
+
     if (XPFNetwork._semCurr === semid) return;
 
     let semurl = XPFNetwork.getSemanticMaskURLfromCurrentXPF(semid);
@@ -901,7 +912,6 @@ XPFNetwork.highlightSemanticMaskInCurrentXPF = (semid)=>{
 
     if (XPFNetwork._semCurr !== undefined) ATON.fireEvent("SemanticMaskLeave", XPFNetwork._semCurr);
 };
-
 
 // TODO: Sphera, OPK
 XPFNetwork.loadFromPhotoscanFile = (configfileurl, onComplete)=>{

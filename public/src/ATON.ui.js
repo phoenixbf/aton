@@ -190,7 +190,7 @@ UI.popupClose = ()=>{
  *
  * document.body.appendChild(search);
  */
-UI.createSearch = async (options) => {
+UI.createSearch = (options) => {
 
     // Use defaults if option values not defined
     let id = options.id ?? 'idScenes';
@@ -235,25 +235,15 @@ UI.createSearch = async (options) => {
     // Alternative to jQuery: fetch() or axios
     // TODO check first if fetch() is function
     // for compatibility with older browsers
-    await UI._fetchData(`${ATON.PATH_RESTAPI}scenes`)
+    UI._fetchData(`${ATON.PATH_RESTAPI}scenes`)
         .then(data => UI._populateSceneList(datalist, data));
 
-    // Enable "Go" button if input value is an existing scene id
+    // Enable "Go" button
     sInput.oninput = () => {
-        let valid = false;
-        for (const opt of datalist.options) {
-            if (sInput.value === opt.value) {
-                valid = true;
-                goBtn.disabled = false;
-                goBtn.className += ' atonBTN-green';
-                goBtn.style.cursor = 'pointer';
-                break;
-            }
-        }
-        if (!valid) {
-            goBtn.disabled = true;
-            goBtn.classList.remove('atonBTN-green');
-            goBtn.style.cursor = 'not-allowed';
+        if (sInput.value.length > 3) {
+            goBtn.disabled = false;
+            goBtn.className += ' atonBTN-green';
+            goBtn.style.cursor = 'pointer';
         }
     }
 

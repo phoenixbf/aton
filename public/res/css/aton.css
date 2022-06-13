@@ -1928,6 +1928,7 @@ video::-webkit-media-controls-start-playback-button {
 }
 
 /* Landing page */
+/*
 #idScenes {
     width:50%;
     max-width:500px;
@@ -1950,7 +1951,7 @@ video::-webkit-media-controls-start-playback-button {
 	display: block;
 	margin: 1rem auto;
 }
-
+*/
 .landing-nav {
     position: absolute;
     top: 0.5rem;
@@ -1961,6 +1962,7 @@ video::-webkit-media-controls-start-playback-button {
     display: inline-block;
 }
 
+/*
 a[href="/examples"] {
     background-image: url('/res/icons/samples.png');
     background-size: contain;
@@ -1970,3 +1972,4 @@ a[href="/shu/scenes"] {
     background-image: url('/res/icons/user.png');
     background-size: contain;
 }
+*/

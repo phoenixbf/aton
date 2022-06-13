@@ -1,7 +1,7 @@
 /*
     ATON UI
 
-    author: bruno.fanini_AT_gmail.com
+    authors: bruno.fanini_AT_gmail.com, nicolo.paraciani_AT_cnr.it
 
 ===========================================================*/
 
@@ -177,6 +177,7 @@ UI.popupClose = ()=>{
 
     ATON.focusOn3DView();
 };
+
 /**
  * Create a search input field with autocomplete
  * to search in collections.
@@ -215,20 +216,21 @@ UI.createSearch = (options) => {
     let goBtn = document.createElement('button');
     goBtn.innerHTML = 'Go';
     goBtn.disabled = true;
-    goBtn.onclick = ()=> UI._goToScene(sInput.value);
+    goBtn.onclick = ()=> ATON.Utils.goToScene( sInput.value );
     goBtn.id = 'btn-go';
     // TODO Add css class for disabled button?
     goBtn.className = 'atonBTN';
-    goBtn.style = "display: inline; cursor: not-allowed";
+    goBtn.style = "display:inline; cursor:not-allowed";
 
+/*  Manage outside
     // Go to selected scene when pressing Enter
     // on search input
     sInput.onkeypress = function (e) {
         if (e.keyCode === 13) {
-            UI._goToScene(this.value);
+            ATON.Utils.goToScene( this.value );
         }
     }
-
+*/
     wrapper.appendChild(sInput);
     wrapper.appendChild(goBtn);
 
@@ -280,12 +282,5 @@ UI._populateSceneList = (list, data) => {
         list.appendChild(opt); 
     });
 };
-
-// One liner wrapped in function in case
-// we want to add some logic to it
-UI._goToScene = sid => {
-    // TODO check if scene id exists first?
-    window.location.href = `${ATON.PATH_FE}${sid}`
-}
 
 export default UI;

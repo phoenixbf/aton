@@ -177,5 +177,115 @@ UI.popupClose = ()=>{
 
     ATON.focusOn3DView();
 };
+/**
+ * Create a search input field with autocomplete
+ * to search in collections.
+ *
+ * @param {object} options - The options object
+ * @returns {HTMLElement}
+ *
+ * @example
+ * const options = {id:'idScenes',listId:'sidlist',placeholder:'My placeholder'};
+ * const search = UI.createSearch(options);
+ *
+ * document.body.appendChild(search);
+ */
+UI.createSearch = (options) => {
+
+    // Use defaults if option values not defined
+    let id = options.id ?? 'idScenes';
+    let inputId = options.inputId ?? 'sid';
+    let className = options.className ?? '';
+    let listId = options.datalist ?? 'sidlist';
+    let placeholder = options.placeholder ?? 'Search by term, user or paste a scene-ID...';
+
+    let wrapper = document.createElement('div');
+    wrapper.id = id;
+    if (className !== '') { wrapper.className = className; }
+
+    let sInput = document.createElement('input');
+    sInput.id = inputId;
+    sInput.type = 'text';
+    sInput.setAttribute('list', listId);
+    sInput.placeholder = placeholder;
+
+    let datalist = document.createElement('datalist');
+    datalist.id = listId;
+
+    let goBtn = document.createElement('button');
+    goBtn.innerHTML = 'Go';
+    goBtn.disabled = true;
+    goBtn.onclick = ()=> UI._goToScene(sInput.value);
+    goBtn.id = 'btn-go';
+    // TODO Add css class for disabled button?
+    goBtn.className = 'atonBTN';
+    goBtn.style = "display: inline; cursor: not-allowed";
+
+    // Go to selected scene when pressing Enter
+    // on search input
+    sInput.onkeypress = function (e) {
+        if (e.keyCode === 13) {
+            UI._goToScene(this.value);
+        }
+    }
+
+    wrapper.appendChild(sInput);
+    wrapper.appendChild(goBtn);
+
+    // Alternative to jQuery: fetch() or axios
+    // TODO check first if fetch() is function
+    // for compatibility with older browsers
+    UI._fetchData(`${ATON.PATH_RESTAPI}scenes`)
+        .then(data => UI._populateSceneList(datalist, data));
+
+    // Enable "Go" button
+    sInput.oninput = () => {
+        if (sInput.value.length > 3) {
+            goBtn.disabled = false;
+            goBtn.className += ' atonBTN-green';
+            goBtn.style.cursor = 'pointer';
+        }
+    }
+
+    wrapper.appendChild(datalist);
+
+    return wrapper;
+}
+/**
+ * Use the Fetch API to retrieve data
+ * from a remote endpoint
+ *
+ * @todo Move to another module??
+ *
+ * @param {string} endpoint The fully qualified endpoint URL
+ * @param {object} options Request options object (optional)
+ *
+ * @returns {object} The JS object resulting from parsing the response body as JSON
+ */
+UI._fetchData = async (endPoint, options = null) => {
+
+    let req = new Request(endPoint);
+    if (options !== null) { req = new Request(req, options); }
+
+    let response = await fetch(req);
+    let data = await response.json();
+
+    return data;
+}
+
+UI._populateSceneList = (list, data) => {
+    data.forEach(d => {
+        let opt = document.createElement("option");
+        opt.setAttribute("value", d.sid);
+        list.appendChild(opt); 
+    });
+};
+
+// One liner wrapped in function in case
+// we want to add some logic to it
+UI._goToScene = sid => {
+    // TODO check if scene id exists first?
+    window.location.href = `${ATON.PATH_FE}${sid}`
+}
 
 export default UI;

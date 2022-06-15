@@ -141,6 +141,26 @@ ATON._onUserInteraction = ()=>{
     }
 };
 
+// Auth
+ATON.checkAuth = (onLogged, onNotLogged)=>{
+    $.ajax({
+        type: 'GET',
+        url: ATON.PATH_RESTAPI+"user",
+        xhrFields: { withCredentials: true },            
+        dataType: 'json',
+
+        success: (data)=>{
+            if (data !== undefined) onLogged(data);
+            else onNotLogged();
+        },
+
+        error: ()=>{
+            if (onNotLogged) onNotLogged();
+        }
+    });
+};
+
+
 ATON._setupBaseListeners = ()=>{
     let el = ATON._renderer.domElement;
 

@@ -647,8 +647,10 @@ app.post("/api/login", (req,res,next)=>{
 app.get('/api/logout', (req, res)=>{
 	console.log(req.user);
 
-	req.logout();
-	res.send(true);
+	req.logout((err)=>{
+		if (err) console.log(err);
+		res.send(true);
+	});
 });
 
 /**

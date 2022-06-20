@@ -1109,6 +1109,23 @@ ATON.recomputeSceneBounds = ( ubs )=>{
     if (ATON._mMainPano) ATON._mMainPano.position.copy(ATON.bounds.center);
 };
 
+/**
+Register a node resource handler for a given extension
+@param {string} ext - the file extension (e.g. "ifc")
+@param {function} routine - handler with ATON node argument
+@example
+ATON.registerNodeResourceHandler("ifc", (N)=>{
+    // do stuff
+    N.add( resource );
+});
+*/
+ATON.registerNodeResourceHandler = (ext, routine)=>{
+    if (!ATON._resHandler) ATON._resHandler = {};
+
+    ATON._resHandler[ext] = routine;
+    console.log("Registered handler for extension: "+ext);
+};
+
 
 ATON.initGraphs = ()=>{
     // Global root

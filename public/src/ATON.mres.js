@@ -473,10 +473,7 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    if (ATON.Nav.isTransitioning()) return;
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav._dOri > MRes.THRES_ORI) return;
-    if (ATON.Nav._dPos > MRes.THRES_POS) return;
+    if ( !MRes.canRequestRefinement() ) return;
 
     //console.log(MRes._tsTasks);
 
@@ -486,6 +483,15 @@ MRes.update = ()=>{
         T();
         T = null;
     }
+};
+
+MRes.canRequestRefinement = ()=>{
+    if (ATON.Nav.isTransitioning()) return false;
+    //if (ATON.Nav._bInteracting) return;
+    if (ATON.Nav._dOri > MRes.THRES_ORI) return false;
+    if (ATON.Nav._dPos > MRes.THRES_POS) return false;
+
+    return true;
 };
 
 export default MRes;

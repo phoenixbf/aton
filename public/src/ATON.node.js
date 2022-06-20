@@ -624,8 +624,10 @@ load(url, onComplete){
 
     let N = this;
 
+    let ext = ATON.Utils.getFileExtension(url);
+
     // Tileset
-    if ( url.endsWith(".json") ){
+    if ( ext === "json" ){
         ATON.MRes.loadTileSetFromURL(url, N);
         //ATON._bqScene = true;
         if (onComplete) onComplete();
@@ -633,7 +635,7 @@ load(url, onComplete){
     }
 
     // IFC
-    if ( url.endsWith(".ifc") ){
+    if ( ext === "ifc" ){
         // TODO:
 /*
         ATON._ifcLoader.load(url, (ifcmodel)=>{
@@ -649,6 +651,11 @@ load(url, onComplete){
             if (onComplete) onComplete();
         });
 */
+        return N;
+    }
+
+    if ( ATON._resHandler && ATON._resHandler[ext] ){
+        ATON._resHandler[ext]( N );
         return N;
     }
 

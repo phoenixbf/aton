@@ -654,8 +654,9 @@ load(url, onComplete){
         return N;
     }
 
+    // Check custom resource handler for given extension if any
     if ( ATON._resHandler && ATON._resHandler[ext] ){
-        ATON._resHandler[ext]( N );
+        ATON._resHandler[ext]( url, N );
         return N;
     }
 

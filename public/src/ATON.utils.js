@@ -219,6 +219,8 @@ Utils.URLify = (string)=>{
 };
 
 Utils.resolveCollectionURL = (url)=>{
+    if (!url) return "";
+
     if (ATON._collMod) url = ATON._collMod(url);
 
     if (url.startsWith("http")) return url;

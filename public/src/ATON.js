@@ -42,6 +42,7 @@ import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
+//import NX from "./_prv/ATON.nx.js";
 
 // Classes
 ATON.Node       = Node;
@@ -70,6 +71,7 @@ ATON.App        = App;
 ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
 ATON.MRes       = MRes;
+//ATON.NX         = NX;
 
 //==============================================================
 // Consts
@@ -677,6 +679,9 @@ ATON.realize = ( bNoRender )=>{
     // XPF-Network
     ATON.XPFNetwork.init();
 
+    // NX
+    //ATON.NX.init();
+
     // FX Composer setup
     if (!ATON.device.lowGPU && !ATON.device.isMobile) ATON.FX.init();
     
@@ -1112,10 +1117,10 @@ ATON.recomputeSceneBounds = ( ubs )=>{
 /**
 Register a node resource handler for a given extension
 @param {string} ext - the file extension (e.g. "ifc")
-@param {function} routine - handler with ATON node argument
+@param {function} routine - handler consuming the resource url and ATON node argument hosting the final resource
 @example
-ATON.registerNodeResourceHandler("ifc", (N)=>{
-    // do stuff
+ATON.registerNodeResourceHandler("ifc", ( resurl, N )=>{
+    // do stuff to load "resurl" into a THREE resource object
     N.add( resource );
 });
 */

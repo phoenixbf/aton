@@ -90,7 +90,7 @@
     "sharp": "^0.30.6",
     "socket.io": "^4.5.1",
     "three": "0.141.0",
-    "three-mesh-bvh": "0.5.12",
+    "three-mesh-bvh": "0.5.14",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

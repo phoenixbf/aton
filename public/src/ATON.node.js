@@ -812,7 +812,12 @@ loadCesiumIONAsset( ionAssID ){
     return this;
 }
 
-// TODO:
+/**
+Load a SketchFab asset. If not set, a prompt will ask for a valid token
+@param {string} skfAssID - the asset ID on SketchFab
+@example
+myNode.loadSketchfabAsset("62662d27c94d4994b2479b8de3a66ca7")
+*/
 loadSketchfabAsset( skfAssID ){
     let tok = ATON.getAPIToken("sketchfab");
     let N = this;
@@ -843,12 +848,20 @@ loadSketchfabAsset( skfAssID ){
             ATON.setAPIToken("sketchfab",tok);
             console.log(data);
 
+            if (data.glb){
+                let url = data.glb.url;
+
+                N.load( url );
+                return N;
+            }
+/*
             if (data.gltf){
                 let zipurl = data.gltf.url;
                 // TODO:
                 //N.load(...);
                 return N;
             }
+*/
         });
 
     return this;

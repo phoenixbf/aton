@@ -829,7 +829,7 @@ loadSketchfabAsset( skfAssID ){
         if (tok == null || tok == "") return this;
     }
 
-    console.log(tok)
+    //console.log(tok)
 
     let url = "https://api.sketchfab.com/v3/models/"+skfAssID+"/download";
     let options = {
@@ -846,7 +846,8 @@ loadSketchfabAsset( skfAssID ){
             return response.json();
         }).then(function(data){
             ATON.setAPIToken("sketchfab",tok);
-            console.log(data);
+            
+            //console.log(data);
 
             if (data.glb){
                 let url = data.glb.url;

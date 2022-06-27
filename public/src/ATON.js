@@ -525,8 +525,8 @@ ATON.realize = ( bNoRender )=>{
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
-    ATON._bDynamicDensity = false; //true;
-    ATON._dRenderBudgetMinFPS = 25.0;
+    ATON._bDynamicDensity = true;
+    ATON._dRenderBudgetMinFPS = 20.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
 
     ATON._aniMixers = [];
@@ -1810,7 +1810,7 @@ ATON.toggleDynamicDensity = (b)=>{
 };
 
 /**
-Set dynamic rendering FPS budgets. Default values are 30 and 55
+Set dynamic rendering FPS budgets. Default values are 20 and 55
 @param {number} minBudget - the lower bound to trigger a lower rendering profile
 @param {number} maxBudget - the upper bound to trigger a higher rendering profile
 */
@@ -1829,15 +1829,15 @@ ATON._handleDynamicRenderProfiles = ()=>{
     if (ATON._fps < ATON._dRenderBudgetMinFPS){
 
         if (ATON._bDynamicDensity){ // Dynamic density
-            d *= 0.8;
-            if (d >= 0.2){
+            d -= 0.1;
+            if (d >= 0.3){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass
                 //ATON.updateFXPassesResolution(d);
                 if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
 
-                console.log(d);
+                console.log("Density: "+d.toPrecision(2));
             }
         }
 
@@ -1851,15 +1851,15 @@ ATON._handleDynamicRenderProfiles = ()=>{
     if (ATON._fps > ATON._dRenderBudgetMaxFPS){
 
         if (ATON._bDynamicDensity){ // Dynamic density
-            d *= 1.25;
-            if (d <= ATON._stdpxd){
+            d += 0.1;
+            if (d <= 1.5){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass
                 //ATON.updateFXPassesResolution(d);
                 if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
 
-                console.log(d);
+                console.log("Density: "+d.toPrecision(2));
             }
         }
 

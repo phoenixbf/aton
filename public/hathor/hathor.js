@@ -355,8 +355,9 @@ HATHOR.uiSetup = ()=>{
 
         //ATON.on("frame", ()=>{
         ATON.addUpdateRoutine(()=>{
+            let d = ATON._renderer.getPixelRatio().toPrecision(2);
             let fps = parseInt(ATON._fps);
-            $("#idFPS").html(fps);
+            $("#idFPS").html("fps:"+fps+", d:"+d);
         });
     }
 };

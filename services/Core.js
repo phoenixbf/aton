@@ -88,8 +88,13 @@ Core.logYellow = (str)=>{
 // Default main config
 Core.CONF_MAIN = {
 	data: {
-		//collections: "",
-		//scenes: ""
+/*
+		collections: "",
+		scenes: "",
+		patterns: {
+			models: "*.gltf,*.glb,*.json"
+		}
+*/
 	},
 
 	services: {
@@ -170,6 +175,12 @@ Core.init = ()=>{
 
 	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
+
+	Core.mpattern = "*.gltf,*.glb,*.json";
+	if (Core.config.data && Core.config.data.patterns && Core.config.data.patterns.models){
+		Core.mpattern = Core.config.data.patterns.models;
+		console.log("Custom models pattern: "+Core.mpattern);
+	}
 
 	Core.touchUserCollectionFolders();
 

@@ -29,10 +29,14 @@
 window.addEventListener( 'load', ()=>{
 
     // A sample SketchFab asset-ID
-    const skfAssetID = "ca77ae1351ca4b1c9a7d403e09e1c4af";
+    let skfAssetID = "ca77ae1351ca4b1c9a7d403e09e1c4af";
 
     // Realize the base front-end
     ATON.FE.realize();
+
+    // Custom asset ID
+    let m = ATON.FE.urlParams.get('m');
+    if (m) skfAssetID = m;
 
     // Create some HTML UI
 	ATON.FE.uiAddButtonHome("idTopToolbar");

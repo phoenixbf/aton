@@ -227,6 +227,28 @@ Utils.resolveCollectionURL = (url)=>{
     return ATON.PATH_COLLECTION+url;
 };
 
+Utils.tryLoadFromService = (url, N)=>{
+    if (!N) return false;
+
+    if (url.startsWith("https://cesium.com/ion/assets/")){
+        let vv = url.split("/");
+        let assid = vv[vv.length - 1];
+
+        N.loadCesiumIONAsset(assid);
+        return true;
+    }
+
+    if (url.startsWith("https://sketchfab.com/3d-models/")){
+        let vv = url.split("-");
+        let assid = vv[vv.length - 1];
+        
+        N.loadSketchfabAsset(assid);
+        return true;
+    }
+
+    return false;
+};
+
 // JSON post utility
 Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     $.ajax({

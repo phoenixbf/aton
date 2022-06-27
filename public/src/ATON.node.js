@@ -619,11 +619,17 @@ myNode.load("mymodel.gltf", ()=>{ console.log("completed!") })
 */
 load(url, onComplete){
     if (url === undefined) return this;
+    
+    let N = this;
 
     url = ATON.Utils.resolveCollectionURL(url);
 
-    let N = this;
-
+    // Try load from known services/platforms
+    if (ATON.Utils.tryLoadFromService(url, N)){
+        if (onComplete) onComplete();
+        return N;
+    }
+    
     let ext = ATON.Utils.getFileExtension(url);
 
     // Tileset

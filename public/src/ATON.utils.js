@@ -143,6 +143,7 @@ Utils.profileRenderingCapabilities = ()=>{
 
     if (!rcc.isWebGL2) ATON.device.lowGPU = true;
     if (rcc.maxTextureSize < 8192) ATON.device.lowGPU = true;
+    if (rcc.maxCubemapSize < 4096) ATON.device.lowGPU = true;
 
     console.log(rcc);
 };

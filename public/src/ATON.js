@@ -528,6 +528,9 @@ ATON.realize = ( bNoRender )=>{
     ATON._bDynamicDensity = true;
     ATON._dRenderBudgetMinFPS = 20.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
+    ATON._ddMin = 0.3;
+    ATON._ddMax = 1.5;
+    if (ATON.device.lowGPU) ATON._ddMax = 1.0;
 
     ATON._aniMixers = [];
     
@@ -1830,7 +1833,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
 
         if (ATON._bDynamicDensity){ // Dynamic density
             d -= 0.1;
-            if (d >= 0.3){
+            if (d >= ATON._ddMin){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass
@@ -1852,7 +1855,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
 
         if (ATON._bDynamicDensity){ // Dynamic density
             d += 0.1;
-            if (d <= 1.5){
+            if (d <= ATON._ddMax){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass

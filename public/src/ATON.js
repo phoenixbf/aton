@@ -526,12 +526,15 @@ ATON.realize = ( bNoRender )=>{
     ATON._avgFPS = 60.0;
 
     ATON._bDynamicDensity = true;
-    ATON._dRenderBudgetMinFPS = 20.0;
+    ATON._dRenderBudgetMinFPS = 25.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
     ATON._ddMin = 0.3;
     ATON._ddMax = 1.5;
     if (ATON.device.lowGPU) ATON._ddMax = 1.0;
-
+/*
+    ATON._ddEST = 0.0;
+    ATON._ddC   = 0;
+*/
     ATON._aniMixers = [];
     
     ATON._stdEncoding = THREE.LinearEncoding; // THREE.sRGBEncoding;
@@ -1692,6 +1695,7 @@ ATON.toggleShadows = (b)=>{
 
     if (b){
         if (ATON.XR.isPresenting()) return; // do not enable for XR
+        if (ATON.device.lowGPU) return; // do not enable on low-profile devices
 
         ATON._dMainL.castShadow = true;
         ATON._renderer.shadowMap.enabled = true;
@@ -1813,7 +1817,7 @@ ATON.toggleDynamicDensity = (b)=>{
 };
 
 /**
-Set dynamic rendering FPS budgets. Default values are 20 and 55
+Set dynamic rendering FPS budgets. Default values are 25 and 55
 @param {number} minBudget - the lower bound to trigger a lower rendering profile
 @param {number} maxBudget - the upper bound to trigger a higher rendering profile
 */
@@ -1869,6 +1873,11 @@ ATON._handleDynamicRenderProfiles = ()=>{
         ATON.fireEvent("RequestHigherRender");
         //console.log("Can request higher render profile");
     }
+/*
+    ATON._ddC++;
+    ATON._ddEST += d;
+    console.log(ATON._ddEST / ATON._ddC);
+*/
 };
 
 //==============================================================

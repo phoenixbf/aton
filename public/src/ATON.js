@@ -1835,7 +1835,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
     // We need lower RP
     if (ATON._fps < ATON._dRenderBudgetMinFPS){
 
-        if (ATON._bDynamicDensity){ // Dynamic density
+        if (ATON._bDynamicDensity && !ATON.XR._bPresenting){ // Dynamic density
             d -= 0.1;
             if (d >= ATON._ddMin){
                 ATON._renderer.setPixelRatio( d );
@@ -1847,7 +1847,13 @@ ATON._handleDynamicRenderProfiles = ()=>{
                 console.log("Density: "+d.toPrecision(2));
             }
         }
-
+/*
+        if (ATON.XR._bPresenting){
+            let et = ATON.MRes.getTSetsErrorTarget();
+            et += 1.0;
+            ATON.MRes.setTSetsErrorTarget(et);
+        }
+*/
         //ATON.toggleShadows(false);
 
         ATON.fireEvent("RequestLowerRender");
@@ -1857,7 +1863,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
     // Can go higher RP
     if (ATON._fps > ATON._dRenderBudgetMaxFPS){
 
-        if (ATON._bDynamicDensity){ // Dynamic density
+        if (ATON._bDynamicDensity && !ATON.XR._bPresenting){ // Dynamic density
             d += 0.1;
             if (d <= ATON._ddMax){
                 ATON._renderer.setPixelRatio( d );
@@ -1869,7 +1875,13 @@ ATON._handleDynamicRenderProfiles = ()=>{
                 console.log("Density: "+d.toPrecision(2));
             }
         }
-
+/*
+        if (ATON.XR._bPresenting){
+            let et = ATON.MRes.getTSetsErrorTarget();
+            et -= 1.0;
+            if (et > 1.0) ATON.MRes.setTSetsErrorTarget(et);
+        }
+*/
         ATON.fireEvent("RequestHigherRender");
         //console.log("Can request higher render profile");
     }

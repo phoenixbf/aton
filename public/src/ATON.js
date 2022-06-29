@@ -525,12 +525,14 @@ ATON.realize = ( bNoRender )=>{
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
-    ATON._bDynamicDensity = true;
     ATON._dRenderBudgetMinFPS = 25.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
-    ATON._ddMin = 0.3;
-    ATON._ddMax = 1.5;
-    if (ATON.device.lowGPU) ATON._ddMax = 1.0;
+
+    // Adaptive Density
+    ATON._bAdaptiveDensity = true;
+    ATON._adMin = 0.3;
+    ATON._adMax = 1.5;
+    if (ATON.device.lowGPU) ATON._adMax = 1.0;
 /*
     ATON._ddEST = 0.0;
     ATON._ddC   = 0;
@@ -1812,8 +1814,8 @@ ATON._markFPS = ()=>{
 Enable or disable dynamic density for renderer
 @param {function} b - bool
 */
-ATON.toggleDynamicDensity = (b)=>{
-    ATON._bDynamicDensity = b;
+ATON.toggleAdaptiveDensity = (b)=>{
+    ATON._bAdaptiveDensity = b;
 };
 
 /**
@@ -1835,9 +1837,9 @@ ATON._handleDynamicRenderProfiles = ()=>{
     // We need lower RP
     if (ATON._fps < ATON._dRenderBudgetMinFPS){
 
-        if (ATON._bDynamicDensity && !ATON.XR._bPresenting){ // Dynamic density
+        if (ATON._bAdaptiveDensity && !ATON.XR._bPresenting){ // Dynamic density
             d -= 0.1;
-            if (d >= ATON._ddMin){
+            if (d >= ATON._adMin){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass
@@ -1863,9 +1865,9 @@ ATON._handleDynamicRenderProfiles = ()=>{
     // Can go higher RP
     if (ATON._fps > ATON._dRenderBudgetMaxFPS){
 
-        if (ATON._bDynamicDensity && !ATON.XR._bPresenting){ // Dynamic density
+        if (ATON._bAdaptiveDensity && !ATON.XR._bPresenting){ // Dynamic density
             d += 0.1;
-            if (d <= ATON._ddMax){
+            if (d <= ATON._adMax){
                 ATON._renderer.setPixelRatio( d );
 
                 // change res to each pass

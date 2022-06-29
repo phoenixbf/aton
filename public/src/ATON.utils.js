@@ -39,12 +39,6 @@ Utils.init = ()=>{
     Utils.stats = {};
     Utils.stats.numVertices = 0;
     Utils.stats.numTris     = 0;
-
-    // TSets
-    Utils.tsSchedCB = func => {
-        //setTimeout( func, 50);
-        ATON._tsTasks.push( func );
-    };
 };
 
 Utils.generateID = (prefix)=>{

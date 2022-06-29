@@ -15,7 +15,7 @@ const obj2gltf = require('obj2gltf');
 const gltfPipeline = require('gltf-pipeline');
 const processGltf = gltfPipeline.processGltf;
 
-const Jimp   = require('jimp');
+//const Jimp   = require('jimp');
 const sharp  = require('sharp');
 const imSize = require('image-size');
 

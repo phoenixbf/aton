@@ -525,12 +525,12 @@ ATON.realize = ( bNoRender )=>{
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
-    ATON._dRenderBudgetMinFPS = 25.0;
+    ATON._dRenderBudgetMinFPS = 20.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
 
     // Adaptive Density
     ATON._bAdaptiveDensity = true;
-    ATON._adMin = 0.3;
+    ATON._adMin = 0.4;
     ATON._adMax = 1.5;
     if (ATON.device.lowGPU) ATON._adMax = 1.0;
 /*
@@ -1819,7 +1819,7 @@ ATON.toggleAdaptiveDensity = (b)=>{
 };
 
 /**
-Set dynamic rendering FPS budgets. Default values are 25 and 55
+Set dynamic rendering FPS budgets. Default values are 20 and 55
 @param {number} minBudget - the lower bound to trigger a lower rendering profile
 @param {number} maxBudget - the upper bound to trigger a higher rendering profile
 */

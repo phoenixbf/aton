@@ -68,7 +68,7 @@
     "fs-extra": "^10.1.0",
     "glob": "^8.0.3",
     "gltf-bounding-box": "^0.4.1",
-    "gltf-pipeline": "^3.0.4",
+    "gltf-pipeline": "^3.0.5",
     "html-minifier": "^4.0.0",
     "http": "0.0.0",
     "http-proxy-middleware": "^2.0.6",

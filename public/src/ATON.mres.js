@@ -38,6 +38,7 @@ MRes.init = ()=>{
     MRes.estimateTSErrorTarget();
 
     MRes._tsuSync = 0;
+    MRes.bMotion = false;
 
     MRes._bPCs = false; // Any PointCloud
 
@@ -473,7 +474,16 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    if ( !MRes.canRequestRefinement() ) return;
+    //if ( !MRes.canRequestRefinement() ) return;
+
+    MRes.bMotion = true;
+
+    if (ATON.Nav.isTransitioning()) return;
+    //if (ATON.Nav._bInteracting) return;
+    if (ATON.Nav._dOri > MRes.THRES_ORI) return;
+    if (ATON.Nav._dPos > MRes.THRES_POS) return;
+
+    MRes.bMotion = false;
 
     //console.log(MRes._tsTasks);
 

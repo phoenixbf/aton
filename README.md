@@ -80,7 +80,7 @@ Main bibliographical reference (open access) of the framework is:
 
 *Fanini, B., Ferdani, D., Demetrescu, E., Berto, S., & d’Annibale, E. (2021). [ATON: An Open-Source Framework for Creating Immersive, Collaborative and Liquid Web-Apps for Cultural Heritage](https://www.mdpi.com/2076-3417/11/22/11062). Applied Sciences, 11(22), 11062.*
 
-You can find [here](http://osiris.itabc.cnr.it/aton/index.php/publications/) a complete list of publications where ATON was employed.
+You can find [here](http://osiris.itabc.cnr.it/aton/index.php/publications/) a complete list of publications where ATON was employed in different national and international projects.
 
 # Contribute
-You are more than welcome to contribute to the project by spotting bugs/issues and providing code or solutions through pull requests to fix or improve ATON functionalities. Get in touch here, on the [telegram open-group](https://t.me/ATON_Framework) or through the other channels.
+You are more than welcome to contribute to the project by spotting bugs/issues and providing code or solutions through pull requests to fix or improve ATON functionalities. Get in touch here on github, through the [telegram open-group](https://t.me/ATON_Framework) or through the other channels.

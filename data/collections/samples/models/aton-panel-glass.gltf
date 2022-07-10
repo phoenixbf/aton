@@ -109,8 +109,7 @@
 		{
 			"name": "M_atonCube-trans",
 			
-			"doubleSided" : true,
-			"alphaMode": "BLEND",
+			"doubleSided" : false,
 			
 			"pbrMetallicRoughness":{
 				"baseColorTexture":

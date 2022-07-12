@@ -233,6 +233,14 @@ Utils.tryLoadFromService = (url, N)=>{
         return true;
     }
 
+    if (url.startsWith("https://assets.cesium.com/")){
+        let vv = url.split("/");
+        let assid = vv[vv.length - 2];
+
+        N.loadCesiumIONAsset(assid);
+        return true;
+    }
+
     if (url.startsWith("https://sketchfab.com/3d-models/")){
         let vv = url.split("-");
         let assid = vv[vv.length - 1];

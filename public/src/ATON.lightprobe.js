@@ -19,7 +19,7 @@ class LightProbe {
 constructor(res, near, far){
     this.pos = new THREE.Vector3(0,0,0);
 
-    this._res  = (res !== undefined)?  res  : 64;
+    this._res  = (res !== undefined)?  res  : 128;
     this._near = (near !== undefined)? near : 1.0;
     this._far  = (far !== undefined)?  far  : ATON.Nav.STD_FAR;
 

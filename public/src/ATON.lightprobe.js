@@ -98,8 +98,8 @@ update(){
     }
 */
 
-// CC approach (still wrong sides)
-/*
+    // CC approach (in some rare cases cubecam faces are still messed up)
+
     if (this._CC === undefined){
         this._createCCtarget();
 
@@ -121,7 +121,7 @@ update(){
     // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
     //this._CC.position.set(-this.pos.x, this.pos.y, this.pos.z);
 
-    // FIXME: this is an hack workaround wrong (mirrored) CubeCamera capture
+    // FIXME: this is an old hack workaround wrong (mirrored) CubeCamera capture
     //ATON._mainRoot.scale.x = -1;
     this._CC.update( ATON._renderer, ATON._mainRoot );
     //ATON._mainRoot.scale.x = 1;
@@ -141,10 +141,9 @@ update(){
     this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
 
     if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
-*/
 
-    // fromScene method
-
+    // fromScene method (robust but requires hack to temp. move scene before capture)
+/*
     ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
     //ATON._mainRoot.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
     ATON._render();
@@ -155,7 +154,7 @@ update(){
     if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
 
     //console.log(ATON._rootVisibleGlobal)
-
+*/
     return this;
 }
 

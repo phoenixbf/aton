@@ -143,6 +143,15 @@ ATON._onUserInteraction = ()=>{
     }
 };
 
+/* TODO: plugin
+ATON.addRay = (jspath)=>{
+    let s = document.createElement('script');
+    s.setAttribute('src', jspath);
+    s.async = false;
+    document.body.appendChild(s);
+};
+*/
+
 // Auth
 ATON.checkAuth = (onLogged, onNotLogged)=>{
     $.ajax({

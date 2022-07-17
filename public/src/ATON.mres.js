@@ -476,14 +476,8 @@ MRes.update = ()=>{
 */
     //if ( !MRes.canRequestRefinement() ) return;
 
-    MRes.bMotion = true;
-
-    if (ATON.Nav.isTransitioning()) return;
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav._dOri > MRes.THRES_ORI) return;
-    if (ATON.Nav._dPos > MRes.THRES_POS) return;
-
-    MRes.bMotion = false;
+    MRes.bMotion = MRes.detectMotion();
+    if (MRes.bMotion) return;
 
     //console.log(MRes._tsTasks);
 
@@ -495,13 +489,15 @@ MRes.update = ()=>{
     }
 };
 
-MRes.canRequestRefinement = ()=>{
-    if (ATON.Nav.isTransitioning()) return false;
-    //if (ATON.Nav._bInteracting) return;
-    if (ATON.Nav._dOri > MRes.THRES_ORI) return false;
-    if (ATON.Nav._dPos > MRes.THRES_POS) return false;
+MRes.detectMotion = ()=>{
+    //if (ATON.Nav.isTransitioning()) return true;
 
-    return true;
+    ///if (ATON.Nav._bInteracting) return true;
+
+    if (ATON.Nav._dOri > MRes.THRES_ORI) return true;
+    if (ATON.Nav._dPos > MRes.THRES_POS) return true;
+
+    return false;
 };
 
 export default MRes;

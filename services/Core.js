@@ -97,6 +97,11 @@ Core.CONF_MAIN = {
 */
 	},
 
+/*	Additional scripts to load for Hathor front-end
+	hathor:{
+		scripts: []
+	},
+*/
 	services: {
 		main: {
 			PORT: 8080,		// main ATON port

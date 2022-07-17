@@ -96,9 +96,10 @@ app.get(/^\/s\/(.*)$/, (req,res,next)=>{
 	if (S){
 		if (S.title) d.title = S.title;
 		d.appicon = "/api/cover/"+d.sid;
+		d.scripts = [];
+		if (Core.config.hathor && Core.config.hathor.scripts) d.scripts = Core.config.hathor.scripts;
 	}
 
-	console.log(d)
 	res.render("hathor/index", d);
 });
 

@@ -69,6 +69,7 @@ HATHOR.init = (sid)=>{
     // POVs
     HATHOR._cPOVind = undefined;
     HATHOR._povs = [];
+    HATHOR._povLoopD = undefined;
 
     HATHOR.uiSetup();
     HATHOR.suiSetup();
@@ -82,8 +83,36 @@ HATHOR.init = (sid)=>{
 
     //ATON._bPauseQuery = true;
     //ATON.setTimedGazeDuration(2.0);
+
+    ATON.addUpdateRoutine( HATHOR.update );
+
+    let autonav = ATON.FE.urlParams.get("autonav");
+    if (autonav) HATHOR.enableAutoNav( parseFloat(autonav) );
 };
 
+HATHOR.update = ()=>{
+
+    if (ATON._numReqLoad < 1){
+        if (HATHOR._povLoopD !== undefined){
+            if (!ATON.Nav.isTransitioning()) HATHOR.povNext();
+        }
+    }
+
+    if (HATHOR.paramFPS){
+        let d = ATON._renderer.getPixelRatio().toPrecision(2);
+        let fps = parseInt(ATON._fps);
+        $("#idProf").html("fps: "+fps+"<br>d: "+d);
+    }
+
+    // continuous point
+/*
+    if (!ATON.FE._bPopup){
+        if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown){
+            ATON.SemFactory.addSurfaceConvexPoint();
+        }
+    }
+*/
+};
 
 
 // Front-end UI
@@ -351,14 +380,7 @@ HATHOR.uiSetup = ()=>{
     $("#btn-next").hide();
 
     if (HATHOR.paramFPS){
-        $("#idTopToolbar").append("<div id='idFPS' style='top:5px;right:5px;position:fixed;'></div>");
-
-        //ATON.on("frame", ()=>{
-        ATON.addUpdateRoutine(()=>{
-            let d = ATON._renderer.getPixelRatio().toPrecision(2);
-            let fps = parseInt(ATON._fps);
-            $("#idFPS").html("fps:"+fps+", d:"+d);
-        });
+        $("#idTopToolbar").append("<div id='idProf' style='top:5px;right:5px;position:fixed;'></div>");
     }
 };
 
@@ -903,15 +925,6 @@ HATHOR.setupEventHandlers = ()=>{
     //setInterval(HATHOR._update, 100);
 };
 
-// TODO: Main HATHOR update routine
-HATHOR._update = ()=>{
-    if (ATON.FE._bPopup) return;
-
-    if (HATHOR._selMode === HATHOR.SELACTION_ADDCONVEXPOINT && ATON._bPointerDown){
-        ATON.SemFactory.addSurfaceConvexPoint();
-    }
-};
-
 // Tasks
 HATHOR.finalizeCurrentTask = ()=>{
     if (ATON.SemFactory.isBuildingShape()){
@@ -958,27 +971,44 @@ HATHOR.measure = ()=>{
 
 
 // POVs
+HATHOR.enableAutoNav = (dur)=>{
+    HATHOR._povLoopD = dur;
+    ATON.Nav.setUserControl(false);
+};
+
+HATHOR.disableAutoNav = ()=>{
+    HATHOR._povLoopD = undefined;
+    ATON.Nav.setUserControl(true);
+};
+
 HATHOR.povNext = ()=>{
     let numpovs = HATHOR._povs.length;
     if (numpovs < 1) return;
 
-    HATHOR._cPOVind = (HATHOR._cPOVind + 1) % numpovs;
+    if (HATHOR._cPOVind === undefined) HATHOR._cPOVind = 0;
+    else HATHOR._cPOVind = (HATHOR._cPOVind + 1) % numpovs;
 
     let pov = HATHOR._povs[HATHOR._cPOVind];
 
     let dur = (ATON.XR._bPresenting)? ATON.XR.STD_TELEP_DURATION : 1.0;
+    if (HATHOR._povLoopD !== undefined) dur = HATHOR._povLoopD;
+
     ATON.Nav.requestPOV(pov, dur);
 };
 HATHOR.povPrev = ()=>{
     let numpovs = HATHOR._povs.length;
     if (numpovs < 1) return;
 
-    HATHOR._cPOVind = (HATHOR._cPOVind - 1);
+    if (HATHOR._cPOVind === undefined) HATHOR._cPOVind = (numpovs-1);
+    else HATHOR._cPOVind = (HATHOR._cPOVind - 1);
+    
     if (HATHOR._cPOVind<0) HATHOR._cPOVind = (numpovs-1);
 
     let pov = HATHOR._povs[HATHOR._cPOVind];
 
     let dur = (ATON.XR._bPresenting)? ATON.XR.STD_TELEP_DURATION : 1.0;
+    if (HATHOR._povLoopD !== undefined) dur = HATHOR._povLoopD;
+
     ATON.Nav.requestPOV(pov, dur);
 };
 
@@ -996,7 +1026,7 @@ HATHOR.uiUpdatePOVs = ()=>{
     //console.log(HATHOR._povs);
 
     if (HATHOR._povs.length>0){
-        HATHOR._cPOVind = 0;
+        HATHOR._cPOVind = undefined;
         $("#btn-prev").show();
         $("#btn-next").show();
     }

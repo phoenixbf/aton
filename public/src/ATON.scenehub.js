@@ -317,7 +317,7 @@ SceneHub.initBaseParsers = ()=>{
                 for (let k in lps.list){
                     let lp = lps.list[k];
 
-                    let LP = new ATON.LightProbe();
+                    let LP = new ATON.LightProbe( lp.res );
 
                     if (lp.pos) LP.setPosition(
                         parseFloat(lp.pos[0]),

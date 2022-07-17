@@ -45,6 +45,10 @@
     <script type="text/javascript" src="../dist/ATON.min.js"></script>
 -->
 
+    <% scripts.forEach(function(js){ %>
+        <script src="<%= js %>"></script>
+    <% }); %>
+
      <script type="text/javascript" src="/hathor/hathor.js"></script>
      <script>
         // We init Hathor onload

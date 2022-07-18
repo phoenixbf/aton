@@ -518,7 +518,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         }
         else A._auTalk.stop();
 */
-        if (A._auTalk.isPlaying) A._auTalk.stop();
+        //if (A._auTalk.isPlaying) A._auTalk.stop();
 
         ATON.AudioHub._loader.load( audioURL, (buffer)=>{
             A._auTalk.setBuffer( buffer );

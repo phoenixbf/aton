@@ -1,7 +1,7 @@
 /*
     ATON UI
 
-    authors: bruno.fanini_AT_gmail.com, nicolo.paraciani_AT_cnr.it
+    authors: bruno.fanini_AT_cnr.it, nicolo.paraciani_AT_cnr.it
 
 ===========================================================*/
 

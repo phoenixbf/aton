@@ -406,6 +406,7 @@ _handleTalk(){
 
     au.onended = ()=>{
         this._bPlayingAudio = false;
+        au = null;
         //console.log("finished playing chunk");
     };
 

@@ -529,8 +529,8 @@ ATON.realize = ( bNoRender )=>{
     // Framerate management
     ATON._fps = 60.0;
     ATON._dt  = 0.01;
-    ATON._dtAccum     = 0.0;
-    ATON._avgFPScount = 0.0;
+    ATON._dtAccum = 0.0;
+    ATON._dtCount = 0.0;
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
@@ -1800,20 +1800,15 @@ ATON._markFPS = ()=>{
     if (ATON._numReqLoad > 0) return;
     if (ATON._dt < 0.0) return;
 
-    const fps = (1.0 / ATON._dt);
+    ATON._dtCount += 1.0;
+    ATON._dtAccum += ATON._dt;
 
-    ATON._avgFPScount += 1.0;
-    ATON._dtAccum     += ATON._dt;
-    ATON._avgFPSaccum += fps;
+    if (ATON._dtAccum < 1.0) return; // 1s mark
 
-    if (ATON._dtAccum < 1.0) return;
+    ATON._fps = 1.0 / (ATON._dtAccum / ATON._dtCount);
 
-    ATON._fps = ATON._avgFPSaccum / ATON._avgFPScount;
-    //console.log(ATON._fps);
-
-    ATON._avgFPSaccum = 0.0;
-    ATON._avgFPScount = 0.0;
-    ATON._dtAccum     = 0.0;
+    ATON._dtCount = 0.0;
+    ATON._dtAccum = 0.0;
 
     // Handle dynamic render profiles
     ATON._handleDynamicRenderProfiles();

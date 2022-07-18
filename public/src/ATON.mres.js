@@ -474,10 +474,7 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    //if ( !MRes.canRequestRefinement() ) return;
-
-    MRes.bMotion = MRes.detectMotion();
-    if (MRes.bMotion) return;
+    if ( MRes.detectMotion() ) return;
 
     //console.log(MRes._tsTasks);
 
@@ -491,6 +488,7 @@ MRes.update = ()=>{
 
 MRes.detectMotion = ()=>{
     //if (ATON.Nav.isTransitioning()) return true;
+    if (!ATON.Nav._bControl) return false;
 
     ///if (ATON.Nav._bInteracting) return true;
 

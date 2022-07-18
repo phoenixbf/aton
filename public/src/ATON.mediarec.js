@@ -149,7 +149,9 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
                 audio: b64,
                 uid: ATON.VRoadcast.uid,
                 //vol: MediaRec._auAVGvolume
-            });              
+            });
+            
+            b64 = null;
             
             if (onFinish) onFinish();
             return;
@@ -181,6 +183,8 @@ MediaRec._onAuBlob = (rblob)=>{
         uid: ATON.VRoadcast.uid,
         vol: MediaRec._auAVGvolume
     });
+
+    rblob = null;
 };
 
 // Audio Recording

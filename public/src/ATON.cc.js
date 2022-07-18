@@ -40,6 +40,9 @@ CC.extract = (data)=>{
         }
     }
 
+    // XMP 3DC Metadata
+    CC.extractXMP3DC(data, cc);
+
     // Empty cc object
     if (Object.keys(cc).length === 0) return;
 
@@ -71,6 +74,32 @@ CC.compare = (A,B)=>{
     }
 
     return true;
+};
+
+// If found in data, extracts 3DC metadata to cc object
+// https://github.com/KhronosGroup/3DC-Metadata-Recommendations/blob/main/model3d.md
+CC.extractXMP3DC = (data, cc)=>{
+    if (data === undefined || cc === undefined) return;
+
+    if (!data.userData) return;
+    let exts = data.userData.gltfExtensions
+    
+    if (!exts) return;
+    if (!exts.KHR_xmp) return;
+
+    let pkts = exts.KHR_xmp.packets;
+        
+    if (!pkts) return;
+    let a = pkts[0];
+
+    // TODO: improve
+    if (a["model3d:spdxLicense"]) cc.license = a["model3d:spdxLicense"];
+    if (a["dc:date"])             cc.date  = a["dc:date"];
+    if (a["dc:title"])            cc.title = a["dc:title"];
+    if (a["xmp:CreatorTool"])     cc.creatorTool = a["xmp:CreatorTool"];
+    if (a["dc:description"])      cc.description  = a["dc:description"];
+    if (a["dc:rights"])           cc.rights = a["dc:rights"];
+    if (a["xmpRights:Owner"])     cc.owner  = a["xmpRights:Owner"];
 };
 
 export default CC;

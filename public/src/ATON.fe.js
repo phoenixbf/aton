@@ -63,10 +63,13 @@ FE.realize = ()=>{
 
     // built-in base front-end parameters
     let ddens = ATON.FE.urlParams.get('d');
-    if (ddens && ddens>0.0) ATON.setDefaultPixelDensity(ddens);
+    if (ddens && ddens>0.0){
+        ATON.setDefaultPixelDensity(ddens);
+        ATON.toggleAdaptiveDensity(false);
+    }
 
     let dynd = ATON.FE.urlParams.get('dd');
-    if (dynd && dynd > 0) ATON.toggleDynamicDensity(true);
+    if (dynd && dynd > 0) ATON.toggleAdaptiveDensity(true);
 
     FE._canvas = ATON._renderer.domElement;
     

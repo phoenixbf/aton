@@ -38,7 +38,6 @@ MRes.init = ()=>{
     MRes.estimateTSErrorTarget();
 
     MRes._tsuSync = 0;
-    MRes.bMotion = false;
 
     MRes._bPCs = false; // Any PointCloud
 
@@ -46,6 +45,10 @@ MRes.init = ()=>{
     MRes._pqLRU       = undefined;
     MRes._pqDownload  = undefined;
     MRes._pqParse     = undefined;
+
+    // Stats
+    MRes._numTilesLoaded = 0;
+    MRes._numTSLoaded    = 0;
 
     //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
 };
@@ -214,6 +217,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         console.log("TileSet loaded");
         //console.log(ts)
 
+        MRes._numTSLoaded++;
+
         // Cesium ION
         if (cesiumReq || N.bUseGeoCoords){
             console.log("TileSet using GeoCoords");
@@ -307,6 +312,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             ATON._assetReqComplete(tsurl);
         }
+
+        MRes._numTilesLoaded++;
 
         scene.traverse( (c)=>{
             //console.log(c)

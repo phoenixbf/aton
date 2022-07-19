@@ -28,7 +28,6 @@ HATHOR.init = (sid)=>{
     if (sid === undefined || sid === null) sid = ATON.FE.urlParams.get('s');
 
     HATHOR.paramSID   = sid;
-    HATHOR.paramDDens = ATON.FE.urlParams.get('d');
     HATHOR.paramVRC   = ATON.FE.urlParams.get('vrc');
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');
     HATHOR.paramFPS   = ATON.FE.urlParams.get('fps');

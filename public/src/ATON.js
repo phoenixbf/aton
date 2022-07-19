@@ -22,6 +22,7 @@ import POV from "./ATON.pov.js";
 //import Period from "./ATON.period.js";
 import LightProbe from "./ATON.lightprobe.js";
 import XPF from "./ATON.xpf.js";
+import Plugin from "./ATON.plugin.js";
 
 import EventHub from "./ATON.eventhub.js";
 import MatHub from "./ATON.mathub.js";
@@ -49,6 +50,7 @@ ATON.Node       = Node;
 ATON.POV        = POV;
 ATON.LightProbe = LightProbe;
 ATON.XPF        = XPF;
+ATON.Plugin     = Plugin;
 //ATON.Period = Period;
 
 // NS
@@ -115,6 +117,8 @@ ATON.SHADOWS_RES  = 1024; // 512
 
 ATON.AMB_L = 0.2; // 0.1 - Ambient for shadowed areas (without LPs)
 
+// Plugins
+ATON._plugList = [];
 
 /**
 Set path collection (3D models, audio, panoramas, ...)
@@ -765,11 +769,24 @@ ATON.realize = ( bNoRender )=>{
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
+    // Plugins
+    for (let p in ATON._plugList){
+        let P = ATON._plugList[p];
+
+        if (P.setup !== undefined)  P.setup();
+        if (P.update !== undefined) ATON.addUpdateRoutine( P.update );
+    }
+
     // Gizmo transforms
     ATON._gizmo  = undefined;
     ATON._bGizmo = false;
 
     ATON.focusOn3DView();
+};
+
+ATON.registerPlugin = (P)=>{
+    if (P === undefined) return;
+    ATON._plugList.push(P);
 };
 
 /**

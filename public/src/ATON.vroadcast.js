@@ -133,6 +133,7 @@ VRoadcast.initMaterials = ()=>{
 
         //M.uniforms.tint.value.set(VRoadcast.ucolors[c].r, VRoadcast.ucolors[c].g, VRoadcast.ucolors[c].b);
         M.uniforms.tint.value = VRoadcast.ucolors[c];
+        M.uniforms.opacity.value = 0.5;
 /*
         let M = new THREE.MeshBasicMaterial({
             color: VRoadcast.ucolors[c],

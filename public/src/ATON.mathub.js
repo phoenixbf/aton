@@ -71,7 +71,7 @@ MatHub.addDefaults = ()=>{
         uniforms: {
             tint: { type:'vec3', value: MatHub.colors.defUI },
             //base: { type:'vec3', value: MatHub.colors.defUI },
-            opacity: { type:'float', value: 0.8 }
+            opacity: { type:'float', value: 0.0 }
         },
 
         vertexShader: MatHub.getDefVertexShader(),
@@ -92,10 +92,12 @@ MatHub.addDefaults = ()=>{
 		        f = clamp(1.0-f, 0.0, 1.0);
                 f *= f;
 
+                f = mix(opacity,1.0, f);
+
                 //vec3 col = mix(base,tint, f);
 		        //gl_FragColor = vec4(col, f * opacity);
 
-                gl_FragColor = vec4(tint, f * opacity);
+                gl_FragColor = vec4(tint, f);
 		    }
         `,
         transparent: true,

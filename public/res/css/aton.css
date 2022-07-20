@@ -897,13 +897,16 @@ canvas:active {
 .atonVRCcounter {
     position: absolute; 
     z-index: 2; 
-    margin-left: -18px;
-    margin-top: 3px;
+    /*margin-left: -22px;
+    margin-top: 5px;*/
+    margin: 0px;
+
+    transform: translate(-150%,10%);
 
     text-align: center;
     text-shadow: 0px 0px 4px black;
 
-    font-size: 70%;
+    font-size: 60%;
 }
 
 .atonVRCchat {

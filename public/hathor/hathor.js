@@ -30,7 +30,7 @@ HATHOR.init = (sid)=>{
     HATHOR.paramSID   = sid;
     HATHOR.paramVRC   = ATON.FE.urlParams.get('vrc');
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');
-    HATHOR.paramFPS   = ATON.FE.urlParams.get('fps');
+    HATHOR.paramProf  = ATON.FE.urlParams.get('pr');
     HATHOR.paramRLOG  = ATON.FE.urlParams.get('rlog');
     HATHOR.paramUIP   = ATON.FE.urlParams.get('uip');
 
@@ -97,10 +97,21 @@ HATHOR.update = ()=>{
         }
     }
 
-    if (HATHOR.paramFPS){
+    if (HATHOR.paramProf){
         let d = ATON._renderer.getPixelRatio().toPrecision(2);
         let fps = parseInt(ATON._fps);
-        $("#idProf").html("fps: "+fps+"<br>d: "+d);
+
+        let ht = "fps: "+fps+"<br>d: "+d;
+
+        let info = ATON._renderer.info;
+        if (info){
+            ht += "<br>G: "+info.memory.geometries;
+            ht += "<br>T: "+info.memory.textures;
+
+            //ATON._renderer.info.reset();
+        }
+
+        $("#idProf").html(ht);
     }
 
     // continuous point
@@ -378,7 +389,8 @@ HATHOR.uiSetup = ()=>{
     $("#btn-prev").hide();
     $("#btn-next").hide();
 
-    if (HATHOR.paramFPS){
+    if (HATHOR.paramProf){
+        //ATON._renderer.info.autoReset = false;
         $("#idTopToolbar").append("<div id='idProf' style='top:5px;right:5px;position:fixed;'></div>");
     }
 };

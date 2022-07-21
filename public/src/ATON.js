@@ -182,6 +182,7 @@ ATON._setupBaseListeners = ()=>{
     window.addEventListener( 'resize', ATON._onResize, false );
     window.onorientationchange = ATON._readDeviceOrientationMode;
 
+    /*
     if (screenfull.isEnabled){
 	    screenfull.on('change', ()=>{
             ATON._bFS = screenfull.isFullscreen;
@@ -191,13 +192,17 @@ ATON._setupBaseListeners = ()=>{
             else console.log("Exit fullscreen");
 	    });
     }
-
-/*
-    document.addEventListener('webkitfullscreenchange', ATON._onFSchange, false);
-    document.addEventListener('mozfullscreenchange', ATON._onFSchange, false);
-    document.addEventListener('fullscreenchange', ATON._onFSchange, false);
-    document.addEventListener('MSFullscreenChange', ATON._onFSchange, false);
 */
+    document.addEventListener('fullscreenchange',(e)=>{
+        ATON._bFS = document.fullscreenElement? true : false;
+
+        ATON.fireEvent("Fullscreen", ATON._bFS);
+
+        if (ATON._bFS) console.log("Now fullscreen");
+        else console.log("Exit fullscreen");
+    });
+
+
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
@@ -473,9 +478,10 @@ ATON.isFullscreen = ()=>{
 */
 };
 
-
 ATON.toggleFullScreen = ()=>{
-    screenfull.toggle();
+    //screenfull.toggle();
+    if (!document.fullscreenElement)  document.documentElement.requestFullscreen();
+    else if (document.exitFullscreen) document.exitFullscreen();
 };
 
 

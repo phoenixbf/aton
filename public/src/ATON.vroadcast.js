@@ -59,6 +59,7 @@ VRoadcast.init = ()=>{
     VRoadcast._lastStateSent = undefined;
 
     VRoadcast._bShowAvaG = true;
+    VRoadcast._bSpatial  = true;
 
     console.log("VRoadcast initialized");
     VRoadcast.enableChatLog();
@@ -272,6 +273,14 @@ VRoadcast.setAvatarsVisibility = (b)=>{
     else VRoadcast.avaGroup.hide();
 };
 
+VRoadcast.disableSpatiality = ()=>{
+    VRoadcast._bSpatial = false;
+};
+
+VRoadcast.enableSpatiality = ()=>{
+    VRoadcast._bSpatial = true;
+};
+
 /**
 Set address for VRoadcast service. Default is same server where main service is running.
 This is used if the service is running on a remote server/node
@@ -425,7 +434,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("User #" +uid+" entered the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" entered the scene</i><br>");
 
-        VRoadcast.touchAvatar(uid);
+        if (VRoadcast._bSpatial) VRoadcast.touchAvatar(uid);
         
         //VRoadcast._numUsers++;
         VRoadcast.requestSceneState();
@@ -453,6 +462,7 @@ VRoadcast._registerSocketHandlers = ()=>{
     VRoadcast.socket.on('USTATE', (data)=>{
         //if (ATON._numReqLoad>0) return; // check / fixme
         if (!VRoadcast._bShowAvaG) return;
+        if (!VRoadcast._bSpatial) return;
 
         let S = VRoadcast.decodeState(data);
 
@@ -467,6 +477,8 @@ VRoadcast._registerSocketHandlers = ()=>{
     });
 
     VRoadcast.socket.on('UFOCUS', (data)=>{
+        if (!VRoadcast._bSpatial) return;
+
         let uid = data.uid;
         let fp  = data.fp;
 
@@ -481,11 +493,15 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (uid === undefined) return;
 
-        let A = VRoadcast.touchAvatar(uid);
-        A.setUsername(uname);
+        if (VRoadcast._bSpatial){
+            let A = VRoadcast.touchAvatar(uid);
+            A.setUsername(uname);
+        }
 
         console.log("User #" +uid+" changed username to: "+uname);
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" changed username to: "+uname+"</i><br>");
+
+        ATON.fireEvent("VRC_UName", data);
     });
 
     VRoadcast.socket.on('UMSG', (data)=>{
@@ -494,11 +510,15 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (uid === undefined) return;
 
-        let A = VRoadcast.touchAvatar(uid);
-        A.setMessage(msg);
+        if (VRoadcast._bSpatial){
+            let A = VRoadcast.touchAvatar(uid);
+            A.setMessage(msg);
+        }
 
         console.log("User #" +uid+": "+msg);
         if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.getUsername()+"</b>: "+msg+"</span><br>");
+
+        ATON.fireEvent("VRC_UMessage", data);
     });
 
     VRoadcast.socket.on('UTALK', (data)=>{
@@ -506,29 +526,27 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (uid === undefined) return;
 
         let audioURL = data.audio;
-        let A = VRoadcast.touchAvatar(uid);
 
-        //A.setTalkVolume(data.vol);
-        A.setTalkVolume(5.0);
-/*
-        if (A._auTalk === undefined || A._auTalk === null){
-            A._auTalk = new THREE.PositionalAudio( ATON.AudioHub._listener );
-            A._auTalk.setRefDistance(50.0);
-            A.add(A._auTalk);
+        if (VRoadcast._bSpatial){
+            let A = VRoadcast.touchAvatar(uid);
+
+            //A.setTalkVolume(data.vol);
+            A.setTalkVolume(5.0);
+
+            if (A._auTalk.isPlaying) A._auTalk.stop();
+
+            ATON.AudioHub._loader.load( audioURL, (buffer)=>{
+                if (buffer){
+                    A._auTalk.setBuffer( buffer );
+                    //A._auTalk.setLoop( false );
+                    //A._auTalk.setVolume( 0.5 );
+                    //A._auTalk.setPlaybackRate(0.9);
+                    A._auTalk.play();
+                }
+            });
         }
-        else A._auTalk.stop();
-*/
-        if (A._auTalk.isPlaying) A._auTalk.stop();
 
-        ATON.AudioHub._loader.load( audioURL, (buffer)=>{
-            if (buffer){
-                A._auTalk.setBuffer( buffer );
-                //A._auTalk.setLoop( false );
-                //A._auTalk.setVolume( 0.5 );
-                //A._auTalk.setPlaybackRate(0.9);
-                A._auTalk.play();
-            }
-        });
+        ATON.fireEvent("VRC_UTalk", data);
 
         audioURL = null;
         

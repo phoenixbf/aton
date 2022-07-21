@@ -498,19 +498,19 @@ FE.uiAddButtonTalk = (idcontainer)=>{
     if (!ATON.Utils.isConnectionSecure()) return;
 
     FE.uiAddButton(idcontainer, "talk", ()=>{
-        if (ATON.MediaRec.isAudioRecording()){
-            ATON.MediaRec.stopMediaStreaming();
+        if (ATON.MediaFlow.isAudioRecording()){
+            ATON.MediaFlow.stopMediaStreaming();
             //FE.uiSwitchButton("talk",false);
             $("#btn-talk").removeClass("atonBTN-rec");
         }
         else {
-            ATON.MediaRec.startMediaStreaming();
+            ATON.MediaFlow.startMediaStreaming();
             //FE.uiSwitchButton("talk",true);
             $("#btn-talk").addClass("atonBTN-rec");
         }
     }, "Talk ON/OFF");
 
-    if (ATON.MediaRec.isAudioRecording()) $("#btn-talk").addClass("atonBTN-rec");
+    if (ATON.MediaFlow.isAudioRecording()) $("#btn-talk").addClass("atonBTN-rec");
     else $("#btn-talk").removeClass("atonBTN-rec");
 };
 
@@ -956,7 +956,7 @@ FE.playAudioFromSemanticNode = (semid)=>{
     
     FE._auSemNodePlaying = true;
     FE._auSemNode.src = au;
-    //FE._auSemNode.type = ATON.MediaRec.auType;
+    //FE._auSemNode.type = ATON.MediaFlow.auType;
     FE._auSemNode.play();
 
     FE._auSemNode.onended = ()=>{

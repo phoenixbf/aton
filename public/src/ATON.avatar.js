@@ -26,6 +26,7 @@ constructor(uid){
     // Positional audio (talk)
     this._auTalk = new THREE.PositionalAudio( ATON.AudioHub._listener );
     this._auTalk.setRefDistance(30.0);
+    this._auTalk.setLoop( false );
     this.add(this._auTalk); // move with avatar
 
     this._bPlayingAudio = false;

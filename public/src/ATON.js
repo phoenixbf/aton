@@ -36,7 +36,7 @@ import UI from "./ATON.ui.js";
 import VRoadcast from "./ATON.vroadcast.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
-import MediaRec from "./ATON.mediarec.js";
+import MediaFlow from "./ATON.mediaflow.js";
 import GeoLoc from "./ATON.geoloc.js";
 import App from "./ATON.app.js";
 import FX from "./ATON.fx.js";
@@ -67,7 +67,7 @@ ATON.UI         = UI;
 ATON.VRoadcast  = VRoadcast;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
-ATON.MediaRec   = MediaRec;
+ATON.MediaFlow  = MediaFlow;
 ATON.GeoLoc     = GeoLoc;
 ATON.App        = App;
 ATON.FX         = FX;
@@ -685,8 +685,8 @@ ATON.realize = ( bNoRender )=>{
     // VRoadcast
     ATON.VRoadcast.init();
 
-    // Media Recorder
-    ATON.MediaRec.init();
+    // Media Flow
+    ATON.MediaFlow.init();
 
     // Semantic Factory
     ATON.SemFactory.init();

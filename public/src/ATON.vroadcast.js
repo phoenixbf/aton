@@ -510,7 +510,6 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         //A.setTalkVolume(data.vol);
         A.setTalkVolume(5.0);
-
 /*
         if (A._auTalk === undefined || A._auTalk === null){
             A._auTalk = new THREE.PositionalAudio( ATON.AudioHub._listener );
@@ -519,14 +518,16 @@ VRoadcast._registerSocketHandlers = ()=>{
         }
         else A._auTalk.stop();
 */
-        //if (A._auTalk.isPlaying) A._auTalk.stop();
+        if (A._auTalk.isPlaying) A._auTalk.stop();
 
         ATON.AudioHub._loader.load( audioURL, (buffer)=>{
-            A._auTalk.setBuffer( buffer );
-            A._auTalk.setLoop( false );
-            //A._auTalk.setVolume( 0.5 );
-            //A._auTalk.setPlaybackRate(0.9);
-            A._auTalk.play();
+            if (buffer){
+                A._auTalk.setBuffer( buffer );
+                //A._auTalk.setLoop( false );
+                //A._auTalk.setVolume( 0.5 );
+                //A._auTalk.setPlaybackRate(0.9);
+                A._auTalk.play();
+            }
         });
 
         audioURL = null;

@@ -1,5 +1,6 @@
 /*
     ATON Media Recorder
+    TO BE DEPRECATED
 
     author: bruno.fanini_AT_gmail.com
 
@@ -15,14 +16,15 @@ MediaRec.auExt  = ".wav";
 //MediaRec.auType = "audio/webm";
 //MediaRec.auExt  = ".webm";
 
-MediaRec.auBitsPerSecond  = 9000; //9000;
-MediaRec.auStreamInterval = 1000;
+MediaRec.auBitsPerSecond  = 9000; //9000
+MediaRec.auStreamInterval = 1000; // 1000
 MediaRec.auMinVol = 1;
 
 
 MediaRec.init = ()=>{
     MediaRec._bAudioRecording = false;
     MediaRec._bStreaming = false;
+    MediaRec._bSendingChunk = false;
 
     MediaRec.recorder = undefined;
 };
@@ -44,7 +46,7 @@ MediaRec.realizeAudioRecorder = ( onComplete )=>{
             video: false, 
             audio: true, 
             channelCount: 1,
-            echoCancellation: true,
+            //echoCancellation: true,
         });
 
         UM.then(async function(stream){
@@ -122,6 +124,10 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
         return;
     }
 
+    if (MediaRec._bSendingChunk) return;
+
+    MediaRec._bSendingChunk = true;
+
     MediaRec.recorder.stopRecording(()=>{
 /*
         let rblob = MediaRec.recorder.getBlob();
@@ -142,16 +148,18 @@ MediaRec._stopRecAndSend = ( onFinish )=>{
 
             if (!ATON.VRoadcast.socket || ATON.VRoadcast.uid === undefined){ // || MediaRec._auAVGvolume <= MediaRec.auMinVol
                 if (onFinish) onFinish();
+                MediaRec._bSendingChunk = false;
                 return;
             }
 
-            ATON.VRoadcast.socket.compress(false).emit("UTALK", {
+            ATON.VRoadcast.socket.emit("UTALK", {
                 audio: b64,
                 uid: ATON.VRoadcast.uid,
                 //vol: MediaRec._auAVGvolume
             });
             
             b64 = null;
+            MediaRec._bSendingChunk = false;
             
             if (onFinish) onFinish();
             return;
@@ -190,7 +198,6 @@ MediaRec._onAuBlob = (rblob)=>{
 // Audio Recording
 MediaRec.startRecording = ()=>{
     MediaRec.realizeAudioRecorder(()=>{
-
         if (!MediaRec.recorder) return;
         if (MediaRec._bAudioRecording) return;
 
@@ -232,9 +239,7 @@ MediaRec._streamChunk = ()=>{
     if (!MediaRec.recorder) return;
     if (!MediaRec._bStreaming) return;
 
-    MediaRec._stopRecAndSend(()=>{ 
-        MediaRec.recorder.startRecording();
-    });
+    MediaRec._stopRecAndSend( MediaRec.recorder.startRecording );
 };
 
 // Audio Streaming

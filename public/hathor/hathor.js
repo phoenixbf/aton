@@ -443,12 +443,12 @@ HATHOR.suiSetup = ()=>{
     btnTalk.setIcon(ATON.FE.PATH_RES_ICONS+"talk.png")
         //.setSwitchColor(ATON.MatHub.colors.orange)
         .onSelect = ()=>{
-            if (ATON.MediaRec.isAudioRecording()){
-                ATON.MediaRec.stopMediaStreaming();
+            if (ATON.MediaFlow.isAudioRecording()){
+                ATON.MediaFlow.stopMediaStreaming();
                 btnTalk.switch(false);
             }
             else {
-                ATON.MediaRec.startMediaStreaming();
+                ATON.MediaFlow.startMediaStreaming();
                 btnTalk.switch(true);
             }
         };
@@ -865,8 +865,8 @@ HATHOR.setupEventHandlers = ()=>{
 */
         //if (k==='y') ATON.XR.switchHands();
 
-        //if (k==='.') ATON.MediaRec.startMediaStreaming();
-        //if (k==='r') ATON.MediaRec.startRecording();
+        //if (k==='.') ATON.MediaFlow.startMediaStreaming();
+        //if (k==='r') ATON.MediaFlow.startRecording();
 
         if (k==='f'){
             ATON.VRoadcast.setFocusStreaming(true);
@@ -888,8 +888,8 @@ HATHOR.setupEventHandlers = ()=>{
             ATON.Nav.stop();
         }
 
-        //if (k==='.') ATON.MediaRec.stopMediaStreaming();
-        //if (k==='r') ATON.MediaRec.stopRecording();
+        //if (k==='.') ATON.MediaFlow.stopMediaStreaming();
+        //if (k==='r') ATON.MediaFlow.stopRecording();
 
         if (k==='f'){
             ATON.VRoadcast.setFocusStreaming(false);
@@ -1114,7 +1114,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
     }
 
 
-    if (ATON.Utils.isConnectionSecure() && !ATON.MediaRec.isAudioRecording()){
+    if (ATON.Utils.isConnectionSecure() && !ATON.MediaFlow.isAudioRecording()){
         htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
@@ -1212,17 +1212,17 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
 
     $('#btnVocalNote').click(()=>{
         // We start recording a vocal note
-        if (!ATON.MediaRec.isAudioRecording()){
+        if (!ATON.MediaFlow.isAudioRecording()){
             bRecVN = true;
             $('#btnVocalNote').attr("class","atonBTN atonBTN-rec");
             $('#btnVocalNote').html("<img src='"+ATON.FE.PATH_RES_ICONS+"rec.png'>STOP Recording");
-            ATON.MediaRec.startRecording();
+            ATON.MediaFlow.startRecording();
 
         }
         else {
             $('#btnVocalNote').attr("class","atonBTN");
             $('#btnVocalNote').html("<img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note");
-            ATON.MediaRec.stopRecording();
+            ATON.MediaFlow.stopRecording();
             $('#ctrlVocalNote').show();
             bRecVN  = false;
         }
@@ -1231,7 +1231,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
     //$('#btnRichContent').click(()=>{ $('#idSemDescCont').toggle(); });
 
     $("#idAnnOK").click(()=>{
-        //if (ATON.MediaRec.isAudioRecording()) return;
+        //if (ATON.MediaFlow.isAudioRecording()) return;
         if (bRecVN && vocnote===undefined) return;
 
         $("#semid").blur();

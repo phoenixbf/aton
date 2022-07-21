@@ -750,6 +750,8 @@ FE._setupVRCevents = ()=>{
         //ATON.MatHub.materials.selector.color = ATON.MatHub.colors.green;
         ATON.SUI.setSelectorColor(ATON.MatHub.colors.defUI);
 
+        ATON.MediaFlow.stopMediaStreaming();
+
         $("#idVRCnumusers").html("");
     });
 

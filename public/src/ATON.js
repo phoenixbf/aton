@@ -1022,6 +1022,8 @@ ATON.setWorldScale = (ws)=>{
     ATON._rootSem.scale.set(ws,ws,ws);
     ///ATON._rootUI.scale.set(ws,ws,ws);
     ATON._worldScale = ws;
+
+    ATON.recomputeSceneBounds();
 };
 
 ATON.getWorldScale = ()=>{

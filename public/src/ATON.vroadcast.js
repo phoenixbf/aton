@@ -549,30 +549,13 @@ VRoadcast._registerSocketHandlers = ()=>{
         ATON.fireEvent("VRC_UTalk", data);
 
         audioURL = null;
-        
-/*
-        //let newblob  = new File([data.blob], "blob"+ATON.MediaRec.auExt, { type: ATON.MediaRec.auType });
-        //let audioURL = window.URL.createObjectURL(newblob);
-        
-        if (A._auTalk === undefined){
-            A._auTalk = new Audio();
-            //A._auTalk.type = ATON.MediaRec.auType;
-        }
-        else {
-            //A._auTalk.pause();
-            A._auTalk.currentTime = 0;    
-        }
+    });
 
-        A._auTalk.src = audioURL;
-        A._auTalk.play();
-*/
+    VRoadcast.socket.on('UVIDEO', (data)=>{
+        let uid = data.uid;
+        if (uid === undefined) return;
 
-/*
-        A._auChunks.push({
-            data: audioURL,
-            volume: data.vol
-        });
-*/
+        ATON.fireEvent("VRC_UVideo", data);
     });
 };
 
@@ -701,7 +684,7 @@ VRoadcast.setFocusStreaming = (b)=>{
 };
 
 VRoadcast.sendState = ()=>{
-    if (!VRoadcast.bSendState) return;
+    if (!VRoadcast.bSendState || !VRoadcast._bSpatial) return;
     if (VRoadcast.uid === undefined) return;
     if (!VRoadcast.socket || !VRoadcast._connected) return;
     

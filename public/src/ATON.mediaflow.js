@@ -22,28 +22,50 @@ MediaFlow.init = ()=>{
     MediaFlow._bStreaming = false;
     MediaFlow._bScreencap = false;
 
-    // Streaming options
-    MediaFlow._sopts = {
+    // Constraints
+    MediaFlow._cAuStream = {
         audio: {
             echoCancellation: true,
             noiseSuppression: true,
-            //audioBitsPerSecond: 9000,
+            channelCount: 1,
+            //sampleSize: 16,
             //sampleRate: 44100
         }
     };
 
-    // Recording options
-    MediaFlow._ropts = {
-        audio: true
+    MediaFlow._cAuRec = {
+        audio: {
+            channelCount: 1
+        }
     };
 
-    // Screen cap
-    MediaFlow._copts = {
+    MediaFlow._cVidRec = {
+        video: {
+            width: 1280,
+            height: 720,
+            //width: { min: 640, ideal: 1920 },
+            //height: { min: 400, ideal: 1080 },
+            //aspectRatio: { ideal: 1.7777777778 },
+            framerate: 30
+        }
+    };
+
+    MediaFlow._cVidStream = {
         video: {
             cursor: "always",
-            //width: 1024,
-            //height: 1024
+            width: 640,
+            height: 360,
+            //width: { min: 640, ideal: 1920 },
+            //height: { min: 400, ideal: 1080 },
+            //aspectRatio: { ideal: 1.7777777778 },
+            framerate: 25
         }
+    };
+
+    // Options
+    MediaFlow._oAuStream = {
+        audioBitsPerSecond : 10000
+        //bitsPerSecond: ,
     };
 
     MediaFlow._aurec = undefined;
@@ -53,9 +75,11 @@ MediaFlow.init = ()=>{
     MediaFlow._schunks = [];
     
     // ScreenCap
+    MediaFlow._bScreenStream = false;
     MediaFlow._screc    = undefined;
     MediaFlow._scblob   = undefined;
     MediaFlow._scchunks = [];
+    MediaFlow._dsc      = undefined;
 
     MediaFlow._fr = new window.FileReader();
 };
@@ -71,7 +95,7 @@ MediaFlow.startRecording = ()=>{
         return;
     }
 
-    navigator.mediaDevices.getUserMedia( MediaFlow._ropts )
+    navigator.mediaDevices.getUserMedia( MediaFlow._cAuRec )
     .then((stream)=>{
         MediaFlow._aurec = new MediaRecorder(stream);
 
@@ -123,9 +147,9 @@ MediaFlow.startOrStopRecording = ()=>{
 
 // Audio Streaming
 MediaFlow.startMediaStreaming = ()=>{
-    navigator.mediaDevices.getUserMedia( MediaFlow._sopts )
+    navigator.mediaDevices.getUserMedia( MediaFlow._cAuStream )
     .then((stream)=>{
-        MediaFlow._aurec = new MediaRecorder(stream);
+        MediaFlow._aurec = new MediaRecorder( stream, MediaFlow._oAuStream );
 
         // First time create streaming routine
         if (MediaFlow._ds === undefined){
@@ -136,18 +160,21 @@ MediaFlow.startMediaStreaming = ()=>{
             }, MediaFlow.auStreamInterval );
         }
 
-        MediaFlow._aurec.onstart = function(e) {
+        MediaFlow._aurec.onstart = (e) => {
             MediaFlow._bStreaming = true;
             MediaFlow._bAudioRecording = true;
             MediaFlow._schunks = [];
         };
 
-        MediaFlow._aurec.ondataavailable = function(e){
+        MediaFlow._aurec.ondataavailable = (e)=>{
+            if (e.data.size <= 0) return;
             MediaFlow._schunks.push(e.data);
         };
 
         MediaFlow._aurec.onstop = function(e){
-            MediaFlow._sblob = new Blob(MediaFlow._schunks, { 'type' : MediaFlow.auType }); //'audio/ogg; codecs=opus' });
+            MediaFlow._sblob = new Blob(MediaFlow._schunks, { 'type' : MediaFlow.auType });
+            
+            //console.log(MediaFlow._sblob.size+" B")
 
             MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
             MediaFlow._fr.onloadend = ()=>{
@@ -189,9 +216,9 @@ MediaFlow.startOrStopMediaStreaming = ()=>{
 };
 
 
-// Screen capture
-MediaFlow.startScreenCapture = ()=>{
-    navigator.mediaDevices.getDisplayMedia( MediaFlow._copts )
+// Screen recording
+MediaFlow.startScreenRecording = ()=>{
+    navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidRec )
     .then((stream)=>{
         MediaFlow._screc = new MediaRecorder(stream);
         MediaFlow._scchunks = [];
@@ -203,14 +230,17 @@ MediaFlow.startScreenCapture = ()=>{
         }
 
         MediaFlow._screc.onstop = () => {
-            MediaFlow._scblob = new Blob(chunks, {
+            MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
                 type: 'video/webm;codecs=vp9'
             });
 
-            MediaFlow._scchunks = [];
-            const blobUrl = URL.createObjectURL(blob);
+            console.log(MediaFlow._scblob.size);
 
-            console.log(blobUrl);
+            MediaFlow._scchunks = [];
+            //const blobUrl = URL.createObjectURL(MediaFlow._scblob);
+
+            //console.log(blobUrl);
+            ATON.Utils.downloadBlob( MediaFlow._scblob, "capture.webm" );
         }
 
         MediaFlow._screc.start(200);
@@ -218,6 +248,66 @@ MediaFlow.startScreenCapture = ()=>{
     .catch((e)=>{
         console.log(e);
     });
+};
+
+MediaFlow.startScreenStreaming = ()=>{
+    navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidStream )
+    .then((stream)=>{
+        MediaFlow._screc = new MediaRecorder(stream);
+
+        // First time create streaming routine
+        if (MediaFlow._dsc === undefined){
+            MediaFlow._dsc = setInterval(()=>{
+                if (!MediaFlow._bScreenStream) return;
+                MediaFlow._screc.stop();
+            }, 1000 );
+        }
+
+        MediaFlow._screc.onstart = (e) => {
+            MediaFlow._bScreenStream = true;
+            MediaFlow._scchunks = [];
+        };
+
+        MediaFlow._screc.ondataavailable = event => {
+            if (event.data.size > 0) {
+                MediaFlow._scchunks.push(event.data);
+            }
+        }
+
+        MediaFlow._screc.onstop = () => {
+            MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
+                type: 'video/webm;codecs=vp9'
+            });
+
+            console.log(MediaFlow._scblob.size);
+
+            MediaFlow._fr.readAsDataURL(MediaFlow._scblob); 
+            MediaFlow._fr.onloadend = ()=>{
+               let b64 = MediaFlow._fr.result;
+
+                ATON.VRoadcast.socket.emit("UVIDEO", {
+                    video: b64,
+                    uid: ATON.VRoadcast.uid
+                });
+
+               b64 = null;
+            };
+
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
+        }
+
+        MediaFlow._screc.start(200);
+    })
+    .catch((e)=>{
+        console.log(e);
+    });
+};
+
+MediaFlow.stopScreenStreaming = ()=>{
+    if (!MediaFlow._screc) return;
+
+    MediaFlow._screc.stop();
+    MediaFlow._bScreenStream = false;
 };
 
 export default MediaFlow;

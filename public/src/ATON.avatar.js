@@ -44,12 +44,14 @@ constructor(uid){
     // States
     this._currState = {
         position: new THREE.Vector3(),
-        quaternion: new THREE.Quaternion()
+        quaternion: new THREE.Quaternion(),
+        scale: 1.0
     };
 
     this._tgtState = {
         position: new THREE.Vector3(),
-        quaternion: new THREE.Quaternion()
+        quaternion: new THREE.Quaternion(),
+        scale: 1.0
     };
 
     //console.log(this);
@@ -308,10 +310,12 @@ requestStateTransition(S){
 
     this._currState.position.copy(this.position);
     this._currState.quaternion.copy(this.quaternion);
+    this._currState.scale = this.scale;
 
     //this._tgtState = S;
     this._tgtState.position.copy(S.position);
     this._tgtState.quaternion.copy(S.quaternion);
+    this._tgtState.scale = S.scale;
     
     //this._sDistance = this.position.distanceTo(S.position);
 }
@@ -336,6 +340,7 @@ handleStateTransition(){
         this.position.copy(ts.position);
         //this.quaternion.copy(ts.quaternion);
         this.usermeshnode.quaternion.copy(ts.quaternion);
+        //this.scale.set(ts.scale,ts.scale,ts.scale);
 
         return;
     }
@@ -343,6 +348,9 @@ handleStateTransition(){
     this.position.lerpVectors(cs.position, ts.position, this._tProgress);
     this.usermeshnode.quaternion.slerp(ts.quaternion, this._tProgress);
     //THREE.Quaternion.slerp( cs.quaternion, ts.quaternion, this.usermeshnode.quaternion, this._tProgress);
+
+    //let sc = THREE.MathUtils.lerp(cs.scale, ts.scale, this._tProgress);
+    //this.scale.set(sc,sc,sc);
 }
 
 update(){

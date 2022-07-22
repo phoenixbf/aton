@@ -507,7 +507,11 @@ ATON.realize = ( bNoRender )=>{
 
     // Bounds
     ATON.bounds = new THREE.Sphere();
+    
     ATON._worldScale = 1.0;
+    ATON._wsMin = 0.1;
+    ATON._wsMax = 20.0;
+    ATON._wsDelta = ATON._wsMax - ATON._wsMin;
 
     ATON._bFS = false; // fullscreen
 

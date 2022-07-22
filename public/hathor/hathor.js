@@ -406,6 +406,7 @@ HATHOR.suiSetup = ()=>{
     buttons.push( new ATON.SUI.Button("sui_talk") );
     buttons.push( new ATON.SUI.Button("sui_home") );
     buttons.push( new ATON.SUI.Button("sui_povnext") );
+    buttons.push( new ATON.SUI.Button("sui_uscale") );
     buttons.push( new ATON.SUI.Button("sui_exitxr") );
 
     let btnAnnConvex = ATON.getUINode("sui_annconvex");
@@ -463,6 +464,12 @@ HATHOR.suiSetup = ()=>{
         .setIcon(ATON.FE.PATH_RES_ICONS+"next.png")
         .onSelect = ()=>{
             HATHOR.povNext();
+        };
+
+    ATON.getUINode("sui_uscale")
+        .setIcon(ATON.FE.PATH_RES_ICONS+"uscale.png")
+        .onSelect = ()=>{
+            HATHOR.switchUserScale();
         };
 
     ATON.getUINode("sui_exitxr")
@@ -978,6 +985,11 @@ HATHOR.measure = ()=>{
 
     ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
     ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+};
+
+HATHOR.switchUserScale = ()=>{
+    if (ATON._ws === 0) ATON.setWorldScale(-10);
+    else ATON.setWorldScale(0);
 };
 
 

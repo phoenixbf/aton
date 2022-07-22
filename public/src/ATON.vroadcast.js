@@ -473,6 +473,9 @@ VRoadcast._registerSocketHandlers = ()=>{
         //A.quaternion.copy(S.quaternion);
         
         A.requestStateTransition(S);
+
+        let s = 1.0/S.scale;
+        A.scale.set(s,s,s);
         //A.hideFocalPoint();
     });
 
@@ -569,7 +572,7 @@ VRoadcast.encodeState = (S)=>{
     A[2] = S.position.z;
 
     // Convert to byte array, we use last float storage (4 bytes)
-    var binData = new Int8Array(A.buffer);
+    var binData = new Int8Array(A.buffer); // signed
 
     binData[12] = (S.quaternion.x * 128.0);
     binData[13] = (S.quaternion.y * 128.0);
@@ -577,7 +580,7 @@ VRoadcast.encodeState = (S)=>{
     binData[15] = (S.quaternion.w * 128.0);
 
     binData[16] = S.userid;
-    binData[17] = VRoadcast.encodeScale(S.scale);
+    binData[17] = ATON._ws;
 
     //binData[19] = ...
 
@@ -585,24 +588,13 @@ VRoadcast.encodeState = (S)=>{
     return binData;
 }
 
-VRoadcast.encodeScale = (d)=>{
-    //let s = (ATON._worldScale - ATON._wsMin);
-    let s = d / ATON._wsMax;
-    return (s*255.0);
-};
-
-VRoadcast.decodeScale = (d)=>{
-    //let s = THREE.MathUtils.lerp(ATON._wsMin, ATON._wsMax, (d/255.0));
-    let s = (d/255.0) * ATON._wsMax;
-    return s;
-};
-
 // Decode state
 VRoadcast.decodeState = (binData)=>{
     let view = new Int8Array(binData);
 
     VRoadcast._decS.userid = view[16];
-    VRoadcast._decS.scale  = VRoadcast.decodeScale( view[17] );
+    let s = ATON._unpackScale( view[17] );
+    VRoadcast._decS.scale = s;
 
     //console.log(view);
 
@@ -618,12 +610,12 @@ VRoadcast.decodeState = (binData)=>{
     view = new Float32Array(binData);
     //VRoadcast._decS.position = new THREE.Vector3(view[0],view[1],view[2]);
     VRoadcast._decS.position.set(
-        parseFloat(view[0]),
-        parseFloat(view[1]),
-        parseFloat(view[2])
+        parseFloat(view[0]) / s,
+        parseFloat(view[1]) / s,
+        parseFloat(view[2]) / s
     );
 
-    console.log(VRoadcast._decS)
+    //console.log(VRoadcast._decS.scale)
 
     return VRoadcast._decS;
 }

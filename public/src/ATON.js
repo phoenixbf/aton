@@ -340,19 +340,7 @@ ATON._setupBaseListeners = ()=>{
         }
         if (k==='PageDown'){
         }
-    });
-
-    // Default semantic highlight
-/*
-    ATON.on("SemanticNodeLeave", (semid)=>{
-        let S = ATON.getSemanticNode(semid);
-        if (S) S.restoreDefaultMaterial();
-    });
-    ATON.on("SemanticNodeHover", (semid)=>{
-        let S = ATON.getSemanticNode(semid);
-        if (S) S.highlight();
-    });
-*/          
+    });         
 };
 
 ATON._onResize = ()=>{
@@ -509,9 +497,7 @@ ATON.realize = ( bNoRender )=>{
     ATON.bounds = new THREE.Sphere();
     
     ATON._worldScale = 1.0;
-    ATON._wsMin = 0.1;
-    ATON._wsMax = 20.0;
-    ATON._wsDelta = ATON._wsMax - ATON._wsMin;
+    ATON._ws = 0;
 
     ATON._bFS = false; // fullscreen
 
@@ -1026,18 +1012,41 @@ ATON.getRootUI = ()=>{
     return ATON._rootUI;
 };
 
-// TODO:
+
+ATON._unpackScale = (s)=>{
+    if (s === 0) return 1.0;
+
+    if (s > 0) return (1.1*s);
+    return (1.0 / (-1.1*s));
+};
+
 ATON.setWorldScale = (ws)=>{
-    ATON._rootVisible.scale.set(ws,ws,ws);
-    ATON._rootSem.scale.set(ws,ws,ws);
-    ///ATON._rootUI.scale.set(ws,ws,ws);
-    ATON._worldScale = ws;
+    ATON._ws = ws;
+
+    let s = ATON._unpackScale(ws);
+
+    ATON._rootVisible.scale.set(s,s,s);
+    ATON._rootSem.scale.set(s,s,s);
+    ///ATON._rootUI.scale.set(s,s,s);
+
+    if (ATON.VRoadcast.avaGroup) ATON.VRoadcast.avaGroup.scale.set(s,s,s);
+    //if (ATON.VRoadcast.focGroup) ATON.VRoadcast.focGroup.scale.set(s,s,s);
+
+    ATON._worldScale = s;
+    console.log("World scale: "+s);
 
     ATON.recomputeSceneBounds();
+
+    let neweye = ATON.Nav.getCurrentEyeLocation();
+    neweye.x *= s;
+    neweye.y *= s;
+    neweye.z *= s;
+    
+    ATON.Nav.requestPOV( new ATON.POV().setPosition(neweye), 0.1 );
 };
 
 ATON.getWorldScale = ()=>{
-    return ATON._worldScale;
+    return ATON._ws;
 };
 
 // Asset loading routines

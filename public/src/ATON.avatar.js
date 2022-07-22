@@ -256,8 +256,15 @@ requestFocus(fp){
 
     this._currFocusPos.copy(this.userfpnode.position);
 
-    this._tgtFocusPos.set( parseFloat(fp[0]), parseFloat(fp[1]), parseFloat(fp[2]) );
-    this._tgtFocusRad = parseFloat(fp[3])*2.0;
+    let us = this.scale.x * ATON._worldScale;
+
+    let fx = parseFloat(fp[0]) * us;
+    let fy = parseFloat(fp[1]) * us;
+    let fz = parseFloat(fp[2]) * us;
+    let fr = parseFloat(fp[3]) * us;
+
+    this._tgtFocusPos.set( fx, fy, fz );
+    this._tgtFocusRad = fr*2.0;
 
     this.userfpnode.scale.set(this._tgtFocusRad,this._tgtFocusRad,this._tgtFocusRad);
 
@@ -315,7 +322,7 @@ requestStateTransition(S){
     //this._tgtState = S;
     this._tgtState.position.copy(S.position);
     this._tgtState.quaternion.copy(S.quaternion);
-    this._tgtState.scale = S.scale;
+    this._tgtState.scale = 1.0 / S.scale;
     
     //this._sDistance = this.position.distanceTo(S.position);
 }

@@ -954,14 +954,10 @@ Nav.requestPOV = (pov, duration)=>{
     if (ATON._tPOVcall >= 0.0) return; // already requested
     if (pov === undefined) return;
 
-    ATON.fireEvent("POVTransitionRequested", pov.id);
-
     if (duration !== undefined) Nav.POVtransitionDuration = duration;
     else Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
     
     //Nav._controls.enabled = false;
-
-    Nav._tPOVcall = ATON._clock.elapsedTime;
     
     if (ATON.XR.isPresenting()){
         Nav._reqPOV.pos.copy(pov.pos? pov.pos : Nav._currPOV.pos);
@@ -979,6 +975,27 @@ Nav.requestPOV = (pov, duration)=>{
         Nav._fromPOV.target.copy(Nav._currPOV.target);
         Nav._fromPOV.fov = Nav._currPOV.fov;
     }
+
+    // World/User Scale
+    if (pov.pos){
+        Nav._reqPOV.pos.x *= ATON._worldScale;
+        Nav._reqPOV.pos.y *= ATON._worldScale;
+        Nav._reqPOV.pos.z *= ATON._worldScale;
+
+        if (ATON.XR.isPresenting()){
+            ATON.XR._reqPos.x *= ATON._worldScale;
+            ATON.XR._reqPos.y *= ATON._worldScale;
+            ATON.XR._reqPos.z *= ATON._worldScale;
+        }
+    }
+    if (pov.target){
+        Nav._reqPOV.target.x *= ATON._worldScale;
+        Nav._reqPOV.target.y *= ATON._worldScale;
+        Nav._reqPOV.target.z *= ATON._worldScale;
+    }
+
+    Nav._tPOVcall = ATON._clock.elapsedTime;
+    ATON.fireEvent("POVTransitionRequested", pov.id);
 };
 
 

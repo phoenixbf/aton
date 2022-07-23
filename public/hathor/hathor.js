@@ -988,8 +988,8 @@ HATHOR.measure = ()=>{
 };
 
 HATHOR.switchUserScale = ()=>{
-    if (ATON._ws === 0) ATON.setWorldScale(-10);
-    else ATON.setWorldScale(0);
+    if (ATON._ws === 0) ATON.setUserScaleLevel(ATON.SCALE_BIG);
+    else ATON.setUserScaleLevel(ATON.SCALE_DEFAULT);
 };
 
 

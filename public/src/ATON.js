@@ -117,6 +117,15 @@ ATON.SHADOWS_RES  = 1024; // 512
 
 ATON.AMB_L = 0.2; // 0.1 - Ambient for shadowed areas (without LPs)
 
+// Scale levels
+ATON.SCALE_DEFAULT   = 0;
+ATON.SCALE_BIG       = 5;
+ATON.SCALE_VERYBIG   = 10;
+ATON.SCALE_SMALL     = -5;
+ATON.SCALE_VERYSMALL = -10;
+
+
+
 // Plugins
 ATON._plugList = [];
 
@@ -1013,14 +1022,46 @@ ATON.getRootUI = ()=>{
 };
 
 
+// World/User scale
 ATON._unpackScale = (s)=>{
-    if (s === 0) return 1.0;
+    if (s == 0) return 1.0;
 
-    if (s > 0) return (1.1*s);
+    if (s >= 0) return (1.1*s);
     return (1.0 / (-1.1*s));
 };
 
-ATON.setWorldScale = (ws)=>{
+/**
+Set user scale by level.
+Level is an integer ranging from -127 to 127, with 0 representing the default scale (or ATON.SCALE_DEFAULT)
+@param {number} ws - the new user scale level (if undefined, reset scale)
+@example
+ATON.setUserScaleLevel(ATON.SCALE_SMALL);
+ATON.setUserScaleLevel(ATON.SCALE_VERYBIG);
+ATON.setUserScaleLevel(8);
+*/
+ATON.setUserScaleLevel = (us)=>{
+    ATON.setWorldScaleLevel(-us);
+};
+
+ATON.getUserScale = ()=>{
+    return (1.0/ATON._worldScale);
+};
+
+/**
+Set world scale by level.
+Level is an integer ranging from -127 to 127, with 0 representing the default scale (or ATON.SCALE_DEFAULT)
+@param {number} ws - the new world scale level (if undefined, reset scale)
+@example
+ATON.setWorldScaleLevel(ATON.SCALE_SMALL);
+ATON.setWorldScaleLevel(ATON.SCALE_VERYBIG);
+ATON.setWorldScaleLevel(24);
+*/
+ATON.setWorldScaleLevel = (ws)=>{
+    if (ws === undefined) ws = 0;
+
+    if (ws < -127) ws = 127;
+    if (ws > 127)  ws = 127;
+
     ATON._ws = ws;
 
     let s = ATON._unpackScale(ws);
@@ -1028,25 +1069,37 @@ ATON.setWorldScale = (ws)=>{
     ATON._rootVisible.scale.set(s,s,s);
     ATON._rootSem.scale.set(s,s,s);
     ///ATON._rootUI.scale.set(s,s,s);
+    SUI.gLocNodes.scale.set(s,s,s);
+    SUI.gMeasures.scale.set(s,s,s);
 
     if (ATON.VRoadcast.avaGroup) ATON.VRoadcast.avaGroup.scale.set(s,s,s);
     //if (ATON.VRoadcast.focGroup) ATON.VRoadcast.focGroup.scale.set(s,s,s);
 
-    ATON._worldScale = s;
-    console.log("World scale: "+s);
-
     ATON.recomputeSceneBounds();
 
-    let neweye = ATON.Nav.getCurrentEyeLocation();
-    neweye.x *= s;
-    neweye.y *= s;
-    neweye.z *= s;
-    
-    ATON.Nav.requestPOV( new ATON.POV().setPosition(neweye), 0.1 );
+    // Relocate current POV accordingly
+    let ds = (s / ATON._worldScale);
+
+    ATON.Nav._currPOV.pos.x *= ds;
+    ATON.Nav._currPOV.pos.y *= ds;
+    ATON.Nav._currPOV.pos.z *= ds;
+    ATON.Nav._currPOV.target.x *= ds;
+    ATON.Nav._currPOV.target.y *= ds;
+    ATON.Nav._currPOV.target.z *= ds;
+    ATON.Nav.syncCurrCamera();
+
+    if (ATON.XR._bPresenting) ATON.XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
+
+    ATON._worldScale = s;
+    console.log("World scale: "+s);
+};
+
+ATON.getWorldScaleLevel = ()=>{
+    return ATON._ws;
 };
 
 ATON.getWorldScale = ()=>{
-    return ATON._ws;
+    return ATON._worldScale;
 };
 
 // Asset loading routines

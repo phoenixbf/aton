@@ -1572,6 +1572,21 @@ ATON.playOrPauseMainPanorama = ()=>{
     else ATON._elPanoVideo.play();
 }
 
+/**
+Stop and remove main videopanorama (if any)
+@example
+ATON.stopAndRemoveMainPanorama();
+*/
+ATON.stopAndRemoveMainPanorama = ()=>{
+    if (!ATON._elPanoVideo) return;
+    if (ATON._vpanoPlaying) ATON._elPanoVideo.stop();
+
+    ATON._elPanoVideo.remove();
+    ATON._elPanoVideo  = undefined;
+    
+    ATON._vpanoPlaying = false;
+}
+
 ATON._realizeOrUpdateMainPano = (tpano)=>{
     // We already created a main pano
     if (ATON._matMainPano !== undefined){

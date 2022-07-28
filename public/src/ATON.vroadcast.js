@@ -533,6 +533,12 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (VRoadcast._bSpatial){
             let A = VRoadcast.touchAvatar(uid);
 
+/*
+            ATON.AudioHub._loader.load( audioURL, (buffer)=>{
+                A._auChunks.push(buffer);
+            });
+*/
+
             //A.setTalkVolume(data.vol);
             A.setTalkVolume(5.0);
 

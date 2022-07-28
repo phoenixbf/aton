@@ -1579,7 +1579,7 @@ ATON.stopAndRemoveMainPanorama();
 */
 ATON.stopAndRemoveMainPanorama = ()=>{
     if (!ATON._elPanoVideo) return;
-    if (ATON._vpanoPlaying) ATON._elPanoVideo.stop();
+    if (ATON._vpanoPlaying) ATON._elPanoVideo.pause();
 
     ATON._elPanoVideo.remove();
     ATON._elPanoVideo  = undefined;

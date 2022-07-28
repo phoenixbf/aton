@@ -412,18 +412,16 @@ _handleTalk(){
     if (this._bPlayingAudio) return;
     if (this._auChunks.length < 1) return;
 
-    let d = this._auChunks.shift();
+    let buf = this._auChunks.shift();
 
-    let au = new Audio();
-    au.src = d.data;
+    this._auTalk.setBuffer( buf );
+    /*if (!this._auTalk.isPlaying)*/ this._auTalk.play();
 
-    au.play();
     this._bPlayingAudio = true;
 
-    au.onended = ()=>{
+    this._auTalk.onended = ()=>{
         this._bPlayingAudio = false;
-        au = null;
-        //console.log("finished playing chunk");
+        buf = null;
     };
 
     //this.setTalkVolume(d.volume);

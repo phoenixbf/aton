@@ -13,7 +13,9 @@ let MediaFlow = {};
 
 MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 
-MediaFlow.auStreamInterval = 500; // 1000
+MediaFlow.auStreamInterval        = 500; // 400
+MediaFlow.auStreamSegmentInterval = 200;
+
 MediaFlow.auMinVol = 1;
 
 
@@ -22,12 +24,21 @@ MediaFlow.init = ()=>{
     MediaFlow._bStreaming = false;
     MediaFlow._bScreencap = false;
 
+    // blob options
+    MediaFlow._blobOptAudio = {
+        type : "audio/wav" // 'audio/ogg; codecs=opus'
+    };
+
+    MediaFlow._blobOptVideo = {
+        type: 'video/webm; codecs=vp9'
+    };
+
     // Constraints
     MediaFlow._cAuStream = {
         audio: {
-            echoCancellation: true,
-            noiseSuppression: true,
             channelCount: 1,
+            //echoCancellation: true,
+            //noiseSuppression: true,
             //sampleSize: 16,
             //sampleRate: 44100
         }
@@ -84,7 +95,72 @@ MediaFlow.init = ()=>{
     MediaFlow._fr = new window.FileReader();
 };
 
+// Utilities
+//==========================================================
+MediaFlow.convertAudioChunksToBase64 = ( au, onComplete )=>{
+    let blob = new Blob( au, MediaFlow._blobOptAudio );
+    let b64  = undefined;
+    
+    MediaFlow._fr.readAsDataURL( blob ); 
+    MediaFlow._fr.onloadend = ()=>{
+        b64 = ATON.MediaFlow._fr.result;
+        blob = null;
+
+        if (onComplete) onComplete( b64 );
+        
+    };
+};
+
+MediaFlow.convertAudioChunksToBuffer = ( au, onComplete )=>{
+    let blob = new Blob( au, MediaFlow._blobOptAudio );
+    let b64  = undefined;
+    
+    MediaFlow._fr.readAsDataURL( blob ); 
+    MediaFlow._fr.onloadend = ()=>{
+        b64 = ATON.MediaFlow._fr.result;
+        blob = null;
+
+        ATON.AudioHub._loader.load( b64, (buffer)=>{
+            if (!buffer) return;
+
+            if (onComplete) onComplete( buffer );
+        });
+    };
+};
+
+MediaFlow.convertVideoChunksToBase64 = ( vid, onComplete )=>{
+    let blob = new Blob( vid, MediaFlow._blobOptVideo );
+    let b64  = undefined;
+    
+    MediaFlow._fr.readAsDataURL( blob ); 
+    MediaFlow._fr.onloadend = ()=>{
+        b64 = ATON.MediaFlow._fr.result;
+        blob = null;
+
+        if (onComplete) onComplete( b64 );
+        
+    };
+};
+
+MediaFlow.convertVideoChunksToBuffer = ( vid, onComplete )=>{
+    let blob = new Blob( vid, MediaFlow._blobOptVideo );
+    let b64  = undefined;
+    
+    MediaFlow._fr.readAsDataURL( blob ); 
+    MediaFlow._fr.onloadend = ()=>{
+        b64 = ATON.MediaFlow._fr.result;
+        blob = null;
+
+        ATON.AudioHub._loader.load( b64, (buffer)=>{
+            if (!buffer) return;
+
+            if (onComplete) onComplete( buffer );
+        });
+    };
+};
+
 // Audio Recording
+//==========================================================
 MediaFlow.isAudioRecording = ()=>{
     return MediaFlow._bAudioRecording;
 };
@@ -113,7 +189,7 @@ MediaFlow.startRecording = ()=>{
         MediaFlow._aurec.onstop = function(e){
             console.log("Stop recording...");
 
-            MediaFlow._sblob = new Blob(MediaFlow._schunks, { 'type' : MediaFlow.auType });
+            MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
 
             MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
             MediaFlow._fr.onloadend = ()=>{
@@ -133,8 +209,8 @@ MediaFlow.startRecording = ()=>{
 };
 
 MediaFlow.stopRecording = ()=>{
-    if (!MediaFlow._bAudioRecording) return;
     if (!MediaFlow._aurec) return;
+    if (!MediaFlow._bAudioRecording) return;
 
     MediaFlow._aurec.stop();
 };
@@ -146,6 +222,7 @@ MediaFlow.startOrStopRecording = ()=>{
 
 
 // Audio Streaming
+//==========================================================
 MediaFlow.startMediaStreaming = ()=>{
     navigator.mediaDevices.getUserMedia( MediaFlow._cAuStream )
     .then((stream)=>{
@@ -160,6 +237,9 @@ MediaFlow.startMediaStreaming = ()=>{
             }, MediaFlow.auStreamInterval );
         }
 
+        // Start streaming
+        MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
+
         MediaFlow._aurec.onstart = (e) => {
             MediaFlow._bStreaming = true;
             MediaFlow._bAudioRecording = true;
@@ -169,12 +249,46 @@ MediaFlow.startMediaStreaming = ()=>{
         MediaFlow._aurec.ondataavailable = (e)=>{
             if (e.data.size <= 0) return;
             MediaFlow._schunks.push(e.data);
+
+            /*
+            if ( MediaFlow._schunks.length < 5) return;
+
+            MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
+            MediaFlow._schunks = [];
+
+            console.log(MediaFlow._sblob.size+" B")
+            //console.log(MediaFlow._schunks)
+
+            MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
+            MediaFlow._fr.onloadend = ()=>{
+               let b64 = MediaFlow._fr.result;
+               //b64 = b64.split(',')[1];
+
+                ATON.VRoadcast.socket.emit("UTALK", {
+                    audio: b64,
+                    uid: ATON.VRoadcast.uid,
+                    //vol: MediaFlow._auAVGvolume
+                });
+
+               b64 = null;
+            };
+*/
         };
 
-        MediaFlow._aurec.onstop = function(e){
-            MediaFlow._sblob = new Blob(MediaFlow._schunks, { 'type' : MediaFlow.auType });
+        MediaFlow._aurec.onstop = (e)=>{
+
+            ATON.VRoadcast.socket.emit("UTALK", {
+                audio: MediaFlow._schunks,
+                uid: ATON.VRoadcast.uid,
+                //vol: MediaFlow._auAVGvolume
+            });
+
+            if (MediaFlow._bStreaming) MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
+/*
+            MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
             
             //console.log(MediaFlow._sblob.size+" B")
+            console.log(MediaFlow._schunks)
 
             MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
             MediaFlow._fr.onloadend = ()=>{
@@ -190,11 +304,9 @@ MediaFlow.startMediaStreaming = ()=>{
                b64 = null;
             };
 
-            if (MediaFlow._bStreaming) MediaFlow._aurec.start();
+            if (MediaFlow._bStreaming) MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
+*/
         };
-    
-        // Start recording
-        MediaFlow._aurec.start();
     })
     .catch((e)=>{
         console.log(e);
@@ -203,8 +315,9 @@ MediaFlow.startMediaStreaming = ()=>{
 
 MediaFlow.stopMediaStreaming = ()=>{
     if (!MediaFlow._aurec) return;
+    if (!MediaFlow._bStreaming) return;
 
-    MediaFlow._aurec.stop();
+    if (MediaFlow._aurec.state !== "inactive") MediaFlow._aurec.stop();
 
     MediaFlow._bStreaming = false;
     MediaFlow._bAudioRecording = false;
@@ -216,7 +329,8 @@ MediaFlow.startOrStopMediaStreaming = ()=>{
 };
 
 
-// Screen recording
+// Screen Recording & Streaming
+//==========================================================
 MediaFlow.startScreenRecording = ()=>{
     navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidRec )
     .then((stream)=>{
@@ -230,9 +344,7 @@ MediaFlow.startScreenRecording = ()=>{
         }
 
         MediaFlow._screc.onstop = () => {
-            MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
-                type: 'video/webm;codecs=vp9'
-            });
+            MediaFlow._scblob = new Blob(MediaFlow._scchunks, MediaFlow._blobOptVideo);
 
             console.log(MediaFlow._scblob.size);
 
@@ -275,6 +387,13 @@ MediaFlow.startScreenStreaming = ()=>{
         }
 
         MediaFlow._screc.onstop = () => {
+            ATON.VRoadcast.socket.emit("UVIDEO", {
+                video: MediaFlow._scchunks,
+                uid: ATON.VRoadcast.uid
+            });
+
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start(200);
+/*
             MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
                 type: 'video/webm;codecs=vp9'
             });
@@ -293,7 +412,8 @@ MediaFlow.startScreenStreaming = ()=>{
                b64 = null;
             };
 
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start(200);
+*/
         }
 
         MediaFlow._screc.start(200);
@@ -305,6 +425,7 @@ MediaFlow.startScreenStreaming = ()=>{
 
 MediaFlow.stopScreenStreaming = ()=>{
     if (!MediaFlow._screc) return;
+    if (!MediaFlow._bScreenStream) return;
 
     MediaFlow._screc.stop();
     MediaFlow._bScreenStream = false;

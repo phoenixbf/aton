@@ -27,10 +27,15 @@ constructor(uid){
     this._auTalk = new THREE.PositionalAudio( ATON.AudioHub._listener );
     this._auTalk.setRefDistance(30.0);
     this._auTalk.setLoop( false );
-    this.add(this._auTalk); // move with avatar
+    this.add( this._auTalk ); // spatial audio, move with avatar
+
+    this.bMuted = false;
 
     this._bPlayingAudio = false;
-    this._auChunks = [];
+    //this._auChunks = [];
+    //this._iAU = 0;
+    this._blob = undefined;
+    this._b64  = undefined;
 
     this._tStateCall = -1.0;
     //this._tStateDur  = 0.1;
@@ -66,6 +71,10 @@ getColor(){
 
 setTalkDistance(r){
     if (r > 0.0) this._auTalk.setRefDistance(r);
+}
+
+setMuted(b){
+    this.bMuted = b;
 }
 
 getAvatarMaterialByUID(uid){
@@ -409,6 +418,28 @@ update(){
 }
 
 _handleTalk(){
+    //if (this._bPlayingAudio) return;
+    if (this._auTalk.isPlaying) return;
+    if (this._auChunks.length < 2) return;
+
+    let buf = this._auChunks[this._iAU];
+
+    this._auTalk.setBuffer( buf );
+    this._auTalk.play();
+
+    //this._bPlayingAudio = true;
+/*
+    this._auTalk.onended = ()=>{
+        this._bPlayingAudio = false;
+        buf = null;
+    };
+*/
+    //this.setTalkVolume(d.volume);
+    this.setTalkVolume(5.0);
+}
+
+
+_handleTalkOLD(){
     if (this._bPlayingAudio) return;
     if (this._auChunks.length < 1) return;
 

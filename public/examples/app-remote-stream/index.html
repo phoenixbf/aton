@@ -49,12 +49,20 @@ window.addEventListener('load', ()=>{
         ATON.VRoadcast.disableSpatiality();
         ATON.VRoadcast.setAvatarsVisibility(false);
 
-        ATON.VRoadcast.connect("samples/welcome");
+        let urlParams = new URLSearchParams(window.location.search);
+        let sesID = urlParams.get('s');
+
+        if (sesID) ATON.VRoadcast.connect(sesID);
+        else ATON.VRoadcast.connect("samples/welcome");
 
         // We handle connect/disconnect to change status message
         ATON.on("VRC_Connected", ()=>{
         });
         ATON.on("VRC_Disconnected", ()=>{
+        });
+
+        ATON.on("VRC_IDassigned", (uid)=>{
+            ATON.VRoadcast.setUsername("RemoteObserver"+uid);
         });
 
         ATON.on("VRC_UVideo", (data)=>{
@@ -101,40 +109,7 @@ window.addEventListener('load', ()=>{
         });
     };
 
-/*
-    setInterval(()=>{
-        //if (bPlayingChunk) return;
-        if (!elVid.pause) return;
-        if (vchunks.length < 1) return;
 
-        let v = vchunks.shift();
-
-        elVid.src = v;
-        elVid.play();
-        bPlayingChunk = true;
-
-        elVid.onended = ()=>{
-            bPlayingChunk = false;
-        };
-    }, 500);
-*/
-
-/*
-    myApp.update = ()=>{
-        console.log("x");
-        if (bPlayingChunk) return;
-
-        let v = vchunks.shift();
-
-        elVid.src = v;
-        elVid.play();
-        bPlayingChunk = true;
-
-        elVid.onended = ()=>{
-            bPlayingChunk = false;
-        };
-    };
-*/
     // Ok, let's run our App!
     myApp.run();
 });
@@ -144,14 +119,14 @@ window.addEventListener('load', ()=>{
 
 <body class="atonDefaultBody">
 
-    <div class="atonTitle">App Remote Stream</div>
+    <div class="atonTitle">Remote Stream</div>
 
-    <div style='display:inline-block; padding:50px; width:100%; height:auto; text-align:center'>
+    <div>
     <!-- 
         <video id='idStream' autoplay playsinline preload="metadata"></video>
     -->
-        <video id='idStream0' autoplay style="position:absolute; left:0; width:100%; height:auto" ></video>
-        <video id='idStream1' autoplay style="position:absolute; left:0; width:100%; height:auto" ></video>
+        <video id='idStream0' autoplay style="position:absolute; left:0; width:100%; height:auto;" ></video>
+        <video id='idStream1' autoplay style="position:absolute; left:0; width:100%; height:auto;" ></video>
     </div>
 
 

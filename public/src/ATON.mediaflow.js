@@ -15,6 +15,7 @@ MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 
 MediaFlow.auStreamInterval        = 500; // 400
 MediaFlow.auStreamSegmentInterval = 200;
+MediaFlow.vidStreamInterval       = 300;
 
 MediaFlow.auMinVol = 1;
 
@@ -71,6 +72,7 @@ MediaFlow.init = ()=>{
             //aspectRatio: { ideal: 1.7777777778 },
             framerate: 25
         }
+        //audio: { channelCount: 1 }
     };
 
     // Options
@@ -372,7 +374,7 @@ MediaFlow.startScreenStreaming = ()=>{
             MediaFlow._dsc = setInterval(()=>{
                 if (!MediaFlow._bScreenStream) return;
                 MediaFlow._screc.stop();
-            }, 1000 );
+            }, MediaFlow.vidStreamInterval );
         }
 
         MediaFlow._screc.onstart = (e) => {
@@ -392,7 +394,7 @@ MediaFlow.startScreenStreaming = ()=>{
                 uid: ATON.VRoadcast.uid
             });
 
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start(250);
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
 /*
             MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
                 type: 'video/webm;codecs=vp9'
@@ -416,7 +418,7 @@ MediaFlow.startScreenStreaming = ()=>{
 */
         }
 
-        MediaFlow._screc.start(250);
+        MediaFlow._screc.start();
     })
     .catch((e)=>{
         console.log(e);

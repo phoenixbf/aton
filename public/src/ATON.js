@@ -1074,6 +1074,7 @@ ATON.setWorldScaleLevel = (ws)=>{
 
     if (ATON.VRoadcast.avaGroup) ATON.VRoadcast.avaGroup.scale.set(s,s,s);
     //if (ATON.VRoadcast.focGroup) ATON.VRoadcast.focGroup.scale.set(s,s,s);
+    //ATON.SUI.gPoints.scale.set(s,s,s);
 
     ATON.recomputeSceneBounds();
 

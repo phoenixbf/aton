@@ -30,7 +30,7 @@ MediaFlow.init = ()=>{
     };
 
     MediaFlow._blobOptVideo = {
-        type: 'video/webm; codecs=vp9'
+        type: "video/webm;codecs=vp9"
     };
 
     // Constraints
@@ -392,7 +392,7 @@ MediaFlow.startScreenStreaming = ()=>{
                 uid: ATON.VRoadcast.uid
             });
 
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start(200);
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start(250);
 /*
             MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
                 type: 'video/webm;codecs=vp9'
@@ -416,7 +416,7 @@ MediaFlow.startScreenStreaming = ()=>{
 */
         }
 
-        MediaFlow._screc.start(200);
+        MediaFlow._screc.start(250);
     })
     .catch((e)=>{
         console.log(e);

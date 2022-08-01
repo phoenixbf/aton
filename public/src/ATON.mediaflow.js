@@ -15,7 +15,7 @@ MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 
 MediaFlow.auStreamInterval        = 500; // 400
 MediaFlow.auStreamSegmentInterval = 200;
-MediaFlow.vidStreamInterval       = 300;
+MediaFlow.vidStreamInterval       = 500;
 
 MediaFlow.auMinVol = 1;
 

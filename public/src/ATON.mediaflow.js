@@ -31,7 +31,8 @@ MediaFlow.init = ()=>{
     };
 
     MediaFlow._blobOptVideo = {
-        type: "video/webm;codecs=vp9"
+        //type: "video/webm;codecs=vp9"
+        type: "video/mp4"
     };
 
     // Constraints
@@ -94,32 +95,46 @@ MediaFlow.init = ()=>{
     MediaFlow._scchunks = [];
     MediaFlow._dsc      = undefined;
 
-    MediaFlow._fr = new window.FileReader();
+    //MediaFlow._fr = new window.FileReader();
+
+    // FR pool
+    MediaFlow._frPool = [];
+    for (let k=0; k<10; k++) MediaFlow._frPool.push(new window.FileReader() );
+    MediaFlow._fri = 0;
 };
 
 // Utilities
 //==========================================================
+MediaFlow.getFR = ()=>{
+    let fr = MediaFlow._frPool[MediaFlow._fri];
+    MediaFlow._fri = (MediaFlow._fri+1) % 10;
+    return fr;
+};
+
 MediaFlow.convertAudioChunksToBase64 = ( au, onComplete )=>{
     let blob = new Blob( au, MediaFlow._blobOptAudio );
     let b64  = undefined;
+
+    let fr = MediaFlow.getFR();
     
-    MediaFlow._fr.readAsDataURL( blob ); 
-    MediaFlow._fr.onloadend = ()=>{
-        b64 = ATON.MediaFlow._fr.result;
+    fr.readAsDataURL( blob ); 
+    fr.onloadend = ()=>{
+        b64  = fr.result;
         blob = null;
 
-        if (onComplete) onComplete( b64 );
-        
+        if (onComplete) onComplete( b64 );    
     };
 };
 
 MediaFlow.convertAudioChunksToBuffer = ( au, onComplete )=>{
     let blob = new Blob( au, MediaFlow._blobOptAudio );
     let b64  = undefined;
+
+    let fr = MediaFlow.getFR();
     
-    MediaFlow._fr.readAsDataURL( blob ); 
-    MediaFlow._fr.onloadend = ()=>{
-        b64 = ATON.MediaFlow._fr.result;
+    fr.readAsDataURL( blob ); 
+    fr.onloadend = ()=>{
+        b64  = fr.result;
         blob = null;
 
         ATON.AudioHub._loader.load( b64, (buffer)=>{
@@ -133,10 +148,12 @@ MediaFlow.convertAudioChunksToBuffer = ( au, onComplete )=>{
 MediaFlow.convertVideoChunksToBase64 = ( vid, onComplete )=>{
     let blob = new Blob( vid, MediaFlow._blobOptVideo );
     let b64  = undefined;
+
+    let fr = MediaFlow.getFR();
     
-    MediaFlow._fr.readAsDataURL( blob ); 
-    MediaFlow._fr.onloadend = ()=>{
-        b64 = ATON.MediaFlow._fr.result;
+    fr.readAsDataURL( blob ); 
+    fr.onloadend = ()=>{
+        b64  = fr.result;
         blob = null;
 
         if (onComplete) onComplete( b64 );
@@ -147,10 +164,12 @@ MediaFlow.convertVideoChunksToBase64 = ( vid, onComplete )=>{
 MediaFlow.convertVideoChunksToBuffer = ( vid, onComplete )=>{
     let blob = new Blob( vid, MediaFlow._blobOptVideo );
     let b64  = undefined;
+
+    let fr = MediaFlow.getFR();
     
-    MediaFlow._fr.readAsDataURL( blob ); 
-    MediaFlow._fr.onloadend = ()=>{
-        b64 = ATON.MediaFlow._fr.result;
+    fr.readAsDataURL( blob ); 
+    fr.onloadend = ()=>{
+        b64  = fr.result;
         blob = null;
 
         ATON.AudioHub._loader.load( b64, (buffer)=>{
@@ -193,9 +212,11 @@ MediaFlow.startRecording = ()=>{
 
             MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
 
-            MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
-            MediaFlow._fr.onloadend = ()=>{
-               let b64 = MediaFlow._fr.result;
+            let fr = MediaFlow.getFR();
+
+            fr.readAsDataURL(MediaFlow._sblob); 
+            fr.onloadend = ()=>{
+               let b64 = fr.result;
                //b64 = b64.split(',')[1];
 
                ATON.fireEvent("AudioRecordCompleted", b64);

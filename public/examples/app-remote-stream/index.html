@@ -71,7 +71,9 @@ window.addEventListener('load', ()=>{
                 //elVid.pause();
                 
                 let v = (vID + 1)%2;
-                elV[v].src = b64;
+
+                elV[v].src  = b64;
+                elV[v].type = "video/mp4";
 
                 //elVid.src = b64;
 

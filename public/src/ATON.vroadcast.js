@@ -547,13 +547,13 @@ VRoadcast._registerSocketHandlers = ()=>{
             });
 */
             ATON.MediaFlow.convertAudioChunksToBuffer(au, (buffer)=>{
-                if (A._auTalk.isPlaying) A._auTalk.stop();
+                //if (A._auTalk.isPlaying) A._auTalk.stop();
     
                 A._auTalk.setBuffer( buffer );
                 //A._auTalk.setLoop( false );
                 //A._auTalk.setVolume( 0.5 );
                 //A._auTalk.setPlaybackRate(0.9);
-                A._auTalk.play();
+                if (!A._auTalk.isPlaying) A._auTalk.play();
 
                 //A.setTalkVolume(data.vol);
                 A.setTalkVolume(5.0);

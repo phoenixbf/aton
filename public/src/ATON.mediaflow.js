@@ -375,7 +375,7 @@ MediaFlow.startScreenRecording = ()=>{
             //const blobUrl = URL.createObjectURL(MediaFlow._scblob);
 
             //console.log(blobUrl);
-            ATON.Utils.downloadBlob( MediaFlow._scblob, "capture.webm" );
+            ATON.Utils.downloadBlob( MediaFlow._scblob, "capture.mp4" );
         }
 
         MediaFlow._screc.start(200);

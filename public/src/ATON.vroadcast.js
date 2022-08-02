@@ -535,18 +535,8 @@ VRoadcast._registerSocketHandlers = ()=>{
             let A = VRoadcast.touchAvatar(uid);
 
             if (A.bMuted) return;
-/*
+
             ATON.AudioHub._loader.load( au, (buffer)=>{
-                A._auChunks[A._iAU] = buffer;
-                A._iAU = (A._iAU+1) % 2;
-            });
-*/
-/*
-            ATON.AudioHub._loader.load( au, (buffer)=>{
-                A._auChunks.push(buffer);
-            });
-*/
-            ATON.MediaFlow.convertAudioChunksToBuffer(au, (buffer)=>{
                 let aa = A._auTalk[A._auTalki];
                 let ii = (A._auTalki+1)%2;
 
@@ -559,59 +549,7 @@ VRoadcast._registerSocketHandlers = ()=>{
                 A.setTalkVolume(5.0);
 
                 A._auTalki = ii;
-/*
-                if (A._auTalk.isPlaying) A._auTalk.stop();
-    
-                A._auTalk.setBuffer( buffer );
-                //A._auTalk.setLoop( false );
-                //A._auTalk.setVolume( 0.5 );
-                //A._auTalk.setPlaybackRate(0.9);
-                A._auTalk.play();
-
-                //A.setTalkVolume(data.vol);
-                A.setTalkVolume(5.0);
-*/
             });
-
-/*
-            A._blob = new Blob( au, ATON.MediaFlow._blobOptAudio );
-            ATON.MediaFlow._fr.readAsDataURL( A._blob ); 
-            ATON.MediaFlow._fr.onloadend = ()=>{
-                A._b64 = ATON.MediaFlow._fr.result;
-
-                ATON.AudioHub._loader.load( A._b64, (buffer)=>{
-                    if (buffer){
-                        if (A._auTalk.isPlaying) A._auTalk.stop();
-    
-                        A._auTalk.setBuffer( buffer );
-                        //A._auTalk.setLoop( false );
-                        //A._auTalk.setVolume( 0.5 );
-                        //A._auTalk.setPlaybackRate(0.9);
-                        A._auTalk.play();
-    
-                        //A.setTalkVolume(data.vol);
-                        A.setTalkVolume(5.0);
-                    }
-                });
-            }
-*/
-
-/*
-            ATON.AudioHub._loader.load( au, (buffer)=>{
-                if (buffer){
-                    if (A._auTalk.isPlaying) A._auTalk.stop();
-
-                    A._auTalk.setBuffer( buffer );
-                    //A._auTalk.setLoop( false );
-                    //A._auTalk.setVolume( 0.5 );
-                    //A._auTalk.setPlaybackRate(0.9);
-                    A._auTalk.play();
-
-                    //A.setTalkVolume(data.vol);
-                    A.setTalkVolume(5.0);
-                }
-            });
-*/
         }
 
         ATON.fireEvent("VRC_UTalk", data);

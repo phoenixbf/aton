@@ -68,8 +68,8 @@ MediaFlow.init = ()=>{
             cursor: "always",
             width: 640,
             height: 360,
-            //width: { min: 640, ideal: 1920 },
-            //height: { min: 400, ideal: 1080 },
+            //width: { min: 426, max: 640 },
+            //height: { min: 240, max: 360 },
             //aspectRatio: { ideal: 1.7777777778 },
             framerate: 25
         }
@@ -77,8 +77,9 @@ MediaFlow.init = ()=>{
     };
 
     // Options
-    MediaFlow._oAuStream = {
-        audioBitsPerSecond : 10000
+    MediaFlow._oStream = {
+        audioBitsPerSecond : 9000,
+        videoBitsPerSecond: 100000
         //bitsPerSecond: ,
     };
 
@@ -95,16 +96,56 @@ MediaFlow.init = ()=>{
     MediaFlow._scchunks = [];
     MediaFlow._dsc      = undefined;
 
-    //MediaFlow._fr = new window.FileReader();
-
-    // FR pool
-    MediaFlow._frPool = [];
-    for (let k=0; k<10; k++) MediaFlow._frPool.push(new window.FileReader() );
-    MediaFlow._fri = 0;
+    // FReaders with onload routines
+    MediaFlow._setupFR();
 };
 
 // Utilities
 //==========================================================
+MediaFlow._setupFR = ()=>{
+    MediaFlow._frAR = new window.FileReader();
+    MediaFlow._frAR.onloadend = ()=>{
+        let b64 = MediaFlow._frAR.result;
+        //b64 = b64.split(',')[1];
+
+        ATON.fireEvent("AudioRecordCompleted", b64);
+        MediaFlow._bAudioRecording = false;
+    };
+
+    MediaFlow._frAS = new window.FileReader();
+    MediaFlow._frAS.onloadend = ()=>{
+        let b64 = MediaFlow._frAS.result;
+
+         ATON.VRoadcast.socket.emit("UTALK", {
+             audio: b64,
+             uid: ATON.VRoadcast.uid,
+             //vol: MediaFlow._auAVGvolume
+         });
+
+        b64 = null;
+    };
+
+    MediaFlow._frVS = new window.FileReader();
+    MediaFlow._frVS.onloadend = ()=>{
+        let b64 = MediaFlow._frVS.result;
+
+         ATON.VRoadcast.socket.emit("UVIDEO", {
+             video: b64,
+             uid: ATON.VRoadcast.uid
+         });
+
+        b64 = null;
+    };
+
+    // FR pool
+/*
+    MediaFlow._frPool = [];
+    for (let k=0; k<10; k++) MediaFlow._frPool.push(new window.FileReader() );
+    MediaFlow._fri = 0;
+*/
+};
+
+/*
 MediaFlow.getFR = ()=>{
     let fr = MediaFlow._frPool[MediaFlow._fri];
     MediaFlow._fri = (MediaFlow._fri+1) % 10;
@@ -179,6 +220,7 @@ MediaFlow.convertVideoChunksToBuffer = ( vid, onComplete )=>{
         });
     };
 };
+*/
 
 // Audio Recording
 //==========================================================
@@ -212,16 +254,7 @@ MediaFlow.startRecording = ()=>{
 
             MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
 
-            let fr = MediaFlow.getFR();
-
-            fr.readAsDataURL(MediaFlow._sblob); 
-            fr.onloadend = ()=>{
-               let b64 = fr.result;
-               //b64 = b64.split(',')[1];
-
-               ATON.fireEvent("AudioRecordCompleted", b64);
-               MediaFlow._bAudioRecording = false;
-            };
+            MediaFlow._frAR.readAsDataURL(MediaFlow._sblob);
         };
 
         MediaFlow._aurec.start();
@@ -249,19 +282,10 @@ MediaFlow.startOrStopRecording = ()=>{
 MediaFlow.startMediaStreaming = ()=>{
     navigator.mediaDevices.getUserMedia( MediaFlow._cAuStream )
     .then((stream)=>{
-        MediaFlow._aurec = new MediaRecorder( stream, MediaFlow._oAuStream );
-
-        // First time create streaming routine
-        if (MediaFlow._ds === undefined){
-            MediaFlow._ds = setInterval(()=>{
-                if (!MediaFlow._bStreaming) return;
-                MediaFlow._aurec.stop();
-        
-            }, MediaFlow.auStreamInterval );
-        }
+        MediaFlow._aurec = new MediaRecorder( stream, MediaFlow._oStream );
 
         // Start streaming
-        MediaFlow._aurec.start(/*MediaFlow.auStreamSegmentInterval*/);
+        MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
 
         MediaFlow._aurec.onstart = (e) => {
             MediaFlow._bStreaming = true;
@@ -273,62 +297,23 @@ MediaFlow.startMediaStreaming = ()=>{
             if (e.data.size <= 0) return;
             MediaFlow._schunks.push(e.data);
 
-            /*
-            if ( MediaFlow._schunks.length < 5) return;
+            //console.log(MediaFlow._schunks);
 
-            MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
-            MediaFlow._schunks = [];
+            if (MediaFlow._schunks.length < 2) return;
 
-            console.log(MediaFlow._sblob.size+" B")
-            //console.log(MediaFlow._schunks)
-
-            MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
-            MediaFlow._fr.onloadend = ()=>{
-               let b64 = MediaFlow._fr.result;
-               //b64 = b64.split(',')[1];
-
-                ATON.VRoadcast.socket.emit("UTALK", {
-                    audio: b64,
-                    uid: ATON.VRoadcast.uid,
-                    //vol: MediaFlow._auAVGvolume
-                });
-
-               b64 = null;
-            };
-*/
+            if (MediaFlow._aurec.state !== "inactive") MediaFlow._aurec.stop();
         };
 
+        // Send chunks
         MediaFlow._aurec.onstop = (e)=>{
 
-            ATON.VRoadcast.socket.emit("UTALK", {
-                audio: MediaFlow._schunks,
-                uid: ATON.VRoadcast.uid,
-                //vol: MediaFlow._auAVGvolume
-            });
-
-            if (MediaFlow._bStreaming) MediaFlow._aurec.start(/*MediaFlow.auStreamSegmentInterval*/);
-/*
             MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
+            MediaFlow._frAS.readAsDataURL( MediaFlow._sblob ); 
             
             //console.log(MediaFlow._sblob.size+" B")
-            console.log(MediaFlow._schunks)
+            //console.log(MediaFlow._schunks)
 
-            MediaFlow._fr.readAsDataURL(MediaFlow._sblob); 
-            MediaFlow._fr.onloadend = ()=>{
-               let b64 = MediaFlow._fr.result;
-               //b64 = b64.split(',')[1];
-
-                ATON.VRoadcast.socket.emit("UTALK", {
-                    audio: b64,
-                    uid: ATON.VRoadcast.uid,
-                    //vol: MediaFlow._auAVGvolume
-                });
-
-               b64 = null;
-            };
-
-            if (MediaFlow._bStreaming) MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
-*/
+            if (MediaFlow._bStreaming) MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
         };
     })
     .catch((e)=>{
@@ -388,7 +373,7 @@ MediaFlow.startScreenRecording = ()=>{
 MediaFlow.startScreenStreaming = ()=>{
     navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidStream )
     .then((stream)=>{
-        MediaFlow._screc = new MediaRecorder(stream);
+        MediaFlow._screc = new MediaRecorder( stream, MediaFlow._oStream );
 
         // First time create streaming routine
         if (MediaFlow._dsc === undefined){
@@ -410,33 +395,22 @@ MediaFlow.startScreenStreaming = ()=>{
         }
 
         MediaFlow._screc.onstop = () => {
+/*
             ATON.VRoadcast.socket.emit("UVIDEO", {
                 video: MediaFlow._scchunks,
                 uid: ATON.VRoadcast.uid
             });
 
             if (MediaFlow._bScreenStream) MediaFlow._screc.start();
-/*
-            MediaFlow._scblob = new Blob(MediaFlow._scchunks, {
-                type: 'video/webm;codecs=vp9'
-            });
-
-            console.log(MediaFlow._scblob.size);
-
-            MediaFlow._fr.readAsDataURL(MediaFlow._scblob); 
-            MediaFlow._fr.onloadend = ()=>{
-               let b64 = MediaFlow._fr.result;
-
-                ATON.VRoadcast.socket.emit("UVIDEO", {
-                    video: b64,
-                    uid: ATON.VRoadcast.uid
-                });
-
-               b64 = null;
-            };
-
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start(200);
 */
+
+            MediaFlow._scblob = new Blob(MediaFlow._scchunks, MediaFlow._blobOptVideo);
+            MediaFlow._frVS.readAsDataURL( MediaFlow._scblob ); 
+
+            //console.log(MediaFlow._scblob.size);
+
+            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
+
         }
 
         MediaFlow._screc.start();

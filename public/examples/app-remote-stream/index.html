@@ -66,8 +66,10 @@ window.addEventListener('load', ()=>{
         });
 
         ATON.on("VRC_UVideo", (data)=>{
+
+            let b64 = data.video;
             
-            ATON.MediaFlow.convertVideoChunksToBase64(data.video, (b64)=>{
+            //ATON.MediaFlow.convertVideoChunksToBase64(data.video, (b64)=>{
                 //elVid.pause();
                 
                 let v = (vID + 1)%2;
@@ -96,7 +98,7 @@ window.addEventListener('load', ()=>{
                 elV[v].play();
 
                 vID = v;
-            });
+            //});
 
 /*
             vchunks.push(data.video);

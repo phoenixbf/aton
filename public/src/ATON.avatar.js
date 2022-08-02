@@ -24,10 +24,25 @@ constructor(uid){
     //this._auTalk = undefined;
 
     // Positional audio (talk)
+/*
     this._auTalk = new THREE.PositionalAudio( ATON.AudioHub._listener );
     this._auTalk.setRefDistance(30.0);
     this._auTalk.setLoop( false );
     this.add( this._auTalk ); // spatial audio, move with avatar
+*/
+    this._auTalk = [];
+    this._auTalk.push( new THREE.PositionalAudio( ATON.AudioHub._listener ) );
+    this._auTalk.push( new THREE.PositionalAudio( ATON.AudioHub._listener ) );
+
+    for (let k=0; k<2; k++){
+        this._auTalk[k].setRefDistance(30.0);
+        this._auTalk[k].setLoop( false );
+        //this._auTalk[k].setPlaybackRate(0.9);
+
+        this.add( this._auTalk[k] );
+    }
+
+    this._auTalki = 0;
 
     this.bMuted = false;
 

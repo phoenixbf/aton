@@ -13,7 +13,7 @@ let MediaFlow = {};
 
 MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 
-MediaFlow.auStreamInterval        = 500; // 400
+MediaFlow.auStreamInterval        = 700; // 400
 MediaFlow.auStreamSegmentInterval = 200;
 MediaFlow.vidStreamInterval       = 500;
 
@@ -39,10 +39,10 @@ MediaFlow.init = ()=>{
     MediaFlow._cAuStream = {
         audio: {
             channelCount: 1,
-            //echoCancellation: true,
-            //noiseSuppression: true,
+            echoCancellation: true,
+            noiseSuppression: true,
             //sampleSize: 16,
-            //sampleRate: 44100
+            //sampleRate: 20000
         }
     };
 
@@ -131,7 +131,7 @@ MediaFlow.convertAudioChunksToBuffer = ( au, onComplete )=>{
     let b64  = undefined;
 
     let fr = MediaFlow.getFR();
-    
+
     fr.readAsDataURL( blob ); 
     fr.onloadend = ()=>{
         b64  = fr.result;
@@ -261,7 +261,7 @@ MediaFlow.startMediaStreaming = ()=>{
         }
 
         // Start streaming
-        MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
+        MediaFlow._aurec.start(/*MediaFlow.auStreamSegmentInterval*/);
 
         MediaFlow._aurec.onstart = (e) => {
             MediaFlow._bStreaming = true;
@@ -306,7 +306,7 @@ MediaFlow.startMediaStreaming = ()=>{
                 //vol: MediaFlow._auAVGvolume
             });
 
-            if (MediaFlow._bStreaming) MediaFlow._aurec.start(MediaFlow.auStreamSegmentInterval);
+            if (MediaFlow._bStreaming) MediaFlow._aurec.start(/*MediaFlow.auStreamSegmentInterval*/);
 /*
             MediaFlow._sblob = new Blob(MediaFlow._schunks, MediaFlow._blobOptAudio);
             

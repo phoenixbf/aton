@@ -13,9 +13,13 @@ let MediaFlow = {};
 
 MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 
-MediaFlow.auStreamInterval        = 700; // 400
-MediaFlow.auStreamSegmentInterval = 200;
-MediaFlow.vidStreamInterval       = 500;
+//MediaFlow.auStreamInterval        = 700; // 400
+//MediaFlow.vidStreamInterval       = 500;
+MediaFlow.auStreamSegmentInterval  = 200;
+MediaFlow.auStreamNumSegments      = 2;
+
+MediaFlow.vidStreamSegmentInterval = 200;
+MediaFlow.vidStreamNumSegments     = 3;
 
 MediaFlow.auMinVol = 1;
 
@@ -52,7 +56,7 @@ MediaFlow.init = ()=>{
         }
     };
 
-    MediaFlow._cVidRec = {
+    MediaFlow._cScreenRec = {
         video: {
             width: 1280,
             height: 720,
@@ -63,17 +67,26 @@ MediaFlow.init = ()=>{
         }
     };
 
-    MediaFlow._cVidStream = {
+    MediaFlow._cScreenStream = {
         video: {
             cursor: "always",
-            width: 640,
-            height: 360,
-            //width: { min: 426, max: 640 },
-            //height: { min: 240, max: 360 },
+            //width: 640,
+            //height: 360,
+            width: { max: 640 },
+            height: { max: 360 },
             //aspectRatio: { ideal: 1.7777777778 },
             framerate: 25
         }
         //audio: { channelCount: 1 }
+    };
+
+    MediaFlow._cCamStream = {
+        video: {
+            width: { max: 320 }
+        },
+        audio: {
+            channelCount: 1
+        }
     };
 
     // Options
@@ -84,17 +97,15 @@ MediaFlow.init = ()=>{
     };
 
     MediaFlow._aurec = undefined;
-    MediaFlow._ds = undefined;
     
     MediaFlow._sblob = undefined;
     MediaFlow._schunks = [];
     
-    // ScreenCap
+    // Screen / Camera
     MediaFlow._bScreenStream = false;
-    MediaFlow._screc    = undefined;
+    MediaFlow._vrec    = undefined;
     MediaFlow._scblob   = undefined;
     MediaFlow._scchunks = [];
-    MediaFlow._dsc      = undefined;
 
     // FReaders with onload routines
     MediaFlow._setupFR();
@@ -299,7 +310,7 @@ MediaFlow.startMediaStreaming = ()=>{
 
             //console.log(MediaFlow._schunks);
 
-            if (MediaFlow._schunks.length < 2) return;
+            if (MediaFlow._schunks.length < MediaFlow.auStreamNumSegments) return;
 
             if (MediaFlow._aurec.state !== "inactive") MediaFlow._aurec.stop();
         };
@@ -340,18 +351,18 @@ MediaFlow.startOrStopMediaStreaming = ()=>{
 // Screen Recording & Streaming
 //==========================================================
 MediaFlow.startScreenRecording = ()=>{
-    navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidRec )
+    navigator.mediaDevices.getDisplayMedia( MediaFlow._cScreenRec )
     .then((stream)=>{
-        MediaFlow._screc = new MediaRecorder(stream);
+        MediaFlow._vrec = new MediaRecorder(stream);
         MediaFlow._scchunks = [];
 
-        MediaFlow._screc.ondataavailable = event => {
+        MediaFlow._vrec.ondataavailable = event => {
             if (event.data.size > 0) {
                 MediaFlow._scchunks.push(event.data);
             }
         }
 
-        MediaFlow._screc.onstop = () => {
+        MediaFlow._vrec.onstop = () => {
             MediaFlow._scblob = new Blob(MediaFlow._scchunks, MediaFlow._blobOptVideo);
 
             console.log(MediaFlow._scblob.size);
@@ -363,7 +374,7 @@ MediaFlow.startScreenRecording = ()=>{
             ATON.Utils.downloadBlob( MediaFlow._scblob, "capture.mp4" );
         }
 
-        MediaFlow._screc.start(200);
+        MediaFlow._vrec.start(200);
     })
     .catch((e)=>{
         console.log(e);
@@ -371,10 +382,10 @@ MediaFlow.startScreenRecording = ()=>{
 };
 
 MediaFlow.startScreenStreaming = ()=>{
-    navigator.mediaDevices.getDisplayMedia( MediaFlow._cVidStream )
+    navigator.mediaDevices.getDisplayMedia( MediaFlow._cScreenStream )
     .then((stream)=>{
-        MediaFlow._screc = new MediaRecorder( stream, MediaFlow._oStream );
-
+        MediaFlow._vrec = new MediaRecorder( stream, MediaFlow._oStream );
+/*
         // First time create streaming routine
         if (MediaFlow._dsc === undefined){
             MediaFlow._dsc = setInterval(()=>{
@@ -382,38 +393,34 @@ MediaFlow.startScreenStreaming = ()=>{
                 MediaFlow._screc.stop();
             }, MediaFlow.vidStreamInterval );
         }
+*/
 
-        MediaFlow._screc.onstart = (e) => {
+        MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
+
+        MediaFlow._vrec.onstart = (e) => {
             MediaFlow._bScreenStream = true;
             MediaFlow._scchunks = [];
         };
 
-        MediaFlow._screc.ondataavailable = event => {
-            if (event.data.size > 0) {
-                MediaFlow._scchunks.push(event.data);
-            }
+        MediaFlow._vrec.ondataavailable = event => {
+            if (event.data.size < 1) return;
+            MediaFlow._scchunks.push(event.data);
+
+            if (MediaFlow._scchunks.length < MediaFlow.vidStreamNumSegments) return;
+
+            if (MediaFlow._vrec.state !== "inactive") MediaFlow._vrec.stop();
         }
 
-        MediaFlow._screc.onstop = () => {
-/*
-            ATON.VRoadcast.socket.emit("UVIDEO", {
-                video: MediaFlow._scchunks,
-                uid: ATON.VRoadcast.uid
-            });
-
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
-*/
+        MediaFlow._vrec.onstop = () => {
 
             MediaFlow._scblob = new Blob(MediaFlow._scchunks, MediaFlow._blobOptVideo);
             MediaFlow._frVS.readAsDataURL( MediaFlow._scblob ); 
 
             //console.log(MediaFlow._scblob.size);
 
-            if (MediaFlow._bScreenStream) MediaFlow._screc.start();
+            if (MediaFlow._bScreenStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
 
         }
-
-        MediaFlow._screc.start();
     })
     .catch((e)=>{
         console.log(e);
@@ -421,10 +428,60 @@ MediaFlow.startScreenStreaming = ()=>{
 };
 
 MediaFlow.stopScreenStreaming = ()=>{
-    if (!MediaFlow._screc) return;
+    if (!MediaFlow._vrec) return;
     if (!MediaFlow._bScreenStream) return;
 
-    MediaFlow._screc.stop();
+    MediaFlow._vrec.stop();
+    MediaFlow._bScreenStream = false;
+};
+
+// Camera Streaming
+//==========================================================
+MediaFlow.startCameraStreaming = ()=>{
+    if (MediaFlow._bScreenStream) return;
+    if (MediaFlow._bAudioRecording) return;
+
+    navigator.mediaDevices.getUserMedia( MediaFlow._cCamStream )
+    .then((stream)=>{
+        MediaFlow._vrec = new MediaRecorder( stream, MediaFlow._oStream );
+
+        MediaFlow._vrec.start( MediaFlow.vidStreamSegmentInterval );
+
+        MediaFlow._vrec.onstart = (e) => {
+            MediaFlow._bScreenStream = true;
+            MediaFlow._scchunks = [];
+        };
+
+        MediaFlow._vrec.ondataavailable = event => {
+            if (event.data.size < 1) return;
+            MediaFlow._scchunks.push(event.data);
+
+            if (MediaFlow._scchunks.length < MediaFlow.vidStreamNumSegments) return;
+
+            if (MediaFlow._vrec.state !== "inactive") MediaFlow._vrec.stop();
+        }
+
+        MediaFlow._vrec.onstop = () => {
+
+            MediaFlow._scblob = new Blob(MediaFlow._scchunks, MediaFlow._blobOptVideo);
+            MediaFlow._frVS.readAsDataURL( MediaFlow._scblob ); 
+
+            //console.log(MediaFlow._scblob.size);
+
+            if (MediaFlow._bScreenStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
+
+        }
+    })
+    .catch((e)=>{
+        console.log(e);
+    });
+};
+
+MediaFlow.stopCameraStreaming = ()=>{
+    if (!MediaFlow._vrec) return;
+    if (!MediaFlow._bScreenStream) return;
+
+    MediaFlow._vrec.stop();
     MediaFlow._bScreenStream = false;
 };
 

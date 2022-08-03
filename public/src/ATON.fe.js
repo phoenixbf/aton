@@ -1115,6 +1115,8 @@ FE.popupVRC = ()=>{
     if (numUsers>1) htmlcontent += "<div class='atonPopupTitle'>Collaborative Session ("+numUsers+" users)</div>";
     else htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
 
+    htmlcontent += "<div id='idCollabTools'></div>";
+
     // Username
     //htmlcontent += "Your username in this collaborative session is:<br>";
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
@@ -1129,6 +1131,30 @@ FE.popupVRC = ()=>{
     htmlcontent += "<div class='atonBTN' id='idVRCdisconnect' style='width:90%'>LEAVE</div>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+
+    if (!ATON.MediaFlow._bCamStream) ATON.FE.uiAddButton("idCollabTools", "screenshare", ()=>{
+        if (!ATON.MediaFlow._bScreenStream) $("#btn-screenshare").removeClass("atonBTN-rec");
+        else $("#btn-screenshare").addClass("atonBTN-rec");
+
+        ATON.MediaFlow.startOrStopScreenStreaming();
+        ATON.FE.popupClose();
+
+    }, "Share your screen with other participants");
+
+    if (!ATON.MediaFlow._bScreenStream) ATON.FE.uiAddButton("idCollabTools", "camera", ()=>{
+        if (!ATON.MediaFlow._bScreenStream) $("#btn-camera").removeClass("atonBTN-rec");
+        else $("#btn-camera").addClass("atonBTN-rec");
+
+        ATON.MediaFlow.startOrStopCameraStreaming();
+        ATON.FE.popupClose();
+
+    }, "Share your camera with other participants");
+
+    if (ATON.MediaFlow._bScreenStream) $("#btn-screenshare").addClass("atonBTN-rec");
+    else $("#btn-screenshare").removeClass("atonBTN-rec");
+    if (ATON.MediaFlow._bCamStream) $("#btn-camera").addClass("atonBTN-rec");
+    else $("#btn-camera").removeClass("atonBTN-rec");
+
 
     if (ATON.VRoadcast._username === undefined){
         $('#idVRCusername').show();

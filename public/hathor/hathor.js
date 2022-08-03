@@ -336,7 +336,7 @@ HATHOR.buildUIProfiles = ()=>{
 
     // Collaborate
 /*
-    ATON.FE.uiAddProfile("Collaborate", ()=>{
+    ATON.FE.uiAddProfile("collaborate", ()=>{
         $("#idTopToolbar").html(""); // clear
 
         ATON.FE.uiAddButtonVRC("idTopToolbar");

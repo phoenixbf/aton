@@ -100,10 +100,13 @@ MediaFlow.init = ()=>{
     MediaFlow._schunks = [];
     
     // Screen / Camera
-    MediaFlow._bScreenStream = false;
+    MediaFlow._bVideoStream = false;
     MediaFlow._vrec    = undefined;
     MediaFlow._scblob   = undefined;
     MediaFlow._scchunks = [];
+
+    MediaFlow._bCamStream    = false;
+    MediaFlow._bScreenStream = false;
 
     // FReaders with onload routines
     MediaFlow._setupFR();
@@ -383,19 +386,11 @@ MediaFlow.startScreenStreaming = ()=>{
     navigator.mediaDevices.getDisplayMedia( MediaFlow._cScreenStream )
     .then((stream)=>{
         MediaFlow._vrec = new MediaRecorder( stream, MediaFlow._oStream );
-/*
-        // First time create streaming routine
-        if (MediaFlow._dsc === undefined){
-            MediaFlow._dsc = setInterval(()=>{
-                if (!MediaFlow._bScreenStream) return;
-                MediaFlow._screc.stop();
-            }, MediaFlow.vidStreamInterval );
-        }
-*/
 
         MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
 
         MediaFlow._vrec.onstart = (e) => {
+            MediaFlow._bVideoStream  = true;
             MediaFlow._bScreenStream = true;
             MediaFlow._scchunks = [];
         };
@@ -416,7 +411,7 @@ MediaFlow.startScreenStreaming = ()=>{
 
             //console.log(MediaFlow._scblob.size);
 
-            if (MediaFlow._bScreenStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
+            if (MediaFlow._bVideoStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
 
         }
     })
@@ -427,17 +422,24 @@ MediaFlow.startScreenStreaming = ()=>{
 
 MediaFlow.stopScreenStreaming = ()=>{
     if (!MediaFlow._vrec) return;
-    if (!MediaFlow._bScreenStream) return;
+    if (!MediaFlow._bVideoStream) return;
 
     MediaFlow._vrec.stop();
+    MediaFlow._bVideoStream = false;
+
     MediaFlow._bScreenStream = false;
+};
+
+MediaFlow.startOrStopScreenStreaming = ()=>{
+    if (MediaFlow._bVideoStream) MediaFlow.stopScreenStreaming();
+    else MediaFlow.startScreenStreaming();
 };
 
 // Camera Streaming
 //==========================================================
 MediaFlow.startCameraStreaming = ()=>{
-    if (MediaFlow._bScreenStream) return;
-    if (MediaFlow._bAudioRecording) return;
+    if (MediaFlow._bVideoStream) return;
+    //if (MediaFlow._bAudioRecording) return;
 
     navigator.mediaDevices.getUserMedia( MediaFlow._cCamStream )
     .then((stream)=>{
@@ -446,7 +448,8 @@ MediaFlow.startCameraStreaming = ()=>{
         MediaFlow._vrec.start( MediaFlow.vidStreamSegmentInterval );
 
         MediaFlow._vrec.onstart = (e) => {
-            MediaFlow._bScreenStream = true;
+            MediaFlow._bVideoStream = true;
+            MediaFlow._bCamStream   = true;
             MediaFlow._scchunks = [];
         };
 
@@ -466,7 +469,7 @@ MediaFlow.startCameraStreaming = ()=>{
 
             //console.log(MediaFlow._scblob.size);
 
-            if (MediaFlow._bScreenStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
+            if (MediaFlow._bVideoStream) MediaFlow._vrec.start(MediaFlow.vidStreamSegmentInterval);
 
         }
     })
@@ -477,10 +480,16 @@ MediaFlow.startCameraStreaming = ()=>{
 
 MediaFlow.stopCameraStreaming = ()=>{
     if (!MediaFlow._vrec) return;
-    if (!MediaFlow._bScreenStream) return;
+    if (!MediaFlow._bVideoStream) return;
 
     MediaFlow._vrec.stop();
-    MediaFlow._bScreenStream = false;
+    MediaFlow._bVideoStream = false;
+    MediaFlow._bCamStream   = false;
+};
+
+MediaFlow.startOrStopCameraStreaming = ()=>{
+    if (MediaFlow._bVideoStream) MediaFlow.stopCameraStreaming();
+    else MediaFlow.startCameraStreaming();
 };
 
 export default MediaFlow;

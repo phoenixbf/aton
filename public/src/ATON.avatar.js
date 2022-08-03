@@ -190,10 +190,13 @@ setupStreamPanel(){
 
     this.userlabelnode.add( this.mStream );
 
+    // canvas
+/*
     let mCanvas = new THREE.Mesh( gStream, ATON.MatHub.materials.avatars[this.userid] );
     mCanvas.position.z = -0.01;
     mCanvas.scale.set(1.04,1.04,1.04);
     this.mStream.add( mCanvas );
+*/
 }
 
 toggleStreamPanel(b){

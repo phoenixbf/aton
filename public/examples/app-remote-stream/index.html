@@ -62,43 +62,40 @@ window.addEventListener('load', ()=>{
         });
 
         ATON.on("VRC_IDassigned", (uid)=>{
-            ATON.VRoadcast.setUsername("RemoteObserver"+uid);
+            ATON.VRoadcast.setUsername("Observer"+uid);
         });
 
         ATON.on("VRC_UVideo", (data)=>{
-
             let b64 = data.video;
-            
-            //ATON.MediaFlow.convertVideoChunksToBase64(data.video, (b64)=>{
-                //elVid.pause();
-                
-                let v = (vID + 1)%2;
-
-                elV[v].src  = b64;
-                elV[v].type = "video/mp4";
-
-                //elVid.src = b64;
-
-                //elVid.currentTime = 0;
-                //elVid.play();
-
-                //if (elVid.paused && elVid.readyState ==4 || !elVid.paused) elVid.play();
-                //elVid.play();
 /*
-                elVid.loadeddata = ()=>{
-                    elVid.currentTime = 0;
-                    elVid.play();
-                };
+            //if (!elV[0].paused) elV[0].pause();
+
+            elV[0].src = b64;
+
+            //elV[0].currentTime = 1;
+            elV[0].play();
 */
+            let v = (vID + 1)%2;
 
-                elV[v].style.zIndex   = "20";
-                elV[vID].style.zIndex = "10";
+            elV[v].src  = b64;
+            elV[v].type = "video/mp4";
 
-                elV[v].currentTime = 0;
-                elV[v].play();
+            //elVid.src = b64;
 
-                vID = v;
-            //});
+            //elVid.currentTime = 0;
+            //elVid.play();
+
+            //if (elVid.paused && elVid.readyState ==4 || !elVid.paused) elVid.play();
+            //elVid.play();
+
+            elV[v].style.zIndex   = "20";
+            elV[vID].style.zIndex = "10";
+            elV[vID].pause();
+
+            elV[v].currentTime = 0;
+            elV[v].play();
+
+            vID = v;
 
 /*
             vchunks.push(data.video);

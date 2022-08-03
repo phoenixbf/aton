@@ -434,7 +434,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         console.log("User #" +uid+" entered the scene");
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" entered the scene</i><br>");
 
-        if (VRoadcast._bSpatial) VRoadcast.touchAvatar(uid);
+        //if (VRoadcast._bSpatial) VRoadcast.touchAvatar(uid);
         
         //VRoadcast._numUsers++;
         VRoadcast.requestSceneState();

@@ -546,6 +546,21 @@ HATHOR.setupVRCEventHandlers = ()=>{
         $("#btn-talk").hide();
     });
 
+    ATON.on("VRC_UVideo", (data)=>{
+        let b64 = data.video;
+        let uid = data.uid;
+
+        let A = ATON.VRoadcast.avatarList[uid];
+        if (!A) return;
+
+        if (!A._elVStream) A.setupStreamPanel();
+
+        A._elVStream.src = b64;
+        A._elVStream.play();
+
+        console.log(A._elVStream.width);
+    });
+
     HATHOR._bVRCsetup = true;
 };
 

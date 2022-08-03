@@ -18,8 +18,8 @@ MediaFlow.auType = "audio/wav"; // 'audio/ogg; codecs=opus'
 MediaFlow.auStreamSegmentInterval  = 200;
 MediaFlow.auStreamNumSegments      = 2;
 
-MediaFlow.vidStreamSegmentInterval = 200;
-MediaFlow.vidStreamNumSegments     = 3;
+MediaFlow.vidStreamSegmentInterval = 300;
+MediaFlow.vidStreamNumSegments     = 1;
 
 MediaFlow.auMinVol = 1;
 
@@ -83,16 +83,14 @@ MediaFlow.init = ()=>{
     MediaFlow._cCamStream = {
         video: {
             width: { max: 320 }
-        },
-        audio: {
-            channelCount: 1
         }
+        //audio: { channelCount: 1 }
     };
 
     // Options
     MediaFlow._oStream = {
         audioBitsPerSecond : 9000,
-        videoBitsPerSecond: 100000
+        //videoBitsPerSecond: 100000
         //bitsPerSecond: ,
     };
 

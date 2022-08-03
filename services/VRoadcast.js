@@ -27,6 +27,8 @@ VRoadcast.user = class {
 
         this.binState = undefined;
         this.focpoint = undefined;
+
+        this.bActive  = false;
     }
 
     setEncodedState(binState){
@@ -38,6 +40,8 @@ VRoadcast.user = class {
     }
 */
     sendSnapshot(socket){
+        //if (!this.bActive) return;
+
         //if (this.uid !== undefined)      socket.emit("UENTER", this.uid);
         if (this.name !== undefined)     socket.emit("UNAME", { uid: this.uid, name: this.name });
         if (this.message !== undefined)  socket.emit("UMSG", { uid: this.uid, msg: this.message });
@@ -195,7 +199,11 @@ VRoadcast.onNewConnection = (socket)=>{
     });
 
     socket.on('USTATE', (data)=>{
-        if (user) user.setEncodedState(data);
+        if (user){
+            user.setEncodedState(data);
+            user.bActive  = true;
+        }
+
         // Broadcast to other users in session
         socket.broadcast.to(sid).emit("USTATE", data );
     });

@@ -554,11 +554,10 @@ HATHOR.setupVRCEventHandlers = ()=>{
         if (!A) return;
 
         if (!A._elVStream) A.setupStreamPanel();
+        else A.toggleStreamPanel(true);
 
         A._elVStream.src = b64;
-        A._elVStream.play();
-
-        console.log(A._elVStream.width);
+        if (A._elVStream.paused) A._elVStream.play();
     });
 
     HATHOR._bVRCsetup = true;

@@ -446,8 +446,10 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (uid === undefined) return;
         
         let A = VRoadcast.avatarList[uid];
-        if (A) A.hide();
-        //VRoadcast.destroyAvatar(uid);
+        if (A){
+            A.toggleStreamPanel(false);
+            A.hide();
+        }
 
         // TODO: hide also focus
 

@@ -189,6 +189,17 @@ setupStreamPanel(){
     });
 
     this.userlabelnode.add( this.mStream );
+
+    let mCanvas = new THREE.Mesh( gStream, ATON.MatHub.materials.avatars[this.userid] );
+    mCanvas.position.z = -0.01;
+    mCanvas.scale.set(1.04,1.04,1.04);
+    this.mStream.add( mCanvas );
+}
+
+toggleStreamPanel(b){
+    if (this.mStream === undefined) return;
+
+    this.mStream.visible = b;
 }
 
 realize(){

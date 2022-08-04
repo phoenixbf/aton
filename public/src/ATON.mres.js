@@ -35,6 +35,7 @@ MRes.init = ()=>{
         MRes._tsTasks.push( func );
     };
 
+    MRes._tseBase = 8.0;
     MRes.estimateTSErrorTarget();
 
     MRes._tsuSync = 0;
@@ -116,12 +117,20 @@ MRes.updateTSetsCamera = (cam)=>{
     }
 };
 
+MRes.setBaseTSE = (tse)=>{
+    MRes._tseBase = tse;
+    console.log(MRes._tseBase);
+
+    MRes.estimateTSErrorTarget();
+};
+
 MRes.estimateTSErrorTarget = ()=>{
-    let tse = 8.0; //10;
+    let tse = MRes._tseBase;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse += 4.0;
     if (ATON.XR._bPresenting) tse += 3.0;
 
+    if (tse < 1.0)  tse = 1.0;
     if (tse > 25.0) tse = 25.0;
 
     console.log("Estimated TSet error target: "+tse);

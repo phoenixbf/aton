@@ -559,11 +559,30 @@ VRoadcast._registerSocketHandlers = ()=>{
         au = null;
     });
 
+    VRoadcast.socket.on('UTALKSTOP', (data)=>{
+        let uid = data.uid;
+        if (uid === undefined) return;
+
+        //
+
+        ATON.fireEvent("VRC_UTalkStop", data);
+    });
+
     VRoadcast.socket.on('UVIDEO', (data)=>{
         let uid = data.uid;
         if (uid === undefined) return;
 
         ATON.fireEvent("VRC_UVideo", data);
+    });
+
+    VRoadcast.socket.on('UVIDEOSTOP', (data)=>{
+        let uid = data.uid;
+        if (uid === undefined) return;
+
+        let A = VRoadcast.avatarList[uid];
+        if (A) A.toggleStreamPanel(false);
+
+        ATON.fireEvent("VRC_UVideoStop", data);
     });
 };
 

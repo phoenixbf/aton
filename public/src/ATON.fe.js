@@ -499,12 +499,12 @@ FE.uiAddButtonTalk = (idcontainer)=>{
 
     FE.uiAddButton(idcontainer, "talk", ()=>{
         if (ATON.MediaFlow.isAudioRecording()){
-            ATON.MediaFlow.stopMediaStreaming();
+            ATON.MediaFlow.stopAudioStreaming();
             //FE.uiSwitchButton("talk",false);
             $("#btn-talk").removeClass("atonBTN-rec");
         }
         else {
-            ATON.MediaFlow.startMediaStreaming();
+            ATON.MediaFlow.startAudioStreaming();
             //FE.uiSwitchButton("talk",true);
             $("#btn-talk").addClass("atonBTN-rec");
         }
@@ -750,7 +750,7 @@ FE._setupVRCevents = ()=>{
         //ATON.MatHub.materials.selector.color = ATON.MatHub.colors.green;
         ATON.SUI.setSelectorColor(ATON.MatHub.colors.defUI);
 
-        ATON.MediaFlow.stopMediaStreaming();
+        ATON.MediaFlow.stopAllStreams();
 
         $("#idVRCnumusers").html("");
     });
@@ -1142,7 +1142,7 @@ FE.popupVRC = ()=>{
     }, "Share your screen with other participants");
 
     if (!ATON.MediaFlow._bScreenStream) ATON.FE.uiAddButton("idCollabTools", "camera", ()=>{
-        if (!ATON.MediaFlow._bScreenStream) $("#btn-camera").removeClass("atonBTN-rec");
+        if (!ATON.MediaFlow._bCamStream) $("#btn-camera").removeClass("atonBTN-rec");
         else $("#btn-camera").addClass("atonBTN-rec");
 
         ATON.MediaFlow.startOrStopCameraStreaming();

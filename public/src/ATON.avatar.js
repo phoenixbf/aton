@@ -150,10 +150,10 @@ _buildLabel(){
 
     ThreeMeshUI.update();
 
-    //this.setupStreamPanel();
+    //this.realizeStreamPanel();
 }
 
-setupStreamPanel(){
+realizeStreamPanel(){
     let htvid = "<video id='uStream"+this.userid+"' autoplay></video>";
     $(htvid).appendTo('body');
 
@@ -188,8 +188,6 @@ setupStreamPanel(){
         this.mStream.position.y = 0.006 * this._elVStream.videoHeight;
     });
 
-    this.userlabelnode.add( this.mStream );
-
     // canvas
 /*
     let mCanvas = new THREE.Mesh( gStream, ATON.MatHub.materials.avatars[this.userid] );
@@ -197,6 +195,12 @@ setupStreamPanel(){
     mCanvas.scale.set(1.04,1.04,1.04);
     this.mStream.add( mCanvas );
 */
+
+    //this.userlabelnode.add( this.mStream );
+}
+
+getStreamPanel(){
+    return this.mStream;
 }
 
 toggleStreamPanel(b){

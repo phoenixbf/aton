@@ -245,8 +245,15 @@ VRoadcast.onNewConnection = (socket)=>{
     socket.on('UTALK', (data)=>{
         socket.to(sid).emit('UTALK', data); // compress(false) // .binary(true)
     });
+    socket.on('UTALKSTOP', (data)=>{
+        socket.to(sid).emit('UTALKSTOP', data);
+    });
+
     socket.on('UVIDEO', (data)=>{
         socket.to(sid).emit('UVIDEO', data); // compress(false) // .binary(true)
+    });
+    socket.on('UVIDEOSTOP', (data)=>{
+        socket.to(sid).emit('UVIDEOSTOP', data);
     });
 };
 

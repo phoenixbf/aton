@@ -246,7 +246,7 @@ XR.onSessionStarted = ( session )=>{
     //console.log(session);
 
     // If any streaming is ongoing, terminate it
-    ATON.MediaFlow.stopMediaStreaming();
+    ATON.MediaFlow.stopAllStreams();
 
     if (XR._sessionType === "immersive-ar") ATON._renderer.xr.setReferenceSpaceType( 'local' );
 
@@ -416,7 +416,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
     ATON._qSyncInt = 1; // Query interval (unused)
 
     // If any streaming is ongoing, terminate it
-    ATON.MediaFlow.stopMediaStreaming();
+    ATON.MediaFlow.stopAllStreams();
 
     ATON.Nav.requestHome();
 

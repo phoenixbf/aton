@@ -26,7 +26,7 @@ MediaFlow.auMinVol = 1;
 
 MediaFlow.init = ()=>{
     MediaFlow._bAudioRecording = false;
-    MediaFlow._bStreaming = false;
+    MediaFlow._bAudioStreaming = false;
     MediaFlow._bScreencap = false;
 
     // blob options
@@ -82,7 +82,8 @@ MediaFlow.init = ()=>{
 
     MediaFlow._cCamStream = {
         video: {
-            width: { max: 320 }
+            width: { max: 256 },
+            height: { max: 256 }
         }
         //audio: { channelCount: 1 }
     };
@@ -126,6 +127,8 @@ MediaFlow._setupFR = ()=>{
 
     MediaFlow._frAS = new window.FileReader();
     MediaFlow._frAS.onloadend = ()=>{
+        if (!MediaFlow._bAudioStreaming) return;
+
         let b64 = MediaFlow._frAS.result;
 
          ATON.VRoadcast.socket.emit("UTALK", {
@@ -139,6 +142,8 @@ MediaFlow._setupFR = ()=>{
 
     MediaFlow._frVS = new window.FileReader();
     MediaFlow._frVS.onloadend = ()=>{
+        if (!MediaFlow._bVideoStream) return;
+
         let b64 = MediaFlow._frVS.result;
 
          ATON.VRoadcast.socket.emit("UVIDEO", {
@@ -291,7 +296,7 @@ MediaFlow.startOrStopRecording = ()=>{
 
 // Audio Streaming
 //==========================================================
-MediaFlow.startMediaStreaming = ()=>{
+MediaFlow.startAudioStreaming = ()=>{
     navigator.mediaDevices.getUserMedia( MediaFlow._cAuStream )
     .then((stream)=>{
         MediaFlow._aurec = new MediaRecorder( stream, MediaFlow._oStream );
@@ -300,7 +305,7 @@ MediaFlow.startMediaStreaming = ()=>{
         MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
 
         MediaFlow._aurec.onstart = (e) => {
-            MediaFlow._bStreaming = true;
+            MediaFlow._bAudioStreaming = true;
             MediaFlow._bAudioRecording = true;
             MediaFlow._schunks = [];
         };
@@ -325,7 +330,7 @@ MediaFlow.startMediaStreaming = ()=>{
             //console.log(MediaFlow._sblob.size+" B")
             //console.log(MediaFlow._schunks)
 
-            if (MediaFlow._bStreaming) MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
+            if (MediaFlow._bAudioStreaming) MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
         };
     })
     .catch((e)=>{
@@ -333,19 +338,21 @@ MediaFlow.startMediaStreaming = ()=>{
     });
 };
 
-MediaFlow.stopMediaStreaming = ()=>{
+MediaFlow.stopAudioStreaming = ()=>{
     if (!MediaFlow._aurec) return;
-    if (!MediaFlow._bStreaming) return;
+    if (!MediaFlow._bAudioStreaming) return;
 
     if (MediaFlow._aurec.state !== "inactive") MediaFlow._aurec.stop();
 
-    MediaFlow._bStreaming = false;
+    MediaFlow._bAudioStreaming = false;
     MediaFlow._bAudioRecording = false;
+
+    ATON.VRoadcast.socket.emit("UAUDIOSTOP", { uid: ATON.VRoadcast.uid });
 };
 
-MediaFlow.startOrStopMediaStreaming = ()=>{
-    if (MediaFlow._bAudioRecording) MediaFlow.stopMediaStreaming();
-    else MediaFlow.startMediaStreaming();
+MediaFlow.startOrStopAudioStreaming = ()=>{
+    if (MediaFlow._bAudioRecording) MediaFlow.stopAudioStreaming();
+    else MediaFlow.startAudioStreaming();
 };
 
 
@@ -426,8 +433,9 @@ MediaFlow.stopScreenStreaming = ()=>{
 
     MediaFlow._vrec.stop();
     MediaFlow._bVideoStream = false;
-
     MediaFlow._bScreenStream = false;
+
+    ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
 };
 
 MediaFlow.startOrStopScreenStreaming = ()=>{
@@ -485,11 +493,19 @@ MediaFlow.stopCameraStreaming = ()=>{
     MediaFlow._vrec.stop();
     MediaFlow._bVideoStream = false;
     MediaFlow._bCamStream   = false;
+
+    ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
 };
 
 MediaFlow.startOrStopCameraStreaming = ()=>{
     if (MediaFlow._bVideoStream) MediaFlow.stopCameraStreaming();
     else MediaFlow.startCameraStreaming();
+};
+
+MediaFlow.stopAllStreams = ()=>{
+    MediaFlow.stopAudioStreaming();
+    MediaFlow.stopCameraStreaming();
+    MediaFlow.stopScreenStreaming();
 };
 
 export default MediaFlow;

@@ -553,7 +553,10 @@ HATHOR.setupVRCEventHandlers = ()=>{
         let A = ATON.VRoadcast.avatarList[uid];
         if (!A) return;
 
-        if (!A._elVStream) A.setupStreamPanel();
+        if (!A._elVStream){
+            A.realizeStreamPanel();
+            A.userlabelnode.add( A.getStreamPanel() );
+        }
         else A.toggleStreamPanel(true);
 
         A._elVStream.src = b64;

@@ -491,9 +491,9 @@ MediaFlow.startCameraStreaming = ()=>{
             ATON.VRoadcast._elVStream = document.createElement("video");
             ATON.VRoadcast._elVStream.autoplay    = true;
             ATON.VRoadcast._elVStream.playsinline = true;
+            
             ATON.VRoadcast._elVStream.classList.add("atonVRCvidStream");
-
-            if (ATON.VRoadcast.uid) ATON.VRoadcast._elVStream.classList.add("atonVRCu"+(ATON.VRoadcast.uid%6));
+            if (ATON.VRoadcast.uid !== undefined) ATON.VRoadcast._elVStream.classList.add("atonVRCu"+(ATON.VRoadcast.uid%6));
 
             ATON.VRoadcast._elVStream.onclick = MediaFlow.stopCameraStreaming;
             

@@ -919,6 +919,25 @@ canvas:active {
     height: 80%;
 }
 
+.atonVRCchatBox {
+    width: 100%;
+    height: 200px;
+
+    display: block;
+
+    /*background-color: rgba(255,255,255, 0.5);*/
+
+    padding: 4px;
+
+    text-align:left;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    /*white-space: nowrap;*/
+
+    -webkit-overflow-scrolling: touch;
+}
+
 .atonVRCchatBlock {
     margin-top: 10px;
     color: white;
@@ -1002,6 +1021,19 @@ canvas:active {
 }
 .atonVRCu5-bg {
     background-color: rgba(255, 0, 255, 0.1);
+}
+
+.atonVRCvidStream {
+    position: fixed;
+    z-index: 150;
+
+    width: 100px;
+    height: auto;
+
+    left: 8px;
+    top: 60px;
+
+    border-radius: 5px;
 }
 
 /*

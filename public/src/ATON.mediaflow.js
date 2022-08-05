@@ -111,6 +111,13 @@ MediaFlow.init = ()=>{
 
     // FReaders with onload routines
     MediaFlow._setupFR();
+
+    // I/O Devices
+    MediaFlow.detectDevices();
+
+    navigator.mediaDevices.addEventListener('devicechange', event => {
+        MediaFlow.detectDevices();
+    });
 };
 
 // Utilities
@@ -160,6 +167,33 @@ MediaFlow._setupFR = ()=>{
     for (let k=0; k<10; k++) MediaFlow._frPool.push(new window.FileReader() );
     MediaFlow._fri = 0;
 */
+};
+
+MediaFlow.detectDevices = ()=>{
+    MediaFlow.audioInputDevices = [];
+    MediaFlow.videoInputDevices = [];
+
+    navigator.mediaDevices.enumerateDevices().then(devices => {
+        //console.log(devices)
+        
+        for (let d in devices){
+            let D = devices[d];
+
+            //console.log(D)
+
+            if (D.kind === "audioinput") MediaFlow.audioInputDevices.push(D);
+            if (D.kind === "videoinput") MediaFlow.videoInputDevices.push(D);
+        }
+
+        //console.log(MediaFlow.videoInputDevices)
+    });
+};
+
+MediaFlow.hasAudioInput = ()=>{
+    return (MediaFlow.audioInputDevices.length > 0);
+};
+MediaFlow.hasVideoInput = ()=>{
+    return (MediaFlow.videoInputDevices.length > 0);
 };
 
 /*
@@ -451,6 +485,25 @@ MediaFlow.startCameraStreaming = ()=>{
 
     navigator.mediaDevices.getUserMedia( MediaFlow._cCamStream )
     .then((stream)=>{
+
+        // Local vstream
+        if (!ATON.VRoadcast._elVStream){
+            ATON.VRoadcast._elVStream = document.createElement("video");
+            ATON.VRoadcast._elVStream.autoplay    = true;
+            ATON.VRoadcast._elVStream.playsinline = true;
+            ATON.VRoadcast._elVStream.classList.add("atonVRCvidStream");
+
+            if (ATON.VRoadcast.uid) ATON.VRoadcast._elVStream.classList.add("atonVRCu"+(ATON.VRoadcast.uid%6));
+
+            ATON.VRoadcast._elVStream.onclick = MediaFlow.stopCameraStreaming;
+            
+            document.body.appendChild( ATON.VRoadcast._elVStream );
+        }
+
+        ATON.VRoadcast._elVStream.style.display = "inline-block";
+        ATON.VRoadcast._elVStream.srcObject = stream;
+
+
         MediaFlow._vrec = new MediaRecorder( stream, MediaFlow._oStream );
 
         MediaFlow._vrec.start( MediaFlow.vidStreamSegmentInterval );
@@ -493,6 +546,8 @@ MediaFlow.stopCameraStreaming = ()=>{
     MediaFlow._vrec.stop();
     MediaFlow._bVideoStream = false;
     MediaFlow._bCamStream   = false;
+
+    if (ATON.VRoadcast._elVStream) ATON.VRoadcast._elVStream.style.display = "none";
 
     ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
 };

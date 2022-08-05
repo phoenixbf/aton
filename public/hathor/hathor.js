@@ -448,11 +448,11 @@ HATHOR.suiSetup = ()=>{
         //.setSwitchColor(ATON.MatHub.colors.orange)
         .onSelect = ()=>{
             if (ATON.MediaFlow.isAudioRecording()){
-                ATON.MediaFlow.stopMediaStreaming();
+                ATON.MediaFlow.stopAudioStreaming();
                 btnTalk.switch(false);
             }
             else {
-                ATON.MediaFlow.startMediaStreaming();
+                ATON.MediaFlow.startAudioStreaming();
                 btnTalk.switch(true);
             }
         };
@@ -1236,7 +1236,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
     let bRecVN  = false;
     ATON.on("AudioRecordCompleted", (au64)=>{
         vocnote = au64;
-        console.log(vocnote);
+        //console.log(vocnote);
 
         $('#ctrlVocalNote').attr("src",au64);
     });

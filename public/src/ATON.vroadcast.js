@@ -64,6 +64,9 @@ VRoadcast.init = ()=>{
     console.log("VRoadcast initialized");
     VRoadcast.enableChatLog();
 
+    // Hosts local vstream
+    VRoadcast._elVStream = undefined;
+
     VRoadcast._decS = {
         quaternion: new THREE.Quaternion(),
         position: new THREE.Vector3()
@@ -498,10 +501,8 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (uid === undefined) return;
 
-        if (VRoadcast._bSpatial){
-            let A = VRoadcast.touchAvatar(uid);
-            A.setUsername(uname);
-        }
+        let A = VRoadcast.touchAvatar(uid);
+        A.setUsername(uname);
 
         console.log("User #" +uid+" changed username to: "+uname);
         if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" changed username to: "+uname+"</i><br>");
@@ -515,10 +516,8 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (uid === undefined) return;
 
-        if (VRoadcast._bSpatial){
-            let A = VRoadcast.touchAvatar(uid);
-            A.setMessage(msg);
-        }
+        let A = VRoadcast.touchAvatar(uid);
+        A.setMessage(msg);
 
         console.log("User #" +uid+": "+msg);
         if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.getUsername()+"</b>: "+msg+"</span><br>");

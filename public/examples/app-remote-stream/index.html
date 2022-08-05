@@ -40,6 +40,9 @@ window.addEventListener('load', ()=>{
         document.getElementById("idStream1")
     ];
 
+    elV[0].type = ATON.MediaFlow._blobOptVideo.type;
+    elV[1].type = ATON.MediaFlow._blobOptVideo.type;
+
     // Setup: this is executed once (App initialization)
     // This may include UI setup (HTML), events handling, etc.
     myApp.setup = ()=>{
@@ -76,9 +79,7 @@ window.addEventListener('load', ()=>{
             elV[0].play();
 */
             let v = (vID + 1)%2;
-
             elV[v].src  = b64;
-            elV[v].type = "video/mp4";
 
             //elVid.src = b64;
 

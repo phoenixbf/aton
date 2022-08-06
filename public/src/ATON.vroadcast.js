@@ -234,14 +234,14 @@ VRoadcast.hasID = ()=>{
 };
 
 /**
-Utility for server-side logging
+Utility for remote logging
 @param {string} d - string data to be logged
 */
 VRoadcast.log = (d)=>{
     if (!VRoadcast._connected) return;
     let sock = VRoadcast.socket;
 
-    if (sock) sock.emit("LOG", d);
+    if (sock) sock.emit("UMSG", d); //sock.emit("LOG", d);
 };
 
 /**
@@ -602,6 +602,8 @@ VRoadcast._registerSocketHandlers = ()=>{
 };
 
 VRoadcast.chatMessageProcessor = (uid, text)=>{
+    text = String(text);
+
     const urls = text.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
     if (urls){
         urls.forEach((url)=>{
@@ -799,7 +801,7 @@ VRoadcast.touchAvatar = (uid)=>{
 
     // Reclaim of previously used slot
     if (!A.visible){
-        VRoadcast._numUsers++;
+        //VRoadcast._numUsers++;
         ATON.fireEvent("VRC_UserEnter", uid);
     }
 

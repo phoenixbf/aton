@@ -94,6 +94,14 @@ VRoadcast.initMaterials = ()=>{
     VRoadcast.ucolorhex.push("#00F");
     VRoadcast.ucolorhex.push("#F0F");
 
+    VRoadcast.ucolorhex_light = [];
+    VRoadcast.ucolorhex_light.push("#FAA");
+    VRoadcast.ucolorhex_light.push("#FFA");
+    VRoadcast.ucolorhex_light.push("#AFA");
+    VRoadcast.ucolorhex_light.push("#AFF");
+    VRoadcast.ucolorhex_light.push("#AAF");
+    VRoadcast.ucolorhex_light.push("#FAF");
+
     VRoadcast.ucolors = [];
 /*
     VRoadcast.ucolors.push( new THREE.Color(1,0,0) );
@@ -359,6 +367,10 @@ VRoadcast.setUsername = (username)=>{
 };
 
 VRoadcast.setMessage = (msg)=>{
+    msg = msg.trim();
+    if (msg.length < 1) return;
+    if (msg.length > 3000) return; // limit max string (check)
+
     VRoadcast._msg = msg;
     if (VRoadcast.socket === undefined) return;
     if (VRoadcast.uid === undefined) return;
@@ -367,7 +379,7 @@ VRoadcast.setMessage = (msg)=>{
 
     if (VRoadcast._elChat){
         msg = VRoadcast.chatMessageProcessor(VRoadcast.uid, msg);
-        VRoadcast.appendToChatBox("<span style='color:"+VRoadcast.ucolorhex[VRoadcast.uid%6]+"'><b>YOU</b>: "+msg+"</span>");
+        VRoadcast.appendToChatBox("<div class='"+ATON.FE.getVRCclassFromID(VRoadcast.uid)+" atonVRCchatUsername'>YOU</div>: <span style='color:"+VRoadcast.ucolorhex_light[VRoadcast.uid%6]+"'>"+msg+"</span>");
     }
 };
 
@@ -443,9 +455,9 @@ VRoadcast._registerSocketHandlers = ()=>{
         let uid = data;
         //if (uid === VRoadcast.uid) return; // myself
 
-        console.log("User #" +uid+" entered the scene");
+        console.log("User #" +uid+" entered the session");
 
-        VRoadcast.appendToChatBox("<i>User #"+uid+" entered the scene</i>");
+        VRoadcast.appendToChatBox("<i>User #"+uid+" entered the session</i>");
 
         //if (VRoadcast._bSpatial) VRoadcast.touchAvatar(uid);
         
@@ -466,9 +478,9 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         // TODO: hide also focus
 
-        console.log("User #" +uid+" left the scene");
+        console.log("User #" +uid+" left the session");
 
-        VRoadcast.appendToChatBox("<i>User #"+uid+" left the scene</i>");
+        VRoadcast.appendToChatBox("<i>User #"+uid+" left the session</i>");
 
         //if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
         VRoadcast.requestSceneState();
@@ -536,7 +548,10 @@ VRoadcast._registerSocketHandlers = ()=>{
         let uname = A.getUsername();
 
         msg = VRoadcast.chatMessageProcessor(uid, msg);
-        VRoadcast.appendToChatBox("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+uname+"</b>: "+msg+"</span>");
+        let col  = VRoadcast.ucolorhex[uid%6];
+        let col2 = VRoadcast.ucolorhex_light[uid%6];
+
+        VRoadcast.appendToChatBox("<div class='"+ATON.FE.getVRCclassFromID(uid)+" atonVRCchatUsername'>"+uname+"</div>: <span style='color:"+col2+"'>"+msg+"</span>");
 
         ATON.fireEvent("VRC_UMessage", data);
     });

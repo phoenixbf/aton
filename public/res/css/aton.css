@@ -931,6 +931,7 @@ canvas:active {
     padding: 4px;
 
     text-align:left;
+    text-shadow: 0px 0px 4px black;
 
     overflow-x: hidden;
     overflow-y: auto;
@@ -1026,6 +1027,17 @@ canvas:active {
 }
 .atonVRCu5-bg {
     background-color: rgba(255, 0, 255, 0.1);
+}
+
+.atonVRCchatUsername {
+    display: inline-block;
+    padding: 4px;
+    margin-top: 3px;
+
+    box-shadow: none;
+    border-radius: 4px;
+
+    cursor: pointer;
 }
 
 .atonVRCvidStream {

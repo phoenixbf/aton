@@ -76,7 +76,7 @@ VRoadcast.init = ()=>{
 };
 
 VRoadcast.enableChatLog = ()=>{
-    VRoadcast._elChat = $("<div></div>").text("");
+    VRoadcast._elChat = $("<div id='idChatBox' class='atonVRCchatBox'></div>").text("");
 };
 
 VRoadcast.getNumUsers = ()=>{
@@ -353,20 +353,29 @@ VRoadcast.setUsername = (username)=>{
     if (VRoadcast.socket === undefined) return;
     if (VRoadcast.uid === undefined) return;
 
-    if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your username is now: "+username+"</i><br>");
+    VRoadcast.appendToChatBox("<i>Your username is now: "+username+"</i>");
+   
     VRoadcast.socket.emit("UNAME", username);
 };
+
 VRoadcast.setMessage = (msg)=>{
     VRoadcast._msg = msg;
     if (VRoadcast.socket === undefined) return;
     if (VRoadcast.uid === undefined) return;
 
-    if (VRoadcast._elChat){
-        VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[VRoadcast.uid%6]+"'><b>YOU</b>: "+msg+"</span><br>");
-        VRoadcast._elChat.scrollTop(VRoadcast._elChat.scrollHeight);
-    }
-
     VRoadcast.socket.emit("UMSG", msg);
+
+    if (VRoadcast._elChat){
+        msg = VRoadcast.chatMessageProcessor(VRoadcast.uid, msg);
+        VRoadcast.appendToChatBox("<span style='color:"+VRoadcast.ucolorhex[VRoadcast.uid%6]+"'><b>YOU</b>: "+msg+"</span>");
+    }
+};
+
+VRoadcast.appendToChatBox = (text)=>{
+    if (!VRoadcast._elChat) return;
+
+    VRoadcast._elChat.append("<div class='atonVRCchatMessage'>"+text+"</div>");
+    VRoadcast._elChat.scrollTop(VRoadcast._elChat[0].scrollHeight);
 };
 
 
@@ -393,7 +402,7 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         VRoadcast.avaGroup.hide();
 
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>YOU disconnected from VRoadcast service</i><br>");
+        VRoadcast.appendToChatBox("<i>YOU disconnected from the collaborative session</i>");
 
         console.log("VRC disconnected!");
         ATON.fireEvent("VRC_Disconnected");
@@ -415,7 +424,7 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         if (VRoadcast._bShowAvaG) VRoadcast.avaGroup.show();
 
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>Your ID is #"+data+"</i><br>");
+        VRoadcast.appendToChatBox("<i>Your ID is #"+data+"</i>");
 
         // Request scene state
         VRoadcast.requestSceneState();
@@ -435,7 +444,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         //if (uid === VRoadcast.uid) return; // myself
 
         console.log("User #" +uid+" entered the scene");
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" entered the scene</i><br>");
+
+        VRoadcast.appendToChatBox("<i>User #"+uid+" entered the scene</i>");
 
         //if (VRoadcast._bSpatial) VRoadcast.touchAvatar(uid);
         
@@ -457,7 +467,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         // TODO: hide also focus
 
         console.log("User #" +uid+" left the scene");
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" left the scene</i><br>");
+
+        VRoadcast.appendToChatBox("<i>User #"+uid+" left the scene</i>");
 
         //if (VRoadcast._numUsers>1) VRoadcast._numUsers--;
         VRoadcast.requestSceneState();
@@ -505,7 +516,8 @@ VRoadcast._registerSocketHandlers = ()=>{
         A.setUsername(uname);
 
         console.log("User #" +uid+" changed username to: "+uname);
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<i>User #"+uid+" changed username to: "+uname+"</i><br>");
+
+        VRoadcast.appendToChatBox("<i>User #"+uid+" changed username to: "+uname+"</i>");
 
         ATON.fireEvent("VRC_UName", data);
     });
@@ -520,7 +532,11 @@ VRoadcast._registerSocketHandlers = ()=>{
         A.setMessage(msg);
 
         console.log("User #" +uid+": "+msg);
-        if (VRoadcast._elChat) VRoadcast._elChat.append("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+A.getUsername()+"</b>: "+msg+"</span><br>");
+
+        let uname = A.getUsername();
+
+        msg = VRoadcast.chatMessageProcessor(uid, msg);
+        VRoadcast.appendToChatBox("<span style='color:"+VRoadcast.ucolorhex[uid%6]+"'><b>"+uname+"</b>: "+msg+"</span>");
 
         ATON.fireEvent("VRC_UMessage", data);
     });
@@ -583,6 +599,17 @@ VRoadcast._registerSocketHandlers = ()=>{
 
         ATON.fireEvent("VRC_UVideoStop", data);
     });
+};
+
+VRoadcast.chatMessageProcessor = (uid, text)=>{
+    const urls = text.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
+    if (urls){
+        urls.forEach((url)=>{
+            text = text.replace(url, "<a target='_blank' href='"+url+"'>"+url+"</a>");
+        });
+    }
+
+    return text;
 };
 
 // Encode state

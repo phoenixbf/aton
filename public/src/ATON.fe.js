@@ -1121,17 +1121,14 @@ FE.popupVRC = ()=>{
     //htmlcontent += "Your username in this collaborative session is:<br>";
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
     htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:150px; display:none'>"+ATON.VRoadcast._username+"</div>";
+    htmlcontent += "<div class='atonBTN atonBTN-text' id='idVRCdisconnect'><img src='"+ATON.FE.PATH_RES_ICONS+"exit.png'>LEAVE</div>";
 
-    htmlcontent += "<div id='idChatBox' class='atonVRCchatBox'></div>";
-
-    //htmlcontent += "<div style='text-align:left'>";
-    htmlcontent += "<input id='idVRCmsg' style='width:90%' type='text' placeholder='message...'>";
-    //htmlcontent += "</div>";
-
-    htmlcontent += "<div class='atonBTN' id='idVRCdisconnect' style='width:90%'>LEAVE</div>";
+    htmlcontent += "<div id='idChatBoxPopup' style='display:block'></div>";
+    htmlcontent += "<input id='idVRCmsg' style='width:90%;margin:auto' type='text' placeholder='message...'>";
 
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
+    // Tools
     if (!ATON.MediaFlow._bCamStream) ATON.FE.uiAddButton("idCollabTools", "screenshare", ()=>{
         if (!ATON.MediaFlow._bScreenStream) $("#btn-screenshare").removeClass("atonBTN-rec");
         else $("#btn-screenshare").addClass("atonBTN-rec");
@@ -1168,7 +1165,7 @@ FE.popupVRC = ()=>{
 
     if (ATON.VRoadcast.uid !== undefined) $('#idVRCusernameBTN').addClass("atonVRCu"+(ATON.VRoadcast.uid % 6));
 
-    $("#idChatBox").append(ATON.VRoadcast._elChat);
+    $("#idChatBoxPopup").append(ATON.VRoadcast._elChat);
 
     $("#idVRCmsg").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
@@ -1201,7 +1198,6 @@ FE.popupVRC = ()=>{
         ATON.VRoadcast.disconnect();
         ATON.FE.popupClose();
     });
-
 };
 
 // User auth

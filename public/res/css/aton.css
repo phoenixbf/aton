@@ -900,6 +900,7 @@ canvas:active {
     /*margin-left: -22px;
     margin-top: 5px;*/
     margin: 0px;
+    padding: 0px;
 
     transform: translate(-150%,10%);
 
@@ -936,6 +937,10 @@ canvas:active {
     /*white-space: nowrap;*/
 
     -webkit-overflow-scrolling: touch;
+}
+
+.atonVRCchatMessage {
+    display: block;
 }
 
 .atonVRCchatBlock {
@@ -1027,14 +1032,23 @@ canvas:active {
     position: fixed;
     z-index: 150;
 
-    width: 100px;
+    display: inline-block;
+    cursor: pointer;
+
+    width: 120px;
     height: auto;
 
     left: 8px;
-    top: 60px;
+    top: 55px;
 
     border-radius: 5px;
 }
+
+/*
+.atonVRCvidStream:hover {
+    transform: scale(1.2);
+}
+*/
 
 /*
 @media only screen and (max-width: 800px){

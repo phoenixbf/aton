@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>VRoadcast Room</title>
+<link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
+<script>
+let uElements = {};
+
+let touchUserIcon = (uid)=>{
+    if (uid === undefined) return;
+
+    if (!uElements[uid]){
+        uElements[uid] = $("<div id='uBox"+uid+"' class='atonBTN'>U"+uid+"</div>");
+        uElements[uid].addClass( ATON.FE.getVRCclassFromID(uid) );
+
+        $("body").append(uElements[uid]);
+    }
+    else uElements[uid].show();
+};
+
+window.addEventListener('load', ()=>{
+    // Realize our App
+    let myApp = ATON.App.realize();
+
+    // Setup: this is executed once (App initialization)
+    // This may include UI setup (HTML), events handling, etc.
+    myApp.setup = ()=>{
+        ATON.realize(true); // We setup ATON without renderer
+        
+        // Lets connect and join VRC session
+        ATON.VRoadcast.disableSpatiality();
+        ATON.VRoadcast.setAvatarsVisibility(false);
+
+        ATON.VRoadcast.connect("demo-chatroom");
+
+        // UI
+        $("#idChatContainer").append(ATON.VRoadcast._elChat);
+        //$("#idChatBox").css("height", "100%");
+
+        $("#idVRCmsg").keypress((e)=>{
+            let keycode = (e.keyCode ? e.keyCode : e.which);
+            if (keycode == '13'){
+                let str = $("#idVRCmsg").val();
+                ATON.VRoadcast.setMessage( str );
+                $("#idVRCmsg").val("");
+            }
+        });
+
+        // We handle connect/disconnect to change status message
+        ATON.on("VRC_Connected", ()=>{
+        });
+        ATON.on("VRC_Disconnected", ()=>{
+        });
+
+        ATON.on("VRC_IDassigned", (uid)=>{
+            touchUserIcon(uid);
+        });
+
+        ATON.on("VRC_UMessage", (data)=>{
+            touchUserIcon(data.uid);
+        });
+
+        ATON.on("VRC_UserEnter", (uid)=>{
+            touchUserIcon(uid);
+        });
+
+        ATON.on("VRC_UserLeave", (uid)=>{
+            if (uElements[uid]) uElements[uid].hide();
+        });
+    };
+
+
+    // Ok, let's run our App!
+    myApp.run();
+});
+
+</script>
+</head>
+
+<body class="atonDefaultBody">
+
+    <div class="atonTitle">Chat Room</div>
+
+    <div id="idChatContainer" style="display:block; padding:10px; background:rgba(0,0,0, 0.5)"></div>
+    <input id='idVRCmsg' style='width:90%; padding:4px' type='text' placeholder='message...'>
+
+    <div id="idUsers"></div>
+
+
+    <!-- Footer -->
+    <div id= 'idFooter' class="atonToolbar atonToolbar-bottom shuFooter">
+        Powered by <a href="http://osiris.itabc.cnr.it/scenebaker/index.php/projects/aton/" target="_blank">ATON</a>
+    </div>
+</body>

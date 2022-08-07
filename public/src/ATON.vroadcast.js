@@ -357,6 +357,9 @@ VRoadcast._onConnected = ()=>{
 };
 
 VRoadcast.setUsername = (username)=>{
+    username = username.trim();
+    if (username.length < 1) return;
+
     VRoadcast._username = username;
     if (VRoadcast.socket === undefined) return;
     if (VRoadcast.uid === undefined) return;
@@ -541,7 +544,7 @@ VRoadcast._registerSocketHandlers = ()=>{
         if (uid === undefined) return;
 
         let A = VRoadcast.touchAvatar(uid);
-        A.setMessage(msg);
+        if (msg.length < 100) A.setMessage(msg); // only short messages for 3D label
 
         console.log("User #" +uid+": "+msg);
 

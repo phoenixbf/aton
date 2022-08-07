@@ -1129,28 +1129,32 @@ FE.popupVRC = ()=>{
     if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
 
     // Tools
-    if (!ATON.MediaFlow._bCamStream) ATON.FE.uiAddButton("idCollabTools", "screenshare", ()=>{
-        if (!ATON.MediaFlow._bScreenStream) $("#btn-screenshare").removeClass("atonBTN-rec");
-        else $("#btn-screenshare").addClass("atonBTN-rec");
+    ATON.checkAuth((u)=>{
+        console.log(u)
 
-        ATON.MediaFlow.startOrStopScreenStreaming();
-        ATON.FE.popupClose();
-
-    }, "Share your screen with other participants");
-
-    if (!ATON.MediaFlow._bScreenStream && ATON.MediaFlow.hasVideoInput()) ATON.FE.uiAddButton("idCollabTools", "camera", ()=>{
-        if (!ATON.MediaFlow._bCamStream) $("#btn-camera").removeClass("atonBTN-rec");
-        else $("#btn-camera").addClass("atonBTN-rec");
-
-        ATON.MediaFlow.startOrStopCameraStreaming();
-        ATON.FE.popupClose();
-
-    }, "Share your camera with other participants");
-
-    if (ATON.MediaFlow._bScreenStream) $("#btn-screenshare").addClass("atonBTN-rec");
-    else $("#btn-screenshare").removeClass("atonBTN-rec");
-    if (ATON.MediaFlow._bCamStream) $("#btn-camera").addClass("atonBTN-rec");
-    else $("#btn-camera").removeClass("atonBTN-rec");
+        if (!ATON.MediaFlow._bCamStream) ATON.FE.uiAddButton("idCollabTools", "screenshare", ()=>{
+            if (!ATON.MediaFlow._bScreenStream) $("#btn-screenshare").removeClass("atonBTN-rec");
+            else $("#btn-screenshare").addClass("atonBTN-rec");
+    
+            ATON.MediaFlow.startOrStopScreenStreaming();
+            ATON.FE.popupClose();
+    
+        }, "Share your screen with other participants");
+    
+        if (!ATON.MediaFlow._bScreenStream && ATON.MediaFlow.hasVideoInput()) ATON.FE.uiAddButton("idCollabTools", "camera", ()=>{
+            if (!ATON.MediaFlow._bCamStream) $("#btn-camera").removeClass("atonBTN-rec");
+            else $("#btn-camera").addClass("atonBTN-rec");
+    
+            ATON.MediaFlow.startOrStopCameraStreaming();
+            ATON.FE.popupClose();
+    
+        }, "Share your camera with other participants");
+    
+        if (ATON.MediaFlow._bScreenStream) $("#btn-screenshare").addClass("atonBTN-rec");
+        else $("#btn-screenshare").removeClass("atonBTN-rec");
+        if (ATON.MediaFlow._bCamStream) $("#btn-camera").addClass("atonBTN-rec");
+        else $("#btn-camera").removeClass("atonBTN-rec");
+    });
 
 
     if (ATON.VRoadcast._username === undefined){

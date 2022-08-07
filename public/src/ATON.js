@@ -174,8 +174,8 @@ ATON.checkAuth = (onLogged, onNotLogged)=>{
         dataType: 'json',
 
         success: (data)=>{
-            if (data !== undefined) onLogged(data);
-            else onNotLogged();
+            if (data !== undefined && data.username) onLogged(data);
+            else if (onNotLogged) onNotLogged();
         },
 
         error: ()=>{

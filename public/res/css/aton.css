@@ -1037,6 +1037,9 @@ canvas:active {
     box-shadow: none;
     border-radius: 4px;
 
+    padding-right: 10px;
+    padding-left: 10px;
+
     cursor: pointer;
 }
 

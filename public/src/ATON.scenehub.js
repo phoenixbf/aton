@@ -470,6 +470,23 @@ SceneHub.initBaseParsers = ()=>{
                 ATON.MRes.loadCesiumIONAsset(cesiumAssID, G);
             }
 
+            if (N.stream){
+                let stream = N.stream;
+                let vsrc = ATON.Utils.resolveCollectionURL(stream.src);
+
+                let vs = ATON.MediaFlow.addVideoStream(nid, vsrc);
+
+                if (stream.mask) 
+                    vs.matStream.uniforms.mask.value.set(
+                        parseFloat(stream.mask[0]),
+                        parseFloat(stream.mask[1]),
+                        parseFloat(stream.mask[2]),
+                        parseFloat(stream.mask[3])
+                    );
+
+                G.setMaterial( vs.matStream );
+            }
+
             // FIXME: not working
             if (N.shadowcast)    G.setShadowCast(N.shadowcast);
             if (N.shadowreceive) G.setShadowCast(N.shadowreceive);

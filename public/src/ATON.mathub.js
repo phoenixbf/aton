@@ -32,8 +32,11 @@ MatHub.getDefVertexShader = ()=>{
         varying vec3 vPositionW;
         varying vec3 vNormalW;
         varying vec3 vNormalV;
+        varying vec2 vUv;
 
         void main(){
+            vUv = uv;
+
             vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
             vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
             vNormalV   = normalize( vec3( normalMatrix * normal ));
@@ -335,6 +338,39 @@ MatHub.addDefaults = ()=>{
 
         size: 0.005,
         sizeAttenuation: true
+    });
+
+    MatHub.materials.greenscreen = new THREE.ShaderMaterial({
+        uniforms: {
+            tBase: { type:'t' /*, value: 0*/ },
+            mask: { type:'vec4', value: new THREE.Vector4(0,1,0, 4.0) },
+        },
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            uniform sampler2D tBase;
+            uniform vec4 mask;
+
+            varying vec2 vUv;
+
+		    void main(){
+		        vec4 frag = texture2D(tBase, vUv);
+
+                float d = distance(frag.rgb, mask.rgb) - 0.5;
+                float a = d * mask.w;
+                a = clamp(a, 0.0,1.0);
+
+                frag.a = mix(1.0,a, mask.w);
+
+                //float ds = abs(a - 0.5);
+                //float g = (frag.r + frag.g + frag.b)/3.0;
+                //frag.rgb = mix( vec3(g,g,g), frag.rgb, ds);
+
+		        gl_FragColor = frag;
+		    }
+        `,
+
+        transparent: true,
+        side: THREE.DoubleSide
     });
 
 };

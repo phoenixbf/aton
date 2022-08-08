@@ -154,6 +154,11 @@ ATON._onUserInteraction = ()=>{
     if (ATON.AudioHub._listener && ATON.AudioHub._listener.context){
         if (ATON.AudioHub._listener.context.state === 'suspended') ATON.AudioHub._listener.context.resume();
     }
+
+    for (let v in ATON.MediaFlow._vStreams){
+        let vs = ATON.MediaFlow._vStreams[v].el;
+        if (!vs.playing) vs.play();
+    }
 };
 
 /* TODO: plugin
@@ -1526,7 +1531,12 @@ ATON.setMainPanorama = (path)=>{
 
         ATON.Utils.textureLoader.load(path, (tex)=>{
             tex.encoding = ATON._stdEncoding;
-            
+/*
+            tex.mapping = THREE.EquirectangularReflectionMapping;
+            ATON._mainRoot.background  = tex;
+            ATON._mainRoot.environment = tex;
+*/
+
             //tex.minFilter = THREE.NearestFilter;
 		    tex.generateMipmaps = true;
 

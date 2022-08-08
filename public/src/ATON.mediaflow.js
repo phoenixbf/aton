@@ -594,18 +594,32 @@ MediaFlow.addVideoStream = (id, sourceurl)=>{
 
         let elid = "vStream-"+id;
 
-        let htvid = "<video id='"+elid+"' autoplay></video>";
+        let htvid = "<video id='"+elid+"' autoplay loop ></video>";
         $(htvid).appendTo('body');
 
         MediaFlow._vStreams[id].el = document.getElementById(elid);
         MediaFlow._vStreams[id].el.src = sourceurl;
 
+        //if (sourceurl.endsWith("m3u8")) MediaFlow._vStreams[id].el.type = "application/x-mpegURL";
+
+/*
+        MediaFlow._vStreams[id].el.oncanplay = ()=>{
+            MediaFlow._vStreams[id].el.play();
+        };
+*/
         MediaFlow._vStreams[id].texStream = new THREE.VideoTexture( MediaFlow._vStreams[id].el );
         MediaFlow._vStreams[id].texStream.encoding = ATON._stdEncoding;
+        MediaFlow._vStreams[id].texStream.flipY = false;
 
+        MediaFlow._vStreams[id].matStream = ATON.MatHub.materials.greenscreen.clone();
+        MediaFlow._vStreams[id].matStream.uniforms.tBase.value  = MediaFlow._vStreams[id].texStream;
+
+/*
         MediaFlow._vStreams[id].matStream = new THREE.MeshBasicMaterial({
             map: MediaFlow._vStreams[id].texStream,
             transparent: true,
+            opacity: 1.0,
+
             //fog: false,
             
             //depthTest: false,
@@ -614,8 +628,11 @@ MediaFlow.addVideoStream = (id, sourceurl)=>{
             ///depthFunc: THREE.AlwaysDepth,
             side: THREE.DoubleSide
         });
+*/
     }
     else MediaFlow._vStreams[id].el.src = sourceurl;
+
+    return MediaFlow._vStreams[id];
 };
 
 MediaFlow.getVideoStream = (id)=>{

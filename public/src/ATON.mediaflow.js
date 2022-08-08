@@ -118,6 +118,8 @@ MediaFlow.init = ()=>{
     navigator.mediaDevices.addEventListener('devicechange', event => {
         MediaFlow.detectDevices();
     });
+
+    MediaFlow._vStreams = {};
 };
 
 // Utilities
@@ -584,6 +586,40 @@ MediaFlow.stopAllStreams = ()=>{
     MediaFlow.stopAudioStreaming();
     MediaFlow.stopCameraStreaming();
     MediaFlow.stopScreenStreaming();
+};
+
+MediaFlow.addVideoStream = (id, sourceurl)=>{
+    if (!MediaFlow._vStreams[id]){
+        MediaFlow._vStreams[id] = {};
+
+        let elid = "vStream-"+id;
+
+        let htvid = "<video id='"+elid+"' autoplay></video>";
+        $(htvid).appendTo('body');
+
+        MediaFlow._vStreams[id].el = document.getElementById(elid);
+        MediaFlow._vStreams[id].el.src = sourceurl;
+
+        MediaFlow._vStreams[id].texStream = new THREE.VideoTexture( MediaFlow._vStreams[id].el );
+        MediaFlow._vStreams[id].texStream.encoding = ATON._stdEncoding;
+
+        MediaFlow._vStreams[id].matStream = new THREE.MeshBasicMaterial({
+            map: MediaFlow._vStreams[id].texStream,
+            transparent: true,
+            //fog: false,
+            
+            //depthTest: false,
+            //depthWrite: false,
+    
+            ///depthFunc: THREE.AlwaysDepth,
+            side: THREE.DoubleSide
+        });
+    }
+    else MediaFlow._vStreams[id].el.src = sourceurl;
+};
+
+MediaFlow.getVideoStream = (id)=>{
+    return MediaFlow._vStreams[id];
 };
 
 export default MediaFlow;

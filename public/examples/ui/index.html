@@ -2,28 +2,44 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
 
-    <!-- Add iOS meta tags and icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content="ATON Framework">
-    <link rel="apple-touch-icon" href="/res/aton-logo.png">
-    <meta name="description" content="ATON Framework">
-    <!-- Add meta theme-color -->
-    <meta name="theme-color" content="#000000" />
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Framework">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Framework">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
 
-    <title>ATON Framework</title>
-    <link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
-    <script type="text/javascript" src="../../vendors/vendors.min.js"></script>
-    <script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
-    <script type="text/javascript" src="../../dist/ATON.min.js"></script>
-    <script type="text/javascript" src="../../shu/shu.js"></script>
-    <script type="module" src="./index.ui.js"></script>
+<title>ATON Framework</title>
+<link rel="stylesheet" type="text/css" href="../../res/css/aton.css">
+<script type="text/javascript" src="../../vendors/vendors.min.js"></script>
+<script type="text/javascript" src="../../dist/THREE.bundle.js"></script>
+<script type="text/javascript" src="../../dist/ATON.min.js"></script>
+<script type="text/javascript" src="../../shu/shu.js"></script>
+<script>
+window.addEventListener('load', ()=>{
+
+    // Example: use the createSearch function
+    // to create a container with a search input,
+    // datalist and button to filter public scenes.
+    const options = {
+        id:'idScenes', 
+        inputId:'sid',
+        listId:'sidlist'
+    };
+
+    $('#mainContent').append(
+        ATON.UI.createSearch(options)
+    );
+});
+</script>
 </head>
 
 <body class="atonDefaultBody">

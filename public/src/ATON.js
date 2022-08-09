@@ -157,7 +157,7 @@ ATON._onUserInteraction = ()=>{
 
     for (let v in ATON.MediaFlow._vStreams){
         let vs = ATON.MediaFlow._vStreams[v].el;
-        if (!vs.playing) vs.play();
+        if (!vs.playing && !vs.uid) vs.play();
     }
 };
 

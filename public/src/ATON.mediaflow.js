@@ -115,7 +115,7 @@ MediaFlow.init = ()=>{
     // I/O Devices
     MediaFlow.detectDevices();
 
-    navigator.mediaDevices.addEventListener('devicechange', event => {
+    if (navigator.mediaDevices) navigator.mediaDevices.addEventListener('devicechange', event => {
         MediaFlow.detectDevices();
     });
 
@@ -174,6 +174,8 @@ MediaFlow._setupFR = ()=>{
 MediaFlow.detectDevices = ()=>{
     MediaFlow.audioInputDevices = [];
     MediaFlow.videoInputDevices = [];
+
+    if (!navigator.mediaDevices) return;
 
     navigator.mediaDevices.enumerateDevices().then(devices => {
         //console.log(devices)
@@ -485,9 +487,13 @@ MediaFlow.stopScreenStreaming = ()=>{
 
     console.log("Stop screen streaming");
 
-    if (ATON.VRoadcast._elVStream) ATON.VRoadcast._elVStream.style.display = "none";
+    if (ATON.VRoadcast.uid !== undefined){
+        let vs = MediaFlow.getVideoStream(ATON.VRoadcast.uid);
+        vs.el.style.display = "none";
+        vs.el.pause();
 
-    ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+        ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+    }
 };
 
 MediaFlow.startOrStopScreenStreaming = ()=>{
@@ -551,9 +557,13 @@ MediaFlow.stopCameraStreaming = ()=>{
 
     console.log("Stop camera streaming");
 
-    if (ATON.VRoadcast._elVStream) ATON.VRoadcast._elVStream.style.display = "none";
+    if (ATON.VRoadcast.uid !== undefined){
+        let vs = MediaFlow.getVideoStream(ATON.VRoadcast.uid);
+        vs.el.style.display = "none";
+        vs.el.pause();
 
-    ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+        ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+    }
 };
 
 MediaFlow.startOrStopCameraStreaming = ()=>{
@@ -564,6 +574,22 @@ MediaFlow.startOrStopCameraStreaming = ()=>{
 
 MediaFlow.realizeOrUpdateVStream = (stream, onClick)=>{
     // Local vstream
+    let uid = ATON.VRoadcast.uid;
+    if (uid === undefined) return;
+
+    let vs  = MediaFlow.getOrCreateVideoStream(uid, undefined, true);
+
+    vs.el.playsinline = true;
+    vs.el.style.display = "inline-block";
+
+    vs.el.classList.add("atonVRCvidStream");
+    vs.el.classList.add("atonVRCu"+(uid%6));
+
+    if (onClick) vs.el.onclick = onClick;
+
+    vs.el.srcObject = stream;
+
+/*
     if (!ATON.VRoadcast._elVStream){
         ATON.VRoadcast._elVStream = document.createElement("video");
         ATON.VRoadcast._elVStream.autoplay    = true;
@@ -579,6 +605,7 @@ MediaFlow.realizeOrUpdateVStream = (stream, onClick)=>{
 
     ATON.VRoadcast._elVStream.style.display = "inline-block";
     ATON.VRoadcast._elVStream.srcObject = stream;
+*/
 };
 
 
@@ -588,17 +615,23 @@ MediaFlow.stopAllStreams = ()=>{
     MediaFlow.stopScreenStreaming();
 };
 
-MediaFlow.addVideoStream = (id, sourceurl)=>{
+MediaFlow.getOrCreateVideoStream = (id, sourceurl, bUser)=>{
     if (!MediaFlow._vStreams[id]){
         MediaFlow._vStreams[id] = {};
 
         let elid = "vStream-"+id;
+        if (bUser){
+            elid = "uStream"+id;
+            MediaFlow._vStreams[id].uid = id;
+        }
 
-        let htvid = "<video id='"+elid+"' autoplay loop ></video>";
+        let htvid = "<video id='"+elid+"' autoplay crossorigin='anonymous' ></video>";
         $(htvid).appendTo('body');
 
         MediaFlow._vStreams[id].el = document.getElementById(elid);
-        MediaFlow._vStreams[id].el.src = sourceurl;
+
+        if (sourceurl) MediaFlow._vStreams[id].el.src = sourceurl;
+        if (!bUser) MediaFlow._vStreams[id].el.loop   = true;
 
         //if (sourceurl.endsWith("m3u8")) MediaFlow._vStreams[id].el.type = "application/x-mpegURL";
 
@@ -630,7 +663,9 @@ MediaFlow.addVideoStream = (id, sourceurl)=>{
         });
 */
     }
-    else MediaFlow._vStreams[id].el.src = sourceurl;
+    else {
+        if (sourceurl) MediaFlow._vStreams[id].el.src = sourceurl;
+    }
 
     return MediaFlow._vStreams[id];
 };

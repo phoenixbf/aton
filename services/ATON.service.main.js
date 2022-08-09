@@ -69,16 +69,18 @@ let app = express();
 //app.set('trust proxy', 1); 	// trust first proxy
 
 //app.use(compression());
-app.use(cors({credentials: true, origin: true}));
 
+app.use(cors({
+	credentials: true,
+	origin: true
+}));
 /*
-    app.use((req, res, next)=>{
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        next();
-    });
+app.use((req, res, next)=>{
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
 */
-
 app.use(express.json({ limit: '50mb' }));
 
 // EJS

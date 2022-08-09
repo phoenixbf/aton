@@ -472,19 +472,22 @@ SceneHub.initBaseParsers = ()=>{
 
             if (N.stream){
                 let stream = N.stream;
-                let vsrc = ATON.Utils.resolveCollectionURL(stream.src);
 
-                let vs = ATON.MediaFlow.addVideoStream(nid, vsrc);
+                let vs;
+
+                if (stream.src.startsWith("#")){
+                    let uid = parseInt( stream.src.substring(1) );
+                    vs = ATON.MediaFlow.getOrCreateVideoStream(uid, undefined, true);
+                }
+                else {
+                    let vsrc = ATON.Utils.resolveCollectionURL(stream.src);
+                    vs = ATON.MediaFlow.getOrCreateVideoStream(nid, vsrc);
+                }
 
                 if (stream.chromakey){
                     let kc = stream.chromakey.color;
                     if (kc){
-                        vs.matStream.uniforms.keycolor.value.set(
-                            parseFloat(kc[0]),
-                            parseFloat(kc[1]),
-                            parseFloat(kc[2]),
-                            parseFloat(kc[3])
-                        );
+                        vs.matStream.uniforms.keycolor.value.set(parseFloat(kc[0]),parseFloat(kc[1]),parseFloat(kc[2]),parseFloat(kc[3]));
                     }
 
                     if (stream.chromakey.smoothness) vs.matStream.uniforms.smoothness.value = parseFloat(stream.chromakey.smoothness);

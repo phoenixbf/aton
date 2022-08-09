@@ -154,6 +154,12 @@ _buildLabel(){
 }
 
 realizeStreamPanel(){
+    
+    let vs = ATON.MediaFlow.getOrCreateVideoStream(this.userid, undefined, true);
+    //vs.texStream.flipY = true;
+
+    this._elVStream = vs.el;
+/*
     let htvid = "<video id='uStream"+this.userid+"' autoplay></video>";
     $(htvid).appendTo('body');
 
@@ -173,18 +179,18 @@ realizeStreamPanel(){
         //side: THREE.BackSide, // THREE.DoubleSide
         side: THREE.DoubleSide
     });
-
+*/
     let gStream = new THREE.PlaneGeometry(1,1);
     
-    this.mStream = new THREE.Mesh( gStream, this._matStream );
+    this.mStream = new THREE.Mesh( gStream, vs.matStream /*this._matStream*/ );
     this.mStream.position.y = 1.0;
 
     this.mStream.scale.x = (16.0 * 0.2);
-    this.mStream.scale.y = (9.0 * 0.2);
+    this.mStream.scale.y = -(9.0 * 0.2);
 
     this._elVStream.addEventListener('loadedmetadata', (e)=>{
         this.mStream.scale.x    = 0.01 * this._elVStream.videoWidth;
-        this.mStream.scale.y    = 0.01 * this._elVStream.videoHeight;
+        this.mStream.scale.y    = -0.01 * this._elVStream.videoHeight;
         this.mStream.position.y = 0.006 * this._elVStream.videoHeight;
     });
 

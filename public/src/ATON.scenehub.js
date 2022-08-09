@@ -476,13 +476,21 @@ SceneHub.initBaseParsers = ()=>{
 
                 let vs = ATON.MediaFlow.addVideoStream(nid, vsrc);
 
-                if (stream.mask) 
-                    vs.matStream.uniforms.mask.value.set(
-                        parseFloat(stream.mask[0]),
-                        parseFloat(stream.mask[1]),
-                        parseFloat(stream.mask[2]),
-                        parseFloat(stream.mask[3])
-                    );
+                if (stream.chromakey){
+                    let kc = stream.chromakey.color;
+                    if (kc){
+                        vs.matStream.uniforms.keycolor.value.set(
+                            parseFloat(kc[0]),
+                            parseFloat(kc[1]),
+                            parseFloat(kc[2]),
+                            parseFloat(kc[3])
+                        );
+                    }
+
+                    if (stream.chromakey.smoothness) vs.matStream.uniforms.smoothness.value = parseFloat(stream.chromakey.smoothness);
+                    if (stream.chromakey.spill)      vs.matStream.uniforms.spill.value      = parseFloat(stream.chromakey.spill);
+                    if (stream.chromakey.similarity) vs.matStream.uniforms.similarity.value = parseFloat(stream.chromakey.similarity);
+                }
 
                 G.setMaterial( vs.matStream );
             }

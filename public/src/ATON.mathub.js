@@ -340,30 +340,49 @@ MatHub.addDefaults = ()=>{
         sizeAttenuation: true
     });
 
-    MatHub.materials.greenscreen = new THREE.ShaderMaterial({
+    MatHub.materials.chromakey = new THREE.ShaderMaterial({
         uniforms: {
             tBase: { type:'t' /*, value: 0*/ },
-            mask: { type:'vec4', value: new THREE.Vector4(0,1,0, 4.0) },
+            keycolor: { type:'vec4', value: new THREE.Vector4(0,1,0, 0.0) },
+            similarity: { type:'float', value: 0.4 },
+            smoothness: { type:'float', value: 0.08 },
+            spill: { type:'float', value: 0.1 }
         },
         vertexShader: MatHub.getDefVertexShader(),
         fragmentShader:`
             uniform sampler2D tBase;
-            uniform vec4 mask;
+            uniform vec4 keycolor;
+
+            uniform float similarity;
+            uniform float smoothness;
+            uniform float spill;
 
             varying vec2 vUv;
 
+            // From https://github.com/libretro/glsl-shaders/blob/master/nnedi3/shaders/rgb-to-yuv.glsl
+            vec2 RGBtoUV(vec3 rgb){
+                return vec2(
+                    rgb.r * -0.169 + rgb.g * -0.331 + rgb.b *  0.5    + 0.5,
+                    rgb.r *  0.5   + rgb.g * -0.419 + rgb.b * -0.081  + 0.5
+                );
+            }
+
+            // From https://godotshaders.com/shader/green-screen-chromakey/
 		    void main(){
 		        vec4 frag = texture2D(tBase, vUv);
+                vec4 orig = frag;
 
-                float d = distance(frag.rgb, mask.rgb) - 0.5;
-                float a = d * mask.w;
-                a = clamp(a, 0.0,1.0);
+                float chromaDist = distance(RGBtoUV(frag.rgb), RGBtoUV(keycolor.rgb));
 
-                frag.a = mix(1.0,a, mask.w);
+                float baseMask = chromaDist - similarity;
+                float fullMask = pow(clamp(baseMask / smoothness, 0.0,1.0), 1.5);
+                frag.a         = fullMask;
+              
+                float spillVal = pow(clamp(baseMask / spill, 0.0,1.0), 1.5);
+                float desat    = clamp(frag.r * 0.2126 + frag.g * 0.7152 + frag.b * 0.0722, 0.0,1.0);
+                frag.rgb       = mix(vec3(desat, desat, desat), frag.rgb, spillVal);
 
-                //float ds = abs(a - 0.5);
-                //float g = (frag.r + frag.g + frag.b)/3.0;
-                //frag.rgb = mix( vec3(g,g,g), frag.rgb, ds);
+                frag = mix(orig,frag, keycolor.w);
 
 		        gl_FragColor = frag;
 		    }

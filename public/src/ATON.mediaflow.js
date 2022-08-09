@@ -611,7 +611,7 @@ MediaFlow.addVideoStream = (id, sourceurl)=>{
         MediaFlow._vStreams[id].texStream.encoding = ATON._stdEncoding;
         MediaFlow._vStreams[id].texStream.flipY = false;
 
-        MediaFlow._vStreams[id].matStream = ATON.MatHub.materials.greenscreen.clone();
+        MediaFlow._vStreams[id].matStream = ATON.MatHub.materials.chromakey.clone();
         MediaFlow._vStreams[id].matStream.uniforms.tBase.value  = MediaFlow._vStreams[id].texStream;
 
 /*

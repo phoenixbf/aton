@@ -495,6 +495,38 @@ SceneHub.initBaseParsers = ()=>{
                     if (stream.chromakey.similarity) vs.matStream.uniforms.similarity.value = parseFloat(stream.chromakey.similarity);
                 }
 
+                // Auto build geom
+                if (!N.urls){
+                    let gStream = new THREE.PlaneGeometry(1,1);
+    
+                    let mStream = new THREE.Mesh( gStream /*, vs.matStream */);
+                
+                    mStream.scale.x = 1.0
+                    mStream.scale.y = -1.0;
+
+                    ATON._assetReqNew();
+                
+                    vs.el.addEventListener('loadedmetadata', (e)=>{
+                        mStream.scale.x    = 0.01 * vs.el.videoWidth;
+                        mStream.scale.y    = -0.01 * vs.el.videoHeight;
+                        //mStream.position.y = 0.006 * vs.el.videoHeight;
+
+                        ATON._assetReqComplete();
+                        //ATON.recomputeSceneBounds();
+                    });
+
+                    ATON.Utils.modelVisitor(G, mStream);
+
+                    G.add( mStream );
+
+                    ATON._bqScene = true;
+
+                    G.setPickable(true);
+                    G.dirtyBound();
+
+                    //ATON.recomputeSceneBounds();
+                }
+
                 G.setMaterial( vs.matStream );
             }
 

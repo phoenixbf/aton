@@ -646,8 +646,8 @@ SUI.update = ()=>{
     else SUI._measLine.visible = false;
 
     // Selector
-    if (ATON._queryDataScene && SUI._bShowSelector && !ATON.Nav._bInteracting){
-        SUI.mainSelector.visible = true;
+    if (ATON._queryDataScene && !ATON.Nav._bInteracting){
+        if (SUI._bShowSelector) SUI.mainSelector.visible = true;
 
         SUI.mainSelector.position.x = ATON._queryDataScene.p.x + SUI._selOffset.x;
         SUI.mainSelector.position.y = ATON._queryDataScene.p.y + SUI._selOffset.y;

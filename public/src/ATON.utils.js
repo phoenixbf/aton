@@ -360,6 +360,10 @@ Utils.rotationBetweenDirections = ( dir1, dir2 )=>{
 	return rotation;
 };
 
+Utils.clampValue = (num, min, max)=>{
+    return Math.min( Math.max(num, min), max );
+};
+
 
 // Helper visitor routine
 // Note: N (parent node) is not yet connected to model

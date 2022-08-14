@@ -785,6 +785,19 @@ Nav.syncCurrPOV = ()=>{
     Nav._currPOV.target.copy(ctrl.target);
 };
 
+/**
+Apply custom constraints to current POV.
+By default this routine does nothing: you can redefine to apply custom constraints to navigation.
+@param {THREE.Material} currpov - Represents the current POV to be manipulated
+@example
+ATON.Nav.applyPOVconstraints = (pov)=>{
+    if (pov.pos.y < 0.0) pov.pos.y = 0.0;
+};
+*/
+Nav.applyPOVconstraints = (currpov)=>{
+    // To be redefined
+};
+
 // After syncCurrPOV and before updateCamera, we maniuplate currPOV
 //==================================================================================
 Nav.handlePOV = ()=>{
@@ -798,7 +811,7 @@ Nav.handlePOV = ()=>{
     //if (ATON.XR.isPresenting()) console.log(ATON._renderer.xr);
 
     // Handle constraints
-
+    Nav.applyPOVconstraints(Nav._currPOV);
 };
 
 // Not used for now
@@ -896,19 +909,6 @@ Nav.syncCurrCamera = ()=>{
     let pos = Nav._currPOV.pos;
     let tgt = Nav._currPOV.target;
 
-    // We are in VR
-/*
-    if (ATON.XR.isPresenting()){
-        ///let vrcam = ATON.XR.rig;
-        ///vrcam.position.copy(pos);
-        
-        ///ATON.XR.setRefSpaceLocation(pos);
-
-        //let C = ATON._renderer.xr.getCamera(cam);
-        //C.getWorldDirection(Nav._vDir);
-        return;
-    }
-*/
     if (Nav._mode === Nav.MODE_DEVORI){
         cam.position.copy(pos);
         return;

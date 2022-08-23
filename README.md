@@ -84,3 +84,10 @@ You can find [here](http://osiris.itabc.cnr.it/aton/index.php/publications/) a c
 
 # Contribute
 You are more than welcome to contribute to the project by spotting bugs/issues and providing code or solutions through pull requests to fix or improve ATON functionalities. Get in touch here on github, through the [telegram open-group](https://t.me/ATON_Framework) or through the other channels.
+
+# TODO list
+
+- [ ] Move and refactor 2D user interface routines from ATON.FE into ATON.UI component (2D labels, popup system, input search, etc.)
+- [ ] Improve main landing page (public gallery), port to ejs and provide more customization
+- [ ] Rewrite Shu using ejs
+- [ ] Improve Shu UI (e.g. new scene, galleries) using new routines from ATON.UI

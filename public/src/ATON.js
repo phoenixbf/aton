@@ -37,7 +37,7 @@ import VRoadcast from "./ATON.vroadcast.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaFlow from "./ATON.mediaflow.js";
-import GeoLoc from "./ATON.geoloc.js";
+import Phygital from "./ATON.phygital.js";
 import App from "./ATON.app.js";
 import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
@@ -68,7 +68,7 @@ ATON.VRoadcast  = VRoadcast;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaFlow  = MediaFlow;
-ATON.GeoLoc     = GeoLoc;
+ATON.Phygital   = Phygital;
 ATON.App        = App;
 ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
@@ -704,8 +704,8 @@ ATON.realize = ( bNoRender )=>{
     // App
     ATON.App.init();
 
-    // GeoLoc
-    ATON.GeoLoc.init();
+    // Phygital
+    ATON.Phygital.init();
 
     // XPF-Network
     ATON.XPFNetwork.init();

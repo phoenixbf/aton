@@ -88,7 +88,7 @@ You are more than welcome to contribute to the project by spotting bugs/issues a
 # TODO list
 
 - [ ] Move and refactor 2D user interface routines from ATON.FE into ATON.UI component (2D labels, popup system, input search, etc.)
-- [ ] Improve main landing page (public gallery), port to ejs and provide more customization
 - [ ] Rewrite Hathor UI elements using new routines from ATON.UI.*
+- [ ] Improve main landing page (public gallery), port to ejs and provide more customization
 - [ ] Rewrite Shu using ejs
 - [ ] Improve Shu UI (e.g. new scene, galleries) using new routines from ATON.UI

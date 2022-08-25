@@ -1162,6 +1162,8 @@ ATON._postAllReqsCompleted = (R)=>{
             //if (N.bPickable !== undefined) N.setPickable(N.bPickable);
         }
     }
+
+    ThreeMeshUI.update();
 };
 
 ATON.recomputeSceneBounds = ( ubs )=>{

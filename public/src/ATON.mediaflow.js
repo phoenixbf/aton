@@ -630,7 +630,19 @@ MediaFlow.getOrCreateVideoStream = (id, sourceurl, bUser)=>{
 
         MediaFlow._vStreams[id].el = document.getElementById(elid);
 
-        if (sourceurl) MediaFlow._vStreams[id].el.src = sourceurl;
+        if (sourceurl){
+            if (sourceurl.endsWith("m3u8")){
+                if (Hls.isSupported()){
+                    let hls = new Hls();
+                    hls.loadSource(sourceurl);
+                    hls.attachMedia( MediaFlow._vStreams[id].el );
+                }
+                else MediaFlow._vStreams[id].el.src = sourceurl; // Native support
+            }
+
+            else MediaFlow._vStreams[id].el.src = sourceurl;
+        }
+
         if (!bUser) MediaFlow._vStreams[id].el.loop   = true;
 
         //if (sourceurl.endsWith("m3u8")) MediaFlow._vStreams[id].el.type = "application/x-mpegURL";

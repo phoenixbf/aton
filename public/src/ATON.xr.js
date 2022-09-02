@@ -506,7 +506,7 @@ XR.setupControllerUI = (h, bAddRep)=>{
         XR.gControllers.add( XR.controller0 );
 
         if (bAddRep){
-            XR._pointerLineGeom = new THREE.CylinderBufferGeometry( raytick,raytick, raylen, 4 );
+            XR._pointerLineGeom = new THREE.CylinderGeometry( raytick,raytick, raylen, 4 );
             //XR._pointerLineGeom = new THREE.CylinderGeometry( raytick,raytick, raylen, 4 );
 
             XR._pointerLineGeom.rotateX( -Math.PI / 2 );

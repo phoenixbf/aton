@@ -863,7 +863,7 @@ Utils.vibrate = (d)=>{
 };
 
 Utils.createATONCube = (id)=>{
-    let g = new THREE.BoxBufferGeometry( 1,1,1 );
+    let g = new THREE.BoxGeometry( 1,1,1 );
 
     let mat = new THREE.MeshStandardMaterial();
 
@@ -882,7 +882,7 @@ Utils.createATONCube = (id)=>{
 
 
 Utils.createATONCubePBR = (id)=>{
-    let g = new THREE.BoxBufferGeometry( 1,1,1 );
+    let g = new THREE.BoxGeometry( 1,1,1 );
 
     let mat = new THREE.MeshStandardMaterial();
     mat.metalness = 1.0;
@@ -920,7 +920,7 @@ Utils.createGround = (texture, dx,dz)=>{
     if (dx === undefined) dx = 1.0;
     if (dz === undefined) dz = 1.0;
 
-    let g = new THREE.PlaneBufferGeometry( dx, dz );
+    let g = new THREE.PlaneGeometry( dx, dz );
 
     let mat = new THREE.MeshStandardMaterial();
     if (texture !== undefined) Utils.textureLoader.load(texture, (tex)=>{

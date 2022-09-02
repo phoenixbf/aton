@@ -89,7 +89,8 @@
     "session-file-store": "^1.5.0",
     "sharp": "^0.30.7",
     "socket.io": "^4.5.1",
-    "three": "0.143.0",
+    "three": "0.144.0",
+    "three-custom-shader-material": "^4.0.0",
     "three-mesh-bvh": "0.5.15",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

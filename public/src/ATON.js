@@ -1425,7 +1425,7 @@ ATON.setMainPanorama = (path)=>{
 
     // Geometry
     if (ATON._mMainPano === undefined){
-        ATON._gMainPano = new THREE.SphereBufferGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
+        ATON._gMainPano = new THREE.SphereGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
         //ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
         
         ATON._gMainPano.castShadow    = false;

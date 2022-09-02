@@ -37,9 +37,9 @@ MatHub.getDefVertexShader = ()=>{
         void main(){
             vUv = uv;
 
-            vPositionW = vec3( vec4( position, 1.0 ) * modelMatrix);
-            vNormalW   = normalize( vec3( vec4( normal, 0.0 ) * modelMatrix ) );
+            vPositionW = ( vec4( position, 1.0 ) * modelMatrix).xyz;
             vNormalV   = normalize( vec3( normalMatrix * normal ));
+            vNormalW   = (modelMatrix * vec4(normal, 0.0)).xyz;
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
         }

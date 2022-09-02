@@ -241,7 +241,7 @@ XPFNetwork.realizeBaseGeometry = ()=>{
     ATON._rootVisibleGlobal.add( XPFNetwork._group );
 
     // Default geometry
-    XPFNetwork._geom = new THREE.SphereBufferGeometry( 1.0, 40,40 );
+    XPFNetwork._geom = new THREE.SphereGeometry( 1.0, 40,40 );
     XPFNetwork._geom.scale( -XPFNetwork._size, XPFNetwork._size, XPFNetwork._size );
         
     XPFNetwork._geom.castShadow    = false;

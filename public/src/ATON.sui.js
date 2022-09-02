@@ -25,7 +25,7 @@ SUI.init = ()=>{
     SUI.initSelector();
 
     SUI.fpTeleport = ATON.createUINode();
-    let gTeleport = new THREE.CylinderBufferGeometry(0.4,0.4, 0.9, 32,1, true);
+    let gTeleport = new THREE.CylinderGeometry(0.4,0.4, 0.9, 32,1, true);
     //let gTeleport = new THREE.CylinderGeometry(0.4,0.4, 0.9, 32,1, true);
 
     let mTeleport = new THREE.Mesh( gTeleport, ATON.MatHub.getMaterial("teleportLoc") );

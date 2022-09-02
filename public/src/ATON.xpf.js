@@ -52,7 +52,7 @@ realizeGeometry(){
     if (this._geom !== undefined) return this; // already realized
 
     // Default geometry
-    this._geom = new THREE.SphereBufferGeometry( 1.0, 60,60 );
+    this._geom = new THREE.SphereGeometry( 1.0, 60,60 );
     this._geom.scale( -this._size, this._size, this._size );
         
     this._geom.castShadow    = false;

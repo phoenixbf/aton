@@ -57,6 +57,7 @@ import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
 
 import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
+import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 
 import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
@@ -139,5 +140,7 @@ window.ThreeMeshUI  = ThreeMeshUI;
 window.ThreeMeshBVH = ThreeMeshBVH;
 window.TILES        = TILES;
 //window.IFCLoader    = IFCLoader;
+
+window.CustomShaderMaterial = CustomShaderMaterial;
 
 //window.Loader3DTiles = Loader3DTiles;

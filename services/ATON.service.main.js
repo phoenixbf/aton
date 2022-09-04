@@ -93,12 +93,13 @@ app.get(/^\/s\/(.*)$/, (req,res,next)=>{
 	d.sid   = req.params[0];
 	d.title = d.sid;
 	d.appicon = "/hathor/appicon.png";
+	d.scripts = [];
 
 	let S = Core.readSceneJSON(d.sid);
 	if (S){
 		if (S.title) d.title = S.title;
 		d.appicon = "/api/cover/"+d.sid;
-		d.scripts = [];
+		
 		if (Core.config.hathor && Core.config.hathor.scripts) d.scripts = Core.config.hathor.scripts;
 	}
 

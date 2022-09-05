@@ -1,0 +1,27 @@
+{
+    "status": "complete",
+    "title": "Chrysippus head",
+    "environment": {
+        "mainpano": {
+            "url": "samples/pano/pacis-blur.exr"
+        },
+        "lightprobes": {
+            "auto": true
+        },
+        "exposure": 5.0
+    },
+    "scenegraph": {
+        "nodes": {
+            "main": {
+                "urls": [
+                    "samples/models/chrysippus/50k_delighted.gltf"
+                ]
+            }
+        },
+        "edges": {
+            ".": [
+                "main"
+            ]
+        }
+    }
+}

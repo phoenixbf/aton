@@ -216,6 +216,34 @@ ATON._setupBaseListeners = ()=>{
         else console.log("Exit fullscreen");
     });
 
+    // Suspend/Resume
+    let hidden = undefined;
+    let visibilityChange = undefined;
+    if (typeof document.hidden !== "undefined") {
+        hidden = "hidden";
+        visibilityChange = "visibilitychange";
+      } else if (typeof document.mozHidden !== "undefined") {
+        hidden = "mozHidden";
+        visibilityChange = "mozvisibilitychange";
+      } else if (typeof document.msHidden !== "undefined") {
+        hidden = "msHidden";
+        visibilityChange = "msvisibilitychange";
+      } else if (typeof document.webkitHidden !== "undefined") {
+        hidden = "webkitHidden";
+        visibilityChange = "webkitvisibilitychange";
+      }
+
+    if (hidden !== undefined) document.addEventListener(visibilityChange, ()=>{
+        if (document[hidden]){
+            console.log("Suspend");
+            ATON.renderPause();
+        }
+        else {
+            console.log("Resume");
+            ATON.renderResume();
+        }
+    }, false);
+
 
     el.addEventListener( 'mousemove', ATON._updateScreenMove, false );
     ///el.addEventListener('dblclick', ATON._doubleTap, false);

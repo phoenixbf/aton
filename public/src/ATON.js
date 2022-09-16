@@ -1664,6 +1664,7 @@ ATON._realizeOrUpdateMainPano = (tpano)=>{
     // FIXME: dirty, find another way
     if (ATON._bMainPanoInfinite){
         ATON._mMainPano.onAfterRender = ()=>{
+            if (ATON.XR._sessionType === "immersive-ar") return;
             //if (ATON._numReqLoad > 0) return;
             if (ATON.Nav._currPOV) ATON._mMainPano.position.copy(ATON.Nav._currPOV.pos);
         };

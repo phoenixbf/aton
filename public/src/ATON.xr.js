@@ -248,17 +248,28 @@ XR.onSessionStarted = ( session )=>{
     // If any streaming is ongoing, terminate it
     ATON.MediaFlow.stopAllStreams();
 
-    if (XR._sessionType === "immersive-ar") ATON._renderer.xr.setReferenceSpaceType( 'local' );
+    if (XR._sessionType === "immersive-ar"){
+        ATON._renderer.xr.setReferenceSpaceType( 'local' );
+    }
 
     // Promised
 	ATON._renderer.xr.setSession( session ).then(()=>{
         XR.currSession = session;
         console.log(XR.currSession);
 
-        // Disable panorama on AR sessions
+        // AR sessions
         if (XR._sessionType === "immersive-ar"){
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;
+/*
+            XR._bPresenting = true;
+            ATON.Nav._bInteracting = false;
+    
+            console.log("AR now presenting");
+    
+            ATON.fireEvent("XRmode", true);
+            return;
+*/
         }
 
         // get xrRefSpace
@@ -268,101 +279,58 @@ XR.onSessionStarted = ( session )=>{
         });
         */
 
-        for (let c = 0; c < 2; c++){
-            const C = ATON._renderer.xr.getController(c);
+        if (XR._sessionType === "immersive-vr"){
+            for (let c = 0; c < 2; c++){
+                const C = ATON._renderer.xr.getController(c);
 
-            if (C !== undefined && !C.userData.bXRconfig){
-                //console.log(C);
+                if (C !== undefined && !C.userData.bXRconfig){
+                    //console.log(C);
 
-                C.visible = false;
-                C.userData.bXRconfig = true;
+                    C.visible = false;
+                    C.userData.bXRconfig = true;
 
-                C.addEventListener( 'connected', (e) => {
-                    //console.log( e.data.handedness );
-                    let hand = e.data.handedness;
-                    C.gm = e.data.gamepad;
-                    
-                    //console.log(e.data);
-                    console.log("Hand "+hand);
-                    console.log("GamePad "+C.gm);
+                    C.addEventListener( 'connected', (e) => {
+                        //console.log( e.data.handedness );
+                        let hand = e.data.handedness;
+                        C.gm = e.data.gamepad;
+                        
+                        //console.log(e.data);
+                        console.log("Hand "+hand);
+                        console.log("GamePad "+C.gm);
 
-                    if (hand === "left")  XR._setupControllerL(C, true);
-                    else {
-                        if (hand === "right") XR._setupControllerR(C, true);
-                        else { // FIXME:
+                        if (hand === "left")  XR._setupControllerL(C, true);
+                        else {
+                            if (hand === "right") XR._setupControllerR(C, true);
+                            else { // FIXME:
 
-                            //XR._setupControllerR(C, false);
-                            
-                            C.addEventListener('selectstart', ()=>{
-                                //if (XR._handleUISelection()) return;
-                                ATON.fireEvent("XRselectStart", XR.HAND_R);
+                                //XR._setupControllerR(C, false);
                                 
-                                console.log("Head-aligned select");
-                            });
-                            C.addEventListener('selectend', ()=>{ 
-                                ATON.fireEvent("XRselectEnd", XR.HAND_R);
-                            });
+                                C.addEventListener('selectstart', ()=>{
+                                    //if (XR._handleUISelection()) return;
+                                    ATON.fireEvent("XRselectStart", XR.HAND_R);
+                                    
+                                    console.log("Head-aligned select");
+                                });
+                                C.addEventListener('selectend', ()=>{ 
+                                    ATON.fireEvent("XRselectEnd", XR.HAND_R);
+                                });
 
-                            ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
+                                ATON.fireEvent("XRcontrollerConnected", XR.HAND_R);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             }
+
+            // reparent current camera to the XR rig
+            XR.rig.add( ATON.Nav._camera );
+
+            XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
+            //console.log(ATON.Nav._currPOV.pos);
+
+            let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
+            ATON.Nav._updCamera( C );
         }
-
-    /*
-        let C0 = ATON._renderer.xr.getController(0);
-        let C1 = ATON._renderer.xr.getController(1);
-
-        console.log(C0);
-        //ATON.VRoadcast.log(JSON.stringify(C0));
-
-        // Controller 0
-        if (C0){
-            C0.visible = false;
-
-            C0.addEventListener( 'connected', (e) => {
-
-                //console.log( e.data.handedness );
-
-                if (e.data.handedness === "left") XR._setupControllerL(C0);
-                else XR._setupControllerR(C0);
-
-                //C0.gamepad = e.data.gamepad;
-                //console.log(XR.controller0.gamepad);
-
-                //ATON.VRoadcast.log(JSON.stringify(e));
-
-                //let gp = C0.gamepad;
-                //if (gp.pose && gp.pose.hasPosition) C0.visible = true;
-
-            });
-        }
-
-        // Controller 1
-        if (C1){
-            C1.visible = false;
-
-            C1.addEventListener( 'connected', (e) => {
-                //console.log( e.data.handedness );
-
-                if (e.data.handedness === "left") XR._setupControllerL(C1);
-                else XR._setupControllerR(C1);
-
-                //C1.gamepad = e.data.gamepad;
-                
-                //let gp = C1.gamepad;
-                //if (gp.pose && gp.pose.hasPosition) C1.visible = true;
-
-            });
-        }
-    */
-
-        // reparent current camera to the XR rig
-        XR.rig.add( ATON.Nav._camera );
-
-        XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
-        console.log(ATON.Nav._currPOV.pos);
 
         XR._bPresenting = true;
         ATON.Nav._bInteracting = false;
@@ -381,9 +349,6 @@ XR.onSessionStarted = ( session )=>{
         //console.log(session);
 
         ATON._qSyncInt = 2; // Query interval (perf)
-
-        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-        ATON.Nav._updCamera( C );
 
         if (ATON.XPFNetwork.getNumXPFs()>0) ATON.setQueryRange(0.0, 100.0);
         else ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
@@ -455,14 +420,19 @@ XR.toggle = (sessiontype)=>{
         };
 
         if (XR._sessionType === "immersive-ar"){
-            sessionInit.requiredFeatures = [ 'hit-test' ];
+            if ( sessionInit.optionalFeatures === undefined ){
+                sessionInit.optionalFeatures = [];
+            }
 
+            //sessionInit.requiredFeatures = [ 'hit-test' ];
+/*
             let overlay = document.createElement('div');
 			overlay.style.display = 'none';
 			document.body.appendChild( overlay );
 
             sessionInit.optionalFeatures.push( 'dom-overlay' );
             sessionInit.domOverlay = { root: overlay };
+*/
             //sessionInit.optionalFeatures.push( 'light-estimation' );
         }
 

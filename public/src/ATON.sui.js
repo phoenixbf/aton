@@ -408,7 +408,7 @@ This can be arranged anywhere in the scene or attached to other UI nodes
 @param {THREE.Color} color - (optional) base color for the toolbar
 @returns {Node}
 */
-SUI.createToolbar = (buttonlist, color)=>{
+SUI.createToolbar = (buttonlist, color, opacity)=>{
     let T = ATON.createUINode();
 
     let num = buttonlist.length;
@@ -421,7 +421,7 @@ SUI.createToolbar = (buttonlist, color)=>{
         padding: 0.01,
         borderRadius: 0.02,
         backgroundColor: color? color : ATON.MatHub.colors.black,
-        backgroundOpacity: 0.3,
+        backgroundOpacity: (opacity!==undefined)? opacity : 0.3,
 
         fontFamily: SUI.PATH_FONT_JSON,
         fontTexture: SUI.PATH_FONT_TEX,

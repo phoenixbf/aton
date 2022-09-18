@@ -234,6 +234,30 @@ XR._setupControllerL = (C, bAddRep)=>{
     ATON.fireEvent("XRcontrollerConnected", XR.HAND_L);
 };
 
+XR.setupSceneForAR = ()=>{
+    if (XR._sessionType !== "immersive-ar") return;
+
+    ATON.recomputeSceneBounds();
+
+    let C = ATON.bounds.center;
+    ATON._rootVisible.position.x = -C.x;
+    ATON._rootVisible.position.y = -C.y;
+    ATON._rootVisible.position.z = -C.z;
+
+    ATON._rootSem.position.x = -C.x;
+    ATON._rootSem.position.y = -C.y;
+    ATON._rootSem.position.z = -C.z;
+
+    ATON.recomputeSceneBounds();
+};
+
+XR.resetSceneOffsets = ()=>{
+    ATON._rootVisible.position.set(0,0,0);
+    ATON._rootSem.position.set(0,0,0);
+
+    ATON.recomputeSceneBounds();
+};
+
 // On XR session started
 XR.onSessionStarted = ( session )=>{
     if (XR.currSession) return; // Already running
@@ -261,6 +285,23 @@ XR.onSessionStarted = ( session )=>{
         if (XR._sessionType === "immersive-ar"){
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;
+
+            XR.setupSceneForAR();
+
+            // Controller
+            XR.controller0 = ATON._renderer.xr.getController(0);
+
+            XR.controller0.addEventListener('selectstart', ()=>{
+                //if (XR._handleUISelection()) return;
+                ATON.fireEvent("XRselectStart", XR.HAND_R);
+                
+                console.log("Head-aligned select");
+            });
+            XR.controller0.addEventListener('selectend', ()=>{ 
+                ATON.fireEvent("XRselectEnd", XR.HAND_R);
+            });
+
+            XR.gControllers.add( XR.controller0 );
 /*
             XR._bPresenting = true;
             ATON.Nav._bInteracting = false;
@@ -279,7 +320,7 @@ XR.onSessionStarted = ( session )=>{
         });
         */
 
-        if (XR._sessionType === "immersive-vr"){
+        else {
             for (let c = 0; c < 2; c++){
                 const C = ATON._renderer.xr.getController(c);
 
@@ -327,10 +368,10 @@ XR.onSessionStarted = ( session )=>{
 
             XR.setRefSpaceLocation(ATON.Nav._currPOV.pos);
             //console.log(ATON.Nav._currPOV.pos);
-
-            let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-            ATON.Nav._updCamera( C );
         }
+
+        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
+        ATON.Nav._updCamera( C );
 
         XR._bPresenting = true;
         ATON.Nav._bInteracting = false;
@@ -372,6 +413,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     XR._bPresenting = false;
     ATON.Nav._bInteracting = false;
+
+    XR.resetSceneOffsets();
 
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );

@@ -18,7 +18,7 @@ VRoadcast.MAX_CLIENTS_PER_SESSION = 50;
 // User
 VRoadcast.user = class {
     constructor(uid){
-        if (uid) this.uid = uid;
+        if (uid!==undefined) this.uid = uid;
 
         this.name      = undefined;
         this.message   = undefined;

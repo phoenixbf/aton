@@ -73,6 +73,22 @@ VRoadcast.init = ()=>{
 
     };
     //VRoadcast._encS = 
+
+    VRoadcast.customAvatarMaterial = undefined;
+};
+
+/**
+Provide custom routine for avatars' materials.
+By default avatars are assigned colors depending on their ID in the session
+@param {function} f - the custom routine: must return a THREE.Material
+
+@example
+ATON.VRoadcast.setCustomAvatarMaterialRoutine(()=>{
+    return new THREE.Material({ color: ATON.MatHub.colors.white });
+});
+*/
+VRoadcast.setCustomAvatarMaterialRoutine = (f)=>{
+    VRoadcast.customAvatarMaterial = f;
 };
 
 VRoadcast.enableChatLog = ()=>{

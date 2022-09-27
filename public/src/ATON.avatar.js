@@ -219,7 +219,8 @@ realize(){
     // build minimal representation
     let g = new THREE.SphereGeometry( 0.2, 16, 16 );
 
-    this.usermaterial = this.getAvatarMaterialByUID(this.userid);
+    if (ATON.VRoadcast.customAvatarMaterial) this.usermaterial = ATON.VRoadcast.customAvatarMaterial();
+    else this.usermaterial = this.getAvatarMaterialByUID(this.userid);
 
     let smesh = new THREE.Mesh( g, this.usermaterial );
 

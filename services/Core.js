@@ -112,8 +112,8 @@ Core.CONF_MAIN = {
 
 		vroadcast: {
 			PORT: 8890,					// local VRoadcast port
-			address: "ws://localhost",
-			maxClientsPerScene: 50		// Max clients per scene
+			address: "ws://localhost"
+			//maxClientsPerSession: 50		// Max clients per scene
 		},
 
 		webdav: {

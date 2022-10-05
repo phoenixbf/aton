@@ -11,7 +11,7 @@ let aConfig = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 
 const PORT_VRC = aConfig.services.vroadcast.PORT || 8890;
 
-VRoadcast.MAX_CLIENTS_PER_SCENE = aConfig.services.vroadcast.maxClientsPerScene || 50;
+VRoadcast.MAX_CLIENTS_PER_SESSION = aConfig.services.vroadcast.maxClientsPerSession || 50;
 
 
 // Start service

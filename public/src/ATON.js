@@ -1725,7 +1725,7 @@ ATON.setMainPanoramaLocation = (c)=>{
 Set and activate main directional light
 @param {THREE.Vector3} v - light direction
 @example
-ATON.setMainLightDirection( new THREE.Vector(0.1,-1.0,0.0) );
+ATON.setMainLightDirection( new THREE.Vector3(0.1,-1.0,0.0) );
 */
 ATON.setMainLightDirection = (v)=>{
 

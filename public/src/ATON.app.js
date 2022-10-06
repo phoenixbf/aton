@@ -152,7 +152,10 @@ App.realize = (setup, update)=>{
         App.run( A );
     };
 
-    A.params = new URLSearchParams(window.location.search);
+    A.params = new URLSearchParams( window.location.search );
+    
+    // Base path for this App
+    A.basePath = window.location.href.split('?')[0];
 
     return A;
 };

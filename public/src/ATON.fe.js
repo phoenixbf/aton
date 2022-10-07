@@ -560,10 +560,12 @@ FE.uiAddButtonMainVideoPanoPlayPause = (idcontainer)=>{
 };
 
 /**
-Add QR-code button
+Add QR-code button (hidden on localhost/offline scenarios)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
 FE.uiAddButtonQR = (idcontainer)=>{
+    if (ATON.Utils.isLocalhost()) return;
+
     FE.uiAddButton(idcontainer,"qr", FE.popupQR, "QR-code" );
 };
 

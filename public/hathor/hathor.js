@@ -249,7 +249,8 @@ HATHOR.buildUIProfiles = ()=>{
         ATON.FE.uiSwitchButton("scene", ATON.SceneHub._bEdit);
 
         //ATON.FE.uiAddButtonNav("idTopToolbar");
-        ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
+        if (!ATON.Utils.isLocalhost()) ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
+        
         ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
         ATON.FE.uiAddButtonVR("idTopToolbar");
         //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");

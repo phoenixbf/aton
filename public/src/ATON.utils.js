@@ -70,6 +70,13 @@ Utils.isConnectionSecure = ()=>{
     return window.isSecureContext;
 }
 
+Utils.isLocalhost = ()=>{
+    if (window.location.origin.includes('localhost')) return true;
+    if (window.location.origin.includes('127.0.0.1')) return true;
+
+    return false;
+};
+
 // Utility
 Utils.showBVHbounds = (level)=>{
     if (level > 0) Utils._bvhBounds = level;

@@ -264,6 +264,7 @@ XR.onSessionStarted = ( session )=>{
     XR._bReqPresenting = false;
 
 	session.addEventListener( 'end', XR.onSessionEnded );
+    session.isImmersive = true;
 
     console.log(XR._sessionType + " session started.");
 
@@ -288,20 +289,24 @@ XR.onSessionStarted = ( session )=>{
 
             XR.setupSceneForAR();
 
-            // Controller
-            XR.controller0 = ATON._renderer.xr.getController(0);
+            // Mobile AR
+            let c0 = ATON._renderer.xr.getController(0);
+            if (c0 && ATON.device.isMobile){
+                XR.controller0 = ATON._renderer.xr.getController(0);
 
-            XR.controller0.addEventListener('selectstart', ()=>{
-                //if (XR._handleUISelection()) return;
-                ATON.fireEvent("XRselectStart", XR.HAND_R);
-                
-                console.log("Head-aligned select");
-            });
-            XR.controller0.addEventListener('selectend', ()=>{ 
-                ATON.fireEvent("XRselectEnd", XR.HAND_R);
-            });
+                XR.controller0.addEventListener('selectstart', ()=>{
+                    //if (XR._handleUISelection()) return;
+                    ATON.fireEvent("XRselectStart", XR.HAND_R);
+                    
+                    console.log("Head-aligned select");
+                });
+                XR.controller0.addEventListener('selectend', ()=>{ 
+                    ATON.fireEvent("XRselectEnd", XR.HAND_R);
+                });
 
-            XR.gControllers.add( XR.controller0 );
+                XR.gControllers.add( XR.controller0 );
+            }
+
 /*
             XR._bPresenting = true;
             ATON.Nav._bInteracting = false;
@@ -414,7 +419,11 @@ XR.onSessionEnded = ( /*event*/ )=>{
     XR._bPresenting = false;
     ATON.Nav._bInteracting = false;
 
-    XR.resetSceneOffsets();
+    if (XR._sessionType === "immersive-ar"){
+        XR.resetSceneOffsets();
+
+        if (ATON._mMainPano) ATON._mMainPano.visible = true;
+    }
 
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );

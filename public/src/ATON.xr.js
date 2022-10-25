@@ -287,7 +287,7 @@ XR.onSessionStarted = ( session )=>{
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;
 
-            XR.setupSceneForAR();
+            //XR.setupSceneForAR();
 
             // Mobile AR
             let c0 = ATON._renderer.xr.getController(0);
@@ -420,7 +420,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
     ATON.Nav._bInteracting = false;
 
     if (XR._sessionType === "immersive-ar"){
-        XR.resetSceneOffsets();
+        //XR.resetSceneOffsets();
 
         if (ATON._mMainPano) ATON._mMainPano.visible = true;
     }

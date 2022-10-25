@@ -436,6 +436,16 @@ MediaFlow.startScreenRecording = ()=>{
     });
 };
 
+MediaFlow.stopScreenRecording = ()=>{
+    if (!MediaFlow._bScreenRec) return;
+
+    MediaFlow._vrec.stop();
+    MediaFlow._bVideoStream  = false;
+    MediaFlow._bScreenStream = false;
+
+    console.log("Stop screen recording");
+};
+
 MediaFlow.startScreenStreaming = ()=>{
     navigator.mediaDevices.getDisplayMedia( MediaFlow._cScreenStream )
     .then((stream)=>{

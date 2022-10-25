@@ -1072,15 +1072,17 @@ FE.popupScreenShot = ()=>{
 
     FE.checkAuth((r)=>{
 
-        let htmlcontent = "<div class='atonPopupTitle'>Screenshot</div>";
+        let htmlcontent = "<div class='atonPopupTitle'>Capture</div>";
         htmlcontent += "This is a preview of what your screenshot will look like:<br><br>";
         htmlcontent += "<img src='"+cover.src+"'><br>";
         htmlcontent += "Resolution: <input id='isShotSize' type='number' min='100' max='4000' value='256'>px<br>";
 
-        htmlcontent += "<div class='atonBTN' id='btnScreenShot' style='width:90%'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>SHOT</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-horizontal' id='btnScreenShot'><img src='"+FE.PATH_RES_ICONS+"sshot.png'>Screenshot</div>";
+
+        htmlcontent += "<div class='atonBTN atonBTN-horizontal' id='btnScreenRec'><img src='"+FE.PATH_RES_ICONS+"recscreen.png'>Record video</div>";
 
         if (r.username !== undefined){
-            htmlcontent += "<div class='atonBTN atonBTN-green' id='btnSetCover' style='width:90%'>Set as Cover</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='btnSetCover'>Set as Cover</div>";
             /*
             htmlcontent += "<div class='atonBTN' id='btnSetCover' style='width:220px; height:220px; padding:5px'>";
             htmlcontent += "<img src='"+cover.src+"'><br>";
@@ -1090,6 +1092,9 @@ FE.popupScreenShot = ()=>{
 
         if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
+        if (ATON.MediaFlow._bScreenRec) $("#btnScreenRec").addClass("atonBTN-rec");
+        else $("#btnScreenRec").removeClass("atonBTN-rec");
+
         $("#btnScreenShot").click(()=>{
             let s = parseInt( $('#isShotSize').val() );
             if (s < 100) return;
@@ -1097,6 +1102,13 @@ FE.popupScreenShot = ()=>{
             ATON.FE.popupClose();
 
             let img = ATON.Utils.takeScreenshot(s,"shot.png");
+        });
+
+        $("#btnScreenRec").click(()=>{
+            if (!ATON.MediaFlow._bScreenRec) ATON.MediaFlow.startScreenRecording();
+            //else 
+
+            ATON.FE.popupClose();
         });
 
         $("#btnSetCover").click(()=>{

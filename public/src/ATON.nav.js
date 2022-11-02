@@ -733,29 +733,22 @@ Nav._deltaMotions = ()=>{
 // Retrieve currPOV from camera and controls
 Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
-        
-        ATON.XR._cam = ATON._renderer.xr.getCamera(Nav._camera);
-        //console.log(ATON.XR._cam);
+/*
+        if (XR._sessionType !== "immersive-ar"){
+            Nav._currPOV.pos.copy(ATON.XR.controller1pos);
+            Nav._vDir.copy(ATON.XR.controller1dir);
+        }
+        else {
+*/
+            ATON.XR._cam = ATON._renderer.xr.getCamera(Nav._camera);
+            //console.log(ATON.XR._cam);
 
-        ATON.XR._cam.getWorldPosition( Nav._currPOV.pos );
-        ATON.XR._cam.getWorldQuaternion( Nav._qOri );
-        ATON.XR._cam.getWorldDirection( Nav._vDir );
+            ATON.XR._cam.getWorldPosition( Nav._currPOV.pos );
+            ATON.XR._cam.getWorldQuaternion( Nav._qOri );
+            ATON.XR._cam.getWorldDirection( Nav._vDir );
+//        }
 
         Nav._deltaMotions();
-
-        //Nav._currPOV.pos.copy(ATON.XR._cam.position);
-        //Nav._qOri.copy(ATON.XR._cam.quaternion);
-
-        //console.log(Nav._hmdPos);
-
-        //ATON.XR.hmdPos.copy(Nav._currPOV.pos);
-        //ATON.XR.hmdDir.copy(Nav._vDir);
-        
-        //ATON._renderer.xr.getCamera(Nav._camera);
-        //ATON._renderer.xr.getCamera(Nav._camera).getWorldDirection(Nav._vDir);
-        //Nav._camera.getWorldDirection(Nav._vDir);
-        
-        //Nav._currPOV.pos.copy(Nav._camera.position);
         return;
     }
 
@@ -950,9 +943,10 @@ Request transition to viewpoint (POV)
 @example
 ATON.Nav.requestPOV( myTargetPOV );
 */
-Nav.requestPOV = (pov, duration)=>{
+Nav.requestPOV = (pov, duration, bApplyWorldScale)=>{
     if (ATON._tPOVcall >= 0.0) return; // already requested
     if (pov === undefined) return;
+    if (ATON.XR._bPresenting && ATON.XR._sessionType === "immersive-ar") return;
 
     if (duration !== undefined) Nav.POVtransitionDuration = duration;
     else Nav.POVtransitionDuration = Nav.STD_POV_TRANS_DURATION;
@@ -977,21 +971,23 @@ Nav.requestPOV = (pov, duration)=>{
     }
 
     // World/User Scale
-    if (pov.pos){
-        Nav._reqPOV.pos.x *= ATON._worldScale;
-        Nav._reqPOV.pos.y *= ATON._worldScale;
-        Nav._reqPOV.pos.z *= ATON._worldScale;
+    if (bApplyWorldScale){
+        if (pov.pos){
+            Nav._reqPOV.pos.x *= ATON._worldScale;
+            Nav._reqPOV.pos.y *= ATON._worldScale;
+            Nav._reqPOV.pos.z *= ATON._worldScale;
 
-        if (ATON.XR.isPresenting()){
-            ATON.XR._reqPos.x *= ATON._worldScale;
-            ATON.XR._reqPos.y *= ATON._worldScale;
-            ATON.XR._reqPos.z *= ATON._worldScale;
+            if (ATON.XR.isPresenting()){
+                ATON.XR._reqPos.x *= ATON._worldScale;
+                ATON.XR._reqPos.y *= ATON._worldScale;
+                ATON.XR._reqPos.z *= ATON._worldScale;
+            }
         }
-    }
-    if (pov.target){
-        Nav._reqPOV.target.x *= ATON._worldScale;
-        Nav._reqPOV.target.y *= ATON._worldScale;
-        Nav._reqPOV.target.z *= ATON._worldScale;
+        if (pov.target){
+            Nav._reqPOV.target.x *= ATON._worldScale;
+            Nav._reqPOV.target.y *= ATON._worldScale;
+            Nav._reqPOV.target.z *= ATON._worldScale;
+        }
     }
 
     Nav._tPOVcall = ATON._clock.elapsedTime;

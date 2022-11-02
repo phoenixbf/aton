@@ -811,6 +811,29 @@ ATON.realize = ( bNoRender )=>{
     for (let p in ATON._plugList){
         let P = ATON._plugList[p];
 
+        // Experimental
+        if (P._deps.length > 0){
+            let cc = P._deps.length;
+
+            for (let s in P._deps){
+                let jss = document.createElement("script");
+                jss.src = P._deps[s];
+                document.documentElement.firstChild.appendChild(jss);
+
+                jss.onload = ()=>{
+                    cc--;
+                    if (cc <= 0){
+                        console.log("All deps loaded for plugin!");
+                        
+                        if (P.setup !== undefined)  P.setup();
+                        if (P.update !== undefined) ATON.addUpdateRoutine( P.update );
+                    }
+                }
+            }
+
+            return;
+        }
+
         if (P.setup !== undefined)  P.setup();
         if (P.update !== undefined) ATON.addUpdateRoutine( P.update );
     }

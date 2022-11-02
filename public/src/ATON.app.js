@@ -156,6 +156,7 @@ App.realize = (setup, update)=>{
     
     // Base path for this App
     A.basePath = window.location.href.split('?')[0];
+    A.basePath = A.basePath.split('/')[0];
 
     return A;
 };

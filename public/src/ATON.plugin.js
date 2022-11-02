@@ -20,6 +20,15 @@ class Plugin {
 constructor( setup, update ){
     this.setup  = setup? setup : undefined;
     this.update = update? update : undefined;
+
+    this._deps = [];
+}
+
+// Experimental
+include(path){
+    this._deps.push(path);
+
+    return this;
 }
 
 }

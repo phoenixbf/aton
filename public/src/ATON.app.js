@@ -155,8 +155,7 @@ App.realize = (setup, update)=>{
     A.params = new URLSearchParams( window.location.search );
     
     // Base path for this App
-    A.basePath = window.location.href.split('?')[0];
-    A.basePath = A.basePath.split('/')[0];
+    A.basePath = ATON.Utils.getBaseFolder( window.location.href.split('?')[0] );
 
     return A;
 };

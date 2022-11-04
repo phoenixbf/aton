@@ -185,13 +185,23 @@ realizeStreamPanel(){
     this.mStream = new THREE.Mesh( gStream, vs.matStream /*this._matStream*/ );
     this.mStream.position.y = 1.0;
 
-    this.mStream.scale.x = (16.0 * 0.2);
-    this.mStream.scale.y = -(9.0 * 0.2);
+    let yratio = 0.5625;
+
+    //this.mStream.scale.x = (16.0 * 0.2);
+    //this.mStream.scale.y = -(9.0 * 0.2);
+    this.mStream.scale.y    = -yratio;
+    this.mStream.position.y = 0.8 * yratio;
 
     this._elVStream.addEventListener('loadedmetadata', (e)=>{
+        yratio = this._elVStream.videoHeight / this._elVStream.videoWidth;
+/*
         this.mStream.scale.x    = 0.01 * this._elVStream.videoWidth;
         this.mStream.scale.y    = -0.01 * this._elVStream.videoHeight;
         this.mStream.position.y = 0.006 * this._elVStream.videoHeight;
+*/
+        this.mStream.scale.y    = -yratio;
+        this.mStream.position.y = 0.8 * yratio;
+
     });
 
     // canvas

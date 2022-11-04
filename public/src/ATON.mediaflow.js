@@ -75,7 +75,7 @@ MediaFlow.init = ()=>{
             width: { max: 640 },
             height: { max: 360 },
             //aspectRatio: { ideal: 1.7777777778 },
-            framerate: 25
+            framerate: 15
         }
         //audio: { channelCount: 1 }
     };
@@ -91,7 +91,7 @@ MediaFlow.init = ()=>{
     // Options
     MediaFlow._oStream = {
         audioBitsPerSecond : 9000,
-        //videoBitsPerSecond: 100000
+        videoBitsPerSecond: 500000
         //bitsPerSecond: ,
     };
 

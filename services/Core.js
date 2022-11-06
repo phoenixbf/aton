@@ -128,11 +128,11 @@ Core.CONF_MAIN = {
 		maat: {
 			PORT: 8891
 		},
-/*
-		atonizer: {
-			PORT: 8085,
-			address: "http://localhost"
-		}
+
+/*		Custom node modules (found in /config/modules/)
+		custom_modules:[
+			"myCustomModule.js"
+		]
 */
 	},
 

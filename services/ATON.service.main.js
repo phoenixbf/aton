@@ -195,7 +195,7 @@ if (CONF.services.custom_modules){
 	for (let m in MM){
 		let mname = MM[m];
 
-		Core.custMods[mname] = require(Core.DIR_CUST_MODS + mname + ".js");
+		Core.custMods[mname] = require(Core.DIR_CUST_MODS + mname);
 		if (Core.custMods[mname].init) Core.custMods[mname].init(app);
 	}
 

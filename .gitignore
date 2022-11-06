@@ -70,7 +70,7 @@ typings/
 /services/sessions
 /sessions
 
-# Custom ATON configurations
+# Custom ATON instance config
 /config
 
 # API doc

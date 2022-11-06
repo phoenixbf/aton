@@ -129,6 +129,10 @@ ATON.SCALE_VERYSMALL = -10;
 // Plugins
 ATON._plugList = [];
 
+// Resource mappers
+ATON._resMappers = [];
+
+
 /**
 Set path collection (3D models, audio, panoramas, ...)
 @param {string} path - path
@@ -145,6 +149,23 @@ Set path scenes
 ATON.setPathScenes = (path)=>{
     ATON.PATH_SCENES = /*window.location.origin +*/ path;
 };
+
+/**
+Add custom resource mapper
+@param {function} sh - routine mapping/translating a resource url, returning undefined if not handled
+@example
+ATON.addResourceMapper((url)=>{
+    if (url.startsWith("http://myservice/")){
+        return "http://.../asset.gltf";
+    }
+
+    return undefined;
+})
+*/
+ATON.addResourceMapper = ( sh )=>{
+    ATON._resMappers.push(sh);
+};
+
 
 // For resuming suspended audio/video streams
 ATON._onUserInteraction = ()=>{

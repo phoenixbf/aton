@@ -256,6 +256,16 @@ Utils.tryLoadFromService = (url, N)=>{
         return true;
     }
 
+    // Custom
+    for (let s in ATON._resMappers){
+        let murl = ATON._resMappers[s](url);
+
+        if ( murl !== undefined){
+            N.load(murl);
+            return true;
+        }
+    }
+
     return false;
 };
 

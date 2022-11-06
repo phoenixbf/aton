@@ -190,6 +190,18 @@ app.use('/dav', createProxyMiddleware({
 }));
 */
 
+if (CONF.services.custom_modules){
+	let MM = CONF.services.custom_modules;
+	for (let m in MM){
+		let mname = MM[m];
+
+		Core.custMods[mname] = require(Core.DIR_CUST_MODS + mname + ".js");
+		if (Core.custMods[mname].init) Core.custMods[mname].init(app);
+	}
+
+	//console.log(Core.custMods);
+}
+
 // START
 //==================================
 http.createServer(app).listen(PORT, ()=>{

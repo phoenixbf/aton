@@ -22,6 +22,6 @@ APP.update = ()=>{
 */
 
 // Run the App
-window.onload = ()=>{
+window.addEventListener('load', ()=>{
 	APP.run();
 };

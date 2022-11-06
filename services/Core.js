@@ -42,6 +42,8 @@ Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_RES          = path.join(Core.DIR_PUBLIC,"res/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
 Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
+Core.DIR_CUST_MODS    = path.join(Core.DIR_CONFIG,"modules/");
+Core.DIR_CUST_CERTS   = path.join(Core.DIR_CONFIG,"certs/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
 //Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
 Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
@@ -82,6 +84,9 @@ Core.logGreen = (str)=>{
 Core.logYellow = (str)=>{
 	console.log(chalk.yellow(str));
 };
+
+// Custom modules
+Core.custMods = {};
 
 // Configs
 //========================================
@@ -267,13 +272,13 @@ Core.getCertPath = ()=>{
 	let cpath = Core.config.services.main.pathCert;
 	
 	if (cpath && cpath.length>4) return cpath;
-	return path.join(Core.DIR_PRV,'server.crt');
+	return path.join(Core.DIR_CUST_CERTS,'server.crt');
 };
 Core.getKeyPath = ()=>{
 	let cpath = Core.config.services.main.pathKey;
 
 	if (cpath && cpath.length>4) return cpath;
-	return path.join(Core.DIR_PRV,'server.key');
+	return path.join(Core.DIR_CUST_CERTS,'server.key');
 };
 
 

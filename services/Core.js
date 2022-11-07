@@ -59,8 +59,8 @@ Core.STATUS_COMPLETE   = "complete";
 Core.STATUS_PROCESSING = "processing";
 
 
-Core.config = undefined; // main config
-Core.users  = [];        // users config
+Core.config  = undefined; // main config
+Core.users   = [];        // users config
 
 Core.SCENES_GLOB_OPTS = {
 	cwd: Core.DIR_SCENES,
@@ -87,6 +87,16 @@ Core.logYellow = (str)=>{
 
 // Custom modules
 Core.custMods = {};
+
+// Custom scripts
+Core.FEScripts = [];
+
+Core.populateFEScripts = ()=>{
+
+	if (Core.config.hathor){
+		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
+	}
+};
 
 // Configs
 //========================================
@@ -214,6 +224,8 @@ Core.init = ()=>{
 	}
 
 	Core.maat.init();
+
+	Core.populateFEScripts();
 };
 
 Core.loadConfigFile = (jsonfile, defconf)=>{

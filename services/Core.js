@@ -112,6 +112,8 @@ Core.populateFEScripts = ()=>{
 		
 		let P = JSON.parse(fs.readFileSync(pp, 'utf8'));
 		for (let s in P.files) Core.FEScripts.push( "/"+ base +"/"+ P.files[s] );
+
+		if (P.respatterns && P.respatterns.length>2) Core.mpattern += ","+P.respatterns;
 	}
 
 	console.log("PLUGINS found:");

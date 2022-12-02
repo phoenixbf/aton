@@ -82,8 +82,8 @@ MediaFlow.init = ()=>{
 
     MediaFlow._cCamStream = {
         video: {
-            width: { max: 256 },
-            height: { max: 256 }
+            width: { max: 512 },
+            height: { max: 512 }
         }
         //audio: { channelCount: 1 }
     };

@@ -28,7 +28,7 @@
 * Complex scene-graph manipulation, hierarchical culling, instancing, composition and cascading transformations
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
 * Multi-temporal (4D) visualization
-* Dynamic and customizable recommendation systems
+* Easily extensible through *plug&play* apps architecture and plugins
 
 The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and support for remote/immersive visual analytics.
 

@@ -19,10 +19,28 @@ h4 {
 h4.name {
     background-color: #555 !important;
     border-radius: 5px;
+    text-shadow: 0px 0px 4px #000000;
+
+    box-shadow: 0px 0px 6px black !important;
+    border: 0px !important;
+}
+
+nav h2 {
+    font-weight: bold;
+}
+
+nav li {
+    padding: 3px;
+    border-radius: 5px;
+}
+
+nav li:hover {
+    background-color: rgba(100, 0, 100, 0.1) !important;
+    font-weight: bold;
 }
 
 .container-overview {
-    background-color: #DDD !important;
+    background-color: rgba(100,0,100, 0.1) !important;
 }
 
 

@@ -12,6 +12,13 @@ body {
     scrollbar-color: #FFF #333;
 }
 
+.page-title {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+
+    padding: 20px;
+    border-radius: 15px;
+}
+
 h4 {
     font-weight: bold;
 }
@@ -36,7 +43,6 @@ nav li {
 
 nav li:hover {
     background-color: rgba(100, 0, 100, 0.1) !important;
-    font-weight: bold;
 }
 
 .container-overview {

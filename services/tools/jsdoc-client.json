@@ -28,8 +28,8 @@
     "docdash": {
         "search": true,
         "collapse": true,
-        "commonNav": true,
-        "scripts": [],
+        "_commonNav": true,
+        "scripts": ["../../res/css/docdash.css"],
         "menu": {
             "Official Website": {
                 "href":"http://osiris.itabc.cnr.it/aton",

@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'AFont';
+    font-style: normal;
+    src: url(../fonts/TitilliumWeb-Regular.ttf);
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+body {
+    font-family: "AFont";
+
+    scrollbar-width: thin;
+    scrollbar-color: #FFF #333;
+}
+
+h4 {
+    font-weight: bold;
+}
+
+h4.name {
+    background-color: #555 !important;
+    border-radius: 5px;
+}
+
+.container-overview {
+    background-color: #DDD !important;
+}
+
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+*::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-left: 0px solid #000;
+    border-radius: 4px;
+}
+*::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 4px;
+    box-shadow: 0px 0px 2px black;
+}
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #000;
+    box-shadow: 0px 0px 4px rgba(0,0,0, 0.9);
+}
+
+input[type="text"]{
+    -webkit-appearance: none;
+    outline: none;
+
+    border: 2px solid gray;
+    line-height: 12px;
+    vertical-align: middle;
+    margin: 5px;
+
+    height: 32px;
+    border-radius: 5px;
+
+    background: #DDD;
+}
+input[type="text"]:hover {
+    border: 2px solid black;
+    box-shadow: 0px 0px 10px black;
+}

@@ -22,7 +22,7 @@ import POV from "./ATON.pov.js";
 //import Period from "./ATON.period.js";
 import LightProbe from "./ATON.lightprobe.js";
 import XPF from "./ATON.xpf.js";
-import Plugin from "./ATON.plugin.js";
+import Flare from "./ATON.flare.js";
 
 import EventHub from "./ATON.eventhub.js";
 import MatHub from "./ATON.mathub.js";
@@ -50,7 +50,7 @@ ATON.Node       = Node;
 ATON.POV        = POV;
 ATON.LightProbe = LightProbe;
 ATON.XPF        = XPF;
-ATON.Plugin     = Plugin;
+ATON.Flare      = Flare;
 //ATON.Period = Period;
 
 // NS
@@ -126,8 +126,8 @@ ATON.SCALE_VERYSMALL = -10;
 
 
 
-// Plugins
-ATON._plugList = [];
+// Flares (plugins)
+ATON._flares = [];
 
 // Resource mappers
 ATON._resMappers = [];
@@ -829,8 +829,8 @@ ATON.realize = ( bNoRender )=>{
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
     // Plugins
-    for (let p in ATON._plugList){
-        let P = ATON._plugList[p];
+    for (let p in ATON._flares){
+        let P = ATON._flares[p];
 
         // Experimental
         if (P._deps.length > 0){
@@ -866,10 +866,16 @@ ATON.realize = ( bNoRender )=>{
     ATON.focusOn3DView();
 };
 
-ATON.registerPlugin = (P)=>{
+/**
+Add (register) globally a flare (ATON plugin)
+@param {Flare} P - The flare object
+*/
+ATON.addFlare = (P)=>{
     if (P === undefined) return;
-    ATON._plugList.push(P);
+    ATON._flares.push(P);
 };
+
+ATON.registerFlare = ATON.addFlare;
 
 /**
 Set ATON collection path modifier

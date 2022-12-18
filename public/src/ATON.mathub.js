@@ -314,18 +314,18 @@ MatHub.addDefaults = ()=>{
         //flatShading: false
     });
 
-/*
+
     let texPoint = new THREE.TextureLoader().load( ATON.PATH_RES+"point-mask.png");
     texPoint.generateMipmaps = false;
     //texPoint.premultiplyAlpha = true;
-    texPoint.magFilter = THREE.NearestFilter;
-    texPoint.minFilter = THREE.NearestFilter;
-    texPoint.alphaTest = 0.9;
-*/
+    //texPoint.magFilter = THREE.NearestFilter;
+    //texPoint.minFilter = THREE.NearestFilter;
+
     MatHub.materials.point = new THREE.PointsMaterial({
         vertexColors: true,
         
-        //alphaMap: texPoint,
+        alphaMap: texPoint,
+        alphaTest: 0.5,
         
         depthTest: true,
         transparent: false,
@@ -334,11 +334,12 @@ MatHub.addDefaults = ()=>{
         //depthWrite: false, 
         //opacity: 0.3,
 
-        //size: 2.0,
-        //sizeAttenuation: false,
-
-        size: 0.005,
+        size: 4.0,
+        sizeAttenuation: false,
+/*
+        size: 0.5,
         sizeAttenuation: true
+*/
     });
 
     MatHub.materials.chromakey = new THREE.ShaderMaterial({

@@ -51,7 +51,7 @@ Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
 Core.DIR_COLLECTIONS  = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
 Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
-Core.DIR_PLUGINS      = path.join(Core.DIR_PUBLIC,"custom/plugins/");
+Core.DIR_FLARES       = path.join(Core.DIR_PUBLIC,"custom/flares/");
 Core.STD_SCENEFILE    = "scene.json";
 Core.STD_PUBFILE      = "pub.txt";
 Core.STD_COVERFILE    = "cover.png";
@@ -99,13 +99,14 @@ Core.populateFEScripts = ()=>{
 		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
 	}
 
-	if (!fs.existsSync(Core.DIR_PLUGINS)) return;
+	if (!fs.existsSync(Core.DIR_FLARES)) return;
 	
 	let O    = {};
 	O.cwd    = Core.DIR_PUBLIC;
 	O.follow = true;
 
-	let plugins = fg.sync("**/plugin.json", O);
+	// Collcet all flares
+	let plugins = fg.sync("**/flare.json", O);
 	for (let f in plugins){
 		let base = path.dirname(plugins[f]);
 		let pp = Core.DIR_PUBLIC + plugins[f];
@@ -116,7 +117,7 @@ Core.populateFEScripts = ()=>{
 		if (P.respatterns && P.respatterns.length>2) Core.mpattern += ","+P.respatterns;
 	}
 
-	console.log("PLUGINS found:");
+	console.log("Flares (plugins) found:");
 	console.log(Core.FEScripts);
 };
 

@@ -1106,9 +1106,11 @@ Nav.computeAndRequestDefaultHome = (duration, dv, sceneBS)=>{
 Request home viewpoint
 @param {number} duration - transition duration
 */
-Nav.requestHome = (duration)=>{
+Nav.requestHomePOV = (duration)=>{
     Nav.requestPOV(Nav.homePOV, duration);
 };
+
+Nav.requestHome = Nav.requestHomePOV;
 
 /** 
 Set and request home viewpoint

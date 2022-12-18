@@ -88,6 +88,7 @@
     "session-file-store": "^1.5.0",
     "sharp": "^0.31.2",
     "socket.io": "^4.5.4",
+    "taffydb": "^2.7.3",
     "three": "0.147.0",
     "three-custom-shader-material": "^4.0.0",
     "three-mesh-bvh": "0.5.19",

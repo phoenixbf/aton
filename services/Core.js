@@ -219,7 +219,9 @@ Core.init = ()=>{
 	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
-	Core.mpattern = "*.gltf,*.glb,*.json";
+	// 3D models base formats
+	Core.mpattern = "*.gltf,*.glb,*.json"; //,*.ifc";
+
 	if (Core.config.data && Core.config.data.patterns && Core.config.data.patterns.models){
 		Core.mpattern = Core.config.data.patterns.models;
 		console.log("Custom models pattern: "+Core.mpattern);

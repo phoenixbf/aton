@@ -584,16 +584,18 @@ SUI.clearMeasurements = ()=>{
 
 SUI._updateMeasurements = ()=>{
     if (SUI._measLabels.length <= 0) return;
-
+/*
     const eye = ATON.Nav.getCurrentEyeLocation();
     let v  = new THREE.Vector3();
     let dn = new THREE.Vector3();
     let op = new THREE.Vector3();
-
-    // Orientation based on segment - TODO: improve
+*/
     for (let ml in SUI._measLabels){
         let L = SUI._measLabels[ml];
-        
+        L.orientToCamera();
+
+        // Orientation based on segment - TODO: improve
+/*    
         let A = L.userData.vStart;
         let B = L.userData.vEnd;
         let D = L.userData.vSEdir;
@@ -608,13 +610,13 @@ SUI._updateMeasurements = ()=>{
         );
 
         L.lookAt(op);
-
-        //L.orientToCamera();
+*/
     }
-
+/*
     v = null;
     dn = null;
     op = null;
+*/
 };
 
 // Main update routine

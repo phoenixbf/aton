@@ -70,7 +70,7 @@ import * as TILES from '3d-tiles-renderer';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
-//import { IFCLoader } from "web-ifc-three/IFCLoader";
+////import { IFCLoader } from "web-ifc-three/IFCLoader";
 
 
 // Add the extension functions
@@ -102,10 +102,10 @@ THREE.GLTFLoader         = GLTFLoader;
 THREE.GLTFExporter       = GLTFExporter;
 THREE.OBJExporter        = OBJExporter;
 THREE.DRACOLoader        = DRACOLoader;
-//THREE.IFCLoader          = IFCLoader;
 //THREE.BasisTextureLoader = BasisTextureLoader;
 THREE.KTX2Loader         = KTX2Loader;
 THREE.USDZExporter       = USDZExporter;
+//THREE.IFCLoader          = IFCLoader;
 
 ///THREE.FirstPersonControls = FirstPersonControls;
 

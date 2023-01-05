@@ -641,22 +641,22 @@ load(url, onComplete){
     }
 
     // IFC
-    if ( ext === "ifc" ){
+    if ( ext === "ifc" && ATON._ifcLoader!==undefined ){
         // TODO:
-/*
+
         ATON._ifcLoader.load(url, (ifcmodel)=>{
             N.add( ifcmodel );
 
             ATON._bqScene = true;
 
-            //ATON.Utils.modelVisitor(N, ifcmodel);
+            ATON.Utils.modelVisitor(N, ifcmodel);
 
             if (N.bPickable) N.enablePicking();
             N.dirtyBound();
 
             if (onComplete) onComplete();
         });
-*/
+
         return N;
     }
 

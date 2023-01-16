@@ -1282,7 +1282,7 @@ FE.popupUser = ()=>{
             let htmlcontent = "<img src='"+FE.PATH_RES_ICONS+"user.png'><br>";
             htmlcontent += "<b>'"+r.username+"'</b><br><br>";
 
-            if (Object.keys(FE._uiProfiles)){
+            if (Object.keys(FE._uiProfiles).length > 0){
                 htmlcontent += "UI Profile:<br><div class='select' style='width:150px;'><select id='idUIProfiles'>";
 
                 for (let uip in FE._uiProfiles){

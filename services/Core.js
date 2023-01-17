@@ -254,7 +254,7 @@ Core.init = ()=>{
 };
 
 Core.loadConfigFile = (jsonfile, defconf)=>{
-	let customconfig  = path.join(Core.DIR_CONFIG + jsonfile);
+	let customconfig  = path.join(Core.DIR_CONFIG,jsonfile);
 
 	if (fs.existsSync(customconfig)){
 		let C = JSON.parse(fs.readFileSync(customconfig, 'utf8'));
@@ -328,7 +328,7 @@ Core.createNewUser = (entry)=>{
 	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
 	Core.users.push(entry);
 	
-	let uconfig = path.join(Core.DIR_CONFIG + "users.json");
+	let uconfig = path.join(Core.DIR_CONFIG,"users.json");
 	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
 	Core.touchCollectionFolder(entry);
@@ -349,7 +349,7 @@ Core.deleteUser = (username)=>{
 		if (Core.users[u].username === username){
 			Core.users.splice(u,1);
 
-			let uconfig = path.join(Core.DIR_CONFIG + "users.json");
+			let uconfig = path.join(Core.DIR_CONFIG,"users.json");
 			fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
 			return true;

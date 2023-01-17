@@ -157,6 +157,7 @@ Maat.scanCollection = (uid)=>{
 
 	Maat.scanModels(uid);
 	Maat.scanPanoramas(uid);
+	Maat.scanMedia(uid);
 
 	Maat.needScan.collections[uid] = false;
 
@@ -204,6 +205,19 @@ Maat.scanPanoramas = (uid)=>{
 
 	CC[uid].panos = [];
 	for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
+};
+
+Maat.scanMedia = (uid)=>{
+	let CC = Maat.db.collections;
+
+	if (CC[uid] === undefined) CC[uid] = {};
+
+	let files = fg.sync("{"+uid+",samples}/media/**/{*.jpg,*.png,*.mp4,*.webm,*.wav,*.mp3}", Core.COLLECTIONS_GLOB_OPTS);
+
+	if (files.length < 1) return;
+
+	CC[uid].media = [];
+	for (let f in files) CC[uid].media.push( files[f] );
 };
 
 // TODO
@@ -290,6 +304,15 @@ Maat.getUserPanoramas = (uid)=>{
 	if (CC[uid] === undefined) return [];
 
 	return CC[uid].panos;
+};
+
+Maat.getUserMedia = (uid)=>{
+	Maat.scanCollection(uid);
+
+	let CC = Maat.db.collections;
+	if (CC[uid] === undefined) return [];
+
+	return CC[uid].media;
 };
 
 Maat.getScenesKeywords = ()=>{

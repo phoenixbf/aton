@@ -531,6 +531,27 @@ app.get("/api/c/panoramas/", (req,res,next)=>{
 	//next();
 });
 
+/**
+	* @api {get} /api/c/media	List media files
+	* @apiGroup Collections
+	* @apiPermission user
+
+	* @apiDescription Retrieve all media (images, videos, audio) owned by currently authenticated user. Paths are relative to the local ATON collection
+	* @apiSuccess {Array} list List of media
+*/
+app.get("/api/c/media/", (req,res,next)=>{
+	if (req.user === undefined){
+		res.send([]);
+		return;
+	}
+
+	let uname = req.user.username;
+
+	res.send( Core.maat.getUserMedia(uname) );
+
+	//next();
+});
+
 
 //=========================================================
 // Web-apps

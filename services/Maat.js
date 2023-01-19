@@ -155,9 +155,14 @@ Maat.scanScenes = ()=>{
 Maat.scanCollection = (uid)=>{
 	if (Maat.needScan.collections[uid] === false) return;
 
+	//const t0 = performance.now();
+
 	Maat.scanModels(uid);
 	Maat.scanPanoramas(uid);
 	Maat.scanMedia(uid);
+
+	//const t1 = performance.now();
+	//console.log(`${t1 - t0} milliseconds.`);
 
 	Maat.needScan.collections[uid] = false;
 
@@ -180,9 +185,8 @@ Maat.scanModels = (uid)=>{
 	//let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
 	let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
 
-	if (files.length < 1) return;
-
 	CC[uid].models = [];
+	if (files.length < 1) return;
 
 	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 };
@@ -201,9 +205,9 @@ Maat.scanPanoramas = (uid)=>{
 	//let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
 	let files = fg.sync("{"+uid+",samples}/pano/**/{*.jpg,*.hdr,*.exr,*.mp4,*.webm}", Core.COLLECTIONS_GLOB_OPTS);
 
+	CC[uid].panos = [];
 	if (files.length < 1) return;
 
-	CC[uid].panos = [];
 	for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
 };
 
@@ -214,9 +218,9 @@ Maat.scanMedia = (uid)=>{
 
 	let files = fg.sync("{"+uid+",samples}/media/**/{*.jpg,*.png,*.mp4,*.webm,*.wav,*.mp3}", Core.COLLECTIONS_GLOB_OPTS);
 
+	CC[uid].media = [];
 	if (files.length < 1) return;
 
-	CC[uid].media = [];
 	for (let f in files) CC[uid].media.push( files[f] );
 };
 
@@ -329,6 +333,8 @@ Maat.getStats = ()=>{
 	R.users  = 0;
 	R.models = 0;
 	R.panos  = 0;
+	R.media  = 0;
+
 	R.kwords = Maat.db.kwords;
 
 	R.scenes = Maat.db.scenes.length;
@@ -337,14 +343,16 @@ Maat.getStats = ()=>{
 		Maat.scanCollection(u);
 		
 		R.users++;
-
+		
 		let U = Maat.db.collections[u];
+		//console.log(U.panos)
 
 		R.models += U.models.length;
 		R.panos  += U.panos.length;
+		R.media  += U.media.length;
 	}
 
-	console.log(R);
+	//console.log(R);
 	return R;
 };
 

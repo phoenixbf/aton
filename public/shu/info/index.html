@@ -66,6 +66,14 @@ let renderForm = ()=>{
             htmlcontent += "</div>";
         }
 
+        if (data.media){
+            htmlcontent += "<div class='atonGalleryItem' style='width:200px; height:200px; background-color: rgba(0,0,0, 0.2)'>";
+            htmlcontent += "<div class='atonBlockSubTitle'>Media files</div><br>";
+            htmlcontent += "<img src='"+ATON.PATH_RES+"icons/media.png'><br>";
+            htmlcontent += "<h2 >"+data.media+"</h2>";
+            htmlcontent += "</div>";
+        }
+
         if (data.kwords){
             htmlcontent += "<br><br>";
             htmlcontent += "<div class='atonGalleryItem'>";

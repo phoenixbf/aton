@@ -339,17 +339,20 @@ Maat.getStats = ()=>{
 
 	R.scenes = Maat.db.scenes.length;
 	
-	for (let u in Maat.db.users){
+	for (let i in Maat.db.users){
+		let u = Maat.db.users[i].username;
+
+		R.users++;
+
 		Maat.scanCollection(u);
 		
-		R.users++;
+		let U = Maat.db.collections[u];	
 		
-		let U = Maat.db.collections[u];
-		//console.log(U.panos)
-
-		R.models += U.models.length;
-		R.panos  += U.panos.length;
-		R.media  += U.media.length;
+		if (U){
+			R.models += U.models.length;
+			R.panos  += U.panos.length;
+			R.media  += U.media.length;
+		}
 	}
 
 	//console.log(R);

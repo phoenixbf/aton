@@ -85,7 +85,7 @@ let renderForm = ()=>{
                 f = 1.0 + (f * 0.1);
                 if (f > 2.0) f = 2.0;
 
-                htmlcontent += "<span class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;'>"+k+" <b>("+w+")</b></span>";
+                htmlcontent += "<a class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' href='/?q="+k+"'>"+k+" <b>("+w+")</b></a>";
             }
             htmlcontent += "</div>";
         }

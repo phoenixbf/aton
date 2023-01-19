@@ -40,6 +40,8 @@ Maat.init = ()=>{
 	Maat.db.kwords      = {};
 	Maat.db.collections = {};
 
+	Maat.db.stats = {};
+
 	//Maat.scanScenes();
 
 /*
@@ -326,37 +328,35 @@ Maat.getScenesKeywords = ()=>{
 };
 
 Maat.getStats = ()=>{
-	let R = {};
-
 	Maat.scanScenes();
 
-	R.users  = 0;
-	R.models = 0;
-	R.panos  = 0;
-	R.media  = 0;
+	Maat.db.stats.users  = 0;
+	Maat.db.stats.models = 0;
+	Maat.db.stats.panos  = 0;
+	Maat.db.stats.media  = 0;
 
-	R.kwords = Maat.db.kwords;
+	Maat.db.stats.kwords = Maat.db.kwords;
 
-	R.scenes = Maat.db.scenes.length;
+	Maat.db.stats.scenes = Maat.db.scenes.length;
 	
 	for (let i in Maat.db.users){
 		let u = Maat.db.users[i].username;
 
-		R.users++;
+		Maat.db.stats.users++;
 
 		Maat.scanCollection(u);
 		
 		let U = Maat.db.collections[u];	
 		
 		if (U){
-			R.models += U.models.length;
-			R.panos  += U.panos.length;
-			R.media  += U.media.length;
+			Maat.db.stats.models += U.models.length;
+			Maat.db.stats.panos  += U.panos.length;
+			Maat.db.stats.media  += U.media.length;
 		}
 	}
 
-	//console.log(R);
-	return R;
+	//console.log(Maat.db.stats);
+	return Maat.db.stats;
 };
 
 module.exports = Maat;

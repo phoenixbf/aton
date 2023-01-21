@@ -146,7 +146,7 @@ Maat.scanScenes = ()=>{
 
 	Maat.needScan.scenes = false;
 
-	//console.log(Maat.db.kwords);
+	console.log(Maat.db.kwords);
 
 	setTimeout(()=>{
 		Maat.needScan.scenes = true;
@@ -174,6 +174,8 @@ Maat.scanApps = ()=>{
 			icon: fs.existsSync(appicon)? true : false
 		});
 	}
+
+	Maat.needScan.apps = false;
 
 	setTimeout(()=>{
 		Maat.needScan.apps = true;
@@ -372,9 +374,8 @@ Maat.getStats = ()=>{
 	Maat.db.stats.media     = 0;
 	Maat.db.stats.apps      = 0;
 	
-	Maat.db.stats.kwords = Maat.db.kwords;
-	
 	Maat.scanScenes();
+	Maat.db.stats.kwords = Maat.db.kwords;
 	Maat.db.stats.scenesTot = Maat.db.scenes.length;
 	for (let x in Maat.db.scenes) if (Maat.db.scenes[x].public) Maat.db.stats.scenesPub++;
 

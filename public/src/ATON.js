@@ -151,6 +151,21 @@ ATON.setPathScenes = (path)=>{
 };
 
 /**
+Configure ATON paths and resources to run as standalone (no NodeJS).
+See public/standalone/
+@param {string} rootpath - (optional) root path
+*/
+ATON.setAsStandalone = (rootpath)=>{
+
+    if (!rootpath) rootpath = "../";
+
+    // Configure local paths
+    ATON.PATH_DRACO_LIB = rootpath + "dist/draco/";
+    ATON.PATH_BASIS_LIB = rootpath + "dist/basis/";
+    ATON.PATH_RES       = rootpath + "res/";
+};
+
+/**
 Add custom resource mapper
 @param {function} sh - routine mapping/translating a resource url, returning undefined if not handled
 @example

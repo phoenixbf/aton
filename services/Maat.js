@@ -27,6 +27,7 @@ Maat.init = ()=>{
 	Maat.needScan.scenes      = true;
 	Maat.needScan.collections = {};
 	Maat.needScan.users       = true;
+	Maat.needScan.apps        = true;
 	//Maat.needScan.models = {};
 	//Maat.needScan.panos  = {}
 
@@ -152,6 +153,33 @@ Maat.scanScenes = ()=>{
 	}, Maat.INTERVAL);
 };
 
+Maat.scanApps = ()=>{
+	if (Maat.needScan.apps === false) return;
+
+	Maat.db.apps = [];
+
+	let O    = {};
+	O.cwd    = Core.DIR_WAPPS;
+	O.follow = true;
+
+	console.log("Scanning web-apps...");
+
+	let files = fg.sync("*/app.webmanifest", O); // index.html
+	for (let f in files){
+		let wid = path.dirname(files[f]);
+		let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
+
+		Maat.db.apps.push({
+			wappid: wid,
+			icon: fs.existsSync(appicon)? true : false
+		});
+	}
+
+	setTimeout(()=>{
+		Maat.needScan.apps = true;
+	}, Maat.INTERVAL);
+};
+
 
 // Collections
 Maat.scanCollection = (uid)=>{
@@ -188,6 +216,8 @@ Maat.scanModels = (uid)=>{
 	let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
 
 	CC[uid].models = [];
+	Maat.db.stats.models += files.length;
+
 	if (files.length < 1) return;
 
 	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
@@ -242,7 +272,12 @@ Maat.getUsers = ()=>{
 	return Maat.db.users;
 };
 
+// Apps
+Maat.getApps = ()=>{
+	Maat.scanApps();
 
+	return Maat.db.apps;
+};
 
 // Scenes
 Maat.getAllScenes = ()=>{
@@ -328,16 +363,23 @@ Maat.getScenesKeywords = ()=>{
 };
 
 Maat.getStats = ()=>{
-	Maat.scanScenes();
-
-	Maat.db.stats.users  = 0;
-	Maat.db.stats.models = 0;
-	Maat.db.stats.panos  = 0;
-	Maat.db.stats.media  = 0;
-
+	
+	Maat.db.stats.scenesTot = 0;
+	Maat.db.stats.scenesPub = 0;
+	Maat.db.stats.users     = 0;
+	Maat.db.stats.models    = 0;
+	Maat.db.stats.panos     = 0;
+	Maat.db.stats.media     = 0;
+	Maat.db.stats.apps      = 0;
+	
 	Maat.db.stats.kwords = Maat.db.kwords;
+	
+	Maat.scanScenes();
+	Maat.db.stats.scenesTot = Maat.db.scenes.length;
+	for (let x in Maat.db.scenes) if (Maat.db.scenes[x].public) Maat.db.stats.scenesPub++;
 
-	Maat.db.stats.scenes = Maat.db.scenes.length;
+	Maat.scanApps();
+	Maat.db.stats.apps = Maat.db.apps.length;
 	
 	for (let i in Maat.db.users){
 		let u = Maat.db.users[i].username;

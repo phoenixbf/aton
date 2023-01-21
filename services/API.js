@@ -120,11 +120,7 @@ app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
 	* @apiSuccess {Array} list scenes object list
 */
 app.get("/api/scenes/", function(req,res,next){
-/*
-	Core.maatQuery("scenes/public", (R)=>{
-		res.send(R);
-	});
-*/
+
 	res.send( Core.maat.getPublicScenes() );
 
 	//next();
@@ -470,13 +466,14 @@ app.get("/api/scenes/own/", (req,res,next)=>{
 		res.send([]);
 		return;
 	}
-
-	let uname = req.user.username;
 /*
-	Core.maatQuery("scenes/byuser/"+uname, (R)=>{
-		res.send(R);
-	});
+	if (req.user.admin){
+		res.send( Core.maat.getAllScenes() );
+		return;
+	}
 */
+	let uname = req.user.username;
+
 	res.send( Core.maat.getUserScenes(uname) );
 
 	//next();
@@ -566,22 +563,7 @@ app.get("/api/c/media/", (req,res,next)=>{
 	* @apiSuccess {Array} list List of web-apps
 */
 app.get("/api/wapps/", (req,res,next)=>{
-	let O = {};
-	O.cwd = Core.DIR_WAPPS;
-	O.follow = true;
-
-	let wapps = [];
-
-	let files = fg.sync("*/app.webmanifest", O); // index.html
-	for (let f in files){
-		let wid = path.dirname(files[f]);
-		let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
-
-		wapps.push({
-			wappid: wid,
-			icon: fs.existsSync(appicon)? true : false
-		});
-	}
+	let wapps = Core.maat.getApps();
 
 	res.send(wapps);
 });

@@ -1763,6 +1763,19 @@ label {
     backdrop-filter: blur(6px);
 }
 
+.shuStatNum {
+    font-size: large;
+    font-weight: bold;
+    display: block;
+    margin: 5px;
+}
+
+.shuStatNumSmall {
+    font-size: medium;
+    display: block;
+    margin: 5px;
+}
+
 .atonTitle {
     display: block;
     position: relative;

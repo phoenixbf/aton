@@ -218,7 +218,6 @@ Maat.scanModels = (uid)=>{
 	let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
 
 	CC[uid].models = [];
-	Maat.db.stats.models += files.length;
 
 	if (files.length < 1) return;
 

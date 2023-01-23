@@ -221,8 +221,8 @@ Maat.scanModels = (uid)=>{
 
 	if (files.length < 1) return;
 
-	// TODO: improve filtering
-	files = Maat.filterTSets(files);
+	// TODO: improve filtering perf.
+	//files = Maat.filterTSets(files);
 
 	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 };

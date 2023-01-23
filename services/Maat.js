@@ -220,7 +220,19 @@ Maat.scanModels = (uid)=>{
 	CC[uid].models = [];
 
 	if (files.length < 1) return;
+/*
+	files.sort();
+	//console.log(files)
 
+	// Filter TSets
+	for (let f in files){
+		let fpath = files[f];
+		if (fpath.endsWith(".json")){
+			let base = path.dirname(fpath);
+			//console.log(base)
+		}
+	}
+*/
 	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 };
 

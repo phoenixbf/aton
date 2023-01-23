@@ -664,7 +664,7 @@ app.get('/api/logout', (req, res)=>{
 	* @apiDescription Retrieve currently authenticated user information (object)
 */
 app.get("/api/user", (req,res)=>{
-	console.log(req.session);
+	//console.log(req.session);
 
 	let U = Core.createClientUserAuthResponse(req);
 

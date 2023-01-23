@@ -220,19 +220,10 @@ Maat.scanModels = (uid)=>{
 	CC[uid].models = [];
 
 	if (files.length < 1) return;
-/*
-	files.sort();
-	//console.log(files)
 
-	// Filter TSets
-	for (let f in files){
-		let fpath = files[f];
-		if (fpath.endsWith(".json")){
-			let base = path.dirname(fpath);
-			//console.log(base)
-		}
-	}
-*/
+	// TODO: improve filtering
+	files = Maat.filterTSets(files);
+
 	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 };
 
@@ -267,6 +258,43 @@ Maat.scanMedia = (uid)=>{
 	if (files.length < 1) return;
 
 	for (let f in files) CC[uid].media.push( files[f] );
+};
+
+// TODO: improve filter alg
+Maat.filterTSets = ( files )=>{
+	let its = [];
+	let B   = {};
+
+	for (let s in files){
+		let fpath = files[s];
+
+		if (fpath.endsWith(".json")){
+			//console.log(fpath)
+
+			B[fpath] = path.dirname(fpath);
+		}
+	}
+
+	//console.log(B)
+
+	for (let k in B){
+		let base1 = B[k];
+		
+		for (let j in B){
+			let base2 = B[j];
+
+			if (base1!==base2 && base1.startsWith(base2)){
+				//console.log(base1+" << "+base2)
+
+				files = files.filter((e)=>{
+					return (e !== k);
+				});
+			}
+		}
+	}
+
+	//console.log(files)
+	return files;
 };
 
 // TODO

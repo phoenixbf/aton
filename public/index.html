@@ -26,7 +26,9 @@
 
 <script>
 let urlParams = new URLSearchParams(window.location.search);
-let query = urlParams.get('q');
+let query      = urlParams.get('q');
+let bg         = urlParams.get('bg');
+//let viewparams = urlParams.get('h');
 
 let openSID = ()=>{
     let sid = $("#sid").val();
@@ -70,6 +72,14 @@ let searchByTerm = (searchTerm)=>{
 let onLandingData = (data)=>{
     let htmlcontent = "";
 
+    // Custom bg color
+    if (bg){
+        $("body").css({
+            "background-color":"rgba("+bg+")",
+            "background-image":"none"
+        });
+    }
+
     if (query){
         htmlcontent += "<div class='atonBlockTitle'>"+query+"</div><br>";
         htmlcontent += "<div id='idPubGallery'></div>";
@@ -80,7 +90,7 @@ let onLandingData = (data)=>{
 
         SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
             searchByTerm( query );
-        });
+        }/*, viewparams*/);
 
         return;
     }

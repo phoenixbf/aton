@@ -118,7 +118,7 @@ SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput, onData)=>{
     });
 };
 
-SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
+SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, viewparams)=>{
     let htmlcontent = "";
 
     let coversizex = 250;
@@ -159,6 +159,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete)=>{
                 htmlcontent += "<div style='width:"+coversizex+"px; height:"+coversizey+"px; position:absolute; top:0; left:0'>";
                 htmlcontent += "<div class='atonBlockSubTitle'>"+title+"</div><br>";
                 
+                if (viewparams) sid += "?"+viewparams;
+
                 htmlcontent += "<a class='atonCover' href='/s/"+sid+"'>";
                 htmlcontent += "<img src='"+urlCover+"' style='width:200px; height:auto'>";
                 htmlcontent += "</a>";

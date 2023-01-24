@@ -33,6 +33,8 @@ HATHOR.init = (sid)=>{
     HATHOR.paramProf  = ATON.FE.urlParams.get('pr');
     HATHOR.paramRLOG  = ATON.FE.urlParams.get('rlog');
     HATHOR.paramUIP   = ATON.FE.urlParams.get('uip');
+    HATHOR.paramUIL   = ATON.FE.urlParams.get('uil');
+    HATHOR.paramBack  = ATON.FE.urlParams.get('back');
 
     if (HATHOR.paramRLOG){
         console.log   = ATON.VRoadcast.log;
@@ -221,6 +223,8 @@ HATHOR.uiAddButtonTaskCancel = (idcontainer)=>{
 HATHOR.uiBase = ()=>{
     $("#idTopToolbar").html(""); // clear
 
+    if (HATHOR.paramBack) ATON.FE.uiAddButtonBack("idTopToolbar");
+
     if (HATHOR.paramVRC) ATON.FE.uiAddButtonVRC("idTopToolbar");
     ATON.FE.uiAddButtonUser("idTopToolbar");
 
@@ -232,6 +236,47 @@ HATHOR.uiAddBaseSem = ()=>{
     HATHOR.uiAddButtonAnnSphere("idTopToolbar");
     HATHOR.uiAddButtonAnnConvex("idTopToolbar");
     HATHOR.uiAddButtonTaskCancel("idTopToolbar");
+};
+
+// Custom UI button list
+HATHOR.customUIList = (list)=>{
+    $("#idTopToolbar").html(""); // clear
+
+    if (HATHOR.paramBack) ATON.FE.uiAddButtonBack("idTopToolbar");
+
+    for (let i in list){
+        let uiname = list[i];
+
+        if (uiname === "nav") ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
+        
+        if (uiname === "vr") ATON.FE.uiAddButtonVR("idTopToolbar");
+        if (uiname === "ar") ATON.FE.uiAddButtonVR("idTopToolbar");
+        if (uiname === "xr") ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
+
+        if (uiname === "qr") ATON.FE.uiAddButtonQR("idTopToolbar");
+        if (uiname === "share" && !ATON.Utils.isLocalhost()) ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
+        
+        if (uiname === "fs") ATON.FE.uiAddButtonFullScreen("idTopToolbar");
+        if (uiname === "measure") ATON.FE.uiAddButton("idTopToolbar", "measure", ()=>{
+            if (HATHOR._selMode !== HATHOR.SELACTION_MEASURE){
+                HATHOR.setSelectionMode(HATHOR.SELACTION_MEASURE);
+            }
+            else {
+                HATHOR.resetSelectionMode();
+            }
+        }, "Measure");
+
+        if (uiname === "layers") ATON.FE.uiAddButton("idTopToolbar", "list", HATHOR.popupGraphs, "Scene Layers");
+        if (uiname === "scene") ATON.FE.uiAddButton("idTopToolbar", "scene", HATHOR.popupScene, "Scene" );
+        if (uiname === "env") ATON.FE.uiAddButton("idTopToolbar","light", HATHOR.popupEnvironment, "Environment");
+
+        if (uiname === "collab") ATON.FE.uiAddButtonVRC("idTopToolbar");
+        if (uiname === "user") ATON.FE.uiAddButtonUser("idTopToolbar");
+
+        if (uiname === "capture") ATON.FE.uiAddButtonScreenshot("idTopToolbar");
+
+        if (uiname === "help") ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
+    }
 };
 
 // Create UI Profiles
@@ -253,7 +298,7 @@ HATHOR.buildUIProfiles = ()=>{
         
         ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
         ATON.FE.uiAddButtonVR("idTopToolbar");
-        //ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+        //ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
@@ -317,6 +362,7 @@ HATHOR.buildUIProfiles = ()=>{
     // Expo
     ATON.FE.uiAddProfile("expo", ()=>{
         $("#idTopToolbar").html(""); // clear
+        if (HATHOR.paramBack) ATON.FE.uiAddButtonBack("idTopToolbar");
 
         ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
@@ -329,6 +375,7 @@ HATHOR.buildUIProfiles = ()=>{
     // XR
     ATON.FE.uiAddProfile("xr", ()=>{
         $("#idTopToolbar").html(""); // clear
+        if (HATHOR.paramBack) ATON.FE.uiAddButtonBack("idTopToolbar");
 
         ATON.FE.uiSetEditMode(false, "idTopToolbar");
 
@@ -342,6 +389,7 @@ HATHOR.buildUIProfiles = ()=>{
 /*
     ATON.FE.uiAddProfile("collaborate", ()=>{
         $("#idTopToolbar").html(""); // clear
+        if (HATHOR.paramBack) ATON.FE.uiAddButtonBack("idTopToolbar");
 
         ATON.FE.uiAddButtonVRC("idTopToolbar");
         ATON.FE.uiAddButtonUser("idTopToolbar");
@@ -375,6 +423,11 @@ HATHOR.uiSetup = ()=>{
 
     if (HATHOR.paramUIP) ATON.FE.uiLoadProfile(HATHOR.paramUIP);
     else ATON.FE.uiLoadProfile("default");
+
+    if (HATHOR.paramUIL){
+        let uil = HATHOR.paramUIL.split(",");
+        HATHOR.customUIList(uil);
+    }
   
     // Bottom toolbar
     //$("#idBottomToolbar").append("<input id='idSearch' type='text' maxlength='15' size='15'><br>");
@@ -1645,23 +1698,29 @@ HATHOR.popupGraphs = ()=>{
 
     htmlcontent += "<div>";
     
-    let dBlock = "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; min-width:150px;'>";
+    let dBlock = "<div style='display:inline-block; text-align:left; margin:10px; vertical-align:top; min-width:150px;'>";
 
     // Scene
     htmlcontent += dBlock;
-    htmlcontent += "<div style='text-align:center'><b>STANDARD</b></div><br>";
+    //htmlcontent += "<div style='text-align:center'><b>STANDARD</b></div><br>";
     htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SCENE);
     //htmlcontent += "<div id='idNewNID' class='atonBTN atonBTN-green atonBTN-horizontal'>NEW</div>";
     htmlcontent += "</div>";
 
     // Semantics
+    let semchk = ATON._rootSem.visible? "checked" : "";
+    htmlcontent += dBlock;
+    //htmlcontent += "<div style='text-align:center'><b>SEMANTIC</b></div><br>";
+    htmlcontent += "<input type='checkbox' "+semchk+" id='idToggleSem'>Semantic Annotations";
+    htmlcontent += "</div>";
+/*
     if (Object.keys(ATON.semnodes).length > 1){
         htmlcontent += dBlock;
         htmlcontent += "<div style='text-align:center'><b>SEMANTIC</b></div><br>";
         htmlcontent += ATON.FE.uiCreateGraph(ATON.NTYPES.SEM);
         htmlcontent += "</div>";
     }
-
+*/
     // Measurements
     if (ATON.SUI.gMeasures.children.length > 0){
         let chk = ATON.SUI.gMeasures.visible? "checked" : "";
@@ -1673,6 +1732,10 @@ HATHOR.popupGraphs = ()=>{
     }
 
     if ( !ATON.FE.popupShow(htmlcontent /*,"atonPopupLarge"*/) ) return;
+
+    $("#idToggleSem").click(()=>{
+        ATON._rootSem.toggle();
+    });
 
     $("#btnClearMeas").click(()=>{
         ATON.SUI.clearMeasurements();
@@ -2439,6 +2502,28 @@ HATHOR.popupSceneDelete = ()=>{
     $('#btnDELno').click(()=>{
         ATON.FE.popupClose();
     });
+};
+
+HATHOR.popupXR = ()=>{
+    if (!ATON.Utils.isConnectionSecure()) return;
+    
+    let htmlcontent = "<div class='atonPopupTitle'>XR</div>";
+
+    if (ATON.Utils.isVRsupported()){
+        htmlcontent +="<div style='display:inline-block;margin:14px'>";
+        htmlcontent +="<div style='display:inline-block;' id='idVRx'></div>";
+        htmlcontent +="<br>Immersive VR";
+        htmlcontent += "</div>";
+    }
+
+    htmlcontent +="<div style='display:inline-block;margin:14px'>";
+    htmlcontent +="<div style='display:inline-block;' id='idARx'></div>";
+    htmlcontent +="<br>Augmented/Mixed Reality</div>";
+
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    ATON.FE.uiAddButtonVR("idVRx");
+    ATON.FE.uiAddButtonAR("idARx");
 };
 
 HATHOR.popupNav = ()=>{

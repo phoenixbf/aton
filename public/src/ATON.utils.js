@@ -20,7 +20,7 @@ Utils.init = ()=>{
     ATON.device = {};
 
     //Utils.geomUnitSphere = new THREE.SphereBufferGeometry( 1.0, 16, 16 );
-    Utils.geomUnitSphere = new THREE.SphereGeometry( 1.0, 16, 16 );
+    Utils.geomUnitSphere = new THREE.SphereGeometry( 1.0, 32, 32 );
     Utils.geomUnitCube   = new THREE.BoxGeometry();
 
     // Export/Download utils

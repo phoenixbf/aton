@@ -397,6 +397,18 @@ FE.uiAddButtonHome = (idcontainer)=>{
 };
 
 /**
+Add back button
+@param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
+@param {string} url - (optional) url
+*/
+FE.uiAddButtonBack = (idcontainer, url)=>{
+    FE.uiAddButton(idcontainer, "back", ()=>{ 
+        if (url && url.length > 1 && url.startsWith("http:")) ATON.Utils.goToURL(url);
+        else history.back();
+    }, "Go Back");
+};
+
+/**
 Add first-person button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */

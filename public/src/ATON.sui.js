@@ -181,12 +181,12 @@ SUI.initSelector = ()=>{
     SUI.mainSelector = ATON.createUINode();
     SUI._mSelectorSphere = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") );
     SUI._mSelectorSphere.renderOrder = 100;
-
+/*
     let mSelBorder = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("outline"));
     mSelBorder.scale.set(SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS);
     mSelBorder.renderOrder = 100;
-
     SUI.mainSelector.add( mSelBorder );
+*/
     SUI.mainSelector.add( SUI._mSelectorSphere );
     SUI.mainSelector.disablePicking();
 

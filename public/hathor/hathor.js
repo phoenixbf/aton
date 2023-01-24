@@ -33,7 +33,7 @@ HATHOR.init = (sid)=>{
     HATHOR.paramProf  = ATON.FE.urlParams.get('pr');
     HATHOR.paramRLOG  = ATON.FE.urlParams.get('rlog');
     HATHOR.paramUIP   = ATON.FE.urlParams.get('uip');
-    HATHOR.paramUIL   = ATON.FE.urlParams.get('uil');
+    HATHOR.paramTB    = ATON.FE.urlParams.get('tb');
     HATHOR.paramBack  = ATON.FE.urlParams.get('back');
 
     if (HATHOR.paramRLOG){
@@ -247,6 +247,8 @@ HATHOR.customUIList = (list)=>{
     for (let i in list){
         let uiname = list[i];
 
+        if (uiname === "back") ATON.FE.uiAddButtonBack("idTopToolbar");
+
         if (uiname === "nav") ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
         
         if (uiname === "vr") ATON.FE.uiAddButtonVR("idTopToolbar");
@@ -424,9 +426,9 @@ HATHOR.uiSetup = ()=>{
     if (HATHOR.paramUIP) ATON.FE.uiLoadProfile(HATHOR.paramUIP);
     else ATON.FE.uiLoadProfile("default");
 
-    if (HATHOR.paramUIL){
-        let uil = HATHOR.paramUIL.split(",");
-        HATHOR.customUIList(uil);
+    if (HATHOR.paramTB){
+        let tb = HATHOR.paramTB.split(",");
+        HATHOR.customUIList(tb);
     }
   
     // Bottom toolbar

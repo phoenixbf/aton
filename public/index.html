@@ -35,6 +35,12 @@ let opts = {
     view: {}
 };
 
+let ohide = {}
+if (hide){
+    hide = hide.split(",");
+    for (let i in hide) ohide[ hide[i] ] = 1;
+}
+
 if (tb) opts.view.tb = tb;
 
 let openSID = ()=>{
@@ -88,14 +94,14 @@ let onLandingData = (data)=>{
     }
 
     if (query){
-        if (!hide || !hide.includes("term")) htmlcontent += "<div id='gTitle' class='atonBlockTitle'>"+query+"</div><br>";
+        if ( !ohide["term"] ) htmlcontent += "<div id='gTitle' class='atonBlockTitle'>"+query+"</div><br>";
         htmlcontent += "<div id='idPubGallery'></div>";
 
         htmlcontent += "<br><br>";
 
         $("#idMainContent").html(htmlcontent);
 
-        if (hide && hide.includes("authors")) opts.hideAuthors = true;
+        if (ohide["authors"]) opts.hideAuthors = true;
 
         SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
             searchByTerm( query );

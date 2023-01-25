@@ -118,13 +118,19 @@ SHU.createScenesInputList = (idlist, onkeyenter, onkeyinput, onData)=>{
     });
 };
 
-SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, viewparams)=>{
+SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
     let htmlcontent = "";
 
     let coversizex = 250;
     let coversizey = 320;
 
     if (bSamples === undefined) bSamples = true;
+
+    let viewparams = undefined;
+    if (opts && opts.view){
+        viewparams = "";
+        for (let p in opts.view) viewparams += p +"="+ opts.view[p]+"&";
+    }
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         data.sort( SHU.sidCompare );
@@ -166,9 +172,12 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, viewparams)=>{
                 htmlcontent += "</a>";
 
                 // user
-                if (user === "samples") htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/samples.png'>samples</div>";
-                else htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>"+user+"</div>";
-                //htmlcontent += htskw;
+                if (!opts || !opts.hideAuthors){
+                    if (user === "samples") htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/samples.png'>samples</div>";
+                    else htmlcontent += "<br><div class='atonAuthor'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/user.png'>"+user+"</div>";
+                    //htmlcontent += htskw;
+                }
+
                 htmlcontent += "</div>";
                 
                 htmlcontent += "</div>";

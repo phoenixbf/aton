@@ -26,9 +26,16 @@
 
 <script>
 let urlParams = new URLSearchParams(window.location.search);
-let query      = urlParams.get('q');
-let bg         = urlParams.get('bg');
-//let viewparams = urlParams.get('h');
+let query  = urlParams.get('q');
+let bg     = urlParams.get('bg');
+let hide   = urlParams.get('hide');
+let tb     = urlParams.get('tb');
+
+let opts = {
+    view: {}
+};
+
+if (tb) opts.view.tb = tb;
 
 let openSID = ()=>{
     let sid = $("#sid").val();
@@ -81,16 +88,18 @@ let onLandingData = (data)=>{
     }
 
     if (query){
-        htmlcontent += "<div class='atonBlockTitle'>"+query+"</div><br>";
+        if (!hide || !hide.includes("term")) htmlcontent += "<div id='gTitle' class='atonBlockTitle'>"+query+"</div><br>";
         htmlcontent += "<div id='idPubGallery'></div>";
 
         htmlcontent += "<br><br>";
 
         $("#idMainContent").html(htmlcontent);
 
+        if (hide && hide.includes("authors")) opts.hideAuthors = true;
+
         SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
             searchByTerm( query );
-        }/*, viewparams*/);
+        }, opts );
 
         return;
     }

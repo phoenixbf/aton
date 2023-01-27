@@ -486,6 +486,7 @@ Nav.setOrbitControl = ()=>{
 
     Nav._mode = Nav.MODE_ORBIT;
     Nav._bInteracting = false;
+    ATON.fireEvent("NavInteraction", false);
 
     // One-time setup
     if (Nav._cOrbit === undefined){
@@ -515,9 +516,11 @@ Nav.setOrbitControl = ()=>{
         //C.addEventListener("change", () => { Nav._bChanged = true; });
         C.addEventListener("start",()=>{
             Nav._bInteracting = true;
+            ATON.fireEvent("NavInteraction", true);
         });
         C.addEventListener("end",()=>{
             Nav._bInteracting = false;
+            ATON.fireEvent("NavInteraction", false);
         });
 
     }
@@ -554,6 +557,7 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
+    ATON.fireEvent("NavInteraction", false);
 
     // One-time setup
     if (Nav._cFirstPerson === undefined){
@@ -627,6 +631,7 @@ Nav.setDeviceOrientationControl = ()=>{
 
     Nav._mode = Nav.MODE_DEVORI;
     Nav._bInteracting = false;
+    ATON.fireEvent("NavInteraction", false);
     ATON._screenPointerCoords.set(0.0,0.0);
 
     // One-time setup

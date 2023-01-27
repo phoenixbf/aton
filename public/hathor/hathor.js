@@ -1015,6 +1015,20 @@ HATHOR.setupEventHandlers = ()=>{
         $("#btn-playpause").show();
     });
 
+    // Show/Hide UI on nav interaction
+    ATON.on("NavInteraction", b =>{
+        if (b){
+            $("#idTopToolbar").hide();
+            $("#idBottomToolbar").hide();
+            $("#idBottomRToolbar").hide();
+        }
+        else {
+            $("#idTopToolbar").show();
+            $("#idBottomToolbar").show();
+            $("#idBottomRToolbar").show();
+        }
+    });
+
     //ATON.on("frame", HATHOR._update);
     //setInterval(HATHOR._update, 100);
 };

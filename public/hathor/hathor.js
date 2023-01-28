@@ -1023,9 +1023,9 @@ HATHOR.setupEventHandlers = ()=>{
             $("#idBottomRToolbar").hide();
         }
         else {
-            $("#idTopToolbar").show();
-            $("#idBottomToolbar").show();
-            $("#idBottomRToolbar").show();
+            $("#idTopToolbar").fadeIn();
+            $("#idBottomToolbar").fadeIn();
+            $("#idBottomRToolbar").fadeIn();
         }
     });
 

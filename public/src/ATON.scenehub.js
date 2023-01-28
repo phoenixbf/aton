@@ -109,6 +109,9 @@ SceneHub.clearSemantics = ()=>{
     }
 
     if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.removeChildren();
+
+    ATON.SemFactory.stopCurrentConvex();
+    ATON.SemFactory.init();
 };
 
 // Clears everything

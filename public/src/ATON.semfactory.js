@@ -15,11 +15,11 @@ let SemFactory = {};
 SemFactory.FLOAT_PREC = 5;
 
 SemFactory.init = ()=>{
-    SemFactory.bConvexBuilding = false;
-    SemFactory.convexPoints = [];
-    //SemFactory.convexMeshes = [];
-    SemFactory.convexNode   = undefined; // keeps track of current convex semnode
-    SemFactory.currConvexMesh = undefined;
+    SemFactory.bConvexBuilding  = false;
+    SemFactory.convexPoints    = [];
+    //SemFactory.convexMeshes  = [];
+    SemFactory.convexNode      = undefined; // keeps track of current convex semnode
+    SemFactory.currConvexMesh  = undefined;
     
     // Temp sem node to hold developing convex mesh
     SemFactory.currSemNode = ATON.createSemanticNode();
@@ -134,6 +134,8 @@ SemFactory.undoConvexPoint = ()=>{
 };
 
 SemFactory.stopCurrentConvex = ()=>{
+    if (!SemFactory.bConvexBuilding) return;
+
     SemFactory.convexPoints = [];
     SemFactory.bConvexBuilding = false;
 

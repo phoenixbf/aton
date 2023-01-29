@@ -405,6 +405,10 @@ Maat.getScenesKeywords = ()=>{
 
 Maat.getStats = ()=>{
 	
+	//console.log(Core.config);
+
+	Maat.db.stats.name      = (Core.config && Core.config.name)? Core.config.name : undefined;
+
 	Maat.db.stats.scenesTot = 0;
 	Maat.db.stats.scenesPub = 0;
 	Maat.db.stats.users     = 0;

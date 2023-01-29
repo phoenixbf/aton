@@ -125,6 +125,8 @@ Core.populateFEScripts = ()=>{
 //========================================
 // Default main config
 Core.CONF_MAIN = {
+	name: "", // name (ID) of this istance (star)
+
 	data: {
 /*
 		collections: "",
@@ -174,6 +176,7 @@ Core.CONF_MAIN = {
 		samples: true,		// Show samples (def true)
 		//header: "",		// Custom header HTML5 snippet
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
+		//apps: []			// List of app IDs to show
     }
 };
 

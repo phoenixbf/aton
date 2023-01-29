@@ -33,6 +33,8 @@ let renderForm = ()=>{
 
         console.log(data);
 
+        if (data.name) $("#instName").html("('"+data.name+"')");
+
         htmlcontent += "<div style='text-shadow: 0px 0px 4px black; margin:10px'>";
 
         if (data.users){
@@ -131,7 +133,7 @@ window.addEventListener( 'load', ()=>{
     <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX shuTopToobar"></div>
 
     <div class='shuMainContainer'>
-        <div class="atonTitle">Instance Information</div>
+        <div class="atonTitle">Instance <span id="instName"></span> Information</div>
         <div class="atonBlockGroup" id="idInfoBlock"></div>
     </div>
 

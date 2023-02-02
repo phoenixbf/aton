@@ -43,8 +43,12 @@ SemFactory.setMaterial = (m)=>{
 };
 
 
-// Convex shapes
-// NOTE: if semid exists, add mesh under the same id
+/**
+Add a convex point in a given location for current convex semantic shape.
+A minimum of 4 points are required. Return true if point was successfully added
+@param {THREE.Vector3} p - the point
+@returns {boolean}
+*/
 SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     if (p === undefined) return false;
 
@@ -133,6 +137,9 @@ SemFactory.undoConvexPoint = ()=>{
     }
 };
 
+/**
+Cancel current convex semantic shape, if building one
+*/
 SemFactory.stopCurrentConvex = ()=>{
     if (!SemFactory.bConvexBuilding) return;
 
@@ -143,16 +150,32 @@ SemFactory.stopCurrentConvex = ()=>{
     ATON.SUI.gPoints.removeChildren();
 };
 
+/**
+Get current convex semantic shape
+@returns {Node}
+*/
 SemFactory.getCurrentConvexShape = ()=>{
     return SemFactory.currSemNode;
 };
 
+/**
+Return true if currently building a convex semantic shape
+@returns {boolean}
+*/
 SemFactory.isBuildingShape = ()=>{
     if (SemFactory.convexPoints.length>0) return true;
 
     return false;
 };
 
+/**
+Complete and return the semantic convex shape (if currently building one) providing a semantic-ID.
+NOTE: if semid exists, add mesh under the same semantic id
+@param {string} semid - the semantic ID to assign
+@returns {Node}
+@example
+let S = ATON.SemFactory.completeConvexShape("face")
+*/
 SemFactory.completeConvexShape = (semid)=>{
     SemFactory.convexPoints = [];
     SemFactory.bConvexBuilding = false;
@@ -197,7 +220,15 @@ SemFactory.completeConvexShape = (semid)=>{
 
     return S;
 };
-
+/**
+Create a semantic convex shape providing a semantic-ID and a set of points.
+NOTE: if semid exists, add mesh under the same semantic id
+@param {string} semid - the semantic ID to assign
+@param {string} points - the list of points
+@returns {Node}
+@example
+let S = ATON.SemFactory.createConvexShape("face", points)
+*/
 SemFactory.createConvexShape = (semid, points)=>{
     let geom   = new THREE.ConvexGeometry( points ); // CHECK: it was THREE.ConvexBufferGeometry( points );
     let semesh = new THREE.Mesh( geom, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
@@ -224,6 +255,12 @@ SemFactory.createConvexShape = (semid, points)=>{
     return S;
 };
 
+/**
+Add a convex point for current convex semantic shape on currently picked surface if valid
+A minimum of 4 points are required. Return location
+@param {Number} offset - (optional) the offset as percentage on distance between surface and camera (default: 0.02)
+@returns {THREE.Vector3}
+*/
 SemFactory.addSurfaceConvexPoint = (/*semid,*/ offset)=>{
     if (ATON._queryDataScene === undefined) return false;
 
@@ -244,8 +281,17 @@ SemFactory.addSurfaceConvexPoint = (/*semid,*/ offset)=>{
 };
 
 
-// Spherical semantic shapes
-// NOTE: if semid exists, add mesh under the same id
+/**
+Add a basic (spherical) semantic shape with given location and radius.
+Return the semantic node if successful, otherwise undefined.
+NOTE: if semid exists, add mesh under the same semantic id
+@param {string} semid - the semantic ID to assign
+@param {THREE.Vector3} location - the location (sphere center)
+@param {Number} radius - the radius
+@returns {Node}
+@example
+let S = ATON.SemFactory.createSphere("face", THREE.Vector3(0,0,0), 1.5)
+*/
 SemFactory.createSphere = (semid, location, radius)=>{
     if (location === undefined) return undefined;
     if (radius === undefined) return undefined;
@@ -286,6 +332,16 @@ SemFactory.createSphere = (semid, location, radius)=>{
     return S;
 };
 
+/**
+Add a basic (spherical) semantic shape on currently picked surface if valid.
+This routine uses current location and radius of main ATON selector for the the spherical shape, see SemFactory.createSphere()
+Return the semantic node if successful, otherwise undefined.
+NOTE: if semid exists, add mesh under the same semantic id
+@param {string} semid - the semantic ID to assign
+@returns {Node}
+@example
+let S = ATON.SemFactory.createSurfaceSphere("face")
+*/
 SemFactory.createSurfaceSphere = (semid)=>{
     if (!ATON._queryDataScene) return undefined;
 
@@ -295,6 +351,15 @@ SemFactory.createSurfaceSphere = (semid)=>{
     return SemFactory.createSphere(semid, p,r);
 };
 
+/**
+Delete a semantic node via semantic-ID.
+Note: all shapes under this semid will be deleted.
+Return true on success, otherwise false (e.g. the semantic node does not exist)
+@param {string} semid - the semantic ID to delete
+@returns {boolean}
+@example
+ATON.SemFactory.deleteSemanticNode("face")
+*/
 SemFactory.deleteSemanticNode = (semid)=>{
     let S = ATON.getSemanticNode(semid);
 

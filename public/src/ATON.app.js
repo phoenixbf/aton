@@ -135,12 +135,13 @@ App.getStorage = (id)=>{
 };
 
 /**
-Create an App object 
+Create an App object.
+It also adds a "params" property to access url parameters, and "basePath" for accessing local content (css, configs, etc.)
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
 @returns {object} - web-app object, to be started with run() method
 @example
-ATON.App.realize( mySetupRoutine )
+let A = ATON.App.realize( mySetupRoutine )
 */
 App.realize = (setup, update)=>{
     let A = {};
@@ -160,12 +161,27 @@ App.realize = (setup, update)=>{
     return A;
 };
 
+/**
+Create and run an App.
+See App.realize() method
+@param {function} setup - setup routine
+@param {function} update - update (or tick) routine
+@example
+ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine )
+*/
 App.realizeAndRun = (setup, update)=>{
     let A = App.realize(setup, update);
     App.run(A);
 };
 
-
+/**
+Run the App, typically inside window.addEventListener('load', ...) 
+@param {object} A - the App created via ATON.App.realize()
+@example
+window.addEventListener('load',()=>{
+    A.run()
+});
+*/
 App.run = ( A )=>{
     if (App._bRunning) return;
 

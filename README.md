@@ -16,14 +16,15 @@
 * Spatial UI (3D labels, buttons, etc...) targeting immersive XR sessions
 * Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*
 * 3D semantic annotations including free-form volumetric shapes
-* Fast, real-time 3D queries on visible graph, semantic graph and UI nodes
-* Built-in Front-End ("Hathor") with WYSIWYG rich HTML5 annotation editor
+* Fast, real-time 3D queries on visible and semantic graphs and UI nodes
+* Built-in front-end ("Hathor") with WYSIWYG rich HTML5 annotation editor
 * Built-in profiler (adapt presentation to different devices)
-* Built-in service to access 3D collections and scenes
+* Built-in services to access 3D collections and scenes for multiple users via authentication
+* Built-in export of 3D scene nodes using different formats (gltf/glb, obj, usd,...) right from the browser
 * Event-driven API for fully customizable events (local and synchronous collaborative contexts)
 * 360 panoramas and virtual tours
-* Physically-Based Rendering (PBR) for advanced materials and custom shaders for complex representations
-* Advanced lighting, including IBL and Light Probes
+* Physically-Based Rendering (PBR) for advanced materials and custom shaders for complex representations, including latest extensions
+* Advanced lighting, including IBL and multiple Light Probes
 * Camera/POV transitions, viewpoint handling and custom navigation constraints
 * Complex scene-graph manipulation, hierarchical culling, instancing, composition and cascading transformations
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
@@ -90,5 +91,6 @@ You are more than welcome to contribute to the project by spotting bugs/issues a
 - [ ] Move and refactor 2D user interface routines from ATON.FE into ATON.UI component (2D labels, popup system, input search, etc.)
 - [ ] Rewrite Hathor UI elements using new routines from ATON.UI.*
 - [ ] Improve main landing page (public gallery), port to ejs and provide more customization
+- [ ] New REST API (v2)
 - [ ] Rewrite Shu using ejs
 - [ ] Improve Shu UI (e.g. new scene, galleries) using new routines from ATON.UI

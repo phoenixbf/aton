@@ -252,7 +252,7 @@ HATHOR.customUIList = (list)=>{
         if (uiname === "nav") ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
         
         if (uiname === "vr") ATON.FE.uiAddButtonVR("idTopToolbar");
-        if (uiname === "ar") ATON.FE.uiAddButtonVR("idTopToolbar");
+        if (uiname === "ar") ATON.FE.uiAddButtonAR("idTopToolbar");
         if (uiname === "xr") ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
 
         if (uiname === "qr") ATON.FE.uiAddButtonQR("idTopToolbar");
@@ -1017,15 +1017,17 @@ HATHOR.setupEventHandlers = ()=>{
 
     // Show/Hide UI on nav interaction
     ATON.on("NavInteraction", b =>{
+        if (ATON.FE._bPopup) return;
+
         if (b){
             $("#idTopToolbar").hide();
             $("#idBottomToolbar").hide();
             $("#idBottomRToolbar").hide();
         }
         else {
-            $("#idTopToolbar").fadeIn();
-            $("#idBottomToolbar").fadeIn();
-            $("#idBottomRToolbar").fadeIn();
+            $("#idTopToolbar").show();
+            $("#idBottomToolbar").show();
+            $("#idBottomRToolbar").show();
         }
     });
 

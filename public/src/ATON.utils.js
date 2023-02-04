@@ -188,6 +188,9 @@ Utils.isVideo = ( filepath )=>{
 
     if (ext === "mp4")  return true;
     if (ext === "webm") return true;
+    if (ext === "m3u8") return true;
+
+    return false;
 };
 
 Utils.getBaseFolder = ( filepath )=>{
@@ -757,7 +760,17 @@ Utils.downloadArrayBuffer = ( buffer, filename )=>{
     Utils.downloadBlob( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
 };
 
-// Export ATON node
+/**
+Export a given ATON node.
+Currently supported formats are: gltf/glb, obj or usdz.
+This can be also useful to export specific semantic shapes for reuse in other software tools.
+@param {Node} node - the ATON node to export
+@param {string} filename - the filename including extension (e.g. "myscene.gltf")
+@example
+ATON.Utils.exportNode( ATON.getRootScene(), "scene.gltf");
+ATON.Utils.exportNode( ATON.getRootScene(), "scene.obj");
+ATON.Utils.exportNode( ATON.getRootScene(), "scene.usdz");
+*/
 Utils.exportNode = (node, filename)=>{
     let ext = Utils.getFileExtension(filename);
     if (ext.length < 1) return;

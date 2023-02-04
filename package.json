@@ -93,7 +93,7 @@
     "socket.io": "^4.5.4",
     "three": "0.149.0",
     "three-custom-shader-material": "4.0.0",
-    "three-mesh-bvh": "0.5.22",
+    "three-mesh-bvh": "0.5.23",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

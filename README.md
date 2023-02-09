@@ -36,9 +36,9 @@ The framework also provides a *built-in* front-end and services based on [Node.j
 ## Getting started (quick)
 1) Install [Node.js](https://nodejs.org/) for your operating system.
 
-2) Install or update ATON services (from root folder) by typing:
+2) Install (or update) required modules from main ATON folder by typing:
 ```
-npm update
+npm install
 ```
 
 3) Deploy ATON *main service* on local machine simply using:

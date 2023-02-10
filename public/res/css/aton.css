@@ -376,6 +376,32 @@ canvas:active {
 }
 */
 
+.atonSidePanelHeader {
+    display: block;
+
+    font-weight: bold;
+    font-size: larger;
+
+    text-align: center;
+
+    /*border-bottom: 1px solid white;*/
+    padding: 0px;
+    padding-right: 10px;
+    padding-left: 10px;
+    
+    margin: 0px;
+    margin-bottom: 10px;
+
+    min-height: 50px;
+    line-height: 50px;
+    
+    left: 0px;
+    right: 0px;
+
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
 .atonSidePanelCloseBTN {
     position: absolute;
     left: 8px;
@@ -398,7 +424,7 @@ canvas:active {
     margin: auto;
 */
     width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);
 
     padding: 0px;
     margin: 0px;
@@ -428,6 +454,31 @@ canvas:active {
         float: left;
         width: 50%;
         max-width: 250px;
+
+        margin-right: 10px;
+    }
+}
+
+.atonSidePanelContent iframe {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+    margin-bottom: 10px;
+
+    border-radius: 5px;
+
+    width: 100%;
+    height: 300px;
+}
+
+@media screen and (orientation: portrait) {
+    .atonSidePanelContent iframe {
+        display: inline;
+        float: left;
+        width: 50%;
+        max-width: 300px;
+        min-width: 200px;
 
         margin-right: 10px;
     }

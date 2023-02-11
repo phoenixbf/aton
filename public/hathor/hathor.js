@@ -58,6 +58,8 @@ HATHOR.init = (sid)=>{
 
     HATHOR._actState = HATHOR.SELACTION_STD;
 
+    HATHOR._bSidePanel = false;
+
 /*
     //if (HATHOR.paramEdit) ATON.SceneHub.setEditMode(HATHOR.paramEdit);
     //else ATON.SceneHub.setEditMode(false);
@@ -773,8 +775,14 @@ HATHOR.setupEventHandlers = ()=>{
     });
 */
     ATON.on("Tap", (e)=>{
-        if (HATHOR._actState === HATHOR.SELACTION_STD && ATON._hoveredSemNode){
-            HATHOR.sideSemDescription(ATON._hoveredSemNode);
+/*
+        if (HATHOR._bSidePanel){
+            HATHOR.toggleSideSemPanel(false);
+            return;    
+        }
+*/
+        if (HATHOR._actState === HATHOR.SELACTION_STD){
+            if (ATON._hoveredSemNode) HATHOR.sideSemDescription(ATON._hoveredSemNode);
         }
 
         if (HATHOR._actState === HATHOR.SELACTION_ADDCONVEXPOINT){
@@ -1419,25 +1427,28 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 
 HATHOR.toggleSideSemPanel = (b, content)=>{
     if (b){
-        $("#idSemPanel").show();
+        $("#idSemPanel").show(0); //, ()=>{ HATHOR._bSidePanel = true; });
 
         $("#idTopToolbar").hide();
         $("#idBottomToolbar").hide();
         $("#idBottomRToolbar").hide();
 
         if (content) $("#idSemPanel").html(content);
-        ATON.FE._bPopup   = true;
-        ATON._bPauseQuery = true;
+
+        ATON.FE._bPopup    = true;
+        ATON._bPauseQuery  = true;
+        HATHOR._bSidePanel = true;
     }
     else {
-        $("#idSemPanel").hide();
+        $("#idSemPanel").hide(0); //, ()=>{ HATHOR._bSidePanel = false; });
 
         $("#idTopToolbar").show();
         $("#idBottomToolbar").show();
         $("#idBottomRToolbar").show();
 
-        ATON.FE._bPopup   = false;
-        ATON._bPauseQuery = false;
+        ATON.FE._bPopup    = false;
+        ATON._bPauseQuery  = false;
+        HATHOR._bSidePanel = false;
 
         $("#idSemPanel").html("");
     }
@@ -1445,7 +1456,7 @@ HATHOR.toggleSideSemPanel = (b, content)=>{
 
 HATHOR.sideSemDescription = (semid)=>{
     if (semid === undefined) return;
-    if (ATON.FE._bPopup) return;
+    if (HATHOR._bSidePanel) return;
 
     ATON.FE.playAudioFromSemanticNode(semid);
 
@@ -1453,8 +1464,8 @@ HATHOR.sideSemDescription = (semid)=>{
     if (descr === undefined) return;
 
     let htmlcontent = "<div class='atonSidePanelHeader'>";
-    htmlcontent += "<div class='atonBTN atonBTN-red' style='float:left' onclick='HATHOR.toggleSideSemPanel(false)'><img src='"+ATON.FE.PATH_RES_ICONS+"cancel.png'></div>";
-    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonBTN' style='float:right' id='btnEditSem' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
+    htmlcontent += "<div class='atonSidePanelCloseBTN atonBTN atonBTN-pulseRed' onclick='HATHOR.toggleSideSemPanel(false)'><img src='"+ATON.FE.PATH_RES_ICONS+"cancel.png'></div>";
+    if (ATON.SceneHub._bEdit) htmlcontent += "<div class='atonSidePanelTopRightBTN atonBTN' id='btnEditSem' style='display:none;'><img src='"+ATON.FE.PATH_RES_ICONS+"edit.png'></div>";
     htmlcontent += semid+"</div>";
 
     htmlcontent += "<div class='atonSidePanelContent'>"+descr+"</div>";

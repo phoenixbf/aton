@@ -53,6 +53,21 @@
     }
 }
 
+@keyframes pulseRed {
+    0% {
+        background-color: rgba(0,0,0, 0.25);
+        box-shadow: 0 0px 5px rgba(255,0,0, 0.1);
+    }
+    50% {
+        background-color: rgba(127,0,0, 0.7);
+        box-shadow: 0 0px 5px rgba(255,0,0, 0.8);
+    }
+    100% {
+        background-color: rgba(0,0,0, 0.25);
+        box-shadow: 0 0px 5px rgba(255,0,0, 0.1);
+    }
+}
+
 @keyframes slideFromRight {
     0% {
         transform: translateX(100%);
@@ -323,7 +338,7 @@ canvas:active {
  
     width: 35%;
     /*min-width: 400px;*/
-    max-width: 400px;
+    max-width: 450px;
 
     margin: 0px;
     padding: 10px;
@@ -390,26 +405,40 @@ canvas:active {
     margin: 0px;
     margin-bottom: 10px;
 
-    min-height: 50px;
-    line-height: 50px;
+    min-height: 45px;
+    line-height: 45px;
     
     left: 0px;
     right: 0px;
 
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .atonSidePanelCloseBTN {
     position: absolute;
     left: 8px;
-    top: 50px;
+    top: 8px;
 
     pointer-events: auto;
 }
 
 @media screen and (orientation: portrait) {
     .atonSidePanelCloseBTN {
+        top: 8px;
+    }
+}
+
+.atonSidePanelTopRightBTN {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+
+    pointer-events: auto;
+}
+
+@media screen and (orientation: portrait) {
+    .atonSidePanelTopRightBTN {
         top: 8px;
     }
 }
@@ -474,8 +503,7 @@ canvas:active {
     .atonSidePanelContent iframe {
         display: inline;
         float: left;
-        width: 50%;
-        max-width: 300px;
+        width: 100%;
         min-width: 200px;
 
         margin-right: 10px;
@@ -879,6 +907,12 @@ canvas:active {
 
 .atonBTN-rec {
     animation-name: pulseRec;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.atonBTN-pulseRed {
+    animation-name: pulseRed;
     animation-duration: 2s;
     animation-iteration-count: infinite;
 }

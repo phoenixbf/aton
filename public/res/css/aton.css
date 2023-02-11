@@ -327,8 +327,22 @@ canvas:active {
     -webkit-overflow-scrolling: touch;
 }
 
-.atonSidePanelContainer {
+.atonSidePanelBG {
+    position: fixed;
     z-index: 101;
+
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+
+    /*background-color: rgba(0,0,0,0.5);*/
+
+    margin: 0px;
+    padding: 0px;
+}
+
+.atonSidePanelContainer {
+    z-index: 130;
 	position: absolute;
 
     box-sizing: border-box;

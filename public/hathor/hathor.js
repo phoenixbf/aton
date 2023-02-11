@@ -452,6 +452,8 @@ HATHOR.uiSetup = ()=>{
     $("#btn-prev").hide();
     $("#btn-next").hide();
 
+    $("#idSemPanelBG").click( ()=>{ HATHOR.toggleSideSemPanel(false); });
+
     if (HATHOR.paramProf){
         //ATON._renderer.info.autoReset = false;
         $("#idTopToolbar").append("<div id='idProf' style='top:5px;right:5px;position:fixed;'></div>");
@@ -1428,6 +1430,9 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 HATHOR.toggleSideSemPanel = (b, content)=>{
     if (b){
         $("#idSemPanel").show(0); //, ()=>{ HATHOR._bSidePanel = true; });
+        
+        ///$("#idSemPanelBG").show(0);
+        //setTimeout(()=>{ $("#idSemPanelBG").show(0); }, 1000);
 
         $("#idTopToolbar").hide();
         $("#idBottomToolbar").hide();
@@ -1441,6 +1446,7 @@ HATHOR.toggleSideSemPanel = (b, content)=>{
     }
     else {
         $("#idSemPanel").hide(0); //, ()=>{ HATHOR._bSidePanel = false; });
+        $("#idSemPanelBG").hide(0);
 
         $("#idTopToolbar").show();
         $("#idBottomToolbar").show();

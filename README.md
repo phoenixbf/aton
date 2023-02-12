@@ -17,10 +17,10 @@
 * Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*
 * 3D semantic annotations including free-form volumetric shapes
 * Fast, real-time 3D queries on visible and semantic graphs and UI nodes
-* Built-in front-end ("Hathor") with WYSIWYG rich HTML5 annotation editor
-* Built-in profiler (adapt presentation to different devices)
+* Built-in front-end ("Hathor") with WYSIWYG rich HTML5 content editor
+* Built-in profiler (automatically adapt 3D presentation to different devices)
 * Built-in services to access 3D collections and scenes for multiple users via authentication
-* Built-in export of 3D scene nodes using different formats (gltf/glb, obj, usd,...) right from the browser
+* Built-in export of 3D scenes/models using different formats (gltf/glb, obj, usd,...) right from the browser
 * Event-driven API for fully customizable events (local and synchronous collaborative contexts)
 * 360 panoramas and virtual tours
 * Physically-Based Rendering (PBR) for advanced materials and custom shaders for complex representations, including latest extensions
@@ -31,7 +31,7 @@
 * Multi-temporal (4D) visualization
 * Easily extensible through *plug&play* apps architecture and plugins
 
-The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative features through the *VRoadcast* component and support for remote/immersive visual analytics.
+The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative multi-user features and support for remote/immersive visual analytics.
 
 ## Getting started (quick)
 1) Install [Node.js](https://nodejs.org/) for your operating system.

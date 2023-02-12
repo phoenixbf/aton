@@ -1,3 +1,3 @@
 @echo off
 
-npm update
+npm install

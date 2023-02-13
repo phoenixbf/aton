@@ -801,11 +801,11 @@ HATHOR.setupEventHandlers = ()=>{
             HATHOR.measure();
         }
     });
-
+/*
     ATON.on("DoubleTap", (e)=>{
         if (ATON._hoveredSemNode) HATHOR.sideSemDescription(ATON._hoveredSemNode);
     });
-
+*/
     ATON.FE.useMouseWheelToScaleSelector();
 
     ATON.on("KeyPress", (k)=>{
@@ -1441,10 +1441,12 @@ HATHOR.toggleSideSemPanel = (b, content)=>{
         if (content) $("#idSemPanel").html(content);
 
         ATON.FE._bPopup    = true;
-        ATON._bPauseQuery  = true;
         HATHOR._bSidePanel = true;
+        //ATON._bPauseQuery  = true;
     }
     else {
+        if (ATON.FE._auSemNode) ATON.FE._auSemNode.stop();
+        
         $("#idSemPanel").hide(0); //, ()=>{ HATHOR._bSidePanel = false; });
         $("#idSemPanelBG").hide(0);
 
@@ -1453,8 +1455,8 @@ HATHOR.toggleSideSemPanel = (b, content)=>{
         $("#idBottomRToolbar").show();
 
         ATON.FE._bPopup    = false;
-        ATON._bPauseQuery  = false;
         HATHOR._bSidePanel = false;
+        //ATON._bPauseQuery  = false;
 
         $("#idSemPanel").html("");
     }
@@ -1462,8 +1464,9 @@ HATHOR.toggleSideSemPanel = (b, content)=>{
 
 HATHOR.sideSemDescription = (semid)=>{
     if (semid === undefined) return;
-    if (HATHOR._bSidePanel) return;
+    //if (HATHOR._bSidePanel) return;
 
+    if (ATON.FE._auSemNode) ATON.FE._auSemNode.stop();
     ATON.FE.playAudioFromSemanticNode(semid);
 
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);

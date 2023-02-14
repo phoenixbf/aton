@@ -785,6 +785,7 @@ HATHOR.setupEventHandlers = ()=>{
 */
         if (HATHOR._actState === HATHOR.SELACTION_STD){
             if (ATON._hoveredSemNode) HATHOR.sideSemDescription(ATON._hoveredSemNode);
+            else HATHOR.toggleSideSemPanel(false);
         }
 
         if (HATHOR._actState === HATHOR.SELACTION_ADDCONVEXPOINT){

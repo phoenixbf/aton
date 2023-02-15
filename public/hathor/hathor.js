@@ -1471,7 +1471,10 @@ HATHOR.sideSemDescription = (semid)=>{
     ATON.FE.playAudioFromSemanticNode(semid);
 
     let descr = HATHOR.getHTMLDescriptionFromSemNode(semid);
-    if (descr === undefined) return;
+    if (descr === undefined){
+        HATHOR.toggleSideSemPanel(false);
+        return;
+    }
 
     let htmlcontent = "<div class='atonSidePanelHeader'>";
     htmlcontent += "<div class='atonSidePanelCloseBTN atonBTN atonBTN-pulseRed' onclick='HATHOR.toggleSideSemPanel(false)'><img src='"+ATON.FE.PATH_RES_ICONS+"cancel.png'></div>";

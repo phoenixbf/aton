@@ -351,7 +351,7 @@ Nav.requestDeltaRotation = (hor,vert, duration)=>{
     let S = new THREE.Vector3();
     let T = new THREE.Vector3();
 
-    S.crossVectors(Nav._vDir, THREE.Object3D.DefaultUp); // Nav._camera.up
+    S.crossVectors(Nav._vDir, THREE.Object3D.DEFAULT_UP); // Nav._camera.up
 
     T.x = Nav._currPOV.target.x + (S.x * hor);
     T.y = Nav._currPOV.target.y + vert;
@@ -804,9 +804,7 @@ Nav.handlePOV = ()=>{
     if (ATON.XR.isPresenting()) Nav.handleXRtransition();
     else Nav.handlePOVtransition();
 
-    //Nav.handleMotion();
-
-    //if (ATON.XR.isPresenting()) console.log(ATON._renderer.xr);
+    Nav.handleMotion();
 
     // Handle constraints
     Nav.applyPOVconstraints(Nav._currPOV);
@@ -815,24 +813,33 @@ Nav.handlePOV = ()=>{
 // Not used for now
 Nav.handleMotion = ()=>{
     if (Nav.isTransitioning()) return;
+    if (Nav._motionAmt == 0.0) return;
 
-    if (Nav._motionAmt != 0.0){
+    if (ATON.XR.controller0 && ATON.XR.controller0.visible){
+        ATON.XR.controller0.getWorldDirection(Nav._motionDir);
+        Nav._motionDir.negate();
+        }
+    else Nav._motionDir.copy(Nav._vDir);
+/*
+    let fv = Nav._motionDir.clone();
+    fv.multiplyScalar(Nav._motionAmt * ATON._dt);
 
-        //if ()
+    Nav._currPOV.pos.add(fv);
+    Nav._currPOV.target.add(fv); // check if needed
+*/
+    let a = (Nav._motionAmt * ATON._dt);
 
+    let dx = (Nav._motionDir.x * a);
+    let dy = (Nav._motionDir.y * a);
+    let dz = (Nav._motionDir.z * a);
 
-        if (ATON.XR.controller0 && ATON.XR.controller0.visible){
-            ATON.XR.controller0.getWorldDirection(Nav._motionDir);
-            Nav._motionDir.negate();
-            }
-        else Nav._motionDir.copy(Nav._vDir);
+    Nav._currPOV.pos.x += dx;
+    Nav._currPOV.pos.y += dy;
+    Nav._currPOV.pos.z += dz;
 
-        let fv = Nav._motionDir.clone();
-        fv.multiplyScalar(Nav._motionAmt * ATON._dt);
-
-        Nav._currPOV.pos.add(fv);
-        Nav._currPOV.target.add(fv); // check if needed
-    }
+    Nav._currPOV.target.x += dx;
+    Nav._currPOV.target.y += dy;
+    Nav._currPOV.target.z += dz;
 };
 
 Nav.handlePOVtransition = ()=>{

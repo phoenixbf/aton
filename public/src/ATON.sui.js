@@ -710,7 +710,7 @@ SUI.update = ()=>{
                 SUI.infoNode.position.x -= (ATON.XR.controller0dir.x * 0.1);
                 SUI.infoNode.position.y -= (ATON.XR.controller0dir.y * 0.1); // + 0.1;
                 SUI.infoNode.position.z -= (ATON.XR.controller0dir.z * 0.1);
-                //SUI.infoNode.setScale(SUI._labelScaleVR);
+                SUI.infoNode.setScale(1.0);
             }
             else {
                 SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.5);

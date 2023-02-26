@@ -956,7 +956,9 @@ FE.playAudioFromSemanticNode = (semid)=>{
     let au = S.getAudio();
     if (au === undefined) return;
 
-    if (typeof au === "string") au = ATON.Utils.resolveCollectionURL(au);
+    if (typeof au === "string" && !au.startsWith("data:audio")){
+        au = ATON.Utils.resolveCollectionURL(au);
+    }
 
     if (FE._auSemNode === undefined || FE._auSemNode === null) FE._auSemNode = new THREE.Audio( ATON.AudioHub._listener );
     else FE._auSemNode.stop();

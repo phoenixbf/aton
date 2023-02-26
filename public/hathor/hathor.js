@@ -1211,7 +1211,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
     // New ID
     if (esemid === undefined){
         htmlcontent += "ID:<input id='semid' type='text' maxlength='15' size='15' list='semlist' >&nbsp;";
-
+/*
         let gSemXPF = ATON.XPFNetwork.getCurrentSemanticGroup();
         if (gSemXPF === undefined){
             htmlcontent += "child of:";
@@ -1220,6 +1220,7 @@ HATHOR._createPopupStdSem = (esemid)=>{
             for (let s in ATON.semnodes) if (s !== ATON.ROOT_NID) htmlcontent += "<option value='"+s+"'>"+s+"</option>";
             htmlcontent += "</select><div class='selectArrow'></div></div>";
         }
+*/
 
         htmlcontent += "<datalist id='semlist'>";
         for (let s in ATON.semnodes){
@@ -1227,8 +1228,8 @@ HATHOR._createPopupStdSem = (esemid)=>{
         }
         htmlcontent += "</datalist>";
 
-        htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
-        htmlcontent += "<div id='idSemDescCont' style='display:none'><textarea id='idSemDescription' style='width:100%;'></textarea></div><br>";
+        htmlcontent += "<br><div id='btnRichContent' class='atonBTN atonBTN-gray atonBTN-horizontal'><img src='"+ATON.FE.PATH_RES_ICONS+"html.png'>Rich Content</div>";
+        htmlcontent += "<div id='idSemDescCont' style='display:none'><textarea id='idSemDescription' style='width:100%;'></textarea></div>";
     }
     // modifying existing ID
     else {
@@ -1237,14 +1238,14 @@ HATHOR._createPopupStdSem = (esemid)=>{
 
 
     if (ATON.Utils.isConnectionSecure() && !ATON.MediaFlow.isAudioRecording()){
-        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray' style='width:90%;'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
+        htmlcontent += "<div id='btnVocalNote' class='atonBTN atonBTN-gray atonBTN-horizontal'><img src='"+ATON.FE.PATH_RES_ICONS+"talk.png'>Vocal Note</div>";
         htmlcontent += "<br><audio id='ctrlVocalNote' style='display:none' controls ></audio>";
     }
 
     htmlcontent += "<br>";
 
-    if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>ADD</div>";
-    else htmlcontent += "<div class='atonBTN atonBTN-green' id='idAnnOK' style='width:90%'>DONE</div>";
+    if (esemid === undefined) htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='idAnnOK'>ADD</div>";
+    else htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal' id='idAnnOK'>DONE</div>";
 
     return htmlcontent;
 };
@@ -1361,6 +1362,8 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
 
         let semid  = $("#semid").val();
         let psemid = $("#psemid").val();
+
+        if (!psemid) psemid = ATON.ROOT_NID;
 
         let xxtmldescr = JSON.stringify( $("#idSemDescription").val() );
         //console.log(xxtmldescr);

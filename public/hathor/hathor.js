@@ -2287,7 +2287,7 @@ HATHOR.popupScene = ()=>{
         htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopGraphs'><img src='"+ATON.FE.PATH_RES_ICONS+"list.png'>Layers</div>";
         htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopEnv'><img src='"+ATON.FE.PATH_RES_ICONS+"light.png'>Environment</div>";
         //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEmbed'><img src='"+ATON.FE.PATH_RES_ICONS+"embed.png'>Embed</div>";
-        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Screenshot</div>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Capture</div>";
 
         if (ATON.FE.getCurrentUIP()==="editor"){
             htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
@@ -2499,7 +2499,7 @@ HATHOR.popupEditSceneInfo = ()=>{
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Hathor <img src='"+ATON.FE.PATH_RES_ICONS+"hathor.png' class='atonDefIcon'> help</div>";
     
-    htmlcontent += "<i>Hathor</i> is the official ATON front-end. <div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><br>";
+    htmlcontent += "<i>Hathor</i> is the official ATON front-end. This advanced web-app can be used to present and interact with 3D models, scenes and panoramic content - with several features built on top of existing ATON functionalities<br><div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><br>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
@@ -2671,11 +2671,19 @@ HATHOR.popupNav = ()=>{
         if (ATON.Nav._locNodes.length>0) htmlcontent += "<div class='atonBTN atonBTN-red atonBTN-horizontal' id='btnDelLocNodes'>Remove all Locomotion Nodes</div>";
     }
 
+    htmlcontent += "<div class='atonBTN atonBTN-horizontal' id='btnViewpoint'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
+
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
     ATON.FE.uiAddButtonFirstPerson("idNMfp");
     ATON.FE.uiAddButtonDeviceOrientation("idNMdevori");
     //ATON.FE.uiAddButtonVR("idNMvr");
+
+    $("#btnViewpoint").click(()=>{
+        ATON.FE.subPopup( ()=>{ 
+            HATHOR.popupPOV();
+        });
+    });
 
     $('#btnDefNavMode').click(()=>{
         let E = {};

@@ -36,12 +36,11 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js"
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter.js';
 
-//import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
 /*
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
 import { InteractiveGroup } from 'three/examples/jsm/interactive/InteractiveGroup.js';
 */
-
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
@@ -123,16 +122,13 @@ THREE.LightProbeGenerator = LightProbeGenerator;
 
 THREE.TransformControls = TransformControls;
 
-/*
 THREE.CSS3DRenderer = CSS3DRenderer;
 THREE.CSS3DObject   = CSS3DObject;
-*/
 
 /*
 THREE.HTMLMesh = HTMLMesh;
 THREE.InteractiveGroup = InteractiveGroup;
 */
-
 //window.GenerateMeshBVHWorker = GenerateMeshBVHWorker;
 
 window.THREE        = THREE;

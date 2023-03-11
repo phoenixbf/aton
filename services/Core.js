@@ -433,8 +433,19 @@ Core.readSceneJSON = (sid)=>{
 	let jspath = Core.getSceneJSONPath(sid);
 	if (!fs.existsSync(jspath)) return undefined;
 
-	let S = JSON.parse(fs.readFileSync(jspath, 'utf8'));
-	return S;
+	//let S = JSON.parse(fs.readFileSync(jspath, 'utf8'));
+
+	let F = fs.readFileSync(jspath, 'utf8');
+	let S = undefined;
+
+	try {
+		S = JSON.parse(F);
+		return S;
+	} catch(e) {
+		console.log("ERROR malformed scene: ", sid);
+		console.log(e);
+		return undefined;
+	}
 };
 
 

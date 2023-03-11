@@ -1805,6 +1805,8 @@ ATON.setMainLightDirection = (v)=>{
         ATON._dMainL = new THREE.DirectionalLight( new THREE.Color(1,1,1), 1.0 );
         ATON._dMainL.castShadow = false;
 
+        ATON._dMainL.intensity = 0.8;
+
         ATON._dMainLtgt = new THREE.Object3D();
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);
         ATON._dMainL.target = ATON._dMainLtgt;
@@ -1844,7 +1846,7 @@ ATON.toggleMainLight = (b)=>{
     }
     else {
         if (numLPs > 0) ATON.setNeutralAmbientLight(0.0);
-        ATON.setNeutralAmbientLight(1.0);
+        else ATON.setNeutralAmbientLight(ATON.AMB_L);
     }
 };
 

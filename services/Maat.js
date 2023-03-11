@@ -139,9 +139,14 @@ Maat.scanScenes = ()=>{
 				S.kwords = sobj.kwords;
 				for (let k in S.kwords) Maat.addSceneKeyword(k);
 			}
+
+			Maat.db.scenes.push(S);
+		}
+		else {
+			console.log("ERROR malformed scene: ", sid);
 		}
 
-		Maat.db.scenes.push(S);
+		//Maat.db.scenes.push(S);
 	}
 
 	Maat.needScan.scenes = false;

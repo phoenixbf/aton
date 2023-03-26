@@ -303,8 +303,8 @@ HATHOR.buildUIProfiles = ()=>{
         if (!ATON.Utils.isLocalhost()) ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
         
         ATON.FE.uiAddButton("idTopToolbar", "nav", HATHOR.popupNav, "Navigation" );
-        ATON.FE.uiAddButtonVR("idTopToolbar");
-        //ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
+        //ATON.FE.uiAddButtonVR("idTopToolbar");
+        ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
 
         ATON.FE.uiAddButtonFullScreen("idTopToolbar");
         ATON.FE.uiAddButton("idTopToolbar", "help", HATHOR.popupHelp, "Help" );
@@ -636,6 +636,17 @@ HATHOR.setupEventHandlers = ()=>{
     // XR
     ATON.on("XRmode",(b)=>{
         HATHOR.resetSelectionMode();
+    });
+
+    ATON.on("XR_support", (d)=>{
+        if (d.type==='immersive-vr'){
+            if (d.v || ATON.Utils.isARsupported()) $("#btn-xr").show();
+            else $("#btn-xr").hide();
+        }
+        if (d.type==='immersive-ar'){
+            if (d.v || ATON.Utils.isVRsupported()) $("#btn-xr").show();
+            else $("#btn-xr").hide();
+        }
     });
 
     ATON.EventHub.clearEventHandlers("XRselectStart");
@@ -2499,24 +2510,24 @@ HATHOR.popupEditSceneInfo = ()=>{
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Hathor <img src='"+ATON.FE.PATH_RES_ICONS+"hathor.png' class='atonDefIcon'> help</div>";
     
-    htmlcontent += "<i>Hathor</i> is the official ATON front-end. This advanced web-app can be used to present and interact with 3D models, scenes and panoramic content - with several features built on top of existing ATON functionalities<br><div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><br>";
+    htmlcontent += "<i>Hathor</i> is the official ATON front-end. This advanced web-app can be used to present and interact with 3D models, scenes and panoramic content - with several features built on top of existing ATON functionalities<br><div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><a class='atonBTN atonBTN-text' href='https://osiris.itabc.cnr.it/aton/index.php/overview/hathor/' target='_blank'><img src='"+ATON.FE.PATH_RES_ICONS+"link.png'>More details</a><br>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
     // Toolbar
     //let sp = "<br>";
-    let iblock = "<div style='width:200px; display:inline-block; margin:5px; vertical-align:top;'>";
+    let iblock = "<div style='width:250px; display:inline-block; margin:5px; vertical-align:top;'>";
     htmlcontent += "<h3>Icons</h3>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'> Home viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"user.png' class='atonDefIcon'> User authentication</div>";
-    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"nav.png' class='atonDefIcon'> Navigation</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"nav.png' class='atonDefIcon'> Navigation menu</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"prev.png' class='atonDefIcon'><img src='"+ATON.FE.PATH_RES_ICONS+"next.png' class='atonDefIcon'> Previous/Next viewpoint</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"scene.png' class='atonDefIcon'> Current scene</div>";
-    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' class='atonDefIcon'> Fullscreen mode</div>";
+    htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"fullscreen.png' class='atonDefIcon'> Fullscreen</div>";
     htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"info.png' class='atonDefIcon'> Scene information</div>";
 
     if (ATON.Utils.isConnectionSecure()){
-        htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"vr.png' class='atonDefIcon'> Immersive VR mode</div>";
+        if (ATON.Utils.isARsupported() || ATON.Utils.isVRsupported()) htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"xr.png' class='atonDefIcon'> Immersive, Augmented or Mixed Reality</div>";
 
         if (ATON.Utils.isMobile()){
             htmlcontent += iblock+"<img src='"+ATON.FE.PATH_RES_ICONS+"devori.png' class='atonDefIcon'> Device orientation mode</div>";
@@ -2620,21 +2631,59 @@ HATHOR.popupXR = ()=>{
     
     let htmlcontent = "<div class='atonPopupTitle'>XR</div>";
 
+    htmlcontent += "Available Immersive, Augmented or Mixed Reality,<br>depending on your device and browser.<br><br>";
+
     if (ATON.Utils.isVRsupported()){
+/*
         htmlcontent +="<div style='display:inline-block;margin:14px'>";
         htmlcontent +="<div style='display:inline-block;' id='idVRx'></div>";
         htmlcontent +="<br>Immersive VR";
         htmlcontent += "</div>";
+*/
+        htmlcontent += "<div id='btnEnterVR' class='atonBTN atonBTN-green atonBTN-text atonBTN-horizontal'><img src='"+ATON.FE.PATH_RES_ICONS+"vr.png'><br>Immersive VR</div><br>";
     }
 
-    htmlcontent +="<div style='display:inline-block;margin:14px'>";
-    htmlcontent +="<div style='display:inline-block;' id='idARx'></div>";
-    htmlcontent +="<br>Augmented/Mixed Reality</div>";
+    if (ATON.Utils.isARsupported()){
+/*
+        htmlcontent +="<div style='display:inline-block;margin:14px'>";
+        htmlcontent +="<div style='display:inline-block;' id='idARx'></div>";
+        htmlcontent +="<br>Augmented/Mixed Reality</div>";
+*/
+        htmlcontent += "<div id='btnEnterAR' class='atonBTN atonBTN-green atonBTN-text atonBTN-horizontal'><img src='"+ATON.FE.PATH_RES_ICONS+"ar.png'><br>Augmented/Mixed Reality</div><br>";
+    }
+
+    let fbxr = ATON._stdpxd;
+    //console.log(ATON._renderer.xr)
+
+    htmlcontent += "<details><summary><b>Advanced options</b></summary>";
+    htmlcontent += "<br>Resolution scale (<span id='idXRfbstxt'>"+fbxr+"</span>):";
+    htmlcontent += "<input id='idXRfbs' type='range' min='0.25' max='1.0' step='0.25' value='"+fbxr+"'>";
+    htmlcontent += "</details>";
 
     if ( !ATON.FE.popupShow(htmlcontent) ) return;
 
-    ATON.FE.uiAddButtonVR("idVRx");
-    ATON.FE.uiAddButtonAR("idARx");
+    //ATON.FE.uiAddButtonVR("idVRx");
+    //ATON.FE.uiAddButtonAR("idARx");
+
+    $("#btnEnterVR").on("click",()=>{
+        ATON.XR.toggle("immersive-vr");
+        ATON.FE.popupClose();
+    });
+    $("#btnEnterAR").on("click",()=>{
+        //ATON._rootVisible.autoFit(true, 2.0);
+        //ATON._rootSem.autoFit(true, 2.0);
+
+        ATON.XR.toggle("immersive-ar");
+        ATON.FE.popupClose();
+    });
+
+
+    $("#idXRfbs").on("input change",()=>{
+        let f = parseFloat( $("#idXRfbs").val() );
+        $("#idXRfbstxt").html(f);
+
+        ATON._renderer.xr.setFramebufferScaleFactor(f);
+    });
 };
 
 HATHOR.popupNav = ()=>{

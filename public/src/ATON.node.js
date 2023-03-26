@@ -525,6 +525,21 @@ dirtyBound(){
     return this;
 }
 
+autoFit(bCenter, maxRad){
+    this.dirtyBound();
+
+    if (bCenter){
+        this.position.copy(this._bs.center);
+        this.position.multiplyScalar(-1);
+    }
+
+    if (maxRad && maxRad > 0.0 && this._bs.radius > 0.0){
+        let s = maxRad / this._bs.radius;
+        this.scale.set(s,s,s);
+    }
+
+}
+
 /**
 Set location (translation) of this node
 @example

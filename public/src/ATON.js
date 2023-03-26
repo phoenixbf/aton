@@ -600,8 +600,8 @@ ATON.realize = ( bNoRender )=>{
     ATON.Utils.profileRenderingCapabilities();
 
     ATON._stdpxd = 1.0;
-    //ATON._stdpxd = window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
-    ATON._renderer.setPixelRatio( ATON._stdpxd );
+    ///ATON._stdpxd = window.devicePixelRatio? (window.devicePixelRatio) : 1.0;
+    //ATON._renderer.setPixelRatio( ATON._stdpxd );
     //console.log(ATON._stdpxd);
 
     // Framerate management
@@ -785,6 +785,9 @@ ATON.realize = ( bNoRender )=>{
             ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
         }
     }
+
+    // Initial density
+    ATON.setDefaultPixelDensity(1.0);
 
     // Query / picked data
     ATON._queryDataScene = undefined;

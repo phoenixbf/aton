@@ -2510,7 +2510,7 @@ HATHOR.popupEditSceneInfo = ()=>{
 HATHOR.popupHelp = ()=>{
     let htmlcontent = "<div class='atonPopupTitle'>Hathor <img src='"+ATON.FE.PATH_RES_ICONS+"hathor.png' class='atonDefIcon'> help</div>";
     
-    htmlcontent += "<i>Hathor</i> is the official ATON front-end. This advanced web-app can be used to present and interact with 3D models, scenes and panoramic content - with several features built on top of existing ATON functionalities<br><div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings</div><a class='atonBTN atonBTN-text' href='https://osiris.itabc.cnr.it/aton/index.php/overview/hathor/' target='_blank'><img src='"+ATON.FE.PATH_RES_ICONS+"link.png'>More details</a><br>";
+    htmlcontent += "<i>Hathor</i> is the official ATON front-end. This advanced web-app can be used to present and interact with 3D models, scenes and panoramic content - with several features built on top of existing ATON functionalities<br><div id='idSettings' class='atonBTN atonBTN-text'><img src='"+ATON.FE.PATH_RES_ICONS+"settings.png'>Settings <span class='atonKey'>'space'</span></div><a class='atonBTN atonBTN-text' href='https://osiris.itabc.cnr.it/aton/index.php/overview/hathor/' target='_blank'><img src='"+ATON.FE.PATH_RES_ICONS+"link.png'>More details</a><br>";
 
     htmlcontent += "<div style='text-align:left;'>";
 
@@ -2560,7 +2560,7 @@ HATHOR.popupHelp = ()=>{
     }
     else {
         htmlcontent += "<li><span class='atonKey'>'SHIFT' + mouse wheel</span>: increase/decrease radius of selector</li>";
-        htmlcontent += "<li><span class='atonKey'>'space'</span>: selector options</li>";
+        htmlcontent += "<li><span class='atonKey'>'space'</span>: Selector options</li>";
     }
     htmlcontent += "</ul></div>";
 
@@ -2811,7 +2811,7 @@ HATHOR.popupEmbed = ()=>{
 };
 
 HATHOR.popupSettings = ()=>{
-    const divBlock = "<div style='display:inline-block; min-width:300px; max-width:800px; min-height:50px; vertical-align:top; padding:10px;'>"; // white-space: nowrap;
+    const divBlock = "<div class='atonBlockRound' style='display:inline-block; min-width:350px; max-width:800px; min-height:50px; vertical-align:top; padding:10px; background-color:rgba(255,255,255, 0.1)'>"; // white-space: nowrap;
 
     let htmlcontent = "<div class='atonPopupTitle'>Hathor Settings</div>";
 
@@ -2820,9 +2820,11 @@ HATHOR.popupSettings = ()=>{
 
     ATON.FE.computeSelectorRanges();
 
+    htmlcontent += "<div id='btnEditSwitch' class='atonBTN atonBTN-text atonBTN-orange atonBTN-horizontal' style='display:none'></div>"
+
     // Selector
     htmlcontent += divBlock;
-    htmlcontent += "<div class='atonBlockSubTitle'><img class='atonDefIcon' src='"+ATON.FE.PATH_RES_ICONS+"selector.png'>3D Selector</div><br>";
+    htmlcontent += "<details><summary><b>3D Selector</b></summary><br>";
     htmlcontent += "Radius (<span id='idSelRadTxt'>"+hr+"</span>):<br>";
     //htmlcontent += ATON.Utils.getHumanReadableDistance(ATON.FE._selRanges[0])+"&nbsp;";
     htmlcontent += "<input id='idSelRad' type='range' min='"+ATON.FE._selRanges[0]+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
@@ -2838,18 +2840,39 @@ HATHOR.popupSettings = ()=>{
     htmlcontent += "<input id='idSeldz' type='range' min='"+(-ATON.FE._selRanges[1])+"' max='"+ATON.FE._selRanges[1]+"' step='"+ATON.FE._selRanges[0]+"'>";
 
     htmlcontent += "<div id='idSelOffReset' class='atonBTN atonBTN-text atonBTN-yellow atonBTN-horizontal'>Reset offsets</div>";
-    htmlcontent += "</div>";
+    htmlcontent += "</details></div>";
 
     // Multires
     if (ATON.MRes._tsets.length > 0){
         htmlcontent += divBlock;
-        htmlcontent += "<div class='atonBlockSubTitle'><img class='atonDefIcon' src='"+ATON.FE.PATH_RES_ICONS+"multires.png'>Multiresolution</div><br>";
+        htmlcontent += "<details><summary><b>Multiresolution</b></summary><br>";
         htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON.MRes._tsET+"</span>):<br>";
         htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:40%' type='range' min='1.0' max='25.0' step='0.5'>&nbsp;Less detail";
-        htmlcontent += "</div>";
+        htmlcontent += "</details></div>";
     }
 
-    if ( !ATON.FE.popupShow(htmlcontent, "atonPopupLarge") ) return;
+    if ( !ATON.FE.popupShow(htmlcontent) ) return;
+
+    ATON.FE.checkAuth((r)=>{
+        let authUser = r.username;
+
+        if (authUser){
+            if (!ATON.SceneHub._bEdit) $("#btnEditSwitch").html("<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"edit.png' class='atonDefIcon'>Enter Editor Mode");
+            else $("#btnEditSwitch").html("<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"exit.png' class='atonDefIcon'>Quit Editor Mode");
+
+            $("#btnEditSwitch").show();
+            $("#btnEditSwitch").click(()=>{
+                if (!ATON.SceneHub._bEdit){
+                    ATON.FE.uiLoadProfile("editor");
+                    ATON.FE.popupClose();
+                }
+                else {
+                    ATON.FE.uiLoadProfile("default");
+                    ATON.FE.popupClose();
+                }
+            });
+        }
+    });
 
     $("#idSelRad").val(rad);
     $("#idTSerr").val(ATON.MRes._tsET);

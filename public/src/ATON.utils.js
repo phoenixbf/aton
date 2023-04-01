@@ -324,7 +324,7 @@ Utils.mergeObject = ( object )=>{
 
     });
 
-    const mergedGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries( geometry, false );
+    const mergedGeometries = THREE.BufferGeometryUtils.mergeGeometries( geometry, false );
     const mergedGeometry   = THREE.BufferGeometryUtils.mergeVertices( mergedGeometries ).center();
 
     const group = new THREE.Group();

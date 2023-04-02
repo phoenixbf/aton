@@ -237,15 +237,15 @@ let addNodeBlock = (nid)=>{
 
     // Transform
     //htmlcontent += "<br>Translation, Rotation, Scale<br>";
-    htmlcontent += "<div class='atonBlockRound' style='display:block; text-align:right'><details>";
-    htmlcontent += "<summary>Transform</summary>";
+    htmlcontent += "<div class='atonBlockRound' style='display:block;'><details>";
+    htmlcontent += "<summary>Transform</summary><div style='text-align:right'>";
     htmlcontent += "Translation:<input id='"+elNIDtformTrans+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Rotation:<input id='"+elNIDtformRot+"' type='text' size='20' placeholder='x,y,z'><br>";
     htmlcontent += "Scale:<input id='"+elNIDtformScale+"' type='text' size='20' placeholder='x,y,z or single value'><br>";
     htmlcontent += "<input id='"+elNIDac+"' type='checkbox'>AutoCenter";
     htmlcontent += "<input id='"+elNIDgeo+"' type='checkbox'>Use Geo Coords";
     htmlcontent += "<div class='atonBTN' id='"+elNIDtformYup+"'><img src='../../res/icons/axes.png'>Z-up &#8594; Y-up</div>";
-    htmlcontent += "</details>";
+    htmlcontent += "</div></details>";
     htmlcontent += "</div>";
 
     htmlcontent += "<div class='atonBlockRound' style='display:block; text-align:right'><details>";

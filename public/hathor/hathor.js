@@ -2857,6 +2857,9 @@ HATHOR.popupSettings = ()=>{
         let authUser = r.username;
 
         if (authUser){
+            let bYourScene = (ATON.SceneHub.currID)? ATON.SceneHub.currID.startsWith(authUser) : false;
+            if (!bYourScene) return;
+
             if (!ATON.SceneHub._bEdit) $("#btnEditSwitch").html("<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"edit.png' class='atonDefIcon'>Enter Editor Mode");
             else $("#btnEditSwitch").html("<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"exit.png' class='atonDefIcon'>Quit Editor Mode");
 

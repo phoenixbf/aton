@@ -1,4 +1,6 @@
-FROM node:16
+FROM node:18
+
+RUN npm install -g npm
 
 # Create main ATON folder
 WORKDIR /aton

@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  star:
+    build: .
+    volumes:
+      - ./data:/aton/data
+    ports:
+      - 8088:8080

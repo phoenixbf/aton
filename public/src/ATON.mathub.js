@@ -37,9 +37,9 @@ MatHub.getDefVertexShader = ()=>{
         void main(){
             vUv = uv;
 
-            vPositionW = ( vec4( position, 1.0 ) * modelMatrix).xyz;
+            vPositionW = ( modelMatrix * vec4( position, 1.0 )).xyz;
             vNormalV   = normalize( vec3( normalMatrix * normal ));
-            vNormalW   = (modelMatrix * vec4(normal, 0.0)).xyz;
+            vNormalW   = ( modelMatrix * vec4(normal, 0.0 )).xyz;
 
             gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
         }
@@ -287,6 +287,28 @@ MatHub.addDefaults = ()=>{
                 f = dot(vNormalW, vec3(0,1,0));
 
 		        gl_FragColor = mix(B,A, f);
+		    }
+        `
+    });
+
+    MatHub.materials.gradient = new THREE.ShaderMaterial({
+        uniforms: {
+            range: { type:'vec2', value: new THREE.Vector2(-4.0,5.0) },
+        },
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+
+            uniform vec2 range;
+
+		    void main(){
+                vec4 A = vec4(0,0,0, 1.0);
+                vec4 B = vec4(0,0.5,1, 1.0);
+
+                float t = (vPositionW.y - range.x)/(range.y - range.x);
+                t = clamp(t, 0.0,1.0);
+
+		        gl_FragColor = mix(A,B, t);
 		    }
         `
     });

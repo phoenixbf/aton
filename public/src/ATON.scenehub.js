@@ -601,7 +601,13 @@ SceneHub.initBaseParsers = ()=>{
                     let mat = undefined;
                     
                     if (typeof N.material === 'string') mat = ATON.MatHub.materials[N.material];
-                    else mat = new THREE.MeshStandardMaterial(N.material);
+                    else {
+                        if (N.material.fragmentShader || N.material.vertexShader){
+                            if (!N.material.vertexShader) N.material.vertexShader = ATON.MatHub.getDefVertexShader();
+                            mat = new THREE.ShaderMaterial(N.material);
+                        }
+                        else mat = new THREE.MeshStandardMaterial(N.material);
+                    }
 
                     //console.log(mat)
                     

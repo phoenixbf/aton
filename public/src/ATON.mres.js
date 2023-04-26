@@ -335,6 +335,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 // Build accelerated raycasting for this tile
                 if (MRes._bTileBVH && c.geometry){
 
+                    c.geometry.computeVertexNormals(); // required for SSAO
+
                     //console.time( 'computing bounds tree' );
                     c.geometry.computeBoundsTree({
                         //maxLeafTris: 2,

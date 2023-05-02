@@ -509,7 +509,7 @@ Nav.setOrbitControl = ()=>{
         
         C.enableZoom  = true;
         C.minDistance = 0.03;
-        C.maxDistance = 100.0;
+        C.maxDistance = 300.0;
 
         if (!Nav._bControl) C.enabled = false;
 

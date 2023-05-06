@@ -39,10 +39,8 @@ SUI.init = ()=>{
     //SUI.enableSemIcons();
 
     // Main Font
-    //SUI.PATH_FONT_JSON = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.json"; // ATON.PATH_RES+"fonts/custom-msdf.json"
-    //SUI.PATH_FONT_TEX  = ATON.PATH_MODS+"three-mesh-ui/examples/assets/Roboto-msdf.png"; // ATON.PATH_RES+"fonts/custom.png"
-    SUI.PATH_FONT_JSON = ATON.PATH_RES+"fonts/custom-msdf.json"
-    SUI.PATH_FONT_TEX  = ATON.PATH_RES+"fonts/custom.png"
+    if (!SUI.PATH_FONT_JSON) SUI.PATH_FONT_JSON = ATON.PATH_RES+"fonts/custom-msdf.json"
+    if (!SUI.PATH_FONT_TEX)  SUI.PATH_FONT_TEX  = ATON.PATH_RES+"fonts/custom.png"
 /*
     ThreeMeshUI.FontLibrary.addFont("mainFont", 
         SUI.PATH_FONT_JSON, 

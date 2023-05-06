@@ -19,7 +19,8 @@ class Label extends Node {
 constructor(uiid, w,h){
     super(uiid, ATON.NTYPES.UI);
 
-    this.baseColor = ATON.MatHub.colors.black;
+    this.baseColor   = ATON.MatHub.colors.black;
+    this.baseOpacity = 0.5;
 
     this.container = new ThreeMeshUI.Block({
         width: (w)? w : 0.2,
@@ -27,7 +28,7 @@ constructor(uiid, w,h){
         padding: 0.001,
         borderRadius: 0.01,
         backgroundColor: this.baseColor,
-        backgroundOpacity: 0.5,
+        backgroundOpacity: this.baseOpacity,
 
         fontFamily: ATON.SUI.PATH_FONT_JSON,
         fontTexture: ATON.SUI.PATH_FONT_TEX,
@@ -85,6 +86,14 @@ setBaseColor(c){
 
 setTextColor(c){
     this.uiText.set({ fontColor: c });
+
+    ThreeMeshUI.update();
+    return this;
+}
+
+setBackgroundOpacity(f){
+    this.container.set({ backgroundOpacity: f });
+    this.baseOpacity = f;
 
     ThreeMeshUI.update();
     return this;

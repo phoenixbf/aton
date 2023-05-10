@@ -626,9 +626,10 @@ ATON.realize = ( bNoRender )=>{
 */
     ATON._aniMixers = [];
     
-    ATON._stdEncoding = THREE.LinearEncoding; // THREE.sRGBEncoding;
+    ATON._stdEncoding = THREE.LinearSRGBColorSpace;
+    //ATON._stdEncoding = THREE.SRGBColorSpace;
 
-    ATON._renderer.outputEncoding = ATON._stdEncoding;
+    ATON._renderer.outputColorSpace = ATON._stdEncoding;
     
     ATON._renderer.toneMapping = THREE.LinearToneMapping;
     //ATON._renderer.toneMapping = THREE.CineonToneMapping;
@@ -1588,7 +1589,7 @@ ATON.setMainPanorama = (path)=>{
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );
-        tpano.encoding = ATON._stdEncoding;
+        tpano.colorSpace = ATON._stdEncoding;
         
         //tpano.minFilter = THREE.NearestFilter;
 		//tpano.generateMipmaps = false;
@@ -1604,7 +1605,7 @@ ATON.setMainPanorama = (path)=>{
                 //hdr.generateMipmaps = true;
                 hdr.minFilter = THREE.LinearMipmapLinearFilter;
                 hdr.magFilter = THREE.LinearFilter;
-                hdr.encoding  = ATON._stdEncoding;
+                hdr.colorSpace  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(hdr);
                 ATON.fireEvent("MainPanoHDR");
@@ -1618,7 +1619,7 @@ ATON.setMainPanorama = (path)=>{
                 //exr.generateMipmaps = true;
                 exr.minFilter = THREE.LinearMipmapLinearFilter;
                 exr.magFilter = THREE.LinearFilter;
-                exr.encoding  = ATON._stdEncoding;
+                exr.colorSpace  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(exr);
                 ATON.fireEvent("MainPanoHDR");
@@ -1628,7 +1629,7 @@ ATON.setMainPanorama = (path)=>{
         }
 
         ATON.Utils.textureLoader.load(path, (tex)=>{
-            tex.encoding = ATON._stdEncoding;
+            tex.colorSpace = ATON._stdEncoding;
 /*
             tex.mapping = THREE.EquirectangularReflectionMapping;
             ATON._mainRoot.background  = tex;

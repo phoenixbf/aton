@@ -35,7 +35,7 @@ FX.init = ()=>{
         minFilter: THREE.LinearFilter,
         magFilter: THREE.LinearFilter,
         format: THREE.RGBAFormat,
-        encoding: ATON._stdEncoding
+        colorSpace: ATON._stdEncoding
     });
     renderTarget.texture.name = 'EffectComposer.rt1';
 

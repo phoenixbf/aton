@@ -663,7 +663,7 @@ MediaFlow.getOrCreateVideoStream = (id, sourceurl, bUser)=>{
         };
 */
         MediaFlow._vStreams[id].texStream = new THREE.VideoTexture( MediaFlow._vStreams[id].el );
-        MediaFlow._vStreams[id].texStream.encoding = ATON._stdEncoding;
+        MediaFlow._vStreams[id].texStream.colorSpace = ATON._stdEncoding;
         MediaFlow._vStreams[id].texStream.flipY = false;
 
         MediaFlow._vStreams[id].matStream = ATON.MatHub.materials.chromakey.clone();

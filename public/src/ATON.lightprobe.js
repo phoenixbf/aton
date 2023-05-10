@@ -65,7 +65,7 @@ _createCCtarget(){
         format: THREE.RGBEFormat, //THREE.RGBEFormat,
         generateMipmaps: true,
         minFilter: THREE.LinearMipmapLinearFilter,
-        encoding: ATON._stdEncoding
+        colorSpace: ATON._stdEncoding
     });
 }
 

@@ -166,7 +166,7 @@ realizeStreamPanel(){
     this._elVStream = document.getElementById("uStream"+this.userid);
 
     this._texStream = new THREE.VideoTexture( this._elVStream );
-    this._texStream.encoding = ATON._stdEncoding;
+    this._texStream.colorSpace = ATON._stdEncoding;
 
     this._matStream = new THREE.MeshBasicMaterial({
         map: this._texStream,

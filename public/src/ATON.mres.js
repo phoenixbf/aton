@@ -338,12 +338,15 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     c.geometry.computeVertexNormals(); // required for SSAO
 
                     //console.time( 'computing bounds tree' );
+                    //let tA = Date.now();
                     c.geometry.computeBoundsTree({
-                        //maxLeafTris: 2,
+                        //maxLeafTris: 30,
                         //strategy: parseFloat( ThreeMeshBVH.SAH )
                     });
-                    //c.geometry.boundsTree.splitStrategy = ThreeMeshBVH.SAH;
+                    ///c.geometry.boundsTree.splitStrategy = ThreeMeshBVH.SAH;
                     //console.timeEnd( 'computing bounds tree' );
+                    //if (MRes._tT === undefined) MRes._tT = Date.now() - tA;
+                    //else MRes._tT += (Date.now() - tA);
 
                     if (ATON.Utils._bvhBounds>0) ATON.Utils._addBVHbounds(c, ATON.Utils._bvhBounds);
                 }
@@ -390,7 +393,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 if (tex){
                     tex.minFilter = THREE.LinearMipmapLinearFilter;
                     tex.magFilter = THREE.LinearFilter;
-                    tex.encoding  = ATON._stdEncoding;
+                    tex.colorSpace  = ATON._stdEncoding;
                 }
 
             }

@@ -738,6 +738,25 @@ Nav._deltaMotions = ()=>{
 // Retrieve currPOV from camera and controls
 Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
+
+        const xrcam = ATON._renderer.xr.getCamera().cameras[0];
+        //console.log(xrcam)
+
+        Nav._currPOV.pos.copy(xrcam.position);
+        Nav._qOri.copy(xrcam.quaternion);
+        //ATON.XR._cam.getWorldDirection( Nav._vDir );
+
+        //xrcam.getWorldPosition( Nav._currPOV.pos );
+        //xrcam.getWorldQuaternion( Nav._qOri );
+        xrcam.getWorldDirection( Nav._vDir );
+
+        Nav._currPOV.pos.x += ATON.XR.rig.position.x;
+        Nav._currPOV.pos.y += ATON.XR.rig.position.y;
+        Nav._currPOV.pos.z += ATON.XR.rig.position.z;
+
+        Nav._deltaMotions();
+        return;
+
 /*
         if (XR._sessionType !== "immersive-ar"){
             Nav._currPOV.pos.copy(ATON.XR.controller1pos);
@@ -745,6 +764,8 @@ Nav.syncCurrPOV = ()=>{
         }
         else {
 */
+
+/*
             ATON.XR._cam = ATON._renderer.xr.getCamera(Nav._camera);
             //console.log(ATON.XR._cam);
 
@@ -755,6 +776,7 @@ Nav.syncCurrPOV = ()=>{
 
         Nav._deltaMotions();
         return;
+*/
     }
 
     const ctrl  = Nav._controls;

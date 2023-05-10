@@ -472,9 +472,7 @@ XR.toggle = (sessiontype)=>{
         };
 
         if (XR._sessionType === "immersive-ar"){
-            if ( sessionInit.optionalFeatures === undefined ){
-                sessionInit.optionalFeatures = [];
-            }
+            if ( sessionInit.optionalFeatures === undefined ) sessionInit.optionalFeatures = [];
 
             //sessionInit.requiredFeatures = [ 'hit-test' ];
 /*
@@ -485,7 +483,7 @@ XR.toggle = (sessiontype)=>{
             sessionInit.optionalFeatures.push( 'dom-overlay' );
             sessionInit.domOverlay = { root: overlay };
 */
-            //sessionInit.optionalFeatures.push( 'light-estimation' );
+            sessionInit.optionalFeatures.push( 'light-estimation' );
         }
 
         XR._bReqPresenting = true;

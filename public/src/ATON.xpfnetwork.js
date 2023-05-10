@@ -364,7 +364,7 @@ XPFNetwork._preloadBaseLayer = (i, onComplete)=>{
     if (XPFNetwork._pathMod) pathbase = XPFNetwork._pathMod(pathbase);
 
     ATON.Utils.textureLoader.load(pathbase, (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         //tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = true;
 
@@ -439,7 +439,7 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
         }
 
         let tex = new THREE.VideoTexture( XPFNetwork._elVid );
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
 
         XPFNetwork._mat.map = tex;
         XPFNetwork._mat.needsUpdate = true;
@@ -455,7 +455,7 @@ XPFNetwork.updateCurrentXPFbaseLayer = ( onComplete )=>{
 
     // Static panorama
     ATON.Utils.textureLoader.load(pathbase, (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         //tex.minFilter = THREE.NearestFilter;
         tex.generateMipmaps = true;
 

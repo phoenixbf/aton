@@ -441,7 +441,7 @@ Utils.modelVisitor = (N, model)=>{
                     o.material.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
                     o.material.map.minFilter  = THREE.LinearMipmapLinearFilter;
                     o.material.map.magFilter  = THREE.LinearFilter;
-                    o.material.map.encoding   = ATON._stdEncoding;
+                    o.material.map.colorSpace   = ATON._stdEncoding;
                     o.material.onBeforeCompile = ( shader )=>{
                         shader.fragmentShader.replace
                         
@@ -508,7 +508,7 @@ Utils.processMaterial = (M)=>{
     M.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
     M.map.minFilter  = THREE.LinearMipmapLinearFilter;
     M.map.magFilter  = THREE.LinearFilter;
-    M.map.encoding   = ATON._stdEncoding;
+    M.map.colorSpace   = ATON._stdEncoding;
     //M.map.needsUpdate = true;
 };
 
@@ -898,7 +898,7 @@ Utils.createATONCube = (id)=>{
     let mat = new THREE.MeshStandardMaterial();
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube.jpg"), (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         mat.map = tex;
     });
 
@@ -918,18 +918,18 @@ Utils.createATONCubePBR = (id)=>{
     mat.metalness = 1.0;
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube.jpg"), (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         mat.map = tex;
     });
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube-pbr.jpg"), (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         mat.metalnessMap = tex;
         mat.roughnessMap = tex;
     });
 
     Utils.textureLoader.load((ATON.PATH_RES+"models/aton-cube-nrm.png"), (tex)=>{
-        tex.encoding  = ATON._stdEncoding;
+        tex.colorSpace  = ATON._stdEncoding;
         mat.normalMap = tex;
 
         //mat.bumpMap.anisotropy = ATON._maxAnisotropy;
@@ -954,7 +954,7 @@ Utils.createGround = (texture, dx,dz)=>{
 
     let mat = new THREE.MeshStandardMaterial();
     if (texture !== undefined) Utils.textureLoader.load(texture, (tex)=>{
-        tex.encoding = ATON._stdEncoding;
+        tex.colorSpace = ATON._stdEncoding;
         mat.map = tex;
     });
 

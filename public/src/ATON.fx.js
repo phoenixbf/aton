@@ -87,9 +87,10 @@ FX.init = ()=>{
     //console.log(FX.passes[FX.PASS_AO]);
 
     // Sobel
+/*
     const effectSobel = new THREE.ShaderPass( THREE.SobelOperatorShader );
     effectSobel.uniforms[ 'resolution' ].value.set(CW,CH);
-
+*/
     // Bloom
     FX.passes[FX.PASS_BLOOM] = new THREE.UnrealBloomPass( new THREE.Vector2( CW,CH ), 1.5, 0.4, 0.85 );
     FX.passes[FX.PASS_BLOOM].threshold = 0.9

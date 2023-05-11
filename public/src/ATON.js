@@ -271,10 +271,14 @@ ATON._setupBaseListeners = ()=>{
 
     if (hidden !== undefined) document.addEventListener(visibilityChange, ()=>{
         if (document[hidden]){
+            if (ATON.XR._bPresenting) return;
+
             console.log("Suspend");
             ATON.renderPause();
         }
         else {
+            if (ATON.XR._bPresenting) return;
+            
             console.log("Resume");
             ATON.renderResume();
         }

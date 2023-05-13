@@ -200,6 +200,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.manager.addHandler( /\.gltf$/, ATON._aLoader );
     ts.manager.addHandler( /\.ktx2$/, ATON._ktx2Loader );
+    ts.manager.addHandler( /\.drc$/, ATON._dracoLoader );
     //ts.manager.addHandler( /\.basis$/, ATON._basisLoader );
 
     N.add( ts.group );

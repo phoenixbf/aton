@@ -235,7 +235,7 @@ Utils.resolveCollectionURL = (url)=>{
 Utils.tryLoadFromService = (url, N)=>{
     if (!N) return false;
 
-    if (url.startsWith("https://cesium.com/ion/assets/")){
+    if (url.startsWith("https://cesium.com/ion/assets/") || url.startsWith("https://ion.cesium.com/assets/")){
         let vv = url.split("/");
         let assid = vv[vv.length - 1];
 

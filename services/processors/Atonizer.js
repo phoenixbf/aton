@@ -91,13 +91,15 @@ Atonizer.run = ()=>{
     let gopts = {};
 	gopts.cwd = Atonizer.args.infolder;
 
-    glob(fpattern, gopts, (err, files)=>{
+    let files = fg.sync(fpattern, gopts);
+
+    //glob(fpattern, gopts, (err, files)=>{
     //fg(fpattern).then((files)=>{
         let outfolder = Atonizer.args.outfolder;
         //let outfolder = path.join(Atonizer.args.outfolder, "uncomp/");
         //if (!fs.existsSync(outfolder)) fs.mkdirSync(outfolder);
 
-        if (err) console.log(err);
+        //if (err) console.log(err);
 
         let nitems = files.length;
 
@@ -127,7 +129,7 @@ Atonizer.run = ()=>{
                 });
             }
         }
-    });
+    //});
 };
 
 

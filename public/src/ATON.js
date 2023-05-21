@@ -591,7 +591,7 @@ ATON.realize = ( bNoRender )=>{
         //powerPreference: "high-performance",
 
         ///pecision: "lowp", //"mediump"
-        preserveDrawingBuffer: true
+        //preserveDrawingBuffer: true // CHECK!
     };
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
@@ -1523,6 +1523,20 @@ ATON.setMainPanorama = (path)=>{
     let tpano = undefined;
 
     path = ATON.Utils.resolveCollectionURL(path);
+/*
+    ATON.Utils.textureLoader.load(path, (tex)=>{
+        tex.colorSpace = ATON._stdEncoding;
+        tex.mapping = THREE.EquirectangularReflectionMapping;
+        tex.generateMipmaps = true;
+
+        ATON._mainRoot.background  = tex;
+        ATON._mainRoot.environment = tex;
+
+        ATON.updateLightProbes();
+    });
+
+    return;
+*/
 
     // Geometry
     if (ATON._mMainPano === undefined){
@@ -2142,7 +2156,7 @@ ATON._onFrame = ()=>{
     else ATON.Nav._controls.update(ATON._dt);
 
     // Spatial queries
-    ATON._handleQueries(); // k
+    /*if (!ATON.device.isMobile || ATON._bCenteredQuery || ATON.XR._bPresenting)*/ ATON._handleQueries();
 
     // Navigation system
     ATON.Nav.update(); // k

@@ -135,15 +135,37 @@ App.getStorage = (id)=>{
 };
 
 /**
+Register a service worker (PWA) for a given app
+@param {object} A - the App created via ATON.App.realize()
+@param {string} swpath - service worker path (PWA) to register
+@example
+ATON.App.registerServiceWorker( A, "myserviceworker.js" )
+*/
+App.registerServiceWorker = ( A, swpath )=>{
+    if (!swpath) return;
+    if (A.basePath) swpath = A.basePath + swpath;
+
+    if ("serviceWorker" in navigator){
+        window.addEventListener("load", ()=>{
+            navigator.serviceWorker
+            .register(swpath)
+            .then(res => console.log("service worker registered"))
+            .catch(err => console.log("service worker not registered", err))
+        });
+    }
+};
+
+/**
 Create an App object.
 It also adds a "params" property to access url parameters, and "basePath" for accessing local content (css, configs, etc.)
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
+@param {string} swpath - (optional) service worker path (PWA) to register
 @returns {object} - web-app object, to be started with run() method
 @example
 let A = ATON.App.realize( mySetupRoutine )
 */
-App.realize = (setup, update)=>{
+App.realize = (setup, update, swpath)=>{
     let A = {};
 
     A.setup  = setup;
@@ -158,6 +180,8 @@ App.realize = (setup, update)=>{
     // Base path for this App
     A.basePath = ATON.Utils.getBaseFolder( window.location.href.split('?')[0] );
 
+    App.registerServiceWorker(A, swpath);
+
     return A;
 };
 
@@ -166,11 +190,12 @@ Create and run an App.
 See App.realize() method
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
+@param {string} swpath - (optional) service worker path (PWA) to register
 @example
 ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine )
 */
-App.realizeAndRun = (setup, update)=>{
-    let A = App.realize(setup, update);
+App.realizeAndRun = (setup, update, swpath)=>{
+    let A = App.realize(setup, update, swpath);
     App.run(A);
 };
 

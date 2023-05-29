@@ -771,7 +771,7 @@ ATON.realize = ( bNoRender )=>{
     ATON.SemFactory.init();
 
     // App
-    ATON.App.init();
+    //ATON.App.init();
 
     // Phygital
     ATON.Phygital.init();

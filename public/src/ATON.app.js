@@ -14,16 +14,14 @@ ATON App Hub
 */
 let App = {};
 
-// Realize the hub
-App.init = ()=>{
-    App._id   = $("meta[name='aton\\:appid']").attr("content");
-    App._data = {};
 
-    App.setup  = undefined;
-    App.update = undefined;
+App._id    = $("meta[name='aton\\:appid']").attr("content");
+App._data  = {};
+App.setup  = undefined;
+App.update = undefined;
 
-    App._bRunning = false;
-};
+App._bRunning = false;
+
 
 // Send JSON patch
 // TODO: https://tools.ietf.org/html/rfc6902
@@ -135,29 +133,30 @@ App.getStorage = (id)=>{
 };
 
 /**
-Register a service worker (PWA) for a given app
-@param {object} A - the App created via ATON.App.realize()
-@param {string} swpath - service worker path (PWA) to register
+Register a service worker (PWA) for webapp
+@param {string} swpath - service worker path to register
 @example
-ATON.App.registerServiceWorker( A, "myserviceworker.js" )
+ATON.App.registerServiceWorker("myserviceworker.js")
 */
-App.registerServiceWorker = ( A, swpath )=>{
+App.registerServiceWorker = ( swpath )=>{
     if (!swpath) return;
-    if (A.basePath) swpath = A.basePath + swpath;
+    if (App.basePath) swpath = App.basePath + swpath;
 
     if ("serviceWorker" in navigator){
         window.addEventListener("load", ()=>{
             navigator.serviceWorker
             .register(swpath)
-            .then(res => console.log("service worker registered"))
-            .catch(err => console.log("service worker not registered", err))
+            .then(res => console.log("PWA service worker registered"))
+            .catch(err => console.log("PWA service worker not registered", err))
         });
     }
+
+    return App;
 };
 
 /**
-Create an App object.
-It also adds a "params" property to access url parameters, and "basePath" for accessing local content (css, configs, etc.)
+Realize the App.
+You can use "params" property to access url parameters, and "basePath" for accessing local app content (css, configs, etc.)
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
 @param {string} swpath - (optional) service worker path (PWA) to register
@@ -166,59 +165,60 @@ It also adds a "params" property to access url parameters, and "basePath" for ac
 let A = ATON.App.realize( mySetupRoutine )
 */
 App.realize = (setup, update, swpath)=>{
-    let A = {};
 
-    A.setup  = setup;
-    A.update = update;
+    App.setup  = setup;
+    App.update = update;
 
-    A.run = ()=>{
-        App.run( A );
-    };
-
-    A.params = new URLSearchParams( window.location.search );
+    // App URL params
+    App.params = new URLSearchParams( window.location.search );
     
     // Base path for this App
-    A.basePath = ATON.Utils.getBaseFolder( window.location.href.split('?')[0] );
+    App.basePath = ATON.Utils.getBaseFolder( window.location.href.split('?')[0] );
+    console.log("App base path: "+App.basePath);
 
-    App.registerServiceWorker(A, swpath);
+    App.registerServiceWorker( swpath );
 
-    return A;
+    return App;
 };
 
 /**
-Create and run an App.
+Create and run the App.
 See App.realize() method
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
 @param {string} swpath - (optional) service worker path (PWA) to register
 @example
-ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine )
+ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine, "myserviceworker.js" )
 */
 App.realizeAndRun = (setup, update, swpath)=>{
-    let A = App.realize(setup, update, swpath);
-    App.run(A);
+    App.realize(setup, update, swpath).run();
 };
 
 /**
 Run the App, typically inside window.addEventListener('load', ...) 
-@param {object} A - the App created via ATON.App.realize()
+@returns {boolean} - true on success
 @example
 window.addEventListener('load',()=>{
     A.run()
 });
 */
-App.run = ( A )=>{
-    if (App._bRunning) return;
+App.run = ()=>{
+    if (App._bRunning) return false;
 
-    App._bRunning = true;
-
-    if (A.setup) A.setup();
+    if (App.setup) App.setup();
     else {
         ATON.FE.realize();
         console.log("App [Warn]: your App should define a setup() routine");
     }
 
-    if (A.update) ATON.addUpdateRoutine( A.update );
+    if (App.update){
+        ATON.addUpdateRoutine( App.update );
+        console.log("App: update routine registered");
+    }
+
+    App._bRunning = true;
+
+    return App._bRunning;
 };
 
 

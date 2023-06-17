@@ -33,7 +33,7 @@ import Nav from "./ATON.nav.js";
 import XR from "./ATON.xr.js";
 import SUI from "./ATON.sui.js";
 import UI from "./ATON.ui.js";
-import Photon from "./ATON.Photon.js";
+import Photon from "./ATON.photon.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaFlow from "./ATON.mediaflow.js";

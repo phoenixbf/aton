@@ -140,9 +140,9 @@ MediaFlow._setupFR = ()=>{
 
         let b64 = MediaFlow._frAS.result;
 
-         ATON.VRoadcast.socket.emit("UTALK", {
+         ATON.Photon.socket.emit("UTALK", {
              audio: b64,
-             uid: ATON.VRoadcast.uid,
+             uid: ATON.Photon.uid,
              //vol: MediaFlow._auAVGvolume
          });
 
@@ -155,9 +155,9 @@ MediaFlow._setupFR = ()=>{
 
         let b64 = MediaFlow._frVS.result;
 
-         ATON.VRoadcast.socket.emit("UVIDEO", {
+         ATON.Photon.socket.emit("UVIDEO", {
              video: b64,
-             uid: ATON.VRoadcast.uid
+             uid: ATON.Photon.uid
          });
 
         b64 = null;
@@ -387,7 +387,7 @@ MediaFlow.stopAudioStreaming = ()=>{
     MediaFlow._bAudioStreaming = false;
     MediaFlow._bAudioRecording = false;
 
-    ATON.VRoadcast.socket.emit("UAUDIOSTOP", { uid: ATON.VRoadcast.uid });
+    ATON.Photon.socket.emit("UAUDIOSTOP", { uid: ATON.Photon.uid });
 };
 
 MediaFlow.startOrStopAudioStreaming = ()=>{
@@ -497,12 +497,12 @@ MediaFlow.stopScreenStreaming = ()=>{
 
     console.log("Stop screen streaming");
 
-    if (ATON.VRoadcast.uid !== undefined){
-        let vs = MediaFlow.getVideoStream(ATON.VRoadcast.uid);
+    if (ATON.Photon.uid !== undefined){
+        let vs = MediaFlow.getVideoStream(ATON.Photon.uid);
         vs.el.style.display = "none";
         vs.el.pause();
 
-        ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+        ATON.Photon.socket.emit("UVIDEOSTOP", { uid: ATON.Photon.uid });
     }
 };
 
@@ -567,12 +567,12 @@ MediaFlow.stopCameraStreaming = ()=>{
 
     console.log("Stop camera streaming");
 
-    if (ATON.VRoadcast.uid !== undefined){
-        let vs = MediaFlow.getVideoStream(ATON.VRoadcast.uid);
+    if (ATON.Photon.uid !== undefined){
+        let vs = MediaFlow.getVideoStream(ATON.Photon.uid);
         vs.el.style.display = "none";
         vs.el.pause();
 
-        ATON.VRoadcast.socket.emit("UVIDEOSTOP", { uid: ATON.VRoadcast.uid });
+        ATON.Photon.socket.emit("UVIDEOSTOP", { uid: ATON.Photon.uid });
     }
 };
 
@@ -584,7 +584,7 @@ MediaFlow.startOrStopCameraStreaming = ()=>{
 
 MediaFlow.realizeOrUpdateVStream = (stream, onClick)=>{
     // Local vstream
-    let uid = ATON.VRoadcast.uid;
+    let uid = ATON.Photon.uid;
     if (uid === undefined) return;
 
     let vs  = MediaFlow.getOrCreateVideoStream(uid, undefined, true);
@@ -600,21 +600,21 @@ MediaFlow.realizeOrUpdateVStream = (stream, onClick)=>{
     vs.el.srcObject = stream;
 
 /*
-    if (!ATON.VRoadcast._elVStream){
-        ATON.VRoadcast._elVStream = document.createElement("video");
-        ATON.VRoadcast._elVStream.autoplay    = true;
-        ATON.VRoadcast._elVStream.playsinline = true;
+    if (!ATON.Photon._elVStream){
+        ATON.Photon._elVStream = document.createElement("video");
+        ATON.Photon._elVStream.autoplay    = true;
+        ATON.Photon._elVStream.playsinline = true;
         
-        ATON.VRoadcast._elVStream.classList.add("atonVRCvidStream");
-        if (ATON.VRoadcast.uid !== undefined) ATON.VRoadcast._elVStream.classList.add("atonVRCu"+(ATON.VRoadcast.uid%6));
+        ATON.Photon._elVStream.classList.add("atonVRCvidStream");
+        if (ATON.Photon.uid !== undefined) ATON.Photon._elVStream.classList.add("atonVRCu"+(ATON.Photon.uid%6));
 
-        if (onClick) ATON.VRoadcast._elVStream.onclick = onClick;
+        if (onClick) ATON.Photon._elVStream.onclick = onClick;
         
-        document.body.appendChild( ATON.VRoadcast._elVStream );
+        document.body.appendChild( ATON.Photon._elVStream );
     }
 
-    ATON.VRoadcast._elVStream.style.display = "inline-block";
-    ATON.VRoadcast._elVStream.srcObject = stream;
+    ATON.Photon._elVStream.style.display = "inline-block";
+    ATON.Photon._elVStream.srcObject = stream;
 */
 };
 

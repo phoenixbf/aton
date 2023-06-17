@@ -23,7 +23,7 @@
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
 
     <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-    <script type="text/javascript" src="/dist/ATON.min.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
 
 <script>
 window.addEventListener( 'load', ()=>{
@@ -32,7 +32,7 @@ window.addEventListener( 'load', ()=>{
     ATON.FE.realize();
 
     // Create some HTML UI
-    ATON.FE.uiAddButtonVRC("idTopToolbar"); // We add our VRoadcast button
+    ATON.FE.uiAddButtonVRC("idTopToolbar"); // We add our Photon button
     ATON.FE.uiAddButtonFullScreen("idTopToolbar");
 
     ATON.FE.uiAddButtonFirstPerson("idTopToolbar");       // First-person navigation mode
@@ -48,9 +48,9 @@ window.addEventListener( 'load', ()=>{
     // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network 
     ATON.FE.loadSceneID("samples/montebelluna");
 
-    // We subscribe to VRoadcast "user ID assigned" event (a positive number the service assign to identify us in the scene)
+    // We subscribe to Photon "user ID assigned" event (a positive number the service assign to identify us in the scene)
     ATON.on("VRC_IDassigned", (uid)=>{
-        console.log("Great! VRoadcast service assigned me ID: "+uid);
+        console.log("Great! Photon service assigned me ID: "+uid);
     });
 
 });

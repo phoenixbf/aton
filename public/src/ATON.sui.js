@@ -728,7 +728,7 @@ SUI.update = ()=>{
 
         if (SUI.bShowInfo) SUI.infoNode.visible = true;
 */      
-        if (!ATON.VRoadcast._bStreamFocus) SUI.mainSelector.visible = false;
+        if (!ATON.Photon._bStreamFocus) SUI.mainSelector.visible = false;
     }
     else {
         // XPF
@@ -744,7 +744,7 @@ SUI.update = ()=>{
         else SUI.infoNode.visible = false;
     }
 
-    if (SUI.mainSelector.visible && ATON.VRoadcast._bStreamFocus){
+    if (SUI.mainSelector.visible && ATON.Photon._bStreamFocus){
         let ss = SUI._selectorRad * (1.0 + (Math.cos(ATON._clock.elapsedTime*10.0) * 0.2) );
         SUI.mainSelector.scale.set(ss,ss,ss);
 

@@ -33,7 +33,7 @@ import Nav from "./ATON.nav.js";
 import XR from "./ATON.xr.js";
 import SUI from "./ATON.sui.js";
 import UI from "./ATON.ui.js";
-import VRoadcast from "./ATON.vroadcast.js";
+import Photon from "./ATON.Photon.js";
 import SemFactory from "./ATON.semfactory.js";
 import FE from "./ATON.fe.js";
 import MediaFlow from "./ATON.mediaflow.js";
@@ -64,7 +64,7 @@ ATON.AudioHub   = AudioHub;
 ATON.XR         = XR;
 ATON.SUI        = SUI;
 ATON.UI         = UI;
-ATON.VRoadcast  = VRoadcast;
+ATON.Photon     = Photon;
 ATON.SemFactory = SemFactory;
 ATON.FE         = FE;
 ATON.MediaFlow  = MediaFlow;
@@ -761,8 +761,9 @@ ATON.realize = ( bNoRender )=>{
     // Spatial UI
     ATON.SUI.init();
 
-    // VRoadcast
-    ATON.VRoadcast.init();
+    // Photon
+    ATON.Photon.init();
+    ATON.VRoadcast = ATON.Photon; // compatibility with old apps (SOON TO BE REMOVED)
 
     // Media Flow
     ATON.MediaFlow.init();
@@ -1178,8 +1179,8 @@ ATON.setWorldScaleLevel = (ws)=>{
     SUI.gLocNodes.scale.set(s,s,s);
     SUI.gMeasures.scale.set(s,s,s);
 
-    if (ATON.VRoadcast.avaGroup) ATON.VRoadcast.avaGroup.scale.set(s,s,s);
-    //if (ATON.VRoadcast.focGroup) ATON.VRoadcast.focGroup.scale.set(s,s,s);
+    if (ATON.Photon.avaGroup) ATON.Photon.avaGroup.scale.set(s,s,s);
+    //if (ATON.Photon.focGroup) ATON.Photon.focGroup.scale.set(s,s,s);
     //ATON.SUI.gPoints.scale.set(s,s,s);
 
     ATON.recomputeSceneBounds();
@@ -2161,8 +2162,8 @@ ATON._onFrame = ()=>{
     // Navigation system
     ATON.Nav.update(); // k
 
-    // VRoadcast
-    ATON.VRoadcast.update();
+    // Photon
+    ATON.Photon.update();
 
     // SUI
     ATON.SUI.update(); // k

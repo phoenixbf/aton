@@ -26,6 +26,18 @@
 <script type="module" src="/src/ATON.js"></script>
 <script>
 window.onload = ()=>{
+    let alpha = undefined;
+    let beta  = undefined;
+    let gamma = undefined;
+    let screenOrientation = 0;
+
+    let _zee   = new THREE.Vector3( 0,0,1 );
+    let _euler = new THREE.Euler();
+    let _q0    = new THREE.Quaternion();
+    let _q1    = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
+
+    let qori = new THREE.Quaternion();
+
     // Realize our App
     let myApp = ATON.App.realize();
 
@@ -34,12 +46,45 @@ window.onload = ()=>{
     myApp.setup = ()=>{
         ATON.realize(true); // We setup ATON without renderer
         
-        // Lets connect and join Photon session "sample-wapp-remote"
+        // Lets connect and join Photon session "sample-wapp-devori"
         ATON.Photon.bSendState = false; // We dont want to send our state since there is no virtual 3D representation for this app 
-        ATON.Photon.connect("sample-wapp-remote");
+        ATON.Photon.connect("sample-wapp-devori");
 
-        // Initial status message (our HTML stuff)
-        setStatus(false);
+        window.addEventListener('deviceorientation', (event)=>{
+            alpha = ATON.DEG2RAD * event.alpha;
+            gamma = ATON.DEG2RAD * event.gamma;
+            beta  = ATON.DEG2RAD * event.beta;
+
+            const orient = screenOrientation ? ATON.DEG2RAD * screenOrientation : 0;
+
+            _euler.set( beta, alpha, - gamma, 'YXZ' ); // 'ZXY' for the device, but 'YXZ' for us
+
+            qori.setFromEuler( _euler ); // orient the device
+            qori.multiply( _q1 ); // camera looks out the back of the device, not the top
+            qori.multiply( _q0.setFromAxisAngle( _zee, -orient ) ); // adjust for screen orientation
+
+            $("#idBeta").html(beta);
+            $("#idAlpha").html(alpha);
+            $("#idGamma").html(gamma);
+        });
+
+        window.addEventListener('orientationchange', ()=>{
+            screenOrientation = window.orientation || 0;
+        });
+
+        window.setInterval(()=>{
+            if (alpha === undefined || alpha === null) return;
+
+            let data = new Int8Array(4);
+            data[0] = 128.0 * qori.x;
+            data[1] = 128.0 * qori.y;
+            data[2] = 128.0 * qori.z;
+            data[3] = 128.0 * qori.w;
+
+            ATON.Photon.fireEvent("ori", data);
+            console.log(data);
+
+        }, 100);
 
         // We handle connect/disconnect to change status message
         ATON.on("VRC_Connected", ()=>{
@@ -54,16 +99,10 @@ window.onload = ()=>{
     myApp.run();
 };
 
-// Broadcast request for specific viewpoint by ID.
-// We define our custom event called "POV", with ID of the viewpoint
-let reqPOV = (id)=>{
-    ATON.Photon.fireEvent("POV", id);
-};
-
 // Helper function to set status message
 let setStatus = (b)=>{
     if (b){
-        let numUsers = ATON.Photon.getNumUsers(); // Retrieve current number of connected users
+        let numUsers = ATON.VRoadcast.getNumUsers(); // Retrieve current number of connected users
 
         if (numUsers <= 1) $("#idStatus").html("Connected (just you!)");
         else $("#idStatus").html("Connected ("+numUsers+" users)");
@@ -81,17 +120,15 @@ let setStatus = (b)=>{
 
 <body class="atonDefaultBody">
 
-    <div class="atonTitle">App Control</div>
+    <div class="atonTitle">DevOri Control</div>
     <div id='idStatus' class="descriptionText" style='text-align:center; padding:16px'></div><br>
 
     <div class='atonGalleryItem' style='padding:10px; min-width:200px; background-color: rgba(0,0,0, 0.2)'>
-        <div class='atonBlockSubTitle'>Viewpoints</div><br>
-        <!-- 
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('home')"><img src="../../res/icons/home.png">Home</div><br>
-        -->
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-entrance')"><img src="../../res/icons/pov.png">Entrance</div>
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-anvil')"><img src="../../res/icons/pov.png">Anvil</div>
-        <div class="atonBTN atonBTN-text atonBTN-green" onclick="reqPOV('pov-forge')"><img src="../../res/icons/pov.png">Forge</div>
+        <div class='atonBlockSubTitle'>Orientation</div><br>
+
+        <div id="idBeta">0.0</div>
+        <div id="idGamma">0.0</div>
+        <div id="idAlpha">0.0</div>
     </div>
 
 

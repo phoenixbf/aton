@@ -1,22 +1,22 @@
 /*!
     @preserve
 
- 	ATON VRoadcast
+ 	ATON Photon (previously "VRoadcast")
 
  	@author Bruno Fanini
 	VHLab, CNR ISPC
 
 ==================================================================================*/
-VRoadcast = {};
+Photon = {};
 
-VRoadcast.MAX_CLIENTS_PER_SESSION = 50;
+Photon.MAX_CLIENTS_PER_SESSION = 50;
 
 
 // Classes
 //=================================================
 
 // User
-VRoadcast.user = class {
+Photon.user = class {
     constructor(uid){
         if (uid!==undefined) this.uid = uid;
 
@@ -51,7 +51,7 @@ VRoadcast.user = class {
 
 
 // Session
-VRoadcast.session = class {
+Photon.session = class {
     constructor(sid){
         if (sid) this.sid = sid;
 
@@ -62,7 +62,7 @@ VRoadcast.session = class {
     touchUser(uid){
         if (this.users[uid]) return this.users[uid];
 
-        this.users[uid] = new VRoadcast.user(uid);
+        this.users[uid] = new Photon.user(uid);
         return this.users[uid];
     }
 
@@ -76,7 +76,7 @@ VRoadcast.session = class {
         }
 
         // If not full, tail index
-        if (tsize < VRoadcast.MAX_CLIENTS_PER_SESSION) return tsize;
+        if (tsize < Photon.MAX_CLIENTS_PER_SESSION) return tsize;
 
         return undefined;
     };
@@ -95,29 +95,29 @@ VRoadcast.session = class {
 };
 
 //=================================================
-VRoadcast.init = (io)=>{
+Photon.init = (io)=>{
     if (!io) return;
-    VRoadcast.io = io;
+    Photon.io = io;
 
-    VRoadcast.sessions = {};
-    VRoadcast.totConnections = 0;
+    Photon.sessions = {};
+    Photon.totConnections = 0;
 
-    VRoadcast.io.on('connection', VRoadcast.onNewConnection);
+    Photon.io.on('connection', Photon.onNewConnection);
 };
 
-VRoadcast.touchSession = (sid)=>{
-    if (VRoadcast.sessions[sid]) return VRoadcast.sessions[sid];
+Photon.touchSession = (sid)=>{
+    if (Photon.sessions[sid]) return Photon.sessions[sid];
 
-    VRoadcast.sessions[sid] = new VRoadcast.session(sid);
+    Photon.sessions[sid] = new Photon.session(sid);
 
     console.log("Created session ID: "+sid);
-    return VRoadcast.sessions[sid];
+    return Photon.sessions[sid];
 };
 
 
 // Handle incoming connection
-VRoadcast.onNewConnection = (socket)=>{
-    VRoadcast.totConnections++;
+Photon.onNewConnection = (socket)=>{
+    Photon.totConnections++;
 
     let ipAddr = socket.handshake.address;
     console.log("New connection from "+ipAddr);
@@ -133,7 +133,7 @@ VRoadcast.onNewConnection = (socket)=>{
     // Whenever someone disconnects
     socket.on('disconnect', ()=>{
         if (sid) socket.leave(sid);
-        VRoadcast.totConnections--;
+        Photon.totConnections--;
 
         if (session !== undefined && uid !== undefined){
             delete session.users[uid];
@@ -145,9 +145,9 @@ VRoadcast.onNewConnection = (socket)=>{
 
             if (session.numUsers === 0){
                 //delete session;
-                //delete VRoadcast.sessions[sid];
+                //delete Photon.sessions[sid];
                 session = null;
-                VRoadcast.sessions[sid] = undefined;
+                Photon.sessions[sid] = undefined;
                 console.log("DELETED session "+sid);
             }
         }
@@ -155,7 +155,7 @@ VRoadcast.onNewConnection = (socket)=>{
 
     socket.on('SENTER', (data)=>{
         sid     = data;
-        session = VRoadcast.touchSession(sid);
+        session = Photon.touchSession(sid);
 
         socket.join(sid);
 
@@ -258,4 +258,4 @@ VRoadcast.onNewConnection = (socket)=>{
 };
 
 
-module.exports = VRoadcast;
+module.exports = Photon;

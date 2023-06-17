@@ -290,7 +290,7 @@ FE._update = ()=>{
     if (ATON.XR._bPresenting){
         let v = ATON.XR.getAxisValue(ATON.XR.HAND_R);
         
-        if (!ATON.VRoadcast._bStreamFocus){
+        if (!ATON.Photon._bStreamFocus){
             let s = ATON.SUI._selectorRad;
             s += (v.y * 0.01);
 
@@ -503,7 +503,7 @@ FE.uiAddButtonNav = (idcontainer)=>{
 };
 
 /**
-Add talk button (VRoadcast)
+Add talk button (Photon)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
 FE.uiAddButtonTalk = (idcontainer)=>{
@@ -527,23 +527,23 @@ FE.uiAddButtonTalk = (idcontainer)=>{
 };
 
 /**
-Add focus stream button (VRoadcast)
+Add focus stream button (Photon)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
 FE.uiAddButtonStreamFocus = (idcontainer)=>{
 
     FE.uiAddButton(idcontainer, "focus", ()=>{
-        if (ATON.VRoadcast._bStreamFocus){
-            ATON.VRoadcast.setFocusStreaming(false);
+        if (ATON.Photon._bStreamFocus){
+            ATON.Photon.setFocusStreaming(false);
             $("#btn-focus").removeClass("atonBTN-rec");
         }
         else {
-            ATON.VRoadcast.setFocusStreaming(true);
+            ATON.Photon.setFocusStreaming(true);
             $("#btn-focus").addClass("atonBTN-rec");
         }
     }, "Focus streaming ON/OFF");
 
-    if (ATON.VRoadcast._bStreamFocus) $("#btn-focus").addClass("atonBTN-rec");
+    if (ATON.Photon._bStreamFocus) $("#btn-focus").addClass("atonBTN-rec");
     else $("#btn-focus").removeClass("atonBTN-rec");
 };
 
@@ -729,18 +729,18 @@ FE._setupVRCevents = ()=>{
         $("#btn-vrc").addClass( FE.getVRCclassFromID(uid) );
 
         // Selector color
-        //let col = ATON.VRoadcast.ucolors[uid%6];
-        //ATON.MatHub.materials.selector.color = ATON.VRoadcast.ucolors[uid%6];
-        ATON.SUI.setSelectorColor( ATON.VRoadcast.color );
-        ATON.plight.color = ATON.VRoadcast.color;
+        //let col = ATON.Photon.ucolors[uid%6];
+        //ATON.MatHub.materials.selector.color = ATON.Photon.ucolors[uid%6];
+        ATON.SUI.setSelectorColor( ATON.Photon.color );
+        ATON.plight.color = ATON.Photon.color;
 
         FE.checkAuth((data)=>{
-            if (data.username!==undefined /*&& ATON.VRoadcast._username===undefined*/) ATON.VRoadcast.setUsername(data.username);
+            if (data.username!==undefined /*&& ATON.Photon._username===undefined*/) ATON.Photon.setUsername(data.username);
         });
     });
 
     ATON.on("VRC_SceneState", (sstate)=>{
-        let numUsers = ATON.VRoadcast.getNumUsers();
+        let numUsers = ATON.Photon.getNumUsers();
         if (numUsers>1) $("#idVRCnumusers").html(numUsers);
         else $("#idVRCnumusers").html("");
 
@@ -748,12 +748,12 @@ FE._setupVRCevents = ()=>{
     });
 /*
     ATON.on("VRC_UserEnter", (uid)=>{
-        let numUsers = ATON.VRoadcast.getNumUsers();
+        let numUsers = ATON.Photon.getNumUsers();
         $("#idVRCnumusers").html(numUsers);
         console.log("Users: "+numUsers);
     });
     ATON.on("VRC_UserLeave", (uid)=>{
-        let numUsers = ATON.VRoadcast.getNumUsers();
+        let numUsers = ATON.Photon.getNumUsers();
         $("#idVRCnumusers").html(numUsers);
         console.log("Users: "+numUsers);
     });
@@ -773,26 +773,26 @@ FE._setupVRCevents = ()=>{
 };
 
 /**
-Add VRoadcast button (to connect/disconnect from collaborative sessions)
+Add Photon button (to connect/disconnect from collaborative sessions)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
 FE.uiAddButtonVRC = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
-        if (ATON.VRoadcast.isConnected()){
+        if (ATON.Photon.isConnected()){
             FE.popupVRC();
         }
         else {
-            ATON.VRoadcast.connect();
+            ATON.Photon.connect();
         }
-    }, "VRoadcast (collaborative session)");
+    }, "Photon (collaborative session)");
 
     $("#btn-vrc").append("<span id='idVRCnumusers' class='atonVRCcounter'></span>");
 
     //$("<div id='idVRCchatPanel' class='atonVRCsidePanel'>xxx</div>").appendTo(document.body);
-    //$("#idVRCchatPanel").append(ATON.VRoadcast._elChat);
+    //$("#idVRCchatPanel").append(ATON.Photon._elChat);
     FE._setupVRCevents();
 
-    if (ATON.VRoadcast.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.VRoadcast.uid) );
+    if (ATON.Photon.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.Photon.uid) );
     else $("#btn-vrc").attr("class","atonBTN");
 };
 
@@ -1140,7 +1140,7 @@ FE.popupScreenShot = ()=>{
 
 FE.popupVRC = ()=>{
     let htmlcontent = "";
-    let numUsers = ATON.VRoadcast.getNumUsers();
+    let numUsers = ATON.Photon.getNumUsers();
 
     if (numUsers>1) htmlcontent += "<div class='atonPopupTitle'>Collaborative Session ("+numUsers+" users)</div>";
     else htmlcontent += "<div class='atonPopupTitle'>Collaborative Session</div>";
@@ -1150,7 +1150,7 @@ FE.popupVRC = ()=>{
     // Username
     //htmlcontent += "Your username in this collaborative session is:<br>";
     htmlcontent += "<input id='idVRCusername' type='text' size='10' placeholder='username...' style='display:none'>";
-    htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:150px; display:none'>"+ATON.VRoadcast._username+"</div>";
+    htmlcontent += "<div id='idVRCusernameBTN' class='atonBTN' style='width:150px; display:none'>"+ATON.Photon._username+"</div>";
     htmlcontent += "<div class='atonBTN atonBTN-text' id='idVRCdisconnect'><img src='"+ATON.FE.PATH_RES_ICONS+"exit.png'>LEAVE</div>";
 
     htmlcontent += "<div id='idChatBoxPopup' style='display:block'></div>";
@@ -1187,25 +1187,25 @@ FE.popupVRC = ()=>{
     });
 
 
-    if (ATON.VRoadcast._username === undefined){
+    if (ATON.Photon._username === undefined){
         $('#idVRCusername').show();
         $('#idVRCusernameBTN').hide();
     }
     else {
-        $('#idVRCusername').val(ATON.VRoadcast._username);
+        $('#idVRCusername').val(ATON.Photon._username);
         $('#idVRCusername').hide();
         $('#idVRCusernameBTN').show();
     }
 
-    if (ATON.VRoadcast.uid !== undefined) $('#idVRCusernameBTN').addClass("atonVRCu"+(ATON.VRoadcast.uid % 6));
+    if (ATON.Photon.uid !== undefined) $('#idVRCusernameBTN').addClass("atonVRCu"+(ATON.Photon.uid % 6));
 
-    $("#idChatBoxPopup").append(ATON.VRoadcast._elChat);
+    $("#idChatBoxPopup").append(ATON.Photon._elChat);
 
     $("#idVRCmsg").keypress((e)=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
         if (keycode == '13'){
             let str = $("#idVRCmsg").val();
-            ATON.VRoadcast.setMessage( str );
+            ATON.Photon.setMessage( str );
             $("#idVRCmsg").val("");
             //$("#idChatBox:first-child").scrollTop( $("#idChatBox:first-child").height() );
         }
@@ -1215,10 +1215,10 @@ FE.popupVRC = ()=>{
         let keycode = (e.keyCode ? e.keyCode : e.which);
         if (keycode == '13'){
             let str = $("#idVRCusername").val();
-            ATON.VRoadcast.setUsername( str );
+            ATON.Photon.setUsername( str );
             
             $('#idVRCusername').hide();
-            $('#idVRCusernameBTN').html(ATON.VRoadcast._username);
+            $('#idVRCusernameBTN').html(ATON.Photon._username);
             $('#idVRCusernameBTN').show();
         }
     });
@@ -1229,7 +1229,7 @@ FE.popupVRC = ()=>{
     });
 
     $("#idVRCdisconnect").click(()=>{
-        ATON.VRoadcast.disconnect();
+        ATON.Photon.disconnect();
         ATON.FE.popupClose();
     });
 };
@@ -1242,7 +1242,7 @@ FE.checkAuth = (onReceive)=>{
 
         if (data.username !== undefined){
             $("#btn-user").addClass("switchedON");
-            if (ATON.VRoadcast._username === undefined) ATON.VRoadcast.setUsername(data.username);
+            if (ATON.Photon._username === undefined) ATON.Photon.setUsername(data.username);
         }
         else {
             $("#btn-user").removeClass("switchedON");
@@ -1266,7 +1266,7 @@ FE.checkAuth = (onReceive)=>{
 
             if (data.username !== undefined){
                 $("#btn-user").addClass("switchedON");
-                if (ATON.VRoadcast._username === undefined) ATON.VRoadcast.setUsername(data.username);
+                if (ATON.Photon._username === undefined) ATON.Photon.setUsername(data.username);
             }
             else {
                 $("#btn-user").removeClass("switchedON");

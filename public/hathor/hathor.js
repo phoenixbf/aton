@@ -38,9 +38,9 @@ HATHOR.init = (sid)=>{
     HATHOR.paramBack  = ATON.FE.urlParams.get('back');
 
     if (HATHOR.paramRLOG){
-        console.log   = ATON.VRoadcast.log;
-        console.error = ATON.VRoadcast.log;
-        console.warn  = ATON.VRoadcast.log;
+        console.log   = ATON.Photon.log;
+        console.error = ATON.Photon.log;
+        console.warn  = ATON.Photon.log;
     }
 
     // Enable BVH bounds visualziation
@@ -414,7 +414,7 @@ HATHOR.buildUIProfiles = ()=>{
         
         //HATHOR.uiAddBaseSem();
 
-        //if (HATHOR.paramSID) ATON.VRoadcast.connect();
+        //if (HATHOR.paramSID) ATON.Photon.connect();
         //HATHOR.paramVRC = "1";
         HATHOR._bVRCreq = true;
     });
@@ -561,9 +561,9 @@ HATHOR.suiSetup = ()=>{
 HATHOR.setupVRCEventHandlers = ()=>{
     if (HATHOR._bVRCsetup) return;
 
-    //ATON.VRoadcast.on("VRC_test", (d)=>{ console.log(d); });
+    //ATON.Photon.on("VRC_test", (d)=>{ console.log(d); });
 
-    ATON.VRoadcast.on("AFE_DeleteNode", (d)=>{
+    ATON.Photon.on("AFE_DeleteNode", (d)=>{
         let nid  = d.nid;
         let type = d.t;
         if (nid === undefined) return;
@@ -578,16 +578,16 @@ HATHOR.setupVRCEventHandlers = ()=>{
         }*/
     });
 
-    ATON.VRoadcast.on("AFE_ClearMeasurements",()=>{
+    ATON.Photon.on("AFE_ClearMeasurements",()=>{
         ATON.SUI.clearMeasurements();
     });
 
-    ATON.VRoadcast.on("AFE_AddSceneEdit", (d)=>{
+    ATON.Photon.on("AFE_AddSceneEdit", (d)=>{
         ATON.SceneHub.parseScene(d);
         //console.log(d);
     });
 
-    ATON.VRoadcast.on("AFE_NodeSwitch", (d)=>{
+    ATON.Photon.on("AFE_NodeSwitch", (d)=>{
         let nid = d.nid;
         if (nid === undefined) return;
 
@@ -600,7 +600,7 @@ HATHOR.setupVRCEventHandlers = ()=>{
         N.toggle(d.v);
     });
 
-    ATON.VRoadcast.on("AFE_LightSwitch", (b)=>{
+    ATON.Photon.on("AFE_LightSwitch", (b)=>{
         ATON.toggleMainLight(b);
     });
 
@@ -615,7 +615,7 @@ HATHOR.setupVRCEventHandlers = ()=>{
         let b64 = data.video;
         let uid = data.uid;
 
-        let A = ATON.VRoadcast.avatarList[uid];
+        let A = ATON.Photon.avatarList[uid];
         if (!A) return;
 
         if (!A._elVStream){
@@ -689,11 +689,11 @@ HATHOR.setupEventHandlers = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (HATHOR.paramVRC){
-            if (HATHOR.paramVRC.length > 4) ATON.VRoadcast.setAddress( HATHOR.paramVRC );
-            ATON.VRoadcast.connect();
+            if (HATHOR.paramVRC.length > 4) ATON.Photon.setAddress( HATHOR.paramVRC );
+            ATON.Photon.connect();
             //HATHOR._bVRCreq = true;
         }
-        //if (HATHOR._bVRCreq) ATON.VRoadcast.connect();
+        //if (HATHOR._bVRCreq) ATON.Photon.connect();
 
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
 
@@ -710,7 +710,7 @@ HATHOR.setupEventHandlers = ()=>{
             HATHOR._bVRCreq = false;
 
             setTimeout(()=>{
-                ATON.VRoadcast.connect();
+                ATON.Photon.connect();
             }, 1000);
         }
     });
@@ -721,7 +721,7 @@ HATHOR.setupEventHandlers = ()=>{
         //$('#idAuthTools').show();
         
         if (HATHOR.paramVRC === undefined) return;
-        ATON.VRoadcast.setUsername(d.username);
+        ATON.Photon.setUsername(d.username);
     });
     ATON.on("Logout", ()=>{
         $('#idAuthTools').hide();
@@ -759,8 +759,8 @@ HATHOR.setupEventHandlers = ()=>{
         }
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        //ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E); // FIXME: check why this is not working
-        ATON.VRoadcast.fireEvent("AFE_NodeSwitch", {nid: N.nid, v: N.v, t: N.t});
+        //ATON.Photon.fireEvent("AFE_AddSceneEdit", E); // FIXME: check why this is not working
+        ATON.Photon.fireEvent("AFE_NodeSwitch", {nid: N.nid, v: N.v, t: N.t});
         
         //console.log(E);
     });
@@ -834,7 +834,7 @@ HATHOR.setupEventHandlers = ()=>{
                 ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
 
                 //if (HATHOR.paramVRC === undefined) return;
-                ATON.VRoadcast.fireEvent("AFE_DeleteNode", {t: ATON.NTYPES.SEM, nid: ATON._hoveredSemNode });
+                ATON.Photon.fireEvent("AFE_DeleteNode", {t: ATON.NTYPES.SEM, nid: ATON._hoveredSemNode });
             }
         }
 
@@ -920,7 +920,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight.shadows = bShadows;
 
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
         if (k==='l'){
             ATON.FE.controlLight(true);
@@ -941,7 +941,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight.direction = [D.x,D.y,D.z];
 
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 */
 
@@ -972,7 +972,7 @@ HATHOR.setupEventHandlers = ()=>{
             console.log(hp);
 
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 */
         //if (k==='y') ATON.XR.switchHands();
@@ -981,7 +981,7 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='r') ATON.MediaFlow.startRecording();
 
         if (k==='f'){
-            ATON.VRoadcast.setFocusStreaming(true);
+            ATON.Photon.setFocusStreaming(true);
 
             if (ATON._queryDataScene){
                 ATON.FX.setDOFfocus( ATON._queryDataScene.d );
@@ -1004,7 +1004,7 @@ HATHOR.setupEventHandlers = ()=>{
         //if (k==='r') ATON.MediaFlow.stopRecording();
 
         if (k==='f'){
-            ATON.VRoadcast.setFocusStreaming(false);
+            ATON.Photon.setFocusStreaming(false);
 
             if (ATON.FX.isPassEnabled(ATON.FX.PASS_DOF)){
                 let k = ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC);
@@ -1031,7 +1031,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight.shadows = ATON._renderer.shadowMap.enabled;
 
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 
         if (k==='.') ATON.FE.controlSelectorScale(false);
@@ -1105,7 +1105,7 @@ HATHOR.measure = ()=>{
     ];
 
     ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-    ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 };
 
 HATHOR.switchUserScale = ()=>{
@@ -1207,7 +1207,7 @@ HATHOR.addLightProbe = ()=>{
     //console.log(E);
 
     ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-    ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+    ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 };
 
 // Popups
@@ -1426,7 +1426,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 };
 
@@ -1731,7 +1731,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].fov      = pov.fov;
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
 
     });
@@ -1757,7 +1757,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].fov      = pov.fov;
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
 /*
@@ -1806,7 +1806,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].fov      = pov.fov;
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         console.log(pov);
     });
@@ -1865,7 +1865,7 @@ HATHOR.popupGraphs = ()=>{
         let E = {};
         E.measurements = {};
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
-        ATON.VRoadcast.fireEvent("AFE_ClearMeasurements");
+        ATON.Photon.fireEvent("AFE_ClearMeasurements");
     });
 
     $("#idNewNID").click(()=>{
@@ -1988,7 +1988,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainpano.url = purl;
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idUpdLPs").click(()=>{
@@ -2070,7 +2070,7 @@ HATHOR.popupEnvironment = ()=>{
 
         E.environment.exposure = e;
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idDirLight").on("change",()=>{
@@ -2086,16 +2086,16 @@ HATHOR.popupEnvironment = ()=>{
             E.environment.mainlight = {};
             E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
         else {
             $("#idOptShadows").hide();
 
             //ATON.SceneHub.sendEdit( { environment:{ mainlight:{} } }, ATON.SceneHub.MODE_ADD);
-            //ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            //ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
             E.environment.mainlight = {};
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
-            ATON.VRoadcast.fireEvent("AFE_LightSwitch", false);
+            ATON.Photon.fireEvent("AFE_LightSwitch", false);
         }
 
         //console.log(E);
@@ -2116,7 +2116,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainlight.shadows = b;
         //if (ld) E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         ATON.updateLightProbes();
     });
@@ -2129,7 +2129,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainpano = {};
         E.environment.mainpano.rotation = r;
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idAutoLP").on("change",()=>{
@@ -2142,7 +2142,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.lightprobes = {};
         E.environment.lightprobes.auto = b;
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
     $("#idFXPassSAO").on("change",()=>{
@@ -2501,7 +2501,7 @@ HATHOR.popupEditSceneInfo = ()=>{
         if (E.title || E.description){
             //console.log(E);
             ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-            ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+            ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
     });
 };
@@ -2757,7 +2757,7 @@ HATHOR.popupNav = ()=>{
         ];
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
-        ATON.VRoadcast.fireEvent("AFE_AddSceneEdit", E);
+        ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         ATON.FE.popupClose();
     });
@@ -2769,7 +2769,7 @@ HATHOR.popupNav = ()=>{
         E.locomotionGraph = {};
 
         ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
-        ATON.VRoadcast.fireEvent("AFE_ClearLocNodes"); // TODO:
+        ATON.Photon.fireEvent("AFE_ClearLocNodes"); // TODO:
 
         ATON.FE.popupClose();
     });

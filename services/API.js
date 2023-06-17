@@ -1,7 +1,7 @@
 /*!
     @preserve
 
- 	ATON main REST API
+ 	ATON main API gateway
 
  	@author Bruno Fanini
 	VHLab, CNR ISPC

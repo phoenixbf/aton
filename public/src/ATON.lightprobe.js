@@ -138,10 +138,12 @@ update(){
     //cctx.needsUpdate = true;
     //console.log(cctx)
     
+
     this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
 
     if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
 
+    
     // fromScene method (robust but requires hack to temp. move scene before capture)
 /*
     ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
@@ -152,7 +154,6 @@ update(){
     ATON._rootVisibleGlobal.position.set(0,0,0);
 
     if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
-
     //console.log(ATON._rootVisibleGlobal)
 */
     return this;

@@ -47,7 +47,7 @@ Subscribe to a given event, with local handler and optional network handler.
 This is also accessible as ATON.on()
 @param {string} evtname - event name
 @param {function} handlerLocal - local event handler
-@param {function} handlerNetwork - optional network (see VRoadcast) event handler
+@param {function} handlerNetwork - optional network (see Photon) event handler
 @example
 ATON.EventHub.on("myEvent", function(data){ console.log("received local event"); })
 @example
@@ -64,7 +64,7 @@ EventHub.on = (evtname, handlerLocal, handlerNetwork)=>{
 
     // Received event (network)
     if (handlerNetwork !== undefined){
-        ATON.VRoadcast.on(evtname, handlerNetwork);
+        ATON.Photon.on(evtname, handlerNetwork);
     }
 
 };
@@ -74,7 +74,7 @@ Fire a local (and optionally network) event, with data.
 This is also accessible as ATON.fireEvent()
 @param {string} evtname - event name
 @param {object} data - object containing data to be transmitted with this event
-@param {bool} bReplicate - if true, it will replicate (broadcast) the event to other connected peers in the same scene (see VRoadcast)
+@param {bool} bReplicate - if true, it will replicate (broadcast) the event to other connected peers in the same scene (see Photon)
 @example
 ATON.EventHub.fireEvent("myEvent", data)
 @example
@@ -85,7 +85,7 @@ EventHub.fireEvent = (evtname, data, bReplicate)=>{
     EventHub.executeHandlers(ehList, data);
 
     if (!bReplicate) return;
-    ATON.VRoadcast.fireEvent(evtname, data);
+    ATON.Photon.fireEvent(evtname, data);
 };
 
 export default EventHub;

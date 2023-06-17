@@ -17,7 +17,7 @@ constructor(uid){
     this.username = undefined; //"User #"+uid;
     this.message  = "...";
 
-    this.color = ATON.VRoadcast.ucolors[this.userid % ATON.VRoadcast.ucolors.length];
+    this.color = ATON.Photon.ucolors[this.userid % ATON.Photon.ucolors.length];
     
     //this.bTalking = false;
 
@@ -229,7 +229,7 @@ realize(){
     // build minimal representation
     let g = new THREE.SphereGeometry( 0.2, 16, 16 );
 
-    if (ATON.VRoadcast.customAvatarMaterial) this.usermaterial = ATON.VRoadcast.customAvatarMaterial();
+    if (ATON.Photon.customAvatarMaterial) this.usermaterial = ATON.Photon.customAvatarMaterial();
     else this.usermaterial = this.getAvatarMaterialByUID(this.userid);
 
     let smesh = new THREE.Mesh( g, this.usermaterial );
@@ -245,7 +245,7 @@ realize(){
 
 
     // Talk UI
-    this.userauinode = new THREE.Sprite( ATON.VRoadcast.uspritemats[this.userid % ATON.VRoadcast.uspritemats.length] );
+    this.userauinode = new THREE.Sprite( ATON.Photon.uspritemats[this.userid % ATON.Photon.uspritemats.length] );
     this.userauinode.position.set(0,0,0);
     this.userauinode.visible = false;
 
@@ -253,7 +253,7 @@ realize(){
 
 
     // Focus
-    this.userfpnode = new THREE.Sprite( ATON.VRoadcast.ufocmats[this.userid % ATON.VRoadcast.ufocmats.length] );
+    this.userfpnode = new THREE.Sprite( ATON.Photon.ufocmats[this.userid % ATON.Photon.ufocmats.length] );
     this.userfpnode.position.set(0,0,0);
     //this.userfpnode.scale.set(10,10,10);
     this.userfpnode.visible = false;
@@ -261,9 +261,9 @@ realize(){
     //this.add(this.userfpnode);
     
     // Focus is centralized for better location accuracy
-    if (ATON.VRoadcast._focNodes[this.userid] === undefined){
-        ATON.VRoadcast._focNodes[this.userid] = this.userfpnode;
-        ATON.VRoadcast.focGroup.add( this.userfpnode );
+    if (ATON.Photon._focNodes[this.userid] === undefined){
+        ATON.Photon._focNodes[this.userid] = this.userfpnode;
+        ATON.Photon.focGroup.add( this.userfpnode );
     }
 
     this._buildLabel();
@@ -277,7 +277,7 @@ destroy(){
     if (this.userauinode) this.userauinode.dispose();
 
     if (this.userfpnode) this.userfpnode.dispose();
-    if (ATON.VRoadcast._focNodes[this.userid]) ATON.VRoadcast._focNodes[this.userid].dispose();
+    if (ATON.Photon._focNodes[this.userid]) ATON.Photon._focNodes[this.userid].dispose();
 
     if (this.userlabelnode) this.userlabelnode.dispose();
     if (this.labelcontainer) this.labelcontainer.dispose();
@@ -382,7 +382,7 @@ requestFocus(fp){
 handleFocusTransition(){
     if (this._tFocCall < 0.0) return;
 
-    let D = ATON.VRoadcast.USER_STATE_FREQ; //this._tStateDur;
+    let D = ATON.Photon.USER_STATE_FREQ; //this._tStateDur;
 
     let t = (ATON._clock.elapsedTime - this._tFocCall) / D;
 
@@ -433,7 +433,7 @@ requestStateTransition(S){
 handleStateTransition(){
     if (this._tStateCall < 0.0) return;
 
-    let D = ATON.VRoadcast.USER_STATE_FREQ; //this._tStateDur;
+    let D = ATON.Photon.USER_STATE_FREQ; //this._tStateDur;
 
     if (D <= 0.0) this._tProgress = 1.0;
     else this._tProgress = (ATON._clock.elapsedTime - this._tStateCall) / D;

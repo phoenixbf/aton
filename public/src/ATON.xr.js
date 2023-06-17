@@ -78,12 +78,12 @@ XR.init = ()=>{
     });
 
     ATON.on("XRsqueezeStart", (c)=>{
-        if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(true);
+        if (c === XR.HAND_R) ATON.Photon.setFocusStreaming(true);
         //if (c === XR.HAND_L) ATON._bPauseQuery = true;
         //console.log("Squeeze "+c);
     });
     ATON.on("XRsqueezeEnd", (c)=>{
-        if (c === XR.HAND_R) ATON.VRoadcast.setFocusStreaming(false);
+        if (c === XR.HAND_R) ATON.Photon.setFocusStreaming(false);
         //if (c === XR.HAND_L) ATON._bPauseQuery = false;
     });
 
@@ -541,10 +541,10 @@ XR.setupControllerUI = (h, bAddRep)=>{
         }
     }
 
-    // We are connected to VRoadcast
-    if (ATON.VRoadcast.uid !== undefined && bAddRep){
+    // We are connected to Photon
+    if (ATON.Photon.uid !== undefined && bAddRep){
         let avMats = ATON.MatHub.materials.avatars;
-        let am = avMats[ATON.VRoadcast.uid % avMats.length];
+        let am = avMats[ATON.Photon.uid % avMats.length];
         if (h === XR.HAND_L) lhand.setMaterial(am);
         else rhand.setMaterial(am);
     }

@@ -35,20 +35,32 @@ window.onload = ()=>{
         ATON.FE.realize(); // Realize the base front-end
         ATON.FE.addBasicLoaderEvents(); // Add basic front-end events (loading spinner, automatic home, ...)
 
-        // Create and load a scene
-        ATON.FE.loadSceneID("samples/montebelluna");
+        // Create 3D model
+        let modelNode = ATON.createSceneNode("modelNode");
+        modelNode.load("samples/models/venus/venus.gltf").attachToRoot();
 
         // Lets connect and join Photon session "sample-wapp-remote"
-        ATON.Photon.connect("sample-wapp-remote");
+        ATON.Photon.connect("sample-wapp-devori");
 
         // Setup incoming communications from control App
         // Remote request for transition to a specific viewpoint
-        ATON.Photon.on("POV", (id)=>{
-            ATON.Nav.requestPOVbyID( id );
+        ATON.Photon.on("ori", (data)=>{
+            //console.log(Q)
+            //modelNode.setRotation((Math.PI*2.0) - d.gamma, d.alpha, (Math.PI*2.0) - d.beta/*d.gamma, d.alpha*/);
+            //modelNode.setRotation(d.beta, d.gamma, d.alpha);
+            
+            //modelNode.quaternion.set(Q[0],Q[1],Q[2],Q[3]);
+            const view = new Int8Array(data);
+            modelNode.quaternion.set(
+                view[0] / 128.0,
+                view[1] / 128.0,
+                view[2] / 128.0,
+                view[3] / 128.0,
+            );
         });
 
         // Generate QR-code for remote control App
-        let url = window.location.origin + "/examples/app-remote/control.html";
+        let url = window.location.origin + "/examples/app-remote-devori/control.html";
         if (url.startsWith("http://localhost")) $("#idQRcontrol").html("<b>To use another device for remote control, you have to use local network address or public IP (not localhost)</b>");
         else new QRCode( document.getElementById("idQRcontrol"), url);
     };

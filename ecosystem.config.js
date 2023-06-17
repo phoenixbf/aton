@@ -19,14 +19,14 @@ module.exports = {
 
     // VRoadcast service
     {
-      name          : 'ATON VRoadcast Service',
-      script        : 'services/ATON.service.vroadcast.js',
+      name          : 'ATON Photon Service',
+      script        : 'services/photon/ATON.service.photon.js',
       instances     : 1,
       exec_mode     : 'cluster',
       watch         : ["services","config"],
       merge_logs    : true,
       //restart_delay : 1000,
-      //out_file     : "./logs/ATON.service.vrc.log",
+      //out_file     : "./logs/ATON.service.photon.log",
       env: {
         "NODE_ENV" : "production",
       }
@@ -35,7 +35,7 @@ module.exports = {
     // WebDav service
     {
       name          : 'ATON WebDav Service',
-      script        : 'services/ATON.service.webdav.js',
+      script        : 'services/webdav/ATON.service.webdav.js',
       instances     : 1,
       exec_mode     : 'cluster',
       watch         : ["services", "config"],

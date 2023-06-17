@@ -84,7 +84,7 @@ App.getAppID = ()=>{
 };
 
 /**
-Add data to persistent, server-side storage of current web-app
+Add or Update data into persistent (server-side) storage of current web-app
 @param {object} id - server-side storage ID
 @param {object} patch - a javascript object patch
 @example
@@ -96,7 +96,7 @@ App.addToStorage = (id, patch)=>{
 };
 
 /**
-Delete data from server-side storage of current web-app
+Delete data from persistent (server-side) storage of current web-app
 @param {object} id - server-side storage ID
 @param {object} patch - a javascript object patch
 @example
@@ -108,7 +108,7 @@ App.deleteFromStorage = (id, patch)=>{
 };
 
 /**
-Get content of server-side storage for current web-app
+Get content of persistent (server-side) storage of current web-app
 @param {object} id - server-side storage ID
 @example
 ATON.App.getStorage("myStorage").then((s)=>{ console.log(s); })

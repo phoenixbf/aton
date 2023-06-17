@@ -13,7 +13,7 @@ const cors   = require('cors');
 const webdav = require('webdav-server').v2;
 const fs     = require('fs');
 
-const Core = require('./Core.js');
+const Core = require('./../Core.js');
 
 // Initialize & load config files
 Core.init();

@@ -1,7 +1,7 @@
 /*!
     @preserve
 
- 	ATON Main Service
+ 	ATON Main Service (gateway)
 
  	@author Bruno Fanini
 	VHLab, CNR ISPC
@@ -33,7 +33,8 @@ const CONF = Core.config;
 // Standard PORTS
 let PORT        = 8080;
 let PORT_SECURE = 8083;
-let PORT_VRC    = 8890;
+let VRC_PORT    = 8890;
+let VRC_ADDR    = "ws://localhost";
 let PORT_WEBDAV = 8081;
 
 if (CONF.services.main.PORT) 
@@ -45,8 +46,16 @@ if (process.env.PORT)
 if (CONF.services.main.PORT_S)
 	PORT_SECURE = CONF.services.main.PORT_S;
 
-if (CONF.services.vroadcast.PORT)
-	PORT_VRC = CONF.services.vroadcast.PORT;
+if (CONF.services.photon){
+	if (CONF.services.photon.PORT)    VRC_PORT = CONF.services.photon.PORT;
+	if (CONF.services.photon.address) VRC_ADDR = CONF.services.photon.address;
+}
+
+// compatibility with previous configs
+if (CONF.services.vroadcast){
+	if (CONF.services.vroadcast.PORT)    VRC_PORT = CONF.services.vroadcast.PORT;
+	if (CONF.services.vroadcast.address) VRC_ADDR = CONF.services.vroadcast.address;
+}
 
 if (CONF.services.webdav && CONF.services.webdav.PORT)
 	PORT_WEBDAV = CONF.services.webdav.PORT;
@@ -150,24 +159,16 @@ Core.realizeBaseAPI(app);
 
 // Micro-services proxies
 //=================================================
-/*
-// Atonizer
-app.use('/atonizer', createProxyMiddleware({ 
-	target: Core.config.services.atonizer.address+":"+PORT_ATONIZER, 
-	pathRewrite: { '^/atonizer': ''},
-	//changeOrigin: true 
-}));
-*/
 
-// VRoadcast
+// Photon (previously VRoadcast)
 app.use('/vrc', createProxyMiddleware({ 
-	target: CONF.services.vroadcast.address+":"+PORT_VRC, 
+	target: VRC_ADDR+":"+VRC_PORT, 
 	ws: true, 
 	pathRewrite: { '^/vrc': ''},
 	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
-	target: CONF.services.vroadcast.address+":"+PORT_VRC, 
+	target: VRC_ADDR+":"+VRC_PORT, 
 	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
@@ -188,16 +189,13 @@ app.use('/dav', createProxyMiddleware({
 }));
 */
 
-if (CONF.services.custom_modules){
-	let MM = CONF.services.custom_modules;
-	for (let m in MM){
-		let mname = MM[m];
+// Collect & setup flares (if found)
+//==================================
+Core.setupFlares(app);
 
-		Core.custMods[mname] = require(Core.DIR_CUST_MODS + mname);
-		if (Core.custMods[mname].init) Core.custMods[mname].init(app);
-	}
-
-	//console.log(Core.custMods);
+for (let f in Core.flares){
+	let flarename = Core.flares[f];
+	app.use('/flares/'+flarename, express.static(Core.DIR_FLARES+flarename+"/public/"));
 }
 
 // START

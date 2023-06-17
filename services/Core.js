@@ -31,7 +31,7 @@ const FileStore      = require('session-file-store')(session);
 
 // Local modules
 const BaseAPI = require("./API.js");
-const Maat    = require("./Maat.js");
+const Maat    = require("./maat/Maat.js");
 
 
 Core = {};
@@ -42,7 +42,7 @@ Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_RES          = path.join(Core.DIR_PUBLIC,"res/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
 Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
-Core.DIR_CUST_MODS    = path.join(Core.DIR_CONFIG,"modules/");
+//Core.DIR_CUST_MODS    = path.join(Core.DIR_CONFIG,"modules/");
 Core.DIR_CUST_CERTS   = path.join(Core.DIR_CONFIG,"certs/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
 //Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
@@ -51,7 +51,7 @@ Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
 Core.DIR_COLLECTIONS  = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
 Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
-Core.DIR_FLARES       = path.join(Core.DIR_PUBLIC,"custom/flares/");
+Core.DIR_FLARES       = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core.DIR_PUBLIC,"custom/flares/");
 Core.STD_SCENEFILE    = "scene.json";
 Core.STD_PUBFILE      = "pub.txt";
 Core.STD_COVERFILE    = "cover.png";
@@ -86,35 +86,48 @@ Core.logYellow = (str)=>{
 	console.log(chalk.yellow(str));
 };
 
-// Custom modules
-Core.custMods = {};
 
-// Custom scripts
-Core.FEScripts = [];
+// Flares
+Core.flares = [];
 
-Core.populateFEScripts = ()=>{
-	Core.FEScripts = [];
-
-	if (Core.config.hathor){
-		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
-	}
-
+Core.setupFlares = (app)=>{
 	if (!fs.existsSync(Core.DIR_FLARES)) return;
 	
+	// From flares
 	let O    = {};
-	O.cwd    = Core.DIR_PUBLIC;
+	O.cwd    = Core.DIR_FLARES; //Core.DIR_PUBLIC;
 	O.follow = true;
 
 	// Collcet all flares
 	let plugins = fg.sync("**/flare.json", O);
 	for (let f in plugins){
-		let base = path.dirname(plugins[f]);
-		let pp = Core.DIR_PUBLIC + plugins[f];
-		
+		let flarename = path.dirname(plugins[f]);
+		let pp = Core.DIR_FLARES + plugins[f];
+
+		//console.log(">> "+pp)
+
 		let P = JSON.parse(fs.readFileSync(pp, 'utf8'));
-		for (let s in P.files) Core.FEScripts.push( "/"+ base +"/"+ P.files[s] );
+
+		let fbasepath = Core.DIR_FLARES + flarename + "/";
+
+		// Client (public) components
+		if (P.client){
+			Core.flares.push( flarename );
+			for (let s in P.client.files) Core.FEScripts.push( "/flares/"+ flarename +"/"+ P.client.files[s] );
+		}
+
+		// Server (private) components
+		if (P.server){
+			for (let m in P.server.modules){
+				let mname = P.server.modules[m];
+		
+				const M = require(fbasepath + mname);
+				if (M.init) M.init(app);
+			}
+		}
 
 		if (P.respatterns && P.respatterns.length>2) Core.mpattern += ","+P.respatterns;
+
 	}
 
 	console.log("Flares (plugins) found:");
@@ -150,8 +163,8 @@ Core.CONF_MAIN = {
 			pathKey: ""		// custom path to key
 		},
 
-		vroadcast: {
-			PORT: 8890,					// local VRoadcast port
+		photon: {
+			PORT: 8890,					// local Photon port
 			address: "ws://localhost"
 			//maxClientsPerSession: 50		// Max clients per scene
 		},
@@ -253,7 +266,13 @@ Core.init = ()=>{
 
 	Core.maat.init();
 
-	Core.populateFEScripts();
+	// Directly from config
+	Core.FEScripts = [];
+	if (Core.config.hathor){
+		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
+	}
+
+	//Core.populateFEScripts();
 };
 
 Core.loadConfigFile = (jsonfile, defconf)=>{

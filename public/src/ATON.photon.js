@@ -10,7 +10,7 @@
 import Avatar from "./ATON.avatar.js";
 
 /**
-ATON Photon client component (previously "VRoadcast")
+ATON Photon client component (previously "VRoadcast").
 Real-time communication over networks
 @namespace Photon
 */
@@ -63,7 +63,7 @@ Photon.init = ()=>{
     Photon._bShowAvaG = true;
     Photon._bSpatial  = true;
 
-    console.log("VRoadcast initialized");
+    console.log("Photon initialized");
     Photon.enableChatLog();
 
     // Hosts local vstream
@@ -242,7 +242,7 @@ Photon.on = (evtname, handler)=>{
 };
 
 /**
-Return true if VRoadcast is connected to the service
+Return true if connected to the Photon service
 @returns {boolean}
 */
 Photon.isConnected = ()=>{
@@ -251,7 +251,7 @@ Photon.isConnected = ()=>{
 };
 
 /**
-Return true if we have a VRoadcast ID assigned
+Return true if we have a Photon ID assigned
 @returns {boolean}
 */
 Photon.hasID = ()=>{
@@ -271,7 +271,7 @@ Photon.log = (d)=>{
 };
 
 /**
-Request to join a given VRoadcast session (typically, the scene ID)
+Request to join a given Photon session (typically, the scene ID)
 @param {string} ssid - the session id (room or scene ID)
 @example
 ATON.Photon.joinSession("testscene");
@@ -311,7 +311,7 @@ Photon.enableSpatiality = ()=>{
 };
 
 /**
-Set address for VRoadcast service. Default is same server where main service is running.
+Set address for Photon service. Default is same server where main service is running.
 This is used if the service is running on a remote server/node
 @param {string} address - the address of the service.
 @example
@@ -322,7 +322,7 @@ Photon.setAddress = (address)=>{
 }
 
 /**
-Connect to VRoadcast service
+Connect to Photon service
 @param {string} ssid - the session ID to join after successfully connected (optional). Default is current scene-ID (if any loaded)
 @example
 ATON.Photon.connect();

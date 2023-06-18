@@ -1429,6 +1429,7 @@ canvas:active {
 ==========================*/
 input[type=range] {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 10px;
     border-radius: 5px;  
@@ -1554,6 +1555,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 input[type="checkbox"] {
     -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
     width: 25px;
     height: 25px;
@@ -1567,6 +1569,7 @@ input[type="checkbox"] {
 }
 input[type="checkbox"]:checked {
     -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
     background: #00FF00;
 }
@@ -1577,6 +1580,7 @@ input[type="checkbox"]:hover {
 
 input[type="radio"] {
     -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
     width: 25px;
     height: 25px;
@@ -1594,6 +1598,7 @@ input[type="radio"]:not(:checked) {
 }
 input[type="radio"]:checked {
     -webkit-appearance: none;
+    appearance: none;
     cursor: pointer;
     background: #00FF00;
 }
@@ -1605,6 +1610,7 @@ input[type="radio"]:hover {
 
 input[type="text"]{
     -webkit-appearance: none;
+    appearance: none;
     outline: none;
 
     border: 2px solid gray;
@@ -1624,6 +1630,7 @@ input[type="text"]:hover {
 
 input[type="password"]{
     -webkit-appearance: none;
+    appearance: none;
     outline: none;
 
     border: 2px solid gray;
@@ -1643,6 +1650,7 @@ input[type="password"]:hover {
 
 input[type="number"]{
     -webkit-appearance: none;
+    appearance: none;
     outline: none;
 
     border: 2px solid gray;

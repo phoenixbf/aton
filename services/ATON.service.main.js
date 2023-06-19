@@ -224,6 +224,6 @@ if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 	});
 }
 else {
-	console.log("SSL certs not found: "+pathKey+", "+pathCert);
+	console.log("\nSSL certs not found:\n"+pathKey+"\n"+pathCert);
 	console.log("\n");
 }

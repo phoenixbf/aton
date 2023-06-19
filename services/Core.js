@@ -110,9 +110,10 @@ Core.setupFlares = (app)=>{
 
 		let fbasepath = Core.DIR_FLARES + flarename + "/";
 
+		Core.flares.push( flarename );
+
 		// Client (public) components
 		if (P.client){
-			Core.flares.push( flarename );
 			for (let s in P.client.files) Core.FEScripts.push( "/flares/"+ flarename +"/"+ P.client.files[s] );
 		}
 
@@ -130,8 +131,8 @@ Core.setupFlares = (app)=>{
 
 	}
 
-	console.log("Flares (plugins) found:");
-	console.log(Core.FEScripts);
+	console.log("\nFlares (plugins) found: ");
+	console.log(Core.flares);
 };
 
 // Configs

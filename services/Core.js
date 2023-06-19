@@ -230,7 +230,7 @@ Core.maatQuery = (str, onresponse)=>{
 // Main init routine
 //==========================================================================
 Core.init = ()=>{
-	if (!fs.existsSync(Core.DIR_CONFIG)) makeDir.sync(Core.DIR_CONFIG);
+	Core.touchConfigFolders();
 
 	Core.config = Core.loadConfigFile("main.json", Core.CONF_MAIN);
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
@@ -273,6 +273,20 @@ Core.init = ()=>{
 	}
 
 	//Core.populateFEScripts();
+};
+
+// Touch config folders
+Core.touchConfigFolders = ()=>{
+	if (!fs.existsSync(Core.DIR_CONFIG)) makeDir.sync(Core.DIR_CONFIG);
+
+	if (!fs.existsSync(Core.DIR_FLARES)){
+		try {
+			makeDir.sync(Core.DIR_FLARES);
+		} catch (e){
+			console.log(e);
+			return;
+		}
+	}
 };
 
 Core.loadConfigFile = (jsonfile, defconf)=>{

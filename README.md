@@ -7,7 +7,7 @@
 
 ![Header](./public/res/aton-header.jpg)
 
-[ATON framework](http://osiris.itabc.cnr.it/aton/) - designed and developed by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for final users. ATON offers:
+[ATON framework](http://osiris.itabc.cnr.it/aton/) - designed, developed and coordinated by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for final users. ATON offers:
 * Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
 * Real-time collaborative multi-user features (*VRoadcast* module)
 * Immersive VR (WebXR) for 3-DOF and 6-DOF devices

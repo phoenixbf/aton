@@ -76,6 +76,7 @@ FX.init = ()=>{
     FX.passes[FX.PASS_AO].params.saoBias  = 1.0;
     FX.passes[FX.PASS_AO].params.saoScale = 100;
     FX.passes[FX.PASS_AO].params.saoIntensity = 0.2; //0.2 //0.005;
+    //FX.passes[FX.PASS_AO].params.saoMinDistance = 0.01;
     //FX.passes[FX.PASS_AO].params.saoBlurRadius = 5;
     
     //FX.passes[FX.PASS_AO].params.saoKernelRadius = 200;

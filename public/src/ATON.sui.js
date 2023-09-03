@@ -752,7 +752,8 @@ SUI.update = ()=>{
         if (fp !== undefined && ATON.plight !== undefined){
             ATON.enablePointLight();
             ATON.plight.position.copy( fp );
-            ATON.plight.distance = SUI._selectorRad * 2.0;
+            ATON.plight.distance  = SUI._selectorRad * 2.0;
+            //ATON.plight.intensity = SUI._selectorRad;
             //fp = null;
         }
     }

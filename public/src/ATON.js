@@ -642,7 +642,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._renderer.toneMappingExposure = 1.0;
     //ATON._renderer.gammaOutput = true;
     //ATON._renderer.gammaFactor = 2.2;
-    //ATON._renderer.physicallyCorrectLights = true;
+    //ATON._renderer.useLegacyLights = true;
 
     //console.log(ATON._renderer.getPixelRatio());
 
@@ -1374,18 +1374,20 @@ ATON.initGraphs = ()=>{
 
     // Uniform lighting
     ATON.ambLight = new THREE.AmbientLight( new THREE.Color(1,1,1) /*ATON._mainRoot.background*/ );
-    //ATON.ambLight.intensity = 1.5;
+    ATON.ambLight.intensity = 3.0;
     ATON._rootVisibleGlobal.add(ATON.ambLight);
 
     // Point light
     ATON.plight = new THREE.PointLight();
     ATON.plight.intensity = 0.0;
+    ATON.plight.decay     = 0.2;
     ATON._rootVisibleGlobal.add(ATON.plight);
 
 };
 
 ATON.enablePointLight = ()=>{
-    ATON.plight.intensity = 2.0;
+    ATON.plight.intensity = 3.0; //0.2;
+    //console.log(ATON.plight)
 
     //if (pos) ATON.plight.position.copy(pos);
     //if (rad) ATON.plight.distance = rad;
@@ -1828,7 +1830,7 @@ ATON.setMainLightDirection = (v)=>{
         ATON._dMainL = new THREE.DirectionalLight( new THREE.Color(1,1,1), 1.0 );
         ATON._dMainL.castShadow = false;
 
-        ATON._dMainL.intensity = 0.8;
+        ATON._dMainL.intensity = 2.0; //0.8;
 
         ATON._dMainLtgt = new THREE.Object3D();
         ATON._rootVisibleGlobal.add(ATON._dMainLtgt);

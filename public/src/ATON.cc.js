@@ -92,14 +92,20 @@ CC.extractXMP3DC = (data, cc)=>{
     if (!pkts) return;
     let a = pkts[0];
 
-    // TODO: improve
+    let lang = "en-us"; // TODO: parametrize language
+
     if (a["model3d:spdxLicense"]) cc.license = a["model3d:spdxLicense"];
+
     if (a["dc:date"])             cc.date  = a["dc:date"];
-    if (a["dc:title"])            cc.title = a["dc:title"];
-    if (a["xmp:CreatorTool"])     cc.creatorTool = a["xmp:CreatorTool"];
-    if (a["dc:description"])      cc.description  = a["dc:description"];
-    if (a["dc:rights"])           cc.rights = a["dc:rights"];
+    if (a["dc:title"])            cc.title = a["dc:title"][lang];
+    if (a["dc:description"])      cc.description  = a["dc:description"][lang];
+    if (a["dc:rights"])           cc.rights = a["dc:rights"][lang];
+    if (a["dc:source"])           cc.source  = a["dc:source"];
+    if (a["dc:subject"])          cc.subject  = a["dc:subject"];
+    if (a["dc:type"])             cc.type  = a["dc:type"];
+    
     if (a["xmpRights:Owner"])     cc.owner  = a["xmpRights:Owner"];
+    if (a["xmp:CreatorTool"])     cc.creatorTool = a["xmp:CreatorTool"];
 };
 
 export default CC;

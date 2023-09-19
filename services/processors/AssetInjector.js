@@ -25,6 +25,8 @@ const optDefs = [
     { name: 'author', type: String },
     { name: 'license', type: String },
     { name: 'copyright', type: String },
+
+    { name: 'xmp', type: String }, // inject XMP metadata from json file
 ];
 
 
@@ -32,10 +34,15 @@ let AssetInjector = {};
 
 AssetInjector.args = commandLineArgs(optDefs);
 
+AssetInjector.XMPdata = undefined;
 
 AssetInjector.run = ()=>{
     if (!AssetInjector.args.input) return;
     let apath = AssetInjector.args.input;
+
+    if (AssetInjector.args.xmp){
+        AssetInjector.XMPdata = JSON.parse(fs.readFileSync(AssetInjector.args.xmp, 'utf8'));
+    }
 
     if (!fs.existsSync(apath)) return;
 
@@ -65,6 +72,22 @@ AssetInjector.injectTileset = (A)=>{
 };
 
 AssetInjector.inject = (A)=>{
+    if (AssetInjector.XMPdata){
+        if (!A.exensions) A.extensions = {};
+        if (!A.extensions.KHR_xmp) A.extensions.KHR_xmp = AssetInjector.XMPdata;
+
+        if (!A.asset) A.asset = {};
+
+        if (!A.asset.extensions) A.asset.extensions = {};
+        A.asset.extensions["KHR_xmp"] = { "packet": 0 };
+        
+        if (!A.extensionsUsed) A.extensionsUsed = [];
+        A.extensionsUsed.push("KHR_xmp");
+
+        console.log(A.asset);
+        return A;
+    }
+
     if (!A.asset) A.asset = {};
     if (!A.asset.extras) A.asset.extras = {};
 
@@ -74,8 +97,6 @@ AssetInjector.inject = (A)=>{
     if (args.license)   A.asset.extras.license = args.license;
 
     if (args.copyright) A.asset.copyright      = args.copyright;
-
-    //TODO: XMP metadata
 
     console.log(A.asset);
 

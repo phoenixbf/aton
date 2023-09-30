@@ -555,7 +555,7 @@ XPFNetwork.loadSemanticMasksIfAny = (i)=>{
             XPFNetwork._semCanvas.width  = 2048;
             XPFNetwork._semCanvas.height = 2048;
 
-            XPFNetwork._semCTX = XPFNetwork._semCanvas.getContext('2d');
+            XPFNetwork._semCTX = XPFNetwork._semCanvas.getContext('2d', { willReadFrequently: true });
         }
 
         let semimgurl = xpf._semMasksURLs[s];

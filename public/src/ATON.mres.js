@@ -227,6 +227,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         console.log("TileSet loaded");
         //console.log(ts)
 
+        ATON._assetReqComplete(tsurl);
+
         MRes._numTSLoaded++;
 
         // Cesium ION
@@ -272,7 +274,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     bb.getCenter( ts.group.position );
                     ts.group.position.multiplyScalar( -1 );
                 }
-                //else if (ATON.Nav.homePOV === undefined) ATON.Nav.computeDefaultHome(undefined, bs );
+                else if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, bs );
                 ///else ATON.recomputeSceneBounds( bs );
             }
             else if ( ts.getBoundingSphere(bs) ){
@@ -281,7 +283,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     ts.group.position.copy( bs.center );
                     ts.group.position.multiplyScalar( -1 );
                 }
-                //else if (ATON.Nav.homePOV === undefined) ATON.Nav.computeDefaultHome(undefined, bs );
+                else if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5, undefined, bs );
                 ///else ATON.recomputeSceneBounds( bs );
             }
 /*
@@ -312,7 +314,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     // On single tile loaded
     ts.onLoadModel = ( scene )=>{
         //console.log(ts.lruCache.itemList.length);
-
+/*
         if (tflip < MIN_TILES) tflip++;
         else if (tflip === MIN_TILES){
             tflip++;
@@ -322,6 +324,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             ATON._assetReqComplete(tsurl);
         }
+*/
 
         MRes._numTilesLoaded++;
 

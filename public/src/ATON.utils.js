@@ -13,6 +13,7 @@ ATON Utils
 let Utils = {};
 
 Utils.TSTRING_SEPARATOR = " ";
+Utils.VOID_CAST = (rc, hitlist)=>{};
 
 
 Utils.init = ()=>{

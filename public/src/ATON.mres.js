@@ -363,6 +363,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 MRes._bPCs  = true;
 
                 c.layers.disable(N.type); // avoid point-clouds queries for now
+                c.raycast = ATON.Utils.VOID_CAST;
 
                 c.material = ATON.MatHub.materials.point;
 /*

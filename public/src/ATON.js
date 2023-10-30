@@ -893,10 +893,13 @@ ATON.realize = ( bNoRender )=>{
 /**
 Add (register) globally a flare (ATON plugin)
 @param {Flare} P - The flare object
+@param {String} id - (Optional) identifier for the flare object (to be accessible through ATON[id])
 */
-ATON.addFlare = (P)=>{
+ATON.addFlare = (P, id)=>{
     if (P === undefined) return;
     ATON._flares.push(P);
+
+    if (id) ATON[id] = P;
 };
 
 ATON.registerFlare = ATON.addFlare;

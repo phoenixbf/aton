@@ -127,10 +127,11 @@ let onLandingData = (data)=>{
         htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
         htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='"+ATON.PATH_RES+"icons/play.png'></div>";
         if (data.samples === undefined || data.samples === true) htmlcontent += "<a href='examples/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/samples.png'></a>";
-        htmlcontent += "<br><br>";
+        htmlcontent += "<br>";
 
         //htmlcontent += "<div class='atonBlockTitle'>Public Scenes</div><br>";
 
+        htmlcontent += "<div id='idTagCloud' style='margin:14px;'></div>";
         htmlcontent += "<div id='idPubGallery'></div>";
     }
 
@@ -143,10 +144,10 @@ let onLandingData = (data)=>{
             $("#sid").attr("placeholder", "search by term, user or paste a scene-ID...");
 /*
             $.getJSON( ATON.PATH_RESTAPI+"keywords/", ( kwds )=>{
-                for (let k in kwds) $("#sidlist").append("<option>"+k+"</option>");
+                //for (let k in kwds) $("#sidlist").append("<option>"+k+"</option>");
+                for (let k in kwds) $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
             });
-*/
-            
+*/       
         });
 
         $("#btn-go").click( openSID );

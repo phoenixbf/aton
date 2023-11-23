@@ -122,7 +122,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
     let htmlcontent = "";
 
     let coversizex = 250;
-    let coversizey = 320;
+    let coversizey = 330;
 
     if (bSamples === undefined) bSamples = true;
 
@@ -131,6 +131,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
         viewparams = "";
         for (let p in opts.view) viewparams += p +"="+ opts.view[p]+"&";
     }
+
+    let skwords = {};
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         data.sort( SHU.sidCompare );
@@ -153,6 +155,9 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
                         let kk = k.toLowerCase();
                         htskw += "<span class='atonKeyword'>"+kk+"</span>";
                         terms += " "+kk;
+
+                        if (!skwords[kk]) skwords[kk] = 1;
+                        else skwords[kk]++;
                     }
                 }
 
@@ -185,6 +190,15 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
         }
 
         $("#"+idcontainer).html(htmlcontent);
+
+        for (let k in skwords){
+            let w = skwords[k];
+            let f = w - 1;
+            f = 1.0 + (f * 0.1);
+            if (f > 2.0) f = 2.0;
+
+            $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
+        }
 
         if (onComplete) onComplete();
     });

@@ -194,8 +194,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
         for (let k in skwords){
             let w = skwords[k];
             let f = w - 1;
-            f = 1.0 + (f * 0.1);
-            if (f > 2.0) f = 2.0;
+            f = 0.8 + (f * 0.1);
+            if (f > 1.5) f = 1.5;
 
             $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
         }

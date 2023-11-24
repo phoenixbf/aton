@@ -100,7 +100,7 @@ let onLandingData = (data)=>{
     }
 
     if (query){
-        if ( !ohide["term"] ) htmlcontent += "<div id='gTitle' class='atonBlockTitle'>"+query+"</div><br>";
+        if ( !ohide["term"] ) htmlcontent += "<div id='gTitle' class='atonBlockTitle'><img class='atonDefIcon' src='"+ATON.PATH_RES+"icons/gallery.png'>"+query+"</div><br>";
         htmlcontent += "<div id='idPubGallery'></div>";
 
         htmlcontent += "<br><br>";
@@ -138,6 +138,7 @@ let onLandingData = (data)=>{
         //htmlcontent += "<div class='atonBlockTitle'>Public Scenes</div><br>";
 
         htmlcontent += "<div id='idTagCloud' class='scrollableX' style='margin:10px; height:50px'></div>";
+        htmlcontent += "<div id='idTCtools'></div>";
         htmlcontent += "<div id='idPubGallery'></div>";
     }
 
@@ -177,12 +178,11 @@ let onLandingData = (data)=>{
                 //}
             }
 
-            let htTCtools = "<div id='idTCtools'>";
+            let htTCtools = "";
             htTCtools += "<div class='atonBTN atonBTN-text atonBTN-red' onclick='searchClear()'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/cancel.png'>Clear</div>";
             htTCtools += "<a class='atonBTN atonBTN-text' id='idKeyGallery'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/gallery.png'>Gallery</a>";
-            htTCtools += "</div>";
 
-            $("#idTagCloud").append(htTCtools);
+            $("#idTCtools").append(htTCtools);
             $("#idTCtools").hide();
         });
     }

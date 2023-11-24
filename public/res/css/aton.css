@@ -692,7 +692,7 @@ canvas:active {
     user-select: none;
 
     margin: 3px;
-    padding: 3px;
+    padding: 4px;
 }
 
 .atonKeywordActivable {
@@ -702,6 +702,16 @@ canvas:active {
 
 .atonKeywordActivable:hover {
     box-shadow: 0 0px 5px rgba(255, 255, 255, 1.0);
+}
+
+.atonKeywordCount {
+    border-radius: 5px;
+    color: white;
+    background-color: rgba(0,0,0, 0.5);
+    padding: 4px;
+    margin: 0px;
+    font-size: x-small;
+    font-weight: bold;
 }
 
 .atonAuthor {

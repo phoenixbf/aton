@@ -66,6 +66,12 @@ let search = ()=>{
     else $("#btn-go").hide();
 };
 
+let searchClear = ()=>{
+    $("#sid").val("");
+    showAllScenes();
+    $("#idTCtools").hide();
+};
+
 let searchByTerm = (searchTerm)=>{
     if (searchTerm === undefined) return;
 
@@ -142,17 +148,42 @@ let onLandingData = (data)=>{
     if (data.gallery){
         SHU.createScenesInputList("idScenes", openSID, search, (scenes)=>{
             $("#sid").attr("placeholder", "search by term, user or paste a scene-ID...");
-/*
-            $.getJSON( ATON.PATH_RESTAPI+"keywords/", ( kwds )=>{
-                //for (let k in kwds) $("#sidlist").append("<option>"+k+"</option>");
-                for (let k in kwds) $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
-            });
-*/       
         });
 
         $("#btn-go").click( openSID );
 
-        SHU.createPubScenesGallery("idPubGallery", data.samples);
+        SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
+            let akws = Object.entries(SHU.pubScenesKwords).sort((a,b)=>b[1]-a[1]).map(el=>el[0]);
+            //console.log(akws);
+
+            for (let i in akws){
+                let k = akws[i];
+                let w = SHU.pubScenesKwords[k];
+                let f = w - 1;
+                f = 0.8 + (f * 0.1);
+                if (f > 1.5) f = 1.5;
+
+                if (i<20){
+                    $("#idTagCloud").append("<div id='idTC-"+k+"' class='atonKeyword atonKeywordActivable'>"+k+" (<b>"+w+"</b>)</div>");
+
+                    $("#idTC-"+k).click(()=>{
+                        $("#sid").val(k);
+                        search();
+                        $("#idTCtools").show();
+
+                        $("#idKeyGallery").attr("href", "/?q="+k); 
+                    });
+                }
+            }
+
+            let htTCtools = "<div id='idTCtools'>";
+            htTCtools += "<div class='atonBTN atonBTN-text atonBTN-red' onclick='searchClear()'><img src='"+ATON.PATH_RES+"icons/cancel.png'>Clear</div>";
+            htTCtools += "<a class='atonBTN atonBTN-text atonBTN-green' id='idKeyGallery'><img src='"+ATON.PATH_RES+"icons/link.png'>Gallery</a>";
+            htTCtools += "</div>";
+
+            $("#idTagCloud").append(htTCtools);
+            $("#idTCtools").hide();
+        });
     }
 
     $("#btn-go").hide();

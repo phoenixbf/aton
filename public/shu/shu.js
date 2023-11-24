@@ -132,7 +132,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
         for (let p in opts.view) viewparams += p +"="+ opts.view[p]+"&";
     }
 
-    let skwords = {};
+    SHU.pubScenesKwords = {};
 
     $.getJSON( ATON.PATH_RESTAPI+"scenes/", ( data )=>{
         data.sort( SHU.sidCompare );
@@ -156,8 +156,8 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
                         htskw += "<span class='atonKeyword'>"+kk+"</span>";
                         terms += " "+kk;
 
-                        if (!skwords[kk]) skwords[kk] = 1;
-                        else skwords[kk]++;
+                        if (!SHU.pubScenesKwords[kk]) SHU.pubScenesKwords[kk] = 1;
+                        else SHU.pubScenesKwords[kk]++;
                     }
                 }
 
@@ -191,30 +191,6 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
 
         $("#"+idcontainer).html(htmlcontent);
 
-        //console.log(skwords);
-
-        let akws = Object.entries(skwords).sort((a,b)=>b[1]-a[1]).map(el=>el[0]);
-        //console.log(akws);
-
-        for (let i in akws){
-            let k = akws[i];
-            let w = skwords[k];
-            let f = w - 1;
-            f = 0.8 + (f * 0.1);
-            if (f > 1.5) f = 1.5;
-
-            if (i<20) $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
-        }
-/*
-        for (let k in skwords){
-            let w = skwords[k];
-            let f = w - 1;
-            f = 0.8 + (f * 0.1);
-            if (f > 1.5) f = 1.5;
-
-            $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
-        }
-*/
         if (onComplete) onComplete();
     });
 };

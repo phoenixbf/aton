@@ -191,6 +191,21 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
 
         $("#"+idcontainer).html(htmlcontent);
 
+        //console.log(skwords);
+
+        let akws = Object.entries(skwords).sort((a,b)=>b[1]-a[1]).map(el=>el[0]);
+        //console.log(akws);
+
+        for (let i in akws){
+            let k = akws[i];
+            let w = skwords[k];
+            let f = w - 1;
+            f = 0.8 + (f * 0.1);
+            if (f > 1.5) f = 1.5;
+
+            if (i<20) $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
+        }
+/*
         for (let k in skwords){
             let w = skwords[k];
             let f = w - 1;
@@ -199,7 +214,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
 
             $("#idTagCloud").append("<div class='atonKeyword atonKeywordActivable' style='margin:5px; font-size:"+f+"em;' onclick='searchByTerm(&quot;"+k+"&quot;)'>"+k+"</div>");
         }
-
+*/
         if (onComplete) onComplete();
     });
 };

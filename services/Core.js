@@ -42,6 +42,7 @@ Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
 Core.DIR_RES          = path.join(Core.DIR_PUBLIC,"res/");
 Core.DIR_PRV          = path.join(__dirname, "_prv/");
 Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
+Core.DIR_CONFIGPUB    = path.join(Core.DIR_CONFIG, "public/");
 //Core.DIR_CUST_MODS    = path.join(Core.DIR_CONFIG,"modules/");
 Core.DIR_CUST_CERTS   = path.join(Core.DIR_CONFIG,"certs/");
 Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
@@ -188,7 +189,7 @@ Core.CONF_MAIN = {
     landing: {
         gallery: true,		// Show gallery (public scenes) in the landing page
 		samples: true,		// Show samples (def true)
-		//header: "",		// Custom header HTML5 snippet
+		//header: "",		// Custom header (HTML partial)
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
 		//apps: []			// List of app IDs to show
     }
@@ -243,7 +244,17 @@ Core.init = ()=>{
 		Core.mpattern = Core.config.data.patterns.models;
 		console.log("Custom models pattern: "+Core.mpattern);
 	}
+/*
+	if (Core.config.landing.header){
+		let srcpath = path.join(Core.DIR_CONFIG, Core.config.landing.header);
+		fs.readFile(srcpath, 'utf8', (err, data)=>{
+			if (err) throw err;
 
+			Core.config.landing.header = data;
+			console.log(data);
+		});
+	}
+*/
 	Core.touchUserCollectionFolders();
 
 	//const maatport = (Core.config.services.maat)? Core.config.services.maat.PORT : 8891;

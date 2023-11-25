@@ -139,10 +139,12 @@ const CACHING_OPT = {
 };
 
 app.use('/', express.static(Core.DIR_PUBLIC, CACHING_OPT ));
-//app.use('/mods', express.static(Core.DIR_NODE_MODULES, /*CACHING_OPT*/));
 
 // Official front-end (Hathor)
-app.use('/fe', express.static(Core.DIR_FE));
+//app.use('/fe', express.static(Core.DIR_FE));
+
+// Common public resources (config/public/)
+if (fs.existsSync(Core.DIR_CONFIGPUB)) app.use('/common', express.static(Core.DIR_CONFIGPUB));
 
 // Web-apps
 app.use('/a', express.static(Core.DIR_WAPPS));

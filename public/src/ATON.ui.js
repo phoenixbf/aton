@@ -76,6 +76,21 @@ UI.basicSetup = ()=>{
 */
 };
 
+UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
+    $.get(src, (data)=>{
+        if (!parentid){
+            if (bPrepend) $("body").prepend(data);
+            else $("body").append(data);
+        }
+        else {
+            if (bPrepend) $("#"+parentid).prepend(data); 
+            else $("#"+parentid).append(data);
+        }
+
+        if (onComplete) onComplete();
+    });
+};
+
 // Semantic 2D Label
 UI.showSemLabel = (text)=>{
     $(UI._elLabel).html(text); 

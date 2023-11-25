@@ -122,9 +122,7 @@ let onLandingData = (data)=>{
     }
 
     if (data.header){
-        htmlcontent += "<div class='atonHeader'>";
-        htmlcontent += data.header;
-        htmlcontent += "</div>";
+        ATON.UI.loadPartial("common/"+data.header, undefined, true);
     }
     else htmlcontent += "<img src='/res/aton-logo.png' style='width:100px; height:auto;'><br>";
 

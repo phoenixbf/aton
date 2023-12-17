@@ -1336,22 +1336,34 @@ ATON.recomputeSceneBounds = ( ubs )=>{
 };
 
 /**
-Register a node resource handler for a given extension
-@param {string} ext - the file extension (e.g. "ifc")
-@param {function} routine - handler consuming the resource url and ATON node argument hosting the final resource
+Register a node resource handler
+@param {string} id - the handler ID (e.g. "ifc")
+@param {function} handler - handler consuming the resource url and ATON Node hosting the final resource. Must return true if handled, false otherwise
 @example
 ATON.registerNodeResourceHandler("ifc", ( resurl, N )=>{
-    // do stuff to load "resurl" into a THREE resource object
+    if (!resurl.endsWith(".ifc")) return false;
+
+    // do stuff to load and convert "resurl" into a THREE resource object
     N.add( resource );
+    
+    return true;
 });
 */
-ATON.registerNodeResourceHandler = (ext, routine)=>{
+ATON.registerNodeResourceHandler = (id, handler)=>{
     if (!ATON._resHandler) ATON._resHandler = {};
 
-    ATON._resHandler[ext] = routine;
-    console.log("Registered handler for extension: "+ext);
+    ATON._resHandler[id] = handler;
+    console.log("Registered resource handler '"+id+"'");
 };
 
+/**
+Remove a node resource handler
+@param {string} id - the handler ID to remove (e.g. "ifc")
+*/
+ATON.removeNodeResourceHanlder = (id)=>{
+    if (!ATON._resHandler) return;
+    if (ATON._resHandler[id]) ATON._resHandler[id] = undefined;
+};
 
 ATON.initGraphs = ()=>{
     // Global root

@@ -647,7 +647,7 @@ load(url, onComplete){
     
     let ext = ATON.Utils.getFileExtension(url);
 
-    // Tileset
+    // Cesium 3D Tiles datasets
     if ( ext === "json" ){
         ATON.MRes.loadTileSetFromURL(url, N);
         //ATON._bqScene = true;
@@ -656,6 +656,7 @@ load(url, onComplete){
     }
 
     // IFC
+/*
     if ( ext === "ifc" && ATON._ifcLoader!==undefined ){
         // TODO:
 
@@ -674,11 +675,13 @@ load(url, onComplete){
 
         return N;
     }
-
-    // Check custom resource handler for given extension if any
-    if ( ATON._resHandler && ATON._resHandler[ext] ){
-        ATON._resHandler[ext]( url, N );
-        return N;
+*/
+    // Check custom resource handlers if any match
+    if ( ATON._resHandler){
+        for (let rh in ATON._resHandler){
+            let br = ATON._resHandler[rh](url, N);
+            if ( br ) return N;
+        }
     }
 
     // [C] Promise already requested

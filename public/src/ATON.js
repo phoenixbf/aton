@@ -1297,7 +1297,7 @@ ATON.recomputeSceneBounds = ( ubs )=>{
     ATON.bounds.center = BS.center;
     ATON.bounds.radius = BS.radius;
 */
-    console.log(ATON.bounds);
+    //console.log(ATON.bounds);
 
     if (ATON.bounds.radius <= 0.0) return;
 

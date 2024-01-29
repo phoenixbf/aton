@@ -173,9 +173,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     // Init p-queues
     if (MRes._pqLRU === undefined){
-        ts.lruCache.maxSize = 500; //350;
-        ts.lruCache.minSize = 150; //150;
-        ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
+        //ts.lruCache.maxSize = 500; //350;
+        //ts.lruCache.minSize = 150; //150;
+        //ts.lruCache.unloadPercent = 0.2; //0.6; // The maximum percentage of minSize to unload during a given frame
 
         // Download/Parse queues
         ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;

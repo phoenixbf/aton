@@ -2847,7 +2847,7 @@ HATHOR.popupSettings = ()=>{
         htmlcontent += divBlock;
         htmlcontent += "<details><summary><b>Multiresolution</b></summary><br>";
         htmlcontent += "Error target (<span id='idTSerrTxt'>"+ATON.MRes._tsET+"</span>):<br>";
-        htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:40%' type='range' min='1.0' max='25.0' step='0.5'>&nbsp;Less detail";
+        htmlcontent += "More detail&nbsp;<input id='idTSerr' style='width:40%' type='range' min='1.0' max='50.0' step='0.5'>&nbsp;Less detail";
         if (ATON.MRes._bPCs){
             htmlcontent += "<br><br>Point size (<span id='idTSpcsTxt'>"+ATON.MatHub.materials.point.size+"</span>):<br>";
             htmlcontent += "<input id='idTSpcs' style='width:100%' type='range' min='0.5' max='10.0' step='0.5'>";

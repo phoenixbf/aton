@@ -23,15 +23,24 @@ constructor( setup, update ){
     this.update = update? update : undefined;
 
     this._deps = [];
+    this._id   = undefined;
 }
 
 /**
 Register globally this flare
+@param {String} id - (Optional) identifier for the flare object (to be accessible through ATON[id])
 */
-register(){
-    ATON.addFlare(this);
+register(id){
+    ATON.addFlare(this, id);
+
+    if (id) this._id = id;
     
     return this;
+}
+
+log(msg){
+    if (this._id) console.log("[Flare "+this._id+"] " + msg);
+    else console.log("[Flare]" + msg);
 }
 
 // Experimental

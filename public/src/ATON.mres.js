@@ -404,7 +404,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             }
         });
 
-    //console.log(ATON._renderer.info.memory);
+        //console.log(ATON._renderer.info.memory);
+        ATON.fireEvent("TileLoaded", scene);
     };
 
     ts.onDisposeModel = (scene, tile)=>{

@@ -7,9 +7,8 @@
 
 /**
 Class representing a plugin
-A flare can be used to extend functionalities to any ATON app 
-by providing a setup routine (initalization) and an optional update routine (executed continuously).
-A flare must be then added (registered) via ATON.addFlare() or register() method
+A flare can be used to extend functionalities to any ATON app by providing a setup routine (initalization) and an optional update routine (executed continuously).
+In order to be activated, a flare must be registered via register() method
 @class Flare
 
 @example 
@@ -27,7 +26,7 @@ constructor( setup, update ){
 }
 
 /**
-Register globally this flare
+Register and activate globally this flare
 @param {String} id - (Optional) identifier for the flare object (to be accessible through ATON.Flares[id])
 */
 register(id){

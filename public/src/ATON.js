@@ -879,6 +879,7 @@ ATON.addFlare = (P)=>{
 
 ATON.registerFlare = ATON.addFlare;
 
+// Setup flares
 ATON._setupFlares = ()=>{
     for (let p in ATON.Flares){
         let P = ATON.Flares[p];

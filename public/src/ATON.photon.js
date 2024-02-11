@@ -762,10 +762,10 @@ Photon.sendState = ()=>{
     // Focus streaming
     let fp = ATON.getSceneFocalPoint();
     if (Photon._bStreamFocus && fp !== undefined){
-        let fx = (fp.x).toPrecision(5);
-        let fy = (fp.y).toPrecision(5);
-        let fz = (fp.z).toPrecision(5);
-        let r  = ATON.SUI.getSelectorRadius().toPrecision(5);
+        let fx = (fp.x).toFixed(3);
+        let fy = (fp.y).toFixed(3);
+        let fz = (fp.z).toFixed(3);
+        let r  = ATON.SUI.getSelectorRadius().toFixed(3);
         
         Photon.socket.emit("UFOCUS", [fx,fy,fz, r]);
 

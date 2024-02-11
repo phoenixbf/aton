@@ -127,7 +127,7 @@ ATON.SCALE_VERYSMALL = -10;
 
 
 // Flares (plugins)
-ATON._flares = [];
+ATON.Flares = {};
 
 // Resource mappers
 ATON._resMappers = [];
@@ -852,9 +852,36 @@ ATON.realize = ( bNoRender )=>{
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
-    // Plugins
-    for (let p in ATON._flares){
-        let P = ATON._flares[p];
+    // Flares / Plugins
+    ATON._setupFlares();
+
+    // Gizmo transforms
+    ATON._gizmo  = undefined;
+    ATON._bGizmo = false;
+
+    ATON.focusOn3DView();
+};
+
+/**
+Add (register) globally a flare (ATON plugin)
+@param {Flare} P - The flare object
+*/
+ATON.addFlare = (P)=>{
+    if (P === undefined) return;
+
+    let numFlares = Object.keys(ATON.Flares).length;
+
+    let fid = P.getID();
+
+    if (fid) ATON.Flares[fid] = P;
+    else ATON.Flares[ "F"+numFlares ] = P;
+};
+
+ATON.registerFlare = ATON.addFlare;
+
+ATON._setupFlares = ()=>{
+    for (let p in ATON.Flares){
+        let P = ATON.Flares[p];
 
         // Experimental
         if (P._deps.length > 0){
@@ -882,27 +909,8 @@ ATON.realize = ( bNoRender )=>{
         if (P.setup !== undefined)  P.setup();
         if (P.update !== undefined) ATON.addUpdateRoutine( P.update );
     }
-
-    // Gizmo transforms
-    ATON._gizmo  = undefined;
-    ATON._bGizmo = false;
-
-    ATON.focusOn3DView();
 };
 
-/**
-Add (register) globally a flare (ATON plugin)
-@param {Flare} P - The flare object
-@param {String} id - (Optional) identifier for the flare object (to be accessible through ATON[id])
-*/
-ATON.addFlare = (P, id)=>{
-    if (P === undefined) return;
-    ATON._flares.push(P);
-
-    if (id) ATON[id] = P;
-};
-
-ATON.registerFlare = ATON.addFlare;
 
 /**
 Set ATON collection path modifier

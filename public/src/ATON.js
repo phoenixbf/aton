@@ -1580,6 +1580,8 @@ ATON.setMainPanorama = (path)=>{
         ATON._mMainPano.layers.disable(ATON.NTYPES.SCENE);
         ATON._mMainPano.layers.disable(ATON.NTYPES.SEM);
         ATON._mMainPano.layers.disable(ATON.NTYPES.UI);
+
+        ATON._mMainPano.raycast = ATON.Utils.VOID_CAST;
         
         ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
         ///ATON.setMainPanoramaRadius(100.0);

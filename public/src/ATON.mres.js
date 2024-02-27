@@ -267,7 +267,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         // Default URL
         else {
-            if ( ts.getBounds(bb) ){
+            if ( ts.getBoundingBox(bb) ){
                 bb.getBoundingSphere( bs );
 
                 if (N.autocenter){

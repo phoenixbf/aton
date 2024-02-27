@@ -50,6 +50,7 @@ import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 //import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js';
 import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
+import { XREstimatedLight } from 'three/addons/webxr/XREstimatedLight.js';
 
 //import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -119,6 +120,7 @@ THREE.EXRLoader  = EXRLoader;
 //THREE.RoughnessMipmapper  = RoughnessMipmapper;
 THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
+THREE.XREstimatedLight    = XREstimatedLight;
 
 THREE.TransformControls = TransformControls;
 

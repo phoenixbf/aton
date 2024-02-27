@@ -66,6 +66,34 @@ XR.init = ()=>{
     XR.gpad0 = undefined;
     XR.gpad1 = undefined;
 
+    // AR light-estimation
+/*
+    XR._arEstLight = new THREE.XREstimatedLight( ATON._renderer );
+    XR._arEstLP = undefined;
+
+    XR._arEstLight.addEventListener( 'estimationstart' , () => {
+        ATON._rootVisible.add( XR._arEstLight );
+
+        if ( XR._arEstLight.environment ) {
+            //ATON._rootVisible.environment = xrLight.environment;
+            ATON._rootVisible.setEnvMap( XR._arEstLight.environment );
+
+            if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = false;
+
+            XR._arEstLP = window.setInterval(()=>{
+                ATON.updateLightProbes();
+            }, 1000);
+        }
+    });
+    
+    XR._arEstLight.addEventListener( 'estimationend', () => {
+        ATON._rootVisible.remove( XR._arEstLight );
+        //ATON._rootVisible.environment = null;
+        if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = true;
+        window.clearInterval( XR._arEstLP );
+    } );
+*/
+
     XR._urlHand = ATON.PATH_RES+"models/hand/hand.glb";
 
     // Base ev

@@ -425,7 +425,7 @@ SceneHub.initBaseParsers = ()=>{
         }
     };
 
-    // Visible scene-graph
+    // Default scene-graph
     SceneHub._jsonParsers.scenegraph = (sg)=>{
         if (sg === undefined) return;
 

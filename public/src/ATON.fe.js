@@ -776,7 +776,7 @@ FE._setupVRCevents = ()=>{
 Add Photon button (to connect/disconnect from collaborative sessions)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
-FE.uiAddButtonVRC = (idcontainer)=>{
+FE.uiAddButtonPhoton = (idcontainer)=>{
     FE.uiAddButton(idcontainer, "vrc", ()=>{
         if (ATON.Photon.isConnected()){
             FE.popupVRC();
@@ -795,6 +795,8 @@ FE.uiAddButtonVRC = (idcontainer)=>{
     if (ATON.Photon.uid !== undefined) $("#btn-vrc").addClass( FE.getVRCclassFromID(ATON.Photon.uid) );
     else $("#btn-vrc").attr("class","atonBTN");
 };
+
+FE.uiAddButtonVRC = FE.uiAddButtonPhoton;
 
 /**
 Add user button (login/logout)

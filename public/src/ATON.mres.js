@@ -242,7 +242,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             let distanceToEllipsoidCenter;
 
-            if ( ts.getOrientedBounds( bb, matrix ) ) {
+            if ( ts.getOrientedBoundingBox( bb, matrix ) ) {
 
                 position.setFromMatrixPosition( matrix );
                 distanceToEllipsoidCenter = position.length();

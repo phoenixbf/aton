@@ -2089,6 +2089,18 @@ ATON.toggleAdaptiveDensity = (b)=>{
 };
 
 /**
+Set dynamic density range
+@param {number} min - minimum density (default 0.2)
+@param {number} max - maximum density (default 1.5)
+*/
+ATON.setAdaptiveDensityRange = (min, max)=>{
+    if (min >= max) return;
+
+    ATON._adMin = min;
+    ATON._adMax = max;
+};
+
+/**
 Set dynamic rendering FPS budgets. Default values are 20 and 55
 @param {number} minBudget - the lower bound to trigger a lower rendering profile
 @param {number} maxBudget - the upper bound to trigger a higher rendering profile

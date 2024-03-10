@@ -30,7 +30,7 @@ const session        = require('express-session');
 const FileStore      = require('session-file-store')(session);
 
 // Local modules
-const BaseAPI = require("./API.js");
+const BaseAPI = require("./API/v1.js");
 const Maat    = require("./maat/Maat.js");
 
 

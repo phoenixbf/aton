@@ -1,7 +1,8 @@
 /*!
     @preserve
 
- 	ATON main API gateway
+ 	ATON main API gateway (v1)
+	This will be soon replaced by new API (v2)
 
  	@author Bruno Fanini
 	VHLab, CNR ISPC

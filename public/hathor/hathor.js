@@ -1270,7 +1270,7 @@ HATHOR.createSemanticTextEditor = (idtextarea)=>{
         //bbcodeTrim: true,
         width: "100%",
         height: "300px", //"100%",
-        resizeEnabled: false,
+        resizeEnabled: true,
         autoExpand: true,
         emoticonsEnabled: false,
         autoUpdate: true,

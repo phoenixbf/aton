@@ -86,7 +86,7 @@ Utils.showBVHbounds = (level)=>{
 Utils._addBVHbounds = (c, level)=>{
     if (c === undefined) return;
 
-    let BVHVis = new ThreeMeshBVH.MeshBVHVisualizer(c, level);
+    let BVHVis = new ThreeMeshBVH.MeshBVHHelper(c, level);
     BVHVis.displayParents = true;
     BVHVis.update();
 

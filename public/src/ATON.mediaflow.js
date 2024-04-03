@@ -635,7 +635,7 @@ MediaFlow.getOrCreateVideoStream = (id, sourceurl, bUser)=>{
             MediaFlow._vStreams[id].uid = id;
         }
 
-        let htvid = "<video id='"+elid+"' autoplay crossorigin='anonymous' ></video>";
+        let htvid = "<video id='"+elid+"' autoplay crossorigin='anonymous' style='display:none' ></video>";
         $(htvid).appendTo('body');
 
         MediaFlow._vStreams[id].el = document.getElementById(elid);

@@ -499,6 +499,7 @@ SceneHub.initBaseParsers = ()=>{
                 }
 
                 // Auto build geom
+                // TODO: move to SUI media panel
                 if (!N.urls){
                     let gStream = new THREE.PlaneGeometry(1,1);
     
@@ -510,8 +511,9 @@ SceneHub.initBaseParsers = ()=>{
                     //ATON._assetReqNew();
                 
                     vs.el.addEventListener('loadedmetadata', (e)=>{
-                        mStream.scale.x    = 0.01 * vs.el.videoWidth;
-                        mStream.scale.y    = -0.01 * vs.el.videoHeight;
+                        let r = vs.el.videoWidth / vs.el.videoHeight;
+                        mStream.scale.x    = r;
+                        mStream.scale.y    = -1.0;
                         //mStream.position.y = 0.006 * vs.el.videoHeight;
 
                         //ATON._assetReqComplete();

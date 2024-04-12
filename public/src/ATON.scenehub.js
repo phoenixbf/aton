@@ -507,14 +507,14 @@ SceneHub.initBaseParsers = ()=>{
                     mStream.scale.x = 1.0
                     mStream.scale.y = -1.0;
 
-                    ATON._assetReqNew();
+                    //ATON._assetReqNew();
                 
                     vs.el.addEventListener('loadedmetadata', (e)=>{
                         mStream.scale.x    = 0.01 * vs.el.videoWidth;
                         mStream.scale.y    = -0.01 * vs.el.videoHeight;
                         //mStream.position.y = 0.006 * vs.el.videoHeight;
 
-                        ATON._assetReqComplete();
+                        //ATON._assetReqComplete();
                         //ATON.recomputeSceneBounds();
                     });
 

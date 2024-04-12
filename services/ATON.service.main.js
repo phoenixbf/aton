@@ -167,14 +167,14 @@ app.use('/vrc', createProxyMiddleware({
 	target: VRC_ADDR+":"+VRC_PORT, 
 	ws: true, 
 	pathRewrite: { '^/vrc': ''},
-	//changeOrigin: true
+	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
 	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
-	//changeOrigin: true 
+	changeOrigin: true 
 }));
 
 // WebDav

@@ -335,17 +335,17 @@ Photon.connect = (ssid)=>{
     let opts = {};
 
     // Secure connection
-    if (window.location.protocol === "https:"){
+    if (ATON.Utils.isConnectionSecure()){
         opts.path = '/svrc/socket.io';
         opts.secure = true;
         opts.rejectUnauthorized = false;
-        opts.transports = ['websocket']; 
-        opts.upgrade = false 
+        //opts.transports = ['websocket']; 
+        //opts.upgrade = false 
     }
     else {
         opts.path = '/vrc/socket.io';
-        opts.transports = ['websocket'];
-        opts.upgrade = false;
+        //opts.transports = ['websocket'];
+        //opts.upgrade = false;
     }
 
     Photon.socket = io.connect(Photon.address, opts); //, { 'force new connection': true });

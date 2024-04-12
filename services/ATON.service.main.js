@@ -173,7 +173,7 @@ app.use('/svrc', createProxyMiddleware({
 	target: VRC_ADDR+":"+VRC_PORT, 
 	ws: true, 
 	pathRewrite: { '^/svrc': ''},
-	secure: true,
+	//secure: true,
 	changeOrigin: true 
 }));
 

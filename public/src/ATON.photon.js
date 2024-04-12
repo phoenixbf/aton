@@ -77,6 +77,10 @@ Photon.init = ()=>{
     //Photon._encS = 
 
     Photon.customAvatarMaterial = undefined;
+
+    window.addEventListener("beforeunload", (event) => {
+        Photon.disconnect();
+    });
 };
 
 /**
@@ -437,7 +441,7 @@ Photon._registerSocketHandlers = ()=>{
 
         Photon.appendToChatBox("<i>YOU disconnected from the Photon session</i>");
 
-        console.log("VRC disconnected!");
+        console.log("Disconnected from Photon service!");
         ATON.fireEvent("VRC_Disconnected");
     });
 

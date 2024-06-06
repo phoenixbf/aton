@@ -761,6 +761,16 @@ Utils.downloadArrayBuffer = ( buffer, filename )=>{
     Utils.downloadBlob( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
 };
 
+Utils.downloadImageFromCanvas = (canvas, filename)=>{
+    if (!canvas) return;
+
+	let b64 = canvas.toDataURL();
+
+	ATON.Utils._dlink.href = b64.replace("image/png", "image/octet-stream");
+	ATON.Utils._dlink.download = filename;
+	ATON.Utils._dlink.click();
+};
+
 /**
 Export a given ATON node.
 Currently supported formats are: gltf/glb, obj or usdz.

@@ -696,4 +696,20 @@ MediaFlow.getVideoStream = (id)=>{
     return MediaFlow._vStreams[id];
 };
 
+MediaFlow.downloadVideoSnapshot = (videoel, filename, scale)=>{
+    if (!scale) scale = 1;
+
+    let w = videoel.videoWidth * scale;
+    let h = videoel.videoHeight * scale;
+
+    let canvas = document.createElement('canvas');
+    canvas.width  = w;
+    canvas.height = h;
+    
+    let ctx = canvas.getContext('2d');
+    ctx.drawImage(videoel, 0, 0, w, h);
+
+    ATON.Utils.downloadImageFromCanvas(canvas, filename);
+};
+
 export default MediaFlow;

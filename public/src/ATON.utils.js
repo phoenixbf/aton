@@ -765,9 +765,12 @@ Utils.downloadImageFromCanvas = (canvas, filename)=>{
     if (!canvas) return;
 
 	let b64 = canvas.toDataURL();
+    ATON.Utils._dlink.href = b64;
 
-	ATON.Utils._dlink.href = b64.replace("image/png", "image/octet-stream");
-	ATON.Utils._dlink.download = filename;
+	//if (filename.endsWith(".png")) ATON.Utils._dlink.href = b64.replace("image/png", "image/octet-stream");
+    //if (filename.endsWith(".jpg")) ATON.Utils._dlink.href = b64.replace("image/jpg", "image/octet-stream");
+	
+    ATON.Utils._dlink.download = filename;
 	ATON.Utils._dlink.click();
 };
 

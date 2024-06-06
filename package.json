@@ -49,7 +49,7 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "3d-tiles-renderer": "0.3.33",
+    "3d-tiles-renderer": "0.3.32",
     "body-parser": "^1.20.2",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
@@ -89,7 +89,7 @@
     "session-file-store": "^1.5.0",
     "sharp": "^0.33.3",
     "socket.io": "^4.7.5",
-    "three": "0.163.0",
+    "three": "0.164.0",
     "three-custom-shader-material": "5.4.0",
     "three-mesh-bvh": "0.7.5",
     "webdav-server": "^2.6.2",

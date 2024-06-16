@@ -23,6 +23,7 @@ const nanoid = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const Core = require('./Core');
+const API  = require("./API/v2"); // v2
 
 
 // Initialize & load config files
@@ -157,7 +158,9 @@ Core.setupPassport();
 Core.realizeAuth(app);
 
 // REST API
-Core.realizeBaseAPI(app);
+
+Core.realizeBaseAPI(app); 	// v1 (for retrocompatibility)
+API.init( app );			// v2
 
 // Micro-services proxies
 //=================================================

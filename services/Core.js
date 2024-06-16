@@ -437,7 +437,8 @@ Core.generateUserSID = ()=>{
     if(dd<10) dd = '0'+dd;
     if(mm<10) mm = '0'+mm;
 
-    let sid = yyyy+mm+dd + '-' + Math.random().toString(36).substr(2,9);
+    //let sid = yyyy+mm+dd + '-' + Math.random().toString(36).substr(2,9);
+	let sid = yyyy+mm+dd + '-' + nanoid(10);
 	return sid;
 };
 

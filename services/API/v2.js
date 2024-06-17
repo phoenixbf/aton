@@ -14,63 +14,183 @@ const fsx         = require('fs-extra');
 const fg          = require('fast-glob');
 const sharp       = require("sharp");
 
+const swaggerJSDoc = require("swagger-jsdoc");
+const swaggerUI    = require("swagger-ui-express");
+//const { SwaggerTheme } = require('swagger-themes');
+
 sharp.cache(false);
 
 
 let API = {};
 API.BASE = "/api/v2/";
+API.DOCS = "/apiv2-docs";
 
 Core.API = API;
 
+API.isUserAuth = (req)=>{
+    if (req.user === undefined) return false;
+    if (req.user.username === undefined) return false;
+
+    return true;
+};
+
+// Main setup
 API.init = (app)=>{
 
-    /**
-        * @api {get} /api/v2/scenes/	List public scenes
-        * @apiGroup Scenes
-        * @apiPermission none
+/*===============================
+    SCENES
+===============================*/
 
-        * @apiDescription List all public scenes
-        * @apiSuccess {Array} list scenes object list
-    */
+    // List public scenes
     app.get(API.BASE + "scenes", (req,res)=>{
-        let filter = req.query.f;
+        let keyword = req.query.k;
+        let R;
 
-        res.send( Core.maat.getPublicScenes() ); // TODO: handle pagination
+        if (keyword) R = Core.maat.getScenesByKeyword(keyword);
+        else R = Core.maat.getPublicScenes();
+
+        res.send( R ); // TODO: handle pagination
     });
 
+    // List user scenes
     app.get(API.BASE + "scenes/:user", (req,res)=>{
-        if (req.user === undefined){
-            res.send(401);
+        if ( !API.isUserAuth(req) ){
+            res.sendStatus(401);
             return;
         }
 
-        let uname = req.params.user;
+        let keyword = req.query.k;
+        let uname   = req.params.user;
+        let R;
+
+        if (keyword) R = Core.maat.getScenesByKeyword(kw, uname);
+        else R = Core.maat.getUserScenes(uname);
         
-        if (req.user === uname) res.send( Core.maat.getUserScenes(uname) );
-        else res.send(401);
+        if (req.user.username === uname) res.send( R );
+        else res.sendStatus(401);
     });
 
-    // New scene
-    app.post(API.BASE + "scenes", (req,res)=>{
-        // Only auth users
-        if (req.user === undefined){
+    // Get scene descriptor
+    app.get(API.BASE+"scenes/:user/:usid", (req,res)=>{
+        let U = req.params.user;
+        let S = req.params.usid;
+
+        if (!U || !S){
             res.send(false);
             return;
         }
 
-        let O = req.body;
-        let sid  = req.user + "/" + Core.generateUserSID();
-        let data = O.data;
-        let pub  = O.pub;
+        let sid = U+"/"+S;
 
-        console.log(O);
+        let sjsonpath = Core.getSceneJSONPath(sid);
 
-        //Core.touchSceneFolder(sid);
-        let r = Core.writeSceneJSON(sid, data, pub);
-
-        res.json(r);
+    	if (fs.existsSync(sjsonpath)){
+            //console.log(sjsonpath);
+            return res.sendFile(sjsonpath);
+        }
+        
+        res.send(false);
     });
 
+    // New scene
+    app.post(API.BASE + "scenes", (req,res)=>{
+        // Only auth users can create scenes
+        if ( !API.isUserAuth(req) ){
+            res.send(false);
+            return;
+        }
+
+        let uname = req.user.username;
+
+        let O = req.body;
+        let data = O.data;
+        let pub  = O.pub;
+        let fromSID  = O.fromSID;
+        let fromItem = O.fromItem;
+
+        // Create a new scene from single item (experimental)
+        if (fromItem){
+            if (Core.isURL3Dmodel(fromItem)){
+                let R = Core.createBasicSceneFromModel(uname,fromItem);
+                
+                if (R) res.send(R);
+                else res.send(false);
+            }
+
+            return;
+        }
+
+        // Create a new scene ID
+        let sid  = uname + "/" + Core.generateUserSID();
+
+        // Clone from existing scene
+        if (fromSID){
+            console.log(Core.DIR_SCENES+fromSID);
+
+            fsx.copy(Core.DIR_SCENES+fromSID, Core.DIR_SCENES+sid, (err)=>{
+                if (err){
+                    console.log(err);
+                    res.send(false);
+                    return;
+                }
+            });
+
+            res.send(sid);
+            return;
+        }
+
+        // Brand new scene
+        let R = Core.writeSceneJSON(sid, data, pub);
+
+        if (R) res.send(sid);
+        else res.send(false);
+    });
+
+/*===============================
+    INSTANCE
+===============================*/
+
+/*===============================
+    ITEMS
+===============================*/
+
+
+/*===============================
+    USERS
+===============================*/
+
+/*===============================
+    APPS
+===============================*/
+
+/*===============================
+    FLARES
+===============================*/
+
+    API.setupDocs(app);
+};
+
+
+// OpenAPI / Swagger docs
+API.setupDocs = (app)=>{
+    const swaggerSpec = swaggerJSDoc({
+        definition: require("./openapi.json"),
+        supportedSubmitMethods: [],
+        apis: [__filename]
+    });
+    
+    const opts = {
+        swaggerOptions: {
+            //tryItOutEnabled: true
+            supportedSubmitMethods: []
+        },
+    
+        //explorer: true,
+        //customCss: theme.getBuffer('dark')
+        //customCssUrl: "./public/hub.css"
+    };
+
+	app.use(API.DOCS, swaggerUI.serve, swaggerUI.setup(swaggerSpec, opts ));
 };
 
 module.exports = API;

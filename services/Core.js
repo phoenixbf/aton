@@ -13,7 +13,7 @@ const path        = require('path');
 const jsonpatch   = require('fast-json-patch');
 const del         = require('del');
 const makeDir     = require('make-dir');
-const nanoid      = require('nanoid');
+const { nanoid }  = require('nanoid');
 const fsx         = require('fs-extra');
 //const axios       = require('axios');
 //const chokidar    = require('chokidar');
@@ -407,6 +407,49 @@ Core.deleteUser = (username)=>{
 	return false;
 };
 
+// Utils
+//=======================================
+Core.generateTodayString = ()=>{
+    let today = new Date();
+
+    let dd   = String( today.getDate() );
+    let mm   = String( today.getMonth()+1 ); 
+    let yyyy = String( today.getFullYear() );
+    
+	if(dd<10) dd = '0'+dd;
+    if(mm<10) mm = '0'+mm;
+
+	return yyyy+mm+dd;
+};
+
+// Readapted from: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
+Core.hashCodeFromString = (str)=>{
+	let hash = 0, chr;
+
+	if (str.length === 0) return hash;
+
+	for (let i = 0; i < str.length; i++) {
+		chr = str.charCodeAt(i);
+		hash = ((hash << 5) - hash) + chr;
+		hash |= 0; // Convert to 32bit integer
+	}
+	return hash.toString(16);
+};
+
+// TODO: improve
+Core.isURL3Dmodel = (itempath)=>{
+	let mp = Core.mpattern;
+	mp = mp.replace("*","");
+
+	let exts = mp.split(",");
+
+	for (let e=0; e<exts.length; e++){
+		if (itempath.endsWith( exts[e] )) return true;
+	}
+
+	return false;
+};
+
 
 // Scenes
 //=======================================
@@ -430,22 +473,14 @@ Core.existsScene = (sid)=>{;
 
 // Generate timestamped user SID
 Core.generateUserSID = ()=>{
-    let today = new Date();
-    let dd   = String( today.getDate() );
-    let mm   = String( today.getMonth()+1 ); 
-    let yyyy = String( today.getFullYear() );
-    if(dd<10) dd = '0'+dd;
-    if(mm<10) mm = '0'+mm;
-
-    //let sid = yyyy+mm+dd + '-' + Math.random().toString(36).substr(2,9);
-	let sid = yyyy+mm+dd + '-' + nanoid(10);
+	let sid = Core.generateTodayString() + '-' + nanoid(10);
 	return sid;
 };
 
 Core.createBasicScene = ()=>{
 	let sobj = {};
 
-	sobj.status = Core.STATUS_COMPLETE;
+	//sobj.status = Core.STATUS_COMPLETE;
 
 	sobj.scenegraph = {};
 	sobj.scenegraph.nodes = {};
@@ -458,6 +493,19 @@ Core.createBasicScene = ()=>{
 	console.log(sobj);
 
 	return sobj;
+};
+
+Core.createBasicSceneFromModel = (user, mpath)=>{
+	let sid = Core.hashCodeFromString(mpath);
+	sid = user + "/" + sid;
+
+	if (Core.existsScene(sid)) return sid;
+
+	let S = Core.createBasicScene();
+	S.scenegraph.nodes.main.urls.push( mpath );
+
+	Core.writeSceneJSON(sid, S);
+	return sid;
 };
 
 // Create sub-folder structure on disk

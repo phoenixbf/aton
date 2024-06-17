@@ -1,0 +1,44 @@
+{
+    "openapi": "3.0.0",
+
+    "supportedSubmitMethods": [],
+
+    "info": {
+        "version": "1.0.0",
+        "title": "ATON REST API v2",
+        "description": "This is the new REST API (v2) for ATON",
+
+        "contact": {
+            "name": "Bruno Fanini"
+        },
+    
+        "license": {
+            "name": "GPL v3"
+        }
+    },
+
+    "paths": {
+
+        "/api/v2/scenes/":{
+            "get":{
+                "tags":["Scenes"],
+                "summary": "List public scenes",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}

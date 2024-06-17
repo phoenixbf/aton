@@ -55,7 +55,7 @@ API.init = (app)=>{
     // List user scenes
     app.get(API.BASE + "scenes/:user", (req,res)=>{
         if ( !API.isUserAuth(req) ){
-            res.sendStatus(401);
+            res.status(401).send([]);
             return;
         }
 
@@ -67,10 +67,10 @@ API.init = (app)=>{
         else R = Core.maat.getUserScenes(uname);
         
         if (req.user.username === uname) res.send( R );
-        else res.sendStatus(401);
+        else res.status(401).send([]);
     });
 
-    // Get scene descriptor
+    // Get JSON scene descriptor
     app.get(API.BASE+"scenes/:user/:usid", (req,res)=>{
         let U = req.params.user;
         let S = req.params.usid;
@@ -96,7 +96,7 @@ API.init = (app)=>{
     app.post(API.BASE + "scenes", (req,res)=>{
         // Only auth users can create scenes
         if ( !API.isUserAuth(req) ){
-            res.send(false);
+            res.status(401).send(false);
             return;
         }
 
@@ -147,13 +147,44 @@ API.init = (app)=>{
     });
 
 /*===============================
-    INSTANCE
+    ITEMS (Collections)
 ===============================*/
 
-/*===============================
-    ITEMS
-===============================*/
+    // 3D models
+    app.get(API.BASE + "items/:user/models", (req,res)=>{
+        if ( !API.isUserAuth(req) ){
+            res.status(401).send([]);
+            return;
+        }
+    
+        let uname = req.user.username;
+    
+        res.send( Core.maat.getUserModels(uname) );
+    });
 
+    // Panoramic content
+    app.get(API.BASE + "items/:user/panoramas", (req,res)=>{
+        if ( !API.isUserAuth(req) ){
+            res.status(401).send([]);
+            return;
+        }
+    
+        let uname = req.user.username;
+    
+        res.send( Core.maat.getUserPanoramas(uname) );
+    });
+
+    // Media
+    app.get(API.BASE + "items/:user/media", (req,res)=>{
+        if ( !API.isUserAuth(req) ){
+            res.status(401).send([]);
+            return;
+        }
+    
+        let uname = req.user.username;
+    
+        res.send( Core.maat.getUserMedia(uname) );
+    });
 
 /*===============================
     USERS
@@ -165,6 +196,10 @@ API.init = (app)=>{
 
 /*===============================
     FLARES
+===============================*/
+
+/*===============================
+    INSTANCE
 ===============================*/
 
     API.setupDocs(app);

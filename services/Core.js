@@ -425,13 +425,14 @@ Core.generateTodayString = ()=>{
 // Readapted from: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
 Core.hashCodeFromString = (str)=>{
 	let hash = 0, chr;
+	let len = str.length;
 
-	if (str.length === 0) return hash;
+	if (len === 0) return hash;
 
-	for (let i = 0; i < str.length; i++) {
+	for (let i = 0; i < len; i++) {
 		chr = str.charCodeAt(i);
 		hash = ((hash << 5) - hash) + chr;
-		hash |= 0; // Convert to 32bit integer
+		hash = hash & hash; // Convert to 32bit integer
 	}
 	return hash.toString(16);
 };
@@ -497,6 +498,7 @@ Core.createBasicScene = ()=>{
 
 Core.createBasicSceneFromModel = (user, mpath)=>{
 	let sid = Core.hashCodeFromString(mpath);
+	sid = sid.replace("-","m");
 	sid = user + "/" + sid;
 
 	if (Core.existsScene(sid)) return sid;

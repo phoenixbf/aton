@@ -137,7 +137,7 @@ Core.realizeAuth(app);
 
 // REST API
 
-Core.realizeBaseAPI(app); 	// v1 (for retrocompatibility)
+Core.realizeBaseAPI(app); 	// v1 (for backward compatibility)
 API.init( app );			// v2
 
 

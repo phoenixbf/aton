@@ -29,6 +29,47 @@
                     "200":{
                         "description": "Successful operation, returns list",
                         "content":{
+                        }
+                    }
+                }
+            },
+
+            "post":{
+                "tags":["Scenes"],
+                "summary": "Create a new scene",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns scene-ID",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/scenes/{user}":{
+            "get":{
+                "tags":["Scenes"],
+                "summary": "List user scenes",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
                             "application/json":{
                                 "schema":{
                                     "type": "object"
@@ -38,7 +79,161 @@
                     }
                 }
             }
+        },
+
+        "/api/v2/scenes/{user}/{usid}":{
+            "get":{
+                "tags":["Scenes"],
+                "summary": "Get JSON scene descriptor",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usid",
+                        "in": "path",
+                        "description": "User scene-ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns JSON descriptor",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
+            "put":{
+                "tags":["Scenes"],
+                "summary": "Patch JSON scene descriptor",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usid",
+                        "in": "path",
+                        "description": "User scene-ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns modified JSON descriptor",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/items/{user}/models":{
+            "get":{
+                "tags":["Items"],
+                "summary": "List user 3D models",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/items/{user}/panoramas":{
+            "get":{
+                "tags":["Items"],
+                "summary": "List user panoramas",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/items/{user}/media":{
+            "get":{
+                "tags":["Items"],
+                "summary": "List user media",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
+                        }
+                    }
+                }
+            }
         }
 
+    },
+
+    "components":{
     }
 }

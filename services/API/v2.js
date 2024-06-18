@@ -150,7 +150,7 @@ API.init = (app)=>{
     ITEMS (Collections)
 ===============================*/
 
-    // 3D models
+    // 3D models list
     app.get(API.BASE + "items/:user/models", (req,res)=>{
         if ( !API.isUserAuth(req) ){
             res.status(401).send([]);
@@ -158,11 +158,37 @@ API.init = (app)=>{
         }
     
         let uname = req.user.username;
+        if (uname !== req.params.user){
+            res.status(401).send([]);
+            return;
+        }
     
         res.send( Core.maat.getUserModels(uname) );
     });
 
-    // Panoramic content
+    // Asset Injector (TODO)
+    app.patch(API.BASE + "items/:user/models", (req,res)=>{
+        if ( !API.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
+    
+        let uname = req.user.username;
+        if (uname !== req.params.user){
+            res.status(401).send(false);
+            return;
+        }
+
+        let modelpath = req.query.m;
+        if (!modelpath){
+            res.send(false);
+            return; 
+        }
+
+        // ...
+    });
+
+    // Panoramic content list
     app.get(API.BASE + "items/:user/panoramas", (req,res)=>{
         if ( !API.isUserAuth(req) ){
             res.status(401).send([]);
@@ -174,7 +200,7 @@ API.init = (app)=>{
         res.send( Core.maat.getUserPanoramas(uname) );
     });
 
-    // Media
+    // Media list
     app.get(API.BASE + "items/:user/media", (req,res)=>{
         if ( !API.isUserAuth(req) ){
             res.status(401).send([]);

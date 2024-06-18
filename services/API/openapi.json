@@ -230,6 +230,52 @@
                     }
                 }
             }
+        },
+
+        "/api/v2/users/":{
+            "get":{
+                "tags":["Users"],
+                "summary": "List users",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns list",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
+            "post":{
+                "tags":["Users"],
+                "summary": "Create a new user",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns true",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/users/{user}":{
+            "get":{
+                "tags":["Users"],
+                "summary": "Get user information",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns user info object",
+                        "content":{
+                        }
+                    }
+                }
+            }
         }
 
     },

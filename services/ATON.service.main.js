@@ -23,6 +23,7 @@ const nanoid = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const Core = require('./Core');
+const Auth = require('./Auth');
 const API  = require("./API/v2"); // v2
 
 
@@ -132,8 +133,10 @@ app.use('/a', express.static(Core.DIR_WAPPS));
 app.use('/', express.static(Core.DIR_DATA, CACHING_OPT));
 
 
-Core.setupPassport();
-Core.realizeAuth(app);
+//Core.setupPassport();
+//Core.realizeAuth(app);
+Auth.init(app);
+
 
 // REST API
 

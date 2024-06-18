@@ -244,7 +244,7 @@ Maat.scanPanoramas = (uid)=>{
 	globopts.follow = true;
 */
 	//let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
-	let files = fg.sync("{"+uid+",samples}/pano/**/{*.jpg,*.hdr,*.exr,*.mp4,*.webm}", Core.COLLECTIONS_GLOB_OPTS);
+	let files = fg.sync("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS);
 
 	CC[uid].panos = [];
 	if (files.length < 1) return;
@@ -257,7 +257,7 @@ Maat.scanMedia = (uid)=>{
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	let files = fg.sync("{"+uid+",samples}/media/**/{*.jpg,*.png,*.mp4,*.webm,*.wav,*.mp3}", Core.COLLECTIONS_GLOB_OPTS);
+	let files = fg.sync("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS);
 
 	CC[uid].media = [];
 	if (files.length < 1) return;

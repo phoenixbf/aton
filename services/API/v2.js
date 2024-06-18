@@ -37,10 +37,9 @@ API.isUserAuth = (req)=>{
 // Main setup
 API.init = (app)=>{
 
-/*===============================
-    SCENES
-===============================*/
-
+    /*===============================
+        SCENES
+    ===============================*/
     // List public scenes
     app.get(API.BASE + "scenes", (req,res)=>{
         let keyword = req.query.k;
@@ -54,7 +53,7 @@ API.init = (app)=>{
 
     // List user scenes
     app.get(API.BASE + "scenes/:user", (req,res)=>{
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send([]);
             return;
         }
@@ -95,7 +94,7 @@ API.init = (app)=>{
     // New scene
     app.post(API.BASE + "scenes", (req,res)=>{
         // Only auth users can create scenes
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send(false);
             return;
         }
@@ -146,13 +145,12 @@ API.init = (app)=>{
         else res.send(false);
     });
 
-/*===============================
-    ITEMS (Collections)
-===============================*/
-
+    /*===============================
+        ITEMS (Collections)
+    ===============================*/
     // 3D models list
     app.get(API.BASE + "items/:user/models", (req,res)=>{
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send([]);
             return;
         }
@@ -168,7 +166,7 @@ API.init = (app)=>{
 
     // Asset Injector (TODO)
     app.patch(API.BASE + "items/:user/models", (req,res)=>{
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send(false);
             return;
         }
@@ -190,7 +188,7 @@ API.init = (app)=>{
 
     // Panoramic content list
     app.get(API.BASE + "items/:user/panoramas", (req,res)=>{
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send([]);
             return;
         }
@@ -202,7 +200,7 @@ API.init = (app)=>{
 
     // Media list
     app.get(API.BASE + "items/:user/media", (req,res)=>{
-        if ( !API.isUserAuth(req) ){
+        if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send([]);
             return;
         }
@@ -212,21 +210,69 @@ API.init = (app)=>{
         res.send( Core.maat.getUserMedia(uname) );
     });
 
-/*===============================
-    USERS
-===============================*/
+    /*===============================
+        USERS
+    ===============================*/
+    app.get(API.BASE + "users", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send([]);
+            return;
+        }
 
-/*===============================
-    APPS
-===============================*/
+        let uu = [];
+        for (let u in Core.users) uu.push({
+            username: Core.users[u].username,
+            admin: Core.users[u].admin
+        });
+    
+        res.send(uu);
+    });
 
-/*===============================
-    FLARES
-===============================*/
+    app.post(API.BASE + "users", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send(false);
+            return;
+        }
 
-/*===============================
-    INSTANCE
-===============================*/
+        let O = req.body;
+    
+        let b = Core.createNewUser(O);
+        res.send(b);
+    });
+
+    app.get(API.BASE + "users/:user", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        let uname = req.params.user;
+
+        for (let i in Core.users){
+            let U = Core.users[i];
+            if (U.username === uname){
+                res.send({
+                    username: U.username,
+                    admin: U.admin
+                });
+                return;
+            }
+        }
+
+        res.send(false);
+    });
+
+    /*===============================
+        APPS
+    ===============================*/
+
+    /*===============================
+        FLARES
+    ===============================*/
+
+    /*===============================
+        INSTANCE
+    ===============================*/
 
     API.setupDocs(app);
 };

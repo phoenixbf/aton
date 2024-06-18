@@ -23,11 +23,13 @@ const chalk       = require('chalk');
 const { networkInterfaces } = require('os');
 
 // Authentication
+/*
 let passport = require('passport');
 let Strategy = require('passport-local').Strategy;
 const cookieParser   = require('cookie-parser');
 const session        = require('express-session');
 const FileStore      = require('session-file-store')(session);
+*/
 
 // Local modules
 const BaseAPI = require("./API/v1.js");
@@ -76,7 +78,7 @@ Core.COLLECTIONS_GLOB_OPTS = {
 
 // Modules setup
 Core.realizeBaseAPI = BaseAPI;
-Core.passport       = passport; // set configured passport
+//Core.passport       = passport; // set configured passport
 Core.maat           = Maat;
 
 // LOG Utils
@@ -238,7 +240,13 @@ Core.init = ()=>{
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 	// 3D models base formats
-	Core.mpattern = "*.gltf,*.glb,*.json"; //,*.ifc";
+	Core.mpattern = "*.gltf,*.glb,*.json";
+
+	// Panoramic content
+	Core.panopattern = "*.jpg,*.hdr,*.exr,*.mp4,*.webm,*.m3u8";
+
+	// Media
+	Core.mediapattern = "*.jpg,*.png,*.mp4,*.webm,*.m3u8,*.wav,*.mp3";
 
 	if (Core.config.data && Core.config.data.patterns && Core.config.data.patterns.models){
 		Core.mpattern = Core.config.data.patterns.models;
@@ -790,6 +798,7 @@ Core.initUsers = (configfile)=>{
 };
 */
 
+/*
 Core.findByUsername = (username, cb)=>{
 	process.nextTick( function(){
 		// Load
@@ -867,6 +876,7 @@ Core.realizeAuth = (app)=>{
     app.use(passport.initialize());
     app.use(passport.session());
 };
+*/
 
 // DATA
 //================================================

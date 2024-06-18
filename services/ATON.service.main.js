@@ -24,6 +24,7 @@ const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const Core = require('./Core');
 const Auth = require('./Auth');
+const Render = require('./Render');
 const API  = require("./API/v2"); // v2
 
 
@@ -132,58 +133,18 @@ app.use('/a', express.static(Core.DIR_WAPPS));
 // Data (static)
 app.use('/', express.static(Core.DIR_DATA, CACHING_OPT));
 
-
-//Core.setupPassport();
-//Core.realizeAuth(app);
+// Setup authentication
 Auth.init(app);
 
 
 // REST API
-
 Core.realizeBaseAPI(app); 	// v1 (for backward compatibility)
 API.init( app );			// v2
 
 
 // Rendering
-//=================================================
-//TODO: move into proper ejs setup routine
-app.set('view engine', 'ejs');
-app.set('views', __dirname+"/views/");
+Core.Render.setup(app);
 
-// Main 3D scene front-end (Hathor) from sid
-app.get(/^\/s\/(.*)$/, (req,res,next)=>{
-	let d = {};
-	d.sid   = req.params[0];
-	d.title = d.sid;
-	d.appicon = "/hathor/appicon.png";
-	d.scripts = Core.FEScripts;
-
-	let S = Core.readSceneJSON(d.sid);
-	if (S){
-		if (S.title) d.title = S.title;
-		d.appicon = "/api/cover/"+d.sid;
-	}
-
-	res.render("hathor/index", d);
-});
-
-// Automatically create 3D scene from item url and redirect to Hathor 
-app.get(/^\/i\/(.*)$/, (req,res,next)=>{
-	if ( req.user === undefined ) return;
-
-	let uname = req.user.username;
-	
-	let item = req.params[0];
-	console.log(item)
-
-	if (Core.isURL3Dmodel(item)){
-		let sid = Core.createBasicSceneFromModel(uname,item);
-		console.log(sid)
-
-		if (sid) res.redirect("/s/"+sid);
-		return;
-	}
-});
 
 // Micro-services proxies
 //=================================================

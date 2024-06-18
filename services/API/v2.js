@@ -269,11 +269,21 @@ API.init = (app)=>{
     /*===============================
         FLARES
     ===============================*/
+    app.get(API.BASE + "flares", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send([]);
+            return;
+        }
+
+        res.send( Core.flares );
+    });
 
     /*===============================
         INSTANCE
     ===============================*/
 
+
+    // REST API docs (OpenAPI / Swagger)
     API.setupDocs(app);
 };
 

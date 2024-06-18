@@ -101,7 +101,7 @@ Core.setupFlares = (app)=>{
 	O.cwd    = Core.DIR_FLARES; //Core.DIR_PUBLIC;
 	O.follow = true;
 
-	// Collcet all flares
+	// Collect all flares
 	let plugins = fg.sync("**/flare.json", O);
 	for (let f in plugins){
 		let flarename = path.dirname(plugins[f]);

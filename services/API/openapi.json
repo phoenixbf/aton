@@ -116,7 +116,7 @@
                 }
             },
 
-            "put":{
+            "patch":{
                 "tags":["Scenes"],
                 "summary": "Patch JSON scene descriptor",
                 "description": "....",
@@ -265,12 +265,26 @@
         "/api/v2/users/{user}":{
             "get":{
                 "tags":["Users"],
-                "summary": "Get user information",
+                "summary": "Get user data",
                 "description": "....",
 
                 "responses":{
                     "200":{
                         "description": "Successful operation, returns user info object",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
+            "put":{
+                "tags":["Users"],
+                "summary": "Update user data",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns true",
                         "content":{
                         }
                     }

@@ -53,20 +53,26 @@ API.init = (app)=>{
 
     // List user scenes
     app.get(API.BASE + "scenes/:user", (req,res)=>{
+        // Only auth users
         if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send([]);
             return;
         }
 
+        // Only own scenes
+        let uname = req.params.user;
+        if (req.user.username !== uname){
+            res.status(401).send([]);
+            return;
+        }
+
         let keyword = req.query.k;
-        let uname   = req.params.user;
         let R;
 
-        if (keyword) R = Core.maat.getScenesByKeyword(kw, uname);
+        if (keyword) R = Core.maat.getScenesByKeyword(keyword, uname);
         else R = Core.maat.getUserScenes(uname);
         
-        if (req.user.username === uname) res.send( R );
-        else res.status(401).send([]);
+        res.send( R );
     });
 
     // Get JSON scene descriptor
@@ -89,6 +95,44 @@ API.init = (app)=>{
         }
         
         res.send(false);
+    });
+
+    // Patch a JSON scene descriptor
+    app.patch(API.BASE+"scenes/:user/:usid", (req,res)=>{
+        // Only auth user can patch a scene
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        // Only own scenes
+        let uname = req.params.user;
+        if (req.user.username !== uname){
+            res.status(401).send(false);
+            return;
+        }
+
+        let U = req.params.user;
+        let S = req.params.usid;
+
+        if (!U || !S){
+            res.send(false);
+            return;
+        }
+
+        let sid = U+"/"+S;
+
+        let O = req.body;
+        let mode  = O.mode;
+        let patch = O.data;
+
+        if (!mode || !data){
+            res.send(false);
+            return;
+        }
+
+        let J = Core.applySceneEdit(sid, patch, mode);
+        res.json(J);
     });
 
     // New scene
@@ -248,18 +292,27 @@ API.init = (app)=>{
 
         let uname = req.params.user;
 
-        for (let i in Core.users){
-            let U = Core.users[i];
-            if (U.username === uname){
-                res.send({
-                    username: U.username,
-                    admin: U.admin
-                });
-                return;
-            }
+        let U = Auth.findUser(uname);
+        if (U) res.send({
+            username: U.username,
+            admin: U.admin
+        });
+        else res.send(false);
+    });
+
+    // Update user
+    app.put(API.BASE + "users/:user", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send(false);
+            return;
         }
 
-        res.send(false);
+        let uname = req.params.user;
+        let O = req.body;
+
+        let U = Auth.findUser(uname);
+
+        //TODO: modify user entry
     });
 
     /*===============================

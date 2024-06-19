@@ -59,7 +59,7 @@ Auth.init = (app)=>{
 Auth.setupPassport = ()=>{
 
     passport.use( new Strategy((username, password, cb)=>{
-        Auth.findByUsername(username, function(err, user) {
+        Auth._findByUsername(username, function(err, user) {
             if (err) return cb(err);
             if (!user) return cb(null, false);
             if (user.password != password) return cb(null, false);
@@ -73,7 +73,7 @@ Auth.setupPassport = ()=>{
     });
 
     passport.deserializeUser((id, cb)=>{
-        Auth.findById(id, (err, user)=>{
+        Auth._findById(id, (err, user)=>{
             if (err) return cb(err);
 
             cb(null, user);
@@ -81,7 +81,8 @@ Auth.setupPassport = ()=>{
     });
 };
 
-Auth.findByUsername = (username, cb)=>{
+// Passport utility
+Auth._findByUsername = (username, cb)=>{
 	process.nextTick( function(){
 		// Load
 		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
@@ -98,7 +99,8 @@ Auth.findByUsername = (username, cb)=>{
 	});
 };
 
-Auth.findById = (id, cb)=>{
+// Passport utility
+Auth._findById = (id, cb)=>{
 	process.nextTick(()=>{
 		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
 
@@ -107,6 +109,14 @@ Auth.findById = (id, cb)=>{
 	});
 };
 
+Auth.findUser = (username)=>{
+	for (let i in Core.users){
+		let U = Core.users[i];
+		if (U.username === username) return U;
+	}
+
+	return undefined;
+};
 
 Auth.isUserAuth = (req)=>{
     if (req.user === undefined) return false;

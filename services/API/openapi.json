@@ -44,6 +44,11 @@
                         "description": "Successful operation, returns scene-ID",
                         "content":{
                         }
+                    },
+                    "401":{
+                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
+                        "content":{
+                        }
                     }
                 }
             }
@@ -75,6 +80,11 @@
                                     "type": "object"
                                 }
                             }
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
+                        "content":{
                         }
                     }
                 }
@@ -116,6 +126,45 @@
                 }
             },
 
+            "delete":{
+                "tags":["Scenes"],
+                "summary": "Delete a scene",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usid",
+                        "in": "path",
+                        "description": "User scene-ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns JSON descriptor",
+                        "content":{
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
             "patch":{
                 "tags":["Scenes"],
                 "summary": "Patch JSON scene descriptor",
@@ -144,6 +193,11 @@
                 "responses":{
                     "200":{
                         "description": "Successful operation, returns modified JSON descriptor",
+                        "content":{
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
                         "content":{
                         }
                     }

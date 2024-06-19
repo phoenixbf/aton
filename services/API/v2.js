@@ -112,7 +112,7 @@ API.init = (app)=>{
             return;
         }
 
-        let U = req.params.user;
+        let U = uname;
         let S = req.params.usid;
 
         if (!U || !S){
@@ -133,6 +133,34 @@ API.init = (app)=>{
 
         let J = Core.applySceneEdit(sid, patch, mode);
         res.json(J);
+    });
+
+    app.delete(API.BASE+"scenes/:user/:usid", (req,res)=>{
+        // Only auth user can delete a scene
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        // Only own scenes
+        let uname = req.params.user;
+        if (req.user.username !== uname){
+            res.status(401).send(false);
+            return;
+        }
+
+        let U = uname;
+        let S = req.params.usid;
+
+        if (!U || !S){
+            res.send(false);
+            return;
+        }
+
+        let sid = U+"/"+S;
+
+        Core.deleteScene(sid);
+        res.send(true);
     });
 
     // New scene

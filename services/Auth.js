@@ -118,9 +118,11 @@ Auth.findUser = (username)=>{
 	return undefined;
 };
 
-Auth.isUserAuth = (req)=>{
+Auth.isUserAuth = (req, username)=>{
     if (req.user === undefined) return false;
     if (req.user.username === undefined) return false;
+
+	if (username && req.user.username!==username) return false;
 
     return true;
 };

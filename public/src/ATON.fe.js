@@ -456,12 +456,14 @@ FE.uiAddButtonAR = (idcontainer)=>{
         if (ATON.Utils.isARsupported()){
             ATON.XR.toggle("immersive-ar");
         }
+/*
         // Apple USDZ
         else {
             let fname = "scene.usdz";
             //if (ATON.SceneHub.currID) fname = 
             ATON.Utils.exportNode(ATON.getRootScene(), fname);
         }
+*/
     }, 
     "Immersive AR mode" );
 

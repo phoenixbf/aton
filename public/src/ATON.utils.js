@@ -822,7 +822,7 @@ Utils.exportNode = (node, filename)=>{
         Utils.downloadText(output, filename);
     }
 
-    // USDZ
+    // USDZ (fixme)
     if (ext === "usdz"){
         if (Utils.exporterUSDZ === undefined) Utils.exporterUSDZ = new THREE.USDZExporter();
 

@@ -40,12 +40,16 @@ Render.setup = (app)=>{
 	});
 	
 	// Automatically create 3D scene from item url and redirect to Hathor
-	app.get(/^\/i\/(.*)$/, (req,res,next)=>{
-		if ( req.user === undefined ) return;
+	app.get("/i", (req,res,next)=>{ // /^\/i\/(.*)$/
+        // Only auth users
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
 	
 		let uname = req.user.username;
 		
-		let item = req.params[0];
+		let item = req.query.m; //req.params[0];
 		console.log(item)
 	
 		if (Core.isURL3Dmodel(item)){
@@ -55,6 +59,7 @@ Render.setup = (app)=>{
 			if (sid) res.redirect("/s/"+sid);
 			return;
 		}
+		else res.send(false);
 	});
 
 

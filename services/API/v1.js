@@ -359,6 +359,20 @@ app.post('/api/visibility/scene', (req, res) => {
 		return;
 	}
 
+	let J;
+	let P = {};
+	P.visibility = 1;
+
+	if (vis==="public"){
+		J = Core.applySceneEdit(sid, P, "ADD");
+		res.json(vis);
+	}
+	else {
+		J = Core.applySceneEdit(sid, P, "DEL");
+		res.json(vis);
+	}
+
+/*
 	let pubfile = Core.getPubFilePath(sid);
 
 	if (vis === "public"){
@@ -371,8 +385,8 @@ app.post('/api/visibility/scene', (req, res) => {
 		res.json(vis);
 		return;
 	}
-
-	res.send(false);
+*/
+	//res.send(false);
 });
 
 // Scene clone
@@ -439,15 +453,15 @@ app.get(/^\/api\/info\/scene\/(.*)$/, (req,res,next)=>{
 		return;
 	}
 	
-	R.public = false;
+	//R.public = false;
 	R.cover  = false;
 
 	let basepath = Core.DIR_SCENES + sid;
 
-	let pubfile   = basepath+"/" + Core.STD_PUBFILE;
+	//let pubfile   = basepath+"/" + Core.STD_PUBFILE;
 	let coverfile = basepath+"/" + Core.STD_COVERFILE;
 
-	if (fs.existsSync(pubfile))   R.public = true;
+	//if (fs.existsSync(pubfile))   R.public = true;
 	if (fs.existsSync(coverfile)) R.cover  = true;
 
 	res.send(R);

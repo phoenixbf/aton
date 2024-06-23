@@ -445,13 +445,22 @@ Core.hashCodeFromString = (str)=>{
 	return hash.toString(16);
 };
 
+Core.hashCodeFromString2 = (str)=>{
+	str = str.replaceAll(":","");
+	str = str.replaceAll("/","");
+	str = str.replaceAll(".","");
+
+	str.replace(/[aeiouAEIOU]/g, '');
+	console.log(str);
+	return str;
+};
+
 // TODO: improve
 Core.isURL3Dmodel = (itempath)=>{
 	let mp = Core.mpattern;
-	mp = mp.replace("*","");
+	mp = mp.replaceAll("*","");
 
 	let exts = mp.split(",");
-
 	for (let e=0; e<exts.length; e++){
 		if (itempath.endsWith( exts[e] )) return true;
 	}
@@ -469,10 +478,12 @@ Core.getSceneJSONPath = (sid)=>{
 	let jsonfile = path.join( Core.getSceneFolder(sid), Core.STD_SCENEFILE);
 	return jsonfile;
 };
+/*
 Core.getPubFilePath = (sid)=>{
 	let pubfile = path.join( Core.getSceneFolder(sid), Core.STD_PUBFILE);
 	return pubfile;
 };
+*/
 
 // Check if scene exists on disk
 Core.existsScene = (sid)=>{;
@@ -505,6 +516,8 @@ Core.createBasicScene = ()=>{
 };
 
 Core.createBasicSceneFromModel = (user, mpath)=>{
+	console.log(user,mpath)
+
 	let sid = Core.hashCodeFromString(mpath);
 	sid = sid.replace("-","m");
 	sid = user + "/" + sid;
@@ -713,23 +726,14 @@ Core.writeSceneJSON = (sid, data, pub)=>{
 
 	let sjpath = Core.getSceneJSONPath(sid);
 
-	// Use partial update (first level)
-/*
-	if (bPartial){
-		let S = Core.readSceneJSON(sid);
-		//for (let k in data) S[k] = data[k];
-		Object.assign(S,data);
-
-		fs.writeFileSync(sjpath, JSON.stringify(S, null, 4));
-		return;
-	}
-*/	
+	if (pub) data.visibility = 1;
 	fs.writeFileSync(sjpath, JSON.stringify(data, null, 4));
+/*
 	if (pub){
 		let pubfile = Core.getPubFilePath(sid);
 		fs.writeFileSync(pubfile, "");
 	}
-
+*/
 	return true;
 };
 

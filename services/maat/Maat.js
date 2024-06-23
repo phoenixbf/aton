@@ -120,7 +120,7 @@ Maat.scanScenes = ()=>{
 		let S = {};
 
 		let sid       = path.dirname(files[f]);
-		let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
+		//let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
 		let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
 	
 		//let user = sid.split("/")[0];
@@ -128,7 +128,7 @@ Maat.scanScenes = ()=>{
 
 		S.sid    = sid;
 		S.cover  = fs.existsSync(coverfile)? true : false;
-		S.public = fs.existsSync(pubfile)? true : false;
+		//S.public = fs.existsSync(pubfile)? true : false;
 		
 		let sobj = Core.readSceneJSON(sid);
 
@@ -139,6 +139,8 @@ Maat.scanScenes = ()=>{
 				S.kwords = sobj.kwords;
 				for (let k in S.kwords) Maat.addSceneKeyword(k);
 			}
+
+			if (sobj.visibility) S.visibility = sobj.visibility;
 
 			Maat.db.scenes.push(S);
 		}
@@ -335,7 +337,7 @@ Maat.getPublicScenes = ()=>{
 	Maat.scanScenes();
 
 	let R = Maat.db.scenes.filter((s)=>{
-		return (s.public);
+		return ( s.visibility );
 	});
 
 	return R;
@@ -351,6 +353,18 @@ Maat.getUserScenes = (uid)=>{
 
 	return R;
 };
+
+/*
+Maat.getScene = (sid)=>{
+	let numScenes = Maat.db.scenes.length;
+
+	for (let s=0; s<numScenes; s++){
+		if (Maat.db.scenes[s].sid === sid) return Maat.db.scenes[s];
+	}
+
+	return undefined;
+};
+*/
 
 Maat.getScenesByKeyword = (kw, uid)=>{
     if (kw === undefined) return undefined;
@@ -368,7 +382,7 @@ Maat.getScenesByKeyword = (kw, uid)=>{
 
     // Public scenes
 	let R = Maat.db.scenes.filter((s)=>{
-		return (s.public && s.kwords !== undefined && s.kwords[kw] !== undefined);
+		return (s.visibility && s.kwords !== undefined && s.kwords[kw] !== undefined);
 	});
 
 	return R;
@@ -425,7 +439,7 @@ Maat.getStats = ()=>{
 	Maat.scanScenes();
 	Maat.db.stats.kwords = Maat.db.kwords;
 	Maat.db.stats.scenesTot = Maat.db.scenes.length;
-	for (let x in Maat.db.scenes) if (Maat.db.scenes[x].public) Maat.db.stats.scenesPub++;
+	for (let x in Maat.db.scenes) if (Maat.db.scenes[x].visibility) Maat.db.stats.scenesPub++;
 
 	Maat.scanApps();
 	Maat.db.stats.apps = Maat.db.apps.length;

@@ -441,6 +441,7 @@ SUI.createToolbar = (buttonlist, color, opacity)=>{
     }
 
     T.add(cont);
+    //T.traverse((o)=>{ if (o.material) o.material.depthWrite = false; });
 
     ThreeMeshUI.update();
     return T;

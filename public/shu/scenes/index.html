@@ -53,6 +53,7 @@ let renderGallery = ()=>{
             let sid = scene.sid;
 
             let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
+            //let urlCover = ATON.PATH_RESTAPI+"cover/"+sid;
 
             let shtml = "";
             shtml += "<div id='s"+i+"' class='atonGalleryItem' style='background-color:rgba(255,255,255, 0.1)'>";
@@ -205,6 +206,29 @@ let renderScene = (sid)=>{
 
         $('#idContent').append(shtml);
 
+
+        let bPublic = false;
+        let impath = ATON.PATH_RESTAPI+"cover/"+sid;
+        $('#idCoverImg').attr("src", impath);
+
+        if (data.visibility){
+            $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/lock.png'>Make Private");
+            bPublic = true;
+        }
+        else {
+            $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/users.png'>Make Public");
+        }
+
+        $('#idPublic').click(()=>{
+            let O = {};
+            O.sid = sid;
+            O.vis = bPublic? "private" : "public";
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI+"visibility/scene", O, (data)=>{
+                if (data) window.location.reload(true);
+            });
+        });
+
+/*
         // Scene data info
         $.getJSON( ATON.PATH_RESTAPI+"info/scene/"+sid, (data)=>{
             if (data === undefined) return;
@@ -216,7 +240,7 @@ let renderScene = (sid)=>{
                 //$('#idBGBlur').css("background-image", "url('"+impath+"')");
             }
 
-            if (data.public){
+            if (data.visibility){
                 $("#idPublic").html("<img src='"+ATON.PATH_RES+"icons/lock.png'>Make Private");
                 bPublic = true;
             }
@@ -233,6 +257,7 @@ let renderScene = (sid)=>{
                 });
             });
         });
+*/
 
         $('#idNewTitle').click(()=>{
             let title = $('#idTitleText').val();

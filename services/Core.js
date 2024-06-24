@@ -56,9 +56,10 @@ Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.D
 Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
 Core.DIR_FLARES       = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core.DIR_PUBLIC,"custom/flares/");
 Core.STD_SCENEFILE    = "scene.json";
-Core.STD_PUBFILE      = "pub.txt";
+Core.STD_PUBFILE      = "pub.txt"; // deprecated
 Core.STD_COVERFILE    = "cover.png";
 
+// Unused
 Core.STATUS_COMPLETE   = "complete";
 Core.STATUS_PROCESSING = "processing";
 
@@ -79,7 +80,7 @@ Core.COLLECTIONS_GLOB_OPTS = {
 // Modules setup
 Core.realizeBaseAPI = BaseAPI;
 //Core.passport       = passport; // set configured passport
-Core.maat           = Maat;
+Core.Maat           = Maat;
 
 // LOG Utils
 Core.logGreen = (str)=>{
@@ -284,7 +285,7 @@ Core.init = ()=>{
 		}
 	}
 
-	Core.maat.init();
+	Core.Maat.init();
 
 	// Directly from config
 	Core.FEScripts = [];
@@ -478,12 +479,12 @@ Core.getSceneJSONPath = (sid)=>{
 	let jsonfile = path.join( Core.getSceneFolder(sid), Core.STD_SCENEFILE);
 	return jsonfile;
 };
-/*
+
+// Deprecated
 Core.getPubFilePath = (sid)=>{
 	let pubfile = path.join( Core.getSceneFolder(sid), Core.STD_PUBFILE);
 	return pubfile;
 };
-*/
 
 // Check if scene exists on disk
 Core.existsScene = (sid)=>{;

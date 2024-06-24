@@ -122,7 +122,7 @@ app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
 */
 app.get("/api/scenes/", function(req,res,next){
 
-	res.send( Core.maat.getPublicScenes() );
+	res.send( Core.Maat.getPublicScenes() );
 
 	//next();
 });
@@ -136,7 +136,7 @@ app.get("/api/scenes/", function(req,res,next){
 	* @apiSuccess {Array} list List of scenes
 */
 app.get("/api/keywords", (req,res)=>{
-	let kk = Core.maat.getScenesKeywords();
+	let kk = Core.Maat.getScenesKeywords();
 	res.send(kk);
 });
 
@@ -151,7 +151,7 @@ app.get("/api/keywords", (req,res)=>{
 app.get("/api/keyword/:kw", (req,res)=>{
 	let kw  = req.params.kw;
 	
-	let R = Core.maat.getScenesByKeyword(kw);
+	let R = Core.Maat.getScenesByKeyword(kw);
 	res.send(R);
 });
 
@@ -173,7 +173,7 @@ app.get("/api/keyword/:kw/own", (req,res)=>{
 	let uid = req.user.username;
 	let kw  = req.params.kw;
 	
-	let R = Core.maat.getScenesByKeyword(kw, uid);
+	let R = Core.Maat.getScenesByKeyword(kw, uid);
 	res.send(R);
 });
 
@@ -483,13 +483,13 @@ app.get("/api/scenes/own/", (req,res,next)=>{
 	}
 /*
 	if (req.user.admin){
-		res.send( Core.maat.getAllScenes() );
+		res.send( Core.Maat.getAllScenes() );
 		return;
 	}
 */
 	let uname = req.user.username;
 
-	res.send( Core.maat.getUserScenes(uname) );
+	res.send( Core.Maat.getUserScenes(uname) );
 
 	//next();
 });
@@ -516,7 +516,7 @@ app.get("/api/c/models/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.maat.getUserModels(uname) );
+	res.send( Core.Maat.getUserModels(uname) );
 
 	//next();
 });
@@ -538,7 +538,7 @@ app.get("/api/c/panoramas/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.maat.getUserPanoramas(uname) );
+	res.send( Core.Maat.getUserPanoramas(uname) );
 
 	//next();
 });
@@ -559,7 +559,7 @@ app.get("/api/c/media/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.maat.getUserMedia(uname) );
+	res.send( Core.Maat.getUserMedia(uname) );
 
 	//next();
 });
@@ -578,7 +578,7 @@ app.get("/api/c/media/", (req,res,next)=>{
 	* @apiSuccess {Array} list List of web-apps
 */
 app.get("/api/wapps/", (req,res,next)=>{
-	let wapps = Core.maat.getApps();
+	let wapps = Core.Maat.getApps();
 
 	res.send(wapps);
 });
@@ -768,7 +768,7 @@ app.get("/api/stats", (req,res)=>{
 		return;
 	}
 
-	res.send( Core.maat.getStats() );
+	res.send( Core.Maat.getStats() );
 });
 
 };

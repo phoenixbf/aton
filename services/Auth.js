@@ -85,7 +85,7 @@ Auth.setupPassport = ()=>{
 Auth._findByUsername = (username, cb)=>{
 	process.nextTick( function(){
 		// Load
-		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
+		Core.users = Core.Maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
 
         let numUsers = Core.users.length;
 
@@ -102,7 +102,7 @@ Auth._findByUsername = (username, cb)=>{
 // Passport utility
 Auth._findById = (id, cb)=>{
 	process.nextTick(()=>{
-		Core.users = Core.maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
+		Core.users = Core.Maat.getUsers(); //Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 		if (Core.users[id]) cb(null, Core.users[id]);
 		else cb( new Error('User ' + id + ' does not exist') );

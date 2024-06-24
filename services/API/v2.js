@@ -45,8 +45,8 @@ API.init = (app)=>{
         let keyword = req.query.k;
         let R;
 
-        if (keyword) R = Core.maat.getScenesByKeyword(keyword);
-        else R = Core.maat.getPublicScenes();
+        if (keyword) R = Core.Maat.getScenesByKeyword(keyword);
+        else R = Core.Maat.getPublicScenes();
 
         res.send( R ); // TODO: handle pagination
     });
@@ -69,8 +69,8 @@ API.init = (app)=>{
         let keyword = req.query.k;
         let R;
 
-        if (keyword) R = Core.maat.getScenesByKeyword(keyword, uname);
-        else R = Core.maat.getUserScenes(uname);
+        if (keyword) R = Core.Maat.getScenesByKeyword(keyword, uname);
+        else R = Core.Maat.getUserScenes(uname);
         
         res.send( R );
     });
@@ -233,7 +233,7 @@ API.init = (app)=>{
             return;
         }
     
-        res.send( Core.maat.getUserModels(uname) );
+        res.send( Core.Maat.getUserModels(uname) );
     });
 
     // Asset Injector (TODO)
@@ -267,7 +267,7 @@ API.init = (app)=>{
     
         let uname = req.user.username;
     
-        res.send( Core.maat.getUserPanoramas(uname) );
+        res.send( Core.Maat.getUserPanoramas(uname) );
     });
 
     // Media list
@@ -279,7 +279,7 @@ API.init = (app)=>{
     
         let uname = req.user.username;
     
-        res.send( Core.maat.getUserMedia(uname) );
+        res.send( Core.Maat.getUserMedia(uname) );
     });
 
     /*===============================

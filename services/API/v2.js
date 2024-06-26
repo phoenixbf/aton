@@ -27,13 +27,6 @@ API.DOCS = "/apiv2-docs";
 
 Core.API = API;
 
-API.isUserAuth = (req)=>{
-    if (req.user === undefined) return false;
-    if (req.user.username === undefined) return false;
-
-    return true;
-};
-
 // Main setup
 API.init = (app)=>{
 
@@ -61,7 +54,7 @@ API.init = (app)=>{
 
         // Only own scenes
         let uname = req.params.user;
-        if (req.user.username !== uname){
+        if (Core.Auth.getUID(req) !== uname){
             res.status(401).send([]);
             return;
         }
@@ -107,7 +100,7 @@ API.init = (app)=>{
 
         // Only own scenes
         let uname = req.params.user;
-        if (req.user.username !== uname){
+        if (Core.Auth.getUID(req) !== uname){
             res.status(401).send(false);
             return;
         }
@@ -144,7 +137,7 @@ API.init = (app)=>{
 
         // Only own scenes
         let uname = req.params.user;
-        if (req.user.username !== uname){
+        if (Core.Auth.getUID(req) !== uname){
             res.status(401).send(false);
             return;
         }
@@ -171,7 +164,7 @@ API.init = (app)=>{
             return;
         }
 
-        let uname = req.user.username;
+        let uname = Core.Auth.getUID(req);
 
         let O = req.body;
         let data = O.data;
@@ -227,7 +220,7 @@ API.init = (app)=>{
             return;
         }
     
-        let uname = req.user.username;
+        let uname = Core.Auth.getUID(req);
         if (uname !== req.params.user){
             res.status(401).send([]);
             return;
@@ -243,7 +236,7 @@ API.init = (app)=>{
             return;
         }
     
-        let uname = req.user.username;
+        let uname = Core.Auth.getUID(req);
         if (uname !== req.params.user){
             res.status(401).send(false);
             return;
@@ -265,7 +258,7 @@ API.init = (app)=>{
             return;
         }
     
-        let uname = req.user.username;
+        let uname = Core.Auth.getUID(req);
     
         res.send( Core.Maat.getUserPanoramas(uname) );
     });
@@ -277,7 +270,7 @@ API.init = (app)=>{
             return;
         }
     
-        let uname = req.user.username;
+        let uname = Core.Auth.getUID(req);
     
         res.send( Core.Maat.getUserMedia(uname) );
     });
@@ -320,7 +313,7 @@ API.init = (app)=>{
 
         let uname = req.params.user;
 
-        let U = Auth.findUser(uname);
+        let U = Core.Auth.findUser(uname);
         if (U) res.send({
             username: U.username,
             admin: U.admin
@@ -338,7 +331,7 @@ API.init = (app)=>{
         let uname = req.params.user;
         let O = req.body;
 
-        let U = Auth.findUser(uname);
+        let U = Core.Auth.findUser(uname);
 
         //TODO: modify user entry
     });

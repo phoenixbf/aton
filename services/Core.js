@@ -203,8 +203,8 @@ Core.CONF_MAIN = {
 Core.CONF_USERS = [
 	{ 
         username: "ra",
-        admin: true,
-        password: "ra2020"
+        password: "ra2020",
+        admin: true
 	},
 	{ 
         username: "bastet",

@@ -118,6 +118,12 @@ Auth.findUser = (username)=>{
 	return undefined;
 };
 
+// Unique user ID
+Auth.getUID = (req)=>{
+	if (!req.user) return undefined;
+	return req.user.username;
+};
+
 Auth.isUserAuth = (req, username)=>{
     if (req.user === undefined) return false;
     if (req.user.username === undefined) return false;
@@ -129,9 +135,10 @@ Auth.isUserAuth = (req, username)=>{
 
 Auth.isUserAdmin = (req)=>{
     if ( !Auth.isUserAuth(req) ) return false;
-    if ( !req.user.admin ) return false;
+	let u = req.user;
 
-    return true;
+	if (u.admin /*|| (u.roles && u.roles.admin)*/) return true;
+    else return false;
 };
 
 module.exports = Auth;

@@ -23,11 +23,13 @@ constructor( setup, update ){
 
     this._deps = [];
     this._id   = undefined;
+
+    this._bDeployed = false;
 }
 
 /**
 Register and activate globally this flare
-@param {String} id - (Optional) identifier for the flare object (to be accessible through ATON.Flares[id])
+@param {String} id - (Optional) local identifier for the flare object (to be accessible through ATON.Flares[id]). It could differ from server flare-ID
 */
 register(id){
     if (id) this._id = id;

@@ -96,19 +96,20 @@ ATON.NTYPES.UI     = 5;
 
 // Folders
 ATON.BASE_URL           = window.location.origin;
-ATON.PATH_RESTAPI       = `${ATON.BASE_URL}/api/`; // "../api/";
+ATON.PATH_RESTAPI       = `${ATON.BASE_URL}/api/`;
 ATON.PATH_RESTAPI_SCENE = `${ATON.PATH_RESTAPI}scene/`;
+ATON.PATH_RESTAPI2      = `${ATON.BASE_URL}/api/v2/`;
 ATON.PATH_WAPPS         = `${ATON.BASE_URL}/a/`;
-ATON.PATH_MODS          = `${ATON.BASE_URL}/mods/`; // "../mods/";
+//ATON.PATH_MODS          = `${ATON.BASE_URL}/mods/`; // "../mods/";
 //ATON.PATH_THREE         = ATON.PATH_MODS + "three/";
 ATON.PATH_DRACO_LIB     = `${ATON.BASE_URL}/dist/draco/`; //ATON.PATH_THREE+"examples/js/libs/draco/";
 ATON.PATH_BASIS_LIB     = `${ATON.BASE_URL}/dist/basis/`; //ATON.PATH_THREE+"examples/js/libs/basis/";
 ATON.PATH_IFC_LIB       = "ifc/"; //ATON.BASE_URL + "/dist/ifc/";
 
-ATON.PATH_COLLECTION = `${ATON.BASE_URL}/collections/`; // "../collection/";
-ATON.PATH_SCENES     = `${ATON.BASE_URL}/scenes/`; // "../scenes/";
-ATON.PATH_RES        = `${ATON.BASE_URL}/res/`; // "../res/";
-ATON.PATH_FE         = `${ATON.BASE_URL}/s/`; // "/fe/";
+ATON.PATH_COLLECTION = `${ATON.BASE_URL}/collections/`;
+ATON.PATH_SCENES     = `${ATON.BASE_URL}/scenes/`;
+ATON.PATH_RES        = `${ATON.BASE_URL}/res/`;
+ATON.PATH_FE         = `${ATON.BASE_URL}/s/`;
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 50.0; //50.0;
@@ -852,8 +853,8 @@ ATON.realize = ( bNoRender )=>{
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
-    // Flares / Plugins
-    ATON._setupFlares();
+    // Deploy registered flares (plugins) if any, via head scripts
+    ATON._deployNewFlares();
 
     // Gizmo transforms
     ATON._gizmo  = undefined;
@@ -879,13 +880,7 @@ ATON.addFlare = (P)=>{
 
 ATON.registerFlare = ATON.addFlare;
 
-// Setup flares
-ATON._setupFlareScripts = (fid)=>{
-    let F = ATON.Flares[fid];
-
-    // TODO
-};
-
+/*
 ATON._setupFlares = ()=>{
     for (let p in ATON.Flares){
         let P = ATON.Flares[p];
@@ -918,6 +913,20 @@ ATON._setupFlares = ()=>{
         if (P.setup !== undefined)  P.setup();
         if (P.update !== undefined) ATON.addUpdateRoutine( P.update );
     }
+};
+*/
+
+ATON._deployFlare = (F)=>{
+    if (F._bDeployed) return;
+
+    if (F.setup !== undefined)  F.setup();
+    if (F.update !== undefined) ATON.addUpdateRoutine( F.update );
+
+    F._bDeployed = true;
+};
+
+ATON._deployNewFlares = ()=>{
+    for (let f in ATON.Flares) ATON._deployFlare( ATON.Flares[f] );
 };
 
 

@@ -155,6 +155,45 @@ App.registerServiceWorker = ( swpath )=>{
 };
 
 /**
+Load and deploy a flare
+@param {string} fid - the server-side flare-ID
+@example
+ATON.App.loadAndDeployFlare("myflare")
+*/
+App.loadAndDeployFlare = (fid)=>{
+    if (ATON.Flares[fid]) return;
+
+    $.get(ATON.PATH_RESTAPI2+"flares/"+fid, (f)=>{
+        let files = f.files;
+        if (files){
+            let numscripts = files.length;
+
+            for (let s in files){
+                let jss = document.createElement("script");
+                jss.src = "/flares/"+fid+"/"+files[s];
+                jss.async = false;
+                document.head.appendChild(jss);
+
+                jss.onload = ()=>{
+                    numscripts--;
+                    if (numscripts <= 0){
+                        console.log("All deps loaded for flare!");
+
+                        ATON._deployNewFlares();
+/*
+                        let F = ATON.Flares[fid];
+
+                        if (F.setup !== undefined)  F.setup();
+                        if (F.update !== undefined) ATON.addUpdateRoutine( F.update );
+*/
+                    }
+                }
+            }
+        }
+    });
+};
+
+/**
 Realize the App.
 You can use "params" property to access url parameters, and "basePath" for accessing local app content (css, configs, etc.)
 @param {function} setup - setup routine

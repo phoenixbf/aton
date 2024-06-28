@@ -142,3 +142,10 @@ window.TILES        = TILES;
 window.CustomShaderMaterial = CustomShaderMaterial;
 
 //window.Loader3DTiles = Loader3DTiles;
+
+export {
+    THREE,
+    ThreeMeshUI,
+    ThreeMeshBVH,
+    TILES
+};

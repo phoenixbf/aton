@@ -182,9 +182,9 @@ app.use('/dav', createProxyMiddleware({
 //==================================
 Core.setupFlares(app);
 
-for (let f in Core.flares){
-	let flarename = Core.flares[f];
-	app.use('/flares/'+flarename, express.static(Core.DIR_FLARES+flarename+"/public/"));
+for (let fid in Core.flares){
+	//let fid = Core.flares[f];
+	app.use('/flares/'+fid, express.static(Core.DIR_FLARES+fid+"/public/"));
 }
 
 // START

@@ -92,7 +92,7 @@ Core.logYellow = (str)=>{
 
 
 // Flares
-Core.flares = [];
+Core.flares = {};
 
 Core.setupFlares = (app)=>{
 	if (!fs.existsSync(Core.DIR_FLARES)) return;
@@ -114,7 +114,7 @@ Core.setupFlares = (app)=>{
 
 		let fbasepath = Core.DIR_FLARES + flarename + "/";
 
-		Core.flares.push( flarename );
+		//Core.flares.push( flarename );
 
 		// Client (public) components
 		if (P.client){
@@ -133,6 +133,7 @@ Core.setupFlares = (app)=>{
 
 		if (P.respatterns && P.respatterns.length>2) Core.mpattern += ","+P.respatterns;
 
+		Core.flares[flarename] = P;
 	}
 
 	console.log("\nFlares (plugins) found: ");

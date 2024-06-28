@@ -343,6 +343,7 @@ API.init = (app)=>{
     /*===============================
         FLARES
     ===============================*/
+    // Get list of flares currently hosted
     app.get(API.BASE + "flares", (req,res)=>{
         if ( !Core.Auth.isUserAdmin(req) ){
             res.status(401).send([]);
@@ -350,6 +351,24 @@ API.init = (app)=>{
         }
 
         res.send( Core.flares );
+    });
+
+    // Get a flare client info
+    app.get(API.BASE + "flares/:fid", (req,res)=>{
+        let f = req.params.fid;
+
+        let F = Core.flares[f];
+        if (!F){
+            res.send(false);
+            return;
+        }
+
+        let O = {};
+        
+        if (F.name) O.name = F.name;
+        if (F.client && F.client.files) O.files = F.client.files;
+
+        res.send( O );
     });
 
     /*===============================

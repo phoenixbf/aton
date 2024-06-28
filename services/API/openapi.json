@@ -349,12 +349,28 @@
         "/api/v2/flares/":{
             "get":{
                 "tags":["Flares"],
-                "summary": "Get list of flares on this instance",
+                "summary": "Get list of flares installed on this instance",
                 "description": "....",
 
                 "responses":{
                     "200":{
                         "description": "Successful operation, returns flares list",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/flares/{fid}":{
+            "get":{
+                "tags":["Flares"],
+                "summary": "Get flare details",
+                "description": "....",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns flare information",
                         "content":{
                         }
                     }

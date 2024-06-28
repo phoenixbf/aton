@@ -880,18 +880,26 @@ ATON.addFlare = (P)=>{
 ATON.registerFlare = ATON.addFlare;
 
 // Setup flares
+ATON._setupFlareScripts = (fid)=>{
+    let F = ATON.Flares[fid];
+
+    // TODO
+};
+
 ATON._setupFlares = ()=>{
     for (let p in ATON.Flares){
         let P = ATON.Flares[p];
 
-        // Experimental
+        // Experimental (TODO: move in _setupFlareScripts)
         if (P._deps.length > 0){
             let cc = P._deps.length;
 
             for (let s in P._deps){
                 let jss = document.createElement("script");
                 jss.src = P._deps[s];
-                document.documentElement.firstChild.appendChild(jss);
+                jss.async = false;
+                //document.documentElement.firstChild.appendChild(jss);
+                document.head.appendChild(jss);
 
                 jss.onload = ()=>{
                     cc--;

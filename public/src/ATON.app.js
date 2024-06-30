@@ -155,8 +155,8 @@ App.registerServiceWorker = ( swpath )=>{
 };
 
 /**
-Load and deploy a flare
-@param {string} fid - the server-side flare-ID
+Load and deploy a flare for this App
+@param {string} fid - the server-side flare-ID (typically the subfolder in /config/flares/<flare-id>/)
 @example
 ATON.App.loadAndDeployFlare("myflare")
 */
@@ -180,12 +180,6 @@ App.loadAndDeployFlare = (fid)=>{
                         console.log("All deps loaded for flare!");
 
                         ATON._deployNewFlares();
-/*
-                        let F = ATON.Flares[fid];
-
-                        if (F.setup !== undefined)  F.setup();
-                        if (F.update !== undefined) ATON.addUpdateRoutine( F.update );
-*/
                     }
                 }
             }

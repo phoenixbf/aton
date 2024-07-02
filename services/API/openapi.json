@@ -4,9 +4,9 @@
     "supportedSubmitMethods": [],
 
     "info": {
-        "version": "1.0.0",
+        "version": "2.0.0",
         "title": "ATON REST API v2",
-        "description": "This is the new REST API (v2) for ATON",
+        "description": "This is the new REST API (v2) for the open-source ATON framework (CNR ISPC) offered by E-RIHS Research Infrastructure (https://www.e-rihs.it/). It allows smooth integration with external platforms, services or tools.",
 
         "contact": {
             "name": "Bruno Fanini (CNR ISPC)"
@@ -18,7 +18,6 @@
     },
 
     "paths": {
-
         "/api/v2/scenes/":{
             "get":{
                 "tags":["Scenes"],
@@ -37,7 +36,32 @@
             "post":{
                 "tags":["Scenes"],
                 "summary": "Create a new scene",
-                "description": "....",
+                "description": "It creates a new scene (a JSON scene descriptor with assigned scene-ID). Only authenticated users.",
+
+                "requestBody":{
+                    "description": "To create the scene, request body may contain 'data' (object with initial attributes), 'vis' (visibility - 0: private, 1: public). Request body may also contain 'fromScene' (clone from another scene ID) or 'fromItem' (create a basic scene starting from a single item - e.g.: a 3D model).",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "data":{
+                                        "type":"object"
+                                    },
+                                    "vis":{
+                                        "type":"number"
+                                    },
+                                    "fromScene":{
+                                        "type": "string"
+                                    },
+                                    "fromItem":{
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
 
                 "responses":{
                     "200":{
@@ -46,7 +70,7 @@
                         }
                     },
                     "401":{
-                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
+                        "description": "Unauthorized. User not authenticated",
                         "content":{
                         }
                     }
@@ -83,7 +107,7 @@
                         }
                     },
                     "401":{
-                        "description": "Unauthorized. User not authenticated or scene belongs to another user",
+                        "description": "Unauthorized. User not authenticated",
                         "content":{
                         }
                     }

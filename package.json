@@ -91,9 +91,9 @@
     "socket.io": "^4.7.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "three": "0.166.0",
+    "three": "0.166.1",
     "three-custom-shader-material": "5.4.0",
-    "three-mesh-bvh": "0.7.5",
+    "three-mesh-bvh": "0.7.6",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

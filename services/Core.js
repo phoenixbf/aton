@@ -720,7 +720,7 @@ Core.cleanScene = (sobj)=>{
 };
 
 // Write scene JSON from sid and data
-Core.writeSceneJSON = (sid, data, pub)=>{
+Core.writeSceneJSON = (sid, data, vis)=>{
 	if (sid === undefined) return false;
 	if (data === undefined) return false;
 
@@ -728,7 +728,7 @@ Core.writeSceneJSON = (sid, data, pub)=>{
 
 	let sjpath = Core.getSceneJSONPath(sid);
 
-	if (pub) data.visibility = 1;
+	if (vis) data.visibility = vis;
 	fs.writeFileSync(sjpath, JSON.stringify(data, null, 4));
 /*
 	if (pub){

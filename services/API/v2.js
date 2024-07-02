@@ -167,9 +167,8 @@ API.init = (app)=>{
         let uname = Core.Auth.getUID(req);
 
         let O = req.body;
-        let data = O.data;
-        let pub  = O.pub;
-        let fromSID  = O.fromSID;
+        let data     = O.data;
+        let fromSID  = O.fromScene;
         let fromItem = O.fromItem;
 
         // Create a new scene from single item (experimental)
@@ -204,7 +203,7 @@ API.init = (app)=>{
         }
 
         // Brand new scene
-        let R = Core.writeSceneJSON(sid, data, pub);
+        let R = Core.writeSceneJSON(sid, data);
 
         if (R) res.send(sid);
         else res.send(false);

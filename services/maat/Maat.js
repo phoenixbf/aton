@@ -330,6 +330,8 @@ Maat.getApps = ()=>{
 };
 
 Maat.getApp = (appid)=>{
+	Maat.scanApps();
+	
 	for (let a in Maat.db.apps){
 		if (Maat.db.apps[a].wappid===appid) return Maat.db.apps[a];
 	}

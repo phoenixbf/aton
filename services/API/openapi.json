@@ -441,6 +441,39 @@
         },
 
         "/api/v2/apps/{appid}/{storid}":{
+            "get":{
+                "tags":["Apps"],
+                "summary": "Get storage data content",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "appid",
+                        "in": "path",
+                        "description": "The App ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "storid",
+                        "in": "path",
+                        "description": "The storage ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns storage data content (JSON)",
+                        "content":{
+                        }
+                    }
+                }
+            },
             "patch":{
                 "tags":["Apps"],
                 "summary": "Manipulate persistent app storage",

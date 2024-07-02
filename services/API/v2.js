@@ -369,10 +369,11 @@ API.init = (app)=>{
         let appid = req.params.appid;
 
         let A = Core.Maat.getApp(appid);
+        console.log(appid);
         res.send( A );
     });
 
-    // Dedicated app storage operations
+    // App storage manipulations
     app.patch(API.BASE + "apps/:appid/:storid", (req,res)=>{
         let appid  = req.params.appid;
         let storid = req.params.storid;
@@ -390,6 +391,20 @@ API.init = (app)=>{
         let J = Core.wappDataEdit(appid, storid, patch, mode);
 
         res.json(J);
+    });
+
+    // Get storage data (JSON)
+    app.get(API.BASE + "apps/:appid/:storid", (req,res)=>{
+        let appid  = req.params.appid;
+        let storid = req.params.storid;
+
+        if (!appid || !storid){
+            res.send(false);
+            return;
+        }
+
+        let spath = Core.getAppJSONPath(appid,storid);
+        res.sendFile(spath);
     });
 
     /*===============================

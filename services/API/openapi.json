@@ -322,6 +322,18 @@
                 "summary": "Get user data",
                 "description": "....",
 
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
                 "responses":{
                     "200":{
                         "description": "Successful operation, returns user info object",
@@ -336,6 +348,44 @@
                 "summary": "Update user data",
                 "description": "....",
 
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns true",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
+            "delete":{
+                "tags":["Users"],
+                "summary": "Remove a user",
+                "description": "....",
+
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
                 "responses":{
                     "200":{
                         "description": "Successful operation, returns true",
@@ -346,11 +396,103 @@
             }
         },
 
+        "/api/v2/apps/":{
+            "get":{
+                "tags":["Apps"],
+                "summary": "Get list of web-apps",
+                "description": "Returns the complete list of web-applications deployed on this instance. Only administrators",
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns apps list",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/apps/{appid}":{
+            "get":{
+                "tags":["Apps"],
+                "summary": "Get web-app details",
+                "description": "....",
+
+                "parameters": [
+                    {
+                        "name": "appid",
+                        "in": "path",
+                        "description": "The app ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns web-app information",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
+        "/api/v2/apps/{appid}/{storid}":{
+            "patch":{
+                "tags":["Apps"],
+                "summary": "Manipulate persistent app storage",
+                "description": "This allows to add, remove or update data from persistent (server-side) app storage. Multiple storages can be created per web-app (scoreboards, inventories, semantic data, etc.). See corresponding client-side documentation in ATON.App.*",
+                "parameters": [
+                    {
+                        "name": "appid",
+                        "in": "path",
+                        "description": "The App ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "storid",
+                        "in": "path",
+                        "description": "The storage ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "requestBody":{
+                    "description": "request body contains data patch (object) for partial modification of the storage ID. Mode can be 'ADD' or 'DELETE'",
+                    "content":{
+                        "application/json":{
+                            "example":{
+                                "patch": { "score": 16 },
+                                "mode": "ADD"
+                            }
+                        }
+                    }
+                },
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns modified storage (JSON)",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/v2/flares/":{
             "get":{
                 "tags":["Flares"],
-                "summary": "Get list of flares installed on this instance",
-                "description": "....",
+                "summary": "Get list of flares",
+                "description": "Returns the complete list of flares (plugins) installed on this instance. Only administrators",
 
                 "responses":{
                     "200":{
@@ -367,6 +509,18 @@
                 "tags":["Flares"],
                 "summary": "Get flare details",
                 "description": "....",
+
+                "parameters": [
+                    {
+                        "name": "fid",
+                        "in": "path",
+                        "description": "The flare ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
 
                 "responses":{
                     "200":{

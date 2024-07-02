@@ -175,10 +175,12 @@ Maat.scanApps = ()=>{
 	for (let f in files){
 		let wid = path.dirname(files[f]);
 		let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
+		let datadir = path.join(Core.DIR_WAPPS+wid, "/data");
 
 		Maat.db.apps.push({
 			wappid: wid,
-			icon: fs.existsSync(appicon)? true : false
+			icon: fs.existsSync(appicon)? true : false,
+			data: fs.existsSync(datadir)? true : false
 		});
 	}
 
@@ -325,6 +327,14 @@ Maat.getApps = ()=>{
 	Maat.scanApps();
 
 	return Maat.db.apps;
+};
+
+Maat.getApp = (appid)=>{
+	for (let a in Maat.db.apps){
+		if (Maat.db.apps[a].wappid===appid) return Maat.db.apps[a];
+	}
+
+	return false;
 };
 
 // Scenes

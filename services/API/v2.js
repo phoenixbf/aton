@@ -336,9 +336,61 @@ API.init = (app)=>{
         //TODO: modify user entry
     });
 
+    // Update user
+    app.delete(API.BASE + "users/:user", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        let uid = req.params.user;
+
+        let b = Core.deleteUser(uid);
+        res.send(b);
+    });
+
     /*===============================
         APPS
     ===============================*/
+    // Get complete apps list
+    app.get(API.BASE + "apps", (req,res)=>{
+        if ( !Core.Auth.isUserAdmin(req) ){
+            res.status(401).send([]);
+            return;
+        }
+
+        let wapps = Core.Maat.getApps();
+
+        res.send(wapps);
+    });
+
+    // Get specific app info
+    app.get(API.BASE + "apps/:appid", (req,res)=>{
+        let appid = req.params.appid;
+
+        let A = Core.Maat.getApp(appid);
+        res.send( A );
+    });
+
+    // Dedicated app storage operations
+    app.patch(API.BASE + "apps/:appid/:storid", (req,res)=>{
+        let appid  = req.params.appid;
+        let storid = req.params.storid;
+
+        if (!appid || !storid){
+            res.send(false);
+            return;
+        }
+
+        let O = req.body;
+
+        let patch  = O.data;
+        let mode   = O.mode;
+
+        let J = Core.wappDataEdit(appid, storid, patch, mode);
+
+        res.json(J);
+    });
 
     /*===============================
         FLARES

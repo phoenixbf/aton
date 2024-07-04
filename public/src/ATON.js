@@ -2492,7 +2492,7 @@ ATON.getSceneQueriedNormal = ()=>{
 /**
 Get queried object name (if any) on visible scene.
 If nothing is queried or object has no name, return undefined
-@returns {THREE.Vector3}
+@returns {String}
 @example
 let ob = ATON.getSceneQueriedObjectName()
 */
@@ -2506,7 +2506,7 @@ ATON.getSceneQueriedObjectName = ()=>{
 /**
 Get queried uv on currently picked surface if any.
 If no surface is currently queried, return undefined
-@returns {THREE.Vector3}
+@returns {THREE.Vector2}
 @example
 let uv = ATON.getSceneQueriedUV()
 */

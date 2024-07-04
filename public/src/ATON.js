@@ -8,7 +8,7 @@
 
 ==================================================================================*/
 
-'use strict';
+//'use strict';
 
 /**
 @namespace ATON
@@ -43,8 +43,6 @@ import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
-import { unwatchFile } from "fs-extra";
-//import NX from "./_prv/ATON.nx.js";
 
 // Classes
 ATON.Node       = Node;

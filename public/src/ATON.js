@@ -43,6 +43,7 @@ import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
+import { unwatchFile } from "fs-extra";
 //import NX from "./_prv/ATON.nx.js";
 
 // Classes
@@ -2486,6 +2487,32 @@ let n = ATON.getSceneQueriedNormal()
 ATON.getSceneQueriedNormal = ()=>{
     if (ATON._queryDataScene === undefined) return undefined;
     return ATON._queryDataScene.n;
+};
+
+/**
+Get queried object name (if any) on visible scene.
+If nothing is queried or object has no name, return undefined
+@returns {THREE.Vector3}
+@example
+let ob = ATON.getSceneQueriedObjectName()
+*/
+ATON.getSceneQueriedObjectName = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+    if (ATON._queryDataScene.o === undefined) return undefined;
+    
+    return ATON._queryDataScene.o.name;
+};
+
+/**
+Get queried uv on currently picked surface if any.
+If no surface is currently queried, return undefined
+@returns {THREE.Vector3}
+@example
+let uv = ATON.getSceneQueriedUV()
+*/
+ATON.getSceneQueriedUV = ()=>{
+    if (ATON._queryDataScene === undefined) return undefined;
+    return ATON._queryDataScene.uv;
 };
 
 /**

@@ -484,10 +484,12 @@ SUI.buildPanelNode = (suid, url, w,h)=>{
 };
 
 /**
-Create a UI Node with a multimedia textured panel from URL (static image or video stream). It automatically adjust height according to content ratio (fixed width = 1.0)
+Create a UI Node with a multimedia textured panel from URL (static image or video stream).
+It automatically adjusts its height according to content ratio (fixed width = 1.0)
 This can be arranged anywhere in the scene or attached to other UI nodes
 @param {string} suid - The SUI Node ID (e.g.: "myPanel")
 @param {string} url - URL to image or video
+@param {object} opts - [optional] options object
 @returns {Node}
 */
 SUI.createMediaPanel = (suid, url, opts)=>{
@@ -514,6 +516,7 @@ SUI.createMediaPanel = (suid, url, opts)=>{
             //pmesh.position.y = 0.8 * yratio;
         });
     }
+
     else {
         ATON.Utils.textureLoader.load(url, (tex) => {
 
@@ -538,6 +541,13 @@ SUI.createMediaPanel = (suid, url, opts)=>{
     }
 
     suiNode.setPickable(true);
+    //suiNode.dirtyBound();
+
+    if (opts){
+        if (opts.onHover)  suiNode.onHover  = opts.onHover;
+        if (opts.onLeave)  suiNode.onLeave  = opts.onLeave;
+        if (opts.onSelect) suiNode.onSelect = opts.onSelect;
+    }
 
     return suiNode;
 };

@@ -110,10 +110,12 @@ window.addEventListener( 'load', ()=>{
     let suiToolbar = ATON.SUI.createToolbar( suiButtons );
     suiToolbar.setPosition(-4.0,0.2,1.0).setRotation(1.0,3.14,0).setScale(5.0).attachToRoot();
 
-    let P = ATON.SUI.createMediaPanel("vpanel", "samples/media/sample-hls1/index.m3u8");
+    // We setup a media panel with video stream (HLS)
+    let P = ATON.SUI.createMediaPanel("panel1", "samples/media/sample-hls1/index.m3u8");
     P.setScale(8.0).setPosition(4.0,2.0,8.0).setRotation(0.0,3.14,0.0).attachToRoot();
 
-    let I = ATON.SUI.createMediaPanel("ipanel", "samples/pano/defsky.jpg");
+    // We setup a media panel with static image
+    let I = ATON.SUI.createMediaPanel("panel2", "samples/pano/defsky.jpg");
     I.setScale(4.0).setPosition(-8.0,0.5,8.0).setRotation(1.0,3.14,0).attachToRoot();
 
     ATON.on("AllNodeRequestsCompleted",()=>{

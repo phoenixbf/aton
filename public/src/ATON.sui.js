@@ -6,6 +6,7 @@
 ===========================================================*/
 import Button from "./ATON.sui.button.js";
 import Label from "./ATON.sui.label.js";
+import MediaPanel from "./ATON.sui.mediapanel.js";
 
 /**
 ATON Spatial UI
@@ -16,8 +17,9 @@ let SUI = {};
 SUI.STD_BTN_SIZE = 0.1;
 SUI.STD_SELECTOR_TICKNESS = 1.05;
 
-SUI.Button = Button;
-SUI.Label  = Label;
+SUI.Button     = Button;
+SUI.Label      = Label;
+SUI.MediaPanel = MediaPanel;
 
 
 //Initializes Spatial UI module
@@ -478,75 +480,6 @@ SUI.buildPanelNode = (suid, url, w,h)=>{
                 side: THREE.DoubleSide
             });
         });
-    }
-
-    return suiNode;
-};
-
-/**
-Create a UI Node with a multimedia textured panel from URL (static image or video stream).
-It automatically adjusts its height according to content ratio (fixed width = 1.0)
-This can be arranged anywhere in the scene or attached to other UI nodes
-@param {string} suid - The SUI Node ID (e.g.: "myPanel")
-@param {string} url - URL to image or video
-@param {object} opts - [optional] options object
-@returns {Node}
-*/
-SUI.createMediaPanel = (suid, url, opts)=>{
-    if (!url || !suid) return undefined;
-
-    let suiNode = ATON.createUINode(suid);
-
-    let pmesh = new THREE.Mesh( new THREE.PlaneGeometry(1,1) /*, ATON.MatHub.materials.fullyTransparent*/);
-    suiNode.add(pmesh);
-
-    url = ATON.Utils.resolveCollectionURL(url);
-
-    let yratio = 1.0;
-
-    if (ATON.Utils.isVideo(url)){
-        let vs = ATON.MediaFlow.getOrCreateVideoStream(suid, url, false);
-
-        pmesh.material = vs.matStream;
-
-        vs.el.addEventListener('loadedmetadata', (e)=>{
-            yratio = vs.el.videoHeight / vs.el.videoWidth;
-
-            pmesh.scale.y    = -yratio;
-            //pmesh.position.y = 0.8 * yratio;
-        });
-    }
-
-    else {
-        ATON.Utils.textureLoader.load(url, (tex) => {
-
-            yratio = tex.image.height / tex.image.width;
-            console.log(tex)
-
-            pmesh.scale.y = yratio;
-
-            pmesh.material = ATON.MatHub.materials.chromakey.clone();
-            pmesh.material.uniforms.tBase.value = tex;
-/*
-            pmesh.material = new THREE.MeshStandardMaterial({
-                map: texture,
-                transparent: true,
-                depthWrite: false,
-                side: THREE.DoubleSide
-            });
-*/
-
-            pmesh.material.needsUpdate = true;
-        });
-    }
-
-    suiNode.setPickable(true);
-    //suiNode.dirtyBound();
-
-    if (opts){
-        if (opts.onHover)  suiNode.onHover  = opts.onHover;
-        if (opts.onLeave)  suiNode.onLeave  = opts.onLeave;
-        if (opts.onSelect) suiNode.onSelect = opts.onSelect;
     }
 
     return suiNode;

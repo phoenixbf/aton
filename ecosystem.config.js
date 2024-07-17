@@ -11,7 +11,8 @@ module.exports = {
       ignore_watch  : ["config/flares"], 
       instance_var  : 'INSTANCE_ID',
       merge_logs    : true,
-      //restart_delay : 1000,
+      max_memory_restart: "400M",
+      restart_delay : 1000,
       //out_file     : "./logs/ATON.service.main.log",
       env: {
         "NODE_ENV" : "production",
@@ -27,7 +28,8 @@ module.exports = {
       watch         : ["services","config"],
       ignore_watch  : ["config/flares"],
       merge_logs    : true,
-      //restart_delay : 1000,
+      max_memory_restart: "400M",
+      restart_delay : 1000,
       //out_file     : "./logs/ATON.service.photon.log",
       env: {
         "NODE_ENV" : "production",
@@ -43,7 +45,8 @@ module.exports = {
       watch         : ["services", "config"],
       ignore_watch  : ["config/flares"],
       merge_logs    : true,
-      //restart_delay : 1000,
+      max_memory_restart: "200M",
+      restart_delay : 1000,
       //out_file     : "./logs/ATON.service.webdav.log",
       env: {
         "NODE_ENV" : "production",

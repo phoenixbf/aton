@@ -385,6 +385,16 @@ Utils.clampValue = (num, min, max)=>{
     return Math.min( Math.max(num, min), max );
 };
 
+// Utility to handle multiple image formats
+Utils.loadTexture = (url, onComplete)=>{
+    if (url.endsWith(".ktx2")){
+        ATON._ktx2Loader.load(url, onComplete);
+        return;
+    }
+
+    Utils.textureLoader.load(url, onComplete);
+};
+
 
 // Helper visitor routine
 // Note: N (parent node) is not yet connected to model

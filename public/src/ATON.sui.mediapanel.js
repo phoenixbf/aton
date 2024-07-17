@@ -82,7 +82,7 @@ load(url, onComplete){
 
     // Static image
     else {
-        ATON.Utils.textureLoader.load(url, (tex) => {
+        ATON.Utils.loadTexture(url, (tex) => {
 
             if (tex.image) this._yratio = tex.image.height / tex.image.width;
 

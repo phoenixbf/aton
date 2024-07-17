@@ -112,11 +112,11 @@ window.addEventListener( 'load', ()=>{
 
     // We setup a MediaPanel with a videostream (HLS)
     let P = new ATON.SUI.MediaPanel("panel1").load("samples/media/sample-hls1/index.m3u8").setTitle("HLS Video").setBackdrop();
-    P.setScale(8.0).setPosition(4.0,2.0,8.0).setRotation(0.0,3.14,0.0).attachToRoot();
+    P.setScale(8.0).setPosition(4.0,2.5,8.0).setRotation(0.0,3.14,0.0).attachToRoot();
 
     // We setup a MediaPanel with static image
     let I = new ATON.SUI.MediaPanel("panel2").load("samples/pano/defsky.jpg").setTitle("Static Image").setColor(ATON.MatHub.colors.blue);
-    I.setScale(4.0).setPosition(-8.0,0.5,8.0).setRotation(1.0,3.14,0).setBackdrop().attachToRoot();
+    I.setScale(4.0).setPosition(-8.0,0.5,8.0).setRotation(1.0,3.14,0).attachToRoot();
 
     ATON.on("AllNodeRequestsCompleted",()=>{
         ATON.Nav.requestHome(0.1);

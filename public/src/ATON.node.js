@@ -586,11 +586,22 @@ setRotation(rx,ry,rz){
     
     return this;
 }
+
 /**
 Orient this node to current camera
 */
 orientToCamera(){
     this.quaternion.copy( ATON.Nav._qOri );
+    return this;
+}
+
+/**
+Orient this node to a location
+*/
+orientToLocation(x,y,z){
+    if (x instanceof THREE.Vector3) this.lookAt(x);
+    else this.lookAt(x,y,z);
+
     return this;
 }
 

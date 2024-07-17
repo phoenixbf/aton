@@ -75,6 +75,7 @@ window.addEventListener( 'load', ()=>{
             if (currItem<0) currItem = (itemURLs.length-1);
             N.removeChildren();
             N.load(itemURLs[currItem]);
+            ATON.AudioHub.playOnceGlobally(ATON.PATH_RES+"audio/blop.mp3");
         };
 
     ATON.getUINode("SUI_Next")
@@ -84,6 +85,7 @@ window.addEventListener( 'load', ()=>{
             currItem = (currItem+1)%itemURLs.length;
             N.removeChildren();
             N.load(itemURLs[currItem]);
+            ATON.AudioHub.playOnceGlobally(ATON.PATH_RES+"audio/blop.mp3");
         };
 
     ATON.getUINode("SUI_VR")
@@ -95,8 +97,7 @@ window.addEventListener( 'load', ()=>{
         };
 
     for (let b in suiButtons){
-        suiButtons[b].onHover = ()=>{ 
-            ATON.AudioHub.playOnceGlobally(ATON.PATH_RES+"audio/blop.mp3");
+        suiButtons[b].onHover = ()=>{
             suiButtons[b].setBackgroundOpacity(0.9);
         };
 

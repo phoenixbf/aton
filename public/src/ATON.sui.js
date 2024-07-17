@@ -22,6 +22,7 @@ SUI.Label      = Label;
 SUI.MediaPanel = MediaPanel;
 
 
+
 //Initializes Spatial UI module
 SUI.init = ()=>{
     SUI.initSelector();
@@ -483,6 +484,28 @@ SUI.buildPanelNode = (suid, url, w,h)=>{
     }
 
     return suiNode;
+};
+
+/**
+Create a 3D layout, starting from a list (array) of SUI elements and a layout function.
+@param {string} list - Array of SUI nodes
+@param {function} layoutfunction - the layout function, taking a SUI node and list index as arguments. It is used to transform each SUI node (location, rotation and scale) depending on some custom logic
+@returns {Node}
+*/
+SUI.createLayout = (list, layoutfunction)=>{
+    let C = ATON.createUINode();
+
+    for (let i=0; i<list.length; i++){
+        let N = list[i];
+
+        // Apply layout function
+        layoutfunction(N,i);
+
+        N.attachTo(C);
+    }
+
+    ThreeMeshUI.update();
+    return C;
 };
 
 // Measurements

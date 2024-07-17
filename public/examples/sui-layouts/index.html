@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="ATON Sample">
+    <link rel="apple-touch-icon" href="/res/aton-logo.png">
+    <meta name="description" content="ATON Sample">
+    <!-- Add meta theme-color -->
+    <meta name="theme-color" content="#000000" />
+
+    <title>ATON Sample</title>
+    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+    // Realize the base front-end
+    ATON.FE.realize();
+
+    // Create some HTML UI
+	ATON.FE.uiAddButtonHome("idTopToolbar");
+    ATON.FE.uiAddButtonVR("idTopToolbar"); // VR button will show up only on secure connections (required)
+
+    // Add basic event handlers
+    ATON.FE.addBasicLoaderEvents();
+
+    // sample scene
+    ATON.FE.loadSceneID("samples/welcome");
+
+    // Our spiral layout function
+    let spiral = (N,i)=>{
+        let y = 0.4 + (i * 0.03);
+
+        let x = 2.0 * Math.cos(i*0.3);
+        let z = 2.0 * Math.sin(i*0.3);
+
+        N.setPosition(x,y,z).orientToLocation(0,y,0).setScale(3);
+    };
+
+    let list = [];
+
+    for (let i=0; i<40; i++){
+        let B = new ATON.SUI.Button("BTN-"+i);
+        
+        B.setText("B"+i);
+
+        //B.setBaseColor(ATON.MatHub.colors.white);
+        //B.setIcon(ATON.PATH_RES+"icons/home.png")
+
+        B.onHover = ()=>{
+            B.setBackgroundOpacity(1.0);
+            B.setScale(4.0);
+        };
+        B.onLeave = ()=>{
+            B.setBackgroundOpacity(0.5);
+            B.setScale(3);
+        };
+
+        //B.enablePicking();
+
+        list.push(B);
+    }
+
+    ATON.SUI.createLayout(list, spiral).attachToRoot();
+
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        ATON.Nav.requestHome(0.1);
+    });
+
+});
+
+</script>
+</head>
+
+<body oncontextmenu="return false;">
+    <!-- Top Toolbar -->
+    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+
+    <!-- Bottom Toolbar -->
+    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
+
+    <!-- Main Popup -->
+    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
+
+    <!-- Loader -->
+    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
+
+    <!-- Powered by -->
+    <div id='idPoweredBy' class="poweredBy" >
+        Powered by <a href="http://osiris.itabc.cnr.it/aton/" target="_blank">ATON</a>
+    </div>
+</body>

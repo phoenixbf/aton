@@ -51,9 +51,10 @@ window.addEventListener( 'load', ()=>{
         N.setPosition(x,y,z).orientToLocation(0,y,0).setScale(3);
     };
 
-    let list = [];
+    let G = ATON.createUINode();
+    G.attachToRoot();
 
-    for (let i=0; i<40; i++){
+    for (let i=0; i<50; i++){
         let B = new ATON.SUI.Button("BTN-"+i);
         
         B.setText("B"+i);
@@ -64,6 +65,10 @@ window.addEventListener( 'load', ()=>{
         B.onHover = ()=>{
             B.setBackgroundOpacity(1.0);
             B.setScale(4.0);
+            //B.position.x *= 0.9;
+            //B.position.z *= 0.9;
+
+            ATON.AudioHub.playOnceGlobally(ATON.PATH_RES+"audio/blop.mp3");
         };
         B.onLeave = ()=>{
             B.setBackgroundOpacity(0.5);
@@ -72,10 +77,10 @@ window.addEventListener( 'load', ()=>{
 
         //B.enablePicking();
 
-        list.push(B);
+        B.attachTo(G);
     }
 
-    ATON.SUI.createLayout(list, spiral).attachToRoot();
+    ATON.SUI.createLayout(G, spiral);
 
 
     ATON.on("AllNodeRequestsCompleted",()=>{

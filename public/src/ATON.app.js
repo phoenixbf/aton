@@ -177,8 +177,7 @@ App.loadAndDeployFlare = (fid)=>{
                 jss.onload = ()=>{
                     numscripts--;
                     if (numscripts <= 0){
-                        console.log("All deps loaded for flare!");
-
+                        console.log("All deps loaded for flare '"+fid+"'");
                         ATON._deployNewFlares();
                     }
                 }

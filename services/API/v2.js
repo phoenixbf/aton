@@ -209,6 +209,32 @@ API.init = (app)=>{
         else res.send(false);
     });
 
+    // Get scene cover
+    app.get(API.BASE+"scenes/:user/:usid/cover", (req,res)=>{
+        let U = req.params.user;
+        let S = req.params.usid;
+
+        let coverfile = Core.DIR_RES+"scenecover.png";
+
+        if (!U || !S){
+            res.sendFile(coverfile);
+            return;
+        }
+
+        let sid = U+"/"+S;
+
+        let se = Core.Maat.getSceneEntry(sid);
+        if (!se){
+            res.sendFile(coverfile);
+            return;
+        }
+
+        if (se.cover){
+            coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
+            res.sendFile(coverfile);
+        }
+    });
+
     /*===============================
         ITEMS (Collections)
     ===============================*/

@@ -606,6 +606,16 @@ orientToLocation(x,y,z){
 }
 
 /**
+Orient this node to another node
+*/
+orientToNode(N){
+    if (!N) return this;
+    this.orientToLocation(N.position);
+
+    return this;
+}
+
+/**
 Orient this node from z-up to y-up
 */
 setYup(){

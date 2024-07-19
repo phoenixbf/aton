@@ -354,6 +354,7 @@ Maat.getPublicScenes = ()=>{
 
 	return R;
 };
+
 Maat.getUserScenes = (uid)=>{
     if (uid === undefined) return undefined;
 
@@ -366,8 +367,8 @@ Maat.getUserScenes = (uid)=>{
 	return R;
 };
 
-/*
-Maat.getScene = (sid)=>{
+// TODO: improve perf
+Maat.getSceneEntry = (sid)=>{
 	let numScenes = Maat.db.scenes.length;
 
 	for (let s=0; s<numScenes; s++){
@@ -376,7 +377,7 @@ Maat.getScene = (sid)=>{
 
 	return undefined;
 };
-*/
+
 
 Maat.getScenesByKeyword = (kw, uid)=>{
     if (kw === undefined) return undefined;

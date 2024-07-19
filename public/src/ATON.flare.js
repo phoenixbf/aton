@@ -35,7 +35,6 @@ register(id){
     if (id) this._id = id;
     
     ATON.addFlare(this);
-    
     return this;
 }
 

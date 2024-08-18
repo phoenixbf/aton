@@ -13,7 +13,7 @@ Hathor front-end (official ATON front-end)
 let HATHOR = ATON.App.realize();
 window.HATHOR = HATHOR;
 
-HATHOR.basePath = ATON.PATH_FE;
+//HATHOR.basePath = ATON.PATH_FE;
 
 // We equip Hathor with all flares available
 HATHOR.requireAllFlares();

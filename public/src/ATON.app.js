@@ -344,32 +344,10 @@ App.run = ()=>{
         console.log("App: update routine registered");
     }
 
-    //App._deploy();
     return true;
-
-    /*
-    // Wait for dependencies
-    //if (App._pDeps.length>0) await Promise.allSettled(App._pDeps);
-    Promise.allSettled(App._pDeps).then(()=>{
-        console.log("=======================");
-
-        if (App.setup) App.setup();
-        else {
-            ATON.FE.realize();
-            console.log("App [Warn]: your App should define a setup() routine");
-        }
-    
-        if (App.update){
-            ATON.addUpdateRoutine( App.update );
-            console.log("App: update routine registered");
-        }
-    });
-
-    App._bRunning = true;
-    return true;
-*/
 };
 
+/*
 App._deploy = ()=>{
     if (App.setup) App.setup();
     else {
@@ -382,6 +360,6 @@ App._deploy = ()=>{
         console.log("App: update routine registered");
     }
 };
-
+*/
 
 export default App;

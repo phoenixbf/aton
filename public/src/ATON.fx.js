@@ -89,6 +89,12 @@ FX.init = ()=>{
 
     //console.log(FX.passes[FX.PASS_AO]);
 
+/*
+    // GTAO
+    FX.passes[FX.PASS_AO] = new THREE.GTAOPass( ATON._mainRoot, ATON.Nav._camera, CW,CH );
+    FX.passes[FX.PASS_AO].output = THREE.GTAOPass.OUTPUT.Denoise;
+*/
+
     // Sobel
 /*
     const effectSobel = new THREE.ShaderPass( THREE.SobelOperatorShader );

@@ -128,6 +128,9 @@ ATON.SCALE_VERYSMALL = -10;
 
 // Flares (plugins)
 ATON.Flares = {};
+ATON._fReqList = [];
+
+ATON._bInitialized = false;
 
 // Resource mappers
 ATON._resMappers = [];
@@ -852,14 +855,19 @@ ATON.realize = ( bNoRender )=>{
 
     if (ATON.device.isMobile) ATON._readDeviceOrientationMode();
 
-    // Deploy registered flares (plugins) if any, via head scripts
-    ATON._deployNewFlares();
+    // Start loading required flares (if any)
+    ATON._fLoading  = 0;
+    ATON._fRequired = ATON._fReqList.length;
+
+    ATON._loadFlares();
 
     // Gizmo transforms
     ATON._gizmo  = undefined;
     ATON._bGizmo = false;
 
     ATON.focusOn3DView();
+
+    ATON._bInitialized = true;
 };
 
 /**
@@ -914,6 +922,62 @@ ATON._setupFlares = ()=>{
     }
 };
 */
+
+/**
+Get ATON flare via id
+@param {string} id - The local flare ID
+@returns {Flare}
+*/
+ATON.getFlare = (id)=>{
+    return ATON.Flares[id];
+}
+
+ATON._loadFlare = (fid)=>{
+    ATON._fLoading++;
+
+    $.get(ATON.PATH_RESTAPI2+"flares/"+fid, (f)=>{
+        let files = f.files;
+        if (files){
+            let numscripts = files.length;
+
+            for (let s in files){
+                let jss = document.createElement("script");
+                jss.src = "/flares/"+fid+"/"+files[s];
+                jss.async = false;
+                document.head.appendChild(jss);
+
+                jss.onload = ()=>{
+                    numscripts--;
+                    if (numscripts <= 0) ATON._onFlareLoaded(fid);
+                };
+
+                jss.onerror = jss.onload;
+            }
+        }
+    });
+};
+
+ATON._loadFlares = ()=>{
+    if (ATON._fRequired <= 0){
+        ATON.fireEvent("AllFlaresReady");
+        return;
+    }
+
+    for (let f in ATON._fReqList) ATON._loadFlare( ATON._fReqList[f] );
+};
+
+ATON._onFlareLoaded = (fid)=>{
+    console.log("All deps loaded for flare '"+fid+"'");
+    ATON._deployNewFlares();
+    
+    ATON._fLoading--;
+    if (ATON._fLoading <= 0) ATON._onAllFlaresLoaded();
+};
+
+ATON._onAllFlaresLoaded = ()=>{
+    console.log("All Flares ready!");
+    ATON.fireEvent("AllFlaresReady");
+};
 
 ATON._deployFlare = (F)=>{
     if (F._bDeployed) return;

@@ -12,19 +12,15 @@ In order to be activated, a flare must be registered via register() method
 @class Flare
 
 @example 
-let F = new ATON.Flare( mySetup, myUpdate )
-F.register();
+let F = new ATON.Flare("myflare")
 */
 class Flare {
 
-constructor( setup, update ){
-    this.setup  = setup? setup : undefined;
-    this.update = update? update : undefined;
-
-    this._deps = [];
-    this._id   = undefined;
-
+constructor( id ){
+    this._id        = undefined;
     this._bDeployed = false;
+
+    if (id) this.register(id);
 }
 
 /**
@@ -57,11 +53,13 @@ log(msg){
     return this;
 }
 
+setSetup(setup){
+    this.setup = setup;
+    return this;
+}
 
-// Experimental
-include(path){
-    this._deps.push(path);
-
+setUpdate(upd){
+    this.update = upd;
     return this;
 }
 

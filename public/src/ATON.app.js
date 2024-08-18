@@ -6,10 +6,8 @@
 
 ===========================================================*/
 
-//import AppData from "./ATON.appdata.js";
-
 /**
-ATON App Hub
+ATON App
 @namespace App
 */
 let App = {};
@@ -21,6 +19,8 @@ App.setup  = undefined;
 App.update = undefined;
 
 App._bRunning = false;
+App._pDeps    = [];
+App._fLoading = 0;
 
 
 // Send JSON patch
@@ -155,13 +155,62 @@ App.registerServiceWorker = ( swpath )=>{
 };
 
 /**
-Load and deploy a flare for this App
+Require (load and deploy) a flare for this App
 @param {string} fid - the server-side flare-ID (typically the subfolder in /config/flares/<flare-id>/)
 @example
-ATON.App.loadAndDeployFlare("myflare")
+ATON.App.requireFlare("myflare")
 */
-App.loadAndDeployFlare = (fid)=>{
+App.requireFlare2 = (fid)=>{
+
+    return new Promise((resolve, reject)=>{
+        if (ATON.Flares[fid]){
+            resolve(fid);
+            return;
+        }
+
+        $.get(ATON.PATH_RESTAPI2+"flares/"+fid, (f)=>{
+            let files = f.files;
+            if (files){
+                let numscripts = files.length;
+    
+                for (let s in files){
+                    let jss = document.createElement("script");
+                    jss.src = "/flares/"+fid+"/"+files[s];
+                    jss.async = false;
+                    document.head.appendChild(jss);
+    
+                    jss.onload = ()=>{
+                        numscripts--;
+                        if (numscripts <= 0){
+                            console.log("All deps loaded for flare '"+fid+"'");
+                            ATON._deployNewFlares();
+                            
+                            resolve(fid);
+                        }
+                    }
+
+                    jss.onerror = ()=>{
+                        numscripts--;
+                        if (numscripts <= 0){
+                            console.log("All deps loaded for flare '"+fid+"'");
+                            ATON._deployNewFlares();
+                            
+                            resolve(fid);
+                        }
+                    };
+                }
+            }
+        });
+
+    });
+
+};
+/*
+App.requireFlareXX = (fid)=>{
     if (ATON.Flares[fid]) return;
+
+    console.log("Require Flare ",fid);
+    App._fLoading++;
 
     $.get(ATON.PATH_RESTAPI2+"flares/"+fid, (f)=>{
         let files = f.files;
@@ -179,12 +228,57 @@ App.loadAndDeployFlare = (fid)=>{
                     if (numscripts <= 0){
                         console.log("All deps loaded for flare '"+fid+"'");
                         ATON._deployNewFlares();
+                        
+                        App._fLoading--;
+                        if (App._fLoading<=0){
+                            console.log("=====================");
+                            if (App._bRunning) App._deploy();
+                        }
                     }
                 }
+
+                jss.onerror = ()=>{
+                    numscripts--;
+                    if (numscripts <= 0){
+                        console.log("All deps loaded for flare '"+fid+"'");
+                        ATON._deployNewFlares();
+                        
+                        App._fLoading--;
+                        if (App._fLoading<=0){
+                            console.log("=====================");
+                            if (App._bRunning) App._deploy();
+                        }
+                    }
+                };
             }
         }
     });
+
 };
+*/
+
+App.requireFlares = (list)=>{
+    if (!list) return;
+
+    ATON._fReqList = list;
+    console.log(ATON._fReqList);
+/*
+
+    for (let i=0; i<list.length; i++) App._pDeps.push( App.requireFlare( list[i] ) );
+    //console.log(App._pDeps)
+*/
+};
+
+
+App.requireAllFlares = ()=>{
+    $.get(ATON.PATH_RESTAPI2+"flares/", (list)=>{
+        ATON._fReqList  = list;
+        ATON._fRequired = list.length;
+
+        ATON._loadFlares();
+    });
+};
+
 
 /**
 Realize the App.
@@ -222,7 +316,7 @@ See App.realize() method
 @example
 ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine, "myserviceworker.js" )
 */
-App.realizeAndRun = (setup, update, swpath)=>{
+App.realizeAndRun = async (setup, update, swpath)=>{
     App.realize(setup, update, swpath).run();
 };
 
@@ -237,6 +331,8 @@ window.addEventListener('load',()=>{
 App.run = ()=>{
     if (App._bRunning) return false;
 
+    App._bRunning = true;
+
     if (App.setup) App.setup();
     else {
         ATON.FE.realize();
@@ -248,9 +344,43 @@ App.run = ()=>{
         console.log("App: update routine registered");
     }
 
-    App._bRunning = true;
+    //App._deploy();
+    return true;
 
-    return App._bRunning;
+    /*
+    // Wait for dependencies
+    //if (App._pDeps.length>0) await Promise.allSettled(App._pDeps);
+    Promise.allSettled(App._pDeps).then(()=>{
+        console.log("=======================");
+
+        if (App.setup) App.setup();
+        else {
+            ATON.FE.realize();
+            console.log("App [Warn]: your App should define a setup() routine");
+        }
+    
+        if (App.update){
+            ATON.addUpdateRoutine( App.update );
+            console.log("App: update routine registered");
+        }
+    });
+
+    App._bRunning = true;
+    return true;
+*/
+};
+
+App._deploy = ()=>{
+    if (App.setup) App.setup();
+    else {
+        ATON.FE.realize();
+        console.log("App [Warn]: your App should define a setup() routine");
+    }
+
+    if (App.update){
+        ATON.addUpdateRoutine( App.update );
+        console.log("App: update routine registered");
+    }
 };
 
 

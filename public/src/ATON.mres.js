@@ -223,7 +223,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     let bPointCloud = false;
 
     // JSON loaded
-    ts.onLoadTileSet = ()=>{
+    ts.addEventListener( 'load-tile-set', ()=>{
         console.log("TileSet loaded");
         //console.log(ts)
 
@@ -235,6 +235,22 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         if (cesiumReq || N.bUseGeoCoords){
             console.log("TileSet using GeoCoords");
 
+            ts.getBoundingSphere( bs );
+
+            const position = bs.center.clone();
+            const distanceToEllipsoidCenter = position.length();
+    
+            const surfaceDirection = position.normalize();
+            const up = new THREE.Vector3( 0, 1, 0 );
+            const rotationToNorthPole = ATON.Utils.rotationBetweenDirections( surfaceDirection, up );
+    
+            ts.group.quaternion.x = rotationToNorthPole.x;
+            ts.group.quaternion.y = rotationToNorthPole.y;
+            ts.group.quaternion.z = rotationToNorthPole.z;
+            ts.group.quaternion.w = rotationToNorthPole.w;
+    
+            ts.group.position.y = - distanceToEllipsoidCenter;
+/*
             //const box    = new THREE.Box3();
             //const sphere = new THREE.Sphere();
             //const matrix = new THREE.Matrix4();
@@ -263,6 +279,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             ts.group.quaternion.w = rotationToNorthPole.w;
 
             ts.group.position.y = -distanceToEllipsoidCenter;
+*/
         }
 
         // Default URL
@@ -309,10 +326,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         
         //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
         //ATON._assetReqComplete(tsurl);
-    };
+    });
 
     // On single tile loaded
-    ts.onLoadModel = ( scene )=>{
+    ts.addEventListener( 'load-model', ( data )=>{
         //console.log(ts.lruCache.itemList.length);
 /*
         if (tflip < MIN_TILES) tflip++;
@@ -325,6 +342,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             ATON._assetReqComplete(tsurl);
         }
 */
+        let scene = data.scene;
+        //console.log(scene);
 
         MRes._numTilesLoaded++;
 
@@ -406,17 +425,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         //console.log(ATON._renderer.info.memory);
         ATON.fireEvent("TileLoaded", scene);
-    };
+    });
 
-    ts.onDisposeModel = (scene, tile)=>{
-        ATON.Utils.cleanupVisitor( scene );
+    ts.addEventListener( 'dispose-model', (data, tile)=>{
+        ATON.Utils.cleanupVisitor( data.scene );
 
-        scene = null;
-        tile  = null;
+        data = null;
+        tile = null;
 
         //console.log(ts.group);
         //console.log("DISPOSE");
-    };
+    });
 
     if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);
 
@@ -431,13 +450,6 @@ MRes.loadCesiumIONAsset = (ionAssID, N)=>{
 
         tok = prompt("Please enter a valid Cesium ION token:");
         if (tok == null || tok == "") return;
-/*
-        ATON.FE.popupModalToken("Please enter a valid Cesium ION token:", (tok)=>{
-            ATON._extAPItokens["cesium.ion"] = tok;
-
-            MRes.loadCesiumIONAsset(ionAssID, N);
-        });
-*/
     }
 
     let url = new URL( `https://api.cesium.com/v1/assets/${ionAssID}/endpoint` );

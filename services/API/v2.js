@@ -438,7 +438,12 @@ API.init = (app)=>{
     // Get list of flares currently hosted
     app.get(API.BASE + "flares", (req,res)=>{
         if ( !Core.Auth.isUserAdmin(req) ){
-            res.status(401).send([]);
+            //res.status(401).send([]);
+
+            let list = [];
+            for (let fid in Core.flares) list.push(fid);
+            res.send(list);
+            
             return;
         }
 

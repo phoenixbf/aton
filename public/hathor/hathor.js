@@ -10,9 +10,13 @@
 Hathor front-end (official ATON front-end)
 @namespace HATHOR
 */
-let HATHOR = {};
+let HATHOR = ATON.App.realize();
 window.HATHOR = HATHOR;
 
+HATHOR.basePath = ATON.PATH_FE;
+
+// We equip Hathor with all flares available
+HATHOR.requireAllFlares();
 
 // Action states
 HATHOR.SELACTION_STD            = 0;
@@ -21,14 +25,19 @@ HATHOR.SELACTION_ADDCONVEXPOINT = 2;
 HATHOR.SELACTION_MEASURE        = 3;
 
 
+// Set SceneID to load
+HATHOR.setSceneToLoad = (sid)=>{
+    if (!sid) sid = String( ATON.FE.urlParams.get('s') );
+
+    HATHOR._sidToLoad = sid;
+};
+
 // Main Hathor init routine, with optional Scene-ID
-HATHOR.init = (sid)=>{
+HATHOR.setup = ()=>{
 
     ATON.FE.realize();
 
-    if (sid === undefined || sid === null) sid = ATON.FE.urlParams.get('s');
-
-    HATHOR.paramSID   = sid;
+    //HATHOR.paramSID   = sid;
     HATHOR.paramVRC   = ATON.FE.urlParams.get('vrc');
     HATHOR.paramEdit  = ATON.FE.urlParams.get('edit');
     HATHOR.paramProf  = ATON.FE.urlParams.get('pr');
@@ -83,9 +92,6 @@ HATHOR.init = (sid)=>{
     HATHOR.suiSetup();
     HATHOR.setupEventHandlers();
 
-    // Load scene
-    ATON.FE.loadSceneID(HATHOR.paramSID);
-
     // Show BVH
     //ATON.Utils.setBVHboundsVisible();
 
@@ -96,6 +102,11 @@ HATHOR.init = (sid)=>{
 
     let autonav = ATON.FE.urlParams.get("autonav");
     if (autonav) HATHOR.enableAutoNav( parseFloat(autonav) );
+
+    // We wait for all flares deployment before loading the 3D scene
+    ATON.on("AllFlaresReady",()=>{
+        if (HATHOR._sidToLoad) ATON.FE.loadSceneID(HATHOR._sidToLoad);
+    });
 };
 
 HATHOR.update = ()=>{

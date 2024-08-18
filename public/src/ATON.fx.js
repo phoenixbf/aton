@@ -72,10 +72,12 @@ FX.init = ()=>{
 
 
     // Ambient Occlusion
-    FX.passes[FX.PASS_AO] = new THREE.SAOPass( ATON._mainRoot, ATON.Nav._camera, false, true );
+    FX.passes[FX.PASS_AO] = new THREE.SAOPass( ATON._mainRoot, ATON.Nav._camera, CW,CH );
     FX.passes[FX.PASS_AO].params.saoBias  = 1.0;
     FX.passes[FX.PASS_AO].params.saoScale = 100;
     FX.passes[FX.PASS_AO].params.saoIntensity = 0.2; //0.2 //0.005;
+    //FX.passes[FX.PASS_AO].params.saoMaxDistance = 0.1;
+
     //FX.passes[FX.PASS_AO].params.saoMinDistance = 0.01;
     //FX.passes[FX.PASS_AO].params.saoBlurRadius = 5;
     

@@ -49,11 +49,13 @@
         <script src="<%= js %>" defer ></script>
     <% }); %>
 
-     <script type="text/javascript" src="/hathor/hathor.js"></script>
-     <script>
+    <script type="module" src="/hathor/hathor.js"></script>
+    <script>
         // We init Hathor onload
         window.addEventListener( 'load', ()=>{
-            HATHOR.init('<%= sid %>');
+            
+            HATHOR.setSceneToLoad('<%= sid %>');
+            HATHOR.run();
         });
     </script>
 </head>

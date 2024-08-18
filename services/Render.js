@@ -29,6 +29,9 @@ Render.setup = (app)=>{
 		d.title = d.sid;
 		d.appicon = "/hathor/appicon.png";
 		d.scripts = Core.FEScripts;
+		
+		//d.flareslist = [];
+		//for (let fid in Core.flares) d.flareslist.push(fid);
 	
 		let S = Core.readSceneJSON(d.sid);
 		if (S){

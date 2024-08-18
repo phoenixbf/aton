@@ -117,10 +117,11 @@ Core.setupFlares = (app)=>{
 		//Core.flares.push( flarename );
 
 		// Client (public) components
+/*
 		if (P.client){
 			for (let s in P.client.files) Core.FEScripts.push( "/flares/"+ flarename +"/"+ P.client.files[s] );
 		}
-
+*/
 		// Server (private) components
 		if (P.server){
 			for (let m in P.server.modules){

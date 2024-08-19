@@ -154,12 +154,7 @@ App.registerServiceWorker = ( swpath )=>{
     return App;
 };
 
-/**
-Require (load and deploy) a flare for this App
-@param {string} fid - the server-side flare-ID (typically the subfolder in /config/flares/<flare-id>/)
-@example
-ATON.App.requireFlare("myflare")
-*/
+/*
 App.requireFlare2 = (fid)=>{
 
     return new Promise((resolve, reject)=>{
@@ -205,7 +200,7 @@ App.requireFlare2 = (fid)=>{
     });
 
 };
-/*
+
 App.requireFlareXX = (fid)=>{
     if (ATON.Flares[fid]) return;
 
@@ -257,6 +252,15 @@ App.requireFlareXX = (fid)=>{
 };
 */
 
+/**
+Setup required flares (plugins) for the App, generally right after app realization.
+@param {function} list - array of flares IDs available on the server node (typically the subfolder in /config/flares/<flare-id>/)
+@example
+let A = ATON.App.realize();
+A.requireFlares(["aflare","anotherflare"]);
+
+...
+*/
 App.requireFlares = (list)=>{
     if (!list) return;
 
@@ -270,6 +274,9 @@ App.requireFlares = (list)=>{
 };
 
 
+/**
+Require all available flares on the server, to equip the App
+*/
 App.requireAllFlares = ()=>{
     $.get(ATON.PATH_RESTAPI2+"flares/", (list)=>{
         ATON._fReqList  = list;

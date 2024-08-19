@@ -55,7 +55,7 @@ FX.init = ()=>{
 
     // SSR - TODO: check for variable rou implementation
 /*
-    FX.passes[ATON.FXPASS_SSR] = new THREE.SSRPass({
+    FX.passes[FX.PASS_SSR] = new THREE.SSRPass({
         renderer: ATON._renderer,
         scene: ATON._mainRoot, 
         camera: ATON.Nav._camera,
@@ -64,12 +64,11 @@ FX.init = ()=>{
         //encoding: THREE.sRGBEncoding
     });
 
-    FX.passes[ATON.FXPASS_SSR].thickness = 0.018;
-    FX.passes[ATON.FXPASS_SSR].infiniteThick = false; //true;
-    FX.passes[ATON.FXPASS_SSR].maxDistance = 0.1; //0.1;
-    console.log(FX.passes[ATON.FXPASS_SSR]);
+    FX.passes[FX.PASS_SSR].thickness = 0.018;
+    FX.passes[FX.PASS_SSR].infiniteThick = false; //true;
+    FX.passes[FX.PASS_SSR].maxDistance = 0.1; //0.1;
+    console.log(FX.passes[FX.PASS_SSR]);
 */
-
 
     // Ambient Occlusion
     FX.passes[FX.PASS_AO] = new THREE.SAOPass( ATON._mainRoot, ATON.Nav._camera, CW,CH );
@@ -152,7 +151,7 @@ FX.init = ()=>{
 
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
     FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
-    //FX.composer.addPass( FX.passes[ATON.FXPASS_SSR] );
+    //FX.composer.addPass( FX.passes[FX.PASS_SSR] );
 
     // tone-mapping passes here (if any)
     

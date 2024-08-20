@@ -152,6 +152,14 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.fetchOptions.mode  = 'cors';
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
+    // Fade plugin
+/*
+    ts.registerPlugin( new TILES.TilesFadePlugin() );
+    const FP = ts.getPluginByName( 'FADE_TILES_PLUGIN' );
+    FP.fadeRootTiles = true;
+    FP.fadeDuration  = 1000;
+*/
+
     if (cesiumReq){
         ts.fetchOptions.headers = {};
 	    ts.fetchOptions.headers.Authorization = `Bearer ${cesiumReq.accessToken}`;

@@ -951,7 +951,11 @@ ATON._loadFlare = (fid)=>{
                     if (numscripts <= 0) ATON._onFlareLoaded(fid);
                 };
 
-                jss.onerror = jss.onload;
+                jss.onerror = ()=>{
+                    console.log("Missing flare '"+fid+"' dependency: " + files[s]);
+                    numscripts--;
+                    if (numscripts <= 0) ATON._onFlareLoaded(fid);
+                };
             }
         }
     });

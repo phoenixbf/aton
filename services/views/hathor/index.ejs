@@ -53,8 +53,14 @@
     <script>
         // We init Hathor onload
         window.addEventListener( 'load', ()=>{
+            let flist = [];
+            <% flareslist.forEach((fid)=>{ %>
+                flist.push("<%= fid %>");
+            <% }); %>
 
-            HATHOR.setSceneToLoad('<%= sid %>');
+            HATHOR.requireFlares( flist );
+
+            HATHOR.setSceneToLoad("<%= sid %>");
             HATHOR.run();
         });
     </script>

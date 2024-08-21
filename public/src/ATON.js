@@ -958,6 +958,11 @@ ATON._loadFlare = (fid)=>{
                 };
             }
         }
+    }).fail(()=>{
+        console.log("Flare "+fid+" not found.");
+
+        ATON._fLoading--;
+        if (ATON._fLoading <= 0) ATON._onAllFlaresLoaded();
     });
 };
 

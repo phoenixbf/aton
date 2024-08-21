@@ -450,13 +450,13 @@ API.init = (app)=>{
         res.send( Core.flares );
     });
 
-    // Get a flare client info
+    // Get a flare client info via flare-ID
     app.get(API.BASE + "flares/:fid", (req,res)=>{
         let f = req.params.fid;
 
         let F = Core.flares[f];
         if (!F){
-            res.send(false);
+            res.status(404).send(false);
             return;
         }
 

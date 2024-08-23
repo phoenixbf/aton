@@ -119,7 +119,7 @@ API.init = (app)=>{
         let mode  = O.mode;
         let patch = O.data;
 
-        if (!mode || !data){
+        if (!mode || !O.data){
             res.send(false);
             return;
         }

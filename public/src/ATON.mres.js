@@ -142,6 +142,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (N === undefined) return;
 
     let ts = new TILES.TilesRenderer(tsurl);
+    //let ts = new TILES.EllipsoidTilesRenderer( null, TILES.LUNAR_ELLIPSOID );
+
     if (!ts) return;
 
     ATON._assetReqNew(tsurl);
@@ -152,7 +154,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.fetchOptions.mode  = 'cors';
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
-    // Fade plugin
+    // Plugins
+    //ts.registerPlugin( new TILES.TileCompressionPlugin() );
 /*
     ts.registerPlugin( new TILES.TilesFadePlugin() );
     const FP = ts.getPluginByName( 'FADE_TILES_PLUGIN' );

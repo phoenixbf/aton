@@ -793,9 +793,9 @@ SceneHub.addSceneParser = (key, parser)=>{
     SceneHub._jsonParsers[key] = parser;
 };
 
-// [C] Sends JSON edit to server node
+// Send JSON patch to server node for persistent modifications
 // previously used: https://tools.ietf.org/html/rfc6902
-SceneHub.sendEdit = (patch, mode, onComplete)=>{
+SceneHub.patch = (patch, mode, onComplete)=>{
     if (SceneHub._bLoading || !SceneHub._bEdit) return;
     if (patch === undefined) return;
     if (mode === undefined) mode = SceneHub.MODE_ADD;
@@ -803,7 +803,7 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
     let sid = SceneHub.currID;
 
     let O = {};
-    O.sid  = sid;
+    //O.sid  = sid;
     O.data = patch;
     O.mode = (mode === SceneHub.MODE_DEL)? "DEL" : "ADD";
 
@@ -814,8 +814,8 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
     O = null;
 
     $.ajax({
-        url: ATON.PATH_RESTAPI+"edit/scene",
-        type:"POST",
+        url: ATON.PATH_RESTAPI2 + "scenes/"+sid, //ATON.PATH_RESTAPI+"edit/scene",
+        type:"PATCH",
         data: jstr,
         contentType:"application/json; charset=utf-8",
         dataType:"json",
@@ -832,6 +832,15 @@ SceneHub.sendEdit = (patch, mode, onComplete)=>{
     });
 };
 
+// Previous name
+SceneHub.sendEdit = SceneHub.patch;
+
+// Visibility
+SceneHub.setVisibility = (v, onSuccess)=>{
+    SceneHub.currData.visibility = v;
+    SceneHub.sendEdit({ visibility: v }, ATON.SceneHub.MODE_ADD, onSuccess );
+};
+
 SceneHub.currSceneHasHomeConfig = ()=>{
     if (SceneHub.currData === undefined) return false;
     if (SceneHub.currData.viewpoints === undefined) return false;
@@ -840,7 +849,7 @@ SceneHub.currSceneHasHomeConfig = ()=>{
     return true;
 };
 
-// FIXME:
+// FIXME: should modify local currData + send patch in edit mode
 SceneHub.setTitle = (title)=>{
     SceneHub._title = title;
 };

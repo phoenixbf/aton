@@ -767,7 +767,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.scenegraph.nodes[N.nid].show = N.v;
         }
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         //ATON.Photon.fireEvent("AFE_AddSceneEdit", E); // FIXME: check why this is not working
         ATON.Photon.fireEvent("AFE_NodeSwitch", {nid: N.nid, v: N.v, t: N.t});
         
@@ -840,7 +840,7 @@ HATHOR.setupEventHandlers = ()=>{
 
                 //console.log(E);
 
-                ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+                ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
 
                 //if (HATHOR.paramVRC === undefined) return;
                 ATON.Photon.fireEvent("AFE_DeleteNode", {t: ATON.NTYPES.SEM, nid: ATON._hoveredSemNode });
@@ -928,7 +928,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight = {};
             E.environment.mainlight.shadows = bShadows;
 
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
         if (k==='l'){
@@ -949,7 +949,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight = {};
             E.environment.mainlight.direction = [D.x,D.y,D.z];
 
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 */
@@ -980,7 +980,7 @@ HATHOR.setupEventHandlers = ()=>{
             console.log("Set home POV");
             console.log(hp);
 
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 */
@@ -1018,7 +1018,7 @@ HATHOR.setupEventHandlers = ()=>{
             if (ATON.FX.isPassEnabled(ATON.FX.PASS_DOF)){
                 let k = ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC);
 
-                ATON.SceneHub.sendEdit({
+                ATON.SceneHub.patch({
                     fx:{ 
                         dof:{
                             f: k
@@ -1039,7 +1039,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment.mainlight.direction = [D.x,D.y,D.z];
             E.environment.mainlight.shadows = ATON._renderer.shadowMap.enabled;
 
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
 
@@ -1113,7 +1113,7 @@ HATHOR.measure = ()=>{
         parseFloat(M.B.z.toPrecision(ATON.SceneHub.FLOAT_PREC))
     ];
 
-    ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
     ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 };
 
@@ -1215,7 +1215,7 @@ HATHOR.addLightProbe = ()=>{
 
     //console.log(E);
 
-    ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
     ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 };
 
@@ -1434,7 +1434,7 @@ HATHOR.popupAddSemantic = (semtype, esemid)=>{
 
         E.semanticgraph.edges = ATON.SceneHub.getJSONgraphEdges(ATON.NTYPES.SEM); 
         
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 };
@@ -1739,7 +1739,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
         E.viewpoints[povid].fov      = pov.fov;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
 
@@ -1765,7 +1765,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
         E.viewpoints[povid].fov      = pov.fov;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
@@ -1814,7 +1814,7 @@ HATHOR.popupPOV = ()=>{
         E.viewpoints[povid].target   = [pov.target.x, pov.target.y, pov.target.z];
         E.viewpoints[povid].fov      = pov.fov;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         console.log(pov);
@@ -1873,7 +1873,7 @@ HATHOR.popupGraphs = ()=>{
 
         let E = {};
         E.measurements = {};
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
         ATON.Photon.fireEvent("AFE_ClearMeasurements");
     });
 
@@ -1996,7 +1996,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainpano = {};
         E.environment.mainpano.url = purl;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
@@ -2031,7 +2031,7 @@ HATHOR.popupEnvironment = ()=>{
 
         if (!ATON.FX.isPassEnabled(ATON.FX.PASS_AO)) return;
 
-        ATON.SceneHub.sendEdit({
+        ATON.SceneHub.patch({
             fx:{ 
                 ao:{ 
                     i: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
@@ -2047,7 +2047,7 @@ HATHOR.popupEnvironment = ()=>{
 
         if (!ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM)) return;
 
-        ATON.SceneHub.sendEdit({
+        ATON.SceneHub.patch({
             fx:{ 
                 bloom:{ 
                     i: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
@@ -2062,7 +2062,7 @@ HATHOR.popupEnvironment = ()=>{
 
         if (!ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM)) return;
 
-        ATON.SceneHub.sendEdit({
+        ATON.SceneHub.patch({
             fx:{ 
                 bloom:{ 
                     t: k.toPrecision(ATON.SceneHub.FLOAT_PREC)
@@ -2078,7 +2078,7 @@ HATHOR.popupEnvironment = ()=>{
         $("#idExpVal").html(e);
 
         E.environment.exposure = e;
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
@@ -2094,16 +2094,16 @@ HATHOR.popupEnvironment = ()=>{
 
             E.environment.mainlight = {};
             E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
         else {
             $("#idOptShadows").hide();
 
-            //ATON.SceneHub.sendEdit( { environment:{ mainlight:{} } }, ATON.SceneHub.MODE_ADD);
+            //ATON.SceneHub.patch( { environment:{ mainlight:{} } }, ATON.SceneHub.MODE_ADD);
             //ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
             E.environment.mainlight = {};
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
             ATON.Photon.fireEvent("AFE_LightSwitch", false);
         }
 
@@ -2124,7 +2124,7 @@ HATHOR.popupEnvironment = ()=>{
         E.environment.mainlight = {};
         E.environment.mainlight.shadows = b;
         //if (ld) E.environment.mainlight.direction = [ld.x,ld.y,ld.z];
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         ATON.updateLightProbes();
@@ -2137,7 +2137,7 @@ HATHOR.popupEnvironment = ()=>{
 
         E.environment.mainpano = {};
         E.environment.mainpano.rotation = r;
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
@@ -2150,7 +2150,7 @@ HATHOR.popupEnvironment = ()=>{
 
         E.environment.lightprobes = {};
         E.environment.lightprobes.auto = b;
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
     });
 
@@ -2160,7 +2160,7 @@ HATHOR.popupEnvironment = ()=>{
         ATON.FX.togglePass(ATON.FX.PASS_AO, b);
 
         if (b){
-            ATON.SceneHub.sendEdit({
+            ATON.SceneHub.patch({
                 fx:{ 
                     ao:{ 
                         i: ATON.FX.getAOintensity().toPrecision(ATON.SceneHub.FLOAT_PREC)
@@ -2168,14 +2168,14 @@ HATHOR.popupEnvironment = ()=>{
                 }
             }, ATON.SceneHub.MODE_ADD);
         }
-        else ATON.SceneHub.sendEdit({ fx:{ ao:{} } }, ATON.SceneHub.MODE_DEL);
+        else ATON.SceneHub.patch({ fx:{ ao:{} } }, ATON.SceneHub.MODE_DEL);
     });
 
     $("#idFXPassBloom").on("change",()=>{
         let b = $("#idFXPassBloom").is(':checked');
 
         if (b){
-            ATON.SceneHub.sendEdit({
+            ATON.SceneHub.patch({
                 fx:{ 
                     bloom:{ 
                         i: ATON.FX.getBloomStrength().toPrecision(ATON.SceneHub.FLOAT_PREC),
@@ -2184,7 +2184,7 @@ HATHOR.popupEnvironment = ()=>{
                 }
             }, ATON.SceneHub.MODE_ADD);
         }
-        else ATON.SceneHub.sendEdit({ fx:{ bloom:{} } }, ATON.SceneHub.MODE_DEL);
+        else ATON.SceneHub.patch({ fx:{ bloom:{} } }, ATON.SceneHub.MODE_DEL);
 
         ATON.FX.togglePass(ATON.FX.PASS_BLOOM, b);
     });
@@ -2193,7 +2193,7 @@ HATHOR.popupEnvironment = ()=>{
         let b = $("#idFXPassDOF").is(':checked');
 
         if (b){
-            ATON.SceneHub.sendEdit({
+            ATON.SceneHub.patch({
                 fx:{ 
                     dof:{
                         f: ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC)
@@ -2201,7 +2201,7 @@ HATHOR.popupEnvironment = ()=>{
                 }
             }, ATON.SceneHub.MODE_ADD);
         }
-        else ATON.SceneHub.sendEdit({ fx:{ dof:{} } }, ATON.SceneHub.MODE_DEL);
+        else ATON.SceneHub.patch({ fx:{ dof:{} } }, ATON.SceneHub.MODE_DEL);
 
         ATON.FX.togglePass(ATON.FX.PASS_DOF, b);
     });
@@ -2252,6 +2252,8 @@ HATHOR.popupShare = ()=>{
 
 HATHOR.popupScene = ()=>{
     if (ATON.SceneHub.currID === undefined) return;
+
+    let scenedata = ATON.SceneHub.currData;
 
     let title = (ATON.SceneHub.getTitle())? ATON.SceneHub.getTitle() : ATON.SceneHub.currID;
 
@@ -2318,17 +2320,23 @@ HATHOR.popupScene = ()=>{
         // Only for auth users
         if (authUser /*&& ATON.FE.getCurrentUIP()==="editor"*/){
             htmlcontent += "<br><br>";
-            htmlcontent += "<div class='atonBTN atonBTN-orange atonBTN-horizontal atonBTN-text' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'>Clone this Scene</div>";
+            htmlcontent += "<div class='atonBTN atonBTN-orange atonBTN-text' style='width:150px' id='idSHUclone'><img src='"+ATON.FE.PATH_RES_ICONS+"clone.png'><br>Clone this Scene</div>";
 
-            // Not my scene
-            if (!bYourScene){
-                //
-            }
             // My scene
-            else {
-                htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscene'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this Scene</div>";
-                htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage my Scenes</div>";
+            if (bYourScene){
+                //htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' id='idSHUscene'><img src='"+ATON.FE.PATH_RES_ICONS+"scene.png'>Manage this Scene</div>";
+                htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' style='width:150px' id='idSHUscenes'><img src='"+ATON.FE.PATH_RES_ICONS+"gallery.png'><br>My Scenes</div>";
+                
+                if (ATON.SceneHub._bEdit){
+                    if (scenedata.visibility) htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text switchedON' style='width:150px' id='idVisibility'><img src='"+ATON.FE.PATH_RES_ICONS+"visibility.png'><br>Make this Scene Private</div>";
+                    else htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-text' style='width:150px' id='idVisibility'><img src='"+ATON.FE.PATH_RES_ICONS+"visibility.png'><br>Make this Scene Public</div>";
+                }
+
                 htmlcontent += "<br><div class='atonBTN atonBTN-red atonBTN-horizontal atonBTN-text' id='idDelScene'><img src='"+ATON.FE.PATH_RES_ICONS+"trash.png'>Delete this scene</div>";
+            }
+            // Not my scene
+            else {
+                //
             }
         }
 
@@ -2427,6 +2435,22 @@ HATHOR.popupScene = ()=>{
             });
         });
 
+        $("#idVisibility").click(()=>{
+            
+            if (scenedata.visibility>0){
+                ATON.SceneHub.setVisibility(0, (data)=>{
+                    ATON.FE.uiSwitchButton("idVisibility", false);
+                    ATON.FE.popupClose();
+                });
+            }
+            else {
+                ATON.SceneHub.setVisibility(1, (data)=>{
+                    ATON.FE.uiSwitchButton("idVisibility", true);
+                    ATON.FE.popupClose();
+                });
+            }
+        });
+
         $("#idDelScene").click(()=>{
             ATON.FE.subPopup( HATHOR.popupSceneDelete );
         });
@@ -2465,14 +2489,14 @@ HATHOR.popupEditSceneInfo = ()=>{
         E.kwords = {};
         E.kwords[kw] = 1;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
     },
     (kw)=>{ // on remove keyword
         let E = {};
         E.kwords = {};
         E.kwords[kw] = 1;
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
 
     });
 
@@ -2509,7 +2533,7 @@ HATHOR.popupEditSceneInfo = ()=>{
 
         if (E.title || E.description){
             //console.log(E);
-            ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+            ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
         }
     });
@@ -2746,7 +2770,7 @@ HATHOR.popupNav = ()=>{
     $('#btnDefNavMode').click(()=>{
         let E = {};
         E.navmode = ATON.Nav._mode;
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
 
         ATON.FE.popupClose();
     });
@@ -2765,7 +2789,7 @@ HATHOR.popupNav = ()=>{
             eye.z.toPrecision(3)
         ];
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_ADD);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
         ATON.Photon.fireEvent("AFE_AddSceneEdit", E);
 
         ATON.FE.popupClose();
@@ -2777,7 +2801,7 @@ HATHOR.popupNav = ()=>{
         let E = {};
         E.locomotionGraph = {};
 
-        ATON.SceneHub.sendEdit( E, ATON.SceneHub.MODE_DEL);
+        ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
         ATON.Photon.fireEvent("AFE_ClearLocNodes"); // TODO:
 
         ATON.FE.popupClose();

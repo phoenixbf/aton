@@ -1674,10 +1674,12 @@ HATHOR.popupPOV = ()=>{
     htmlcontent += "<div class='atonBTN atonBTN-green atonBTN-horizontal atonBTN-text' id='btnPOVgo'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Go</div>";
     htmlcontent += "</div><br>";
 
-    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set as Home</div><br>";
-    htmlcontent += "<div class='atonBlockRound' style='padding:2px; display:block; background-color:rgba(255,255,2555, 0.1)'>";
-    htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
-    htmlcontent += "as: <input id='idPOVid' type='text' size='15' placeholder='Viewpoint-ID' value='"+ATON.Utils.generateID("pov")+"'></div>";
+    if (ATON.FE.getCurrentUIP()==="editor"){
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVsetHome'><img src='"+ATON.FE.PATH_RES_ICONS+"home.png'>Set as Home</div><br>";
+        htmlcontent += "<div class='atonBlockRound' style='padding:2px; display:block; background-color:rgba(255,255,2555, 0.1)'>";
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPOVadd'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Add current viewpoint</div>";
+        htmlcontent += "as: <input id='idPOVid' type='text' size='15' placeholder='Viewpoint-ID' value='"+ATON.Utils.generateID("pov")+"'></div>";
+    }
 /*
     htmlcontent += "<img id='idPOVmodeIcon' src='"+ATON.FE.PATH_RES_ICONS+"home.png' class='atonDefIcon'>&nbsp;";
     htmlcontent += "<div class='select' style='width:250px;'><select id='idPOVmode'>";
@@ -2261,18 +2263,16 @@ HATHOR.popupScene = ()=>{
     if (ATON.SceneHub.getTitle()) htmlcontent += ATON.SceneHub.currID+"<br>";
 
     // Keywords
-    if (ATON.SceneHub.currData){
-        let kwds = ATON.SceneHub.currData.kwords;
-        if (kwds){
-            htmlcontent += "<div>";
-            for (let k in kwds) htmlcontent += "<a class='atonKeyword atonKeywordActivable' href='/?q="+k+"'>"+k+"</a>";
-            htmlcontent += "</div><br>";
-        }
+    let kwds = scenedata.kwords;
+    if (kwds){
+        htmlcontent += "<div>";
+        for (let k in kwds) htmlcontent += "<a class='atonKeyword atonKeywordActivable' href='/?q="+k+"'>"+k+"</a>";
+        htmlcontent += "</div>";
     }
     
     //htmlcontent += "<div class='atonQRcontainer' style='display:inline-block; max-width:200px; margin:6px; vertical-align:top;' id='idQRcode'></div>"; // <br><br>
 
-    htmlcontent += "<div id='btnCover' class='atonCover' style='margin:5px'>";
+    htmlcontent += "<div id='btnCover' class='atonCover' style='display:inline-block; vertical-align:top;' >";
     htmlcontent += "<img src='"+ATON.PATH_RESTAPI+"cover/"+ATON.SceneHub.currID+"' style='width:200px; height:auto'></div>";
 
     //htmlcontent += "<div class='atonBTN' id='idPopQR'><img src='"+ATON.FE.PATH_RES_ICONS+"qr.png'>&nbsp;Share</div><br>";
@@ -2281,7 +2281,7 @@ HATHOR.popupScene = ()=>{
         let authUser   = r.username;
         let bYourScene = ATON.SceneHub.currID.startsWith(authUser);
 
-        htmlcontent += "<div style='display:inline-block; text-align:left; margin:6px; vertical-align:top; max-width:300px; text-align:center'>";
+        htmlcontent += "<div style='display:inline-block; vertical-align:top; max-width:200px; text-align:center'>";
 
         // Authenticated
         if (authUser && bYourScene){
@@ -2311,9 +2311,9 @@ HATHOR.popupScene = ()=>{
         //htmlcontent += "<div class='atonBTN atonBTN-gray' style='width:120px' id='btnPopEmbed'><img src='"+ATON.FE.PATH_RES_ICONS+"embed.png'>Embed</div>";
         htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnSShot'><img src='"+ATON.FE.PATH_RES_ICONS+"sshot.png'>Capture</div>";
 
-        if (ATON.FE.getCurrentUIP()==="editor"){
-            htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
-        }
+        //if (ATON.FE.getCurrentUIP()==="editor"){
+        htmlcontent += "<div class='atonBTN atonBTN-gray atonBTN-horizontal atonBTN-text' id='btnPopPOV'><img src='"+ATON.FE.PATH_RES_ICONS+"pov.png'>Viewpoint</div>";
+        //}
 
         htmlcontent += "</div>";
 

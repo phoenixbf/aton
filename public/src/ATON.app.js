@@ -265,18 +265,20 @@ App.requireFlares = (list)=>{
     if (!list) return;
 
     ATON._fReqList = list;
-    console.log(ATON._fReqList);
+    console.log("Required Flares: "+ATON._fReqList);
 /*
 
     for (let i=0; i<list.length; i++) App._pDeps.push( App.requireFlare( list[i] ) );
     //console.log(App._pDeps)
 */
+
+    return App;
 };
 
 
-/**
+/*
 Require all available flares on the server, to equip the App
-*/
+
 App.requireAllFlares = ()=>{
     $.get(ATON.PATH_RESTAPI2+"flares/", (list)=>{
         ATON._fReqList  = list;
@@ -284,7 +286,10 @@ App.requireAllFlares = ()=>{
 
         ATON._loadFlares();
     });
+
+    return App;
 };
+*/
 
 
 /**
@@ -340,33 +345,23 @@ App.run = ()=>{
 
     App._bRunning = true;
 
-    if (App.setup) App.setup();
-    else {
-        ATON.FE.realize();
-        console.log("App [Warn]: your App should define a setup() routine");
-    }
+    //ATON.FE.realize();
 
-    if (App.update){
-        ATON.addUpdateRoutine( App.update );
-        console.log("App: update routine registered");
-    }
+    // We wait for all flares deployment
+    //ATON.on("AllFlaresReady",()=>{
+        if (App.setup) App.setup();
+        else {
+            ATON.FE.realize();
+            console.log("App [Warn]: your App should define a setup() routine");
+        }
+    
+        if (App.update){
+            ATON.addUpdateRoutine( App.update );
+            console.log("App: update routine registered");
+        }
+    //});
 
     return true;
 };
-
-/*
-App._deploy = ()=>{
-    if (App.setup) App.setup();
-    else {
-        ATON.FE.realize();
-        console.log("App [Warn]: your App should define a setup() routine");
-    }
-
-    if (App.update){
-        ATON.addUpdateRoutine( App.update );
-        console.log("App: update routine registered");
-    }
-};
-*/
 
 export default App;

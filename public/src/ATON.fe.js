@@ -20,10 +20,14 @@ FE.POPUP_DT = 500; //300;
 
 FE.STD_SEL_RAD = 0.05;
 
+FE._bRealized = false;
+
 /**
 Initialize Front-end
 */
 FE.realize = ()=>{
+    if (FE._bRealized) return;
+
     FE.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     FE._bPopup     = false;  // showing popup
@@ -75,6 +79,8 @@ FE.realize = ()=>{
     
     FE._bSem = false; // hovering semantic node or mask
     FE._bShowSemLabel = true;
+
+    FE._bRealized = true;
 };
 
 FE._handleHomeReq = ()=>{

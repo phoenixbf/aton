@@ -859,6 +859,8 @@ ATON.realize = ( bNoRender )=>{
     ATON._fLoading  = 0;
     ATON._fRequired = ATON._fReqList.length;
 
+    //console.log(ATON._fRequired);
+
     ATON._loadFlares();
 
     // Gizmo transforms
@@ -961,8 +963,7 @@ ATON._loadFlare = (fid)=>{
     }).fail(()=>{
         console.log("Flare "+fid+" not found.");
 
-        ATON._fLoading--;
-        if (ATON._fLoading <= 0) ATON._onAllFlaresLoaded();
+        ATON._onFlareError(fid);
     });
 };
 
@@ -981,6 +982,11 @@ ATON._onFlareLoaded = (fid)=>{
     
     ATON._fLoading--;
     if (ATON._fLoading <= 0) ATON._onAllFlaresLoaded();
+};
+
+ATON._onFlareError = (fid)=>{
+    ATON._fLoading--;
+    if (ATON._fLoading <= 0) ATON._onAllFlaresLoaded();  
 };
 
 ATON._onAllFlaresLoaded = ()=>{

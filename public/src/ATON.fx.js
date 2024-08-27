@@ -19,6 +19,7 @@ FX.PASS_SSR   = "p_ssr";
 FX.PASS_BLOOM = "p_bloom";
 FX.PASS_DOF   = "p_dof";
 FX.PASS_GAMMA = "p_gamma";
+FX.PASS_SOBEL = "p_sobel";
 
 
 // Initialization (main renderer must be initialized already)
@@ -95,10 +96,9 @@ FX.init = ()=>{
 */
 
     // Sobel
-/*
-    const effectSobel = new THREE.ShaderPass( THREE.SobelOperatorShader );
-    effectSobel.uniforms[ 'resolution' ].value.set(CW,CH);
-*/
+    //FX.passes[FX.PASS_SOBEL] = new THREE.ShaderPass( THREE.SobelOperatorShader );
+    //FX.passes[FX.PASS_SOBEL].uniforms.resolution.value.set(CW,CH);
+
     // Bloom
     FX.passes[FX.PASS_BLOOM] = new THREE.UnrealBloomPass( new THREE.Vector2( CW,CH ), 1.5, 0.4, 0.85 );
     FX.passes[FX.PASS_BLOOM].threshold = 0.9
@@ -162,15 +162,16 @@ FX.init = ()=>{
 
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );
 
-    //FX.composer.addPass( effectSobel );
+    //FX.composer.addPass( FX.passes[FX.PASS_SOBEL] );
 
     // Defaults
     FX.togglePass(FX.PASS_AO, false);
     FX.togglePass(FX.PASS_BLOOM, false);
     FX.togglePass(FX.PASS_DOF, false);
+    //FX.togglePass(FX.PASS_SOBEL, false);
 
     //for (let p in FX.passes) FX.passes[p].renderToScreen = true;
-    console.log(FX.composer);
+    //console.log(FX.composer);
 };
 
 /**

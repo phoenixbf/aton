@@ -328,7 +328,7 @@ See App.realize() method
 @example
 ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine, "myserviceworker.js" )
 */
-App.realizeAndRun = async (setup, update, swpath)=>{
+App.realizeAndRun = (setup, update, swpath)=>{
     App.realize(setup, update, swpath).run();
 };
 

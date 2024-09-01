@@ -49,7 +49,7 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "3d-tiles-renderer": "0.3.37",
+    "3d-tiles-renderer": "0.3.36",
     "body-parser": "^1.20.2",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
@@ -81,7 +81,7 @@
     "make-dir": "4.0.0",
     "nanoid": "3.3.4",
     "obj2gltf": "^3.1.6",
-    "object-delete-key": "^4.0.24",
+    "object-delete-key": "^4.0.25",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
@@ -92,7 +92,7 @@
     "socket.io": "^4.7.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "three": "0.167.1",
+    "three": "0.168.0",
     "three-custom-shader-material": "5.4.0",
     "three-mesh-bvh": "0.7.6",
     "webdav-server": "^2.6.2",

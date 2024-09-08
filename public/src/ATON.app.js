@@ -312,7 +312,7 @@ App.realize = (setup, update, swpath)=>{
     
     // Base path for this App
     App.basePath = ATON.Utils.getBaseFolder( window.location.href.split('?')[0] );
-    console.log("App base path: "+App.basePath);
+    //console.log("App base path: "+App.basePath);
 
     App.registerServiceWorker( swpath );
 

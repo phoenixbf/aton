@@ -934,6 +934,17 @@ ATON.getFlare = (id)=>{
     return ATON.Flares[id];
 }
 
+ATON.loadScript = (src, onLoad, onError)=>{
+    let jss = document.createElement("script");
+    
+    jss.src   = src;
+    jss.async = false;
+    document.head.appendChild(jss);
+
+    if (onLoad)  jss.onload  = onLoad;
+    if (onError) jss.onerror = onError;
+};
+
 ATON._loadFlare = (fid)=>{
     ATON._fLoading++;
 

@@ -783,9 +783,6 @@ ATON.realize = ( bNoRender )=>{
     // XPF-Network
     ATON.XPFNetwork.init();
 
-    // NX
-    //ATON.NX.init();
-
     // FX Composer setup
     if (!ATON.device.lowGPU && !ATON.device.isMobile) ATON.FX.init();
     
@@ -858,8 +855,6 @@ ATON.realize = ( bNoRender )=>{
     // Start loading required flares (if any)
     ATON._fLoading  = 0;
     ATON._fRequired = ATON._fReqList.length;
-
-    //console.log(ATON._fRequired);
 
     ATON._loadFlares();
 

@@ -361,6 +361,8 @@ App.run = ()=>{
         }
     //});
 
+    if (ATON._fRequired <= 0) ATON.fireEvent("AllFlaresReady");
+
     return true;
 };
 

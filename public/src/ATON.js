@@ -949,6 +949,19 @@ ATON._loadFlare = (fid)=>{
             let numscripts = files.length;
 
             for (let s in files){
+
+                ATON.loadScript("/flares/"+fid+"/"+files[s],
+                    ()=>{
+                        numscripts--;
+                        if (numscripts <= 0) ATON._onFlareLoaded(fid);
+                    },
+                    ()=>{
+                        console.log("Missing flare '"+fid+"' dependency: " + files[s]);
+                        numscripts--;
+                        if (numscripts <= 0) ATON._onFlareLoaded(fid);
+                    }
+                );
+/*
                 let jss = document.createElement("script");
                 jss.src = "/flares/"+fid+"/"+files[s];
                 jss.async = false;
@@ -964,6 +977,7 @@ ATON._loadFlare = (fid)=>{
                     numscripts--;
                     if (numscripts <= 0) ATON._onFlareLoaded(fid);
                 };
+*/
             }
         }
     }).fail(()=>{

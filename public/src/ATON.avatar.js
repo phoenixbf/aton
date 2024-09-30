@@ -141,7 +141,7 @@ _buildLabel(){
         fontSize: 0.03,
         fontColor: ATON.MatHub.colors.white
     });
-    this.usermessagetext.position.y = -0.03;
+    this.usermessagetext.position.y = 0.0;
 
     this.labelcontainer.add(this.usernametext);
     this.labelcontainer.add(this.usermessagetext);

@@ -295,6 +295,7 @@ App.requireAllFlares = ()=>{
 /**
 Realize the App.
 You can use "params" property to access url parameters, and "basePath" for accessing local app content (css, configs, etc.)
+You can equip dynamically this app with any flare via "ff" url parameter (e.g. ?ff=<flareA-id>,<flareB-id>)
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
 @param {string} swpath - (optional) service worker path (PWA) to register
@@ -315,6 +316,13 @@ App.realize = (setup, update, swpath)=>{
     //console.log("App base path: "+App.basePath);
 
     App.registerServiceWorker( swpath );
+
+    // on-demand flares
+    let ff = App.params.get("ff");
+    if (ff){
+        let flist = String(ff).split(",");
+        App.requireFlares(flist);
+    }
 
     return App;
 };

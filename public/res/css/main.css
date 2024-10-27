@@ -1,0 +1,97 @@
+/*
+    Main cascading ATON CSS (v2) applied after Bootrap
+
+    Authors:
+    - Bruno Fanini (bruno.fanini++AT++cnr.it)
+
+====================================================================*/
+
+@font-face {
+    font-family: 'AFont';
+    font-style: normal;
+    src: url(../fonts/TitilliumWeb-Regular.ttf);
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*=========================================
+    Base
+=========================================*/
+
+body {
+    margin: 0px;
+    padding: 0px;
+    border: none;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    color: #FFF;
+
+    font-size: 18px !important;
+
+    /*font-family: Tahoma, Verdana, Geneva;*/
+    /*font-family: 'Segoe UI Local', 'Segoe UI Web (West European)';*/
+    
+    font-family: "AFont" !important;
+
+    touch-action: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+    scrollbar-width: thin;
+    scrollbar-color: #FFF #333;
+}
+
+canvas {
+    display: block;
+
+    height: 100%;
+    width: 100%;
+
+    margin: 0px;
+    padding: 0px;
+
+    border: none;
+    outline: none;
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+/*
+    cursor: default;
+    cursor: -moz-default;
+    cursor: -webkit-default;
+*/
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+
+/*
+    touch-action: none;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+*/
+}
+
+canvas:active {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+
+/*=========================================
+    ATON cascading styles (aton-*)
+=========================================*/
+
+.aton-top-toolbar {
+    width: 100%;
+    position: absolute;
+    
+    background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
+    backdrop-filter: blur(6px);
+}

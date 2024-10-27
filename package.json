@@ -87,11 +87,11 @@
     "recursive-copy": "^2.0.14",
     "session-file-store": "^1.5.0",
     "sharp": "^0.33.5",
-    "socket.io": "^4.8.0",
+    "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "three": "0.169.0",
-    "three-custom-shader-material": "5.4.0",
+    "three-custom-shader-material": "6.0.13",
     "three-mesh-bvh": "0.8.2",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

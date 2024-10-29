@@ -47,13 +47,13 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "3d-tiles-renderer": "0.3.39",
+    "3d-tiles-renderer": "0.3.40",
     "body-parser": "^1.20.3",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
     "chokidar": "^4.0.1",
     "clamp": "^1.0.1",
-    "command-line-args": "^6.0.0",
+    "command-line-args": "^6.0.1",
     "compression": "^1.7.4",
     "constants-browserify": "^1.0.0",
     "cookie-parser": "^1.4.7",

@@ -2776,7 +2776,7 @@ HATHOR.popupNav = ()=>{
     });
 
     $("#btnAddLocNode").click(()=>{
-        lnid = ATON.Utils.generateID("ln");
+        let lnid = ATON.Utils.generateID("ln");
 
         ATON.Nav.addLocomotionNode(eye.x,eye.y,eye.z, true);
 

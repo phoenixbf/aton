@@ -30,6 +30,7 @@ UI._createElemementFromHTMLString = (html)=>{
     return container.firstElementChild;
 };
 
+// Setup base structure
 UI._setupBase = ()=>{
     document.body.oncontextmenu = ()=>{ return false; };
 

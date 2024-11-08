@@ -20,6 +20,8 @@ UI.init = ()=>{
 
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
+    UI._bModal = false;
+
     UI._setupBase();
 };
 
@@ -104,7 +106,6 @@ UI._setupBase = ()=>{
     Main Modal (popup)
 ===============================*/
 UI.showModal = (options)=>{
-
     // Clear
     UI.elModalContent.innerHTML = "";
 
@@ -113,7 +114,7 @@ UI.showModal = (options)=>{
         el.classList.add("modal-header");
         //el.append(options.header);
 
-        el.innerHTML = "<h4 class='modal-title' id='staticBackdropLabel'>"+options.header+"</h4>";
+        el.innerHTML = "<h4 class='modal-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
 
         UI.elModalContent.append( el );
     }
@@ -133,10 +134,12 @@ UI.showModal = (options)=>{
     }
 
     UI.modal.show();
+    UI._bModal = true;
 };
 
 UI.closeModal = ()=>{
     UI.modal.hide();
+    UI._bModal = false;
 };
 
 /*===============================

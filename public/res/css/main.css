@@ -27,8 +27,6 @@ body {
 
     overflow: hidden;
 
-    color: #FFF;
-
     font-size: 18px !important;
 
     /*font-family: Tahoma, Verdana, Geneva;*/
@@ -85,7 +83,8 @@ canvas:active {
 }
 
 /*=========================================
-    ATON cascading styles (aton-*)
+    ATON cascading classes (aton-*)
+    to be applied on top of bootstrap 5
 =========================================*/
 
 .aton-top-toolbar {
@@ -94,4 +93,15 @@ canvas:active {
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
     backdrop-filter: blur(6px);
+}
+
+.aton-std-bg {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
+    backdrop-filter: blur(6px);  
+}
+
+.aton-btn img {
+    width: 32px;
+    height: 32px;
+    margin-right: 5px;
 }

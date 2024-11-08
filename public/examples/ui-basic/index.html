@@ -19,7 +19,7 @@
 
     <title>ATON Sample</title>
     <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+    <link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
     <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -30,13 +30,25 @@
 <script>
 window.addEventListener( 'load', ()=>{
 
-    // Realize the base front-end
+    // Realize core
     ATON.realize();
 
     // We use built-in scene loader
     // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network 
     ATON.FE.loadSceneID("samples/venus", ()=>{
         ATON.Nav.requestHome(1.0);
+
+        ATON.UI.showModal({
+            header: "Sample Modal",
+            body: ATON.UI.createButton({
+                    variant:"primary",
+                    text:"click me",
+                    icon: "nav",
+                    onpress: ()=>{
+                        console.log("CLICK!");
+                    }
+                })
+            });
     });
 
 });

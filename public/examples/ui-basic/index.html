@@ -33,8 +33,6 @@ window.addEventListener( 'load', ()=>{
     // Realize core
     ATON.realize();
 
-    // We use built-in scene loader
-    // Note: argument is the "SID" (scene ID) that uniquely identify the scene on the network 
     ATON.FE.loadSceneID("samples/venus", ()=>{
         ATON.Nav.requestHome(1.0);
 
@@ -49,10 +47,24 @@ window.addEventListener( 'load', ()=>{
                     }
                 })
             });
+/*
+        let test = ATON.UI._createElemementFromHTMLString(`
+            <details>
+                <summary>TEST</summary>
+                <details>
+                    <summary>TEST2</summary>
+                    blablabla    
+                </details>
+            </details>
+        `);
+
+        ATON.UI.showSidePanel({
+            header: "Info",
+            body: test
+        });
+*/
     });
-
 });
-
 </script>
 </head>
 

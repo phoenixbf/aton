@@ -16,11 +16,12 @@ let UI = {};
 
 
 UI.init = ()=>{
-    if (!bootstrap) return;
+    if (!window.bootstrap) return;
 
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
-    UI._bModal = false;
+    UI._bModal     = false;
+    UI._bSidePanel = false;
 
     UI._setupBase();
 };
@@ -37,15 +38,26 @@ UI.onContextMenu = ()=>{
     return false;
 };
 
-// Setup base structure
+/*===============================
+    Base setup
+===============================*/
 UI._setupBase = ()=>{
     document.body.oncontextmenu = UI.onContextMenu;
 
     // Defaults to dark
     document.body.setAttribute("data-bs-theme","dark");
 
+    // Central overlay (spinners, etc.)
+    UI.elCenteredOverlay = UI._createElemementFromHTMLString(`
+        <div class="d-flex align-items-center justify-content-center aton-centered-container">
+            <div class="spinner-border aton-spinner" role="status"><span class="visually-hidden">Loading...</span></div>
+        </div>
+	`);
+
+    document.body.append( UI.elCenteredOverlay );
+    UI.hideCenteredOverlay();
+
     // Centralized modal dialog
-    //UI.elModal = document.createElement('div');
     UI.elModal = UI._createElemementFromHTMLString(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -59,28 +71,17 @@ UI._setupBase = ()=>{
     document.body.append(UI.elModal);
     UI.elModalContent = document.getElementById("uiModalContent");
 
+
+    // Centralized side panel
+    UI.elSidePanel = UI._createElemementFromHTMLString(`
+        <div class="offcanvas offcanvas-end aton-std-bg" tabindex="-1" aria-labelledby="offcanvasExampleLabel"></div>
+	`); // offcanvas-md
+
+    UI.sidepanel = new bootstrap.Offcanvas(UI.elSidePanel);
+    document.body.append(UI.elSidePanel);
+
 /*
-
-    // Modal popup
-    UI._bPopup = false;
-    UI.popupBlurBG = 0; // blur 3D canvas on popup show (in pixels), 0 to disable
-
-    UI._elPopup = document.getElementById("idPopup");
-    if (!UI._elPopup){
-        UI._elPopup = document.createElement('div');
-        UI._elPopup.classList.add("atonPopupContainer");
-        UI._elPopup.style.display = "none";
-        UI._elPopup.id = "idPopup";
-        document.body.prepend(UI._elPopup);
-    }
-
-    UI._elPopupContent = document.createElement('div');
-    UI._elPopupContent.classList.add("atonPopup");
-    
-    $(UI._elPopupContent).click((e)=>{ e.stopPropagation(); });
-    UI._elPopup.appendChild(UI._elPopupContent);
-
-    $(UI._elPopup).click( UI.popupClose );
+    TO REMOVE
 
 
     // Loader
@@ -102,10 +103,25 @@ UI._setupBase = ()=>{
 */
 };
 
+/*========================================
+    Centered overlay (loading, etc.)
+========================================*/
+UI.showCenteredOverlay = (options)=>{
+    UI.elCenteredOverlay.classList.add("d-flex");
+    UI.elCenteredOverlay.classList.remove("d-none");
+};
+
+UI.hideCenteredOverlay = ()=>{
+    UI.elCenteredOverlay.classList.remove("d-flex");
+    UI.elCenteredOverlay.classList.add("d-none");
+};
+
 /*===============================
     Main Modal (popup)
 ===============================*/
 UI.showModal = (options)=>{
+    if (!options) return;
+
     // Clear
     UI.elModalContent.innerHTML = "";
 
@@ -143,6 +159,41 @@ UI.closeModal = ()=>{
 };
 
 /*===============================
+    Side panel
+===============================*/
+UI.showSidePanel = (options)=>{
+    if (!options) return;
+
+    UI.elSidePanel.innerHTML = "";
+
+    if (options.header){
+        let el = document.createElement('div');
+        el.classList.add("offcanvas-header");
+
+        el.innerHTML = "<h4 class='offcanvas-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+
+        UI.elSidePanel.append(el);
+    }
+
+    if (options.body){
+        let el = document.createElement('div');
+        el.classList.add("offcanvas-body");
+
+        el.append(options.body);
+
+        UI.elSidePanel.append(el);
+    }
+
+    UI.sidepanel.show();
+    UI._bSidePanel = true;
+};
+
+UI.closeSidePanel = ()=>{
+    UI.sidepanel.hide();
+    UI._bSidePanel = false;
+};
+
+/*===============================
     Utilities
 ===============================*/
 UI.loadPartial = (src, elParent, bPrepend)=>{
@@ -176,6 +227,11 @@ UI.hideSemLabel = ()=>{
     Items
 ===============================*/
 
+/**
+Create a button (icon and/or text)
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
 UI.createButton = (options)=>{
     let el = document.createElement('button');
     el.classList.add("btn", "aton-btn");
@@ -197,8 +253,14 @@ UI.createButton = (options)=>{
     return el;
 };
 
-UI.createCard = (options)=>{
+/*
+UI.createTabGroup = (options)=>{
+    let el = document.createElement('ul');
+    el.classList.add("nav","nav-tabs","nav-justified");
+    el.setAttribute("role","tablist");
 
+    return el;
 };
+*/
 
 export default UI;

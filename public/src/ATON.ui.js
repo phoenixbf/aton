@@ -14,11 +14,11 @@ A set UI blueprints for ATON apps, based on Bootstrap v5
 */
 let UI = {};
 
+UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
+
 
 UI.init = ()=>{
     if (!window.bootstrap) return;
-
-    UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     UI._bModal     = false;
     UI._bSidePanel = false;
@@ -198,7 +198,7 @@ UI.closeSidePanel = ()=>{
 ===============================*/
 UI.loadPartial = (src, elParent, bPrepend)=>{
     $.get(src, (data)=>{
-        if (!parentid){
+        if (!elParent){
             if (bPrepend) document.body.prepend(data);
             else document.body.append(data);
         }

@@ -196,7 +196,7 @@ UI.closeSidePanel = ()=>{
 /*===============================
     Utilities
 ===============================*/
-UI.loadPartial = (src, elParent, bPrepend)=>{
+UI.loadPartial = (src, elParent, bPrepend, onComplete)=>{
     $.get(src, (data)=>{
         if (!elParent){
             if (bPrepend) document.body.prepend(data);

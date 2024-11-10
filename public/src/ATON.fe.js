@@ -81,6 +81,9 @@ FE.realize = ()=>{
     FE._bShowSemLabel = true;
 
     FE._bRealized = true;
+
+    // Backwards compatibility
+    FE.loadSceneID = ATON.App.loadScene;
 };
 
 FE._handleHomeReq = ()=>{
@@ -255,11 +258,7 @@ FE.useMouseWheelToScaleSelector = (f)=>{
 };
 
 
-/**
-Load a scene. 
-You can use ATON.on("SceneJSONLoaded", ...) to perform additional tasks when the scene JSON is fully loaded
-@param {string} sid - the scene ID (e.g.: 'sample/venus')
-*/
+/*
 FE.loadSceneID = (sid, onSuccess)=>{
     if (sid === undefined) return;
 
@@ -270,6 +269,7 @@ FE.loadSceneID = (sid, onSuccess)=>{
 
     console.log(reqstr);
 };
+*/
 
 FE._update = ()=>{
     //if (ATON.XR._bPresenting) return;
@@ -1244,7 +1244,7 @@ FE.popupVRC = ()=>{
     });
 };
 
-// User auth
+// User auth (TO BE DEPRECATED)
 FE.checkAuth = (onReceive)=>{
     ATON.Utils.checkAuth((data)=>{
         FE._userAuth = data;

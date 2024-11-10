@@ -196,6 +196,9 @@ UI.closeSidePanel = ()=>{
 /*===============================
     Utilities
 ===============================*/
+
+// Append or prepend HTML fragment to DOM
+// TODO: remove jquery?
 UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
     $.get(src, (data)=>{
         if (!parentid){

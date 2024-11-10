@@ -293,6 +293,22 @@ App.requireAllFlares = ()=>{
 
 
 /**
+Load a scene. 
+You can use ATON.on("SceneJSONLoaded", ...) to perform additional tasks when the scene JSON is fully loaded
+@param {string} sid - the scene ID (e.g.: 'sample/venus')
+@param {function} onSuccess - (optional) routine after the scene descriptor JSON was loaded. You can alternatively use ATON.on("SceneJSONLoaded", ...)
+*/
+App.loadScene = (sid, onSuccess)=>{
+    if (sid === undefined) return;
+
+    ATON.SceneHub.load(
+        ATON.PATH_RESTAPI2+"scenes/"+sid, 
+        sid,
+        onSuccess
+    );
+};
+
+/**
 Realize the App.
 You can use "params" property to access url parameters, and "basePath" for accessing local app content (css, configs, etc.)
 You can equip dynamically this app with any flare via "ff" url parameter (e.g. ?ff=<flareA-id>,<flareB-id>)

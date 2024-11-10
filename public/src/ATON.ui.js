@@ -196,15 +196,15 @@ UI.closeSidePanel = ()=>{
 /*===============================
     Utilities
 ===============================*/
-UI.loadPartial = (src, elParent, bPrepend, onComplete)=>{
+UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
     $.get(src, (data)=>{
-        if (!elParent){
-            if (bPrepend) document.body.prepend(data);
-            else document.body.append(data);
+        if (!parentid){
+            if (bPrepend) $("body").prepend(data);
+            else $("body").append(data);
         }
         else {
-            if (bPrepend) elParent.prepend(data); 
-            else elParent.append(data);
+            if (bPrepend) $("#"+parentid).prepend(data); 
+            else $("#"+parentid).append(data);
         }
 
         if (onComplete) onComplete();

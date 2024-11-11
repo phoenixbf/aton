@@ -47,7 +47,7 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "3d-tiles-renderer": "0.3.40",
+    "3d-tiles-renderer": "0.3.41",
     "body-parser": "^1.20.3",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
@@ -90,8 +90,8 @@
     "socket.io": "^4.8.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "three": "0.169.0",
-    "three-custom-shader-material": "6.0.13",
+    "three": "0.170.0",
+    "three-custom-shader-material": "6.1.1",
     "three-mesh-bvh": "0.8.2",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"

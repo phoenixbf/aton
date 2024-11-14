@@ -54,7 +54,7 @@
     "chokidar": "^4.0.1",
     "clamp": "^1.0.1",
     "command-line-args": "^6.0.1",
-    "compression": "^1.7.4",
+    "compression": "^1.7.5",
     "constants-browserify": "^1.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
@@ -92,7 +92,7 @@
     "swagger-ui-express": "^5.0.1",
     "three": "0.170.0",
     "three-custom-shader-material": "6.1.1",
-    "three-mesh-bvh": "0.8.2",
+    "three-mesh-bvh": "0.8.3",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

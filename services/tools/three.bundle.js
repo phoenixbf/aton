@@ -68,7 +68,8 @@ import * as ThreeMeshBVH from 'three-mesh-bvh';
 //import { GenerateMeshBVHWorker } from 'three-mesh-bvh/src/workers/GenerateMeshBVHWorker.js';
 
 import * as TILES from '3d-tiles-renderer';
-import { TilesFadePlugin } from '../../_prv/3DTilesRendererJS/example/src/plugins/fade/TilesFadePlugin.js';
+import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
+import { ImplicitTilingPlugin  } from '3d-tiles-renderer/plugins';
 //import { TileCompressionPlugin } from '../../_prv/3DTilesRendererJS/example/src/plugins/TileCompressionPlugin.js';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
@@ -130,7 +131,8 @@ THREE.TransformControls = TransformControls;
 THREE.CSS3DRenderer = CSS3DRenderer;
 THREE.CSS3DObject   = CSS3DObject;
 
-TILES.TilesFadePlugin = TilesFadePlugin;
+TILES.TilesFadePlugin      = TilesFadePlugin;
+TILES.ImplicitTilingPlugin = ImplicitTilingPlugin;
 //TILES.TileCompressionPlugin = TileCompressionPlugin;
 
 /*

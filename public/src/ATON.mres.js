@@ -155,6 +155,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //ts.fetchOptions.cache = 'no-store'; //'default';
 
     // Plugins
+    ts.registerPlugin( new TILES.ImplicitTilingPlugin() );
     //ts.registerPlugin( new TILES.TileCompressionPlugin() );
 /*
     ts.registerPlugin( new TILES.TilesFadePlugin() );

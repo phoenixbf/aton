@@ -297,6 +297,11 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
     });
 };
 
+UI.resolveIconURL = (icon)=>{
+    if (icon.includes("/")) return icon;
+    return UI.PATH_RES_ICONS + icon+".png";
+};
+
 /*===============================
     Items
 ===============================*/
@@ -321,10 +326,7 @@ UI.createButton = (options)=>{
     if (options.text) el.innerText = options.text;
 
     if (options.icon){
-        let iconsrc = UI.PATH_RES_ICONS + options.icon+".png";
-        if (options.icon.includes("/")) iconsrc = options.icon; // a path is given
-
-        el.prepend( UI.createElemementFromHTMLString("<img class='icon' src='"+iconsrc+"'>"));
+        el.prepend( UI.createElemementFromHTMLString("<img class='icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;
@@ -333,19 +335,19 @@ UI.createButton = (options)=>{
 };
 
 /**
-Create a tab group.
-- options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties.
+Create a tabs group.
+- options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties. An optional "icon" can also be assigned per tab
 
 @param {object} options  - UI options object
 @returns {HTMLElement}
 */
-UI.createTabGroup = (options)=>{
+UI.createTabsGroup = (options)=>{
     let baseid = ATON.Utils.generateID("tabgroup");
 
     let el = document.createElement('div');
 
     let eltabs = document.createElement('ul');
-    eltabs.classList.add("nav","nav-tabs","nav-justified");
+    eltabs.classList.add("nav","nav-justified","nav-tabs"); // "nav-underline"
     eltabs.setAttribute("role","tablist");
 
     let eltabcontent = document.createElement('div');
@@ -360,6 +362,10 @@ UI.createTabGroup = (options)=>{
 
         let tabtitle   = e.title;
         let tabcontent = e.content;
+        let icon       = e.icon;
+
+        let icontab = "";
+        if (icon) icontab = "<img class='icon' src='"+UI.resolveIconURL(icon)+"'>";
 
         let tabid = baseid+"-"+tabtitle;
 
@@ -368,9 +374,9 @@ UI.createTabGroup = (options)=>{
         eltab.setAttribute("role","presentation");
 
         if (i===0) 
-            eltab.innerHTML = "<button class='nav-link active id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"' aria-selected='true'>"+tabtitle+"</button>";
+            eltab.innerHTML = "<button class='nav-link aton-tab active' id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"' aria-selected='true'>"+icontab+tabtitle+"</button>";
         else 
-            eltab.innerHTML = "<button class='nav-link id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"'>"+tabtitle+"</button>";
+            eltab.innerHTML = "<button class='nav-link aton-tab' id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"'>"+icontab+tabtitle+"</button>";
 
         eltabs.append(eltab);
 

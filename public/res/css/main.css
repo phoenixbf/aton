@@ -171,3 +171,9 @@ canvas:active {
     height: 32px;
     margin-right: 5px;
 }
+
+.aton-tab img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}

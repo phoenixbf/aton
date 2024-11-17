@@ -303,6 +303,11 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
 
 /**
 Create a button (icon and/or text)
+- options.variant: the bootstrap variant (primary, info, etc.)
+- options.text: the button text
+- options.icon: the icon, if simple string will look for centralized icon resources (e.g. "home"), otherwise a provided url to image
+- options.onpress: routine to launch on click
+
 @param {object} options  - UI options object
 @returns {HTMLElement}
 */
@@ -327,14 +332,63 @@ UI.createButton = (options)=>{
     return el;
 };
 
-/*
+/**
+Create a tab group.
+- options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties.
+
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
 UI.createTabGroup = (options)=>{
-    let el = document.createElement('ul');
-    el.classList.add("nav","nav-tabs","nav-justified");
-    el.setAttribute("role","tablist");
+    let baseid = ATON.Utils.generateID("tabgroup");
+
+    let el = document.createElement('div');
+
+    let eltabs = document.createElement('ul');
+    eltabs.classList.add("nav","nav-tabs","nav-justified");
+    eltabs.setAttribute("role","tablist");
+
+    let eltabcontent = document.createElement('div');
+    eltabcontent.classList.add("tab-content");
+    //eltabcontent.id = baseid + "tabContent";
+
+    el.append(eltabs);
+    el.append(eltabcontent);
+
+    for (let i=0; i<options.items.length; i++){
+        let e = options.items[i];
+
+        let tabtitle   = e.title;
+        let tabcontent = e.content;
+
+        let tabid = baseid+"-"+tabtitle;
+
+        let eltab = document.createElement('li');
+        eltab.classList.add("nav-item");
+        eltab.setAttribute("role","presentation");
+
+        if (i===0) 
+            eltab.innerHTML = "<button class='nav-link active id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"' aria-selected='true'>"+tabtitle+"</button>";
+        else 
+            eltab.innerHTML = "<button class='nav-link id='"+tabid+"-tab' data-bs-toggle='pill' data-bs-target='#"+tabid+"' type='button' role='tab' aria-controls='"+tabid+"'>"+tabtitle+"</button>";
+
+        eltabs.append(eltab);
+
+        let eltabbody;
+
+        if (i===0) 
+            eltabbody = UI.createElemementFromHTMLString("<div class='tab-pane show active' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+        else 
+            eltabbody = UI.createElemementFromHTMLString("<div class='tab-pane show' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+
+        eltabbody.style.padding = "10px 0px 10px 0px";
+
+        eltabbody.append( tabcontent );
+        eltabcontent.append(eltabbody);
+
+    }
 
     return el;
 };
-*/
 
 export default UI;

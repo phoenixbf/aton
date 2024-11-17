@@ -39,13 +39,22 @@ window.addEventListener( 'load', ()=>{
 
         ATON.UI.showModal({
             header: "Sample Modal",
-            body: ATON.UI.createButton({
-                    variant:"primary",
-                    text:"click me",
-                    icon: "nav",
-                    onpress: ()=>{
-                        console.log("CLICK!");
+            body: ATON.UI.createTabGroup({
+                items: [
+                    {
+                        title: "Tab1",
+                        content: ATON.UI.createButton({
+                                    variant:"primary",
+                                    text:"click me",
+                                    icon: "nav",
+                                    onpress: ()=>{ console.log("CLICK!"); }
+                                })
+                    },
+                    {
+                        title: "Tab2",
+                        content: "This is a sample text for this second tab"
                     }
+                ]
                 })
             });
 /*

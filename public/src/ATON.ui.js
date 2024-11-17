@@ -23,13 +23,16 @@ UI.init = ()=>{
     UI._bModal     = false;
     UI._bSidePanel = false;
 
+    UI._bSemL = false; // Hovering semantic shape or mask
+
     UI._setupBase();
 };
 
 // Utility function to create DOM element from string
-UI._createElemementFromHTMLString = (html)=>{
+UI.createElemementFromHTMLString = (html)=>{
     const container = document.createElement('div');
     container.innerHTML = html;
+
     return container.firstElementChild;
 };
 
@@ -48,7 +51,7 @@ UI._setupBase = ()=>{
     document.body.setAttribute("data-bs-theme","dark");
 
     // Central overlay (spinners, etc.)
-    UI.elCenteredOverlay = UI._createElemementFromHTMLString(`
+    UI.elCenteredOverlay = UI.createElemementFromHTMLString(`
         <div class="d-flex align-items-center justify-content-center aton-centered-container">
             <div class="spinner-border aton-spinner" role="status"><span class="visually-hidden">Loading...</span></div>
         </div>
@@ -56,9 +59,22 @@ UI._setupBase = ()=>{
 
     document.body.append( UI.elCenteredOverlay );
     UI.hideCenteredOverlay();
+    
+    // 2D labels
+    //UI.elLabelCon = UI.createElemementFromHTMLString(`<div class='aton-floating-label-container'></div>`);
+    UI.elLabelCon = document.createElement('div');
+    UI.elLabelCon.classList.add("aton-floating-label-container");
+
+    //UI.elLabel    = UI.createElemementFromHTMLString("<div class='aton-floating-label'></div>");
+    UI.elLabel = document.createElement('div');
+    UI.elLabel.classList.add("aton-floating-label");
+
+    UI.elLabelCon.append(UI.elLabel);
+    document.body.prepend( UI.elLabelCon );
+    UI.hideSemLabel();
 
     // Centralized modal dialog
-    UI.elModal = UI._createElemementFromHTMLString(`
+    UI.elModal = UI.createElemementFromHTMLString(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
@@ -73,7 +89,7 @@ UI._setupBase = ()=>{
 
 
     // Centralized side panel
-    UI.elSidePanel = UI._createElemementFromHTMLString(`
+    UI.elSidePanel = UI.createElemementFromHTMLString(`
         <div class="offcanvas offcanvas-end aton-std-bg" tabindex="-1" aria-labelledby="offcanvasExampleLabel"></div>
 	`); // offcanvas-md
 
@@ -153,7 +169,7 @@ UI.showModal = (options)=>{
     UI._bModal = true;
 };
 
-UI.closeModal = ()=>{
+UI.hideModal = ()=>{
     UI.modal.hide();
     UI._bModal = false;
 };
@@ -188,7 +204,7 @@ UI.showSidePanel = (options)=>{
     UI._bSidePanel = true;
 };
 
-UI.closeSidePanel = ()=>{
+UI.hideSidePanel = ()=>{
     UI.sidepanel.hide();
     UI._bSidePanel = false;
 };
@@ -196,6 +212,73 @@ UI.closeSidePanel = ()=>{
 /*===============================
     Utilities
 ===============================*/
+
+UI.addBasicEvents = ()=>{
+    ATON.on("NodeRequestFired", ()=>{
+        UI.showCenteredOverlay();
+    });
+
+    ATON.on("AllNodeRequestsCompleted", ()=>{ 
+        UI.hideCenteredOverlay();
+    });
+
+    // Semantic
+    ATON.on("SemanticNodeHover", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S === undefined) return;
+
+        UI.showSemLabel(semid);
+
+        S.highlight();
+        $('canvas').css({ cursor: 'pointer' });
+
+        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
+    });
+    ATON.on("SemanticNodeLeave", (semid)=>{
+        let S = ATON.getSemanticNode(semid);
+        if (S === undefined) return;
+
+        UI.hideSemLabel();
+
+        S.restoreDefaultMaterial();
+        $('canvas').css({ cursor: 'grab' });
+
+        if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
+    });
+
+    ATON.on("SemanticMaskHover", semid => {
+        UI.showSemLabel(semid);
+        $('canvas').css({ cursor: 'pointer' }); // 'crosshair'
+    });
+    ATON.on("SemanticMaskLeave", semid => {
+        UI.hideSemLabel();
+        $('canvas').css({ cursor: 'grab' });
+    });
+
+    ATON.addUpdateRoutine( UI.update );
+};
+
+// Main UI Update routine
+UI.update = ()=>{
+    if (UI._bSemL && !ATON.XR._bPresenting){
+        let x = ((ATON._screenPointerCoords.x)*0.5) * window.innerWidth; //FE._canvas.width;
+        let y = ((1.0 - ATON._screenPointerCoords.y)*0.5) * window.innerHeight; //FE._canvas.height;
+        y -= 35;
+
+        UI.elLabel.style.transform = "translate("+x+"px, "+y+"px)";
+    }
+};
+
+// Semantic 2D Label
+UI.showSemLabel = (text)=>{
+    UI.elLabel.innerHTML = text;
+    UI.elLabel.style.display = "inline-block";
+    UI._bSemL = true;
+};
+UI.hideSemLabel = ()=>{
+    UI.elLabel.style.display = "none";
+    UI._bSemL = false;
+};
 
 // Append or prepend HTML fragment to DOM
 // TODO: remove jquery?
@@ -213,18 +296,6 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
         if (onComplete) onComplete();
     });
 };
-
-/*
-// Semantic 2D Label
-UI.showSemLabel = (text)=>{
-    $(UI._elLabel).html(text); 
-    $(UI._elLabel).show();
-};
-UI.hideSemLabel = ()=>{
-    $(UI._elLabel).hide();
-    $(UI._elLabel).html("");
-};
-*/
 
 /*===============================
     Items
@@ -248,7 +319,7 @@ UI.createButton = (options)=>{
         let iconsrc = UI.PATH_RES_ICONS + options.icon+".png";
         if (options.icon.includes("/")) iconsrc = options.icon; // a path is given
 
-        el.prepend( UI._createElemementFromHTMLString("<img class='icon' src='"+iconsrc+"'>"));
+        el.prepend( UI.createElemementFromHTMLString("<img class='icon' src='"+iconsrc+"'>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;

@@ -48,7 +48,13 @@ window.addEventListener( 'load', ()=>{
                                     variant:"primary",
                                     text:"click me",
                                     icon: "nav",
-                                    onpress: ()=>{ console.log("CLICK!"); }
+                                    onpress: ()=>{
+                                        navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
+                                            .then(device => {
+                                                console.log(device)
+                                            })
+                                            .catch(error => { console.error(error); });
+                                    }
                                 })
                     },
                     {

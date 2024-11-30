@@ -49,11 +49,7 @@ window.addEventListener( 'load', ()=>{
                                     text:"click me",
                                     icon: "nav",
                                     onpress: ()=>{
-                                        navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
-                                            .then(device => {
-                                                console.log(device)
-                                            })
-                                            .catch(error => { console.error(error); });
+                                        alert("Hi!");
                                     }
                                 })
                     },

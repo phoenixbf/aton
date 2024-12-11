@@ -338,6 +338,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         
         //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
         //ATON._assetReqComplete(tsurl);
+
+        ATON.Utils._visitorCP(ts.group);
     });
 
     // On single tile loaded
@@ -432,11 +434,14 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     tex.colorSpace  = ATON._stdEncoding;
                 }
 
+                //ATON.Utils._processMatCP( c.material );
             }
         });
 
         //console.log(ATON._renderer.info.memory);
         ATON.fireEvent("TileLoaded", scene);
+
+        ATON.Utils._visitorCP(scene);
     });
 
     ts.addEventListener( 'dispose-model', (data, tile)=>{
@@ -447,6 +452,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         //console.log(ts.group);
         //console.log("DISPOSE");
+
+        //ATON.Utils._visitorCP(ts.group);
     });
 
     if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);

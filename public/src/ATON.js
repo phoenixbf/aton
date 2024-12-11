@@ -134,6 +134,9 @@ ATON._bInitialized = false;
 // Resource mappers
 ATON._resMappers = [];
 
+// Clip-planes
+ATON._clipPlanes = [];
+
 /**
 Set ATON base url (root)
 @param {string} baseurl - baseurl
@@ -2843,6 +2846,32 @@ ATON.getAPIToken = (servicename)=>{
 
 ATON.clearToken = (servicename)=>{
     window.sessionStorage.removeItem("ATON.tokens."+servicename);
+};
+
+/*
+    Sections
+================================================*/
+ATON.enableClipPlanes = ()=>{
+    if (!ATON._renderer) return;
+    ATON._renderer.localClippingEnabled = true;
+};
+
+ATON.disableClipPlanes = ()=>{
+    if (!ATON._renderer) return;
+    ATON._renderer.localClippingEnabled = false;
+    ATON._clipPlanes = [];
+};
+
+ATON.addClipPlane = (dir, loc)=>{
+    ATON.enableClipPlanes();
+
+    let P = new THREE.Plane();
+    P.setFromNormalAndCoplanarPoint(dir, loc); 
+    ATON._clipPlanes.push( P );
+
+    ATON.Utils._visitorCP();
+    
+    return P;
 };
 
 /*

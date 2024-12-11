@@ -123,6 +123,7 @@ update(){
 
     // FIXME: this is an old hack workaround wrong (mirrored) CubeCamera capture
     //ATON._mainRoot.scale.x = -1;
+    ATON._mMainPano.position.copy(this.pos);
     this._CC.update( ATON._renderer, ATON._mainRoot );
     //ATON._mainRoot.scale.x = 1;
 
@@ -137,7 +138,6 @@ update(){
     //cctx.flipY = false;
     //cctx.needsUpdate = true;
     //console.log(cctx)
-    
 
     this._envtex = ATON._pmremGenerator.fromCubemap(cctx).texture;
 

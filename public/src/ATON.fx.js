@@ -86,6 +86,7 @@ FX.init = ()=>{
     //FX.passes[FX.PASS_AO].params.saoBlurStdDev = 10.0;
     //FX.passes[FX.PASS_AO].params.saoBlurDepthCutoff = 10.0; //0.2;
     //FX.passes[FX.PASS_AO].params.saoMinResolution = 0.01;
+    //FX.passes[FX.PASS_AO].accumulate = false;
 
     //console.log(FX.passes[FX.PASS_AO]);
 
@@ -150,7 +151,6 @@ FX.init = ()=>{
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );
 
     FX.composer.addPass( FX.passes[FX.PASS_AO] );
-    FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
     //FX.composer.addPass( FX.passes[FX.PASS_SSR] );
 
     // tone-mapping passes here (if any)
@@ -160,9 +160,13 @@ FX.init = ()=>{
     
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );
 
+    FX.composer.addPass( FX.passes[FX.PASS_BLOOM] );
+
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );
 
     //FX.composer.addPass( FX.passes[FX.PASS_SOBEL] );
+
+    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
 
     // Defaults
     FX.togglePass(FX.PASS_AO, false);

@@ -513,7 +513,7 @@ Utils.processMaterial = (M)=>{
 */
     if (M.map === null || M.map === undefined) return;
 
-    // Force mipmapping
+    // Mipmapping
     M.map.generateMipmaps = true;
     
     M.map.anisotropy = ATON.device.isMobile? 0 : ATON._maxAnisotropy;
@@ -521,6 +521,21 @@ Utils.processMaterial = (M)=>{
     M.map.magFilter  = THREE.LinearFilter;
     M.map.colorSpace   = ATON._stdEncoding;
     //M.map.needsUpdate = true;
+};
+
+Utils._visitorCP = (N)=>{
+    if (!ATON._renderer.localClippingEnabled) return;
+    //if (ATON._clipPlanes.length < 1) return;
+
+    if (!N) N = ATON._rootVisible;
+
+    N.traverse((o)=>{
+        if (o.material){
+            o.material.clippingPlanes   = ATON._clipPlanes;
+            o.material.clipIntersection = false;
+            o.material.clipShadows      = true;
+        }
+    });
 };
 
 Utils.cleanupVisitor = ( object )=>{

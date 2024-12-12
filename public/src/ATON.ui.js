@@ -17,6 +17,7 @@ let UI = {};
 
 UI.init = ()=>{
     if (!window.bootstrap) return;
+    if (!window.bootstrap.Offcanvas) return; // tmp hack
 
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 

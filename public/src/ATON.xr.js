@@ -695,6 +695,19 @@ XR.getControllerWorldDirection = (i)=>{
     else return XR.controller0dir;
 };
 
+/**
+Get controller world orientation
+@param {number} i - the controller ID (0 or 1)
+@returns {THREE.Quaternion}
+*/
+XR.getControllerWorldOrientation = (i)=>{
+    let Q = new THREE.Quaternion();
+    if (i === 1) XR.controller1.getWorldQuaternion(Q);
+    else XR.controller0.getWorldQuaternion(Q);
+
+    return Q;
+};
+
 XR._deltaMotionController = (C)=>{
     if (C === XR.HAND_L && XR._lastPosL === undefined) return;
     if (C === XR.HAND_R && XR._lastPosR === undefined) return;

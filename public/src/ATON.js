@@ -43,6 +43,7 @@ import FX from "./ATON.fx.js";
 import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
+import ASCII from "./ATON.ascii.js";
 
 // Classes
 ATON.Node       = Node;
@@ -72,7 +73,7 @@ ATON.App        = App;
 ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
 ATON.MRes       = MRes;
-//ATON.NX         = NX;
+ATON.ASCII      = ASCII;
 
 //==============================================================
 // Consts
@@ -713,6 +714,7 @@ ATON.realize = ( bNoRender )=>{
 
     ATON.EventHub.init();
     ATON.MatHub.init();
+    ATON.ASCII.init();
 
     //ATON._setupLoadManager();
     ATON._assetsManager = {};

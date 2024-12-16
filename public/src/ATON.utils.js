@@ -292,6 +292,20 @@ Utils.postJSON = (endpoint, obj, onReceive, onFail)=>{
     });
 };
 
+Utils.getJSON = (jsonurl, onLoad)=>{
+    fetch(jsonurl, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+    })
+    .then(response => response.json())
+    .then(response => {
+        //console.log("Loaded:");
+        console.log(response);
+
+        if (onLoad) onLoad(response);
+    });
+};
+
 // From https://bit.ly/2neWfJ2
 // runAsync( longRunningFunction ).then(console.log);
 Utils.runAsync = fn => {

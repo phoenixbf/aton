@@ -415,6 +415,8 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.fireEvent("XRmode", true);
 
+        ATON.rewindAllPlayingMedia();
+
         ATON.toggleShadows(false); // disable shadows for XR sessions
 
         // for immersive sessions we (re)set selector radius to 10cm

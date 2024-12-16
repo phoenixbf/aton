@@ -133,6 +133,19 @@ App.getStorage = (id)=>{
 };
 
 /**
+Utility routine to load a config (JSON) for the App
+@param {string} jsonconf - url to JSON config
+@param {function} onLoad - routine to execute on JSON loaded
+@example
+ATON.App.loadJSONConfig("myconf.json")
+*/
+App.loadJSONConfig = (configurl, onLoad)=>{
+    ATON.Utils.getJSON(configurl, onLoad);
+
+    return App;
+};
+
+/**
 Register a service worker (PWA) for webapp
 @param {string} swpath - service worker path to register
 @example

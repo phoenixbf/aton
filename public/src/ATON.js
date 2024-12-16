@@ -223,14 +223,24 @@ ATON._onUserInteraction = ()=>{
     }
 };
 
-/* TODO: plugin
-ATON.addRay = (jspath)=>{
-    let s = document.createElement('script');
-    s.setAttribute('src', jspath);
-    s.async = false;
-    document.body.appendChild(s);
+// FIXME:
+ATON.rewindAllPlayingMedia = ()=>{
+    if (ATON._elPanoVideo) ATON._elPanoVideo.currentTime = 0;
+    if (ATON.XPFNetwork._elVid) ATON.XPFNetwork.currentTime = 0;
+
+    if (ATON._auMain){
+        ATON._auMain.stop();
+        ATON._auMain.play();
+    }
+
+    for (let v in ATON.MediaFlow._vStreams){
+        let vs = ATON.MediaFlow._vStreams[v].el;
+        if (vs.playing && !vs.uid){
+            vs.stop();
+            vs.play();
+        }
+    }
 };
-*/
 
 // Auth
 ATON.checkAuth = (onLogged, onNotLogged)=>{

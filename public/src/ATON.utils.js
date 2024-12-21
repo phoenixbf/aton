@@ -194,6 +194,16 @@ Utils.isVideo = ( filepath )=>{
     return false;
 };
 
+Utils.isImage = ( filepath )=>{
+    let ext = Utils.getFileExtension(filepath);
+
+    if (ext === "jpg")  return true;
+    if (ext === "png") return true;
+    if (ext === "ktx" || ext === "ktx2") return true;
+
+    return false;
+};
+
 Utils.getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf('/');
     if (index !== -1) return filepath.substring( 0, index + 1 );

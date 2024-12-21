@@ -84,6 +84,7 @@ API.init = (app)=>{
 
     	if (fs.existsSync(sjsonpath)){
             //console.log(sjsonpath);
+            console.log("Request scene: "+sid);
             return res.sendFile(sjsonpath);
         }
         

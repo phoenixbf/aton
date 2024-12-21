@@ -6,7 +6,7 @@
 ===========================================================*/
 
 /**
-ATON ASCII
+ATON ASCII utilities to load and manipulate txt, csv, tsv, etc.
 @namespace ASCII
 */
 let ASCII = {};
@@ -17,6 +17,14 @@ ASCII.DELIM_TSV = "\t";
 //Initializes the component
 ASCII.init = ()=>{
 
+};
+
+ASCII.loadTextFromURL = (url, onComplete)=>{
+    $.get( url, (data)=>{
+        if (onComplete) onComplete(data);
+    });
+
+    return ASCII;
 };
 
 ASCII.loadValuesFromFile = (url, delim, mainkey, onComplete)=>{

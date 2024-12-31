@@ -98,7 +98,7 @@ update(){
     }
 */
 
-    // CC approach (in some rare cases cubecam faces are still messed up)
+    // CC approach (seems with special extensions cubecam faces are still messed up)
 /*
     if (this._CC === undefined){
         this._createCCtarget();
@@ -123,7 +123,7 @@ update(){
 
     // FIXME: this is an old hack workaround wrong (mirrored) CubeCamera capture
     //ATON._mainRoot.scale.x = -1;
-    ATON._mMainPano.position.copy(this.pos);
+    if (ATON._mMainPano) ATON._mMainPano.position.copy(this.pos);
     this._CC.update( ATON._renderer, ATON._mainRoot );
     //ATON._mainRoot.scale.x = 1;
 

@@ -111,8 +111,8 @@ ATON.PATH_FE         = `${ATON.BASE_URL}/s/`;
 */
 
 ATON.SHADOWS_NEAR = 0.1;
-ATON.SHADOWS_FAR  = 50.0; //50.0;
-ATON.SHADOWS_SIZE = 15.0;
+ATON.SHADOWS_FAR  = 100.0; //50.0;
+ATON.SHADOWS_SIZE = 50.0;
 ATON.SHADOWS_RES  = 1024; // 512
 
 ATON.AMB_L = 0.2; // 0.1 - Ambient for shadowed areas (without LPs)
@@ -766,7 +766,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._lps = []; // list of lightprobes
     ATON._bAutoLP = false;
     ATON._envMapInt = 1.0;
-    ATON._numLPbounces = 2;
+    ATON._numLPbounces = 2; //2;
     ATON._lpbCount = 0;
     
     // Shadows
@@ -2085,6 +2085,9 @@ ATON.adjustShadowsParamsFromSceneBounds = ()=>{
         ATON._shadowsFixedBoundCenter = c;
         ATON._shadowsSize = r * 1.5;
 
+        //ATON._shadowsNear = ATON.SHADOWS_NEAR;
+        //ATON._shadowsFar  = r * 20.0;
+
         //console.log(ATON._shadowsNear,ATON._shadowsFar);
     }
 
@@ -2896,6 +2899,8 @@ ATON.useGizmo = (b)=>{
 };
 
 ATON._setupGizmo = ()=>{
+    return; // TODO
+
     if (!ATON._bGizmo){
         if (ATON._gizmo) ATON._gizmo.detach();
         return;

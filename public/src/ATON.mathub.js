@@ -21,7 +21,8 @@ MatHub.init = ()=>{
     // Uniforms
     MatHub._uSem = {
         time: { type:'float', value: 0.0 },
-        tint: { type:'vec4', value: new THREE.Vector4(0.2,0.2,1.0, 0.2) }
+        tint: { type:'vec4', value: new THREE.Vector4(0.2,0.2,1.0, 0.2) },
+        sel: { type:'vec4', value: new THREE.Vector4(0.0,0.0,0.0, 0.1) }
     };
 
     MatHub.addDefaults();
@@ -445,6 +446,11 @@ MatHub.getMaterial = (id)=>{
 
 MatHub.update = ()=>{
     MatHub._uSem.time.value += ATON._dt;
+    
+    MatHub._uSem.sel.value.x = ATON.SUI.mainSelector.position.x;
+    MatHub._uSem.sel.value.y = ATON.SUI.mainSelector.position.y;
+    MatHub._uSem.sel.value.z = ATON.SUI.mainSelector.position.z;
+    MatHub._uSem.sel.value.w = ATON.SUI._selectorRad;
 };
 
 export default MatHub;

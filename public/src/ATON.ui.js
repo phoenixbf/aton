@@ -369,6 +369,7 @@ UI.createTabsGroup = (options)=>{
         if (icon) icontab = "<img class='icon' src='"+UI.resolveIconURL(icon)+"'>";
 
         let tabid = baseid+"-"+tabtitle;
+        tabid = tabid.replaceAll(" ", "");
 
         let eltab = document.createElement('li');
         eltab.classList.add("nav-item");
@@ -393,6 +394,125 @@ UI.createTabsGroup = (options)=>{
         eltabbody.append( tabcontent );
         eltabcontent.append(eltabbody);
 
+    }
+
+    return el;
+};
+
+/**
+Create a vector control
+- options.vector: target THREE.Vector3 to be manipulated
+- options.step: step value
+- options.onupdate: a routine called when vector is changed/updated
+
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
+UI.createVectorControl = (options)=>{
+    let baseid = ATON.Utils.generateID("vec3");
+
+    let V = undefined;
+    if (options.vector) V = options.vector;
+
+    let step = 0.01;
+    if (options.step) step = options.step;
+
+    let posx = V? V.x : 0.0;
+    let posy = V? V.y : 0.0;
+    let posz = V? V.z : 0.0;
+
+    let el = UI.createElemementFromHTMLString(`
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="x" aria-label="x" step="${step}" value="${posx}">
+            <input type="number" class="form-control" placeholder="y" aria-label="y" step="${step}" value="${posy}">
+            <input type="number" class="form-control" placeholder="z" aria-label="z" step="${step}" value="${posz}">
+        </div>
+    `);
+
+    el.id = baseid;
+
+    let elInputX = el.children[0];
+    let elInputY = el.children[1];
+    let elInputZ = el.children[2];
+
+    elInputX.oninput = ()=>{
+        let v = elInputX.value;
+
+        if (V) V.x = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    elInputY.oninput = ()=>{
+        let v = elInputY.value;
+
+        if (V) V.y = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    elInputZ.oninput = ()=>{
+        let v = elInputZ.value;
+
+        if (V) V.z = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    return el;
+};
+
+/**
+Create a node transform control (3x3 with positin, scale and rotation)
+- options.node: ATON node id to be transformed
+- options.position: enable position/location manipulation
+- options.scale: enable scale manipulation
+- options.rotation: enable rotation manipulation
+
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
+UI.createNodeTrasformControl = (options)=>{
+    let baseid = ATON.Utils.generateID("ftrans");
+    
+    let el = document.createElement('div');
+    el.id = baseid;
+    //el.classList.add("");
+
+    let N = undefined;
+    if (options.node) N = ATON.getSceneNode( options.node );
+
+    // Position
+    if (options.position){
+
+        let elPos = UI.createVectorControl({
+            vector: N.position,
+            step: options.position.step
+        });
+
+        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elPos.id+"'>Position</label>") );
+        el.append( elPos );
+    }
+
+    // Scale
+    if (options.scale){
+
+        let elScale = UI.createVectorControl({
+            vector: N.scale,
+            step: options.scale.step
+        });
+
+        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elScale.id+"'>Scale</label>") );
+        el.append( elScale );
+    }
+
+    // Rotation
+    if (options.rotation){
+
+        let elRot = UI.createVectorControl({
+            vector: N.rotation,
+            step: options.rotation.step
+        });
+
+        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
+        el.append( elRot );
     }
 
     return el;

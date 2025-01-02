@@ -42,7 +42,7 @@ window.addEventListener( 'load', ()=>{
             body: ATON.UI.createTabsGroup({
                 items: [
                     {
-                        title: "Tab1",
+                        title: "Tab",
                         icon: "settings",
                         content: ATON.UI.createButton({
                                     variant:"primary",
@@ -54,7 +54,17 @@ window.addEventListener( 'load', ()=>{
                                 })
                     },
                     {
-                        title: "Tab2",
+                        title: "Transform",
+                        //icon: "settings",
+                        content: ATON.UI.createNodeTrasformControl({
+                            node: "main",
+                            position: true,
+                            scale: true,
+                            rotation: true
+                        })
+                    },
+                    {
+                        title: "Lorem Ipsum",
                         icon: "layers",
                         content: "This is a sample text for this second tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero. Nunc sapien ex, tincidunt vel malesuada sit amet, elementum sit amet libero.Phasellus nec neque et lectus rhoncus tristique at ullamcorper justo. Maecenas venenatis elementum urna, non dignissim urna bibendum a. Nunc odio tortor, blandit in sodales vel, lacinia in augue. Aliquam quis sagittis turpis. Suspendisse eget mollis ex. Aenean lacinia laoreet viverra. In volutpat nisi sagittis, semper nisi et, fermentum lectus. Nunc vel eros nec diam pulvinar gravida. Sed quis auctor turpis. Suspendisse et nulla ipsum. Fusce non consequat diam. Mauris risus lacus, placerat sit amet dui nec, interdum consectetur turpis. Integer ut lobortis dolor, sed convallis est."
                     }

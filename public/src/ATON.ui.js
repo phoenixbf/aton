@@ -423,9 +423,9 @@ UI.createVectorControl = (options)=>{
 
     let el = UI.createElemementFromHTMLString(`
         <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="x" aria-label="x" step="${step}" value="${posx}">
-            <input type="number" class="form-control" placeholder="y" aria-label="y" step="${step}" value="${posy}">
-            <input type="number" class="form-control" placeholder="z" aria-label="z" step="${step}" value="${posz}">
+            <input type="number" class="form-control aton-input-x" placeholder="x" aria-label="x" step="${step}" value="${posx}">
+            <input type="number" class="form-control aton-input-y" placeholder="y" aria-label="y" step="${step}" value="${posy}">
+            <input type="number" class="form-control aton-input-z" placeholder="z" aria-label="z" step="${step}" value="${posz}">
         </div>
     `);
 
@@ -453,6 +453,76 @@ UI.createVectorControl = (options)=>{
         let v = elInputZ.value;
 
         if (V) V.z = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    return el;
+};
+
+/**
+Create a quaternion control
+- options.quat: target THREE.Quaternion to be manipulated
+- options.step: step value
+- options.onupdate: a routine called when Quaternion is changed/updated
+
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
+UI.createQuaternionControl = (options)=>{
+    let baseid = ATON.Utils.generateID("vec3");
+
+    let Q = undefined;
+    if (options.quat) Q = options.quat;
+
+    let step = 0.01;
+    if (options.step) step = options.step;
+
+    let x = Q? Q.x : 0.0;
+    let y = Q? Q.y : 0.0;
+    let z = Q? Q.z : 0.0;
+    let w = Q? Q.w : 0.0;
+
+    let el = UI.createElemementFromHTMLString(`
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" placeholder="x" aria-label="x" step="${step}" value="${x}">
+            <input type="number" class="form-control" placeholder="y" aria-label="y" step="${step}" value="${y}">
+            <input type="number" class="form-control" placeholder="z" aria-label="z" step="${step}" value="${z}">
+            <input type="number" class="form-control" placeholder="w" aria-label="w" step="${step}" value="${w}">
+        </div>
+    `);
+
+    el.id = baseid;
+
+    let elInputX = el.children[0];
+    let elInputY = el.children[1];
+    let elInputZ = el.children[2];
+    let elInputW = el.children[3];
+
+    elInputX.oninput = ()=>{
+        let v = elInputX.value;
+
+        if (Q) Q.x = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    elInputY.oninput = ()=>{
+        let v = elInputY.value;
+
+        if (Q) Q.y = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    elInputZ.oninput = ()=>{
+        let v = elInputZ.value;
+
+        if (Q) Q.z = v;
+        if (options.onupdate) options.onupdate();
+    };
+
+    elInputZ.oninput = ()=>{
+        let v = elInputW.value;
+
+        if (Q) Q.w = v;
         if (options.onupdate) options.onupdate();
     };
 
@@ -510,7 +580,12 @@ UI.createNodeTrasformControl = (options)=>{
             vector: N.rotation,
             step: options.rotation.step
         });
-
+/*
+        let elRot = UI.createQuaternionControl({
+            quat: N.quaternion,
+            step: options.rotation.step
+        });     
+*/
         el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
     }

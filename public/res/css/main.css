@@ -166,6 +166,19 @@ canvas:active {
     backdrop-filter: blur(6px);  
 }
 
+.aton-input-x {
+    border-color: rgba(255,0,0, 0.2);
+    /*background-color: rgba(255,0,0, 0.1) !important;*/
+}
+.aton-input-y {
+    border-color: rgba(0,255,0, 0.2);
+    /*background-color: rgba(0,255,0, 0.1) !important;*/
+}
+.aton-input-z {
+    border-color: rgba(0,0,255, 0.2);
+    /*background-color: rgba(0,0,255, 0.1) !important;*/
+}
+
 .aton-btn img {
     width: 32px;
     height: 32px;

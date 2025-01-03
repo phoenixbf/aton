@@ -391,13 +391,51 @@ UI.createTabsGroup = (options)=>{
 
         eltabbody.style.padding = "10px 0px 10px 0px";
 
-        eltabbody.append( tabcontent );
+        if (tabcontent) eltabbody.append( tabcontent );
         eltabcontent.append(eltabbody);
 
     }
 
     return el;
 };
+
+/**
+Create a tree group
+- options.items: an array of objects (items) with "title" (string) and "content" (DOM element) properties
+
+@param {object} options  - UI options object
+@returns {HTMLElement}
+*/
+UI.createTreeGroup = (options)=>{
+    let baseid = ATON.Utils.generateID("tree");
+
+    let el = document.createElement('div');
+    el.classList.add("aton-tree-container");
+
+    for (let i=0; i<options.items.length; i++){
+        let e = options.items[i];
+
+        let title   = e.title? e.title : i;
+        let content = e.content;
+ 
+        let elItem = document.createElement('details');
+        elItem.classList.add("aton-tree-item");
+        elItem.id = baseid+"-"+i;
+
+        elItem.append( UI.createElemementFromHTMLString("<summary>"+title+"</summary>") );
+        if (content){
+            let elContent = document.createElement('div');
+            elContent.classList.add("aton-tree-item-content");
+            elContent.append( e.content );
+
+            elItem.append( elContent );
+        }
+
+        el.append(elItem);
+    }
+
+    return el;
+}
 
 /**
 Create a vector control

@@ -166,6 +166,7 @@ canvas:active {
     backdrop-filter: blur(6px);  
 }
 
+/* Input XYZ */
 .aton-input-x {
     border-color: rgba(255,0,0, 0.2);
     /*background-color: rgba(255,0,0, 0.1) !important;*/
@@ -189,4 +190,47 @@ canvas:active {
     width: 18px;
     height: 18px;
     margin-right: 5px;
+}
+
+/* Trees */
+.aton-tree-container {
+    padding: 0px;
+}
+
+.aton-tree-item {
+    margin-left: 0px;
+    
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.aton-tree-item summary {
+    padding: 5px;
+
+    font-weight: bold;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5);
+    /*border-left: solid var(--bs-body-color) 1px;*/
+
+    border-radius: var(--bs-border-radius-sm);
+
+    /*line-height: 20px;*/
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.aton-tree-item summary:hover {
+    background-color: rgba(var(--bs-body-bg-rgb), 1.0);
+}
+
+.aton-tree-item summary::marker {
+    font-size: 1.2em;
+}
+
+.aton-tree-item-content {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: dotted var(--bs-body-color) 2px;
 }

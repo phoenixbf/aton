@@ -42,8 +42,8 @@ window.addEventListener( 'load', ()=>{
             body: ATON.UI.createTabsGroup({
                 items: [
                     {
-                        title: "Tab",
-                        icon: "settings",
+                        title: "Buttons",
+                        icon: "home",
                         content: ATON.UI.createButton({
                                     variant:"primary",
                                     text:"click me",
@@ -52,6 +52,41 @@ window.addEventListener( 'load', ()=>{
                                         alert("Hi!");
                                     }
                                 })
+                    },
+                    {
+                        title: "layers",
+                        icon: "layers",
+                        content: ATON.UI.createTreeGroup({
+                            items:[
+                                {
+                                    title: "Section A",
+                                    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                },
+                                {
+                                    title: "Section B",
+                                    content: ATON.UI.createTreeGroup({
+                                        items:[
+                                            {
+                                                title: "Section B.1",
+                                                content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                            },
+                                            {
+                                                title: "Section B.2",
+                                                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                            },
+                                            {
+                                                title: "Section B.3",
+                                                 content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                            }
+                                        ]
+                                    })
+                                },
+                                {
+                                    title: "Section C",
+                                    content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                }
+                            ]
+                        })
                     },
                     {
                         title: "Transform",
@@ -64,8 +99,8 @@ window.addEventListener( 'load', ()=>{
                         })
                     },
                     {
-                        title: "Lorem Ipsum",
-                        icon: "layers",
+                        title: "Lorem",
+                        icon: "info",
                         content: "This is a sample text for this second tab. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero. Nunc sapien ex, tincidunt vel malesuada sit amet, elementum sit amet libero.Phasellus nec neque et lectus rhoncus tristique at ullamcorper justo. Maecenas venenatis elementum urna, non dignissim urna bibendum a. Nunc odio tortor, blandit in sodales vel, lacinia in augue. Aliquam quis sagittis turpis. Suspendisse eget mollis ex. Aenean lacinia laoreet viverra. In volutpat nisi sagittis, semper nisi et, fermentum lectus. Nunc vel eros nec diam pulvinar gravida. Sed quis auctor turpis. Suspendisse et nulla ipsum. Fusce non consequat diam. Mauris risus lacus, placerat sit amet dui nec, interdum consectetur turpis. Integer ut lobortis dolor, sed convallis est."
                     }
                 ]

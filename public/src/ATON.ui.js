@@ -314,7 +314,7 @@ Create a button (icon and/or text)
 - options.icon: the icon, if simple string will look for centralized icon resources (e.g. "home"), otherwise a provided url to image
 - options.onpress: routine to launch on click
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createButton = (options)=>{
@@ -339,7 +339,7 @@ UI.createButton = (options)=>{
 Create a tabs group.
 - options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties. An optional "icon" can also be assigned per tab
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTabsGroup = (options)=>{
@@ -403,7 +403,7 @@ UI.createTabsGroup = (options)=>{
 Create a tree group
 - options.items: an array of objects (items) with "title" (string) and "content" (DOM element) properties
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTreeGroup = (options)=>{
@@ -420,6 +420,8 @@ UI.createTreeGroup = (options)=>{
  
         let elItem = document.createElement('details');
         elItem.classList.add("aton-tree-item");
+        if (e.open) elItem.setAttribute("open",true);
+        
         elItem.id = baseid+"-"+i;
 
         elItem.append( UI.createElemementFromHTMLString("<summary>"+title+"</summary>") );
@@ -443,7 +445,7 @@ Create a vector control
 - options.step: step value
 - options.onupdate: a routine called when vector is changed/updated
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createVectorControl = (options)=>{
@@ -503,7 +505,7 @@ Create a quaternion control
 - options.step: step value
 - options.onupdate: a routine called when Quaternion is changed/updated
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createQuaternionControl = (options)=>{
@@ -568,13 +570,13 @@ UI.createQuaternionControl = (options)=>{
 };
 
 /**
-Create a node transform control (3x3 with positin, scale and rotation)
+Create a node transform control. If "position", "scale" and "rotation" properties are provided, a 3x3 form is generated to directly control a given ATON node.
 - options.node: ATON node id to be transformed
 - options.position: enable position/location manipulation
 - options.scale: enable scale manipulation
 - options.rotation: enable rotation manipulation
 
-@param {object} options  - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createNodeTrasformControl = (options)=>{

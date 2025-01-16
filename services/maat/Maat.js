@@ -271,6 +271,22 @@ Maat.scanMedia = (uid)=>{
 
 // TODO: improve filter alg
 Maat.filterTSets = ( files )=>{
+
+	let R = [];
+
+	for (let s in files){
+		let fpath = files[s];
+
+		if (fpath.endsWith(".json")){
+			//console.log(fpath)
+
+			R.push( fpath );
+		}
+	}
+
+	return R;
+
+/*
 	let its = [];
 	let B   = {};
 
@@ -304,6 +320,7 @@ Maat.filterTSets = ( files )=>{
 
 	//console.log(files)
 	return files;
+*/
 };
 
 // TODO

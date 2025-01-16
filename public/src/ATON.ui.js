@@ -96,28 +96,6 @@ UI._setupBase = ()=>{
 
     UI.sidepanel = new bootstrap.Offcanvas(UI.elSidePanel);
     document.body.append(UI.elSidePanel);
-
-/*
-    TO REMOVE
-
-
-    // Loader
-    UI._elLoader = document.getElementById("idLoader");
-    if (!UI._elLoader){
-        UI._elLoader = document.createElement('div');
-        UI._elLoader.className = "atonCenterLoader";
-        UI._elLoader.style.display = "none";
-        UI._elLoader.id = "idLoader";
-        document.body.prepend(UI._elLoader);
-    }
-
-    UI._elLoader.innerHTML = "<img src='"+ATON.PATH_RES+"loader.png'>";
-
-    // 2D Label
-    $("body").prepend("<div class='atonPopupLabelContainer'><div id='idPopupLabel' class='atonPopupLabel'></div></div>");
-    UI._elLabel = document.getElementById("idPopupLabel");
-    UI.hideSemLabel();
-*/
 };
 
 /*========================================

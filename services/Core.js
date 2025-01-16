@@ -243,7 +243,7 @@ Core.init = ()=>{
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 	// 3D models base formats
-	Core.mpattern = "*.gltf,*.glb,*.json";
+	Core.mpattern = "*.gltf,*.glb,*tileset.json";
 
 	// Panoramic content
 	Core.panopattern = "*.jpg,*.hdr,*.exr,*.mp4,*.webm,*.m3u8";

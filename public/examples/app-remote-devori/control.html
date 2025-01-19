@@ -75,11 +75,23 @@ window.onload = ()=>{
         window.setInterval(()=>{
             if (alpha === undefined || alpha === null) return;
 
+/*
             let data = new Int8Array(4);
-            data[0] = 128.0 * qori.x;
-            data[1] = 128.0 * qori.y;
-            data[2] = 128.0 * qori.z;
-            data[3] = 128.0 * qori.w;
+            data[0] = parseInt(127.0 * qori.x);
+            data[1] = parseInt(127.0 * qori.y);
+            data[2] = parseInt(127.0 * qori.z);
+            data[3] = parseInt(127.0 * qori.w);
+*/
+
+            let data = new Uint8Array(4);
+            data[0] = parseInt(127.0 * qori.x) + 127;
+            data[1] = parseInt(127.0 * qori.y) + 127;
+            data[2] = parseInt(127.0 * qori.z) + 127;
+            data[3] = parseInt(127.0 * qori.w) + 127;
+
+            data = ATON.Utils.convertByteArrayToHexString(data);
+
+            //let data = parseInt(127.0 * qori.x)+","+parseInt(127.0 * qori.y)+","+parseInt(127.0 * qori.z)+","+parseInt(127.0 * qori.w);
 
             ATON.Photon.fireEvent("ori", data);
             console.log(data);

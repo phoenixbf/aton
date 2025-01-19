@@ -1028,5 +1028,19 @@ Utils.createGround = (texture, dx,dz)=>{
     return N;
 };
 
+/**
+Convert Uint8Array into hex string
+@param {Uint8Array} uint8array - Uint8Array array
+@returns {String}
+*/
+Utils.convertByteArrayToHexString = (uint8array) => uint8array.reduce((str, byte) => str + byte.toString(16).padStart(2,'0'),'');
+
+/**
+Convert hex string into Uint8Array
+@param {String} hexString - Hex string
+@returns {Uint8Array}
+*/
+Utils.convertHexStringToByteArray = (hexString) => Uint8Array.from(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte,16)));
+
 
 export default Utils;

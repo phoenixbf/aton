@@ -25,9 +25,26 @@
 <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
 <script type="module" src="/src/ATON.js"></script>
 <script>
+let int32ToBytes = (int)=>{
+    return [
+        int & 0xff,
+        (int >> 8) & 0xff,
+        (int >> 16) & 0xff,
+        (int >> 24) & 0xff
+    ]
+}
+
 window.onload = ()=>{
+    let Qstart  = new THREE.Quaternion();
+    let Qtarget = new THREE.Quaternion();
+    
+    let tMark = 0.0;
+
     // Realize our App
     let myApp = ATON.App.realize();
+
+    let modelNode = undefined;
+
 
     // Setup: this is executed once (App initialization)
     // This may include UI setup (HTML), events handling, etc.
@@ -35,34 +52,77 @@ window.onload = ()=>{
         ATON.FE.realize(); // Realize the base front-end
         ATON.FE.addBasicLoaderEvents(); // Add basic front-end events (loading spinner, automatic home, ...)
 
+        ATON.Nav.setAndRequestHomePOV( new ATON.POV().setPosition(0,10,30).setTarget(0,10,0) );
+
         // Create 3D model
-        let modelNode = ATON.createSceneNode("modelNode");
+        modelNode = ATON.createSceneNode("modelNode");
         modelNode.load("samples/models/venus/venus.gltf").attachToRoot();
 
         // Lets connect and join Photon session "sample-wapp-remote"
         ATON.Photon.connect("sample-wapp-devori");
 
-        // Setup incoming communications from control App
-        // Remote request for transition to a specific viewpoint
+        // Incoming states
         ATON.Photon.on("ori", (data)=>{
-            //console.log(Q)
-            //modelNode.setRotation((Math.PI*2.0) - d.gamma, d.alpha, (Math.PI*2.0) - d.beta/*d.gamma, d.alpha*/);
-            //modelNode.setRotation(d.beta, d.gamma, d.alpha);
-            
-            //modelNode.quaternion.set(Q[0],Q[1],Q[2],Q[3]);
-            const view = new Int8Array(data);
-            modelNode.quaternion.set(
-                view[0] / 128.0,
-                view[1] / 128.0,
-                view[2] / 128.0,
-                view[3] / 128.0,
+
+            Qstart.copy(modelNode.quaternion);
+/*
+            data = data.split(",");
+            Qtarget.set(
+                data[0] / 127.0,
+                data[1] / 127.0,
+                data[2] / 127.0,
+                data[3] / 127.0,
             );
+*/
+
+            //console.log(data)
+
+            const values = ATON.Utils.convertHexStringToByteArray(data);
+
+            Qtarget.set(
+                parseFloat((values[0] - 127) / 127.0),
+                parseFloat((values[1] - 127) / 127.0),
+                parseFloat((values[2] - 127) / 127.0),
+                parseFloat((values[3] - 127) / 127.0)
+            );
+
+            //console.log(Qtarget)
+
+/*
+            const view = new Int8Array(data);
+            Qtarget.set(
+                view[0] / 127.0,
+                view[1] / 127.0,
+                view[2] / 127.0,
+                view[3] / 127.0,
+            );
+
+            console.log(view)
+*/
+            tMark = ATON._clock.elapsedTime;
         });
 
         // Generate QR-code for remote control App
-        let url = window.location.origin + "/examples/app-remote-devori/control.html";
+        let url = ATON.BASE_URL + "/examples/app-remote-devori/control.html";
         if (url.startsWith("http://localhost")) $("#idQRcontrol").html("<b>To use another device for remote control, you have to use local network address or public IP (not localhost)</b>");
         else new QRCode( document.getElementById("idQRcontrol"), url);
+    };
+
+    myApp.update = ()=>{
+        if (!tMark) return;
+        if (!modelNode) return;
+
+        if (Qstart.equals(Qtarget)) return;
+
+        let dt = (ATON._clock.elapsedTime - tMark);
+        if (dt > 0.3){
+            modelNode.quaternion.identity();
+            return;
+        }
+
+        let t = dt / 0.1;
+
+        modelNode.quaternion.slerpQuaternions(Qstart,Qtarget, t);
     };
 
     // Ok, let's run our App!
@@ -82,29 +142,10 @@ window.onload = ()=>{
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
-            In this sample we showcase <b>remote control</b> (viewpoints) between web-apps using Photon.<br><br>
-            
-            We setup a first 3D App (this one) like <a href="../app-basic/">App basic sample</a>, where we load a scene with some viewpoints (POVs). Then we create a second App for remote control.<br><br>
-            You can open this second App by clicking, tapping or using this QR-code (for instance in another device, like a smartphone):<br>
+
             <a href="control.html" target="_blank">
                 <div class="atonQRcodeContainer" id='idQRcontrol' style="background-color: white; color:black; padding:30px; display:inline-block; max-width:250px;"></div>
             </a>
-
-            <br><br>
-            Both apps join a Photon session named "sample-wapp-remote" via:
-            <code>
-                ATON.Photon.connect("sample-wapp-remote")
-            </code><br><br>
-            The control App can send custom events to this one (in this simple case, viewpoints requests named "POV"), via:
-            <code>
-                ATON.Photon.fireEvent("POV", id)
-            </code><br><br>
-            The 3D App (this one), handles incoming viewpoints requests via:
-            <code>
-                ATON.Photon.on("POV", function(id){...})
-            </code><br><br>
-
-            Note that depending on where the framework is deployed, everyone in same network can remotely request viewpoints. If the server is public, remote people can request specific viewpoints (or handle your own custom logic)! You can try it also on HMDs
         </div>
         </div>
     </div>

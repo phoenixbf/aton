@@ -157,11 +157,12 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     // Plugins
     ts.registerPlugin( new TILES.ImplicitTilingPlugin() );
     //ts.registerPlugin( new TILES.TileCompressionPlugin() );
+
 /*
-    ts.registerPlugin( new TILES.TilesFadePlugin() );
-    const FP = ts.getPluginByName( 'FADE_TILES_PLUGIN' );
+    let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = true;
     FP.fadeDuration  = 1000;
+    ts.registerPlugin( FP );
 */
 
     if (cesiumReq){

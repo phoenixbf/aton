@@ -94,21 +94,6 @@ ATON.NTYPES.SCENE  = 3;
 ATON.NTYPES.SEM    = 4;
 ATON.NTYPES.UI     = 5;
 
-// Folders
-/*
-ATON.BASE_URL           = window.location.origin;
-ATON.PATH_RESTAPI       = `${ATON.BASE_URL}/api/`;
-ATON.PATH_RESTAPI_SCENE = `${ATON.PATH_RESTAPI}scene/`;
-ATON.PATH_RESTAPI2      = `${ATON.BASE_URL}/api/v2/`;
-ATON.PATH_WAPPS         = `${ATON.BASE_URL}/a/`;
-ATON.PATH_DRACO_LIB     = `${ATON.BASE_URL}/dist/draco/`; //ATON.PATH_THREE+"examples/js/libs/draco/";
-ATON.PATH_BASIS_LIB     = `${ATON.BASE_URL}/dist/basis/`; //ATON.PATH_THREE+"examples/js/libs/basis/";
-
-ATON.PATH_COLLECTION = `${ATON.BASE_URL}/collections/`;
-ATON.PATH_SCENES     = `${ATON.BASE_URL}/scenes/`;
-ATON.PATH_RES        = `${ATON.BASE_URL}/res/`;
-ATON.PATH_FE         = `${ATON.BASE_URL}/s/`;
-*/
 
 ATON.SHADOWS_NEAR = 0.1;
 ATON.SHADOWS_FAR  = 100.0; //50.0;
@@ -148,6 +133,7 @@ ATON.setBaseURL = (baseurl)=>{
     ATON.PATH_RESTAPI_SCENE = `${ATON.PATH_RESTAPI}scene/`;
     ATON.PATH_RESTAPI2      = `${ATON.BASE_URL}/api/v2/`;
     ATON.PATH_WAPPS         = `${ATON.BASE_URL}/a/`;
+    ATON.PATH_FLARES        = `${ATON.BASE_URL}/flares/`;
     ATON.PATH_DRACO_LIB     = `${ATON.BASE_URL}/dist/draco/`; //ATON.PATH_THREE+"examples/js/libs/draco/";
     ATON.PATH_BASIS_LIB     = `${ATON.BASE_URL}/dist/basis/`; //ATON.PATH_THREE+"examples/js/libs/basis/";
     
@@ -985,7 +971,7 @@ ATON._loadFlare = (fid)=>{
 
             for (let s in files){
 
-                ATON.loadScript("/flares/"+fid+"/"+files[s],
+                ATON.loadScript(ATON.PATH_FLARES + fid+"/"+files[s],
                     ()=>{
                         numscripts--;
                         if (numscripts <= 0) ATON._onFlareLoaded(fid);

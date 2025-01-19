@@ -50,7 +50,7 @@
     "@gltf-transform/core": "^4.1.1",
     "@gltf-transform/extensions": "^4.1.1",
     "@gltf-transform/functions": "^4.1.1",
-    "3d-tiles-renderer": "0.4.0",
+    "3d-tiles-renderer": "0.4.2",
     "body-parser": "^1.20.3",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",

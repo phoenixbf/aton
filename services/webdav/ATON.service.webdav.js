@@ -41,15 +41,17 @@ for (let u in Core.users){
         //privilegeManager.setRights(user, "/", [ 'canRead' ]);
         //privilegeManager.setRights(user, "/"+uname+"/", [ 'canRead' ]);
 /*
-        privilegeManager.setRights(user, "/"+uname+"/", [ 'canRead' ]);
+        //privilegeManager.setRights(user, "/"+uname+"/", [ 'all' ]);
         privilegeManager.setRights(user, "/"+uname+"/collection/", [ 'all' ]);
         privilegeManager.setRights(user, "/"+uname+"/scenes/", [ 'all' ]);
-*/      
+*/
+    
         privilegeManager.setRights(user, "/"+uname+"-collection/", [ 'all' ]);
         privilegeManager.setRights(user, "/"+uname+"-scenes/", [ 'all' ]);
 
         if (bAdmin){
             privilegeManager.setRights(user, "/apps/", [ 'all' ]);
+            privilegeManager.setRights(user, "/config/flares/", [ 'all' ]);
         }
         
         //privilegeManager.setRights(user, '/', [ 'all' ]);
@@ -91,14 +93,19 @@ for (let u in Core.users){
 
     if (fs.existsSync(upathCollection)){
         server.setFileSystemSync("/"+uname+"-collection", new webdav.PhysicalFileSystem(upathCollection));
+        //server.setFileSystemSync("/"+uname+"/collection", new webdav.PhysicalFileSystem(upathCollection));
     }
     if (fs.existsSync(upathScenes)){
         server.setFileSystemSync("/"+uname+"-scenes", new webdav.PhysicalFileSystem(upathScenes));
+        //server.setFileSystemSync("/"+uname+"/scenes", new webdav.PhysicalFileSystem(upathScenes));
     }
 }
 
 // Access to web-apps
 server.setFileSystemSync("/apps", new webdav.PhysicalFileSystem(Core.DIR_WAPPS));
+
+// Access to flares
+server.setFileSystemSync("/flares", new webdav.PhysicalFileSystem(Core.DIR_FLARES));
 
 
 //server.setFileSystemSync('/collection', new webdav.PhysicalFileSystem(Core.DIR_COLLECTIONS));

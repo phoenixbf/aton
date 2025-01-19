@@ -102,10 +102,12 @@ window.onload = ()=>{
             tMark = ATON._clock.elapsedTime;
         });
 
+/*
         // Generate QR-code for remote control App
         let url = ATON.BASE_URL + "/examples/app-remote-devori/control.html";
         if (url.startsWith("http://localhost")) $("#idQRcontrol").html("<b>To use another device for remote control, you have to use local network address or public IP (not localhost)</b>");
         else new QRCode( document.getElementById("idQRcontrol"), url);
+*/
     };
 
     myApp.update = ()=>{
@@ -138,7 +140,7 @@ window.onload = ()=>{
     <!-- Bottom Toolbar -->
     <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
 
-	<!-- Side Panel -->
+	<!-- Side Panel
 	<div id="idPanel" class="atonSidePanelContainer">
         <div class='atonSidePanelContent'>
         <div class='descriptionText'>
@@ -149,6 +151,7 @@ window.onload = ()=>{
         </div>
         </div>
     </div>
+     -->
 
     <!-- Main Popup -->
     <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>

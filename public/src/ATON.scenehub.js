@@ -70,7 +70,7 @@ SceneHub.load = (reqpath, sid, onSuccess/*, onFail*/)=>{
         SceneHub.parseScene(data);
 
         if (onSuccess) onSuccess();
-        ATON.fireEvent("SceneJSONLoaded", sid);
+        ATON.fire("SceneJSONLoaded", sid);
     });
 /*
     .fail(()=>{

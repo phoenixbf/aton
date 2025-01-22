@@ -25,6 +25,11 @@ Photon.THRES_STATE_ORI = 0.08; // radians
 
 Photon.Avatar = Avatar;
 
+Photon.CSTATE = {
+    DISCONNECTED: 0,
+    CONNECTING: 1,
+    CONNECTED: 2
+};
 
 /**
 Initialize the component
@@ -35,7 +40,8 @@ Photon.init = ()=>{
     Photon.initMaterials();
 
     Photon.socket = undefined;
-    Photon._connected = false;
+    //Photon._connected = false;
+    Photon._cstate = Photon.CSTATE.DISCONNECTED;
     Photon._reqSSID = undefined;
 
     Photon._username = undefined;
@@ -218,15 +224,17 @@ Fire a replicated event (network)
 @param {object} data - object containing data to be transmitted with this event
 
 @example
-ATON.Photon.fireEvent("test", 42);
+ATON.Photon.fire("test", 42);
 */
-Photon.fireEvent = (evtname, data)=>{
-    if (!Photon._connected) return;
+Photon.fire = (evtname, data)=>{
+    if (!Photon.isConnected()) return;
     let sock = Photon.socket;
 
     if (sock) sock.emit(Photon.REPLICATED_EVT, {e: evtname, d: data});
     //else ATON.on("VRC_Connected", ()=>{ sock.on(evtname, onReceive); });
 };
+
+Photon.fireEvent = Photon.fire; // Backwards compatibility
 
 /**
 Subscribe to a given network event, through given handler
@@ -250,8 +258,9 @@ Return true if connected to the Photon service
 @returns {boolean}
 */
 Photon.isConnected = ()=>{
-    if (Photon.socket === undefined) return false;
-    return Photon._connected;
+    //if (Photon.socket === undefined) return false;
+    //return Photon._connected;
+    return (Photon._cstate === Photon.CSTATE.CONNECTED);
 };
 
 /**
@@ -268,7 +277,7 @@ Utility for remote logging
 @param {string} d - string data to be logged
 */
 Photon.log = (d)=>{
-    if (!Photon._connected) return;
+    if (!Photon.isConnected()) return;
     let sock = Photon.socket;
 
     if (sock) sock.emit("UMSG", d); //sock.emit("LOG", d);
@@ -332,7 +341,8 @@ Connect to Photon service
 ATON.Photon.connect();
 */
 Photon.connect = (ssid)=>{
-    if (Photon._connected) return;
+    if (Photon._cstate === Photon.CSTATE.CONNECTED) return;
+    if (Photon._cstate === Photon.CSTATE.CONNECTING) return; 
 
     Photon._reqSSID = ssid;
 
@@ -352,10 +362,15 @@ Photon.connect = (ssid)=>{
         //opts.upgrade = false;
     }
 
+    Photon._cstate = Photon.CSTATE.CONNECTING;
+
     Photon.socket = io.connect(Photon.address, opts); //, { 'force new connection': true });
 
-    if (Photon.socket === undefined) return;
-    Photon._connected = Photon.socket.connected;
+    if (Photon.socket === undefined){
+        Photon._cstate = Photon.CSTATE.DISCONNECTED;
+        return;
+    }
+    //Photon._connected = Photon.socket.connected;
 
     Photon._registerSocketHandlers();
 };
@@ -370,7 +385,8 @@ Photon.disconnect = ()=>{
     Photon.color   = ATON.MatHub.colors.white;
     ATON.plight.color = ATON.MatHub.colors.white;
 
-    Photon._connected = false;
+    //Photon._connected = false;
+    Photon._cstate = Photon.CSTATE.DISCONNECTED;
 };
 
 
@@ -421,20 +437,23 @@ Photon._registerSocketHandlers = ()=>{
 
     // We connected to server
     Photon.socket.on('connect', ()=>{
-        Photon._connected = true;
+        //Photon._connected = true;
+        Photon._cstate = Photon.CSTATE.CONNECTED;
 
         // Join session
         if (Photon._reqSSID !== undefined) Photon.joinSession(Photon._reqSSID);
         else Photon.joinSession(ATON.SceneHub.currID);
         
         console.log("Connected to Photon service!");
-        ATON.fireEvent("VRC_Connected");
+        ATON.fire("VRC_Connected");
 
         Photon._onConnected();
     });
 
     Photon.socket.on('disconnect', ()=>{
-        Photon._connected = false;
+        //Photon._connected = false;
+        Photon._cstate = Photon.CSTATE.DISCONNECTED;
+
         Photon.uid = undefined;
 
         Photon.avaGroup.hide();
@@ -442,7 +461,7 @@ Photon._registerSocketHandlers = ()=>{
         Photon.appendToChatBox("<i>YOU disconnected from the Photon session</i>");
 
         console.log("Disconnected from Photon service!");
-        ATON.fireEvent("VRC_Disconnected");
+        ATON.fire("VRC_Disconnected");
     });
 
     // Incoming replicated event
@@ -466,14 +485,14 @@ Photon._registerSocketHandlers = ()=>{
         // Request scene state
         Photon.requestSceneState();
 
-        ATON.fireEvent("VRC_IDassigned", data);
+        ATON.fire("VRC_IDassigned", data);
     });
 
     Photon.socket.on('SSTATE', (data)=>{
         Photon._numUsers = data.numUsers;
         console.log("Num. users: "+Photon._numUsers);
 
-        ATON.fireEvent("VRC_SceneState", data);
+        ATON.fire("VRC_SceneState", data);
     });
 
     Photon.socket.on('UENTER', (data)=>{
@@ -488,7 +507,7 @@ Photon._registerSocketHandlers = ()=>{
         
         //Photon._numUsers++;
         Photon.requestSceneState();
-        ATON.fireEvent("VRC_UserEnter", uid);
+        ATON.fire("VRC_UserEnter", uid);
     });
 
     Photon.socket.on('ULEAVE', (data)=>{
@@ -509,7 +528,7 @@ Photon._registerSocketHandlers = ()=>{
 
         //if (Photon._numUsers>1) Photon._numUsers--;
         Photon.requestSceneState();
-        ATON.fireEvent("VRC_UserLeave", uid);
+        ATON.fire("VRC_UserLeave", uid);
     });
 
     Photon.socket.on('USTATE', (data)=>{
@@ -556,7 +575,7 @@ Photon._registerSocketHandlers = ()=>{
 
         Photon.appendToChatBox("<i>User #"+uid+" changed username to: "+uname+"</i>");
 
-        ATON.fireEvent("VRC_UName", data);
+        ATON.fire("VRC_UName", data);
     });
 
     Photon.socket.on('UMSG', (data)=>{
@@ -578,7 +597,7 @@ Photon._registerSocketHandlers = ()=>{
 
         Photon.appendToChatBox("<div class='"+ATON.FE.getVRCclassFromID(uid)+" atonVRCchatUsername'>"+uname+"</div>: <span style='color:"+col2+"'>"+msg+"</span>");
 
-        ATON.fireEvent("VRC_UMessage", data);
+        ATON.fire("VRC_UMessage", data);
     });
 
     Photon.socket.on('UTALK', (data)=>{
@@ -609,7 +628,7 @@ Photon._registerSocketHandlers = ()=>{
             });
         }
 
-        ATON.fireEvent("VRC_UTalk", data);
+        ATON.fire("VRC_UTalk", data);
 
         au = null;
     });
@@ -620,14 +639,14 @@ Photon._registerSocketHandlers = ()=>{
 
         //
 
-        ATON.fireEvent("VRC_UTalkStop", data);
+        ATON.fire("VRC_UTalkStop", data);
     });
 
     Photon.socket.on('UVIDEO', (data)=>{
         let uid = data.uid;
         if (uid === undefined) return;
 
-        ATON.fireEvent("VRC_UVideo", data);
+        ATON.fire("VRC_UVideo", data);
     });
 
     Photon.socket.on('UVIDEOSTOP', (data)=>{
@@ -637,7 +656,7 @@ Photon._registerSocketHandlers = ()=>{
         let A = Photon.avatarList[uid];
         if (A) A.toggleStreamPanel(false);
 
-        ATON.fireEvent("VRC_UVideoStop", data);
+        ATON.fire("VRC_UVideoStop", data);
     });
 };
 
@@ -715,7 +734,7 @@ Photon.decodeState = (binData)=>{
 
 // Update
 Photon.update = ()=>{
-    if (!Photon._connected) return;
+    if (!Photon.isConnected()) return;
 
     // State interpolation
     for (let a=0; a<Photon.avatarList.length; a++){
@@ -732,7 +751,7 @@ Photon.setFocusStreaming = (b)=>{
 
     if (b){
         if (!Photon._bStreamFocus){
-            ATON.fireEvent("VRC_FocusStreamingStarted");
+            ATON.fire("VRC_FocusStreamingStarted");
             ATON.enablePointLight();
             ATON.plight.color = ATON.Photon.color;
         }
@@ -742,7 +761,7 @@ Photon.setFocusStreaming = (b)=>{
     }
     else {
         if (Photon._bStreamFocus){
-            ATON.fireEvent("VRC_FocusStreamingStopped");
+            ATON.fire("VRC_FocusStreamingStopped");
             ATON.disablePointLight();
         }
 
@@ -757,7 +776,7 @@ Photon.setFocusStreaming = (b)=>{
 Photon.sendState = ()=>{
     if (!Photon.bSendState || !Photon._bSpatial) return;
     if (Photon.uid === undefined) return;
-    if (!Photon.socket || !Photon._connected) return;
+    if (!Photon.socket || !Photon.isConnected()) return;
     
     let cpov = ATON.Nav._currPOV;
     if (!cpov) return;
@@ -832,7 +851,7 @@ Photon.touchAvatar = (uid)=>{
         //console.log(A);
         
         //Photon._numUsers++;
-        //ATON.fireEvent("VRC_UserEnter", uid);
+        //ATON.fire("VRC_UserEnter", uid);
 
         //console.log(ava)
     }
@@ -842,7 +861,7 @@ Photon.touchAvatar = (uid)=>{
     // Reclaim of previously used slot
     if (!A.visible){
         //Photon._numUsers++;
-        ATON.fireEvent("VRC_UserEnter", uid);
+        ATON.fire("VRC_UserEnter", uid);
     }
 
     if (Photon._bShowAvaG) A.show();

@@ -46,10 +46,14 @@ window.addEventListener( 'load', ()=>{
                         icon: "home",
                         content: ATON.UI.createButton({
                                     variant:"primary",
-                                    text:"click me",
+                                    text:"Open side panel",
                                     icon: "nav",
                                     onpress: ()=>{
-                                        alert("Hi!");
+                                        ATON.UI.showSidePanel({
+                                            header: "Title",
+                                            body: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec congue viverra diam vitae maximus. Pellentesque a placerat lacus, interdum feugiat est. Proin non suscipit elit. Aliquam erat volutpat. Integer lobortis gravida venenatis. Nulla turpis eros, eleifend vel neque in, molestie pulvinar libero."
+                                        });
+                                        ATON.UI.hideModal();
                                     }
                                 })
                     },

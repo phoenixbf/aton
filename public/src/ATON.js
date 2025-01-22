@@ -259,7 +259,7 @@ ATON._setupBaseListeners = ()=>{
     if (screenfull.isEnabled){
 	    screenfull.on('change', ()=>{
             ATON._bFS = screenfull.isFullscreen;
-            ATON.fireEvent("Fullscreen", ATON._bFS);
+            ATON.fire("Fullscreen", ATON._bFS);
 
 		    if (ATON._bFS) console.log("Now fullscreen");
             else console.log("Exit fullscreen");
@@ -269,7 +269,7 @@ ATON._setupBaseListeners = ()=>{
     document.addEventListener('fullscreenchange',(e)=>{
         ATON._bFS = document.fullscreenElement? true : false;
 
-        ATON.fireEvent("Fullscreen", ATON._bFS);
+        ATON.fire("Fullscreen", ATON._bFS);
 
         if (ATON._bFS) console.log("Now fullscreen");
         else console.log("Exit fullscreen");
@@ -312,8 +312,8 @@ ATON._setupBaseListeners = ()=>{
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
     el.addEventListener('mousedown', (e)=>{
-        if (e.button === 1) ATON.fireEvent("MouseMidButton");      // middle-click
-        if (e.button === 2) ATON.fireEvent("MouseRightButton");    // right-click
+        if (e.button === 1) ATON.fire("MouseMidButton");      // middle-click
+        if (e.button === 2) ATON.fire("MouseRightButton");    // right-click
     });
 
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );
@@ -370,7 +370,7 @@ ATON._setupBaseListeners = ()=>{
         ATON._bPointerDown = false;
         ATON._onUserInteraction();
 
-        ATON.fireEvent("DoubleTap", e.srcEvent);
+        ATON.fire("DoubleTap", e.srcEvent);
         //console.log(e.srcEvent);
     });
 
@@ -383,7 +383,7 @@ ATON._setupBaseListeners = ()=>{
         ATON._updateScreenMove(e.srcEvent);
         ATON._handleQueries();
 
-        ATON.fireEvent("Tap", e.srcEvent);
+        ATON.fire("Tap", e.srcEvent);
         //console.log(e.srcEvent);
 
         // UI selection
@@ -413,8 +413,8 @@ ATON._setupBaseListeners = ()=>{
         
         if (!ATON._bListenKeyboardEvents) return;
 
-        ATON.fireEvent("KeyPress", e.key);
-        //ATON.fireEvent("KeyPress/"+e.key);
+        ATON.fire("KeyPress", e.key);
+        //ATON.fire("KeyPress/"+e.key);
     }, false);
 
     window.addEventListener("keyup", (e)=>{
@@ -425,8 +425,8 @@ ATON._setupBaseListeners = ()=>{
 
         if (!ATON._bListenKeyboardEvents) return;
 
-        ATON.fireEvent("KeyUp", e.key);
-        //ATON.fireEvent("KeyUp/"+e.key);
+        ATON.fire("KeyUp", e.key);
+        //ATON.fire("KeyUp/"+e.key);
     }, false);
 
     // Defaults
@@ -469,7 +469,7 @@ ATON._onResize = ()=>{
 ATON._onMouseWheel = (e)=>{
     e.preventDefault();
 
-    ATON.fireEvent("MouseWheel", e.deltaY);
+    ATON.fire("MouseWheel", e.deltaY);
 };
 
 ATON.focusOn3DView = ()=>{
@@ -498,7 +498,7 @@ ATON._stdActivation = ()=>{
     if (!ATON.Nav._bControl) return;
 
     if (ATON.XPFNetwork._semCurr !== undefined){
-        ATON.fireEvent("SemanticMaskSelect", ATON.XPFNetwork._semCurr);
+        ATON.fire("SemanticMaskSelect", ATON.XPFNetwork._semCurr);
     }
 
     // Handle active immersive AR/VR session
@@ -536,7 +536,7 @@ ATON._stdActivation = ()=>{
     }
 
     // TODO: leave this and disable requestPOVbyNode
-    //if (ATON._hoveredSemNode) ATON.fireEvent("SemanticNodeSelect", ATON._hoveredSemNode);
+    //if (ATON._hoveredSemNode) ATON.fire("SemanticNodeSelect", ATON._hoveredSemNode);
 
     // In orbit mode, focus on selected SemNode...
     let hsn = ATON.getSemanticNode(ATON._hoveredSemNode);
@@ -1010,7 +1010,7 @@ ATON._loadFlare = (fid)=>{
 
 ATON._loadFlares = ()=>{
     if (ATON._fRequired <= 0){
-        ATON.fireEvent("AllFlaresReady");
+        ATON.fire("AllFlaresReady");
         return;
     }
 
@@ -1032,7 +1032,7 @@ ATON._onFlareError = (fid)=>{
 
 ATON._onAllFlaresLoaded = ()=>{
     console.log("All Flares ready!");
-    ATON.fireEvent("AllFlaresReady");
+    ATON.fire("AllFlaresReady");
 };
 
 ATON._deployFlare = (F)=>{
@@ -1100,12 +1100,12 @@ ATON._setupLoadManager = ()=>{
     ATON._loadManager = new THREE.LoadingManager();
     ATON._loadManager.onStart = ( url, itemsLoaded, itemsTotal )=>{
 	    console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
-        ATON.fireEvent("NodeRequestFired", url);
+        ATON.fire("NodeRequestFired", url);
     };
 
     ATON._loadManager.onLoad = ()=>{
 	    console.log( 'Loading complete!');
-        ATON.fireEvent("AllNodeRequestsCompleted");
+        ATON.fire("AllNodeRequestsCompleted");
     };
 
     ATON._loadManager.onProgress = ( url, itemsLoaded, itemsTotal )=>{
@@ -1147,11 +1147,11 @@ ATON.resetPixelDensity = ()=>{
 ATON._readDeviceOrientationMode = ()=>{
     if (Math.abs(window.orientation) === 90){
         console.log("Landscape Mode");
-        ATON.fireEvent("MobileLandscapeMode");
+        ATON.fire("MobileLandscapeMode");
     }
     else {
         console.log("Portrait Mode");
-        ATON.fireEvent("MobilePortraitMode");
+        ATON.fire("MobilePortraitMode");
     }
 
     setTimeout( ATON._onResize, 500);
@@ -1361,11 +1361,11 @@ ATON.getWorldScale = ()=>{
 // Asset loading routines
 ATON._assetReqNew = (url)=>{
     ATON._numReqLoad++;
-    ATON.fireEvent("NodeRequestFired", url);
+    ATON.fire("NodeRequestFired", url);
 };
 
 ATON._assetReqComplete = (url)=>{
-    ATON.fireEvent("NodeRequestCompleted", url);
+    ATON.fire("NodeRequestCompleted", url);
     ATON._numReqLoad--;
 
     if (ATON._numReqLoad <= 0) ATON._onAllReqsCompleted();
@@ -1382,7 +1382,7 @@ ATON._onAllReqsCompleted = ()=>{
 
     //ATON._bDirtyLP = true;
 
-    ATON.fireEvent("AllNodeRequestsCompleted");
+    ATON.fire("AllNodeRequestsCompleted");
 
     ATON._postAllReqsCompleted();
 
@@ -1779,7 +1779,7 @@ ATON.setMainPanorama = (path)=>{
         //console.log(ATON._elPanoVideo);
 
         ATON._realizeOrUpdateMainPano(tpano);
-        ATON.fireEvent("MainPanoVideo");
+        ATON.fire("MainPanoVideo");
     }
     // Static Panorama
     else {
@@ -1791,7 +1791,7 @@ ATON.setMainPanorama = (path)=>{
                 hdr.colorSpace  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(hdr);
-                ATON.fireEvent("MainPanoHDR");
+                ATON.fire("MainPanoHDR");
             });
 
             return;
@@ -1805,7 +1805,7 @@ ATON.setMainPanorama = (path)=>{
                 exr.colorSpace  = ATON._stdEncoding;
 
                 ATON._realizeOrUpdateMainPano(exr);
-                ATON.fireEvent("MainPanoHDR");
+                ATON.fire("MainPanoHDR");
             });
 
             return;
@@ -1823,7 +1823,7 @@ ATON.setMainPanorama = (path)=>{
 		    tex.generateMipmaps = true;
 
             ATON._realizeOrUpdateMainPano(tex);
-            ATON.fireEvent("MainPano");
+            ATON.fire("MainPano");
         });
 
     }
@@ -2279,7 +2279,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
 */
         //ATON.toggleShadows(false);
 
-        ATON.fireEvent("RequestLowerRender");
+        ATON.fire("RequestLowerRender");
         //console.log("Need lower render profile");
     }
 
@@ -2305,7 +2305,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
             if (et > 1.0) ATON.MRes.setTSetsErrorTarget(et);
         }
 */
-        ATON.fireEvent("RequestHigherRender");
+        ATON.fire("RequestHigherRender");
         //console.log("Can request higher render profile");
     }
 /*
@@ -2326,7 +2326,7 @@ ATON._onFrame = ()=>{
     
     ATON._markFPS();
 
-    //ATON.fireEvent("preframe");
+    //ATON.fire("preframe");
 
     // Render
     //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
@@ -2374,7 +2374,7 @@ ATON._onFrame = ()=>{
         ATON._lpbCount--;
     }
 */
-    //ATON.fireEvent("frame");
+    //ATON.fire("frame");
 };
 
 // Render frame
@@ -2674,7 +2674,7 @@ ATON._handleQuerySemantics = ()=>{
         ATON._queryDataSem = undefined;
 
         if (ATON._hoveredSemNode){
-            ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+            ATON.fire("SemanticNodeLeave", ATON._hoveredSemNode);
             let S = ATON.getSemanticNode(ATON._hoveredSemNode);
             if (S && S.onLeave) S.onLeave();
         }
@@ -2693,7 +2693,7 @@ ATON._handleQuerySemantics = ()=>{
             ATON._queryDataSem = undefined;
 
             if (ATON._hoveredSemNode){
-                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+                ATON.fire("SemanticNodeLeave", ATON._hoveredSemNode);
                 let S = ATON.getSemanticNode(ATON._hoveredSemNode);
                 if (S && S.onLeave) S.onLeave();
             }
@@ -2722,7 +2722,7 @@ ATON._handleQuerySemantics = ()=>{
     if (hsn){
         if (ATON._hoveredSemNode !== hsn){
             if (ATON._hoveredSemNode){
-                ATON.fireEvent("SemanticNodeLeave", ATON._hoveredSemNode);
+                ATON.fire("SemanticNodeLeave", ATON._hoveredSemNode);
                 let S = ATON.getSemanticNode(ATON._hoveredSemNode);
                 if (S && S.onLeave) S.onLeave();
                 
@@ -2730,7 +2730,7 @@ ATON._handleQuerySemantics = ()=>{
             }
 
             ATON._hoveredSemNode = hsn;
-            ATON.fireEvent("SemanticNodeHover", hsn);
+            ATON.fire("SemanticNodeHover", hsn);
             let S = ATON.getSemanticNode(hsn);
             if (S && S.onHover) S.onHover();
 
@@ -2757,7 +2757,7 @@ ATON._handleQueryUI = ()=>{
         ATON._queryDataUI = undefined;
 
         if (ATON._hoveredUI){
-            ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+            ATON.fire("UINodeLeave", ATON._hoveredUI);
             const S = ATON.getUINode(ATON._hoveredUI);
             if (S && S.onLeave) S.onLeave();
         }
@@ -2776,7 +2776,7 @@ ATON._handleQueryUI = ()=>{
             ATON._queryDataUI = undefined;
 
             if (ATON._hoveredUI){
-                ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+                ATON.fire("UINodeLeave", ATON._hoveredUI);
                 const S = ATON.getUINode(ATON._hoveredUI);
                 if (S && S.onLeave) S.onLeave();
             }
@@ -2805,7 +2805,7 @@ ATON._handleQueryUI = ()=>{
     if (hui){
         if (ATON._hoveredUI !== hui){
             if (ATON._hoveredUI){
-                ATON.fireEvent("UINodeLeave", ATON._hoveredUI);
+                ATON.fire("UINodeLeave", ATON._hoveredUI);
                 const S = ATON.getUINode(ATON._hoveredUI);
                 if (S && S.onLeave) S.onLeave();
                 
@@ -2813,7 +2813,7 @@ ATON._handleQueryUI = ()=>{
             }
 
             ATON._hoveredUI = hui;
-            ATON.fireEvent("UINodeHover", hui);
+            ATON.fire("UINodeHover", hui);
             const S = ATON.getUINode(hui);
             if (S && S.onHover) S.onHover();
 

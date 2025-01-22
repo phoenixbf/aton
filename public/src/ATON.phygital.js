@@ -93,7 +93,7 @@ Phygital._onGeoPosition = (pos)=>{
     //console.log(pos.coords.latitude+","+pos.coords.longitude);
     //console.log(pos);
 
-    ATON.fireEvent("GeoLocation", pos);
+    ATON.fire("GeoLocation", pos);
 
     Phygital._handleGeoPOIs();
 };
@@ -120,14 +120,14 @@ Phygital._handleGeoPOIs = ()=>{
         // Inside this POI radius
         if (d <= POI.radius){
             if (Phygital._currGeoPOI !== i){
-                ATON.fireEvent("EnterGeoPOI", { id: i, distance: d });
+                ATON.fire("EnterGeoPOI", { id: i, distance: d });
                 //console.log("Entered POI "+i);
             }
             Phygital._currGeoPOI = i;
         }
         // Ouside
         else {
-            if (Phygital._currGeoPOI !== undefined) ATON.fireEvent("LeaveGeoPOI", { id: Phygital._currGeoPOI, distance: d });
+            if (Phygital._currGeoPOI !== undefined) ATON.fire("LeaveGeoPOI", { id: Phygital._currGeoPOI, distance: d });
             Phygital._currGeoPOI = undefined;
         }
     }

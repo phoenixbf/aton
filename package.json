@@ -50,7 +50,7 @@
     "@gltf-transform/core": "^4.1.1",
     "@gltf-transform/extensions": "^4.1.1",
     "@gltf-transform/functions": "^4.1.1",
-    "3d-tiles-renderer": "0.4.2",
+    "3d-tiles-renderer": "0.4.3",
     "body-parser": "^1.20.3",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
@@ -96,7 +96,7 @@
     "swagger-ui-express": "^5.0.1",
     "three": "0.172.0",
     "three-custom-shader-material": "6.2.1",
-    "three-mesh-bvh": "0.8.3",
+    "three-mesh-bvh": "0.9.0",
     "webdav-server": "^2.6.2",
     "zlibjs": "^0.3.1"
   }

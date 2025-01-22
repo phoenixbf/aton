@@ -440,7 +440,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         });
 
         //console.log(ATON._renderer.info.memory);
-        ATON.fireEvent("TileLoaded", scene);
+        ATON.fire("TileLoaded", scene);
 
         ATON.Utils._visitorCP(scene);
     });

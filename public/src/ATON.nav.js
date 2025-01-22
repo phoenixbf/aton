@@ -225,7 +225,7 @@ Nav.addLocomotionNode = (x,y,z, bSUI)=>{
 
     Nav._locNodes.push(LN);
 
-    ATON.fireEvent("LocomotionNodeAdded", LN);
+    ATON.fire("LocomotionNodeAdded", LN);
     return LN;
 };
 
@@ -313,7 +313,7 @@ Nav.requestTransitionToLocomotionNode = (lnode, duration)=>{
 
     Nav._prevLN = lnode;
 
-    ATON.fireEvent("LocomotionNodeRequested", lnode);
+    ATON.fire("LocomotionNodeRequested", lnode);
 };
 
 /**
@@ -486,7 +486,7 @@ Nav.setOrbitControl = ()=>{
 
     Nav._mode = Nav.MODE_ORBIT;
     Nav._bInteracting = false;
-    ATON.fireEvent("NavInteraction", false);
+    ATON.fire("NavInteraction", false);
 
     // One-time setup
     if (Nav._cOrbit === undefined){
@@ -516,11 +516,11 @@ Nav.setOrbitControl = ()=>{
         //C.addEventListener("change", () => { Nav._bChanged = true; });
         C.addEventListener("start",()=>{
             Nav._bInteracting = true;
-            ATON.fireEvent("NavInteraction", true);
+            ATON.fire("NavInteraction", true);
         });
         C.addEventListener("end",()=>{
             Nav._bInteracting = false;
-            ATON.fireEvent("NavInteraction", false);
+            ATON.fire("NavInteraction", false);
         });
 
     }
@@ -542,7 +542,7 @@ Nav.setOrbitControl = ()=>{
 
     ATON.toggleCenteredQuery(false);
 
-    ATON.fireEvent("NavMode", Nav._mode);
+    ATON.fire("NavMode", Nav._mode);
 };
 
 /**
@@ -557,7 +557,7 @@ Nav.setFirstPersonControl = ()=>{
 
     Nav._mode = Nav.MODE_FP;
     Nav._bInteracting = false;
-    ATON.fireEvent("NavInteraction", false);
+    ATON.fire("NavInteraction", false);
 
     // One-time setup
     if (Nav._cFirstPerson === undefined){
@@ -604,7 +604,7 @@ Nav.setFirstPersonControl = ()=>{
 
     ATON.toggleCenteredQuery(false);
 
-    ATON.fireEvent("NavMode", Nav._mode);
+    ATON.fire("NavMode", Nav._mode);
 /*
     if (Nav._controls) ATON._controls.dispose();
     ATON._controls = new THREE.FirstPersonControls( ATON._camera, ATON._renderer.domElement);
@@ -631,7 +631,7 @@ Nav.setDeviceOrientationControl = ()=>{
 
     Nav._mode = Nav.MODE_DEVORI;
     Nav._bInteracting = false;
-    ATON.fireEvent("NavInteraction", false);
+    ATON.fire("NavInteraction", false);
     ATON._screenPointerCoords.set(0.0,0.0);
 
     // One-time setup
@@ -663,7 +663,7 @@ Nav.setDeviceOrientationControl = ()=>{
 
     ATON.toggleCenteredQuery(true);
     
-    ATON.fireEvent("NavMode", Nav._mode);
+    ATON.fire("NavMode", Nav._mode);
 };
 
 Nav.useAbsoluteOrientation = (b)=>{
@@ -880,7 +880,7 @@ Nav.handlePOVtransition = ()=>{
         Nav._currPOV.target.copy(Nav._reqPOV.target);
         Nav._currPOV.fov = Nav._reqPOV.fov;
 
-        ATON.fireEvent("POVTransitionCompleted", Nav._reqPOV.id);
+        ATON.fire("POVTransitionCompleted", Nav._reqPOV.id);
         return;
     }
 
@@ -917,7 +917,7 @@ Nav.handleXRtransition = ()=>{
         //console.log("XR height"+ATON.XR._currPos.y);
         //console.log("HMD height"+Nav._currPOV.pos.y);
 
-        ATON.fireEvent("POVTransitionCompleted", Nav._reqPOV.id);
+        ATON.fire("POVTransitionCompleted", Nav._reqPOV.id);
         return;
     }
 
@@ -1025,7 +1025,7 @@ Nav.requestPOV = (pov, duration, bApplyWorldScale)=>{
     }
 
     Nav._tPOVcall = ATON._clock.elapsedTime;
-    ATON.fireEvent("POVTransitionRequested", pov.id);
+    ATON.fire("POVTransitionRequested", pov.id);
 };
 
 

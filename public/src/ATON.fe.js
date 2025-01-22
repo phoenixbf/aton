@@ -920,7 +920,7 @@ FE.switchNode = (nid, value, type)=>{
 
     N.toggle(value);
 
-    ATON.fireEvent("FE_NodeSwitch", {nid: nid, t: type, v: value});
+    ATON.fire("FE_NodeSwitch", {nid: nid, t: type, v: value});
     //console.log("XXX");
 };
 
@@ -1292,7 +1292,7 @@ FE.checkAuth = (onReceive)=>{
 FE.logout = ( onSuccess )=>{
     $.get(ATON.PATH_RESTAPI+"logout", (r)=>{
         ATON.SceneHub.setEditMode(false);
-        ATON.fireEvent("Logout");
+        ATON.fire("Logout");
         
         if (onSuccess) onSuccess();
     });
@@ -1333,7 +1333,7 @@ FE.popupUser = ()=>{
                     ATON.SceneHub.setEditMode(false);
                     FE.uiSwitchButton("edit",false);
 
-                    ATON.fireEvent("Logout");
+                    ATON.fire("Logout");
                     $("#btn-user").removeClass("switchedON");
                 });
 
@@ -1381,7 +1381,7 @@ FE.popupUser = ()=>{
                     success: (r)=>{
                         console.log(r);
                         if (r){
-                            ATON.fireEvent("Login", r);
+                            ATON.fire("Login", r);
                             $("#btn-user").addClass("switchedON");
                             ATON.FE.popupClose();
                         }

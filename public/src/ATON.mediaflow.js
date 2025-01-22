@@ -130,7 +130,7 @@ MediaFlow._setupFR = ()=>{
         let b64 = MediaFlow._frAR.result;
         //b64 = b64.split(',')[1];
 
-        ATON.fireEvent("AudioRecordCompleted", b64);
+        ATON.fire("AudioRecordCompleted", b64);
         MediaFlow._bAudioRecording = false;
     };
 

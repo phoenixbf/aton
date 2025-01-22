@@ -121,7 +121,7 @@ Utils.profileDevice = ()=>{
             else   ATON.device.xrSupported['immersive-vr'] = false;
 
             console.log("WebXR VR session support: "+ATON.device.xrSupported['immersive-vr']);
-            ATON.fireEvent("XR_support", {type: 'immersive-vr', v: ATON.device.xrSupported['immersive-vr']});
+            ATON.fire("XR_support", {type: 'immersive-vr', v: ATON.device.xrSupported['immersive-vr']});
 		});
 
 	    navigator.xr.isSessionSupported( 'immersive-ar' ).then(( b )=>{
@@ -129,7 +129,7 @@ Utils.profileDevice = ()=>{
             else   ATON.device.xrSupported['immersive-ar'] = false;
 
             console.log("WebXR AR session support: "+ATON.device.xrSupported['immersive-ar']);
-            ATON.fireEvent("XR_support", {type: 'immersive-ar', v: ATON.device.xrSupported['immersive-ar']});
+            ATON.fire("XR_support", {type: 'immersive-ar', v: ATON.device.xrSupported['immersive-ar']});
 		});
     }
 };

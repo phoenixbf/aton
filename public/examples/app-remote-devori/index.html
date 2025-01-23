@@ -25,15 +25,6 @@
 <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
 <script type="module" src="/src/ATON.js"></script>
 <script>
-let int32ToBytes = (int)=>{
-    return [
-        int & 0xff,
-        (int >> 8) & 0xff,
-        (int >> 16) & 0xff,
-        (int >> 24) & 0xff
-    ]
-}
-
 window.onload = ()=>{
     let Qstart  = new THREE.Quaternion();
     let Qtarget = new THREE.Quaternion();

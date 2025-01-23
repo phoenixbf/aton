@@ -115,12 +115,12 @@ Photon.getNumUsers = ()=>{
 Photon.initMaterials = ()=>{
 
     Photon.ucolorhex = [];
-    Photon.ucolorhex.push("#F00");
-    Photon.ucolorhex.push("#FF0");
-    Photon.ucolorhex.push("#0F0");
-    Photon.ucolorhex.push("#0FF");
-    Photon.ucolorhex.push("#00F");
-    Photon.ucolorhex.push("#F0F");
+    Photon.ucolorhex.push("#D88");
+    Photon.ucolorhex.push("#DD8");
+    Photon.ucolorhex.push("#8D8");
+    Photon.ucolorhex.push("#8DD");
+    Photon.ucolorhex.push("#88D");
+    Photon.ucolorhex.push("#D8D");
 
     Photon.ucolorhex_light = [];
     Photon.ucolorhex_light.push("#FAA");
@@ -841,7 +841,7 @@ Photon.touchAvatar = (uid)=>{
         let ava = new Photon.Avatar(uid);
         ava.attachTo(Photon.avaGroup);
         
-        ava.loadRepresentation(ATON.PATH_RES+"models/vrc/head.gltf");
+        ava.loadRepresentation(ATON.PATH_RES+"models/vrc/head.glb");
         //console.log(Photon.avaGroup);
 
         Photon.avatarList[uid] = ava;

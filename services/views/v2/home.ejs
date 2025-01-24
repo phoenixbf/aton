@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Framework">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Framework">
+
+<title>ATON Framework</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+    <script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.UI.init();
+        
+        ATON.UI.setTheme("light");
+
+        document.body.style["overflow-y"] = "auto";
+
+        // Hero
+        let elHero = document.getElementById("hero");
+        if (elHero.children.length <= 0){
+                console.log("custom")
+        }
+
+        let elStaffPick = document.getElementById("staffpick");
+
+        elStaffPick.append(
+                ATON.UI.createSceneCard({
+                        title:"sample",
+                        sid: "samples/welcome"
+                })
+        );
+        elStaffPick.append(
+                ATON.UI.createSceneCard({
+                        title:"sample",
+                        sid: "samples/skyphos"
+                })
+        );
+});
+</script>
+</head>
+
+<body>
+        <%- include('navbar'); %>
+
+        <!-- Hero section -->
+        <div id="hero">
+                <% if (!hero){ %>
+                        <%- include('hero'); %> 
+                <% } %>
+        </div>
+
+        <!-- Staff Pick -->
+        <div id="staffpick" style="padding: 4px;"></div>
+
+        <!-- Apps -->
+
+        <!-- Public scenes -->
+</body>

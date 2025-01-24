@@ -160,9 +160,15 @@ canvas:active {
     height: 3rem;
 }
 
+.aton-icon-small {
+    width: 18px;
+    height: 18px;
+}
+
 .aton-top-toolbar {
+    top: 0px;
     width: 100%;
-    position: absolute;
+    position: fixed;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
     backdrop-filter: blur(6px);
@@ -243,4 +249,45 @@ canvas:active {
 
     padding-left: 10px;
     border-left: dotted var(--bs-body-color) 2px;
+}
+
+.aton-scene-card {
+    display: inline-block;
+    position: relative;
+
+    margin: 2px;
+    width: 200px;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.7);
+    /*border: 0px;*/
+}
+
+.aton-scene-card-bg {
+    position: absolute;
+
+    left: 0;
+    top:0;
+
+    z-index: -10;
+    /*
+    display: block;
+    */
+    /*background-image: url();*/
+
+    width: 100%;
+    height: 100%;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /*background-color: rgba(0, 0, 0, 0.5);*/
+    opacity: 0.7;
+
+    -webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    filter: blur(10px);
+
 }

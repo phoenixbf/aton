@@ -29,6 +29,10 @@ UI.init = ()=>{
     UI._setupBase();
 };
 
+UI.setTheme = (theme)=>{
+    document.body.setAttribute("data-bs-theme",theme);
+};
+
 // Utility function to create DOM element from string
 UI.createElemementFromHTMLString = (html)=>{
     const container = document.createElement('div');
@@ -49,7 +53,7 @@ UI._setupBase = ()=>{
     document.body.oncontextmenu = UI.onContextMenu;
 
     // Defaults to dark
-    document.body.setAttribute("data-bs-theme","dark");
+    UI.setTheme("dark");
 
     // Central overlay (spinners, etc.)
     UI.elCenteredOverlay = UI.createElemementFromHTMLString(`
@@ -306,6 +310,10 @@ UI.createButton = (options)=>{
 
     if (options.icon){
         el.prepend( UI.createElemementFromHTMLString("<img class='icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
+    }
+
+    if (options.badge){ 
+        el.append( UI.createElemementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;
@@ -607,6 +615,51 @@ UI.createNodeTrasformControl = (options)=>{
         el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
     }
+
+    return el;
+};
+
+UI.createSceneCard = (options)=>{
+    //let baseid = ATON.Utils.generateID("ftrans");
+    
+    let el = document.createElement('div');
+    el.classList.add("card", "aton-scene-card");
+    //el.id = baseid;
+
+    let user  = undefined;
+    let usid  = undefined;
+    let cover = undefined;
+    let title = undefined;
+
+    if (!options.sid) return el;
+    
+    cover = ATON.PATH_RESTAPI2+"scenes/"+options.sid+"/cover";
+    let pp = options.sid.split("/");
+    user = pp[0];
+    usid = pp[1];
+
+    // Blur bg
+    let bgdiv = document.createElement('div');
+    bgdiv.classList.add("aton-scene-card-bg");
+    bgdiv.style.backgroundImage = "url('"+cover+"')";
+    el.append(bgdiv);
+
+    // Cover    
+    //if (options.onpress) el.innerHTML += "<img src='"+cover+"' class='card-img-top'>";
+    el.innerHTML += "<a href='"+ATON.PATH_FE+options.sid+"'><img src='"+cover+"' class='card-img-top'></a>";
+    
+    // Body
+    let elbody = document.createElement('div');
+    elbody.classList.add("card-body","aton-scene-card-body");
+
+    el.append(elbody);
+
+    if (options.title) elbody.innerHTML += "<div class='card-title'>"+options.title+"</div>";
+    else {
+        // Fetch info
+    }
+
+    elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary'>"+user+"</div>"; // <img class='icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>
 
     return el;
 };

@@ -7,6 +7,7 @@
 	VHLab, CNR ISPC
 
 ==================================================================================*/
+const fs = require('fs');
 
 let Render = {};
 
@@ -66,9 +67,14 @@ Render.setup = (app)=>{
 	});
 
 
-	// Shu
+	// Main
 	//================================================
-
+	app.get("/v2", (req,res,next)=>{
+		//res.sendFile( Render.DIR_VIEWS + "v2/home.html" );
+		let opts = {};
+		opts.hero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html"); 
+		res.render("v2/home", opts);
+	});
 };
 
 

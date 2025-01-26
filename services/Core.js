@@ -192,12 +192,18 @@ Core.CONF_MAIN = {
 */
 	},
 
+	// Soon deprecated
     landing: {
         gallery: true,		// Show gallery (public scenes) in the landing page
 		samples: true,		// Show samples (def true)
 		//header: "",		// Custom header (HTML partial)
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
 		//apps: []			// List of app IDs to show
+    },
+
+    shu: {
+        samples: true,
+        apps: ["app_template"]
     }
 };
 

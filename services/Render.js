@@ -72,7 +72,10 @@ Render.setup = (app)=>{
 	app.get("/v2", (req,res,next)=>{
 		//res.sendFile( Render.DIR_VIEWS + "v2/home.html" );
 		let opts = {};
-		opts.hero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html"); 
+		opts.hero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html");
+		opts.shu = Core.config.shu;
+		if (!opts.shu) opts.shu = {};
+
 		res.render("v2/home", opts);
 	});
 };

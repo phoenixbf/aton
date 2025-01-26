@@ -786,7 +786,10 @@ UI.createPublicScenesGallery = (options)=>{
 
         for (let s=0; s<data.length; s++){
             let S = data[s];
-            el.append(
+
+            let bSample = S.sid.startsWith("samples/");
+
+            if (!bSample || (bSample && options.samples)) el.append(
                 ATON.UI.createSceneCard({
                     title: S.title? S.title : S.sid,
                     sid: S.sid,

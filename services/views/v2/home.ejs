@@ -45,7 +45,7 @@ window.addEventListener( 'load', ()=>{
                 ATON.UI.createSceneCard({
                         title:"sample",
                         sid: "samples/welcome",
-                        size: "large",
+                        //size: "large",
                         useblurtint: true
                 })
         );
@@ -53,7 +53,7 @@ window.addEventListener( 'load', ()=>{
                 ATON.UI.createSceneCard({
                         title:"sample",
                         sid: "samples/skyphos",
-                        size: "large",
+                        //size: "large",
                         useblurtint: true
                 })
         );
@@ -61,7 +61,7 @@ window.addEventListener( 'load', ()=>{
                 ATON.UI.createSceneCard({
                         title:"montebelluna",
                         sid: "samples/montebelluna",
-                        size: "large",
+                        //size: "large",
                         useblurtint: true
                 })
         );
@@ -71,7 +71,11 @@ window.addEventListener( 'load', ()=>{
 
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
-        ATON.UI.createPublicScenesGallery({containerid: "pubscenes"});
+        ATON.UI.createPublicScenesGallery({
+                containerid: "pubscenes",
+                size:"small",
+                <% if (shu.samples) { %> samples: true <% } %>
+        });
 
         // Navbar
         let elNavCont = document.getElementById("navbarSupportedContent");

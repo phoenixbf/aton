@@ -16,8 +16,8 @@ SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/aton/";
 SHU.urlATONgit     = "https://github.com/phoenixbf/aton";
 
 SHU.sidCompare = (entryA, entryB)=>{
-	let a = entryA.creationDate;
-	let b = entryB.creationDate;
+	let a = entryA.sid; //entryA.creationDate;
+	let b = entryB.sid; //entryB.creationDate;
 
 /*
 	let a = entryA.sid.split("/")[1];

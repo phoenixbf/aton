@@ -646,12 +646,13 @@ UI.createSceneCard = (options)=>{
 
     if (!options.sid) return el;
 
-    // Object holding scene kwords
+    let sskwords = "";
+
+    // Object holding internal scene kwords
     if (options.keywords){
-        let str = "";
-        for (let k in options.keywords) str += k+" ";
-        str = str.trim().toLowerCase();
-        el.setAttribute("data-search-term", str);
+        for (let k in options.keywords) sskwords += k+" ";
+        sskwords = sskwords.trim().toLowerCase();
+        el.setAttribute("data-search-term", sskwords);
     }
     
     cover = ATON.PATH_RESTAPI2+"scenes/"+options.sid+"/cover";
@@ -662,10 +663,12 @@ UI.createSceneCard = (options)=>{
     el.setAttribute("data-search-user", user);
 
     // Blur bg
-    let bgdiv = document.createElement('div');
-    bgdiv.classList.add("aton-scene-card-bg");
-    bgdiv.style.backgroundImage = "url('"+cover+"')";
-    el.append(bgdiv);
+    if (options.useblurtint){
+        let bgdiv = document.createElement('div');
+        bgdiv.classList.add("aton-scene-card-bg");
+        bgdiv.style.backgroundImage = "url('"+cover+"')";
+        el.append(bgdiv);
+    }
 
     // Cover    
     //if (options.onpress) el.innerHTML += "<img src='"+cover+"' class='card-img-top'>";
@@ -686,7 +689,10 @@ UI.createSceneCard = (options)=>{
 
     if (options.title){
         elTitle.innerHTML = options.title;
-        el.setAttribute("data-search-term", options.title.trim().toLowerCase());
+
+        sskwords += options.title.trim().toLowerCase();
+
+        el.setAttribute("data-search-term", sskwords);
     }
     else {
         $.getJSON(ATON.PATH_RESTAPI2+"scenes/"+options.sid, ( data )=>{

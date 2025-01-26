@@ -28,11 +28,9 @@
 
 <script>
 window.addEventListener( 'load', ()=>{
-        ATON.UI.init();
+        ATON.realize2D();
         
         ATON.UI.setTheme("light");
-
-        document.body.style["overflow-y"]  = "auto";
 
         // Hero
         let elHero = document.getElementById("hero");
@@ -73,22 +71,7 @@ window.addEventListener( 'load', ()=>{
 
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
-        $.getJSON(ATON.PATH_RESTAPI2+"scenes/", ( data )=>{
-                console.log(data);
-
-                for (let s=0; s<data.length; s++){
-                        let S = data[s];
-                        elPubScenes.append(
-                                ATON.UI.createSceneCard({
-                                        title: S.title? S.title : S.sid,
-                                        sid: S.sid,
-                                        keywords: S.kwords,
-                                        useblurtint: true
-                                        //size: "small"
-                                })
-                        );
-                }
-        });
+        ATON.UI.createPublicScenesGallery({containerid: "pubscenes"});
 
         // Navbar
         let elNavCont = document.getElementById("navbarSupportedContent");
@@ -143,5 +126,9 @@ window.addEventListener( 'load', ()=>{
         <div id="pubscenes" style="padding: 40px; text-align: center;">
                 <h2>Public Scenes</h2>
                 3D content published by users<hr>
+        </div>
+
+        <div id="footer" class="aton-footer">
+                <%- include('footer'); %>
         </div>
 </body>

@@ -69,20 +69,20 @@ Photon.init = ()=>{
     Photon._bShowAvaG = true;
     Photon._bSpatial  = true;
 
+    Photon._decS = {
+        quaternion: new THREE.Quaternion(),
+        position: new THREE.Vector3()
+    };
+
+    //Photon._encS = 
+
+    Photon.customAvatarMaterial = undefined;
+
     console.log("Photon initialized");
     Photon.enableChatLog();
 
     // Hosts local vstream
     Photon._elVStream = undefined;
-
-    Photon._decS = {
-        quaternion: new THREE.Quaternion(),
-        position: new THREE.Vector3()
-
-    };
-    //Photon._encS = 
-
-    Photon.customAvatarMaterial = undefined;
 
     window.addEventListener("beforeunload", (event) => {
         Photon.disconnect();
@@ -155,7 +155,7 @@ Photon.initMaterials = ()=>{
     Photon.ucolorsdark.push( new THREE.Color(0.2,0.0,0.2) );
 
     let MM = ATON.MatHub.materials;
-    MM.avatars = [];
+    if (MM) MM.avatars = [];
 
 /*
     let mat = new THREE.MeshBasicMaterial({

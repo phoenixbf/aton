@@ -15,13 +15,19 @@ let SHU = {};
 SHU.urlATONwebsite = "http://osiris.itabc.cnr.it/aton/";
 SHU.urlATONgit     = "https://github.com/phoenixbf/aton";
 
-SHU.sidCompare = (a,b)=>{
-    if (a.sid > b.sid) {
-        return -1;
-    }
-    if (b.sid > a.sid) {
-        return 1;
-    }
+SHU.sidCompare = (entryA, entryB)=>{
+	let a = entryA.creationDate;
+	let b = entryB.creationDate;
+
+/*
+	let a = entryA.sid.split("/")[1];
+	let b = entryB.sid.split("/")[1];
+*/
+	if (!a || !b ) return 0;
+
+    if (a > b) return -1;
+    if (b > a) return 1;
+
     return 0;
 };
 

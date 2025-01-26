@@ -14,6 +14,18 @@ A set UI blueprints for ATON apps, based on Bootstrap v5
 */
 let UI = {};
 
+UI.SCENES_SORTER = (entryA, entryB)=>{
+	let a = entryA.creationDate;
+	let b = entryB.creationDate;
+
+	if (!a || !b ) return 0;
+
+    if (a > b) return -1;
+    if (b > a) return 1;
+
+    return 0;
+};
+
 
 UI.init = ()=>{
     if (!window.bootstrap) return;
@@ -758,6 +770,33 @@ UI.createLiveFilter = (options)=>{
     if (options.onblur)  elInput.onblur  = options.onblur;
 
     el.append(elInput);
+
+    return el;
+};
+
+UI.createPublicScenesGallery = (options)=>{
+    if (!options.containerid) return undefined;
+
+    let el = document.getElementById(options.containerid);
+    if (!el) return undefined;
+
+    $.getJSON(ATON.PATH_RESTAPI2+"scenes/", ( data )=>{
+        data.sort( UI.SCENES_SORTER );               
+        console.log(data);
+
+        for (let s=0; s<data.length; s++){
+            let S = data[s];
+            el.append(
+                ATON.UI.createSceneCard({
+                    title: S.title? S.title : S.sid,
+                    sid: S.sid,
+                    keywords: S.kwords,
+                    useblurtint: true,
+                    size: options.size
+                })
+            );
+        }
+    });
 
     return el;
 };

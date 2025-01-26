@@ -116,6 +116,7 @@ ATON.Flares = {};
 ATON._fReqList = [];
 
 ATON._bInitialized = false;
+ATON._b2D = false;
 
 // Resource mappers
 ATON._resMappers = [];
@@ -890,7 +891,19 @@ ATON.realize = ( bNoRender )=>{
 
 // TODO
 ATON.realize2D = ()=>{
+    ATON._b2D = true;
 
+    ATON.UI.init();
+
+    document.body.style["overflow-y"] = "auto";
+    document.body.oncontextmenu = null;
+
+    ATON.EventHub.init();
+    //ATON.Photon.init();
+
+    //ATON.MediaFlow.init();
+
+    ATON._bInitialized = true;
 };
 
 /**

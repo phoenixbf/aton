@@ -198,6 +198,22 @@ canvas:active {
     backdrop-filter: blur(var(--aton-blur-radius));
 }
 
+.aton-footer {
+    bottom: 0px;
+    width: 100%;
+
+    padding: 4px;
+    font-size: 0.8em;
+
+    position: fixed;
+    z-index: 100;
+    
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    backdrop-filter: blur(var(--aton-blur-radius));
+
+    text-align: center;
+}
+
 /* BG for modals,panels...
 ========================*/
 .aton-std-bg {
@@ -313,6 +329,7 @@ canvas:active {
 
     background-color: rgba(var(--bs-body-bg-rgb), 0.4);
     border: 0px;
+    /*border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);*/
 
     text-align: left;
     font-size: 0.8em;
@@ -322,6 +339,7 @@ canvas:active {
 
 .aton-scene-card:hover {
     transform: scale(1.1);
+    /*border: 1px solid rgba(var(--bs-body-color-rgb), 1);*/
 }
 
 .aton-scene-card img:hover {

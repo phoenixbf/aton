@@ -11,6 +11,7 @@ const fs     = require('fs');
 const path   = require('path');
 const fg     = require('fast-glob');
 const fsx    = require('fs-extra');
+const { creationDate } = require('webdav-server/lib/resource/v1/std/resourceTester/StdMetaData');
 //const axios  = require('axios');
 
 
@@ -38,6 +39,7 @@ Maat.init = ()=>{
 
 	Maat.db.users       = {};
 	Maat.db.scenes      = [];
+	Maat.db.scenesByID  = {};
 	Maat.db.kwords      = {};
 	Maat.db.collections = {};
 
@@ -94,6 +96,22 @@ Maat.init = ()=>{
     //Maat._dUpd = setInterval(Maat.update, Maat.INTERVAL);
 };
 
+Maat.sortScenes = (entryA, entryB)=>{
+	let a = entryA.creationDate;
+	let b = entryB.creationDate;
+
+/*
+	let a = entryA.sid.split("/")[1];
+	let b = entryB.sid.split("/")[1];
+*/
+	if (!a || !b ) return 0;
+
+    if (a > b) return -1;
+    if (b > a) return 1;
+
+    return 0;
+}
+
 
 Maat.addSceneKeyword = (k)=>{
 	if (k === undefined) return;
@@ -108,8 +126,9 @@ Maat.addSceneKeyword = (k)=>{
 Maat.scanScenes = ()=>{
 	if (Maat.needScan.scenes === false) return;
 
-	Maat.db.scenes = []; // clear
-	Maat.db.kwords = {}; // clear global keywords
+	Maat.db.scenes     = []; // clear
+	Maat.db.scenesByID = {};
+	Maat.db.kwords     = {}; // clear global keywords
 	//Maat.db.users  = {};
 	
 	console.log("Scanning scenes...");
@@ -142,7 +161,20 @@ Maat.scanScenes = ()=>{
 
 			if (sobj.visibility) S.visibility = sobj.visibility;
 
+			if (!sobj.creationDate){
+				const sstats = fs.statSync(Core.DIR_SCENES + files[f]);
+				S.creationDate = sstats.birthtime;
+			}
+
 			Maat.db.scenes.push(S);
+
+			Maat.db.scenesByID[S.sid] = {
+				title: S.title,
+				visibility: S.visibility,
+				kwords: S.kwords,
+				cover: S.cover,
+				creationDate: S.creationDate
+			};
 		}
 		else {
 			console.log("ERROR malformed scene: ", sid);
@@ -150,6 +182,10 @@ Maat.scanScenes = ()=>{
 
 		//Maat.db.scenes.push(S);
 	}
+
+	//console.log(Maat.db.scenesByID);
+
+	//Maat.db.scenes.sort( Maat.sortScenes );
 
 	Maat.needScan.scenes = false;
 
@@ -386,6 +422,8 @@ Maat.getUserScenes = (uid)=>{
 
 // TODO: improve perf
 Maat.getSceneEntry = (sid)=>{
+	return Maat.db.scenesByID[sid];
+/*
 	let numScenes = Maat.db.scenes.length;
 
 	for (let s=0; s<numScenes; s++){
@@ -393,6 +431,7 @@ Maat.getSceneEntry = (sid)=>{
 	}
 
 	return undefined;
+*/
 };
 
 

@@ -224,8 +224,12 @@ API.init = (app)=>{
 
         let coverfile = path.join(Core.getSceneFolder(sid), Core.STD_COVERFILE);
         fs.access(coverfile, (err) => {
-            if (err) res.sendFile(Core.STD_COVERFILE_PATH);
-            else res.sendFile(coverfile);
+            if (err){
+                res.sendFile(Core.STD_COVERFILE_PATH);
+                return;
+            }
+            
+            res.sendFile(coverfile);
         });
 
 /*

@@ -58,7 +58,7 @@ Core.DIR_FLARES         = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core
 Core.STD_SCENEFILE      = "scene.json";
 Core.STD_PUBFILE        = "pub.txt"; // deprecated
 Core.STD_COVERFILE      = "cover.png";
-Core.STD_COVERFILE_PATH = Core.DIR_RES + Core.STD_COVERFILE;
+Core.STD_COVERFILE_PATH = path.join(Core.DIR_RES,"scenecover.png");
 
 // Unused
 Core.STATUS_COMPLETE   = "complete";

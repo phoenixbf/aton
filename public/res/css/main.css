@@ -13,12 +13,22 @@
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/*
+
+/*=========================================
+    Variables
+=========================================*/
 :root {
-    --bs-primary: orange;
-    --bs-success: #198754;
+    --aton-blur-radius: 15px
+}
+
+/*
+:root,
+[data-bs-theme=light] {
+    --bs-primary: #F00;
+    --bs-primary-rgb: 255,0,0
 }
 */
+
 
 /*=========================================
     Base
@@ -95,6 +105,14 @@ canvas:active {
     ATON cascading classes (aton-*)
     to be applied on top of bootstrap 5
 =========================================*/
+
+/* Spinner, labels
+========================*/
+.aton-spinner {
+    width: 3rem;
+    height: 3rem;
+}
+
 .aton-centered-container {
     position: absolute;
     z-index:10;
@@ -154,32 +172,41 @@ canvas:active {
     /*transform-origin: top;*/
 }
 
+/* Navbars & toolbars
+========================*/
+.aton-navbar {
+    top: 0px;
+    width: 100%;
+    position: fixed;
+    z-index: 100;
+    
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    backdrop-filter: blur(var(--aton-blur-radius));
 
-.aton-spinner {
-    width: 3rem;
-    height: 3rem;
-}
-
-.aton-icon-small {
-    width: 18px;
-    height: 18px;
+    box-shadow: 0px 0px 10px rgba(0,0,0, 0.9);
+/*
+    border-bottom: solid black 2px;
+*/
 }
 
 .aton-top-toolbar {
     top: 0px;
     width: 100%;
-    position: fixed;
+    position: absolute;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(var(--aton-blur-radius));
 }
 
+/* BG for modals,panels...
+========================*/
 .aton-std-bg {
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
-    backdrop-filter: blur(6px);  
+    backdrop-filter: blur(var(--aton-blur-radius));  
 }
 
-/* Input XYZ */
+/* Input decorators
+=======================*/
 .aton-input-x {
     border-color: rgba(255,0,0, 0.2);
     /*background-color: rgba(255,0,0, 0.1) !important;*/
@@ -193,19 +220,43 @@ canvas:active {
     /*background-color: rgba(0,0,255, 0.1) !important;*/
 }
 
+/* Buttons & Icons
+=================*/
+[data-bs-theme=light] .aton-icon {
+    margin-right: 4px;
+    filter: invert(100%);
+}
+[data-bs-theme=dark] .aton-icon {
+    margin-right: 4px;
+}
+
+.aton-icon-small {
+    width: 18px;
+    height: 18px;
+}
+
 .aton-btn img {
     width: 32px;
     height: 32px;
-    margin-right: 5px;
+    margin-right: 4px;
 }
 
+/*
+.aton-btn {
+    border-radius: 10px;
+}
+*/
+
+/* Tabs
+============*/
 .aton-tab img {
     width: 18px;
     height: 18px;
     margin-right: 5px;
 }
 
-/* Trees */
+/* Trees
+============*/
 .aton-tree-container {
     padding: 0px;
 }
@@ -251,15 +302,42 @@ canvas:active {
     border-left: dotted var(--bs-body-color) 2px;
 }
 
+/* Cards
+========================*/
 .aton-scene-card {
     display: inline-block;
     position: relative;
 
-    margin: 2px;
+    margin: 8px;
     width: 200px;
 
-    background-color: rgba(var(--bs-body-bg-rgb), 0.7);
-    /*border: 0px;*/
+    background-color: rgba(var(--bs-body-bg-rgb), 0.4);
+    border: 0px;
+
+    text-align: left;
+    font-size: 0.8em;
+}
+
+.aton-scene-card img:hover {
+    box-shadow: 0 3000px rgba(204, 0, 255, 0.4) inset;
+}
+
+.aton-scene-card-small {
+    margin: 4px;
+    width: 150px;
+}
+
+.aton-scene-card-large {
+    margin: 10px;
+    width: 250px;
+}
+
+.aton-scene-card-title {
+    /*font-size: 1.2em;*/
+    font-weight: bolder;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .aton-scene-card-bg {
@@ -282,12 +360,11 @@ canvas:active {
     background-size: cover;
 
     /*background-color: rgba(0, 0, 0, 0.5);*/
-    opacity: 0.7;
+    opacity: 0.5;
 
-    -webkit-filter: blur(10px);
-    -moz-filter: blur(10px);
-    -o-filter: blur(10px);
-    -ms-filter: blur(10px);
-    filter: blur(10px);
-
+    -webkit-filter: blur(var(--aton-blur-radius));
+    -moz-filter: blur(var(--aton-blur-radius));
+    -o-filter: blur(var(--aton-blur-radius));
+    -ms-filter: blur(var(--aton-blur-radius));
+    filter: blur(var(--aton-blur-radius));
 }

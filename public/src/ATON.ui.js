@@ -309,7 +309,7 @@ UI.createButton = (options)=>{
     if (options.text) el.innerText = options.text;
 
     if (options.icon){
-        el.prepend( UI.createElemementFromHTMLString("<img class='icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
+        el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
     }
 
     if (options.badge){ 
@@ -352,7 +352,7 @@ UI.createTabsGroup = (options)=>{
         let icon       = e.icon;
 
         let icontab = "";
-        if (icon) icontab = "<img class='icon' src='"+UI.resolveIconURL(icon)+"'>";
+        if (icon) icontab = "<img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL(icon)+"'>";
 
         let tabid = baseid+"-"+tabtitle;
         tabid = tabid.replaceAll(" ", "");
@@ -619,6 +619,16 @@ UI.createNodeTrasformControl = (options)=>{
     return el;
 };
 
+/**
+Create a scene card.
+- options.sid: the scene ID (mandatory)
+- options.size: "small" or "large", if not present standard size
+- options.keywords: keywords object (eg. {"gold":1, "silver":1 })
+- options.title: scene title
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
 UI.createSceneCard = (options)=>{
     //let baseid = ATON.Utils.generateID("ftrans");
     
@@ -626,17 +636,30 @@ UI.createSceneCard = (options)=>{
     el.classList.add("card", "aton-scene-card");
     //el.id = baseid;
 
+    if (options.size==="small") el.classList.add("aton-scene-card-small");
+    if (options.size==="large") el.classList.add("aton-scene-card-large");
+
     let user  = undefined;
     let usid  = undefined;
     let cover = undefined;
-    let title = undefined;
+    //let title = undefined;
 
     if (!options.sid) return el;
+
+    // Object holding scene kwords
+    if (options.keywords){
+        let str = "";
+        for (let k in options.keywords) str += k+" ";
+        str = str.trim().toLowerCase();
+        el.setAttribute("data-search-term", str);
+    }
     
     cover = ATON.PATH_RESTAPI2+"scenes/"+options.sid+"/cover";
     let pp = options.sid.split("/");
     user = pp[0];
     usid = pp[1];
+
+    el.setAttribute("data-search-user", user);
 
     // Blur bg
     let bgdiv = document.createElement('div');
@@ -654,12 +677,81 @@ UI.createSceneCard = (options)=>{
 
     el.append(elbody);
 
-    if (options.title) elbody.innerHTML += "<div class='card-title'>"+options.title+"</div>";
+    // Title
+    let elTitle = document.createElement("div");
+    elTitle.classList.add("card-title", "aton-scene-card-title");
+    elTitle.innerHTML = "Title";
+
+    elbody.append(elTitle);
+
+    if (options.title){
+        elTitle.innerHTML = options.title;
+        el.setAttribute("data-search-term", options.title.trim().toLowerCase());
+    }
     else {
-        // Fetch info
+        $.getJSON(ATON.PATH_RESTAPI2+"scenes/"+options.sid, ( data )=>{
+            if (data.title) elTitle.innerHTML = data.title; // FIXME
+        });
     }
 
-    elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary'>"+user+"</div>"; // <img class='icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>
+    elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
+/*
+    let footer = document.createElement('div');
+    footer.classList.add("card-footer");
+    footer.innerHTML += "<small class='text-body-secondary'>"+user+"</small>";
+    el.append(footer);
+*/
+    return el;
+};
+
+/**
+Create a live filter, search as user is typing
+- options.filterclass: items class to filter (eg. "aton-scene-card")
+- options.onfocus: routine when input filed is focused
+- options.onblur: routine when leaving input filed
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createLiveFilter = (options)=>{
+    let baseid  = ATON.Utils.generateID("filter");
+    let inputid = baseid+"-input";
+
+    let el = document.createElement("form");
+    el.id = baseid;
+    el.classList.add("d-flex");
+    el.setAttribute("role", "search");
+
+    let placeholder = "Search";
+    if (options.placeholder) placeholder = options.placeholder;
+
+    let elInput = UI.createElemementFromHTMLString("<input class='form-control me-2' type='search' placeholder='"+placeholder+"' aria-label='Search' id='"+inputid+"'>");
+
+    elInput.oninput = ()=>{
+        if (!options.filterclass) return;
+
+        let v = elInput.value.trim().toLowerCase();
+
+        if (v.length < 3){
+            $("."+options.filterclass).each(function(){
+                $(this).show(/*"scale"*/);
+            });
+            
+            return;
+        }    
+
+        $("."+options.filterclass).each(function(){
+            if ($(this).filter('[data-search-term*='+v+']').length > 0 || v.length < 1){
+                $(this).show(/*"scale"*/);
+            }
+            else $(this).hide(/*"scale"*/);
+        });
+    };
+
+    if (options.onfocus) elInput.onfocus = options.onfocus;
+    if (options.onblur)  elInput.onblur  = options.onblur;
+
+    el.append(elInput);
 
     return el;
 };

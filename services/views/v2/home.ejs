@@ -32,46 +32,112 @@ window.addEventListener( 'load', ()=>{
         
         ATON.UI.setTheme("light");
 
-        document.body.style["overflow-y"] = "auto";
+        document.body.style["overflow-y"]  = "auto";
 
         // Hero
         let elHero = document.getElementById("hero");
         if (elHero.children.length <= 0){
-                console.log("custom")
+                ATON.UI.loadPartial("/common/hero.html",elHero);
         }
 
+        // Staff pick
         let elStaffPick = document.getElementById("staffpick");
 
         elStaffPick.append(
                 ATON.UI.createSceneCard({
                         title:"sample",
-                        sid: "samples/welcome"
+                        sid: "samples/welcome",
+                        size: "large"
                 })
         );
         elStaffPick.append(
                 ATON.UI.createSceneCard({
                         title:"sample",
-                        sid: "samples/skyphos"
+                        sid: "samples/skyphos",
+                        size: "large"
                 })
         );
+        elStaffPick.append(
+                ATON.UI.createSceneCard({
+                        title:"montebelluna",
+                        sid: "samples/montebelluna",
+                        size: "large"
+                })
+        );
+
+        // Apps
+        let elApps = document.getElementById("apps");
+
+        // Pub scenes
+        let elPubScenes = document.getElementById("pubscenes");
+        $.getJSON(ATON.PATH_RESTAPI2+"scenes/", ( data )=>{
+                console.log(data);
+
+                for (let s=0; s<data.length; s++){
+                        let S = data[s];
+                        elPubScenes.append(
+                                ATON.UI.createSceneCard({
+                                        title: S.title? S.title : S.sid,
+                                        sid: S.sid,
+                                        keywords: S.kwords,
+                                        //size: "small"
+                                })
+                        );
+                }
+        });
+
+        // Navbar
+        let elNavCont = document.getElementById("navbarSupportedContent");
+        elNavCont.append(ATON.UI.createLiveFilter({
+                filterclass: "aton-scene-card",
+                onfocus: ()=>{
+                        elHero.style.display = "none";
+                        elApps.style.display = "none";
+                        //elStaffPick.style.display = "none";
+                },
+                onblur: ()=>{
+                        elHero.style.display = "block";
+                        elApps.style.display = "block";
+                        //elStaffPick.style.display = "block";   
+                }
+        }));
+
+        elNavCont.append(ATON.UI.createButton({
+                icon: "user",
+                text: "Login"
+        }));
 });
 </script>
 </head>
 
 <body>
+        <!-- Navbar -->
         <%- include('navbar'); %>
 
         <!-- Hero section -->
+        <div style="margin-top: 40px;"></div>
         <div id="hero">
                 <% if (!hero){ %>
                         <%- include('hero'); %> 
                 <% } %>
         </div>
+        
 
         <!-- Staff Pick -->
-        <div id="staffpick" style="padding: 4px;"></div>
+        <div id="staffpick" style="padding: 40px; text-align: center;">
+                <h2>Staff Pick</h2>
+                <hr>
+        </div>
 
         <!-- Apps -->
+        <div id="apps" style="padding: 40px; text-align: center;">
+                <h2>Apps</h2>
+                WebApps accessible on this instance<hr>
+        </div>
 
         <!-- Public scenes -->
+        <div id="pubscenes" style="padding: 40px; text-align: center;">
+                <h2>Public Scenes</h2>
+                3D content published by users<hr>
+        </div>
 </body>

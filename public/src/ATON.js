@@ -888,6 +888,11 @@ ATON.realize = ( bNoRender )=>{
     ATON._bInitialized = true;
 };
 
+// TODO
+ATON.realize2D = ()=>{
+
+};
+
 /**
 Add (register) globally a flare (ATON plugin)
 @param {Flare} P - The flare object

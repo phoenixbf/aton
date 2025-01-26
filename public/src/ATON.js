@@ -895,7 +895,10 @@ ATON.realize2D = ()=>{
 
     ATON.UI.init();
 
-    document.body.style["overflow-y"] = "auto";
+    document.body.style["overflow-y"]        = "auto";
+    document.body.style["touch-action"]      = "auto";
+    document.body.style["-webkit-user-drag"] = "auto";
+
     document.body.oncontextmenu = null;
 
     ATON.EventHub.init();

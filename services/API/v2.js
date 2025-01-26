@@ -215,15 +215,20 @@ API.init = (app)=>{
         let U = req.params.user;
         let S = req.params.usid;
 
-        let coverfile = Core.DIR_RES+"scenecover.png";
-
         if (!U || !S){
-            res.sendFile(coverfile);
+            res.sendFile(Core.STD_COVERFILE_PATH);
             return;
         }
 
         let sid = U+"/"+S;
 
+        let coverfile = path.join(Core.getSceneFolder(sid), Core.STD_COVERFILE);
+        fs.access(coverfile, (err) => {
+            if (err) res.sendFile(Core.STD_COVERFILE_PATH);
+            else res.sendFile(coverfile);
+        });
+
+/*
         let se = Core.Maat.getSceneEntry(sid);
         if (!se){
             res.sendFile(coverfile);
@@ -234,6 +239,7 @@ API.init = (app)=>{
             coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
             res.sendFile(coverfile);
         }
+*/
     });
 
     /*===============================

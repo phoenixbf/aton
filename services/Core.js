@@ -38,26 +38,27 @@ const Maat    = require("./maat/Maat.js");
 
 Core = {};
 
-Core.DIR_DATA         = path.join(__dirname,"/../data/");
-Core.DIR_WAPPS        = path.join(__dirname,"/../wapps/");
-Core.DIR_PUBLIC       = path.join(__dirname,"/../public/");
-Core.DIR_RES          = path.join(Core.DIR_PUBLIC,"res/");
-Core.DIR_PRV          = path.join(__dirname, "_prv/");
-Core.DIR_CONFIG       = path.join(__dirname, "/../config/");
-Core.DIR_CONFIGPUB    = path.join(Core.DIR_CONFIG, "public/");
+Core.DIR_DATA           = path.join(__dirname,"/../data/");
+Core.DIR_WAPPS          = path.join(__dirname,"/../wapps/");
+Core.DIR_PUBLIC         = path.join(__dirname,"/../public/");
+Core.DIR_RES            = path.join(Core.DIR_PUBLIC,"res/");
+Core.DIR_PRV            = path.join(__dirname, "_prv/");
+Core.DIR_CONFIG         = path.join(__dirname, "/../config/");
+Core.DIR_CONFIGPUB      = path.join(Core.DIR_CONFIG, "public/");
 //Core.DIR_CUST_MODS    = path.join(Core.DIR_CONFIG,"modules/");
-Core.DIR_CUST_CERTS   = path.join(Core.DIR_CONFIG,"certs/");
-Core.DIR_NODE_MODULES = path.join(__dirname, "/../node_modules");
+Core.DIR_CUST_CERTS     = path.join(Core.DIR_CONFIG,"certs/");
+Core.DIR_NODE_MODULES   = path.join(__dirname, "/../node_modules");
 //Core.DIR_APIDOC       = path.join(__dirname, "/../API/");
-Core.DIR_FE           = path.join(Core.DIR_PUBLIC,"hathor/");
-Core.DIR_BE           = path.join(Core.DIR_PUBLIC,"shu/");
-Core.DIR_COLLECTIONS  = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
-Core.DIR_SCENES       = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
-Core.DIR_EXAMPLES     = path.join(Core.DIR_PUBLIC,"examples/");
-Core.DIR_FLARES       = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core.DIR_PUBLIC,"custom/flares/");
-Core.STD_SCENEFILE    = "scene.json";
-Core.STD_PUBFILE      = "pub.txt"; // deprecated
-Core.STD_COVERFILE    = "cover.png";
+Core.DIR_FE             = path.join(Core.DIR_PUBLIC,"hathor/");
+Core.DIR_BE             = path.join(Core.DIR_PUBLIC,"shu/");
+Core.DIR_COLLECTIONS    = path.join(Core.DIR_DATA,"collections/"); //path.join(Core.DIR_PUBLIC,"collection/");
+Core.DIR_SCENES         = path.join(Core.DIR_DATA,"scenes/");   //path.join(Core.DIR_PUBLIC,"scenes/");
+Core.DIR_EXAMPLES       = path.join(Core.DIR_PUBLIC,"examples/");
+Core.DIR_FLARES         = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core.DIR_PUBLIC,"custom/flares/");
+Core.STD_SCENEFILE      = "scene.json";
+Core.STD_PUBFILE        = "pub.txt"; // deprecated
+Core.STD_COVERFILE      = "cover.png";
+Core.STD_COVERFILE_PATH = Core.DIR_RES + Core.STD_COVERFILE;
 
 // Unused
 Core.STATUS_COMPLETE   = "complete";

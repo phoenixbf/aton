@@ -74,10 +74,7 @@ Render.setup = (app)=>{
 		
 		let opts = Core.config.shu;
 
-		if (!opts) opts = {
-			apps: [],
-			samples: true
-		};
+		if (!opts) opts = Core.CONF_MAIN.shu;
 		
 		opts.customhero = Render.customhero;
 

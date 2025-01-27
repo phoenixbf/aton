@@ -324,7 +324,7 @@ canvas:active {
     display: inline-block;
     position: relative;
 
-    margin: 8px;
+    margin: 12px;
     width: 200px;
 
     background-color: rgba(var(--bs-body-bg-rgb), 0.4);
@@ -347,12 +347,12 @@ canvas:active {
 }
 
 .aton-scene-card-small {
-    margin: 6px;
+    margin: 8px;
     width: 150px;
 }
 
 .aton-scene-card-large {
-    margin: 10px;
+    margin: 16px;
     width: 250px;
 }
 

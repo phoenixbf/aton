@@ -774,6 +774,14 @@ UI.createLiveFilter = (options)=>{
     return el;
 };
 
+/**
+Create public scenes gallery
+- options.containerid: ID of container (DOM element) for the gallery
+- options.size: scene cards size
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
 UI.createPublicScenesGallery = (options)=>{
     if (!options.containerid) return undefined;
 

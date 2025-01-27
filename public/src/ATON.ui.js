@@ -786,35 +786,35 @@ Create public scenes gallery
 - options.containerid: ID of container (DOM element) for the gallery
 - options.size: scene cards size
 
-@param {object} options - UI options object
+@param {{containerid, size}} options - UI options object
 @returns {HTMLElement}
 */
-UI.createPublicScenesGallery = (options)=>{
+UI.createPublicScenesGallery = async (options) => {
     if (!options.containerid) return undefined;
 
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    $.getJSON(ATON.PATH_RESTAPI2+"scenes/", ( data )=>{
-        data.sort( UI.SCENES_SORTER );               
-        console.log(data);
+    let data = await fetch(ATON.PATH_RESTAPI2 + "scenes/")
+        .then(res => res.json())
+        .catch(err => console.log(`Couldn't fetch scenes data (Error: ${err})`));
 
-        for (let s=0; s<data.length; s++){
-            let S = data[s];
+    data.sort( UI.SCENES_SORTER );               
+    console.log(data);
 
-            let bSample = S.sid.startsWith("samples/");
+    for (let scene of data) {
+        let bSample = scene.sid.startsWith("samples/");
 
-            if (!bSample || (bSample && options.samples)) el.append(
-                ATON.UI.createSceneCard({
-                    title: S.title? S.title : S.sid,
-                    sid: S.sid,
-                    keywords: S.kwords,
-                    useblurtint: true,
-                    size: options.size
-                })
-            );
-        }
-    });
+        if (!bSample || (bSample && options.samples)) el.append(
+            ATON.UI.createSceneCard({
+                title: scene.title? scene.title : scene.sid,
+                sid: scene.sid,
+                keywords: scene.kwords,
+                useblurtint: true,
+                size: options.size
+            })
+        );
+    }
 
     return el;
 };

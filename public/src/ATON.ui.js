@@ -728,7 +728,7 @@ Create a live filter, search as user is typing
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
 
-@param {object} options - UI options object
+@param {{filterclass, onfocus, onblur}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createLiveFilter = (options)=>{
@@ -743,27 +743,34 @@ UI.createLiveFilter = (options)=>{
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
 
-    let elInput = UI.createElemementFromHTMLString("<input class='form-control me-2' type='search' placeholder='"+placeholder+"' aria-label='Search' id='"+inputid+"'>");
+    let elInput = UI.createElemementFromHTMLString(
+        `<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`
+    );
 
-    elInput.oninput = ()=>{
+    elInput.oninput = ()=> {
         if (!options.filterclass) return;
 
         let v = elInput.value.trim().toLowerCase();
+        let filterItems = document.querySelectorAll(`.${options.filterclass}`);
 
-        if (v.length < 3){
-            $("."+options.filterclass).each(function(){
-                $(this).show(/*"scale"*/);
-            });
+        if (v.length < 3) {
             
+            for (let item of filterItems) {
+                // Using Bootstrap 5 class `d-none`
+                item.classList.remove('d-none');
+            }
+
             return;
         }    
 
-        $("."+options.filterclass).each(function(){
-            if ($(this).filter('[data-search-term*='+v+']').length > 0 || v.length < 1){
-                $(this).show(/*"scale"*/);
+        for (let item of filterItems) {
+            if (item.getAttribute('data-search-term').includes(v) || v.length < 1) {
+                item.classList.remove('d-none');
+            } else {
+                item.classList.add('d-none');
             }
-            else $(this).hide(/*"scale"*/);
-        });
+        }
+
     };
 
     if (options.onfocus) elInput.onfocus = options.onfocus;

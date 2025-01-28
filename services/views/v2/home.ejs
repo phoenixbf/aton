@@ -19,7 +19,7 @@
 <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
-    <script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
 <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
@@ -35,7 +35,8 @@ window.addEventListener( 'load', ()=>{
         // Hero
         let elHero = document.getElementById("hero");
         if (elHero.children.length <= 0){
-                ATON.UI.loadPartial("/common/hero.html",elHero);
+                console.log(elHero)
+                ATON.UI.loadPartial("/common/hero.html","hero");
         }
 
         // Staff pick
@@ -74,7 +75,7 @@ window.addEventListener( 'load', ()=>{
         ATON.UI.createPublicScenesGallery({
                 containerid: "pubscenes",
                 size:"small",
-                <% if (shu.samples) { %> samples: true <% } %>
+                <% if (samples) { %> samples: true <% } %>
         });
 
         // Navbar
@@ -105,10 +106,11 @@ window.addEventListener( 'load', ()=>{
         <!-- Navbar -->
         <%- include('navbar'); %>
 
-        <!-- Hero section -->
         <div style="margin-top: 40px;"></div>
+
+        <!-- Hero section -->
         <div id="hero">
-                <% if (!hero){ %>
+                <% if (!customhero){ %>
                         <%- include('hero'); %> 
                 <% } %>
         </div>

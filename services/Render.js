@@ -70,11 +70,13 @@ Render.setup = (app)=>{
 	// Main
 	//================================================
 	app.get("/v2", (req,res,next)=>{
-		//res.sendFile( Render.DIR_VIEWS + "v2/home.html" );
-		let opts = {};
-		opts.hero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html");
-		opts.shu = Core.config.shu;
-		if (!opts.shu) opts.shu = {};
+		Render.customhero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html");
+		
+		let opts = Core.config.shu;
+
+		if (!opts) opts = Core.CONF_MAIN.shu;
+		
+		opts.customhero = Render.customhero;
 
 		res.render("v2/home", opts);
 	});

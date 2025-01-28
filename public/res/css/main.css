@@ -247,9 +247,15 @@ canvas:active {
 }
 
 .aton-icon-small {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
 }
+
+/*
+.aton-btn {
+    background-color: var(--bs-secondary-bg);
+}
+*/
 
 .aton-btn img {
     width: 32px;
@@ -257,17 +263,12 @@ canvas:active {
     margin-right: 4px;
 }
 
-/*
-.aton-btn {
-    border-radius: 10px;
-}
-*/
 
 /* Tabs
 ============*/
 .aton-tab img {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-right: 5px;
 }
 
@@ -328,8 +329,8 @@ canvas:active {
     width: 200px;
 
     background-color: rgba(var(--bs-body-bg-rgb), 0.4);
-    border: 0px;
-    /*border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);*/
+
+    border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);
 
     text-align: left;
     font-size: 0.8em;
@@ -338,12 +339,9 @@ canvas:active {
 }
 
 .aton-scene-card:hover {
-    transform: scale(1.1);
-    /*border: 1px solid rgba(var(--bs-body-color-rgb), 1);*/
-}
-
-.aton-scene-card img:hover {
-    box-shadow: 0 3000px rgba(204, 0, 255, 0.4) inset;
+    /*transform: scale(1.1);*/
+    border: 1px solid rgba(var(--bs-body-color-rgb), 1);
+    /*box-shadow: 0px 0px 10px rgba(var(--bs-body-color-rgb), 0.5);*/
 }
 
 .aton-scene-card-small {
@@ -384,7 +382,7 @@ canvas:active {
     background-size: cover;
 
     /*background-color: rgba(0, 0, 0, 0.5);*/
-    opacity: 0.5;
+    opacity: 0.4;
 
     -webkit-filter: blur(var(--aton-blur-radius));
     -moz-filter: blur(var(--aton-blur-radius));

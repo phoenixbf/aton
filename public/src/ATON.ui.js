@@ -209,6 +209,8 @@ UI.hideSidePanel = ()=>{
 ===============================*/
 
 UI.addBasicEvents = ()=>{
+    let canvas = document.querySelector('canvas');
+
     ATON.on("NodeRequestFired", ()=>{
         UI.showCenteredOverlay();
     });
@@ -225,7 +227,8 @@ UI.addBasicEvents = ()=>{
         UI.showSemLabel(semid);
 
         S.highlight();
-        $('canvas').css({ cursor: 'pointer' });
+
+        canvas.style.cursor = 'pointer';
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
     });
@@ -236,18 +239,18 @@ UI.addBasicEvents = ()=>{
         UI.hideSemLabel();
 
         S.restoreDefaultMaterial();
-        $('canvas').css({ cursor: 'grab' });
+        canvas.style.cursor = 'grab';
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
     });
 
     ATON.on("SemanticMaskHover", semid => {
         UI.showSemLabel(semid);
-        $('canvas').css({ cursor: 'pointer' }); // 'crosshair'
+        canvas.style.cursor = 'pointer';
     });
     ATON.on("SemanticMaskLeave", semid => {
         UI.hideSemLabel();
-        $('canvas').css({ cursor: 'grab' });
+        canvas.style.cursor = 'grab';
     });
 
     ATON.addUpdateRoutine( UI.update );
@@ -276,20 +279,19 @@ UI.hideSemLabel = ()=>{
 };
 
 // Append or prepend HTML fragment to DOM
-// TODO: remove jquery?
-UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
-    $.get(src, (data)=>{
-        if (!parentid){
-            if (bPrepend) $("body").prepend(data);
-            else $("body").append(data);
-        }
-        else {
-            if (bPrepend) $("#"+parentid).prepend(data); 
-            else $("#"+parentid).append(data);
-        }
+UI.loadPartial = async (src, parentid, bPrepend, onComplete)=>{
+    let data = await fetch(src).then(res => res.json());
 
-        if (onComplete) onComplete();
-    });
+    if (!parentid){
+        if (bPrepend) document.body.prepend(data);
+        else document.body.append(data);
+    }
+    else {
+        if (bPrepend) document.querySelector(`#${parentid}`).prepend(data); 
+        else document.querySelector(`#${parentid}`).append(data);
+    }
+
+    if (onComplete) onComplete();
 };
 
 UI.resolveIconURL = (icon)=>{
@@ -641,7 +643,7 @@ Create a scene card.
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createSceneCard = (options)=>{
+UI.createSceneCard = async (options)=>{
     //let baseid = ATON.Utils.generateID("ftrans");
     
     let el = document.createElement('div');
@@ -707,9 +709,11 @@ UI.createSceneCard = (options)=>{
         el.setAttribute("data-search-term", sskwords);
     }
     else {
-        $.getJSON(ATON.PATH_RESTAPI2+"scenes/"+options.sid, ( data )=>{
-            if (data.title) elTitle.innerHTML = data.title; // FIXME
-        });
+        let data = await fetch(`${ATON.PATH_RESTAPI2}scenes/${options.sid}`)
+            .then(res => res.json())
+            .catch(err => `Error fetching scene data: ${err}`);
+
+        if (data.title) elTitle.innerHTML = data.title; // FIXME
     }
 
     elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
@@ -754,7 +758,6 @@ UI.createLiveFilter = (options)=>{
         let filterItems = document.querySelectorAll(`.${options.filterclass}`);
 
         if (v.length < 3) {
-            
             for (let item of filterItems) {
                 // Using Bootstrap 5 class `d-none`
                 item.classList.remove('d-none');
@@ -766,7 +769,8 @@ UI.createLiveFilter = (options)=>{
         for (let item of filterItems) {
             if (item.getAttribute('data-search-term').includes(v) || v.length < 1) {
                 item.classList.remove('d-none');
-            } else {
+            }
+            else {
                 item.classList.add('d-none');
             }
         }
@@ -795,18 +799,18 @@ UI.createPublicScenesGallery = async (options) => {
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    let data = await fetch(ATON.PATH_RESTAPI2 + "scenes/")
+    let data = await fetch(`${ATON.PATH_RESTAPI2}scenes/`)
         .then(res => res.json())
         .catch(err => console.log(`Couldn't fetch scenes data (Error: ${err})`));
 
-    data.sort( UI.SCENES_SORTER );               
+    data.sort( UI.SCENES_SORTER );              
     console.log(data);
 
     for (let scene of data) {
         let bSample = scene.sid.startsWith("samples/");
 
         if (!bSample || (bSample && options.samples)) el.append(
-            ATON.UI.createSceneCard({
+            await ATON.UI.createSceneCard({
                 title: scene.title? scene.title : scene.sid,
                 sid: scene.sid,
                 keywords: scene.kwords,

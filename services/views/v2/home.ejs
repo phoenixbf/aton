@@ -27,7 +27,7 @@
 <script type="module" src="/src/ATON.js"></script>
 
 <script>
-window.addEventListener( 'load', ()=>{
+window.addEventListener( 'load', async ()=>{
         ATON.realize2D();
         
         ATON.UI.setTheme("light");
@@ -43,7 +43,7 @@ window.addEventListener( 'load', ()=>{
         let elStaffPick = document.getElementById("staffpick");
 
         elStaffPick.append(
-                ATON.UI.createSceneCard({
+                await ATON.UI.createSceneCard({
                         title:"sample",
                         sid: "samples/welcome",
                         //size: "large",
@@ -51,7 +51,7 @@ window.addEventListener( 'load', ()=>{
                 })
         );
         elStaffPick.append(
-                ATON.UI.createSceneCard({
+                await ATON.UI.createSceneCard({
                         title:"sample",
                         sid: "samples/skyphos",
                         //size: "large",
@@ -59,7 +59,7 @@ window.addEventListener( 'load', ()=>{
                 })
         );
         elStaffPick.append(
-                ATON.UI.createSceneCard({
+                await ATON.UI.createSceneCard({
                         title:"montebelluna",
                         sid: "samples/montebelluna",
                         //size: "large",

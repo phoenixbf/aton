@@ -707,7 +707,7 @@ UI.createSceneCard = (options)=>{
         el.setAttribute("data-search-term", sskwords);
     }
     else {
-        $.getJSON(ATON.PATH_RESTAPI2+"scenes/"+options.sid, ( data )=>{
+        ATON.REQ.get("scenes/"+options.sid, ( data )=>{
             if (data.title) elTitle.innerHTML = data.title; // FIXME
         });
     }

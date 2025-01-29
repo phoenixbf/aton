@@ -328,6 +328,8 @@ canvas:active {
     margin: 12px;
     width: 200px;
 
+    /*padding: 4px;*/
+
     background-color: rgba(var(--bs-body-bg-rgb), 0.1);
 
     /*border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);*/

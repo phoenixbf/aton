@@ -133,6 +133,8 @@ Maat.scanScenes = ()=>{
 	
 	console.log("Scanning scenes...");
 
+	const confSHU = Core.config.shu;
+
 	let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
 
 	for (let f in files){
@@ -149,7 +151,7 @@ Maat.scanScenes = ()=>{
 		S.cover  = fs.existsSync(coverfile)? true : false;
 		//S.public = fs.existsSync(pubfile)? true : false;
 
-		if (Core.config.shu && Core.config.shu.staffpick[sid]) S.staffpick = 1;
+		if (confSHU && confSHU.staffpick && confSHU.staffpick[sid]) S.staffpick = 1;
 		
 		let sobj = Core.readSceneJSON(sid);
 

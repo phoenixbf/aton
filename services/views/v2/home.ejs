@@ -48,16 +48,9 @@ window.addEventListener( 'load', ()=>{
 
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
-/*
-        ATON.UI.createPublicScenesGallery({
-                containerid: "pubscenes",
-                size:"small",
-                <% if (samples) { %> samples: true <% } %>
-        });
-*/
 
         // Content
-        $.getJSON(ATON.PATH_RESTAPI2+"scenes/", entries =>{
+        ATON.REQ.get("scenes/", entries =>{
 
                 for (let s in entries){
                         const S = entries[s];
@@ -88,12 +81,12 @@ window.addEventListener( 'load', ()=>{
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
                         elHero.style.display = "none";
-                        elApps.style.display = "none";
+                        if (elApps) elApps.style.display = "none";
                         //elStaffPick.style.display = "none";
                 },
                 onblur: ()=>{
                         elHero.style.display = "block";
-                        elApps.style.display = "block";
+                        if (elApps) elApps.style.display = "block";
                         //elStaffPick.style.display = "block";   
                 }
         }));
@@ -128,10 +121,12 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <!-- Apps -->
+        <% if (apps.length>0) { %>
         <div id="apps" style="padding: 40px; text-align: center;">
                 <h2>Apps</h2>
                 WebApps accessible on this instance<hr>
         </div>
+        <% } %>
 
         <!-- Public scenes -->
         <div id="pubscenes" style="padding: 40px; text-align: center;">

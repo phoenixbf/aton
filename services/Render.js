@@ -73,12 +73,17 @@ Render.setup = (app)=>{
 		Render.customhero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html");
 		
 		let opts = Core.config.shu;
-
 		if (!opts) opts = Core.CONF_MAIN.shu;
+		if (!opts.apps) opts.apps = [];
 		
 		opts.customhero = Render.customhero;
 
 		res.render("v2/home", opts);
+	});
+
+	app.get("/v2/login", (req,res,next)=>{
+
+		//res.render("v2/login", opts);
 	});
 };
 

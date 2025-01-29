@@ -44,6 +44,7 @@ import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
 import ASCII from "./ATON.ascii.js";
+import REQ from "./ATON.req.js";
 
 // Classes
 ATON.Node       = Node;
@@ -74,6 +75,7 @@ ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
 ATON.MRes       = MRes;
 ATON.ASCII      = ASCII;
+ATON.REQ        = REQ;
 
 //==============================================================
 // Consts

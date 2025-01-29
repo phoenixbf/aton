@@ -778,6 +778,7 @@ UI.createLiveFilter = (options)=>{
 Create public scenes gallery
 - options.containerid: ID of container (DOM element) for the gallery
 - options.size: scene cards size
+- options.entries: an optional array of scenes entries. If not provided, REST API will be used to retrieve public scenes
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -788,14 +789,14 @@ UI.createPublicScenesGallery = (options)=>{
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    $.getJSON(ATON.PATH_RESTAPI2+"scenes/", ( data )=>{
-        data.sort( UI.SCENES_SORTER );               
-        console.log(data);
+    const generate = (entries)=>{
+        entries.sort( UI.SCENES_SORTER );               
+        console.log(entries);
 
-        for (let s=0; s<data.length; s++){
-            let S = data[s];
+        for (let s=0; s<entries.length; s++){
+            let S = entries[s];
 
-            let bSample = S.sid.startsWith("samples/");
+            let bSample = S.sid.startsWith("samples/"); // check if sample scene
 
             if (!bSample || (bSample && options.samples)) el.append(
                 ATON.UI.createSceneCard({
@@ -807,7 +808,10 @@ UI.createPublicScenesGallery = (options)=>{
                 })
             );
         }
-    });
+    };
+
+    if (options.entries) generate(options.entries);
+    else $.getJSON(ATON.PATH_RESTAPI2+"scenes/", generate);
 
     return el;
 };

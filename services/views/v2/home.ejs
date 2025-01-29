@@ -41,41 +41,45 @@ window.addEventListener( 'load', ()=>{
 
         // Staff pick
         let elStaffPick = document.getElementById("staffpick");
-
-        elStaffPick.append(
-                ATON.UI.createSceneCard({
-                        title:"sample",
-                        sid: "samples/welcome",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
-        elStaffPick.append(
-                ATON.UI.createSceneCard({
-                        title:"sample",
-                        sid: "samples/skyphos",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
-        elStaffPick.append(
-                ATON.UI.createSceneCard({
-                        title:"montebelluna",
-                        sid: "samples/montebelluna",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
+        let elStaffPickBand = document.getElementById("staffpickband");
 
         // Apps
         let elApps = document.getElementById("apps");
 
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
+/*
         ATON.UI.createPublicScenesGallery({
                 containerid: "pubscenes",
                 size:"small",
                 <% if (samples) { %> samples: true <% } %>
+        });
+*/
+
+        // Content
+        $.getJSON(ATON.PATH_RESTAPI2+"scenes/", entries =>{
+
+                for (let s in entries){
+                        const S = entries[s];
+
+                        if (S.staffpick) elStaffPickBand.append(
+                                ATON.UI.createSceneCard({
+                                        title: S.title,
+                                        sid: S.sid,
+                                        keywords: S.kwords,
+                                        //size: "large",
+                                        useblurtint: true
+                                })
+                        );
+                }
+
+                ATON.UI.createPublicScenesGallery({
+                        containerid: "pubscenes",
+                        size:"small",
+                        entries: entries,
+                        <% if (samples) { %> samples: true <% } %>
+                });
+
         });
 
         // Navbar
@@ -120,6 +124,7 @@ window.addEventListener( 'load', ()=>{
         <div id="staffpick" style="padding: 40px; text-align: center;">
                 <h2>Staff Pick</h2>
                 <hr>
+                <div id="staffpickband" class="aton-hscrollable" ></div>
         </div>
 
         <!-- Apps -->

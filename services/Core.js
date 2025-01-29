@@ -203,7 +203,8 @@ Core.CONF_MAIN = {
 
     shu: {
         samples: true,
-        apps: ["app_template"]
+        apps: ["app_template"],	// List of apps to display
+		staffpick: {}			// List of staff picked scene-IDs
     }
 };
 

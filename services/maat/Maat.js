@@ -148,6 +148,8 @@ Maat.scanScenes = ()=>{
 		S.sid    = sid;
 		S.cover  = fs.existsSync(coverfile)? true : false;
 		//S.public = fs.existsSync(pubfile)? true : false;
+
+		if (Core.config.shu && Core.config.shu.staffpick[sid]) S.staffpick = 1;
 		
 		let sobj = Core.readSceneJSON(sid);
 

@@ -823,4 +823,38 @@ UI.createPublicScenesGallery = (options)=>{
     return el;
 };
 
+UI.createLoginForm = (options)=>{
+    let el = document.createElement("div");
+    el.classList.add("container-sm", "text-center");
+
+    let elUsername = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
+    let elPassword = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
+
+    let elInputUN = UI.createElemementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
+    let elInputPW = UI.createElemementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
+
+    elUsername.append(elInputUN);
+    elPassword.append(elInputPW);
+
+    let elEnter = ATON.UI.createButton({
+        text: "Login",
+        icon: "bi-person",
+        variant: "primary",
+        onpress: ()=>{
+            let uname = elInputUN.value.trim();
+            let passw = elInputPW.value.trim();
+
+
+        }
+    });
+
+    if (options.header) el.append(options.header);
+
+    el.append(elUsername);
+    el.append(elPassword);
+    el.append(elEnter);
+
+    return el;
+};
+
 export default UI;

@@ -141,4 +141,16 @@ Auth.isUserAdmin = (req)=>{
     else return false;
 };
 
+Auth.createClientResponse = (req)=>{
+	if (!Auth.isUserAuth(req)) return false;
+
+	let U = {};
+	U.username = req.user.username;
+	U.admin    = req.user.admin;
+
+	if (Core.config.services.webdav && Core.config.services.webdav.PORT) U.webdav = Core.config.services.webdav.PORT;
+
+	return U;
+};
+
 module.exports = Auth;

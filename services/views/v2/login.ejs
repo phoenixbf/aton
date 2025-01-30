@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Framework">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Framework">
+
+<title>ATON Framework</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.realize2D();
+        ATON.UI.setTheme("light");
+
+        const params = new URLSearchParams( window.location.search );
+
+        let elForm = document.getElementById("loginform");
+
+        elForm.append(
+            ATON.UI.createLoginForm({
+                onSuccess: (r)=>{
+                    let url = params.get("u");
+                    if (url) window.location.href = url;
+                },
+                onFail: ()=>{}
+            })
+        );
+});
+</script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <%- include('navbar'); %>
+
+    <div style="margin-top: 40px;"></div>
+
+    <div id="loginform" style="max-width: 400px; margin: auto; padding: 40px;"></div>
+  
+    <div id="footer" class="aton-footer">
+            <%- include('footer'); %>
+    </div>
+</body>

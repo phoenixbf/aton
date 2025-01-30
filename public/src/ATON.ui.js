@@ -90,7 +90,7 @@ UI._setupBase = ()=>{
     document.body.prepend( UI.elLabelCon );
     UI.hideSemLabel();
 
-    // Centralized modal dialog
+    // Centralized modal dialog // modal-fullscreen-md-down
     UI.elModal = UI.createElemementFromHTMLString(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -844,11 +844,24 @@ UI.createLoginForm = (options)=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();
 
-
+            ATON.REQ.post("login",
+                {
+                    username:uname, 
+                    password:passw
+                },
+                (r)=>{
+                    if (r && options.onSuccess) options.onSuccess(r);
+                    else if (options.onFail) options.onFail();
+                },
+                (e)=>{
+                    if (options.onFail) options.onFail();
+                }
+            )
         }
     });
 
     if (options.header) el.append(options.header);
+    else el.append( UI.createElemementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
 
     el.append(elUsername);
     el.append(elPassword);

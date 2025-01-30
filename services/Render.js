@@ -83,7 +83,7 @@ Render.setup = (app)=>{
 
 	app.get("/v2/login", (req,res,next)=>{
 
-		//res.render("v2/login", opts);
+		res.render("v2/login");
 	});
 };
 

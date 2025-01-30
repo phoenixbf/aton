@@ -106,6 +106,19 @@ canvas:active {
     to be applied on top of bootstrap 5
 =========================================*/
 
+.aton-body2D {
+    overflow: auto !important;
+    
+    font-family: "AFont" !important;
+
+    touch-action: auto;
+    -webkit-user-drag: auto;
+    -webkit-tap-highlight-color: auto;
+
+    scrollbar-width: thin;
+}
+
+
 /* Spinner, labels
 ========================*/
 .aton-spinner {

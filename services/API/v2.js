@@ -312,6 +312,19 @@ API.init = (app)=>{
     });
 
     /*===============================
+        AUTH
+    ===============================*/
+    app.post(API.BASE + "login", 
+        Core.passport.authenticate('local', {
+            failureRedirect: 'v2/login'
+        }), (req, res)=>{
+
+        let U = Core.Auth.createClientResponse(req);
+    
+        res.send(U);
+    });
+
+    /*===============================
         USERS
     ===============================*/
     app.get(API.BASE + "user", (req,res)=>{

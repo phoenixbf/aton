@@ -30,7 +30,6 @@
 <script>
 window.addEventListener( 'load', ()=>{
         ATON.realize2D();
-        
         ATON.UI.setTheme("light");
 
         // Hero
@@ -92,18 +91,26 @@ window.addEventListener( 'load', ()=>{
                 }
         }));
 
-        elNavCont.append(ATON.UI.createButton({
+        let btnLogin = ATON.UI.createButton({
                 icon: "bi-person",
                 //icon: "user",
-                text: "Login"
-        }));
-
-        ATON.UI.showModal({
-                header: "Login",
-                body: ATON.UI.createLoginForm({
-
+                text: "Login",
+                onpress: ()=>{
+                        ATON.UI.showModal({
+                                //header: "Login",
+                                body: ATON.UI.createLoginForm({
+                                        onSuccess: (r)=>{
+                                                btnLogin.innerHTML = r.username;
+                                                ATON.UI.hideModal()
+                                        },
+                                        onFail: ()=>{}
+                                })
                         })
+                }
+
         });
+
+        elNavCont.append(btnLogin);
 });
 </script>
 </head>

@@ -908,10 +908,14 @@ ATON.realize2D = ()=>{
 
     ATON.UI.init();
 
-    document.body.style["overflow-y"]        = "auto";
-    document.body.style["touch-action"]      = "auto";
-    document.body.style["-webkit-user-drag"] = "auto";
-
+    document.body.classList.add("aton-body2D");
+/*
+    const bs = document.body.style;
+    bs["overflow"]          = "auto";
+    bs["touch-action"]      = "auto";
+    bs["-webkit-user-drag"] = "auto";
+    bs["-webkit-tap-highlight-color"] = ""
+*/
     document.body.oncontextmenu = null;
 
     ATON.EventHub.init();

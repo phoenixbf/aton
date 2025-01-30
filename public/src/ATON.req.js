@@ -1,5 +1,6 @@
 /*
-    ATON ASCII Utils
+    ATON Requests Utils
+    Utilities to perform GET, POST, PUT, PATCH or DELETE requests
 
     author: bruno.fanini_AT_gmail.com
 

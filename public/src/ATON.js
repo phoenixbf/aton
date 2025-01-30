@@ -234,6 +234,16 @@ ATON.rewindAllPlayingMedia = ()=>{
 
 // Auth
 ATON.checkAuth = (onLogged, onNotLogged)=>{
+    ATON.REQ.get("user",
+        (data)=>{
+            if (data && onLogged) onLogged(data);
+            else if (onNotLogged) onNotLogged();
+        },
+        (err)=>{
+            if (onNotLogged) onNotLogged(); 
+        }
+    );
+/*
     $.ajax({
         type: 'GET',
         url: ATON.PATH_RESTAPI+"user",
@@ -249,6 +259,7 @@ ATON.checkAuth = (onLogged, onNotLogged)=>{
             if (onNotLogged) onNotLogged();
         }
     });
+*/
 };
 
 

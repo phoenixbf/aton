@@ -238,12 +238,17 @@ canvas:active {
 
 /* Buttons & Icons
 =================*/
-[data-bs-theme=light] .aton-icon {
+.aton-icon {
     margin-right: 4px;
+    width: 1em;
+    height: 1em; 
+}
+
+[data-bs-theme=light] .aton-icon {
     filter: invert(100%);
 }
 [data-bs-theme=dark] .aton-icon {
-    margin-right: 4px;
+    filter: none;
 }
 
 .aton-icon-small {
@@ -258,8 +263,8 @@ canvas:active {
 */
 
 .aton-btn img {
-    width: 32px;
-    height: 32px;
+    width: 1.5em;
+    height: 1.5em;
     margin-right: 4px;
 }
 
@@ -292,7 +297,7 @@ canvas:active {
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
     /*border-left: solid var(--bs-body-color) 1px;*/
 
-    border-radius: var(--bs-border-radius-sm);
+    border-radius: var(--bs-border-radius);
 
     /*line-height: 20px;*/
 

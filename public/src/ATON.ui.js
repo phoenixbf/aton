@@ -305,7 +305,7 @@ UI.resolveIconURL = (icon)=>{
 Create a button (icon and/or text)
 - options.variant: the bootstrap variant (primary, info, etc.)
 - options.text: the button text
-- options.icon: the icon, if simple string will look for centralized icon resources (e.g. "home"), otherwise a provided url to image
+- options.icon: a basic string will look for centralized ATON PNG icons (e.g. "home") or bootstrap icons (starting with "bi-*"), otherwise a provided full url to image
 - options.onpress: routine to launch on click
 
 @param {object} options - UI options object
@@ -321,7 +321,10 @@ UI.createButton = (options)=>{
     if (options.text) el.innerText = options.text;
 
     if (options.icon){
-        el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
+        let stricon = options.icon;
+        
+        if (stricon.startsWith("bi-")) el.prepend( UI.createElemementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
+        else el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
     }
 
     if (options.badge){ 
@@ -742,8 +745,12 @@ UI.createLiveFilter = (options)=>{
 
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
+    let elInput = UI.createElemementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`);
 
-    let elInput = UI.createElemementFromHTMLString("<input class='form-control me-2' type='search' placeholder='"+placeholder+"' aria-label='Search' id='"+inputid+"'>");
+    const elInGroup = document.createElement("div");
+    elInGroup.classList.add("input-group"); //,"mb-2");
+    elInGroup.append(UI.createElemementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
+    elInGroup.append(elInput);
 
     elInput.oninput = ()=>{
         if (!options.filterclass) return;
@@ -769,7 +776,7 @@ UI.createLiveFilter = (options)=>{
     if (options.onfocus) elInput.onfocus = options.onfocus;
     if (options.onblur)  elInput.onblur  = options.onblur;
 
-    el.append(elInput);
+    el.append(elInGroup);
 
     return el;
 };

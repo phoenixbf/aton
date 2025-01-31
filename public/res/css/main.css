@@ -194,6 +194,8 @@ canvas:active {
     z-index: 100;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));
 
     box-shadow: 0px 0px 10px rgba(0,0,0, 0.9);
@@ -208,6 +210,8 @@ canvas:active {
     position: absolute;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));
 }
 
@@ -222,6 +226,8 @@ canvas:active {
     z-index: 100;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));
 
     text-align: center;
@@ -231,6 +237,8 @@ canvas:active {
 ========================*/
 .aton-std-bg {
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));  
 }
 

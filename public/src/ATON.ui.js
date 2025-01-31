@@ -209,6 +209,8 @@ UI.hideSidePanel = ()=>{
 ===============================*/
 
 UI.addBasicEvents = ()=>{
+    let canvas = document.querySelector('canvas');
+
     ATON.on("NodeRequestFired", ()=>{
         UI.showCenteredOverlay();
     });
@@ -225,7 +227,8 @@ UI.addBasicEvents = ()=>{
         UI.showSemLabel(semid);
 
         S.highlight();
-        $('canvas').css({ cursor: 'pointer' });
+
+        canvas.style.cursor = 'pointer';
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
     });
@@ -236,18 +239,18 @@ UI.addBasicEvents = ()=>{
         UI.hideSemLabel();
 
         S.restoreDefaultMaterial();
-        $('canvas').css({ cursor: 'grab' });
+        canvas.style.cursor = 'grab';
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
     });
 
     ATON.on("SemanticMaskHover", semid => {
         UI.showSemLabel(semid);
-        $('canvas').css({ cursor: 'pointer' }); // 'crosshair'
+        canvas.style.cursor = 'pointer';
     });
     ATON.on("SemanticMaskLeave", semid => {
         UI.hideSemLabel();
-        $('canvas').css({ cursor: 'grab' });
+        canvas.style.cursor = 'grab';
     });
 
     ATON.addUpdateRoutine( UI.update );
@@ -276,20 +279,19 @@ UI.hideSemLabel = ()=>{
 };
 
 // Append or prepend HTML fragment to DOM
-// TODO: remove jquery?
 UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
-    $.get(src, (data)=>{
+    ATON.REQ.get(src, data => {
         if (!parentid){
-            if (bPrepend) $("body").prepend(data);
-            else $("body").append(data);
+            if (bPrepend) document.body.prepend(data);
+            else document.body.append(data);
         }
         else {
-            if (bPrepend) $("#"+parentid).prepend(data); 
-            else $("#"+parentid).append(data);
+            if (bPrepend) document.querySelector(`#${parentid}`).prepend(data); 
+            else document.querySelector(`#${parentid}`).append(data);
         }
-
-        if (onComplete) onComplete();
     });
+
+    if (onComplete) onComplete();
 };
 
 UI.resolveIconURL = (icon)=>{
@@ -752,25 +754,30 @@ UI.createLiveFilter = (options)=>{
     elInGroup.append(UI.createElemementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
-    elInput.oninput = ()=>{
+    elInput.oninput = ()=> {
         if (!options.filterclass) return;
 
         let v = elInput.value.trim().toLowerCase();
+        let filterItems = document.querySelectorAll(`.${options.filterclass}`);
 
-        if (v.length < 3){
-            $("."+options.filterclass).each(function(){
-                $(this).show(/*"scale"*/);
-            });
-            
+        if (v.length < 3) {
+            for (let item of filterItems) {
+                // Using Bootstrap 5 class `d-none`
+                item.classList.remove('d-none');
+            }
+
             return;
         }    
 
-        $("."+options.filterclass).each(function(){
-            if ($(this).filter('[data-search-term*='+v+']').length > 0 || v.length < 1){
-                $(this).show(/*"scale"*/);
+        for (let item of filterItems) {
+            if (item.getAttribute('data-search-term').includes(v) || v.length < 1) {
+                item.classList.remove('d-none');
             }
-            else $(this).hide(/*"scale"*/);
-        });
+            else {
+                item.classList.add('d-none');
+            }
+        }
+
     };
 
     if (options.onfocus) elInput.onfocus = options.onfocus;
@@ -790,7 +797,7 @@ Create public scenes gallery
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createPublicScenesGallery = (options)=>{
+UI.createPublicScenesGallery = (options) => {
     if (!options.containerid) return undefined;
 
     let el = document.getElementById(options.containerid);
@@ -800,25 +807,29 @@ UI.createPublicScenesGallery = (options)=>{
         entries.sort( UI.SCENES_SORTER );               
         console.log(entries);
 
-        for (let s=0; s<entries.length; s++){
-            let S = entries[s];
+        for (let scene of entries) {
+            let bSample = scene.sid.startsWith("samples/");
 
-            let bSample = S.sid.startsWith("samples/"); // check if sample scene
-
-            if (!bSample || (bSample && options.samples)) el.append(
-                ATON.UI.createSceneCard({
-                    title: S.title? S.title : S.sid,
-                    sid: S.sid,
-                    keywords: S.kwords,
+            if (!bSample || (bSample && options.samples)) {
+                let card = ATON.UI.createSceneCard({
+                    title: scene.title? scene.title : scene.sid,
+                    sid: scene.sid,
+                    keywords: scene.kwords,
                     useblurtint: true,
                     size: options.size
-                })
-            );
+                });
+
+                el.append(card);
+            }
         }
     };
 
-    if (options.entries) generate(options.entries);
-    else $.getJSON(ATON.PATH_RESTAPI2+"scenes/", generate);
+    if (options.entries) {
+        generate(options.entries);
+    }
+    else {
+        ATON.REQ.get(ATON.PATH_RESTAPI2+"scenes/", data => generate(data));
+    }
 
     return el;
 };

@@ -31,6 +31,8 @@ UI.init = ()=>{
     if (!window.bootstrap) return;
     if (!window.bootstrap.Offcanvas) return; // tmp hack
 
+    UI._parser = new DOMParser;
+
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
     UI._bModal     = false;
@@ -47,9 +49,7 @@ UI.setTheme = (theme)=>{
 
 // Utility function to create DOM element from string
 UI.createElementFromHTMLString = (html)=>{
-    let parser = new DOMParser;
-    let element = parser.parseFromString(html, 'text/html')
-        .body.firstElementChild;
+    let element = UI._parser.parseFromString(html, 'text/html').body.firstElementChild;
 
     return element;
 };
@@ -284,9 +284,7 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
     fetch(src)
         .then(res => res.text())
         .then(res => {
-            let parser = new DOMParser;
-            let nodes = parser.parseFromString(res, 'text/html')
-                .body.childNodes;
+            let nodes = UI._parser.parseFromString(res, 'text/html').body.childNodes;
 
             if (!parentid){
                 if (bPrepend) document.body.prepend(...nodes);

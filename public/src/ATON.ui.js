@@ -646,7 +646,7 @@ Create a scene card.
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createSceneCard = async (options)=>{
+UI.createSceneCard = (options)=>{
     //let baseid = ATON.Utils.generateID("ftrans");
     
     let el = document.createElement('div');
@@ -797,13 +797,13 @@ Create public scenes gallery
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createPublicScenesGallery = async (options) => {
+UI.createPublicScenesGallery = (options) => {
     if (!options.containerid) return undefined;
 
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    const generate = async (entries)=>{
+    const generate = (entries)=>{
         entries.sort( UI.SCENES_SORTER );               
         console.log(entries);
 
@@ -811,7 +811,7 @@ UI.createPublicScenesGallery = async (options) => {
             let bSample = scene.sid.startsWith("samples/");
 
             if (!bSample || (bSample && options.samples)) {
-                let card = await ATON.UI.createSceneCard({
+                let card = ATON.UI.createSceneCard({
                     title: scene.title? scene.title : scene.sid,
                     sid: scene.sid,
                     keywords: scene.kwords,

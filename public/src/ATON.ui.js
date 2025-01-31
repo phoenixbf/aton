@@ -46,11 +46,12 @@ UI.setTheme = (theme)=>{
 };
 
 // Utility function to create DOM element from string
-UI.createElemementFromHTMLString = (html)=>{
-    const container = document.createElement('div');
-    container.innerHTML = html;
+UI.createElementFromHTMLString = (html)=>{
+    let parser = new DOMParser;
+    let element = parser.parseFromString(html, 'text/html')
+        .body.firstElementChild;
 
-    return container.firstElementChild;
+    return element;
 };
 
 // This can be possibly replaced by custom user routine
@@ -68,7 +69,7 @@ UI._setupBase = ()=>{
     UI.setTheme("dark");
 
     // Central overlay (spinners, etc.)
-    UI.elCenteredOverlay = UI.createElemementFromHTMLString(`
+    UI.elCenteredOverlay = UI.createElementFromHTMLString(`
         <div class="d-flex align-items-center justify-content-center aton-centered-container">
             <div class="spinner-border aton-spinner" role="status"><span class="visually-hidden">Loading...</span></div>
         </div>
@@ -78,11 +79,11 @@ UI._setupBase = ()=>{
     UI.hideCenteredOverlay();
     
     // 2D labels
-    //UI.elLabelCon = UI.createElemementFromHTMLString(`<div class='aton-floating-label-container'></div>`);
+    //UI.elLabelCon = UI.createElementFromHTMLString(`<div class='aton-floating-label-container'></div>`);
     UI.elLabelCon = document.createElement('div');
     UI.elLabelCon.classList.add("aton-floating-label-container");
 
-    //UI.elLabel    = UI.createElemementFromHTMLString("<div class='aton-floating-label'></div>");
+    //UI.elLabel    = UI.createElementFromHTMLString("<div class='aton-floating-label'></div>");
     UI.elLabel = document.createElement('div');
     UI.elLabel.classList.add("aton-floating-label");
 
@@ -91,7 +92,7 @@ UI._setupBase = ()=>{
     UI.hideSemLabel();
 
     // Centralized modal dialog // modal-fullscreen-md-down
-    UI.elModal = UI.createElemementFromHTMLString(`
+    UI.elModal = UI.createElementFromHTMLString(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
@@ -106,7 +107,7 @@ UI._setupBase = ()=>{
 
 
     // Centralized side panel
-    UI.elSidePanel = UI.createElemementFromHTMLString(`
+    UI.elSidePanel = UI.createElementFromHTMLString(`
         <div class="offcanvas offcanvas-end aton-std-bg" tabindex="-1" aria-labelledby="offcanvasExampleLabel"></div>
 	`); // offcanvas-md
 
@@ -280,16 +281,23 @@ UI.hideSemLabel = ()=>{
 
 // Append or prepend HTML fragment to DOM
 UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
-    ATON.REQ.get(src, data => {
-        if (!parentid){
-            if (bPrepend) document.body.prepend(data);
-            else document.body.append(data);
-        }
-        else {
-            if (bPrepend) document.querySelector(`#${parentid}`).prepend(data); 
-            else document.querySelector(`#${parentid}`).append(data);
-        }
-    });
+    fetch(src)
+        .then(res => res.text())
+        .then(res => {
+            let parser = new DOMParser;
+            let nodes = parser.parseFromString(res, 'text/html')
+                .body.childNodes;
+
+            if (!parentid){
+                if (bPrepend) document.body.prepend(...nodes);
+                else document.body.append(...nodes);
+            }
+            else {
+                if (bPrepend) document.querySelector(`#${parentid}`).prepend(...nodes); 
+                else document.querySelector(`#${parentid}`).append(...nodes);
+            }
+        })
+        .catch(err => `Error fetching partial: ${err}`);
 
     if (onComplete) onComplete();
 };
@@ -325,12 +333,12 @@ UI.createButton = (options)=>{
     if (options.icon){
         let stricon = options.icon;
         
-        if (stricon.startsWith("bi-")) el.prepend( UI.createElemementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
-        else el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
+        if (stricon.startsWith("bi-")) el.prepend( UI.createElementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
+        else el.prepend( UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
     }
 
     if (options.badge){ 
-        el.append( UI.createElemementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
+        el.append( UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;
@@ -388,9 +396,9 @@ UI.createTabsGroup = (options)=>{
         let eltabbody;
 
         if (i===0) 
-            eltabbody = UI.createElemementFromHTMLString("<div class='tab-pane show active' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+            eltabbody = UI.createElementFromHTMLString("<div class='tab-pane show active' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
         else 
-            eltabbody = UI.createElemementFromHTMLString("<div class='tab-pane show' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+            eltabbody = UI.createElementFromHTMLString("<div class='tab-pane show' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
 
         eltabbody.style.padding = "10px 0px 10px 0px";
 
@@ -427,7 +435,7 @@ UI.createTreeGroup = (options)=>{
         
         elItem.id = baseid+"-"+i;
 
-        elItem.append( UI.createElemementFromHTMLString("<summary>"+title+"</summary>") );
+        elItem.append( UI.createElementFromHTMLString("<summary>"+title+"</summary>") );
         if (content){
             let elContent = document.createElement('div');
             elContent.classList.add("aton-tree-item-content");
@@ -464,7 +472,7 @@ UI.createVectorControl = (options)=>{
     let posy = V? V.y : 0.0;
     let posz = V? V.z : 0.0;
 
-    let el = UI.createElemementFromHTMLString(`
+    let el = UI.createElementFromHTMLString(`
         <div class="input-group mb-3">
             <input type="number" class="form-control aton-input-x" placeholder="x" aria-label="x" step="${step}" value="${posx}">
             <input type="number" class="form-control aton-input-y" placeholder="y" aria-label="y" step="${step}" value="${posy}">
@@ -525,7 +533,7 @@ UI.createQuaternionControl = (options)=>{
     let z = Q? Q.z : 0.0;
     let w = Q? Q.w : 0.0;
 
-    let el = UI.createElemementFromHTMLString(`
+    let el = UI.createElementFromHTMLString(`
         <div class="input-group mb-3">
             <input type="number" class="form-control" placeholder="x" aria-label="x" step="${step}" value="${x}">
             <input type="number" class="form-control" placeholder="y" aria-label="y" step="${step}" value="${y}">
@@ -600,7 +608,7 @@ UI.createNodeTrasformControl = (options)=>{
             step: options.position.step
         });
 
-        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elPos.id+"'>Position</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elPos.id+"'>Position</label>") );
         el.append( elPos );
     }
 
@@ -612,7 +620,7 @@ UI.createNodeTrasformControl = (options)=>{
             step: options.scale.step
         });
 
-        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elScale.id+"'>Scale</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elScale.id+"'>Scale</label>") );
         el.append( elScale );
     }
 
@@ -629,7 +637,7 @@ UI.createNodeTrasformControl = (options)=>{
             step: options.rotation.step
         });     
 */
-        el.append( UI.createElemementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
     }
 
@@ -747,11 +755,11 @@ UI.createLiveFilter = (options)=>{
 
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
-    let elInput = UI.createElemementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`);
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`);
 
     const elInGroup = document.createElement("div");
     elInGroup.classList.add("input-group"); //,"mb-2");
-    elInGroup.append(UI.createElemementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
+    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
     elInput.oninput = ()=> {
@@ -838,11 +846,11 @@ UI.createLoginForm = (options)=>{
     let el = document.createElement("div");
     el.classList.add("container-sm", "text-center");
 
-    let elUsername = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
-    let elPassword = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
+    let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
+    let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
 
-    let elInputUN = UI.createElemementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
-    let elInputPW = UI.createElemementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
+    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
+    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
 
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);
@@ -872,7 +880,7 @@ UI.createLoginForm = (options)=>{
     });
 
     if (options.header) el.append(options.header);
-    else el.append( UI.createElemementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
+    else el.append( UI.createElementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
 
     el.append(elUsername);
     el.append(elPassword);

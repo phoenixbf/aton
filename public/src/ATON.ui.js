@@ -824,8 +824,14 @@ UI.createPublicScenesGallery = async (options) => {
         }
     };
 
-    if (options.entries) generate(options.entries);
-    else $.getJSON(ATON.PATH_RESTAPI2+"scenes/", generate);
+    if (options.entries) {
+        generate(options.entries);
+    }
+    else {
+        const data = await fetch(ATON.PATH_RESTAPI2+"scenes/")
+            .then(res => res.json());
+        generate(data);
+    }
 
     return el;
 };

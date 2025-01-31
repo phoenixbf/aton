@@ -13,7 +13,7 @@ window.addEventListener( 'load', async ()=>{
         let elHero = document.getElementById("hero");
         if (elHero.children.length <= 0){
                 console.log(elHero)
-                ATON.UI.loadPartial("/common/hero.html","hero");
+                await ATON.UI.loadPartial("/common/hero.html","hero");
         }
 
         // Staff pick
@@ -27,23 +27,23 @@ window.addEventListener( 'load', async ()=>{
         let elPubScenes = document.getElementById("pubscenes");
 
         // Content
-        ATON.REQ.get("scenes/", entries =>{
+        ATON.REQ.get("scenes/", async entries =>{
 
                 for (let s in entries){
                         const S = entries[s];
 
-                        if (S.staffpick) elStaffPickBand.append(
-                                ATON.UI.createSceneCard({
-                                        title: S.title,
-                                        sid: S.sid,
-                                        keywords: S.kwords,
-                                        //size: "large",
-                                        useblurtint: true
-                                })
-                        );
+                        let card = await ATON.UI.createSceneCard({
+                                title: S.title,
+                                sid: S.sid,
+                                keywords: S.kwords,
+                                //size: "large",
+                                useblurtint: true
+                        });
+
+                        if (S.staffpick) elStaffPickBand.append(card);
                 }
 
-                ATON.UI.createPublicScenesGallery({
+                await ATON.UI.createPublicScenesGallery({
                         containerid: "pubscenes",
                         size:"small",
                         entries: entries,
@@ -54,7 +54,7 @@ window.addEventListener( 'load', async ()=>{
 
         // Navbar
         let elNavCont = document.getElementById("navbarSupportedContent");
-        elNavCont.append(ATON.UI.createLiveFilter({
+        elNavCont.append(await ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
                         elHero.style.display = "none";

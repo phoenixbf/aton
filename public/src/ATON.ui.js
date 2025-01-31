@@ -803,22 +803,24 @@ UI.createPublicScenesGallery = async (options) => {
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    const generate = (entries)=>{
+    const generate = async (entries)=>{
         entries.sort( UI.SCENES_SORTER );               
         console.log(entries);
 
-    for (let scene of data) {
-        let bSample = scene.sid.startsWith("samples/");
+        for (let scene of entries) {
+            let bSample = scene.sid.startsWith("samples/");
 
-            if (!bSample || (bSample && options.samples)) el.append(
-                ATON.UI.createSceneCard({
-                    title: S.title? S.title : S.sid,
-                    sid: S.sid,
-                    keywords: S.kwords,
+            if (!bSample || (bSample && options.samples)) {
+                let card = await ATON.UI.createSceneCard({
+                    title: scene.title? scene.title : scene.sid,
+                    sid: scene.sid,
+                    keywords: scene.kwords,
                     useblurtint: true,
                     size: options.size
-                })
-            );
+                });
+
+                el.append(card);
+            }
         }
     };
 

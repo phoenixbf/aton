@@ -280,7 +280,7 @@ UI.hideSemLabel = ()=>{
 
 // Append or prepend HTML fragment to DOM
 UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
-    ATON.REQ(src, data => {
+    ATON.REQ.get(src, data => {
         if (!parentid){
             if (bPrepend) document.body.prepend(data);
             else document.body.append(data);
@@ -310,7 +310,7 @@ Create a button (icon and/or text)
 - options.icon: a basic string will look for centralized ATON PNG icons (e.g. "home") or bootstrap icons (starting with "bi-*"), otherwise a provided full url to image
 - options.onpress: routine to launch on click
 
-@param {{variant, text, icon, onpress}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createButton = (options)=>{
@@ -342,7 +342,7 @@ UI.createButton = (options)=>{
 Create a tabs group.
 - options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties. An optional "icon" can also be assigned per tab
 
-@param {{items}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTabsGroup = (options)=>{
@@ -406,7 +406,7 @@ UI.createTabsGroup = (options)=>{
 Create a tree group
 - options.items: an array of objects (items) with "title" (string) and "content" (DOM element) properties
 
-@param {{items}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTreeGroup = (options)=>{
@@ -448,7 +448,7 @@ Create a vector control
 - options.step: step value
 - options.onupdate: a routine called when vector is changed/updated
 
-@param {{vector, step, onupdate}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createVectorControl = (options)=>{
@@ -508,7 +508,7 @@ Create a quaternion control
 - options.step: step value
 - options.onupdate: a routine called when Quaternion is changed/updated
 
-@param {{quat, step, onupdate}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createQuaternionControl = (options)=>{
@@ -579,7 +579,7 @@ Create a node transform control. If "position", "scale" and "rotation" propertie
 - options.scale: enable scale manipulation
 - options.rotation: enable rotation manipulation
 
-@param {{node, position, scale, rotation}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createNodeTrasformControl = (options)=>{
@@ -643,7 +643,7 @@ Create a scene card.
 - options.keywords: keywords object (eg. {"gold":1, "silver":1 })
 - options.title: scene title
 
-@param {{sid, size, keywords, title}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createSceneCard = async (options)=>{
@@ -733,7 +733,7 @@ Create a live filter, search as user is typing
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
 
-@param {{filterclass, onfocus, onblur}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createLiveFilter = (options)=>{
@@ -794,7 +794,7 @@ Create public scenes gallery
 - options.size: scene cards size
 - options.entries: an optional array of scenes entries. If not provided, REST API will be used to retrieve public scenes
 
-@param {{containerid, size}} options - UI options object
+@param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createPublicScenesGallery = async (options) => {
@@ -828,7 +828,7 @@ UI.createPublicScenesGallery = async (options) => {
         generate(options.entries);
     }
     else {
-        ATON.REQ(ATON.PATH_RESTAPI2+"scenes/", data => generate(data));
+        ATON.REQ.get(ATON.PATH_RESTAPI2+"scenes/", data => generate(data));
     }
 
     return el;

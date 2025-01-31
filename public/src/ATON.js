@@ -44,6 +44,7 @@ import XPFNetwork from "./ATON.xpfnetwork.js";
 import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
 import ASCII from "./ATON.ascii.js";
+import REQ from "./ATON.req.js";
 
 // Classes
 ATON.Node       = Node;
@@ -74,6 +75,7 @@ ATON.FX         = FX;
 ATON.XPFNetwork = XPFNetwork;
 ATON.MRes       = MRes;
 ATON.ASCII      = ASCII;
+ATON.REQ        = REQ;
 
 //==============================================================
 // Consts
@@ -232,6 +234,16 @@ ATON.rewindAllPlayingMedia = ()=>{
 
 // Auth
 ATON.checkAuth = (onLogged, onNotLogged)=>{
+    ATON.REQ.get("user",
+        (data)=>{
+            if (data && onLogged) onLogged(data);
+            else if (onNotLogged) onNotLogged();
+        },
+        (err)=>{
+            if (onNotLogged) onNotLogged(); 
+        }
+    );
+/*
     $.ajax({
         type: 'GET',
         url: ATON.PATH_RESTAPI+"user",
@@ -247,6 +259,7 @@ ATON.checkAuth = (onLogged, onNotLogged)=>{
             if (onNotLogged) onNotLogged();
         }
     });
+*/
 };
 
 
@@ -895,10 +908,14 @@ ATON.realize2D = ()=>{
 
     ATON.UI.init();
 
-    document.body.style["overflow-y"]        = "auto";
-    document.body.style["touch-action"]      = "auto";
-    document.body.style["-webkit-user-drag"] = "auto";
-
+    document.body.classList.add("aton-body2D");
+/*
+    const bs = document.body.style;
+    bs["overflow"]          = "auto";
+    bs["touch-action"]      = "auto";
+    bs["-webkit-user-drag"] = "auto";
+    bs["-webkit-tap-highlight-color"] = ""
+*/
     document.body.oncontextmenu = null;
 
     ATON.EventHub.init();

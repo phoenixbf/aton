@@ -90,7 +90,7 @@ UI._setupBase = ()=>{
     document.body.prepend( UI.elLabelCon );
     UI.hideSemLabel();
 
-    // Centralized modal dialog
+    // Centralized modal dialog // modal-fullscreen-md-down
     UI.elModal = UI.createElemementFromHTMLString(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -307,7 +307,7 @@ UI.resolveIconURL = (icon)=>{
 Create a button (icon and/or text)
 - options.variant: the bootstrap variant (primary, info, etc.)
 - options.text: the button text
-- options.icon: the icon, if simple string will look for centralized icon resources (e.g. "home"), otherwise a provided url to image
+- options.icon: a basic string will look for centralized ATON PNG icons (e.g. "home") or bootstrap icons (starting with "bi-*"), otherwise a provided full url to image
 - options.onpress: routine to launch on click
 
 @param {object} options - UI options object
@@ -323,7 +323,10 @@ UI.createButton = (options)=>{
     if (options.text) el.innerText = options.text;
 
     if (options.icon){
-        el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(options.icon)+"'>"));
+        let stricon = options.icon;
+        
+        if (stricon.startsWith("bi-")) el.prepend( UI.createElemementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
+        else el.prepend( UI.createElemementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
     }
 
     if (options.badge){ 
@@ -709,11 +712,9 @@ UI.createSceneCard = async (options)=>{
         el.setAttribute("data-search-term", sskwords);
     }
     else {
-        let data = await fetch(`${ATON.PATH_RESTAPI2}scenes/${options.sid}`)
-            .then(res => res.json())
-            .catch(err => `Error fetching scene data: ${err}`);
-
-        if (data.title) elTitle.innerHTML = data.title; // FIXME
+        ATON.REQ.get("scenes/"+options.sid, ( data )=>{
+            if (data.title) elTitle.innerHTML = data.title; // FIXME
+        });
     }
 
     elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
@@ -746,10 +747,12 @@ UI.createLiveFilter = (options)=>{
 
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
+    let elInput = UI.createElemementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`);
 
-    let elInput = UI.createElemementFromHTMLString(
-        `<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`
-    );
+    const elInGroup = document.createElement("div");
+    elInGroup.classList.add("input-group"); //,"mb-2");
+    elInGroup.append(UI.createElemementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
+    elInGroup.append(elInput);
 
     elInput.oninput = ()=> {
         if (!options.filterclass) return;
@@ -780,7 +783,7 @@ UI.createLiveFilter = (options)=>{
     if (options.onfocus) elInput.onfocus = options.onfocus;
     if (options.onblur)  elInput.onblur  = options.onblur;
 
-    el.append(elInput);
+    el.append(elInGroup);
 
     return el;
 };
@@ -789,6 +792,7 @@ UI.createLiveFilter = (options)=>{
 Create public scenes gallery
 - options.containerid: ID of container (DOM element) for the gallery
 - options.size: scene cards size
+- options.entries: an optional array of scenes entries. If not provided, REST API will be used to retrieve public scenes
 
 @param {{containerid, size}} options - UI options object
 @returns {HTMLElement}
@@ -799,26 +803,74 @@ UI.createPublicScenesGallery = async (options) => {
     let el = document.getElementById(options.containerid);
     if (!el) return undefined;
 
-    let data = await fetch(`${ATON.PATH_RESTAPI2}scenes/`)
-        .then(res => res.json())
-        .catch(err => console.log(`Couldn't fetch scenes data (Error: ${err})`));
-
-    data.sort( UI.SCENES_SORTER );              
-    console.log(data);
+    const generate = (entries)=>{
+        entries.sort( UI.SCENES_SORTER );               
+        console.log(entries);
 
     for (let scene of data) {
         let bSample = scene.sid.startsWith("samples/");
 
-        if (!bSample || (bSample && options.samples)) el.append(
-            await ATON.UI.createSceneCard({
-                title: scene.title? scene.title : scene.sid,
-                sid: scene.sid,
-                keywords: scene.kwords,
-                useblurtint: true,
-                size: options.size
-            })
-        );
-    }
+            if (!bSample || (bSample && options.samples)) el.append(
+                ATON.UI.createSceneCard({
+                    title: S.title? S.title : S.sid,
+                    sid: S.sid,
+                    keywords: S.kwords,
+                    useblurtint: true,
+                    size: options.size
+                })
+            );
+        }
+    };
+
+    if (options.entries) generate(options.entries);
+    else $.getJSON(ATON.PATH_RESTAPI2+"scenes/", generate);
+
+    return el;
+};
+
+UI.createLoginForm = (options)=>{
+    let el = document.createElement("div");
+    el.classList.add("container-sm", "text-center");
+
+    let elUsername = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
+    let elPassword = UI.createElemementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
+
+    let elInputUN = UI.createElemementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
+    let elInputPW = UI.createElemementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
+
+    elUsername.append(elInputUN);
+    elPassword.append(elInputPW);
+
+    let elEnter = ATON.UI.createButton({
+        text: "Login",
+        icon: "bi-person",
+        variant: "primary",
+        onpress: ()=>{
+            let uname = elInputUN.value.trim();
+            let passw = elInputPW.value.trim();
+
+            ATON.REQ.post("login",
+                {
+                    username:uname, 
+                    password:passw
+                },
+                (r)=>{
+                    if (r && options.onSuccess) options.onSuccess(r);
+                    else if (options.onFail) options.onFail();
+                },
+                (e)=>{
+                    if (options.onFail) options.onFail();
+                }
+            )
+        }
+    });
+
+    if (options.header) el.append(options.header);
+    else el.append( UI.createElemementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
+
+    el.append(elUsername);
+    el.append(elPassword);
+    el.append(elEnter);
 
     return el;
 };

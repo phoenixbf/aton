@@ -312,8 +312,37 @@ API.init = (app)=>{
     });
 
     /*===============================
+        AUTH
+    ===============================*/
+    app.post(API.BASE + "login", 
+        Core.passport.authenticate('local', {
+            failureRedirect: 'v2/login'
+        }), (req, res)=>{
+
+        let U = Core.Auth.createClientResponse(req);
+    
+        res.send(U);
+    });
+
+    /*===============================
         USERS
     ===============================*/
+    app.get(API.BASE + "user", (req,res)=>{
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.send(false);
+            return;
+        }
+
+        let uname = req.user.username;
+
+        let U = Core.Auth.findUser(uname);
+        if (U) res.send({
+            username: U.username,
+            admin: U.admin
+        });
+        else res.send(false);
+    });
+
     app.get(API.BASE + "users", (req,res)=>{
         if ( !Core.Auth.isUserAdmin(req) ){
             res.status(401).send([]);
@@ -372,7 +401,7 @@ API.init = (app)=>{
         //TODO: modify user entry
     });
 
-    // Update user
+    // Delete user
     app.delete(API.BASE + "users/:user", (req,res)=>{
         if ( !Core.Auth.isUserAdmin(req) ){
             res.status(401).send(false);

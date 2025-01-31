@@ -2,34 +2,11 @@
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
-
-<!-- Add iOS meta tags and icons -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="ATON Framework">
-<link rel="apple-touch-icon" href="/res/aton-logo.png">
-<meta name="description" content="ATON Framework">
-
-<title>ATON Framework</title>
-<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/res/css/main.css">
-
-<script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
-<script type="module" src="/src/ATON.js"></script>
+<%- include('frags/head'); %>
 
 <script>
 window.addEventListener( 'load', async ()=>{
         ATON.realize2D();
-        
         ATON.UI.setTheme("light");
 
         // Hero
@@ -41,41 +18,38 @@ window.addEventListener( 'load', async ()=>{
 
         // Staff pick
         let elStaffPick = document.getElementById("staffpick");
-
-        elStaffPick.append(
-                await ATON.UI.createSceneCard({
-                        title:"sample",
-                        sid: "samples/welcome",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
-        elStaffPick.append(
-                await ATON.UI.createSceneCard({
-                        title:"sample",
-                        sid: "samples/skyphos",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
-        elStaffPick.append(
-                await ATON.UI.createSceneCard({
-                        title:"montebelluna",
-                        sid: "samples/montebelluna",
-                        //size: "large",
-                        useblurtint: true
-                })
-        );
+        let elStaffPickBand = document.getElementById("staffpickband");
 
         // Apps
         let elApps = document.getElementById("apps");
 
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
-        ATON.UI.createPublicScenesGallery({
-                containerid: "pubscenes",
-                size:"small",
-                <% if (samples) { %> samples: true <% } %>
+
+        // Content
+        ATON.REQ.get("scenes/", entries =>{
+
+                for (let s in entries){
+                        const S = entries[s];
+
+                        if (S.staffpick) elStaffPickBand.append(
+                                ATON.UI.createSceneCard({
+                                        title: S.title,
+                                        sid: S.sid,
+                                        keywords: S.kwords,
+                                        //size: "large",
+                                        useblurtint: true
+                                })
+                        );
+                }
+
+                ATON.UI.createPublicScenesGallery({
+                        containerid: "pubscenes",
+                        size:"small",
+                        entries: entries,
+                        <% if (samples) { %> samples: true <% } %>
+                });
+
         });
 
         // Navbar
@@ -84,34 +58,70 @@ window.addEventListener( 'load', async ()=>{
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
                         elHero.style.display = "none";
-                        elApps.style.display = "none";
+                        if (elApps) elApps.style.display = "none";
                         //elStaffPick.style.display = "none";
                 },
                 onblur: ()=>{
                         elHero.style.display = "block";
-                        elApps.style.display = "block";
+                        if (elApps) elApps.style.display = "block";
                         //elStaffPick.style.display = "block";   
                 }
         }));
 
-        elNavCont.append(ATON.UI.createButton({
-                icon: "user",
-                text: "Login"
-        }));
+        let btnLogin = ATON.UI.createButton({
+                icon: "bi-person",
+                //icon: "user",
+                text: "Login",
+                onpress: ()=>{
+                        window.location.href = "/v2/login"+"?u="+window.location.href;
+/*
+                        ATON.UI.showModal({
+                                //header: "Login",
+                                body: ATON.UI.createLoginForm({
+                                        onSuccess: (r)=>{
+                                                btnLogin.innerHTML = r.username;
+                                                ATON.UI.hideModal()
+                                        },
+                                        onFail: ()=>{}
+                                })
+                        })
+*/
+                }
+
+        });
+
+        elNavCont.append(btnLogin);
+
+        ATON.checkAuth(
+                (u)=>{
+                        if (u){
+                                console.log(u)
+                                btnLogin.replaceWith(ATON.UI.createButton({
+                                        icon: "bi-person",
+                                        //icon: "user",
+                                        text: u.username,
+                                        onpress: ()=>{
+                                                //window.location.href = "/v2/login"+"?u="+window.location.href;
+                                        }
+                                }));
+                        }
+                
+                }
+        );
 });
 </script>
 </head>
 
 <body>
         <!-- Navbar -->
-        <%- include('navbar'); %>
+        <%- include('frags/navbar'); %>
 
         <div style="margin-top: 40px;"></div>
 
         <!-- Hero section -->
         <div id="hero">
                 <% if (!customhero){ %>
-                        <%- include('hero'); %> 
+                        <%- include('frags/hero'); %> 
                 <% } %>
         </div>
         
@@ -120,13 +130,16 @@ window.addEventListener( 'load', async ()=>{
         <div id="staffpick" style="padding: 40px; text-align: center;">
                 <h2>Staff Pick</h2>
                 <hr>
+                <div id="staffpickband" class="aton-hscrollable" ></div>
         </div>
 
         <!-- Apps -->
+        <% if (apps.length>0) { %>
         <div id="apps" style="padding: 40px; text-align: center;">
                 <h2>Apps</h2>
                 WebApps accessible on this instance<hr>
         </div>
+        <% } %>
 
         <!-- Public scenes -->
         <div id="pubscenes" style="padding: 40px; text-align: center;">
@@ -135,6 +148,6 @@ window.addEventListener( 'load', async ()=>{
         </div>
 
         <div id="footer" class="aton-footer">
-                <%- include('footer'); %>
+                <%- include('frags/footer'); %>
         </div>
 </body>

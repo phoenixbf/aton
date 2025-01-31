@@ -279,17 +279,17 @@ UI.hideSemLabel = ()=>{
 };
 
 // Append or prepend HTML fragment to DOM
-UI.loadPartial = async (src, parentid, bPrepend, onComplete)=>{
-    let data = await fetch(src).then(res => res.json());
-
-    if (!parentid){
-        if (bPrepend) document.body.prepend(data);
-        else document.body.append(data);
-    }
-    else {
-        if (bPrepend) document.querySelector(`#${parentid}`).prepend(data); 
-        else document.querySelector(`#${parentid}`).append(data);
-    }
+UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
+    ATON.REQ(src, data => {
+        if (!parentid){
+            if (bPrepend) document.body.prepend(data);
+            else document.body.append(data);
+        }
+        else {
+            if (bPrepend) document.querySelector(`#${parentid}`).prepend(data); 
+            else document.querySelector(`#${parentid}`).append(data);
+        }
+    });
 
     if (onComplete) onComplete();
 };
@@ -828,9 +828,7 @@ UI.createPublicScenesGallery = async (options) => {
         generate(options.entries);
     }
     else {
-        const data = await fetch(ATON.PATH_RESTAPI2+"scenes/")
-            .then(res => res.json());
-        generate(data);
+        ATON.REQ(ATON.PATH_RESTAPI2+"scenes/", data => generate(data));
     }
 
     return el;

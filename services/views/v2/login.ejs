@@ -11,7 +11,7 @@ window.addEventListener( 'load', ()=>{
 
         const params = new URLSearchParams( window.location.search );
 
-        let elForm = document.getElementById("loginform");
+        let elForm = document.getElementById("logincontainer");
 
         elHeader = ATON.UI.createElementFromHTMLString(`<img src="/res/aton-logo.png" style="width:100px; height:auto; margin-bottom:20px">`);
 
@@ -36,7 +36,7 @@ window.addEventListener( 'load', ()=>{
     <div style="margin-top: 40px;"></div>
 -->
 
-    <form id="loginform" style="max-width: 400px; margin: auto; padding: 40px;"></form>
+    <div id="logincontainer" style="max-width: 400px; margin: auto; padding: 40px;"></div>
   
     <div id="footer" class="aton-footer">
             <%- include('frags/footer'); %>

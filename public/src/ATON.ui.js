@@ -841,7 +841,7 @@ UI.createPublicScenesGallery = (options) => {
 };
 
 UI.createLoginForm = (options)=>{
-    let el = document.createElement("div");
+    let el = document.createElement("form");
     el.classList.add("container-sm", "text-center");
 
     let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);

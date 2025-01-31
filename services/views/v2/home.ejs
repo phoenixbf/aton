@@ -2,30 +2,7 @@
 <html lang="en">
 
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
-
-<!-- Add iOS meta tags and icons -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="ATON Framework">
-<link rel="apple-touch-icon" href="/res/aton-logo.png">
-<meta name="description" content="ATON Framework">
-
-<title>ATON Framework</title>
-<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
-<link rel="stylesheet" type="text/css" href="/res/css/main.css">
-
-<script type="text/javascript" src="/vendors/vendors.min.js"></script>
-<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
-<script type="module" src="/src/ATON.js"></script>
+<%- include('frags/head'); %>
 
 <script>
 window.addEventListener( 'load', ()=>{
@@ -96,6 +73,8 @@ window.addEventListener( 'load', ()=>{
                 //icon: "user",
                 text: "Login",
                 onpress: ()=>{
+                        window.location.href = "/v2/login"+"?u="+window.location.href;
+/*
                         ATON.UI.showModal({
                                 //header: "Login",
                                 body: ATON.UI.createLoginForm({
@@ -106,25 +85,43 @@ window.addEventListener( 'load', ()=>{
                                         onFail: ()=>{}
                                 })
                         })
+*/
                 }
 
         });
 
         elNavCont.append(btnLogin);
+
+        ATON.checkAuth(
+                (u)=>{
+                        if (u){
+                                console.log(u)
+                                btnLogin.replaceWith(ATON.UI.createButton({
+                                        icon: "bi-person",
+                                        //icon: "user",
+                                        text: u.username,
+                                        onpress: ()=>{
+                                                //window.location.href = "/v2/login"+"?u="+window.location.href;
+                                        }
+                                }));
+                        }
+                
+                }
+        );
 });
 </script>
 </head>
 
 <body>
         <!-- Navbar -->
-        <%- include('navbar'); %>
+        <%- include('frags/navbar'); %>
 
         <div style="margin-top: 40px;"></div>
 
         <!-- Hero section -->
         <div id="hero">
                 <% if (!customhero){ %>
-                        <%- include('hero'); %> 
+                        <%- include('frags/hero'); %> 
                 <% } %>
         </div>
         
@@ -151,6 +148,6 @@ window.addEventListener( 'load', ()=>{
         </div>
 
         <div id="footer" class="aton-footer">
-                <%- include('footer'); %>
+                <%- include('frags/footer'); %>
         </div>
 </body>

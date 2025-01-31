@@ -310,7 +310,7 @@ Create a button (icon and/or text)
 - options.icon: a basic string will look for centralized ATON PNG icons (e.g. "home") or bootstrap icons (starting with "bi-*"), otherwise a provided full url to image
 - options.onpress: routine to launch on click
 
-@param {object} options - UI options object
+@param {{variant, text, icon, onpress}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createButton = (options)=>{
@@ -342,7 +342,7 @@ UI.createButton = (options)=>{
 Create a tabs group.
 - options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties. An optional "icon" can also be assigned per tab
 
-@param {object} options - UI options object
+@param {{items}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTabsGroup = (options)=>{
@@ -406,7 +406,7 @@ UI.createTabsGroup = (options)=>{
 Create a tree group
 - options.items: an array of objects (items) with "title" (string) and "content" (DOM element) properties
 
-@param {object} options - UI options object
+@param {{items}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createTreeGroup = (options)=>{
@@ -448,7 +448,7 @@ Create a vector control
 - options.step: step value
 - options.onupdate: a routine called when vector is changed/updated
 
-@param {object} options - UI options object
+@param {{vector, step, onupdate}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createVectorControl = (options)=>{
@@ -508,7 +508,7 @@ Create a quaternion control
 - options.step: step value
 - options.onupdate: a routine called when Quaternion is changed/updated
 
-@param {object} options - UI options object
+@param {{quat, step, onupdate}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createQuaternionControl = (options)=>{
@@ -579,7 +579,7 @@ Create a node transform control. If "position", "scale" and "rotation" propertie
 - options.scale: enable scale manipulation
 - options.rotation: enable rotation manipulation
 
-@param {object} options - UI options object
+@param {{node, position, scale, rotation}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createNodeTrasformControl = (options)=>{
@@ -643,7 +643,7 @@ Create a scene card.
 - options.keywords: keywords object (eg. {"gold":1, "silver":1 })
 - options.title: scene title
 
-@param {object} options - UI options object
+@param {{sid, size, keywords, title}} options - UI options object
 @returns {HTMLElement}
 */
 UI.createSceneCard = async (options)=>{

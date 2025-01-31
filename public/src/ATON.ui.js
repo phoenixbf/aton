@@ -828,7 +828,7 @@ UI.createPublicScenesGallery = (options) => {
         generate(options.entries);
     }
     else {
-        ATON.REQ.get(ATON.PATH_RESTAPI2+"scenes/", data => generate(data));
+        ATON.REQ.get("scenes/", data => generate(data));
     }
 
     return el;

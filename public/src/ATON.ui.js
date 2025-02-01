@@ -305,6 +305,13 @@ UI.resolveIconURL = (icon)=>{
     return UI.PATH_RES_ICONS + icon+".png";
 };
 
+UI.prependIcon = (el, icon)=>{
+    if (icon.startsWith("bi-")) 
+        el.prepend( UI.createElementFromHTMLString("<i class='bi "+icon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
+    else 
+        el.prepend( UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(icon)+"'>"));
+};
+
 /*===============================
     Items
 ===============================*/
@@ -328,18 +335,71 @@ UI.createButton = (options)=>{
 
     if (options.text) el.innerText = options.text;
 
+    if (options.icon) UI.prependIcon(el, options.icon);
+/*
     if (options.icon){
         let stricon = options.icon;
         
         if (stricon.startsWith("bi-")) el.prepend( UI.createElementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
         else el.prepend( UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
     }
-
+*/
     if (options.badge){ 
         el.append( UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;
+
+    return el;
+};
+
+/**
+Create a dropdown
+- options.items: an array of objects with "title" (string) and "url" (string) properties.
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createDropdown = (options)=>{
+    let el = document.createElement('div');
+    el.classList.add("btn-group");
+
+    let elBtn = UI.createElementFromHTMLString(`
+        <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
+    `);
+    
+    if (options.icon) UI.prependIcon(elBtn, options.icon);
+
+    el.append( elBtn );
+
+    if (options.items){
+        let elList = document.createElement("ul");
+
+        elList.classList.add("dropdown-menu", "aton-dropdown-menu");
+        if (options.align) elList.classList.add(options.align);
+
+        for (let i=0; i<options.items.length; i++){
+            let E = options.items[i];
+
+            let elItem;
+
+            if (E.el){
+                elItem = E.el;
+                elItem.classList.add("dropdown-item", "aton-dropdown-item");
+            }
+            else elItem = UI.createElementFromHTMLString(`
+                <a class="dropdown-item aton-dropdown-item" href="${E.url}">${E.title}</a>
+            `);
+
+            let elItemLI = document.createElement("li");
+            elItemLI.append( elItem );
+            elList.append( elItemLI );
+
+            if (E.icon) UI.prependIcon(elItem, E.icon);
+        }
+
+        el.append(elList);
+    }
 
     return el;
 };
@@ -861,19 +921,7 @@ UI.createLoginForm = (options)=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();
 
-            ATON.REQ.post("login",
-                {
-                    username:uname, 
-                    password:passw
-                },
-                (r)=>{
-                    if (r && options.onSuccess) options.onSuccess(r);
-                    else if (options.onFail) options.onFail();
-                },
-                (e)=>{
-                    if (options.onFail) options.onFail();
-                }
-            )
+            ATON.REQ.login(uname,passw, options.onSuccess, options.onFail);
         }
     });
 

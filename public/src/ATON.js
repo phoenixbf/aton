@@ -707,6 +707,7 @@ ATON.realize = ( bNoRender )=>{
     //canvas.style.height  = "100%";
 
     ATON.UI.init();
+    ATON.REQ.init();
 
     // Multimedia
     ATON._vpanoPlaying = false;
@@ -907,15 +908,9 @@ ATON.realize2D = ()=>{
     ATON._b2D = true;
 
     ATON.UI.init();
+    ATON.REQ.init();
 
     document.body.classList.add("aton-body2D");
-/*
-    const bs = document.body.style;
-    bs["overflow"]          = "auto";
-    bs["touch-action"]      = "auto";
-    bs["-webkit-user-drag"] = "auto";
-    bs["-webkit-tap-highlight-color"] = ""
-*/
     document.body.oncontextmenu = null;
 
     ATON.EventHub.init();

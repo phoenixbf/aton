@@ -82,9 +82,12 @@ Render.setup = (app)=>{
 	});
 
 	app.get("/v2/login", (req,res,next)=>{
-
 		res.render("v2/login");
 	});
+	app.get("/v2/logout", (req,res,next)=>{
+		res.render("v2/logout");
+	});
+
 };
 
 

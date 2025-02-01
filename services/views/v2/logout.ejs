@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<%- include('frags/head'); %>
+
+<script>
+window.addEventListener( 'load', ()=>{
+    ATON.realize2D();
+    ATON.UI.setTheme("light");
+
+    const params = new URLSearchParams( window.location.search );
+
+    let url = params.get("u");
+
+    ATON.REQ.logout(()=>{
+        if (url) window.location.href = url;
+        else window.location.href = "/v2";
+    });
+});
+</script>
+</head>
+
+<body>
+    <div id="footer" class="aton-footer">
+            <%- include('frags/footer'); %>
+    </div>
+</body>

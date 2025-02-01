@@ -53,7 +53,9 @@ window.addEventListener( 'load', ()=>{
         });
 
         // Navbar
-        let elNavCont = document.getElementById("navbarSupportedContent");
+        let elNavCont  = document.getElementById("navbarSupportedContent");
+        let elNavItems = document.getElementById("navbarItems");
+
         elNavCont.append(ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
@@ -94,18 +96,31 @@ window.addEventListener( 'load', ()=>{
 
         ATON.checkAuth(
                 (u)=>{
-                        if (u){
-                                console.log(u)
-                                btnLogin.replaceWith(ATON.UI.createButton({
-                                        icon: "bi-person",
-                                        //icon: "user",
-                                        text: u.username,
-                                        onpress: ()=>{
-                                                //window.location.href = "/v2/login"+"?u="+window.location.href;
-                                        }
-                                }));
-                        }
-                
+                        console.log(u)
+
+                        btnLogin.remove();
+/*
+                        btnLogin.replaceWith(ATON.UI.createButton({
+                                icon: "bi-person",
+                                //icon: "user",
+                                text: u.username,
+                                onpress: ()=>{
+                                        //window.location.href = "/v2/login"+"?u="+window.location.href;
+                                }
+                        }));
+*/
+
+                        elNavCont.append( ATON.UI.createDropdown({
+                                icon: "bi-person",
+                                align: "dropdown-menu-end",
+                                title: u.username,
+                                items: [
+                                        { title: "My Scenes", url: "#", icon:"scene" },
+                                        { title: "My Collection", url: "#", icon:"collection" },
+                                        { title: "Logout", url: "/v2/logout" }
+                                ]
+                        }));
+
                 }
         );
 });

@@ -143,6 +143,7 @@ Auth.isUserAdmin = (req)=>{
 
 Auth.createClientResponse = (req)=>{
 	if (!Auth.isUserAuth(req)) return false;
+	//if (req.user === undefined) return false;
 
 	let U = {};
 	U.username = req.user.username;

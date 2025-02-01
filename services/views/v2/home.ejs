@@ -45,7 +45,7 @@ window.addEventListener( 'load', ()=>{
 
                 ATON.UI.createPublicScenesGallery({
                         containerid: "pubscenes",
-                        size:"small",
+                        //size:"small",
                         entries: entries,
                         <% if (samples) { %> samples: true <% } %>
                 });
@@ -129,11 +129,11 @@ window.addEventListener( 'load', ()=>{
 </script>
 </head>
 
-<body>
+<body style="padding-top:50px;">
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 
-        <div style="margin-top: 40px;"></div>
+        <!-- <div style="margin-top: 40px;"></div>  -->
 
         <!-- Hero section -->
         <div id="hero">

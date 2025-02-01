@@ -757,7 +757,7 @@ UI.createSceneCard = (options)=>{
 
     // Cover    
     //if (options.onpress) el.innerHTML += "<img src='"+cover+"' class='card-img-top'>";
-    el.innerHTML += "<a href='"+ATON.PATH_FE+options.sid+"'><img src='"+cover+"' class='card-img-top'></a>";
+    el.innerHTML += "<div class='aton-card-cover'><a href='"+ATON.PATH_FE+options.sid+"'><img src='"+cover+"' class='card-img-top'></a></div>";
     
     // Body
     let elbody = document.createElement('div');

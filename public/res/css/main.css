@@ -277,11 +277,11 @@ canvas:active {
     height: 16px;
 }
 
-/*
+
 .aton-btn {
-    background-color: var(--bs-secondary-bg);
+    /*background-color: var(--bs-body-bg) !important;*/
+    white-space: nowrap;
 }
-*/
 
 .aton-btn img {
     width: 1.5em;
@@ -304,6 +304,17 @@ canvas:active {
 
 .aton-dropdown-item {
     display: inline-block;
+}
+
+.aton-dropdown-item img {
+    margin-right: 8px;
+    height: 20px;
+    width: 20px;
+}
+.aton-dropdown-item .bi {
+    margin-right: 8px;
+    height: 16px;
+    width: 16px;
 }
 
 .aton-dropdown-item:hover {

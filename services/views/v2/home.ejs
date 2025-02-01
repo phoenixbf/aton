@@ -56,7 +56,7 @@ window.addEventListener( 'load', ()=>{
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
 
-        elNavCont.append(ATON.UI.createLiveFilter({
+        let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
                         elHero.style.display = "none";
@@ -68,7 +68,9 @@ window.addEventListener( 'load', ()=>{
                         if (elApps) elApps.style.display = "block";
                         //elStaffPick.style.display = "block";   
                 }
-        }));
+        })
+
+        elNavCont.append(elSearch);
 
         let btnLogin = ATON.UI.createButton({
                 icon: "bi-person",
@@ -112,12 +114,12 @@ window.addEventListener( 'load', ()=>{
 
                         elNavCont.append( ATON.UI.createDropdown({
                                 icon: "bi-person",
-                                align: "dropdown-menu-end",
+                                //align: "dropdown-menu-end",
                                 title: u.username,
                                 items: [
                                         { title: "My Scenes", url: "#", icon:"scene" },
                                         { title: "My Collection", url: "#", icon:"collection" },
-                                        { title: "Logout", url: "/v2/logout" }
+                                        { title: "Logout", url: "/v2/logout", xicon: "bi-box-arrow-left" }
                                 ]
                         }));
 

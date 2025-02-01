@@ -355,7 +355,9 @@ UI.createButton = (options)=>{
 
 /**
 Create a dropdown
-- options.items: an array of objects with "title" (string) and "url" (string) properties.
+- options.title: the dropdown button title
+- options.icon: icon for dropdown button
+- options.items: an array of objects with "title" (string) and "url" (string) properties. An optional icon can be provided
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -365,7 +367,7 @@ UI.createDropdown = (options)=>{
     el.classList.add("btn-group");
 
     let elBtn = UI.createElementFromHTMLString(`
-        <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
+        <button type="button" class="btn aton-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
     `);
     
     if (options.icon) UI.prependIcon(elBtn, options.icon);
@@ -375,8 +377,8 @@ UI.createDropdown = (options)=>{
     if (options.items){
         let elList = document.createElement("ul");
 
-        elList.classList.add("dropdown-menu", "aton-dropdown-menu");
-        if (options.align) elList.classList.add(options.align);
+        elList.classList.add("dropdown-menu", "dropdown-menu-sm-end", "aton-dropdown-menu");
+        //if (options.align) elList.classList.add(options.align);
 
         for (let i=0; i<options.items.length; i++){
             let E = options.items[i];
@@ -798,6 +800,7 @@ Create a live filter, search as user is typing
 - options.filterclass: items class to filter (eg. "aton-scene-card")
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
+- options.oninput: custom routine on keyboard input. If not provided uses filterclass option
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -820,7 +823,8 @@ UI.createLiveFilter = (options)=>{
     elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
-    elInput.oninput = ()=> {
+    if (options.oninput) elInput.oninput = options.oninput;
+    else elInput.oninput = ()=> {
         if (!options.filterclass) return;
 
         let v = elInput.value.trim().toLowerCase();
@@ -836,7 +840,9 @@ UI.createLiveFilter = (options)=>{
         }    
 
         for (let item of filterItems) {
-            if (item.getAttribute('data-search-term').includes(v) || v.length < 1) {
+            let attr = item.getAttribute('data-search-term');
+
+            if (attr && (attr.includes(v) || v.length < 1)) {
                 item.classList.remove('d-none');
             }
             else {

@@ -149,7 +149,7 @@ SHU.createPubScenesGallery = (idcontainer, bSamples, onComplete, opts)=>{
             let user  = SHU.getUserFromSID(sid);
 
             if ( bSamples || user !== "samples" ){
-                let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
+                let urlCover = ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover"; // (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
                 let title = (scene.title)? scene.title : sid;
 
                 let terms = title.trim().toLowerCase();

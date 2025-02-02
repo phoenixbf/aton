@@ -52,7 +52,7 @@ let renderGallery = ()=>{
             let scene = data[i];
             let sid = scene.sid;
 
-            let urlCover = (scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
+            let urlCover = ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover"; //(scene.cover)? ATON.PATH_SCENES+sid+"/cover.png" : ATON.PATH_RES+"scenecover.png";
             //let urlCover = ATON.PATH_RESTAPI+"cover/"+sid;
 
             let shtml = "";

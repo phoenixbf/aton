@@ -240,40 +240,8 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 
 	img = img.replace(/^data:image\/png;base64,/, "");
 
-	let scenefolder  = Core.getSceneFolder(sid);
-	let coverfile    = path.join(scenefolder, "cover-high.png");
-	let coverfileOpt = path.join(scenefolder, "cover.png");
-	console.log(coverfile);
-
-	fs.writeFile(coverfile, img, 'base64', (err)=>{
-		//if (fs.existsSync(coverfileOpt)) fs.unlinkSync(coverfileOpt);
-
-		// Optimize PNG size
-		sharp(coverfile)
-			//.resize({ width: 256, height: 256 })
-			.withMetadata()
-			.png({
-				quality: 90, // 0-100
-				//compression: 6, // this doesn't need to be set
-			})
-			.toFile(coverfileOpt, (err)=>{
-				if (err) console.log(err);
-				else {
-					console.log('done');
-					res.send(true);
-				}
-		}); 
-
-/*
-		imagemin([coverfile], {
-			destination: scenefolder,
-			plugins: [ imageminPNGquant({ quality: [0.1, 0.1] }) ]
-		}).then(()=>{
-			console.log("Cover compressed");
-			res.send(true);
-		});
-*/
-		//res.send(true);
+	Core.generateCoverForScene(sid, img, ()=>{
+		res.send(true);
 	});
 });
 
@@ -287,10 +255,13 @@ app.post("/api/cover/scene/", (req,res,next)=>{
 app.get(/^\/api\/cover\/(.*)$/, (req,res,next)=>{
 	let sid = req.params[0];
 
-	let coverfile = path.join(Core.getSceneFolder(sid), "cover.png");
+	let coverfile = path.join(Core.getSceneFolder(sid), Core.STD_COVERFILE);
+	if (!fs.existsSync(coverfile)) coverfile = path.join(Core.getSceneFolder(sid), Core.STD_COVERFILE_HI);
+
+	console.log(coverfile)
 
 	if (!fs.existsSync(coverfile)){
-		return res.sendFile(Core.DIR_RES+"scenecover.png");
+		return res.sendFile(Core.STD_COVERFILE_PATH);
 	}
 
 	res.sendFile(coverfile);

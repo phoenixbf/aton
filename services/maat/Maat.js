@@ -94,6 +94,15 @@ Maat.init = ()=>{
     });
 */
     //Maat._dUpd = setInterval(Maat.update, Maat.INTERVAL);
+
+	// First global scan
+	Maat.getUsers();
+	Maat.scanApps();
+	Maat.scanScenes();
+	for (let i in Maat.db.users){
+		let u = Maat.db.users[i].username;
+		Maat.scanCollection(u);
+	}
 };
 
 Maat.sortScenes = (entryA, entryB)=>{
@@ -125,85 +134,85 @@ Maat.addSceneKeyword = (k)=>{
 
 Maat.scanScenes = ()=>{
 	if (Maat.needScan.scenes === false) return;
-
-	Maat.db.scenes     = []; // clear
-	Maat.db.scenesByID = {};
-	Maat.db.kwords     = {}; // clear global keywords
-	//Maat.db.users  = {};
 	
 	console.log("Scanning scenes...");
 
 	const confSHU = Core.config.shu;
 
-	let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+	//let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+	fg("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS).then( files => {
 
-	for (let f in files){
-		let S = {};
+		Maat.db.scenes     = []; // clear
+		Maat.db.scenesByID = {};
+		Maat.db.kwords     = {}; // clear global keywords
+		//Maat.db.users  = {};
 
-		let sid       = path.dirname(files[f]);
-		//let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
-		let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
-	
-		//let user = sid.split("/")[0];
-		//if (user) Maat.db.users[user] = 1;
+		for (let f in files){
+			let S = {};
 
-		S.sid    = sid;
-		S.cover  = fs.existsSync(coverfile)? true : false;
-		//S.public = fs.existsSync(pubfile)? true : false;
-
-		if (confSHU && confSHU.staffpick && confSHU.staffpick[sid]) S.staffpick = 1;
+			let sid       = path.dirname(files[f]);
+			//let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
+			let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
 		
-		let sobj = Core.readSceneJSON(sid);
+			//let user = sid.split("/")[0];
+			//if (user) Maat.db.users[user] = 1;
 
-		if (sobj){
-			if (sobj.title) S.title = sobj.title;
+			S.sid    = sid;
+			S.cover  = fs.existsSync(coverfile)? true : false;
+			//S.public = fs.existsSync(pubfile)? true : false;
 
-			if (sobj.kwords){
-				S.kwords = sobj.kwords;
-				for (let k in S.kwords) Maat.addSceneKeyword(k);
+			if (confSHU && confSHU.staffpick && confSHU.staffpick[sid]) S.staffpick = 1;
+			
+			let sobj = Core.readSceneJSON(sid);
+
+			if (sobj){
+				if (sobj.title) S.title = sobj.title;
+
+				if (sobj.kwords){
+					S.kwords = sobj.kwords;
+					for (let k in S.kwords) Maat.addSceneKeyword(k);
+				}
+
+				if (sobj.visibility) S.visibility = sobj.visibility;
+
+				if (!sobj.creationDate){
+					const sstats = fs.statSync(Core.DIR_SCENES + files[f]);
+					S.creationDate = sstats.birthtime;
+				}
+
+				Maat.db.scenes.push(S);
+
+				Maat.db.scenesByID[S.sid] = {
+					title: S.title,
+					visibility: S.visibility,
+					kwords: S.kwords,
+					cover: S.cover,
+					creationDate: S.creationDate
+				};
+			}
+			else {
+				console.log("ERROR malformed scene: ", sid);
 			}
 
-			if (sobj.visibility) S.visibility = sobj.visibility;
-
-			if (!sobj.creationDate){
-				const sstats = fs.statSync(Core.DIR_SCENES + files[f]);
-				S.creationDate = sstats.birthtime;
-			}
-
-			Maat.db.scenes.push(S);
-
-			Maat.db.scenesByID[S.sid] = {
-				title: S.title,
-				visibility: S.visibility,
-				kwords: S.kwords,
-				cover: S.cover,
-				creationDate: S.creationDate
-			};
-		}
-		else {
-			console.log("ERROR malformed scene: ", sid);
+			//Maat.db.scenes.push(S);
 		}
 
-		//Maat.db.scenes.push(S);
-	}
 
-	//console.log(Maat.db.scenesByID);
 
-	//Maat.db.scenes.sort( Maat.sortScenes );
+		//console.log(Maat.db.scenesByID);
 
-	Maat.needScan.scenes = false;
+		//Maat.db.scenes.sort( Maat.sortScenes );
 
-	console.log(Maat.db.kwords);
+		Maat.needScan.scenes = false;
 
-	setTimeout(()=>{
-		Maat.needScan.scenes = true;
-	}, Maat.INTERVAL);
+		//console.log(Maat.db.kwords);
+
+		setTimeout(()=>{ Maat.needScan.scenes = true; }, Maat.INTERVAL);
+	});
 };
 
 Maat.scanApps = ()=>{
 	if (Maat.needScan.apps === false) return;
-
-	Maat.db.apps = [];
 
 	let O    = {};
 	O.cwd    = Core.DIR_WAPPS;
@@ -211,24 +220,27 @@ Maat.scanApps = ()=>{
 
 	console.log("Scanning web-apps...");
 
-	let files = fg.sync("*/app.webmanifest", O); // index.html
-	for (let f in files){
-		let wid = path.dirname(files[f]);
-		let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
-		let datadir = path.join(Core.DIR_WAPPS+wid, "/data");
+	fg("*/app.webmanifest", O).then(files => {
+		Maat.db.apps = [];
 
-		Maat.db.apps.push({
-			wappid: wid,
-			icon: fs.existsSync(appicon)? true : false,
-			data: fs.existsSync(datadir)? true : false
-		});
-	}
+		for (let f in files){
+			let wid = path.dirname(files[f]);
+			let appicon = path.join(Core.DIR_WAPPS+wid, "/appicon.png");
+			let datadir = path.join(Core.DIR_WAPPS+wid, "/data");
 
-	Maat.needScan.apps = false;
+			Maat.db.apps.push({
+				wappid: wid,
+				icon: fs.existsSync(appicon)? true : false,
+				data: fs.existsSync(datadir)? true : false
+			});
+		}
 
-	setTimeout(()=>{
-		Maat.needScan.apps = true;
-	}, Maat.INTERVAL);
+		Maat.needScan.apps = false;
+
+		setTimeout(()=>{
+			Maat.needScan.apps = true;
+		}, Maat.INTERVAL);
+	});
 };
 
 
@@ -264,16 +276,17 @@ Maat.scanModels = (uid)=>{
 	globopts.follow = true;
 */
 	//let files = fg.sync("**/{*.gltf,*.glb,*.json}", globopts);
-	let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS).then( files =>{
 
-	CC[uid].models = [];
+		CC[uid].models = [];
 
-	if (files.length < 1) return;
+		if (files.length < 1) return;
 
-	// TODO: improve filtering perf.
-	//files = Maat.filterTSets(files);
+		// TODO: improve filtering perf.
+		//files = Maat.filterTSets(files);
 
-	for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
+		for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
+	});
 };
 
 Maat.scanPanoramas = (uid)=>{
@@ -288,12 +301,13 @@ Maat.scanPanoramas = (uid)=>{
 	globopts.follow = true;
 */
 	//let files = fg.sync("**/{*.jpg,*.mp4,*.webm}", globopts);
-	let files = fg.sync("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files => {
 
-	CC[uid].panos = [];
-	if (files.length < 1) return;
-
-	for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
+		CC[uid].panos = [];
+		
+		if (files.length < 1) return;
+		for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
+	});
 };
 
 Maat.scanMedia = (uid)=>{
@@ -301,12 +315,13 @@ Maat.scanMedia = (uid)=>{
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	let files = fg.sync("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files =>{
 
-	CC[uid].media = [];
-	if (files.length < 1) return;
+		CC[uid].media = [];
+		if (files.length < 1) return;
 
-	for (let f in files) CC[uid].media.push( files[f] );
+		for (let f in files) CC[uid].media.push( files[f] );
+	});
 };
 
 // TODO: improve filter alg

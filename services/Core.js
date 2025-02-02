@@ -19,6 +19,7 @@ const fsx         = require('fs-extra');
 //const chokidar    = require('chokidar');
 const fg          = require('fast-glob');
 const chalk       = require('chalk');
+const sharp       = require("sharp");
 
 const { networkInterfaces } = require('os');
 
@@ -57,7 +58,9 @@ Core.DIR_EXAMPLES       = path.join(Core.DIR_PUBLIC,"examples/");
 Core.DIR_FLARES         = path.join(Core.DIR_CONFIG,"flares/"); //path.join(Core.DIR_PUBLIC,"custom/flares/");
 Core.STD_SCENEFILE      = "scene.json";
 Core.STD_PUBFILE        = "pub.txt"; // deprecated
-Core.STD_COVERFILE      = "cover.png";
+Core.STD_COVERFILE_HI   = "cover.png";
+Core.STD_COVERFILE      = "cover.jpg";
+Core.STD_COVERSIZE      = 256;
 Core.STD_COVERFILE_PATH = path.join(Core.DIR_RES,"scenecover.png");
 
 // Unused
@@ -921,6 +924,40 @@ Core.setupDataRoute = (app)=>{
 
 		res.sendFile(Core.DIR_SCENES + path);
 		//next();
+	});
+};
+
+// IMG
+Core.generateCoverForScene = (sid, b64img, onComplete)=>{
+	if (!sid) return;
+
+	let scenefolder  = Core.getSceneFolder(sid);
+	let coverfile    = path.join(scenefolder, Core.STD_COVERFILE_HI);
+	let coverfileOpt = path.join(scenefolder, Core.STD_COVERFILE);
+
+	fs.writeFile(coverfile, b64img, 'base64', (err)=>{
+		//if (fs.existsSync(coverfileOpt)) fs.unlinkSync(coverfileOpt);
+
+		// Optimize PNG size
+		sharp(coverfile)
+			.resize({
+				width: Core.STD_COVERSIZE, 
+				height: Core.STD_COVERSIZE
+			})
+			.withMetadata()
+/*
+			.png({
+				quality: 90, // 0-100
+				//compression: 6, // this doesn't need to be set
+			})
+*/
+			.jpeg({
+				quality: 60
+			})
+			.toFile(coverfileOpt, (err)=>{
+				if (err) console.log(err);
+				else if (onComplete) onComplete();
+		});
 	});
 };
 

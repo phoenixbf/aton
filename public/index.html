@@ -121,13 +121,8 @@ let onLandingData = (data)=>{
         return;
     }
 
-    if (data.header){
-        ATON.UI.loadPartial("common/"+data.header, undefined, true);
-    }
-    else htmlcontent += "<img src='/res/aton-logo.png' style='width:100px; height:auto;'><br>";
-
     if (data.gallery){
-        htmlcontent += "<a href='shu/scenes/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'></a>";
+        htmlcontent += "<br><a href='shu/scenes/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'></a>";
         htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
         htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='"+ATON.PATH_RES+"icons/play.png'></div>";
         if (data.samples === undefined || data.samples === true) htmlcontent += "<a href='examples/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/samples.png'></a>";
@@ -143,6 +138,12 @@ let onLandingData = (data)=>{
     htmlcontent += "<br><br>";
 
     $("#idMainContent").html(htmlcontent);
+
+    if (data.header){
+        ATON.UI.loadPartial("/common/"+data.header, "idMainContent", true);
+    }
+    //else htmlcontent += "<img src='/res/aton-logo.png' style='width:100px; height:auto;'><br>";
+    else document.getElementById("idMainContent").prepend( ATON.UI.createElementFromHTMLString("<img src='/res/aton-logo.png' style='width:100px; height:auto;'>") );
 
     if (data.gallery){
         SHU.createScenesInputList("idScenes", openSID, search, (scenes)=>{
@@ -189,6 +190,8 @@ let onLandingData = (data)=>{
 };
 
 window.addEventListener( 'load', ()=>{
+    //ATON.realize2D();
+
     $.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
 });
 

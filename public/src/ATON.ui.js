@@ -13,6 +13,7 @@ A set UI blueprints for ATON apps, based on Bootstrap v5
 @namespace UI
 */
 let UI = {};
+UI._parser = new DOMParser;
 
 UI.SCENES_SORTER = (entryA, entryB)=>{
 	let a = entryA.creationDate;
@@ -30,8 +31,6 @@ UI.SCENES_SORTER = (entryA, entryB)=>{
 UI.init = ()=>{
     if (!window.bootstrap) return;
     if (!window.bootstrap.Offcanvas) return; // tmp hack
-
-    UI._parser = new DOMParser;
 
     UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
 
@@ -279,20 +278,24 @@ UI.hideSemLabel = ()=>{
     UI._bSemL = false;
 };
 
-// Append or prepend HTML fragment to DOM
+// Append or prepend HTML fragments to DOM
 UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
+
     fetch(src)
         .then(res => res.text())
         .then(res => {
-            let nodes = UI._parser.parseFromString(res, 'text/html').body.childNodes;
+            let elHeader = UI.createElementFromHTMLString(res);
+            //let elHeader = UI._parser.parseFromString(res, 'text/html'); //.body.childNodes;
+
+            //console.log(elHeader)
 
             if (!parentid){
-                if (bPrepend) document.body.prepend(...nodes);
-                else document.body.append(...nodes);
+                if (bPrepend) document.body.prepend(elHeader);
+                else document.body.append(elHeader);
             }
             else {
-                if (bPrepend) document.querySelector(`#${parentid}`).prepend(...nodes); 
-                else document.querySelector(`#${parentid}`).append(...nodes);
+                if (bPrepend) document.getElementById(parentid).prepend(elHeader); //document.querySelector(`#${parentid}`).prepend(elHeader); 
+                else document.getElementById(parentid).append(elHeader); //document.querySelector(`#${parentid}`).append(elHeader);
             }
         })
         .catch(err => `Error fetching partial: ${err}`);

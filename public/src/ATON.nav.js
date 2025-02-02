@@ -18,7 +18,7 @@ let Nav = {};
 // Consts
 Nav.STD_FOV  = 50.0;
 Nav.STD_NEAR = 0.01; //0.05;
-Nav.STD_FAR  = 800.0; // 1000
+Nav.STD_FAR  = 1000.0; // 1000
 
 Nav.FP_EPS = 0.01;
 Nav.STD_POV_TRANS_DURATION = 2.0;

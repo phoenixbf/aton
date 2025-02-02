@@ -625,6 +625,8 @@ ATON.realize = ( bNoRender )=>{
         antialias: true, //ATON.device.isMobile? false : true,
         alpha: true,     // required for AR
 
+        //logarithmicDepthBuffer: true, // issues with postfx (SSAO)
+
         //powerPreference: "high-performance",
 
         ///pecision: "lowp", //"mediump"

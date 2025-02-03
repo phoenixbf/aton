@@ -387,7 +387,7 @@ canvas:active {
 
     /*padding: 4px;*/
 
-    background-color: rgba(var(--bs-body-bg-rgb), 0.1);
+    background-color: rgba(var(--bs-body-bg-rgb), 0.2);
 
     /*border: 1px solid rgba(var(--bs-body-color-rgb), 0.1);*/
 
@@ -451,11 +451,16 @@ canvas:active {
 
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+
+    background-size:cover;
 
     /*background-color: rgba(0, 0, 0, 0.5);*/
-    opacity: 0.4;
+    opacity: 0.3;
 
+/*
+    background-size: contain;
+    transform: scaleY(-1) translateY(-50%);
+*/
     -webkit-filter: blur(var(--aton-blur-radius));
     -moz-filter: blur(var(--aton-blur-radius));
     -o-filter: blur(var(--aton-blur-radius));

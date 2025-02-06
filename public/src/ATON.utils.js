@@ -412,11 +412,10 @@ Utils.clampValue = (num, min, max)=>{
 // Utility to handle multiple image formats
 Utils.loadTexture = (url, onComplete)=>{
     if (url.endsWith(".ktx2")){
-        ATON._ktx2Loader.load(url, onComplete);
-        return;
+        return ATON._ktx2Loader.load(url, onComplete);
     }
 
-    Utils.textureLoader.load(url, onComplete);
+    return Utils.textureLoader.load(url, onComplete);
 };
 
 

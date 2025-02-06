@@ -550,6 +550,7 @@ autoFit(bCenter, maxRad){
         this.scale.set(s,s,s);
     }
 
+    return this;
 }
 
 /**

@@ -111,25 +111,19 @@ window.addEventListener( 'load', ()=>{
                 ]
                 })
             });
-/*
-        let test = ATON.UI.createElementFromHTMLString(`
-            <details>
-                <summary>TEST</summary>
-                <details>
-                    <summary>TEST2</summary>
-                    blablabla    
-                </details>
-            </details>
-        `);
-
-        ATON.UI.showSidePanel({
-            header: "Info",
-            body: test
-        });
-*/
+         
+        ATON.UI.get("toolbar").append(
+            ATON.UI.createButtonBack(),
+            ATON.UI.createButtonHome(),
+            ATON.UI.createButtonVR(),
+            ATON.UI.createButtonAR(),
+            ATON.UI.createButtonDeviceOrientation()
+        );
     });
 });
 </script>
 </head>
 
-<body></body>
+<body>
+<div id="toolbar" class="aton-top-toolbar"></div>
+</body>

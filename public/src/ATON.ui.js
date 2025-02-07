@@ -49,8 +49,14 @@ UI.setTheme = (theme)=>{
 // Utility function to create DOM element from string
 UI.createElementFromHTMLString = (html)=>{
     let element = UI._parser.parseFromString(html, 'text/html').body.firstElementChild;
+    // TODO: compare perf with insertAdjacentHTML( 'beforeend', str );
 
     return element;
+};
+
+// Shorter get el by ID
+UI.get = (elID)=>{
+    return document.getElementById(elID);
 };
 
 // This can be possibly replaced by custom user routine
@@ -336,7 +342,7 @@ UI.createButton = (options)=>{
 
     if (options.variant) el.classList.add("btn-"+options.variant); // Bootstrap button variants (primary, info, ...)
 
-    if (options.text) el.innerText = options.text;
+    if (options.text) el.innerText = " "+options.text;
 
     if (options.icon) UI.prependIcon(el, options.icon);
 /*
@@ -352,6 +358,110 @@ UI.createButton = (options)=>{
     }
 
     if (options.onpress) el.onclick = options.onpress;
+
+    return el;
+};
+
+// Buttons prefabs
+
+/**
+Create home button
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonHome = (options)=>{
+    const std = {
+        icon: "home",
+        onpress: ()=>{
+            ATON.Nav.requestHome(0.3);
+        }
+    };
+
+    return UI.createButton({ ...std, ...options });
+};
+
+/**
+Create back button
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonBack = (options)=>{
+    const std = {
+        icon: "back",
+        onpress: ()=>{
+            history.back();
+        }
+    };
+
+    return UI.createButton({ ...std, ...options });
+};
+
+/**
+Create VR button. Hidden if not supported by device
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonVR = (options)=>{
+    const std = {
+        icon: "vr",
+        onpress: ()=>{
+            ATON.XR.toggle("immersive-vr");
+        }
+    };
+
+    let el = UI.createButton({ ...std, ...options });
+
+    if (!ATON.device.xrSupported['immersive-vr']) el.classList.add('d-none');
+    ATON.on("XR_support", d => {
+        if (ATON.device.xrSupported['immersive-vr']) el.classList.remove('d-none');
+    });
+
+    return el;
+};
+
+/**
+Create AR button. Hidden if not supported by device
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonAR = (options)=>{
+    const std = {
+        icon: "ar",
+        onpress: ()=>{
+            ATON.XR.toggle("immersive-ar");
+        }
+    };
+
+    let el = UI.createButton({ ...std, ...options });
+
+    if (!ATON.device.xrSupported['immersive-ar']) el.classList.add('d-none');
+    ATON.on("XR_support", d => {
+        if (ATON.device.xrSupported['immersive-ar']) el.classList.remove('d-none');
+    });
+
+    return el;
+};
+
+/**
+Create Device Orientation button. Hidden if not supported by device
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonDeviceOrientation = (options)=>{
+    const std = {
+        icon: "devori",
+        onpress: ()=>{
+            if (ATON.Nav.isDevOri()){
+                ATON.Nav.restorePreviousNavMode();
+            }
+            else {
+                ATON.Nav.setDeviceOrientationControl();
+            }
+        }
+    };
+
+    let el = UI.createButton({ ...std, ...options });
+    if (!ATON.Utils.isConnectionSecure() || !ATON.Utils.isMobile()) el.classList.add('d-none');
 
     return el;
 };

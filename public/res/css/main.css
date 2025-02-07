@@ -281,12 +281,14 @@ canvas:active {
 .aton-btn {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
+    padding: 8px;
 }
 
 .aton-btn img {
     width: 1.5em;
     height: 1.5em;
-    margin-right: 4px;
+    /*margin-right: 4px;*/
+    margin: 0px;
 }
 
 /* Dropdowns

@@ -1662,6 +1662,15 @@ ATON.clearLightProbes = ()=>{
     ATON._lps = [];
 
     ATON.setNeutralAmbientLight(1);
+
+    ATON._rootVisible.traverse((o) => {
+        let LP = o.userData.LP;
+        if (LP && LP instanceof ATON.LightProbe){
+            o.material.envMap  = null;
+            o.material.envMapIntensity = null;
+            o.material.needsUpdate     = true;
+        }
+    });
 };
 
 // Internal routine to update LPs
@@ -1710,7 +1719,7 @@ ATON.dirtyLightProbes = (n)=>{
 Update all LightProbes in the scene
 */
 ATON.updateLightProbes = ()=>{
-    if (ATON.XR._bPresenting) return; // CHECK
+    //if (ATON.XR._bPresenting) return; // CHECK
     if (ATON._lps.length === 0) return;
 
     for (let p=0; p<ATON._numLPbounces; p++) ATON._updLP(); // multi-bounce LP captures

@@ -114,7 +114,7 @@ _buildLabel(){
         padding: 0.03,
         borderRadius: 0.05,
 
-        backgroundColor: ATON.MatHub.colors.white,
+        backgroundColor: ATON.MatHub.colors.black, // ATON.MatHub.colors.white,
 
         fontFamily: ATON.SUI.PATH_FONT_JSON,
         fontTexture: ATON.SUI.PATH_FONT_TEX,

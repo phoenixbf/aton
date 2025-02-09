@@ -169,13 +169,17 @@ FX.init = ()=>{
     //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
 
     // Defaults
+    FX.reset();
+
+    //for (let p in FX.passes) FX.passes[p].renderToScreen = true;
+    //console.log(FX.composer);
+};
+
+FX.reset = ()=>{
     FX.togglePass(FX.PASS_AO, false);
     FX.togglePass(FX.PASS_BLOOM, false);
     FX.togglePass(FX.PASS_DOF, false);
     //FX.togglePass(FX.PASS_SOBEL, false);
-
-    //for (let p in FX.passes) FX.passes[p].renderToScreen = true;
-    //console.log(FX.composer);
 };
 
 /**

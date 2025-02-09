@@ -87,8 +87,10 @@ SceneHub.clearScene = ()=>{
     if (ATON._rootVisible.children.length <= 0) return;
 
     ATON._rootVisible.removeChildren();
+
     for (let i in ATON.snodes) {
-        if (i !== ATON.ROOT_NID){
+        if (i !== ATON.ROOT_NID && ATON.snodes[i]){
+            ATON.snodes[i].removeChildren();
             delete ATON.snodes[i];
         }
     }
@@ -102,8 +104,10 @@ SceneHub.clearSemantics = ()=>{
     if (ATON._rootSem.children.length <= 0) return;
 
     ATON._rootSem.removeChildren();
+
     for (let i in ATON.semnodes){
-        if (i !== ATON.ROOT_NID) {
+        if (i !== ATON.ROOT_NID && ATON.semnodes[i]){
+            ATON.semnodes[i].removeChildren();
             delete ATON.semnodes[i];
         }
     }
@@ -119,7 +123,10 @@ SceneHub.clear = ()=>{
     SceneHub.clearScene();
     SceneHub.clearSemantics();
 
+    ATON.clearLightProbes();
+
     ATON.Nav.clear();
+    ATON.FX.reset();
 };
 
 // Parse JSON scene obj

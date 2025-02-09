@@ -1568,7 +1568,7 @@ ATON.initGraphs = ()=>{
     ATON._mainRoot.add(ATON._rootUI);
 
     // Uniform lighting
-    ATON.ambLight = new THREE.AmbientLight( new THREE.Color(1,1,1) /*ATON._mainRoot.background*/ );
+    ATON.ambLight = new THREE.AmbientLight( ATON.MatHub.colors.white /*ATON._mainRoot.background*/ );
     ATON.ambLight.intensity = 3.0;
     ATON._rootVisibleGlobal.add(ATON.ambLight);
 
@@ -1650,6 +1650,18 @@ ATON.addLightProbe = (LP)=>{
 
 ATON.getNumLightProbes = ()=>{
     return ATON._lps.length;
+};
+
+ATON.clearLightProbes = ()=>{
+    for (let i in ATON._lps){
+        if (ATON._lps[i]){
+            ATON._lps[i].clear();
+            delete ATON._lps[i];
+        }
+    }
+    ATON._lps = [];
+
+    ATON.setNeutralAmbientLight(1);
 };
 
 // Internal routine to update LPs

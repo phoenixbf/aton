@@ -33,6 +33,11 @@ constructor(res, near, far){
     }
 }
 
+clear(){
+    if (this._envtex) this._envtex.dispose();
+    if (this._CCtarget) this._CCtarget.dispose();
+}
+
 /**
 Set LP position
 @example

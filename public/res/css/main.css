@@ -204,15 +204,33 @@ canvas:active {
 */
 }
 
-.aton-top-toolbar {
+.aton-toolbar-top {
     top: 0px;
-    width: 100%;
+    display: inline-block;
     position: absolute;
     
+/*
     background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
 
     -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));
+*/
+}
+
+.aton-toolbar-top .aton-btn {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
+}
+
+.aton-poweredby {
+    bottom: 0px;
+    left: 0px;
+    display: inline-block;
+    position: absolute;
+
+    padding: 4px;
+    font-size: x-small;
+
+    text-shadow: 0px 0px 4px var(--bs-body-bg);
 }
 
 .aton-footer {
@@ -282,6 +300,7 @@ canvas:active {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
     padding: 8px;
+    margin: 2px;
 }
 
 .aton-btn img {

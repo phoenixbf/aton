@@ -47,10 +47,10 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "@gltf-transform/core": "^4.1.1",
-    "@gltf-transform/extensions": "^4.1.1",
-    "@gltf-transform/functions": "^4.1.1",
-    "3d-tiles-renderer": "0.4.6",
+    "@gltf-transform/core": "^4.1.2",
+    "@gltf-transform/extensions": "^4.1.2",
+    "@gltf-transform/functions": "^4.1.2",
+    "3d-tiles-renderer": "0.4.7",
     "body-parser": "^1.20.3",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
@@ -94,7 +94,7 @@
     "ws": "^8.18.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "three": "0.173.0",
+    "three": "0.174.0",
     "three-custom-shader-material": "6.3.1",
     "three-mesh-bvh": "0.9.0",
     "webdav-server": "^2.6.2",

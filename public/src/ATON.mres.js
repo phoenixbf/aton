@@ -182,7 +182,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //ts.errorThreshold  = 100;
     //ts.loadSiblings    = false; // a few hops
 
-    ts.optimizeRaycast = false; // We already use BVH
+    //ts.optimizeRaycast = false; // We already use BVH
 
     // Init p-queues
     if (MRes._pqLRU === undefined){

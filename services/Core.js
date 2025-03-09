@@ -644,7 +644,7 @@ Core.applySceneEdit = (sid, patch, mode)=>{
 	let sjpath = Core.getSceneJSONPath(sid);
 	let S = Core.readSceneJSON(sid);
 
-	if (S === undefined) return; // scene does not exist
+	if (!S) return undefined; // scene does not exist or malformed
 
 	//jsonpatch.applyPatch(S, patch);
 

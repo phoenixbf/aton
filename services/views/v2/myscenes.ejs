@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<%- include('frags/head'); %>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.realize2D();
+        ATON.UI.setTheme("light");
+
+        // Navbar
+        let elNavCont  = document.getElementById("navbarSupportedContent");
+        let elNavItems = document.getElementById("navbarItems");
+
+        let elSearch = ATON.UI.createLiveFilter({
+                filterclass: "aton-scene-card",
+                onfocus: ()=>{
+
+                },
+                onblur: ()=>{
+
+                }
+        })
+
+        elNavCont.append(elSearch);
+});
+</script>
+</head>
+
+<body style="padding-top:60px;">
+        <!-- Navbar -->
+        <%- include('frags/navbar'); %>
+</body>

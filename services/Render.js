@@ -88,6 +88,15 @@ Render.setup = (app)=>{
 		res.render("v2/logout");
 	});
 
+	app.get("/v2/myscenes", (req,res,next)=>{
+        if ( !Core.Auth.isUserAuth(req) ){
+			res.redirect("/v2/login?u=/v2/myscenes");
+			return;
+        }
+
+		res.render("v2/myscenes");
+	});
+
 };
 
 

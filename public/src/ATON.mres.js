@@ -194,8 +194,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
         ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-        ts.downloadQueue.maxJobs = 6; // 6
-        ts.parseQueue.maxJobs    = 1; // 1
+        //ts.downloadQueue.maxJobs = 6; // 6
+        //ts.parseQueue.maxJobs    = 1; // 1
 
         MRes._pqLRU      = ts.lruCache;
         MRes._pqDownload = ts.downloadQueue;

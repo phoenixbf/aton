@@ -36,6 +36,7 @@ window.addEventListener( 'load', ()=>{
                                 ATON.UI.createSceneCard({
                                         title: S.title,
                                         sid: S.sid,
+                                        showuser: true,
                                         keywords: S.kwords,
                                         //size: "large",
                                         useblurtint: true
@@ -117,7 +118,7 @@ window.addEventListener( 'load', ()=>{
                                 //align: "dropdown-menu-end",
                                 title: u.username,
                                 items: [
-                                        { title: "My Scenes", url: "#", icon:"scene" },
+                                        { title: "My Scenes", url: "/v2/myscenes", icon:"scene" },
                                         { title: "My Collection", url: "#", icon:"collection" },
                                         { title: "Logout", url: "/v2/logout", icon: "exit" }
                                 ]

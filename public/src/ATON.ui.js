@@ -898,13 +898,17 @@ UI.createSceneCard = (options)=>{
         });
     }
 
-    elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
-/*
-    let footer = document.createElement('div');
-    footer.classList.add("card-footer");
-    footer.innerHTML += "<small class='text-body-secondary'>"+user+"</small>";
-    el.append(footer);
-*/
+    if (options.showuser) elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
+
+    // Footer
+    if (options.footer){
+        let elFooter = document.createElement('div');
+        elFooter.classList.add("card-footer");
+        elFooter.append(options.footer);
+        elbody.append(elFooter);
+    }
+
+
     return el;
 };
 
@@ -999,6 +1003,7 @@ UI.createPublicScenesGallery = (options) => {
                 let card = ATON.UI.createSceneCard({
                     title: scene.title? scene.title : scene.sid,
                     sid: scene.sid,
+                    showuser: true,
                     keywords: scene.kwords,
                     useblurtint: true,
                     size: options.size
@@ -1017,6 +1022,35 @@ UI.createPublicScenesGallery = (options) => {
     }
 
     return el;
+};
+
+UI.createOwnScenesGallery = (options)=>{
+    if (!options.containerid) return undefined;
+
+    let el = document.getElementById(options.containerid);
+    if (!el) return undefined;
+
+    ATON.checkAuth(
+        (u)=>{
+            ATON.REQ.get("scenes/"+u.username, entries => {
+                entries.sort( UI.SCENES_SORTER );               
+                console.log(entries);
+        
+                for (let scene of entries) {
+        
+                    let card = ATON.UI.createSceneCard({
+                        title: scene.title? scene.title : scene.sid,
+                        sid: scene.sid,
+                        keywords: scene.kwords,
+                        useblurtint: true,
+                        size: options.size
+                    });
+    
+                    el.append(card);
+                }
+            });
+        }
+    );
 };
 
 UI.createLoginForm = (options)=>{

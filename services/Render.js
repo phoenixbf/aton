@@ -94,7 +94,10 @@ Render.setup = (app)=>{
 			return;
         }
 
-		res.render("v2/myscenes");
+		let opts = {};
+		opts.user = req.user.username;
+
+		res.render("v2/myscenes", opts);
 	});
 
 };

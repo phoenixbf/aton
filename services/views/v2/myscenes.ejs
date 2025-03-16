@@ -24,6 +24,55 @@ window.addEventListener( 'load', ()=>{
         })
 
         elNavCont.append(elSearch);
+
+        // My scene gallery
+        let elMyScenes = document.getElementById("myscenes");
+        ATON.checkAuth(
+                (u)=>{
+                        ATON.REQ.get("scenes/"+u.username, entries => {
+                                entries.sort( ATON.UI.SCENES_SORTER );               
+                                console.log(entries);
+                        
+                                for (let scene of entries){
+                                        const elFooter = ATON.UI.createElementFromHTMLString(`
+                                                <div class="align-items-center justify-content-center">
+                                                </div>
+                                                `
+                                        );
+
+                                        elFooter.append(ATON.UI.createButton({
+                                                icon: "bi-gear-fill",
+                                                text: "Settings",
+                                                onpress: ()=>{
+                                                        sceneSettings(scene.sid);
+                                                }
+                                        }));
+                        
+                                        let card = ATON.UI.createSceneCard({
+                                                title: scene.title? scene.title : scene.sid,
+                                                sid: scene.sid,
+                                                keywords: scene.kwords,
+                                                footer: elFooter,
+                                                useblurtint: true,
+                                                //size: ...
+                                        });
+                
+                                        elMyScenes.append(card);
+                                }
+                        });
+                }
+        );
+
+        // Scene settings
+        let sceneSettings = (sid)=>{
+                ATON.UI.showModal({
+                        header: sid,
+                        body: ATON.UI.createElementFromHTMLString(`
+                                <div>Here settings</div>
+                        `)
+                });
+        };
+        
 });
 </script>
 </head>
@@ -31,4 +80,6 @@ window.addEventListener( 'load', ()=>{
 <body style="padding-top:60px;">
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
+
+        <div id="myscenes" style="padding: 40px; text-align: center;"></div>
 </body>

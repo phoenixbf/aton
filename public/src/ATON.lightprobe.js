@@ -151,12 +151,23 @@ update(){
     
     // fromScene method (robust but requires hack to temp. move scene before capture)
 
-    ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
+    //ATON._rootVisibleGlobal.position.set(-this.pos.x, -this.pos.y, -this.pos.z);
     //ATON._mainRoot.position.set(-this.pos.x,-this.pos.y,-this.pos.z);
-    ATON._render();
-    this._envtex = ATON._pmremGenerator.fromScene(ATON._mainRoot, 0, this._near, this._far).texture;
-    //ATON._mainRoot.position.set(0,0,0);
-    ATON._rootVisibleGlobal.position.set(0,0,0);
+    //ATON._render();
+    
+    this._envtex = ATON._pmremGenerator.fromScene(
+        ATON._mainRoot,
+        0, 
+        this._near, 
+        this._far,
+        {
+            position: this.pos, 
+            size: this._res
+        }
+    ).texture;
+    
+    ///ATON._mainRoot.position.set(0,0,0);
+    //ATON._rootVisibleGlobal.position.set(0,0,0);
 
     if (ATON._renderer.shadowMap.enabled && ATON._dMainL) ATON._dMainL.shadow.needsUpdate = true;
     //console.log(ATON._rootVisibleGlobal)

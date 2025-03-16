@@ -29,6 +29,16 @@ window.addEventListener( 'load', ()=>{
         let elMyScenes = document.getElementById("myscenes");
         ATON.checkAuth(
                 (u)=>{
+                        elNavCont.append( ATON.UI.createDropdown({
+                                icon: "bi-person",
+                                //align: "dropdown-menu-end",
+                                title: u.username,
+                                items: [
+                                        { title: "My Collection", url: "#", icon:"collection" },
+                                        { title: "Logout", url: "/v2/logout", icon: "exit" }
+                                ]
+                        }));
+
                         ATON.REQ.get("scenes/"+u.username, entries => {
                                 entries.sort( ATON.UI.SCENES_SORTER );               
                                 console.log(entries);
@@ -42,7 +52,7 @@ window.addEventListener( 'load', ()=>{
 
                                         elFooter.append(ATON.UI.createButton({
                                                 icon: "bi-gear-fill",
-                                                text: "Settings",
+                                                text: "Manage",
                                                 onpress: ()=>{
                                                         sceneSettings(scene.sid);
                                                 }

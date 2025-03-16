@@ -1,0 +1,23 @@
+<script>
+let SHU = {};
+window.SHU = SHU;
+
+SHU.createMainAuthDropdown = (u, section)=>{
+
+    const items = [];
+
+    if (section!=="myscenes")     items.push({ title: "My Scenes", url: "/v2/myscenes", icon:"scene" });
+    if (section!=="mycollection") items.push({ title: "My Collection", url: "#", icon:"collection" });
+
+    items.push({ title: "Logout", url: "/v2/logout", icon: "exit" });
+
+
+    return ATON.UI.createDropdown({
+            icon: "bi-person",
+            //align: "dropdown-menu-end",
+            title: u.username,
+            items: items
+    });
+};
+
+</script>

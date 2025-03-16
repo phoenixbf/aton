@@ -13,6 +13,8 @@ window.addEventListener( 'load', ()=>{
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
 
+        elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
+
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
@@ -29,15 +31,7 @@ window.addEventListener( 'load', ()=>{
         let elMyScenes = document.getElementById("myscenes");
         ATON.checkAuth(
                 (u)=>{
-                        elNavCont.append( ATON.UI.createDropdown({
-                                icon: "bi-person",
-                                //align: "dropdown-menu-end",
-                                title: u.username,
-                                items: [
-                                        { title: "My Collection", url: "#", icon:"collection" },
-                                        { title: "Logout", url: "/v2/logout", icon: "exit" }
-                                ]
-                        }));
+                        elNavCont.append( SHU.createMainAuthDropdown(u,"myscenes") );
 
                         ATON.REQ.get("scenes/"+u.username, entries => {
                                 entries.sort( ATON.UI.SCENES_SORTER );               
@@ -75,11 +69,13 @@ window.addEventListener( 'load', ()=>{
 
         // Scene settings
         let sceneSettings = (sid)=>{
+                const elBody = ATON.UI.createElementFromHTMLString(`
+                        <div>Here settings</div>
+                `);
+
                 ATON.UI.showModal({
                         header: sid,
-                        body: ATON.UI.createElementFromHTMLString(`
-                                <div>Here settings</div>
-                        `)
+                        body: elBody
                 });
         };
         
@@ -91,5 +87,5 @@ window.addEventListener( 'load', ()=>{
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 
-        <div id="myscenes" style="padding: 40px; text-align: center;"></div>
+        <div id="myscenes" style="padding: 20px; text-align: center;"></div>
 </body>

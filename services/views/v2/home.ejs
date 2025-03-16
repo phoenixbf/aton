@@ -113,16 +113,7 @@ window.addEventListener( 'load', ()=>{
                         }));
 */
 
-                        elNavCont.append( ATON.UI.createDropdown({
-                                icon: "bi-person",
-                                //align: "dropdown-menu-end",
-                                title: u.username,
-                                items: [
-                                        { title: "My Scenes", url: "/v2/myscenes", icon:"scene" },
-                                        { title: "My Collection", url: "#", icon:"collection" },
-                                        { title: "Logout", url: "/v2/logout", icon: "exit" }
-                                ]
-                        }));
+                        elNavCont.append( SHU.createMainAuthDropdown(u) );
 
                 }
         );
@@ -145,7 +136,7 @@ window.addEventListener( 'load', ()=>{
         
 
         <!-- Staff Pick -->
-        <div id="staffpick" style="padding: 40px; text-align: center;">
+        <div id="staffpick" style="padding: 20px; text-align: center;">
                 <h2>Staff Pick</h2>
                 <hr>
                 <div id="staffpickband" class="aton-hscrollable" ></div>
@@ -153,14 +144,14 @@ window.addEventListener( 'load', ()=>{
 
         <!-- Apps -->
         <% if (apps.length>0) { %>
-        <div id="apps" style="padding: 40px; text-align: center;">
+        <div id="apps" style="padding: 20px; text-align: center;">
                 <h2>Apps</h2>
                 WebApps accessible on this instance<hr>
         </div>
         <% } %>
 
         <!-- Public scenes -->
-        <div id="pubscenes" style="padding: 40px; text-align: center;">
+        <div id="pubscenes" style="padding: 20px; text-align: center;">
                 <h2>Public Scenes</h2>
                 3D content published by users<hr>
         </div>

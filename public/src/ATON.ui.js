@@ -16,8 +16,8 @@ let UI = {};
 UI._parser = new DOMParser;
 
 UI.SCENES_SORTER = (entryA, entryB)=>{
-	let a = entryA.creationDate;
-	let b = entryB.creationDate;
+	let a = new Date(entryA.creationDate);
+	let b = new Date(entryB.creationDate);
 
 	if (!a || !b ) return 0;
 

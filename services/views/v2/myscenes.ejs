@@ -38,6 +38,8 @@ window.addEventListener( 'load', ()=>{
                                 console.log(entries);
 
                                 ATON.UI.get("numscenes").innerHTML = entries.length;
+
+                                let years = {};
                         
                                 for (let scene of entries){
                                         const elFooter = ATON.UI.createElementFromHTMLString(`
@@ -45,6 +47,17 @@ window.addEventListener( 'load', ()=>{
                                                 </div>
                                                 `
                                         );
+
+                                        let YYYY = new Date(scene.creationDate).getFullYear();
+                                        if (!years[YYYY]){
+                                                years[YYYY] = 1;
+                                                elMyScenes.append(ATON.UI.createElementFromHTMLString(`
+                                                <div class="shuSectionTitleContainer" style="text-align: left;">
+                                                        <b>${YYYY}</b>
+                                                </div>
+                                                `));
+                                        }
+                                        else years[YYYY]++;
 
                                         elFooter.append(ATON.UI.createButton({
                                                 icon: "bi-gear-fill",
@@ -91,7 +104,8 @@ window.addEventListener( 'load', ()=>{
 
         <div id="myscenes" class="shuGalleryContainer">
                 <div class="shuSectionTitleContainer" style="text-align: left;">
-                        <h2>My Scenes (<span id="numscenes">0</span>)</h2>
+                        <h2>My Scenes</h2>
+                        Total: <span id="numscenes">0</span>
                 </div>
         </div>
 </body>

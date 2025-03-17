@@ -121,7 +121,7 @@ window.addEventListener( 'load', ()=>{
 </script>
 </head>
 
-<body style="padding-top:60px;">
+<body>
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 
@@ -136,24 +136,27 @@ window.addEventListener( 'load', ()=>{
         
 
         <!-- Staff Pick -->
-        <div id="staffpick" style="padding: 20px; text-align: center;">
-                <h2>Staff Pick</h2>
-                <hr>
+        <div id="staffpick" class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer">
+                        <h2>Staff Pick</h2>
+                </div>
                 <div id="staffpickband" class="aton-hscrollable" ></div>
         </div>
 
         <!-- Apps -->
         <% if (apps.length>0) { %>
-        <div id="apps" style="padding: 20px; text-align: center;">
+        <div id="apps" class="shuGalleryContainer">
                 <h2>Apps</h2>
                 WebApps accessible on this instance<hr>
         </div>
         <% } %>
 
         <!-- Public scenes -->
-        <div id="pubscenes" style="padding: 20px; text-align: center;">
-                <h2>Public Scenes</h2>
-                3D content published by users<hr>
+        <div id="pubscenes" class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer">
+                        <h2>Public Scenes</h2>
+                        3D content published by users
+                </div>
         </div>
 
         <div id="footer" class="aton-footer">

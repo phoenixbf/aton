@@ -13,7 +13,7 @@ window.addEventListener( 'load', ()=>{
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
 
-        elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
+        //elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
 
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
@@ -36,6 +36,8 @@ window.addEventListener( 'load', ()=>{
                         ATON.REQ.get("scenes/"+u.username, entries => {
                                 entries.sort( ATON.UI.SCENES_SORTER );               
                                 console.log(entries);
+
+                                ATON.UI.get("numscenes").innerHTML = entries.length;
                         
                                 for (let scene of entries){
                                         const elFooter = ATON.UI.createElementFromHTMLString(`
@@ -83,9 +85,13 @@ window.addEventListener( 'load', ()=>{
 </script>
 </head>
 
-<body style="padding-top:60px;">
+<body>
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 
-        <div id="myscenes" style="padding: 20px; text-align: center;"></div>
+        <div id="myscenes" class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer" style="text-align: left;">
+                        <h2>My Scenes (<span id="numscenes">0</span>)</h2>
+                </div>
+        </div>
 </body>

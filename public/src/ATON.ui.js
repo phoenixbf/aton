@@ -1053,6 +1053,35 @@ UI.createOwnScenesGallery = (options)=>{
     );
 };
 
+/**
+Create a keyword
+- options.term: the term (string)
+- options.count: optional counter for this keyword
+- options.onpress: routine to launch on click
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createKeyword = (options)=>{
+    let el;
+    if (options.count){
+        el = UI.createElementFromHTMLString(`
+            <button type="button" class="btn btn-sm btn-outline-secondary aton-keyword">
+                ${options.term} <span class="badge text-bg-secondary">${options.count}</span>
+            </button>
+        `);
+    }
+    else {
+        el = UI.createElementFromHTMLString(`
+            <button type="button" class="btn btn-sm btn-outline-secondary aton-keyword">${options.term}</button>
+        `);
+    }
+
+    if (options.onpress) el.onclick = options.onpress;
+
+    return el;
+};
+
 UI.createLoginForm = (options)=>{
     let el = document.createElement("form");
     el.classList.add("container-sm", "text-center");

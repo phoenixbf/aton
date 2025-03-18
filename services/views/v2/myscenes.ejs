@@ -18,17 +18,22 @@ window.addEventListener( 'load', ()=>{
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
-
+                        let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        for (let y of elYears) y.classList.add('d-none');
                 },
                 onblur: ()=>{
-
+                        let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        for (let y of elYears) y.classList.remove('d-none');
                 }
         })
 
+        elSearchInput = elSearch.getElementsByTagName('input')[0];
         elNavCont.append(elSearch);
 
         // My scene gallery
-        let elMyScenes = document.getElementById("myscenes");
+        let elMyScenes = ATON.UI.get("myscenes");
+        let elKeywords = ATON.UI.get("keywords");
+
         ATON.checkAuth(
                 (u)=>{
                         elNavCont.append( SHU.createMainAuthDropdown(u,"myscenes") );
@@ -40,6 +45,7 @@ window.addEventListener( 'load', ()=>{
                                 ATON.UI.get("numscenes").innerHTML = entries.length;
 
                                 let years = {};
+                                let kwords = {};
                         
                                 for (let scene of entries){
                                         const elFooter = ATON.UI.createElementFromHTMLString(`
@@ -48,16 +54,25 @@ window.addEventListener( 'load', ()=>{
                                                 `
                                         );
 
+                                        // Years
                                         let YYYY = new Date(scene.creationDate).getFullYear();
                                         if (!years[YYYY]){
                                                 years[YYYY] = 1;
                                                 elMyScenes.append(ATON.UI.createElementFromHTMLString(`
-                                                <div class="shuSectionTitleContainer" style="text-align: left;">
+                                                <div class="shuYearTitleContainer" style="text-align: left;">
                                                         <b>${YYYY}</b>
                                                 </div>
                                                 `));
                                         }
                                         else years[YYYY]++;
+
+                                        // Keywords
+                                        if (scene.kwords){
+                                                for (let k in scene.kwords){
+                                                        if (!kwords[k]) kwords[k] = 1;
+                                                        else kwords[k]++;
+                                                }
+                                        }
 
                                         elFooter.append(ATON.UI.createButton({
                                                 icon: "bi-gear-fill",
@@ -77,6 +92,18 @@ window.addEventListener( 'load', ()=>{
                                         });
                 
                                         elMyScenes.append(card);
+                                }
+
+                                for (let k in kwords){
+                                        elKeywords.append(ATON.UI.createKeyword({
+                                                term: k,
+                                                count: kwords[k],
+                                                onpress: ()=>{
+                                                        elSearchInput.value = k;
+                                                        elSearchInput.focus();
+                                                        elSearchInput.oninput();
+                                                }
+                                        }));
                                 }
                         });
                 }
@@ -106,6 +133,7 @@ window.addEventListener( 'load', ()=>{
                 <div class="shuSectionTitleContainer" style="text-align: left;">
                         <h2>My Scenes</h2>
                         Total: <span id="numscenes">0</span>
+                        <div id="keywords" style="display: block; padding: 2px;"></div>
                 </div>
         </div>
 </body>

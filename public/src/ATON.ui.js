@@ -322,6 +322,33 @@ UI.prependIcon = (el, icon)=>{
 };
 
 /*===============================
+    Containers
+===============================*/
+
+/**
+Create a generic container
+- options.id: optional ID for this element
+- options.classes: optional list of space-separated CSS classes
+- options.style: optional style string (e.g.: "display:block; padding:2px")
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createContainer = (options)=>{
+    let str = "";
+
+    if (options){
+        if (options.id) str += ` id="${options.id}"`;
+        if (options.classes) str += ` class="${options.classes}"`;
+        if (options.style) str += ` style="${options.style}"`;
+    }
+
+    let el = UI.createElementFromHTMLString(`<div${str}></div>`);
+
+    return el;
+};
+
+/*===============================
     Items
 ===============================*/
 
@@ -1024,6 +1051,14 @@ UI.createPublicScenesGallery = (options) => {
     return el;
 };
 
+/**
+Create private (own) scenes gallery
+- options.containerid: ID of container (parent DOM element) for the gallery
+- options.size: scene cards size
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
 UI.createOwnScenesGallery = (options)=>{
     if (!options.containerid) return undefined;
 

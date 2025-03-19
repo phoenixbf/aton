@@ -505,4 +505,5 @@ canvas:active {
 .aton-keyword {
     display: inline-block;
     margin: 2px;
+    border-radius: 10px;
 }

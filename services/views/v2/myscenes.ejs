@@ -18,12 +18,12 @@ window.addEventListener( 'load', ()=>{
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-scene-card",
                 onfocus: ()=>{
-                        let elYears = document.querySelectorAll(".shuYearTitleContainer");
-                        for (let y of elYears) y.classList.add('d-none');
+                        //let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        //for (let y of elYears) y.classList.add('d-none');
                 },
                 onblur: ()=>{
-                        let elYears = document.querySelectorAll(".shuYearTitleContainer");
-                        for (let y of elYears) y.classList.remove('d-none');
+                        //let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        //for (let y of elYears) y.classList.remove('d-none');
                 }
         })
 
@@ -59,9 +59,9 @@ window.addEventListener( 'load', ()=>{
                                         if (!years[YYYY]){
                                                 years[YYYY] = 1;
                                                 elMyScenes.append(ATON.UI.createElementFromHTMLString(`
-                                                <div class="shuYearTitleContainer" style="text-align: left;">
-                                                        <b>${YYYY}</b>
-                                                </div>
+                                                        <div class="shuYearTitleContainer" style="text-align: left;">
+                                                                <b>${YYYY}</b>
+                                                        </div>
                                                 `));
                                         }
                                         else years[YYYY]++;
@@ -94,7 +94,10 @@ window.addEventListener( 'load', ()=>{
                                         elMyScenes.append(card);
                                 }
 
+                                let elKWs = ATON.UI.createContainer(); //document.createElement("div");
+
                                 for (let k in kwords){
+                                        // elKWs
                                         elKeywords.append(ATON.UI.createKeyword({
                                                 term: k,
                                                 count: kwords[k],
@@ -105,6 +108,16 @@ window.addEventListener( 'load', ()=>{
                                                 }
                                         }));
                                 }
+/*
+                                elKeywords.append(ATON.UI.createTreeGroup({
+                                        items:[
+                                                {
+                                                        title: "Keywords",
+                                                        content: elKWs
+                                                }
+                                        ]
+                                }));
+*/
                         });
                 }
         );
@@ -133,7 +146,29 @@ window.addEventListener( 'load', ()=>{
                 <div class="shuSectionTitleContainer" style="text-align: left;">
                         <h2>My Scenes</h2>
                         Total: <span id="numscenes">0</span>
+
+                        <div style="display: block; margin-top: 8px;">
+                                <div class="d-inline-flex gap-1">
+                                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords</button>
+                                </div>
+                                <div class="collapse" id="keywords"></div>
+                        </div>
+
+<!--
+                        <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseKW" aria-expanded="true" aria-controls="collapseOne">Keywords</button>
+                                </h2>
+                                <div id="collapseKW" class="accordion-collapse collapse show">
+                                <div class="accordion-body" id="keywords">
+                                </div>
+                                </div>
+                        </div>
+                        </div>
+
                         <div id="keywords" style="display: block; padding: 2px;"></div>
+-->
                 </div>
         </div>
 </body>

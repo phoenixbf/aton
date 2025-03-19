@@ -101,6 +101,10 @@ canvas:active {
     cursor: -webkit-grabbing;
 }
 
+a {
+    color: var(--bs-body-color);
+}
+
 /*=========================================
     ATON cascading classes (aton-*)
     to be applied on top of bootstrap 5

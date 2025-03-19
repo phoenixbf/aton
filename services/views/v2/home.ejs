@@ -38,7 +38,7 @@ window.addEventListener( 'load', ()=>{
                                         sid: S.sid,
                                         showuser: true,
                                         keywords: S.kwords,
-                                        //size: "large",
+                                        size: "large",
                                         useblurtint: true
                                 })
                         );
@@ -138,7 +138,7 @@ window.addEventListener( 'load', ()=>{
         <!-- Staff Pick -->
         <div id="staffpick" class="shuGalleryContainer">
                 <div class="shuSectionTitleContainer">
-                        <h2>Staff Pick</h2>
+                        <h2><i class='bi bi-star-fill' style='vertical-align:middle; margin-right: 8px;'></i>Staff Pick</h2>
                 </div>
                 <div id="staffpickband" class="aton-hscrollable" ></div>
         </div>
@@ -146,8 +146,10 @@ window.addEventListener( 'load', ()=>{
         <!-- Apps -->
         <% if (apps.length>0) { %>
         <div id="apps" class="shuGalleryContainer">
-                <h2>Apps</h2>
-                WebApps accessible on this instance<hr>
+                <div class="shuSectionTitleContainer">
+                        <h2>Apps</h2>
+                        WebApps accessible on this instance
+                </div>
         </div>
         <% } %>
 

@@ -372,14 +372,12 @@ UI.createButton = (options)=>{
     if (options.text) el.innerText = " "+options.text;
 
     if (options.icon) UI.prependIcon(el, options.icon);
-/*
-    if (options.icon){
-        let stricon = options.icon;
-        
-        if (stricon.startsWith("bi-")) el.prepend( UI.createElementFromHTMLString("<i class='bi "+stricon+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>"));
-        else el.prepend( UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(stricon)+"'>"));
+
+    if (options.size){
+        if (options.size === "large") el.classList.add("btn-lg");
+        if (options.size === "small") el.classList.add("btn-sm");
     }
-*/
+
     if (options.badge){ 
         el.append( UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
     }

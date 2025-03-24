@@ -328,8 +328,9 @@ UI.prependIcon = (el, icon)=>{
 /**
 Create a generic container
 - options.id: optional ID for this element
-- options.classes: optional list of space-separated CSS classes
+- options.classes: optional list of space-separated CSS classes (e.g.: "myclass_A myclass_B")
 - options.style: optional style string (e.g.: "display:block; padding:2px")
+- options.items: optional list of children elements
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -344,6 +345,10 @@ UI.createContainer = (options)=>{
     }
 
     let el = UI.createElementFromHTMLString(`<div${str}></div>`);
+
+    if (options.items){
+        for (let i in options.items) if (options.items[i]) el.append( options.items[i] );
+    }
 
     return el;
 };
@@ -570,15 +575,14 @@ UI.createTabsGroup = (options)=>{
     for (let i=0; i<options.items.length; i++){
         let e = options.items[i];
 
-        let tabtitle   = e.title;
+        let tabtitle   = e.title? e.title : "";
         let tabcontent = e.content;
         let icon       = e.icon;
 
         let icontab = "";
         if (icon) icontab = "<img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL(icon)+"'>";
 
-        let tabid = baseid+"-"+tabtitle;
-        tabid = tabid.replaceAll(" ", "");
+        let tabid = baseid+"-" + i;
 
         let eltab = document.createElement('li');
         eltab.classList.add("nav-item");
@@ -962,7 +966,7 @@ UI.createLiveFilter = (options)=>{
 
     const elInGroup = document.createElement("div");
     elInGroup.classList.add("input-group"); //,"mb-2");
-    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text' id='basic-addon1'><i class='bi bi-search'></i></span>"));
+    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
     if (options.oninput) elInput.oninput = options.oninput;
@@ -1087,7 +1091,7 @@ UI.createOwnScenesGallery = (options)=>{
 };
 
 /**
-Create a keyword
+Create a keyword (tag)
 - options.term: the term (string)
 - options.count: optional counter for this keyword
 - options.onpress: routine to launch on click
@@ -1111,6 +1115,64 @@ UI.createKeyword = (options)=>{
     }
 
     if (options.onpress) el.onclick = options.onpress;
+
+    return el;
+};
+
+UI.createSlider = (options)=>{
+    let el = UI.createContainer({classes: "aton-range-container"});
+    let baseid = ATON.Utils.generateID("slider");
+    
+    let elValue = undefined;
+    let elLabel = undefined;
+    
+    if (options.label){
+        elLabel = UI.createElementFromHTMLString("<label for='"+baseid+"' class='aton-range-label'><b>"+options.label+"</b>: </label>");
+        //elLabel = UI.createElementFromHTMLString("<span class='input-group-text'><i class='bi bi-search'></i></span>");
+        el.append(elLabel);
+        elValue = document.createElement("span");
+        elLabel.append(elValue);
+
+        if (options.value) elValue.innerText = options.value;
+    }
+
+    let min  = 0;
+    let max  = 1;
+    let step = (options.step)? options.step : 1;
+
+    if (options.range){
+        min = options.range[0];
+        max = options.range[1];
+    }
+
+    let elInput = UI.createElementFromHTMLString(`
+        <input type="range" class="aton-range" list="ticks-${baseid}" min="${min}" max="${max}" step="${step}" id="${baseid}">
+    `);
+
+    if (options.value) elInput.value = options.value;
+
+    el.append(elInput);
+
+/*
+    if (options.ticks){
+        let elDL = document.createElement("datalist");
+        elDL.id = "ticks-"+baseid;
+
+        for (let t=min; t<=max; t+=step){
+            elDL.append( UI.createElementFromHTMLString("<option value='"+t+"'></option>") );
+        }
+
+        el.append(elDL);
+    }
+*/
+    elInput.oninput = ()=>{
+        if (elValue) elValue.innerText = elInput.value;
+        if (options.oninput) options.oninput(elInput.value);
+    };
+    if (options.onchange) elInput.onchange = ()=>{
+        if (elValue) elValue.innerText = elInput.value;
+        options.onchange(elInput.value);
+    };
 
     return el;
 };

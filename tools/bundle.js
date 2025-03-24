@@ -60,7 +60,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 
-import ThreeMeshUI from '../../_prv/three-mesh-ui/src/three-mesh-ui.js';
+import ThreeMeshUI from '../_prv/three-mesh-ui/src/three-mesh-ui.js';
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
 
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
@@ -70,7 +70,6 @@ import * as ThreeMeshBVH from 'three-mesh-bvh';
 import * as TILES from '3d-tiles-renderer';
 import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
 import { ImplicitTilingPlugin  } from '3d-tiles-renderer/plugins';
-//import { TileCompressionPlugin } from '../../_prv/3DTilesRendererJS/example/src/plugins/TileCompressionPlugin.js';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
@@ -147,6 +146,8 @@ window.ThreeMeshBVH = ThreeMeshBVH;
 window.TILES        = TILES;
 //window.IFCLoader    = IFCLoader;
 
+//window.GS3D = GS3D;
+
 window.CustomShaderMaterial = CustomShaderMaterial;
 
 //window.Loader3DTiles = Loader3DTiles;
@@ -155,5 +156,6 @@ export {
     THREE,
     ThreeMeshUI,
     ThreeMeshBVH,
-    TILES
+    TILES,
+    //GS3D
 };

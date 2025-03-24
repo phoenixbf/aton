@@ -58,7 +58,7 @@
         "recurse": true,
         "verbose": true,
         "encoding": "utf8",
-        "readme": "./services/tools/API.md",
+        "readme": "./tools/API.md",
 
         "_theme_opts": {
             "theme__": "dark",

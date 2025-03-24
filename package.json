@@ -10,10 +10,9 @@
     "start-webdav": "node services/webdav/ATON.service.webdav.js",
     "deploy-pm2": "pm2 start ecosystem.config.js",
     "upd": "git pull && npm install",
-    "build-three": "webpack --config ./services/tools/webpack.three.js",
-    "build-aton": "webpack --config ./services/tools/webpack.aton.js",
-    "build-apidoc-client": "jsdoc -c ./services/tools/jsdoc-client.json",
-    "build-apidoc-server": "apidoc -c ./services/tools/apidoc-server.json -i ./services/ -o ./public/apidoc/server/ -e _prv -t ./_prv/apidoc-template/template"
+    "build-bundle": "webpack --config ./tools/webpack.bundle.js",
+    "build-aton": "webpack --config ./tools/webpack.aton.js",
+    "build-apidoc-client": "jsdoc -c ./tools/jsdoc-client.json"
   },
   "author": "Bruno Fanini",
   "license": "GPL-3.0-only",

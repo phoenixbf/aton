@@ -42,9 +42,11 @@ window.addEventListener( 'load', ()=>{
             body: ATON.UI.createTabsGroup({
                 items: [
                     {
-                        title: "Buttons",
+                        //title: "Home",
                         icon: "home",
-                        content: ATON.UI.createButton({
+                        content: ATON.UI.createContainer({
+                            items: [
+                                ATON.UI.createButton({
                                     variant:"primary",
                                     text:"Open side panel",
                                     icon: "nav",
@@ -55,7 +57,21 @@ window.addEventListener( 'load', ()=>{
                                         });
                                         ATON.UI.hideModal();
                                     }
+                                }),
+                                ATON.UI.createSlider({
+                                    label: "Slider A",
+                                    range: [0,10],
+                                    value: 5,
+                                    //oninput: (v)=>{ console.log(v) }
+                                }),
+                                ATON.UI.createSlider({
+                                    label: "Slider B",
+                                    range: [0,20],
+                                    value: 5,
+                                    //oninput: (v)=>{ console.log(v) }
                                 })
+                            ]
+                        })
                     },
                     {
                         title: "layers",

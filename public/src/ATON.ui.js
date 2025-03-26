@@ -346,7 +346,7 @@ UI.createContainer = (options)=>{
 
     let el = UI.createElementFromHTMLString(`<div${str}></div>`);
 
-    if (options.items){
+    if (options && options.items){
         for (let i in options.items) if (options.items[i]) el.append( options.items[i] );
     }
 
@@ -506,6 +506,8 @@ Create a dropdown
 @returns {HTMLElement}
 */
 UI.createDropdown = (options)=>{
+    if (!options.items) return undefined;
+
     let el = document.createElement('div');
     el.classList.add("btn-group");
 
@@ -557,6 +559,8 @@ Create a tabs group.
 @returns {HTMLElement}
 */
 UI.createTabsGroup = (options)=>{
+    if (!options.items) return undefined;
+
     let baseid = ATON.Utils.generateID("tabgroup");
 
     let el = document.createElement('div');
@@ -620,6 +624,8 @@ Create a tree group
 @returns {HTMLElement}
 */
 UI.createTreeGroup = (options)=>{
+    if (!options.items) return undefined;
+
     let baseid = ATON.Utils.generateID("tree");
 
     let el = document.createElement('div');
@@ -1119,6 +1125,17 @@ UI.createKeyword = (options)=>{
     return el;
 };
 
+/**
+Create a range/slider
+- options.range: min and max values pair (e.g. [0,10])
+- options.label: optional label for this slider
+- options.value: initial value
+- options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
+- options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
 UI.createSlider = (options)=>{
     let el = UI.createContainer({classes: "aton-range-container"});
     let baseid = ATON.Utils.generateID("slider");

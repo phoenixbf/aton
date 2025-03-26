@@ -36,10 +36,13 @@
     <meta name="theme-color" content="#000000" />
 
     <title>__APPTITLE__</title>
-    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
+    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
     <!-- Vendors -->
     <script type="text/javascript" src="/vendors/vendors.min.js"></script>
+    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
     <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
     <script type="text/javascript" src="/dist/ATON.min.js"></script>
 
@@ -47,21 +50,10 @@
 	<script type="text/javascript" src="js/main.js"></script>
 </head>
 
-<body oncontextmenu="return false;">
-    <!-- Top Toolbar -->
-    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left"></div>
+<body>
+    <div id="toolbar" class="aton-toolbar-top"></div>
 
-	<!-- Bottom Toolbar -->
-	<div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom"></div>
-
-    <!-- Main Popup -->
-    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
-
-    <!-- Loader -->
-    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
-
-    <!-- Powered by -->
-    <div id='idPoweredBy' class="atonToolbar atonToolbar-bottom poweredBy" >
-        Powered by <a href="https://osiris.itabc.cnr.it/aton/" target="_blank">ATON</a>
+    <div class="aton-poweredby" >
+        <a href="https://aton.ispc.cnr.it/site/" target="_blank"><img src="/res/aton-logo.png"></a>
     </div>
 </body>

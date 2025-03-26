@@ -94,7 +94,11 @@ window.addEventListener( 'load', ()=>{
                                         elMyScenes.append(card);
                                 }
 
-                                let elKWs = ATON.UI.createContainer(); //document.createElement("div");
+                                let elKWs = ATON.UI.createContainer();
+
+                                let numKWs = Object.keys(kwords).length;
+
+                                ATON.UI.get("numkeywords").innerHTML = numKWs;
 
                                 for (let k in kwords){
                                         // elKWs
@@ -108,6 +112,7 @@ window.addEventListener( 'load', ()=>{
                                                 }
                                         }));
                                 }
+                                
 /*
                                 elKeywords.append(ATON.UI.createTreeGroup({
                                         items:[
@@ -144,12 +149,13 @@ window.addEventListener( 'load', ()=>{
 
         <div id="myscenes" class="shuGalleryContainer">
                 <div class="shuSectionTitleContainer" style="text-align: left;">
+                        <div style="float: right;">TEST</div>
                         <h2>My Scenes</h2>
                         Total: <span id="numscenes">0</span>
 
                         <div style="display: block; margin-top: 8px;">
                                 <div class="d-inline-flex gap-1">
-                                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords</button>
+                                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords (<span id="numkeywords">0</span>)</button>
                                 </div>
                                 <div class="collapse" id="keywords"></div>
                         </div>

@@ -1,12 +1,14 @@
 /*!
     @preserve
 
-    THREEjs library (https://threejs.org/) custom bundle
-    including:
+    Bundle including:
+    - THREE.js library (https://threejs.org/)
     - THREE mesh BVH (https://www.npmjs.com/package/three-mesh-bvh)
     - THREE mesh UI (https://www.npmjs.com/package/three-mesh-ui)
     - 3D Tiles Renderer (https://github.com/NASA-AMMOS/3DTilesRendererJS)
-==================================================================================*/
+    - THREE custom shader material (https://www.npmjs.com/package/three-custom-shader-material)
+    
+=================================================================================================*/
 
 import * as THREE from "three";
 

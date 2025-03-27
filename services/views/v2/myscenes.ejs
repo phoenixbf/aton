@@ -33,6 +33,17 @@ window.addEventListener( 'load', ()=>{
         // My scene gallery
         let elMyScenes = ATON.UI.get("myscenes");
         let elKeywords = ATON.UI.get("keywords");
+        let elMainTasks = ATON.UI.get("maintasks");
+
+        elMainTasks.append(ATON.UI.createButton({
+                icon: "bi-plus-lg",
+                text: "New Scene",
+                classes: "aton-btn-primary",
+                //size: "large",
+                onpress: ()=>{
+                        //
+                }
+        }));
 
         ATON.checkAuth(
                 (u)=>{
@@ -149,7 +160,7 @@ window.addEventListener( 'load', ()=>{
 
         <div id="myscenes" class="shuGalleryContainer">
                 <div class="shuSectionTitleContainer" style="text-align: left;">
-                        <div style="float: right;">TEST</div>
+                        <div class="shuMainSectionTasks" id="maintasks"></div>
                         <h2>My Scenes</h2>
                         Total: <span id="numscenes">0</span>
 

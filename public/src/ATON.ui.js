@@ -363,6 +363,7 @@ Create a button (icon and/or text)
 - options.text: the button text
 - options.icon: a basic string will look for centralized ATON PNG icons (e.g. "home") or bootstrap icons (starting with "bi-*"), otherwise a provided full url to image
 - options.onpress: routine to launch on click
+- options.size: "large" or "small", otherwise default size
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -373,6 +374,7 @@ UI.createButton = (options)=>{
     el.setAttribute("type","button");
 
     if (options.variant) el.classList.add("btn-"+options.variant); // Bootstrap button variants (primary, info, ...)
+    if (options.classes) el.className = el.className + " " + options.classes;
 
     if (options.text) el.innerText = " "+options.text;
 

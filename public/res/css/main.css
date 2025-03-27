@@ -18,7 +18,8 @@
     Variables
 =========================================*/
 :root {
-    --aton-blur-radius: 15px
+    --aton-blur-radius: 15px;
+    --aton-colors-primary-rgb: #F2CB05;
 }
 
 /*
@@ -307,7 +308,7 @@ a {
 .aton-btn {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
-    padding: 4px;
+    padding: 0.5em;
     margin: 2px;
 }
 
@@ -316,6 +317,11 @@ a {
     height: 1.5em;
     /*margin-right: 4px;*/
     margin: 0px;
+}
+
+.aton-btn-primary {
+    background-color: var(--aton-colors-primary-rgb);
+/*    border-color: var(--bs-body-color-rgb);*/
 }
 
 /* Dropdowns

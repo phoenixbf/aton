@@ -19,7 +19,7 @@
 =========================================*/
 :root {
     --aton-blur-radius: 15px;
-    --aton-colors-primary-rgb: #F2CB05;
+    --aton-colors-accent: #F2CB05;
 }
 
 /*
@@ -304,11 +304,38 @@ a {
     height: 16px;
 }
 
+.btn-accent {
+    --bs-btn-bg: var(--aton-colors-accent);
+    --bs-btn-border-color: rgba(var(--aton-colors-accent), 0.0);
+    --bs-btn-color: #222;
+
+    --bs-btn-hover-bg: var(--aton-colors-accent);
+    --bs-btn-hover-border-color: black;
+    --bs-btn-hover-color: #222;
+/*
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #0d6efd;
+    --bs-btn-border-color: #0d6efd;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0b5ed7;
+    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0a58ca;
+    --bs-btn-active-border-color: #0a53be;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #0d6efd;
+    --bs-btn-disabled-border-color: #0d6efd;
+*/
+}
 
 .aton-btn {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
-    padding: 0.5em;
+    padding: 4px;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
     margin: 2px;
 }
 
@@ -320,7 +347,7 @@ a {
 }
 
 .aton-btn-primary {
-    background-color: var(--aton-colors-primary-rgb);
+    background-color: var(--aton-colors-accent);
 /*    border-color: var(--bs-body-color-rgb);*/
 }
 

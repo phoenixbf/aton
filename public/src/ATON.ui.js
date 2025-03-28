@@ -1212,7 +1212,7 @@ UI.createLoginForm = (options)=>{
     let elEnter = ATON.UI.createButton({
         text: "Login",
         icon: "bi-person",
-        variant: "primary",
+        variant: "accent",
         onpress: ()=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();

@@ -334,9 +334,16 @@ a {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
     padding: 4px;
+/*
     padding-left: 0.5em;
     padding-right: 0.5em;
+*/
     margin: 2px;
+}
+
+.aton-btn-text {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
 }
 
 .aton-btn img {
@@ -385,6 +392,15 @@ a {
 
 /* Tabs
 ============*/
+.aton-tab {
+    color: var(--bs-body-color);
+}
+/*
+.aton-tab:hover {
+    border-bottom: solid var(--bs-body-color);
+}
+*/
+
 .aton-tab img {
     width: 16px;
     height: 16px;
@@ -405,7 +421,7 @@ a {
 }
 
 .aton-tree-item summary {
-    padding: 5px;
+    padding: 10px;
 
     font-weight: bold;
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
@@ -431,7 +447,7 @@ a {
 }
 
 .aton-tree-item-content {
-    margin-left: 10px;
+    margin-left: 14px;
     margin-top: 5px;
 
     padding-left: 10px;

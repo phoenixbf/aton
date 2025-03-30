@@ -21,7 +21,7 @@ Maat module serves as in-memory DB
 */
 let Maat = {};
 
-Maat.INTERVAL = 5000;
+Maat.INTERVAL = 10000;
 
 Maat.init = ()=>{
 	Maat.needScan = {};
@@ -320,7 +320,7 @@ Maat.scanMedia = (uid)=>{
 
 // TODO: improve filter alg
 Maat.filterTSets = ( files )=>{
-
+/*
 	let R = [];
 
 	for (let s in files){
@@ -334,8 +334,8 @@ Maat.filterTSets = ( files )=>{
 	}
 
 	return R;
+*/
 
-/*
 	let its = [];
 	let B   = {};
 
@@ -369,7 +369,7 @@ Maat.filterTSets = ( files )=>{
 
 	//console.log(files)
 	return files;
-*/
+
 };
 
 // TODO

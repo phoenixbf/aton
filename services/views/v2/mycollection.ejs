@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<%- include('frags/head'); %>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.realize2D();
+        ATON.UI.setTheme("light");
+
+        // Navbar
+        let elNavCont  = document.getElementById("navbarSupportedContent");
+        let elNavItems = document.getElementById("navbarItems");
+
+        //elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
+
+        let elSearch = ATON.UI.createLiveFilter({
+                filterclass: "aton-btn",
+                onfocus: ()=>{
+
+                },
+                onblur: ()=>{
+
+                }
+        })
+
+        elSearchInput = elSearch.getElementsByTagName('input')[0];
+        elNavCont.append(elSearch);
+
+        let elMainTasks = ATON.UI.get("maintasks");
+        
+        let elModels = ATON.UI.createContainer({classes:"shuCollectionTreeContainer"});
+        let elPano   = ATON.UI.createContainer();
+        let elMedia  = ATON.UI.createContainer();
+
+        elMainTasks.append(ATON.UI.createButton({
+                icon: "bi-arrow-clockwise",
+                text: "Refresh",
+                variant: "accent",
+                //classes: "aton-btn-primary",
+                //size: "large",
+                onpress: ()=>{
+                        window.location.reload();
+                }
+        }));
+
+        let realizeTree = (o, ppath)=>{
+                let items = [];
+
+                for (let k in o){
+                        let child = o[k];
+
+                        // Item
+                        if (Object.keys(child).length <= 0){
+                                let ext = ATON.Utils.getFileExtension(k);
+                                let type;
+                                if (ext === "gltf" || ext === "glb") type = "glTF";
+                                if (ext === "json") type = "3D Tiles";
+
+                                let elItem = ATON.UI.createContainer();
+                                elItem.append(
+                                        ATON.UI.createKeyword({ term: type }),
+
+                                        ATON.UI.createButton({
+                                                text: /*ppath +*/ k,
+                                                //icon: "collection-item",
+                                                //variant: "secondary",
+                                                size: "small"
+                                        })
+                                );
+
+                                elItem.setAttribute("data-search-term", k);
+
+                                items.push({
+                                        //title: k,
+                                        content: elItem
+                                });
+                        }
+                        // Folder
+                        else {
+                                items.push({
+                                        title: k+"/",
+                                        content: realizeTree(child, ppath+k+"/")
+                                });
+                        }
+                }
+
+                let T = ATON.UI.createTreeGroup({ items: items });
+                return T;
+        };
+
+        ATON.checkAuth(
+                (u)=>{
+                        elNavCont.append( SHU.createMainAuthDropdown(u,"mycollection") );
+
+                        let models = {};
+
+                        SHU.setPageWaiting();
+                        ATON.REQ.get("items/"+u.username+"/models", entries => {
+                                SHU.setPageComplete();
+                                
+                                entries.forEach(p => p.split('/').reduce((o, k) => o[k] = o[k] || {}, models));
+
+                                //console.log(models)
+                                
+                                elModels.append( realizeTree(models[u.username].models, "/") );
+                                //elModels.append( realizeTree(models, "/") );
+                        });
+                }
+        );
+
+        ATON.UI.get("items").append(
+                ATON.UI.createTabsGroup({
+                        items: [
+                                {
+                                        title: "3D Models",
+                                        content: elModels
+                                },
+                                {
+                                        title: "360",
+                                        content: elPano
+                                },
+                                {
+                                        title: "Media",
+                                        content: elMedia
+                                }
+                        ]
+                })
+        );
+        
+});
+</script>
+</head>
+
+<body>
+        <!-- Navbar -->
+        <%- include('frags/navbar'); %>
+
+        <div class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer" style="text-align: left;">
+                        <div class="shuMainSectionTasks" id="maintasks"></div>
+                        <h2>My Collection</h2>
+                        Total: <span id="xxx">0</span>
+                </div>
+
+                <div id="items"></div>
+        </div>
+
+        <div id="footer" class="aton-footer">
+                <%- include('frags/footer'); %>
+        </div>
+</body>

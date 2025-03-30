@@ -6,6 +6,14 @@
 let SHU = {};
 window.SHU = SHU;
 
+SHU.setPageWaiting = ()=>{
+    ATON.UI.showCenteredOverlay();
+};
+
+SHU.setPageComplete = ()=>{
+    ATON.UI.hideCenteredOverlay();
+};
+
 SHU.createMainAuthDropdown = (u, section)=>{
 
     const items = [];

@@ -100,6 +100,18 @@ Render.setup = (app)=>{
 		res.render("v2/myscenes", opts);
 	});
 
+	app.get("/v2/mycollection", (req,res,next)=>{
+        if ( !Core.Auth.isUserAuth(req) ){
+			res.redirect("/v2/login?u=/v2/mycollection");
+			return;
+        }
+
+		let opts = {};
+		opts.user = req.user.username;
+
+		res.render("v2/mycollection", opts);
+	});
+
 };
 
 

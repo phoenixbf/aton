@@ -376,7 +376,7 @@ UI.createButton = (options)=>{
     if (options.variant) el.classList.add("btn-"+options.variant); // Bootstrap button variants (primary, info, ...)
     if (options.classes) el.className = el.className + " " + options.classes;
 
-    if (options.text) el.innerText = " "+options.text;
+    if (options.text) el.innerHTML = "<span class='aton-btn-text'>"+options.text+"</span>";
 
     if (options.icon) UI.prependIcon(el, options.icon);
 
@@ -636,22 +636,34 @@ UI.createTreeGroup = (options)=>{
     for (let i=0; i<options.items.length; i++){
         let e = options.items[i];
 
-        let title   = e.title? e.title : i;
+        let title   = e.title; //? e.title : i;
         let content = e.content;
- 
-        let elItem = document.createElement('details');
-        elItem.classList.add("aton-tree-item");
-        if (e.open) elItem.setAttribute("open",true);
-        
-        elItem.id = baseid+"-"+i;
 
-        elItem.append( UI.createElementFromHTMLString("<summary>"+title+"</summary>") );
-        if (content){
-            let elContent = document.createElement('div');
-            elContent.classList.add("aton-tree-item-content");
-            elContent.append( e.content );
+        let elItem, elContent;
 
-            elItem.append( elContent );
+        if (!title){
+            elItem = ATON.UI.createContainer(/*{ classes:"aton-tree-item"}*/);
+            if (content){
+                elContent = ATON.UI.createContainer(/*{ classes:"aton-tree-item-content"}*/);
+                elContent.append( content );
+                elItem.append( elContent );
+            }
+        }
+        else {
+            elItem = document.createElement('details');
+            elItem.classList.add("aton-tree-item");
+            if (e.open) elItem.setAttribute("open",true);
+            
+            elItem.id = baseid+"-"+i;
+    
+            elItem.append( UI.createElementFromHTMLString("<summary>"+title+"</summary>") );
+            if (content){
+                let elContent = document.createElement('div');
+                elContent.classList.add("aton-tree-item-content");
+                elContent.append( content );
+    
+                elItem.append( elContent );
+            }
         }
 
         el.append(elItem);

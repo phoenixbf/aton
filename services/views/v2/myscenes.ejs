@@ -50,9 +50,12 @@ window.addEventListener( 'load', ()=>{
                 (u)=>{
                         elNavCont.append( SHU.createMainAuthDropdown(u,"myscenes") );
 
+                        SHU.setPageWaiting();
                         ATON.REQ.get("scenes/"+u.username, entries => {
                                 entries.sort( ATON.UI.SCENES_SORTER );               
                                 console.log(entries);
+
+                                SHU.setPageComplete();
 
                                 ATON.UI.get("numscenes").innerHTML = entries.length;
 
@@ -60,6 +63,12 @@ window.addEventListener( 'load', ()=>{
                                 let kwords = {};
                         
                                 for (let scene of entries){
+                                        cdate = new Date(scene.creationDate);
+                                        let YYYY = cdate.getUTCFullYear();
+                                        let MM   = cdate.getUTCMonth()+1;
+                                        let DD   = cdate.getUTCDate();
+                                        if (MM<10) MM = "0"+MM;
+
                                         const elFooter = ATON.UI.createElementFromHTMLString(`
                                                 <div class="align-items-center justify-content-center">
                                                 </div>
@@ -67,7 +76,6 @@ window.addEventListener( 'load', ()=>{
                                         );
 
                                         // Years
-                                        let YYYY = new Date(scene.creationDate).getFullYear();
                                         if (!years[YYYY]){
                                                 years[YYYY] = 1;
                                                 elMyScenes.append(ATON.UI.createElementFromHTMLString(`
@@ -89,6 +97,7 @@ window.addEventListener( 'load', ()=>{
                                         elFooter.append(ATON.UI.createButton({
                                                 icon: "bi-gear-fill",
                                                 text: "Manage",
+                                                //variant: "secondary",
                                                 onpress: ()=>{
                                                         sceneSettings(scene.sid);
                                                 }
@@ -98,6 +107,7 @@ window.addEventListener( 'load', ()=>{
                                                 title: scene.title? scene.title : scene.sid,
                                                 sid: scene.sid,
                                                 keywords: scene.kwords,
+                                                subtitle: YYYY+"-"+MM+"-"+DD,
                                                 footer: elFooter,
                                                 useblurtint: true,
                                                 //size: ...

@@ -872,6 +872,7 @@ Create a scene card.
 - options.size: "small" or "large", if not present standard size
 - options.keywords: keywords object (eg. {"gold":1, "silver":1 })
 - options.title: scene title
+- options.subtitle: custom subtitle (if not provided, defaults to user)
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -879,9 +880,7 @@ Create a scene card.
 UI.createSceneCard = (options)=>{
     //let baseid = ATON.Utils.generateID("ftrans");
     
-    let el = document.createElement('div');
-    el.classList.add("card", "aton-scene-card");
-    //el.id = baseid;
+    let el = ATON.UI.createContainer({ classes: "card aton-scene-card" });
 
     if (options.size==="small") el.classList.add("aton-scene-card-small");
     if (options.size==="large") el.classList.add("aton-scene-card-large");
@@ -903,6 +902,7 @@ UI.createSceneCard = (options)=>{
     }
     
     cover = ATON.PATH_RESTAPI2+"scenes/"+options.sid+"/cover";
+
     let pp = options.sid.split("/");
     user = pp[0];
     usid = pp[1];
@@ -947,7 +947,18 @@ UI.createSceneCard = (options)=>{
         });
     }
 
-    if (options.showuser) elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
+    let elSub = ATON.UI.createElementFromHTMLString(`<div class='card-subtitle mb-2 text-body-secondary'></div>`);
+
+    if (options.subtitle){
+        elSub.append(options.subtitle);
+    }
+    else {
+        elSub.innerHTML = "<img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user;
+    }
+
+    elbody.append(elSub);
+
+    //if (options.showuser) elbody.innerHTML += "<div class='card-subtitle mb-2 text-body-secondary' ><img class='icon aton-icon aton-icon-small' src='"+UI.resolveIconURL("user")+"'>"+user+"</div>";
 
     // Footer
     if (options.footer){

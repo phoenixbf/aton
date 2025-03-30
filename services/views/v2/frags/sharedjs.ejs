@@ -19,7 +19,7 @@ SHU.createMainAuthDropdown = (u, section)=>{
     const items = [];
 
     if (section!=="myscenes")     items.push({ title: "My Scenes", url: "/v2/myscenes", icon:"scene" });
-    if (section!=="mycollection") items.push({ title: "My Collection", url: "#", icon:"collection" });
+    if (section!=="mycollection") items.push({ title: "My Collection", url: "/v2/mycollection", icon:"collection" });
 
     items.push({ title: "Logout", url: "/v2/logout", icon: "exit" });
 

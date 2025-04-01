@@ -39,6 +39,8 @@ UI.init = ()=>{
 
     UI._bSemL = false; // Hovering semantic shape or mask
 
+    UI._bReqHome = false;
+
     UI._setupBase();
 };
 
@@ -223,6 +225,12 @@ UI.addBasicEvents = ()=>{
 
     ATON.on("AllNodeRequestsCompleted", ()=>{ 
         UI.hideCenteredOverlay();
+
+        // Handle home pov
+        if (UI._bReqHome) return;
+        if (!ATON.Nav.homePOV) ATON.Nav.computeAndRequestDefaultHome(0.5);
+		ATON.Nav.requestHomePOV(0.2);
+        UI._bReqHome = true;
     });
 
     // Semantic

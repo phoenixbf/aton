@@ -19,11 +19,6 @@ APP.setup = ()=>{
 	// Load sample 3D model
 	ATON.createSceneNode("sample").load("samples/models/skyphos/skyphos.gltf").attachToRoot();
 
-	// Autocompute & go to home viewpoint when all 3D models are loaded
-	ATON.on("AllNodeRequestsCompleted", ()=>{
-		ATON.Nav.computeAndRequestDefaultHome(0.2);
-	});
-
     // If our app required ore or more flares (plugins), we can also wait for them to be ready for specific setups
     ATON.on("AllFlaresReady",()=>{
 		// Do stuff

@@ -328,7 +328,7 @@ You can equip dynamically this app with any flare via "ff" url parameter (e.g. ?
 @param {function} setup - setup routine
 @param {function} update - update (or tick) routine
 @param {string} swpath - (optional) service worker path (PWA) to register
-@returns {object} - web-app object, to be started with run() method
+@returns {object} - web-app object
 @example
 let A = ATON.App.realize( mySetupRoutine )
 */

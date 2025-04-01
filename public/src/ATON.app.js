@@ -353,24 +353,16 @@ App.realize = (setup, update, swpath)=>{
         App.requireFlares(flist);
     }
 
+    // Automatically run the app when document ready
+    window.addEventListener('load', ()=>{
+        App.run();
+    });
+
     return App;
 };
 
 /**
-Create and run the App.
-See App.realize() method
-@param {function} setup - setup routine
-@param {function} update - update (or tick) routine
-@param {string} swpath - (optional) service worker path (PWA) to register
-@example
-ATON.App.realizeAndRun( mySetupRoutine, myUpdateRoutine, "myserviceworker.js" )
-*/
-App.realizeAndRun = (setup, update, swpath)=>{
-    App.realize(setup, update, swpath).run();
-};
-
-/**
-Run the App, typically inside window.addEventListener('load', ...) 
+Run the App. This typically happens inside window.addEventListener('load', ...) 
 @returns {boolean} - true on success
 @example
 window.addEventListener('load',()=>{

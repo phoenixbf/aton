@@ -36,8 +36,3 @@ APP.update = ()=>{
 
 };
 */
-
-// Run the App!
-window.addEventListener('load', ()=>{
-	APP.run();
-});

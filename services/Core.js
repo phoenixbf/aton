@@ -78,7 +78,8 @@ Core.SCENES_GLOB_OPTS = {
 
 Core.COLLECTIONS_GLOB_OPTS = {
 	cwd: Core.DIR_COLLECTIONS,
-	follow: true
+	follow: true,
+	//ignore: ["*/Data/*","*/tiles/*"]
 };
 
 // Modules setup

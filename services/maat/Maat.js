@@ -276,9 +276,21 @@ Maat.scanModels = (uid)=>{
 		if (files.length < 1) return;
 
 		// TODO: improve filtering perf.
-		files = Maat.filterTSets(files);
+		//files = Maat.filterTSets(files);
 
-		for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
+		for (let f in files){
+			let fpath = files[f];
+
+			// Filtering
+			if (fpath.endsWith(".json")){
+				if (!fpath.includes("/Data/")) CC[uid].models.push( fpath );
+			}
+			else {
+				if (!fpath.includes("/tiles/")) CC[uid].models.push( fpath );
+			}
+
+			//CC[uid].models.push( /*relpath + */files[f] );
+		}
 	//});
 };
 

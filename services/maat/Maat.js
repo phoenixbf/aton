@@ -276,7 +276,7 @@ Maat.scanModels = (uid)=>{
 		if (files.length < 1) return;
 
 		// TODO: improve filtering perf.
-		//files = Maat.filterTSets(files);
+		files = Maat.filterTSets(files);
 
 		for (let f in files) CC[uid].models.push( /*relpath + */files[f] );
 	//});
@@ -320,21 +320,22 @@ Maat.scanMedia = (uid)=>{
 
 // TODO: improve filter alg
 Maat.filterTSets = ( files )=>{
-/*
+
 	let R = [];
 
 	for (let s in files){
 		let fpath = files[s];
 
 		if (fpath.endsWith(".json")){
-			//console.log(fpath)
-
-			R.push( fpath );
+			if (!fpath.includes("/Data/")) R.push( fpath );
+		}
+		else {
+			if (!fpath.includes("/tiles/")) R.push( fpath );
 		}
 	}
 
 	return R;
-*/
+/*
 
 	let its = [];
 	let B   = {};
@@ -369,7 +370,7 @@ Maat.filterTSets = ( files )=>{
 
 	//console.log(files)
 	return files;
-
+*/
 };
 
 // TODO

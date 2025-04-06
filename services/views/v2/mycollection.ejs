@@ -99,6 +99,8 @@ window.addEventListener( 'load', ()=>{
                         SHU.setPageWaiting();
                         ATON.REQ.get("items/"+u.username+"/models", entries => {
                                 SHU.setPageComplete();
+
+                                ATON.UI.get("countmodels").innerHTML = entries.length;
                                 
                                 entries.forEach(p => p.split('/').reduce((o, k) => o[k] = o[k] || {}, models));
 
@@ -141,7 +143,9 @@ window.addEventListener( 'load', ()=>{
                 <div class="shuSectionTitleContainer" style="text-align: left;">
                         <div class="shuMainSectionTasks" id="maintasks"></div>
                         <h2>My Collection</h2>
-                        Total: <span id="xxx">0</span>
+                        3D models: <span id="countmodels">0</span><br>
+                        Panoramas: <span id="count360">0</span><br>
+                        Media: <span id="countmedia">0</span>
                 </div>
 
                 <div id="items"></div>

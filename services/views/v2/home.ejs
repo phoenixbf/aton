@@ -73,11 +73,12 @@ window.addEventListener( 'load', ()=>{
         elNavCont.append(elSearch);
 
         let btnLogin = ATON.UI.createButton({
-                icon: "bi-person",
+                icon: "bi-person-fill",
                 //icon: "user",
                 text: "Login",
+                //variant: "accent",
                 onpress: ()=>{
-                        window.location.href = "/v2/login"+"?u="+window.location.href;
+                        window.location.href = "/v2/login/?u=/v2/myscenes" //+"?u="+window.location.href;
 /*
                         ATON.UI.showModal({
                                 //header: "Login",
@@ -93,6 +94,7 @@ window.addEventListener( 'load', ()=>{
                 }
 
         });
+
 
         elNavCont.append(btnLogin);
 
@@ -112,6 +114,21 @@ window.addEventListener( 'load', ()=>{
                         }));
 */
 
+/*
+                        elNavCont.prepend(
+                                ATON.UI.createButton({
+                                        text: "Collection",
+                                        icon: "collection-item",
+                                        onpress: ()=>{ window.location.href = "/v2/mycollection"; }
+                                }),
+
+                                ATON.UI.createButton({
+                                        text: "Scenes",
+                                        icon: "scene",
+                                        onpress: ()=>{ window.location.href = "/v2/myscenes"; }
+                                }),
+                        );
+*/
                         elNavCont.append( SHU.createMainAuthDropdown(u) );
 
                 }

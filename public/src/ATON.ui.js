@@ -149,7 +149,7 @@ UI.showModal = (options)=>{
         el.classList.add("modal-header");
         //el.append(options.header);
 
-        el.innerHTML = "<h4 class='modal-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
+        el.innerHTML = "<h4 class='modal-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close' onclick='ATON.UI.hideModal()'></button>";
 
         UI.elModalContent.append( el );
     }
@@ -173,6 +173,9 @@ UI.showModal = (options)=>{
 };
 
 UI.hideModal = ()=>{
+    // Clear
+    UI.elModalContent.innerHTML = "";
+
     UI.modal.hide();
     UI._bModal = false;
 };
@@ -524,6 +527,8 @@ UI.createDropdown = (options)=>{
     let elBtn = UI.createElementFromHTMLString(`
         <button type="button" class="btn aton-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
     `);
+
+    if (options.variant) elBtn.classList.add("btn-"+options.variant);
     
     if (options.icon) UI.prependIcon(elBtn, options.icon);
 
@@ -1242,8 +1247,9 @@ UI.createLoginForm = (options)=>{
 
     let elEnter = ATON.UI.createButton({
         text: "Login",
-        icon: "bi-person",
+        icon: "bi-person-fill",
         variant: "accent",
+        size: "large",
         onpress: ()=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();

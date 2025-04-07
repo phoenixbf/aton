@@ -9,6 +9,8 @@ window.addEventListener( 'load', ()=>{
         ATON.realize2D();
         ATON.UI.setTheme("light");
 
+        let uname = undefined;
+
         // Navbar
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
@@ -45,6 +47,22 @@ window.addEventListener( 'load', ()=>{
                 }
         }));
 
+        let popupPreview = (path)=>{
+                let pp = "/standalone/?m=" + path;
+                console.log(pp)
+
+                let elFrame = ATON.UI.createElementFromHTMLString(`
+                        <iframe style='height:500px; margin:0;' width='100%' height='500px' frameborder='0'></iframe>
+                `);
+
+                ATON.UI.showModal({
+                        header: "Preview",
+                        body: elFrame
+                });
+
+                elFrame.src = pp;
+        };
+
         let realizeTree = (o, ppath)=>{
                 let items = [];
 
@@ -58,9 +76,38 @@ window.addEventListener( 'load', ()=>{
                                 if (ext === "gltf" || ext === "glb") type = "glTF";
                                 if (ext === "json") type = "3D Tiles";
 
+                                let localPath = uname + "/models" + ppath + k;
+
                                 let elItem = ATON.UI.createContainer();
                                 elItem.append(
-                                        ATON.UI.createKeyword({ term: type }),
+                                        //ATON.UI.createKeyword({ term: type }),
+
+                                        ATON.UI.createButton({
+                                                //text: "Copy",
+                                                icon: "bi-eye-fill",
+                                                //variant: "secondary",
+                                                size: "small",
+                                                onpress: ()=>{
+                                                        if (!uname) return;
+
+                                                        const pp = ATON.PATH_COLLECTION + localPath;
+                                                        popupPreview(pp);
+                                                }
+                                        }),
+
+                                        ATON.UI.createButton({
+                                                //text: "Copy",
+                                                icon: "bi-clipboard-plus",
+                                                //variant: "secondary",
+                                                size: "small",
+                                                onpress: ()=>{
+                                                        if (!uname) return;
+
+                                                        const pp = ATON.PATH_COLLECTION + localPath;
+                                                        console.log(pp)
+                                                        navigator.clipboard.writeText(pp);
+                                                }
+                                        }),
 
                                         ATON.UI.createButton({
                                                 text: /*ppath +*/ k,
@@ -96,8 +143,10 @@ window.addEventListener( 'load', ()=>{
 
                         let models = {};
 
+                        uname = u.username;
+
                         SHU.setPageWaiting();
-                        ATON.REQ.get("items/"+u.username+"/models", entries => {
+                        ATON.REQ.get("items/"+uname+"/models", entries => {
                                 SHU.setPageComplete();
 
                                 ATON.UI.get("countmodels").innerHTML = entries.length;

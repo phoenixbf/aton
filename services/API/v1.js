@@ -122,7 +122,10 @@ app.get(/^\/api\/scene\/(.*)$/, (req,res,next)=>{
 */
 app.get("/api/scenes/", function(req,res,next){
 
-	res.send( Core.Maat.getPublicScenes() );
+	//res.send( Core.Maat.getPublicScenes() );
+	Core.Maat.getPublicScenes().then(R =>{
+		res.send(R);
+	});
 
 	//next();
 });
@@ -151,8 +154,11 @@ app.get("/api/keywords", (req,res)=>{
 app.get("/api/keyword/:kw", (req,res)=>{
 	let kw  = req.params.kw;
 	
-	let R = Core.Maat.getScenesByKeyword(kw);
-	res.send(R);
+	Core.Maat.getScenesByKeyword(kw).then(R =>{
+		res.send(R);
+	});
+	//let R = Core.Maat.getScenesByKeyword(kw);
+	//res.send(R);
 });
 
 /**
@@ -173,8 +179,11 @@ app.get("/api/keyword/:kw/own", (req,res)=>{
 	let uid = req.user.username;
 	let kw  = req.params.kw;
 	
-	let R = Core.Maat.getScenesByKeyword(kw, uid);
-	res.send(R);
+	Core.Maat.getScenesByKeyword(kw, uid).then(R=>{
+		res.send(R);
+	});
+	//let R = Core.Maat.getScenesByKeyword(kw, uid);
+	//res.send(R);
 });
 
 /**
@@ -460,7 +469,10 @@ app.get("/api/scenes/own/", (req,res,next)=>{
 */
 	let uname = req.user.username;
 
-	res.send( Core.Maat.getUserScenes(uname) );
+	//res.send( Core.Maat.getUserScenes(uname) );
+	Core.Maat.getUserScenes(uname).then(R=>{
+		res.send(R);
+	});
 
 	//next();
 });
@@ -487,7 +499,10 @@ app.get("/api/c/models/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.Maat.getUserModels(uname) );
+	//res.send( Core.Maat.getUserModels(uname) );
+	Core.Maat.getUserModels(uname).then((mm)=>{
+		res.send(mm);
+	});
 
 	//next();
 });
@@ -509,7 +524,10 @@ app.get("/api/c/panoramas/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.Maat.getUserPanoramas(uname) );
+	//res.send( Core.Maat.getUserPanoramas(uname) );
+	Core.Maat.getUserPanoramas(uname).then(R=>{
+		res.send(R);
+	});
 
 	//next();
 });
@@ -530,7 +548,10 @@ app.get("/api/c/media/", (req,res,next)=>{
 
 	let uname = req.user.username;
 
-	res.send( Core.Maat.getUserMedia(uname) );
+	//res.send( Core.Maat.getUserMedia(uname) );
+	Core.Maat.getUserMedia(uname).then(R=>{
+		res.send(R);
+	});
 
 	//next();
 });

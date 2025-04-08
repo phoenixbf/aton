@@ -45,7 +45,7 @@ Maat.init = ()=>{
 
 	Maat.db.stats = {};
 
-/*
+/* TOO heavy on CPU
 	const watcherScenes = chokidar.watch(Core.DIR_SCENES, {
 		ignored: /(^|[\/\\])\../, // ignore dotfiles
 		persistent: true,
@@ -78,7 +78,6 @@ Maat.init = ()=>{
 		.on('change', onCollectionsChange )
 		.on('unlink', onCollectionsChange );
 */
-
 
 /*
     fs.watch(Core.DIR_SCENES, (eventType, filename) => {
@@ -128,15 +127,19 @@ Maat.addSceneKeyword = (k)=>{
 	else Maat.db.kwords[k]++;
 };
 
-Maat.scanScenes = ()=>{
-	if (!Maat.needScan.scenes) return;
+Maat.scanScenes = (onComplete)=>{
+	if (!Maat.needScan.scenes){
+		if (onComplete) onComplete();
+		return;
+	}
 	
 	console.log("Scanning scenes...");
+	Maat.needScan.scenes = false;
 
 	const confSHU = Core.config.shu;
 
-	let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
-	//fg("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS).then( files => {
+	//let files = fg.sync("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS);
+	fg("**/"+Core.STD_SCENEFILE, Core.SCENES_GLOB_OPTS).then( files => {
 
 		Maat.db.scenes     = []; // clear
 		Maat.db.scenesByID = {};
@@ -200,14 +203,21 @@ Maat.scanScenes = ()=>{
 		//Maat.db.scenes.sort( Maat.sortScenes );
 
 		//console.log(Maat.db.kwords);
-		Maat.needScan.scenes = false;
+		//Maat.needScan.scenes = false;
 
 		setTimeout(()=>{ Maat.needScan.scenes = true; }, Maat.INTERVAL);
-	//});
+
+		if (onComplete) onComplete();
+	});
 };
 
-Maat.scanApps = ()=>{
-	if (!Maat.needScan.apps) return;
+Maat.scanApps = (onComplete)=>{
+	if (!Maat.needScan.apps){
+		if (onComplete) onComplete();
+		return;
+	}
+
+	Maat.needScan.apps = false;
 
 	let O    = {};
 	O.cwd    = Core.DIR_WAPPS;
@@ -215,8 +225,8 @@ Maat.scanApps = ()=>{
 
 	console.log("Scanning web-apps...");
 
-	let files = fg.sync("*/app.webmanifest", O);
-	//fg("*/app.webmanifest", O).then(files => {
+	//let files = fg.sync("*/app.webmanifest", O);
+	fg("*/app.webmanifest", O).then(files => {
 		Maat.db.apps = [];
 
 		for (let f in files){
@@ -230,46 +240,69 @@ Maat.scanApps = ()=>{
 				data: fs.existsSync(datadir)? true : false
 			});
 		}
-	//});
 
-	Maat.needScan.apps = false;
-	setTimeout(()=>{ Maat.needScan.apps = true; }, Maat.INTERVAL);
+		setTimeout(()=>{ Maat.needScan.apps = true; }, Maat.INTERVAL);
+
+		if (onComplete) onComplete();
+	});
+
+	//setTimeout(()=>{ Maat.needScan.apps = true; }, Maat.INTERVAL);
 };
 
 
 // Collections
-Maat.scanCollection = (uid)=>{
-	if (Maat.needScan.collections[uid] === false) return;
+Maat.scanCollection = (uid, onComplete)=>{
+	if (Maat.needScan.collections[uid] === false){
+		if (onComplete) onComplete();
+		return;
+	}
+
+	Maat.needScan.collections[uid] = false;
 
 	console.log("Scan collection: "+uid);
 
 	//const t0 = performance.now();
 
-	Maat.scanModels(uid);
-	Maat.scanPanoramas(uid);
-	Maat.scanMedia(uid);
+	let scheduleScan = ()=>{
+		console.log("Scan collection "+uid+" completed.");
+		if (onComplete) onComplete();
+
+		setTimeout(()=>{ Maat.needScan.collections[uid] = true; }, Maat.INTERVAL);
+	};
+
+	let bModels = false;
+	let bPano   = false;
+	let bMedia  = false;
+
+	Maat.scanModels(uid, ()=>{
+		bModels = true;
+		if (bPano && bMedia) scheduleScan();
+	});
+	Maat.scanPanoramas(uid, ()=>{
+		bPano = true;
+		if (bModels && bMedia) scheduleScan();
+	});
+	Maat.scanMedia(uid, ()=>{
+		bMedia = true;
+		if (bModels && bPano) scheduleScan();
+	});
 
 	//const t1 = performance.now();
 	//console.log(`${t1 - t0} milliseconds.`);
-
+/*
 	Maat.needScan.collections[uid] = false;
 
 	setTimeout(()=>{ Maat.needScan.collections[uid] = true; }, Maat.INTERVAL);
+*/
 };
 
-Maat.scanModels = (uid)=>{
+Maat.scanModels = (uid, onComplete)=>{
 	let CC = Maat.db.collections;
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	//let relpath = uid +"/models/";
-/*
-	let globopts    = {};
-	globopts.cwd    = Core.DIR_COLLECTIONS;// + relpath;
-	globopts.follow = true;
-*/
-	let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
-	//fg("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS).then( files =>{
+	//let files = fg.sync("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/models/**/{"+Core.mpattern+"}", Core.COLLECTIONS_GLOB_OPTS).then( files =>{
 
 		CC[uid].models = [];
 
@@ -291,10 +324,12 @@ Maat.scanModels = (uid)=>{
 
 			//CC[uid].models.push( /*relpath + */files[f] );
 		}
-	//});
+
+		if (onComplete) onComplete();
+	});
 };
 
-Maat.scanPanoramas = (uid)=>{
+Maat.scanPanoramas = (uid, onComplete)=>{
 	let CC = Maat.db.collections;
 
 	if (CC[uid] === undefined) CC[uid] = {};
@@ -305,29 +340,33 @@ Maat.scanPanoramas = (uid)=>{
 	globopts.cwd    = Core.DIR_COLLECTIONS; // + relpath;
 	globopts.follow = true;
 */
-	let files = fg.sync("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS);
-	//fg("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files => {
+	//let files = fg.sync("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/pano/**/{"+Core.panopattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files => {
 
 		CC[uid].panos = [];
 		
 		if (files.length < 1) return;
 		for (let f in files) CC[uid].panos.push( /*relpath +*/ files[f] );
-	//});
+
+		if (onComplete) onComplete();
+	});
 };
 
-Maat.scanMedia = (uid)=>{
+Maat.scanMedia = (uid, onComplete)=>{
 	let CC = Maat.db.collections;
 
 	if (CC[uid] === undefined) CC[uid] = {};
 
-	let files = fg.sync("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS);
-	//fg("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files =>{
+	//let files = fg.sync("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS);
+	fg("{"+uid+",samples}/media/**/{"+Core.mediapattern+"}", Core.COLLECTIONS_GLOB_OPTS).then(files =>{
 
 		CC[uid].media = [];
 		if (files.length < 1) return;
 
 		for (let f in files) CC[uid].media.push( files[f] );
-	//});
+
+		if (onComplete) onComplete();
+	});
 };
 
 // TODO: improve filter alg
@@ -394,9 +433,7 @@ Maat.getUsers = ()=>{
 
 	Maat.needScan.users = false;
 
-	setTimeout(()=>{
-		Maat.needScan.users = true;
-	}, Maat.INTERVAL);
+	setTimeout(()=>{ Maat.needScan.users = true; }, Maat.INTERVAL);
 
 	return Maat.db.users;
 };
@@ -420,11 +457,26 @@ Maat.getApp = (appid)=>{
 
 // Scenes
 Maat.getAllScenes = ()=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanScenes(()=>{
+			resolve( Maat.db.scenes );
+		});
+	});
+/*
 	Maat.scanScenes();
 
 	return Maat.db.scenes;
+*/
 }
+
 Maat.getPublicScenes = ()=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanScenes(()=>{
+			let R = Maat.db.scenes.filter((s)=>{ return ( s.visibility ); });
+			resolve( R );
+		});
+	});
+/*
 	Maat.scanScenes();
 
 	let R = Maat.db.scenes.filter((s)=>{
@@ -432,9 +484,18 @@ Maat.getPublicScenes = ()=>{
 	});
 
 	return R;
+*/
 };
 
 Maat.getUserScenes = (uid)=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanScenes(()=>{
+			let R = Maat.db.scenes.filter((s)=>{ return (s.sid.startsWith(uid)); });
+			resolve( R );
+		});
+	});
+
+/*
     if (uid === undefined) return undefined;
 
 	Maat.scanScenes();
@@ -444,24 +505,37 @@ Maat.getUserScenes = (uid)=>{
 	});
 
 	return R;
+*/
 };
 
-// TODO: improve perf
 Maat.getSceneEntry = (sid)=>{
 	return Maat.db.scenesByID[sid];
-/*
-	let numScenes = Maat.db.scenes.length;
-
-	for (let s=0; s<numScenes; s++){
-		if (Maat.db.scenes[s].sid === sid) return Maat.db.scenes[s];
-	}
-
-	return undefined;
-*/
 };
 
 
 Maat.getScenesByKeyword = (kw, uid)=>{
+	return new Promise((resolve, reject)=>{
+		if (!kw) resolve(undefined);
+
+		Maat.scanScenes(()=>{
+			if (uid !== undefined){
+				let R = Maat.db.scenes.filter((s)=>{
+					return (s.sid.startsWith(uid) && s.kwords !== undefined && s.kwords[kw] !== undefined);
+				});
+
+				resolve(R);
+			}
+			else {
+				let R = Maat.db.scenes.filter((s)=>{
+					return (s.visibility && s.kwords !== undefined && s.kwords[kw] !== undefined);
+				});
+	
+				resolve( R );
+			}
+		});
+	});
+
+/*
     if (kw === undefined) return undefined;
 
 	Maat.scanScenes();
@@ -481,40 +555,80 @@ Maat.getScenesByKeyword = (kw, uid)=>{
 	});
 
 	return R;
+*/
 };
 
 // Collections
 Maat.getUserModels = (uid)=>{
+	return new Promise((resolve, reject)=>{
+		let CC = Maat.db.collections;
+		if (!uid || !CC[uid]) resolve([]);
+
+		Maat.scanCollection(uid, ()=>{
+			resolve( CC[uid].models );
+		});
+	});
+/*
 	Maat.scanCollection(uid);
 
 	let CC = Maat.db.collections;
 	if (CC[uid] === undefined) return [];
 
 	return CC[uid].models;
+*/
 };
 
 Maat.getUserPanoramas = (uid)=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanCollection(uid,()=>{
+			let CC = Maat.db.collections;
+			
+			if (!CC || !CC[uid]) resolve([]);
+			else resolve( CC[uid].panos );
+		});
+	});
+/*
 	Maat.scanCollection(uid);
 
 	let CC = Maat.db.collections;
 	if (CC[uid] === undefined) return [];
 
 	return CC[uid].panos;
+*/
 };
 
 Maat.getUserMedia = (uid)=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanCollection(uid,()=>{
+			let CC = Maat.db.collections;
+
+			if (!CC || !CC[uid]) resolve([]);
+			else resolve( CC[uid].media );
+		});
+	});
+/*
 	Maat.scanCollection(uid);
 
 	let CC = Maat.db.collections;
 	if (CC[uid] === undefined) return [];
 
 	return CC[uid].media;
+*/
 };
 
+// Keywords
 Maat.getScenesKeywords = ()=>{
+	return new Promise((resolve, reject)=>{
+		Maat.scanScenes(()=>{
+			resolve( Maat.db.kwords );
+		});
+	});
+
+/*
 	Maat.scanScenes();
 
 	return Maat.db.kwords;
+*/
 };
 
 Maat.getStats = ()=>{

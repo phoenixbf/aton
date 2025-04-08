@@ -36,12 +36,21 @@ API.init = (app)=>{
     // List public scenes
     app.get(API.BASE + "scenes", (req,res)=>{
         let keyword = req.query.k;
-        let R;
+        //let R;
 
+        if (keyword) Core.Maat.getScenesByKeyword(keyword).then(R => {
+            res.send(R);
+        })
+        else Core.Maat.getPublicScenes().then(R =>{
+            res.send(R);
+        });
+
+/*
         if (keyword) R = Core.Maat.getScenesByKeyword(keyword);
         else R = Core.Maat.getPublicScenes();
 
         res.send( R ); // TODO: handle pagination
+*/
     });
 
     // List user scenes
@@ -60,12 +69,21 @@ API.init = (app)=>{
         }
 
         let keyword = req.query.k;
+
+        if (keyword) Core.Maat.getScenesByKeyword(keyword, uname).then(R => {
+            res.send(R);
+        })
+        else Core.Maat.getUserScenes(uname).then(R =>{
+            res.send(R);
+        });
+/*
         let R;
 
         if (keyword) R = Core.Maat.getScenesByKeyword(keyword, uname);
         else R = Core.Maat.getUserScenes(uname);
         
         res.send( R );
+*/
     });
 
     // Get JSON scene descriptor
@@ -266,7 +284,10 @@ API.init = (app)=>{
             return;
         }
     
-        res.send( Core.Maat.getUserModels(uname) );
+        //res.send( Core.Maat.getUserModels(uname) );
+        Core.Maat.getUserModels(uname).then((mm)=>{
+            res.send(mm);
+        });
     });
 
     // Asset Injector (TODO)
@@ -300,7 +321,10 @@ API.init = (app)=>{
     
         let uname = Core.Auth.getUID(req);
     
-        res.send( Core.Maat.getUserPanoramas(uname) );
+        //res.send( Core.Maat.getUserPanoramas(uname) );
+        Core.Maat.getUserPanoramas(uname).then(R=>{
+            res.send(R);
+        });
     });
 
     // Media list
@@ -312,7 +336,10 @@ API.init = (app)=>{
     
         let uname = Core.Auth.getUID(req);
     
-        res.send( Core.Maat.getUserMedia(uname) );
+        //res.send( Core.Maat.getUserMedia(uname) );
+        Core.Maat.getUserMedia(uname).then(R=>{
+            res.send(R);
+        });
     });
 
     /*===============================

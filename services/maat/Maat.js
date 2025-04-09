@@ -127,6 +127,19 @@ Maat.addSceneKeyword = (k)=>{
 	else Maat.db.kwords[k]++;
 };
 
+
+// TODO: scan per user
+Maat._scanScenes = (uid, onComplete)=>{
+	if (Maat.needScan.scenes[uid] === false){
+		if (onComplete) onComplete();
+		return;
+	}
+
+	Maat.needScan.scenes[uid] = false;
+
+	console.log("Scan scenes: "+uid);
+};
+
 Maat.scanScenes = (onComplete)=>{
 	if (!Maat.needScan.scenes){
 		if (onComplete) onComplete();

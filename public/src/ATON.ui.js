@@ -1204,7 +1204,7 @@ UI.createSlider = (options)=>{
         <input type="range" class="aton-range" list="ticks-${baseid}" min="${min}" max="${max}" step="${step}" id="${baseid}">
     `);
 
-    if (options.value) elInput.value = options.value;
+    if (options.value !== undefined) elInput.value = options.value;
 
     el.append(elInput);
 

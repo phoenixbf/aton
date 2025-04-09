@@ -473,6 +473,8 @@ a {
     font-size: 0.8em;
 
     transition: all .1s ease-in-out;
+
+    overflow: hidden;
 }
 
 .aton-scene-card:hover {
@@ -530,14 +532,15 @@ a {
     background-position: center;
     background-repeat: no-repeat;
 
-    background-size:cover;
+    background-size: cover;
 
     /*background-color: rgba(0, 0, 0, 0.5);*/
     opacity: 0.3;
 
+
 /*
     background-size: contain;
-    transform: scaleY(-1) translateY(-50%);
+    transform: scaleY(-1) translateY(-50);
 */
     -webkit-filter: blur(var(--aton-blur-radius));
     -moz-filter: blur(var(--aton-blur-radius));

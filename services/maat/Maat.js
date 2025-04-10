@@ -309,6 +309,18 @@ Maat.scanCollection = (uid, onComplete)=>{
 */
 };
 
+// Models path-based filtering
+Maat._mfilter = (fpath)=>{
+	if (fpath.endsWith(".json")){
+		if (fpath.includes("/Data/")) return false;
+	}
+	else {
+		if (fpath.includes("/tiles/")) return false;
+	}
+
+	return true;
+};
+
 Maat.scanModels = (uid, onComplete)=>{
 	let CC = Maat.db.collections;
 
@@ -327,13 +339,7 @@ Maat.scanModels = (uid, onComplete)=>{
 		for (let f in files){
 			let fpath = files[f];
 
-			// Filtering
-			if (fpath.endsWith(".json")){
-				if (!fpath.includes("/Data/")) CC[uid].models.push( fpath );
-			}
-			else {
-				if (!fpath.includes("/tiles/")) CC[uid].models.push( fpath );
-			}
+			if (Maat._mfilter(fpath)) CC[uid].models.push( fpath );
 
 			//CC[uid].models.push( /*relpath + */files[f] );
 		}

@@ -409,12 +409,12 @@ This can be arranged anywhere in the scene or attached to other UI nodes
 @param {THREE.Color} color - (optional) base color for the toolbar
 @returns {Node}
 */
-SUI.createToolbar = (buttonlist, color, opacity)=>{
+SUI.createToolbar = (buttonlist, color, opacity, marginf=1.1)=>{
     let T = ATON.createUINode();
 
     let num = buttonlist.length;
     let padding = SUI.STD_BTN_SIZE * 0.3;
-    let marginf = 1.1;
+    //let marginf = margin;
 
     let cont = new ThreeMeshUI.Block({
         width: (SUI.STD_BTN_SIZE * num * marginf) + padding,
@@ -438,7 +438,12 @@ SUI.createToolbar = (buttonlist, color, opacity)=>{
     for (let i=0; i<num; i++){
         let button = buttonlist[i];
         if (button){
-            button.position.set((i*SUI.STD_BTN_SIZE*marginf)-m, 0.0, 0.005);
+            button.position.set(
+                (i*SUI.STD_BTN_SIZE*marginf) - m,
+                0.0,
+                0.005
+            );
+
             cont.add(button);
         }
     }

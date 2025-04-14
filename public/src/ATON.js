@@ -769,7 +769,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._lps = []; // list of lightprobes
     ATON._bAutoLP = false;
     ATON._envMapInt = 1.0;
-    ATON._numLPbounces = 2; //2;
+    ATON._numLPbounces = 1; //2;
     ATON._lpbCount = 0;
     
     // Shadows
@@ -1422,7 +1422,7 @@ ATON._onAllReqsCompleted = ()=>{
     ATON._postAllReqsCompleted();
 
     // FIXME: dirty
-    setTimeout( ()=>{
+//    setTimeout( ()=>{
         //if (c && ATON._mMainPano) ATON._mMainPano.position.copy(c);
         ATON.updateLightProbes();
 
@@ -1431,7 +1431,7 @@ ATON._onAllReqsCompleted = ()=>{
             ATON._dMainL.shadow.autoUpdate = false;
             console.log("Lazy shadows");
         }
-    }, 1000);
+//    }, 1000);
 };
 
 ATON._postAllReqsCompleted = (R)=>{

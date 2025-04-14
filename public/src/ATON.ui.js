@@ -1249,7 +1249,7 @@ UI.createLoginForm = (options)=>{
         text: "Login",
         icon: "bi-person-fill",
         variant: "accent",
-        size: "large",
+        //size: "large",
         onpress: ()=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();

@@ -162,7 +162,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = true;
     FP.fadeDuration  = 1000;
+    
     ts.registerPlugin( FP );
+    ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 */
 
     if (cesiumReq){
@@ -224,14 +226,14 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ATON.CC.extract(data);
     });
 
-    const MIN_TILES = 2; // min number of tiles for tileset to be considered loaded
-    let tflip = 0;
+    //const MIN_TILES = 2; // min number of tiles for tileset to be considered loaded
+    //let tflip = 0;
 
     let bb = new THREE.Box3();
     let bs = new THREE.Sphere();
 
-    const matrix = new THREE.Matrix4();
-    let position = new THREE.Vector3();
+    //const matrix = new THREE.Matrix4();
+    //let position = new THREE.Vector3();
 
     let bPointCloud = false;
 

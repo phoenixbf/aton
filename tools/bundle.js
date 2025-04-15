@@ -47,6 +47,7 @@ import { InteractiveGroup } from 'three/examples/jsm/interactive/InteractiveGrou
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
+import { Reflector } from 'three/addons/objects/Reflector.js';
 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
@@ -118,6 +119,7 @@ THREE.ConvexGeometry      = ConvexGeometry;
 THREE.BufferGeometryUtils = BufferGeometryUtils;
 THREE.GeometryUtils       = GeometryUtils;
 THREE.UnrealBloomPass     = UnrealBloomPass;
+THREE.Reflector           = Reflector;
 
 THREE.RGBELoader = RGBELoader;
 THREE.EXRLoader  = EXRLoader;

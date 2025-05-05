@@ -141,6 +141,9 @@ MRes.estimateTSErrorTarget = ()=>{
 MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (N === undefined) return;
 
+    let bDZI = false;
+    if (tsurl.endsWith(".dzi")) bDZI = true;
+
     let ts = new TILES.TilesRenderer(tsurl);
     //let ts = new TILES.EllipsoidTilesRenderer( null, TILES.LUNAR_ELLIPSOID );
 
@@ -158,13 +161,15 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.registerPlugin( new TILES.ImplicitTilingPlugin() );
     //ts.registerPlugin( new TILES.TileCompressionPlugin() );
 
+    if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
+    ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
+
 /*
     let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = true;
     FP.fadeDuration  = 1000;
     
     ts.registerPlugin( FP );
-    ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 */
 
     if (cesiumReq){
@@ -180,7 +185,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         };
     }
 
-    ts.errorTarget     = MRes._tsET;
+    ts.errorTarget = MRes._tsET;
+    if (bDZI) ts.errorTarget = 2.0;
     //ts.errorThreshold  = 100;
     //ts.loadSiblings    = false; // a few hops
 
@@ -222,7 +228,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //console.log(N)
 
     // CC extract
-    $.getJSON( tsurl, ( data )=>{
+    if (!bDZI) ATON.REQ.get( tsurl, ( data )=>{
         ATON.CC.extract(data);
     });
 

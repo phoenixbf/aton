@@ -682,7 +682,7 @@ load(url, onComplete){
     let ext = ATON.Utils.getFileExtension(url);
 
     // Cesium 3D Tiles datasets
-    if ( ext === "json" ){
+    if ( ext === "json" || ext === "dzi" ){
         ATON.MRes.loadTileSetFromURL(url, N);
         //ATON._bqScene = true;
         if (onComplete) onComplete();

@@ -42,7 +42,7 @@ REQ.get = (endpoint, onResponse, onError)=>{
     if (!endpoint.startsWith("http")) endpoint = REQ._base + endpoint;
 
     fetch(endpoint, {
-        credentials: 'include'
+        //credentials: 'include'
     })
     .then(response => {
         if (!response.ok){

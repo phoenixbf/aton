@@ -35,6 +35,36 @@ Nav.MODE_DEVORI = 2;
 
 Nav.LocomotionNode = LocomotionNode;
 
+Nav.STD_LOC_VALIDATOR = ()=>{
+    if (ATON._queryDataScene === undefined){
+        Nav._bValidLocomotion = false;
+        return;
+    }
+
+    let qs = ATON._queryDataScene;
+
+    let P = qs.p;
+    let N = qs.n;
+    let d = qs.d;
+
+    if (d <= Nav.MIN_LOC_VALID_DIST){ // too close
+        Nav._bValidLocomotion = false;
+        return;     
+    }
+
+    if (!N){ // invalid normal
+        Nav._bValidLocomotion = false;
+        return;  
+    }
+
+    if (N.y <= 0.7){ // slope
+        Nav._bValidLocomotion = false;
+        return;
+    }
+
+    Nav._bValidLocomotion = true;
+};
+
 
 //Initialize nav system
 Nav.init = ()=>{
@@ -174,35 +204,7 @@ This is used to validate current queried location for locomotion.
 By default, we exploit surface normal to determine if we can move there or not.
 You can replace this function with your own locomotion validator.
 */
-Nav.locomotionValidator = ()=>{
-    if (ATON._queryDataScene === undefined){
-        Nav._bValidLocomotion = false;
-        return;
-    }
-
-    let qs = ATON._queryDataScene;
-
-    let P = qs.p;
-    let N = qs.n;
-    let d = qs.d;
-
-    if (d <= Nav.MIN_LOC_VALID_DIST){ // too close
-        Nav._bValidLocomotion = false;
-        return;     
-    }
-
-    if (!N){ // invalid normal
-        Nav._bValidLocomotion = false;
-        return;  
-    }
-
-    if (N.y <= 0.7){ // slope
-        Nav._bValidLocomotion = false;
-        return;
-    }
-
-    Nav._bValidLocomotion = true;
-}
+Nav.locomotionValidator = Nav.STD_LOC_VALIDATOR;
 
 Nav.toggleLocomotionValidator = (b)=>{
     if (b) Nav._bLocValidator = true;

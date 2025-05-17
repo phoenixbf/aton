@@ -339,6 +339,9 @@ a {
     padding-right: 0.5em;
 */
     margin: 2px;
+
+    min-width: 40px;
+    min-height: 40px;
 }
 
 .aton-btn-text {

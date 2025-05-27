@@ -47,7 +47,10 @@ XR.init = ()=>{
     XR._fromPos = new THREE.Vector3();
     XR._reqPos  = new THREE.Vector3();
 
-    XR.gControllers = undefined;
+    //XR.gControllers = undefined;
+    XR.gControllers = ATON.createUINode();
+    XR.gControllers.disablePicking();
+    XR.rig.add( XR.gControllers );
 
     XR.controller0 = undefined;
     XR.controller1 = undefined;
@@ -332,7 +335,7 @@ XR.onSessionStarted = ( session )=>{
                     ATON.fire("XRselectEnd", XR.HAND_R);
                 });
 
-                if (XR.gControllers) XR.gControllers.add( XR.controller0 );
+                XR.gControllers.add( XR.controller0 );
             }
 
 /*
@@ -534,14 +537,14 @@ XR.setupControllerUI = (h, bAddRep)=>{
     let lhand = undefined;
 
     //console.log("Setup controller "+h);
-
+/*
     if (XR.gControllers === undefined){
         XR.gControllers = ATON.createUINode();
 
         XR.gControllers.disablePicking();
         XR.rig.add(XR.gControllers);
     }
-
+*/
     // Left
     if (h === XR.HAND_L){
         XR.gControllers.add( XR.controller1 );

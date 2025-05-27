@@ -332,7 +332,7 @@ XR.onSessionStarted = ( session )=>{
                     ATON.fire("XRselectEnd", XR.HAND_R);
                 });
 
-                XR.gControllers.add( XR.controller0 );
+                if (XR.gControllers) XR.gControllers.add( XR.controller0 );
             }
 
 /*

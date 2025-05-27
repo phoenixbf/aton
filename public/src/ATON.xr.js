@@ -327,6 +327,8 @@ XR.onSessionStarted = ( session )=>{
                     //console.log( e.data.handedness );
                     let hand = e.data.handedness;
                     C.gm = e.data.gamepad;
+
+                    C.visible = true;
                     
                     //console.log(e.data);
                     console.log("Hand "+hand);

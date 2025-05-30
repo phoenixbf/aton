@@ -304,11 +304,10 @@ XR.onSessionStarted = ( session )=>{
     // If any streaming is ongoing, terminate it
     ATON.MediaFlow.stopAllStreams();
 
-/*
     if (XR._sessionType === "immersive-ar"){
         ATON._renderer.xr.setReferenceSpaceType( 'local' );
     }
-*/
+
     // Promised
 	ATON._renderer.xr.setSession( session ).then(()=>{
         XR.currSession = session;
@@ -317,7 +316,7 @@ XR.onSessionStarted = ( session )=>{
         for (let c = 0; c < 2; c++){
             const C = ATON._renderer.xr.getController(c);
 
-            if (C !== undefined && !C.userData.bXRconfig){
+            if (C && !C.userData.bXRconfig){
                 //console.log(C);
 
                 C.visible = false;
@@ -360,7 +359,6 @@ XR.onSessionStarted = ( session )=>{
 
         // AR sessions
         if (XR._sessionType === "immersive-ar"){
-            ATON._renderer.xr.setReferenceSpaceType( 'local' );
 
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;

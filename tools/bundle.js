@@ -44,6 +44,10 @@ import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRe
 import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
 import { InteractiveGroup } from 'three/examples/jsm/interactive/InteractiveGroup.js';
 */
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
@@ -115,6 +119,9 @@ THREE.USDZExporter       = USDZExporter;
 ///THREE.FirstPersonControls = FirstPersonControls;
 
 //THREE.ConvexBufferGeometry = ConvexBufferGeometry;
+THREE.Line2               = Line2;
+THREE.LineMaterial        = LineMaterial;
+THREE.LineGeometry        = LineGeometry;
 THREE.ConvexGeometry      = ConvexGeometry;
 THREE.BufferGeometryUtils = BufferGeometryUtils;
 THREE.GeometryUtils       = GeometryUtils;

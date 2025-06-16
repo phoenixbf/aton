@@ -343,6 +343,8 @@ MediaFlow.startAudioStreaming = ()=>{
         MediaFlow._aurec.start( MediaFlow.auStreamSegmentInterval );
         console.log("Start audio streaming");
 
+        ATON.fire("MediaFlow_AudioStream", true);
+
         MediaFlow._aurec.onstart = (e) => {
             MediaFlow._bAudioStreaming = true;
             MediaFlow._bAudioRecording = true;
@@ -387,6 +389,7 @@ MediaFlow.stopAudioStreaming = ()=>{
     MediaFlow._bAudioStreaming = false;
     MediaFlow._bAudioRecording = false;
 
+    ATON.fire("MediaFlow_AudioStream", false);
     ATON.Photon.socket.emit("UAUDIOSTOP", { uid: ATON.Photon.uid });
 };
 

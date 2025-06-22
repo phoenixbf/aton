@@ -361,6 +361,14 @@ a {
 /*    border-color: var(--bs-body-color-rgb);*/
 }
 
+.aton-btn-highlight {
+    border-bottom: var(--aton-colors-accent) solid 4px;
+}
+
+.aton-btn-highlight:hover {
+    border-bottom: var(--aton-colors-accent) solid 4px;
+}
+
 /* Dropdowns
 ============*/
 .aton-dropdown-menu {

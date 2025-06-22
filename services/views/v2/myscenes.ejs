@@ -48,7 +48,8 @@ window.addEventListener( 'load', ()=>{
 
         ATON.checkAuth(
                 (u)=>{
-                        elNavCont.append( SHU.createMainAuthDropdown(u,"myscenes") );
+                        elNavCont.append( SHU.createMainAuthDropdown(u) );
+                        SHU.createNavbarAuthSections("myscenes");
 
                         SHU.setPageWaiting();
                         ATON.REQ.get("scenes/"+u.username, entries => {

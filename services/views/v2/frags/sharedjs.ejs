@@ -18,8 +18,8 @@ SHU.createMainAuthDropdown = (u, section)=>{
 
     const items = [];
 
-    if (section!=="myscenes")     items.push({ title: "My Scenes", url: "/v2/myscenes", icon:"scene" });
-    if (section!=="mycollection") items.push({ title: "My Collection", url: "/v2/mycollection", icon:"collection" });
+    //if (section!=="myscenes")     items.push({ title: "My Scenes", url: "/v2/myscenes", icon:"scene" });
+    //if (section!=="mycollection") items.push({ title: "My Collection", url: "/v2/mycollection", icon:"collection" });
 
     items.push({ title: "Logout", url: "/v2/logout", icon: "exit" });
 
@@ -31,6 +31,31 @@ SHU.createMainAuthDropdown = (u, section)=>{
             title: u.username,
             items: items
     });
+};
+
+SHU.createNavbarAuthSections = (section)=>{
+    const items = [];
+
+    items.push({ 
+        text: "My Collection",
+        onpress: ()=>{window.location.href="/v2/mycollection"},
+        classes: (section==="mycollection")? "aton-btn-highlight": undefined,
+        icon:"collection"
+    });
+
+    items.push({
+        text: "My Scenes",
+        onpress: ()=>{window.location.href="/v2/myscenes"},
+        classes: (section==="myscenes")? "aton-btn-highlight": undefined,
+        icon:"scene"
+    });
+
+    const elNavbar = ATON.UI.get("navbarItems");
+
+    for (let i in items){
+        elNavbar.append( ATON.UI.createButton( items[i] ) );
+    }
+
 };
 
 </script>

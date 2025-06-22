@@ -139,7 +139,8 @@ window.addEventListener( 'load', ()=>{
 
         ATON.checkAuth(
                 (u)=>{
-                        elNavCont.append( SHU.createMainAuthDropdown(u,"mycollection") );
+                        elNavCont.append( SHU.createMainAuthDropdown(u) );
+                        SHU.createNavbarAuthSections("mycollection");
 
                         let models = {};
 

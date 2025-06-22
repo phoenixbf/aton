@@ -254,7 +254,7 @@ Maat.scanApps = (onComplete)=>{
 			});
 		}
 
-		setTimeout(()=>{ Maat.needScan.apps = true; }, Maat.INTERVAL);
+		setTimeout(()=>{ Maat.needScan.apps = true; }, Maat.INTERVAL );
 
 		if (onComplete) onComplete();
 	});

@@ -20,6 +20,7 @@
 :root {
     --aton-blur-radius: 15px;
     --aton-colors-accent: #F2CB05;
+    --aton-colors-accent-rgb: 242,203,5 
 }
 
 /*
@@ -363,6 +364,7 @@ a {
 
 .aton-btn-highlight {
     border-bottom: var(--aton-colors-accent) solid 4px;
+    /*background-color: rgba(var(--aton-colors-accent-rgb), 0.2);*/
 }
 
 .aton-btn-highlight:hover {

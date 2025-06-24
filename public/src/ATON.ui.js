@@ -1249,6 +1249,7 @@ UI.createLoginForm = (options)=>{
         text: "Login",
         icon: "bi-person-fill",
         variant: "accent",
+        classes: "px-4",
         //size: "large",
         onpress: ()=>{
             let uname = elInputUN.value.trim();

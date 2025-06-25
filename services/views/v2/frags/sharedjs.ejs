@@ -39,14 +39,14 @@ SHU.createNavbarAuthSections = (section)=>{
     items.push({ 
         text: "My Collection",
         onpress: ()=>{window.location.href="/v2/mycollection"},
-        classes: (section==="mycollection")? "aton-btn-highlight": undefined,
+        classes: (section==="mycollection")? "aton-btn-section-highlight": undefined,
         icon:"collection"
     });
 
     items.push({
         text: "My Scenes",
         onpress: ()=>{window.location.href="/v2/myscenes"},
-        classes: (section==="myscenes")? "aton-btn-highlight": undefined,
+        classes: (section==="myscenes")? "aton-btn-section-highlight": undefined,
         icon:"scene"
     });
 

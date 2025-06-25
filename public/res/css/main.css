@@ -311,7 +311,7 @@ a {
     --bs-btn-color: #222;
 
     --bs-btn-hover-bg: var(--aton-colors-accent);
-    --bs-btn-hover-border-color: black;
+    --bs-btn-hover-border-color: rgba(var(--aton-colors-accent-rgb), 1.0);
     --bs-btn-hover-color: #222;
 /*
     --bs-btn-color: #fff;
@@ -336,8 +336,8 @@ a {
     --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.0);
     --bs-btn-color: var(--bs-btn-color);
 
-    --bs-btn-hover-bg: rgba(var(--bs-body-color-rgb), 0.1);
-    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 1.0);
+    --bs-btn-hover-bg: rgba(var(--bs-body-color-rgb), 0.2);
+    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.5);
     --bs-btn-hover-color: var(--bs-btn-color);
 /*
     --bs-btn-color: #fff;
@@ -393,12 +393,12 @@ a {
 /*    border-color: var(--bs-body-color-rgb);*/
 }
 
-.aton-btn-highlight {
+.aton-btn-section-highlight {
     border-bottom: var(--aton-colors-accent) solid 4px;
     /*background-color: rgba(var(--aton-colors-accent-rgb), 0.2);*/
 }
 
-.aton-btn-highlight:hover {
+.aton-btn-section-highlight:hover {
     border-bottom: var(--aton-colors-accent) solid 4px;
 }
 

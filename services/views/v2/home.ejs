@@ -26,6 +26,16 @@ window.addEventListener( 'load', ()=>{
         // Pub scenes
         let elPubScenes = document.getElementById("pubscenes");
 
+/*
+        elStaffPickBand.append(ATON.UI.createCard({
+                title: "test",
+                cover: "/res/aton-header.jpg",
+                subtitle: ATON.UI.createElementFromHTMLString("<p>Lorem Ipsum.</p>"),
+                footer: ATON.UI.createElementFromHTMLString("<p>Lorem Ipsum.</p>"),
+                //useblurtint: true
+        }));
+*/
+
         // Content
         ATON.REQ.get("scenes/", entries =>{
 

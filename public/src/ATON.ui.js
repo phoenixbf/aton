@@ -880,6 +880,89 @@ UI.createNodeTrasformControl = (options)=>{
 };
 
 /**
+Create a generic card.
+- options.size: "small" or "large", if not present standard size
+- options.cover: cover image url
+- options.url: landing url when selecting the main cover
+- options.keywords: keywords object (eg. {"term_a":1, "term_b":1 }) to filter this card
+- options.title: card title
+- options.subtitle: custom subtitle element
+- options.footer: custom footer element
+- options.useblurtint: use special blur effect on this card
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createCard = (options)=>{
+    let cc = "card aton-card ";
+    if (options.classes) cc += options.classes;
+
+    let el = ATON.UI.createContainer({ classes: cc });
+
+    if (options.size==="small") el.classList.add("aton-card-small");
+    if (options.size==="large") el.classList.add("aton-card-large");
+
+    let sskwords = "";
+
+    // Object holding internal card keywords
+    if (options.keywords){
+        for (let k in options.keywords) sskwords += k+" ";
+        sskwords = sskwords.trim().toLowerCase();
+        el.setAttribute("data-search-term", sskwords);
+    }
+
+    if (options.cover){
+        // Blur bg
+        if (options.useblurtint){
+            let bgdiv = document.createElement('div');
+            bgdiv.classList.add("aton-card-bg");
+            bgdiv.style.backgroundImage = "url('"+options.cover+"')";
+            el.append(bgdiv);
+        }
+
+        // Cover
+        //if (options.url){
+            el.innerHTML += "<div class='aton-card-cover'><a href='"+options.url+"'><img src='"+options.cover+"' class='card-img-top'></a></div>";
+        //}
+    }
+    
+    // Body
+    let elbody = document.createElement('div');
+    elbody.classList.add("card-body","aton-card-body");
+    el.append(elbody);
+
+    // Title
+    let elTitle = document.createElement("div");
+    elTitle.classList.add("card-title", "aton-card-title");
+    elTitle.innerHTML = "Title";
+    elbody.append(elTitle);
+
+    if (options.title){
+        elTitle.innerHTML = options.title;
+        sskwords += options.title.trim().toLowerCase();
+        el.setAttribute("data-search-term", sskwords);
+    }
+
+    // Sub-title
+    if (options.subtitle){
+        let elSub = ATON.UI.createElementFromHTMLString(`<div class='card-subtitle mb-2 text-body-secondary'></div>`);
+
+        elSub.append(options.subtitle);
+        elbody.append(elSub);
+    }
+
+    // Footer
+    if (options.footer){
+        let elFooter = document.createElement('div');
+        elFooter.classList.add("card-footer");
+        elFooter.append(options.footer);
+        elbody.append(elFooter);
+    }
+
+    return el;
+};
+
+/**
 Create a scene card.
 - options.sid: the scene ID (mandatory)
 - options.size: "small" or "large", if not present standard size
@@ -892,7 +975,37 @@ Create a scene card.
 */
 UI.createSceneCard = (options)=>{
     //let baseid = ATON.Utils.generateID("ftrans");
+
+    let user  = undefined;
+    let usid  = undefined;
+
+    let sid = options.sid;
+    if (!sid) sid = "samples/welcome";
+
+    let pp = sid.split("/");
+    user = pp[0];
+    usid = pp[1];
+
+    let kw = options.keywords? options.keywords : {};
+    kw[user] = 1;
+
+    let elSub = options.subtitle;
+    if (!elSub) 
+        elSub = ATON.UI.createElementFromHTMLString(`
+            <div><img class='icon aton-icon aton-icon-small' src='${UI.resolveIconURL("user")}'>${user}</div>
+        `);
+
+    let el = ATON.UI.createCard({
+        title: (options.title)? options.title : usid, // "Scene"
+        keywords: kw,
+        useblurtint: options.useblurtint,
+        cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
+        url: ATON.PATH_FE + sid,
+        subtitle: elSub,
+        footer: options.footer
+    });
     
+/*
     let el = ATON.UI.createContainer({ classes: "card aton-scene-card" });
 
     if (options.size==="small") el.classList.add("aton-scene-card-small");
@@ -913,7 +1026,7 @@ UI.createSceneCard = (options)=>{
         sskwords = sskwords.trim().toLowerCase();
         el.setAttribute("data-search-term", sskwords);
     }
-    
+
     cover = ATON.PATH_RESTAPI2+"scenes/"+options.sid+"/cover";
 
     let pp = options.sid.split("/");
@@ -980,7 +1093,7 @@ UI.createSceneCard = (options)=>{
         elFooter.append(options.footer);
         elbody.append(elFooter);
     }
-
+*/
 
     return el;
 };

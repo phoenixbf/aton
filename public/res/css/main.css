@@ -291,6 +291,7 @@ a {
     margin-right: 4px;
     width: 1em;
     height: 1em; 
+    vertical-align: middle;
 }
 
 [data-bs-theme=light] .aton-icon {
@@ -500,7 +501,7 @@ a {
 
 /* Cards
 ========================*/
-.aton-scene-card {
+.aton-card {
     display: inline-block;
     position: relative;
 
@@ -521,7 +522,7 @@ a {
     overflow: hidden;
 }
 
-.aton-scene-card:hover {
+.aton-card:hover {
     /*transform: scale(1.1);*/
     
     /*border: 1px solid rgba(var(--bs-body-color-rgb), 1);*/
@@ -540,17 +541,17 @@ a {
     transform: scale(1.5);
 }
 
-.aton-scene-card-small {
+.aton-card-small {
     margin: 8px;
     width: 150px;
 }
 
-.aton-scene-card-large {
+.aton-card-large {
     margin: 16px;
     width: 250px;
 }
 
-.aton-scene-card-title {
+.aton-card-title {
     /*font-size: 1.2em;*/
     font-weight: bolder;
     overflow: hidden;
@@ -558,7 +559,7 @@ a {
     white-space: nowrap;
 }
 
-.aton-scene-card-bg {
+.aton-card-bg {
     position: absolute;
 
     left: 0;

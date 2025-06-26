@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<%- include('frags/head'); %>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.realize2D();
+        ATON.UI.setTheme("light");
+
+        // Navbar
+        let elNavCont  = ATON.UI.get("navbarSupportedContent");
+        let elNavItems = ATON.UI.get("navbarItems");
+        let elContent  = ATON.UI.get("examples");
+
+        let elSearch = ATON.UI.createLiveFilter({
+                filterclass: "aton-card",
+                onfocus: ()=>{
+                        //let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        //for (let y of elYears) y.classList.add('d-none');
+                },
+                onblur: ()=>{
+                        //let elYears = document.querySelectorAll(".shuYearTitleContainer");
+                        //for (let y of elYears) y.classList.remove('d-none');
+                }
+        })
+
+        elSearchInput = elSearch.getElementsByTagName('input')[0];
+        elNavCont.append(elSearch);
+
+        let btnLogin = ATON.UI.createButton({
+                icon: "bi-person-fill",
+                //icon: "user",
+                text: "Login",
+                //variant: "accent",
+                onpress: ()=>{ window.location.href = "/v2/login/?u=/v2/examples" }
+        });
+
+        elNavCont.append(btnLogin);
+
+        // My scene gallery
+        let elMyScenes = ATON.UI.get("myscenes");
+        let elKeywords = ATON.UI.get("keywords");
+
+        ATON.checkAuth(
+                (u)=>{
+                        btnLogin.remove();
+                        elNavCont.append( SHU.createMainAuthDropdown(u) );
+                }
+        );
+
+
+        let sampleskw = {};
+
+        let createExampleKeyword = (k, bSmall)=>{
+                return ATON.UI.createKeyword({
+                        term: k,
+                        classes: bSmall? "aton-keyword-small" : undefined
+                });
+        };
+
+        let createExampleCard = (o)=>{
+                let sampledir = "/examples/"+o.dir+"/";
+
+                let elKW = ATON.UI.createContainer();
+
+                for (let k in o.keywords){
+                        elKW.append( createExampleKeyword(k,true) );
+                        sampleskw[k] = 1;
+                }
+
+                let el = ATON.UI.createCard({
+                        title: o.title,
+                        cover: sampledir+"/cover.jpg",
+                        url: sampledir,
+                        footer: elKW,
+                        keywords: o.keywords,
+                        classes: "aton-card-h400",
+                        //size: "large",
+                        useblurtint: true
+                });
+
+                elContent.append(el);
+        };
+
+        // Build samples
+        createExampleCard({
+                title: "Minimal",
+                dir: "minimal",
+                keywords: {basic:1, minimal:1, object:1}
+        });
+
+        createExampleCard({
+                title: "Basic",
+                dir: "basic",
+                keywords: {basic:1}
+        });
+
+        createExampleCard({
+                title: "Basic Scene",
+                dir: "scene-basic",
+                keywords: {basic:1}
+        });
+
+        createExampleCard({
+                title: "Animated 3D Model",
+                dir: "animation1",
+                keywords: {basic:1, object:1, animation:1}
+        });
+
+        createExampleCard({
+                title: "Scene Layers",
+                dir: "layers-basic",
+                keywords: {graph:1, node:1, switch:1}
+        });
+
+        // Events
+        createExampleCard({
+                title: "Basic Events",
+                dir: "events-basic",
+                keywords: {basic:1, events:1}
+        });
+
+        createExampleCard({
+                title: "Custom Events",
+                dir: "events-custom",
+                keywords: {basic:1, events:1, picking:1, query:1}
+        });
+
+        // Navigation
+        createExampleCard({
+                title: "Basic Navigation",
+                dir: "navigation-basic",
+                keywords: {first:1, person:1, orbit:1, vr:1, device:1, orientation:1, mobile:1}
+        });
+
+
+        for (let k in sampleskw) elKeywords.append( createExampleKeyword(k) );
+        ATON.UI.get("numkeywords").innerHTML = Object.keys(sampleskw).length;
+
+        
+});
+</script>
+</head>
+
+<body>
+        <!-- Navbar -->
+        <%- include('frags/navbar'); %>
+
+        <div id="examples" class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer" style="text-align: left;">
+                        <h2>Examples</h2>
+                        This is a list of interactive examples built on top of ATON framework for developers. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like ..., . There is also an example of <a href='/examples/minimal/'>minimal setup</a> required to present an interactive 3D scene or model.
+                        <div style="display: block; margin-top: 8px;">
+                                <div class="d-inline-flex gap-1">
+                                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords (<span id="numkeywords">0</span>)</button>
+                                </div>
+                                <div class="collapse" id="keywords"></div>
+                        </div>
+                </div>
+        </div>
+
+        <div id="footer" class="aton-footer">
+                <%- include('frags/footer'); %>
+        </div>
+</body>

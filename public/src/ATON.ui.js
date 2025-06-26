@@ -939,7 +939,7 @@ UI.createCard = (options)=>{
 
     if (options.title){
         elTitle.innerHTML = options.title;
-        sskwords += options.title.trim().toLowerCase();
+        sskwords += " "+options.title.trim().toLowerCase();
         el.setAttribute("data-search-term", sskwords);
     }
 
@@ -1270,6 +1270,8 @@ UI.createKeyword = (options)=>{
             <button type="button" class="btn btn-sm btn-outline-secondary aton-keyword">${options.term}</button>
         `);
     }
+
+    if (options.classes) el.className = el.className + " " + options.classes;
 
     if (options.onpress) el.onclick = options.onpress;
 

@@ -594,6 +594,11 @@ a {
     filter: blur(var(--aton-blur-radius));
 }
 
+.aton-card-h400 {
+    height: 400px;
+}
+
+
 .aton-hscrollable {
     display: block;
     overflow-x: auto;
@@ -607,6 +612,12 @@ a {
     display: inline-block;
     margin: 2px;
     border-radius: 10px;
+}
+
+.aton-keyword-small {
+    font-size: x-small;
+    margin: 2px;
+    padding: 4px;
 }
 
 /* Ranges / Sliders

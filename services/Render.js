@@ -81,6 +81,10 @@ Render.setup = (app)=>{
 		res.render("v2/home", opts);
 	});
 
+	app.get("/v2/examples", (req,res,next)=>{
+		res.render("v2/examples");
+	});
+
 	app.get("/v2/login", (req,res,next)=>{
 		res.render("v2/login");
 	});

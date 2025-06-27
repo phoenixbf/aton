@@ -998,6 +998,7 @@ UI.createSceneCard = (options)=>{
     let el = ATON.UI.createCard({
         title: (options.title)? options.title : usid, // "Scene"
         keywords: kw,
+        size: options.size,
         useblurtint: options.useblurtint,
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
         url: ATON.PATH_FE + sid,

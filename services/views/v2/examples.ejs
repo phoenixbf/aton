@@ -29,6 +29,9 @@ window.addEventListener( 'load', ()=>{
         elSearchInput = elSearch.getElementsByTagName('input')[0];
         elNavCont.append(elSearch);
 
+        let elKeywords = ATON.UI.get("keywords");
+
+/*
         let btnLogin = ATON.UI.createButton({
                 icon: "bi-person-fill",
                 //icon: "user",
@@ -39,24 +42,25 @@ window.addEventListener( 'load', ()=>{
 
         elNavCont.append(btnLogin);
 
-        // My scene gallery
-        let elMyScenes = ATON.UI.get("myscenes");
-        let elKeywords = ATON.UI.get("keywords");
-
         ATON.checkAuth(
                 (u)=>{
                         btnLogin.remove();
                         elNavCont.append( SHU.createMainAuthDropdown(u) );
                 }
         );
-
+*/
 
         let sampleskw = {};
 
         let createExampleKeyword = (k, bSmall)=>{
                 return ATON.UI.createKeyword({
                         term: k,
-                        classes: bSmall? "aton-keyword-small" : undefined
+                        classes: bSmall? "aton-keyword-small" : undefined,
+                        onpress: ()=>{
+                                elSearchInput.value = k;
+                                elSearchInput.focus();
+                                elSearchInput.oninput();
+                        }
                 });
         };
 
@@ -74,9 +78,9 @@ window.addEventListener( 'load', ()=>{
                         title: o.title,
                         cover: sampledir+"/cover.jpg",
                         url: sampledir,
-                        footer: elKW,
                         keywords: o.keywords,
-                        classes: "aton-card-h400",
+                        //classes: "aton-card-h400",
+                        //footer: elKW,
                         //size: "large",
                         useblurtint: true
                 });
@@ -134,12 +138,26 @@ window.addEventListener( 'load', ()=>{
                 dir: "navigation-basic",
                 keywords: {first:1, person:1, orbit:1, vr:1, device:1, orientation:1, mobile:1}
         });
+        createExampleCard({
+                title: "Viewpoints",
+                dir: "navigation-pov",
+                keywords: {basic:1, navigation:1, pov:1, viewpoint:1, object:1}
+        });
+        createExampleCard({
+                title: "Locomotion Nodes",
+                dir: "locnodes",
+                keywords: {navigation:1, pov:1, viewpoint:1, locomotion:1, graph:1}
+        });
+
+        // XPF
+        createExampleCard({
+                title: "XPF Basics (Panorama Virtual Tour)",
+                dir: "xpf-basic",
+                keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1}
+        });  
 
 
         for (let k in sampleskw) elKeywords.append( createExampleKeyword(k) );
-        ATON.UI.get("numkeywords").innerHTML = Object.keys(sampleskw).length;
-
-        
 });
 </script>
 </head>
@@ -153,10 +171,7 @@ window.addEventListener( 'load', ()=>{
                         <h2>Examples</h2>
                         This is a list of interactive examples built on top of ATON framework for developers. Each example has source-code commented so you can get started very quickly. You can search (top left) using keywords like ..., . There is also an example of <a href='/examples/minimal/'>minimal setup</a> required to present an interactive 3D scene or model.
                         <div style="display: block; margin-top: 8px;">
-                                <div class="d-inline-flex gap-1">
-                                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords (<span id="numkeywords">0</span>)</button>
-                                </div>
-                                <div class="collapse" id="keywords"></div>
+                                <div id="keywords"></div>
                         </div>
                 </div>
         </div>

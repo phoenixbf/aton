@@ -154,8 +154,34 @@ window.addEventListener( 'load', ()=>{
                 title: "XPF Basics (Panorama Virtual Tour)",
                 dir: "xpf-basic",
                 keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1}
-        });  
+        });
+        createExampleCard({
+                title: "XPF Scene",
+                dir: "xpf-scene",
+                keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1}
+        });
+        createExampleCard({
+                title: "XPF Custom",
+                dir: "xpf-custom",
+                keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1}
+        });
+        createExampleCard({
+                title: "XPF Semantic Masks",
+                dir: "xpf-basicsem",
+                keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1, query:1}
+        });
+        createExampleCard({
+                title: "XPF Semantic Hint Maps",
+                dir: "xpf-basicsem2",
+                keywords: {navigation:1, 360:1, panorama:1, xpf:1, dpf:1, viewpoint:1, network:1, virtual:1, tour:1, query:1}
+        });
 
+        // Semantics
+        createExampleCard({
+                title: "Semantic Annotations",
+                dir: "semantics-basic",
+                keywords: {semantic:1, annotation:1, query:1, object:1, shape:1}
+        });
 
         for (let k in sampleskw) elKeywords.append( createExampleKeyword(k) );
 });

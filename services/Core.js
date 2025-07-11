@@ -342,10 +342,14 @@ Core.loadConfigFile = (jsonfile, defconf)=>{
 
 };
 
+Core.getUserCollectionFolder = (user)=>{
+	return path.join( Core.DIR_COLLECTIONS, user.username );
+};
+
 Core.touchCollectionFolder = (user)=>{
 	if (user === undefined) return;
 
-	let dirColl = path.join( Core.DIR_COLLECTIONS, user.username );
+	let dirColl = Core.getUserCollectionFolder(user);
 
 	if (!fs.existsSync(dirColl)){
 		try {

@@ -164,14 +164,14 @@ Maat.scanScenes = (onComplete)=>{
 
 			let sid       = path.dirname(files[f]);
 			//let pubfile   = Core.DIR_SCENES + sid+"/" + Core.STD_PUBFILE;
-			let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
+			//let coverfile = Core.DIR_SCENES + sid+"/" + Core.STD_COVERFILE;
 		
 			//let user = sid.split("/")[0];
 			//if (user) Maat.db.users[user] = 1;
 
 			S.sid    = sid;
-			S.cover  = fs.existsSync(coverfile)? true : false;
-			//S.public = fs.existsSync(pubfile)? true : false;
+			//S.cover  = fs.existsSync(coverfile)? true : false;
+			///S.public = fs.existsSync(pubfile)? true : false;
 
 			if (confSHU && confSHU.staffpick && confSHU.staffpick[sid]) S.staffpick = 1;
 			
@@ -198,7 +198,7 @@ Maat.scanScenes = (onComplete)=>{
 					title: S.title,
 					visibility: S.visibility,
 					kwords: S.kwords,
-					cover: S.cover,
+					//cover: S.cover,
 					creationDate: S.creationDate
 				};
 			}

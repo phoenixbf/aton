@@ -245,6 +245,8 @@ API.init = (app)=>{
         // To be removed in the future (old PNGs covers)
         if (!fs.existsSync(coverfile)) coverfile = path.join(Core.getSceneFolder(sid), Core.STD_COVERFILE_HI);
 
+        //res.sendFile(coverfile);
+
         fs.access(coverfile, (err) => {
             if (err){
                 res.sendFile(Core.STD_COVERFILE_PATH);

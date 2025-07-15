@@ -332,6 +332,16 @@ UI.prependIcon = (el, icon)=>{
         el.prepend( UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(icon)+"'>"));
 };
 
+UI.createSceneCoverIMG = (sid)=>{
+    let im = document.createElement("img");
+    im.src = ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover";
+    im.onerror = ()=>{
+        im.src = ATON.PATH_RES+"scenecover.png";
+    };
+
+    return im;
+};
+
 /*===============================
     Containers
 ===============================*/

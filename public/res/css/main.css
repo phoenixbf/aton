@@ -227,6 +227,23 @@ a {
     background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
 }
 
+.aton-toolbar-left {
+    top: 0px;
+    position: absolute;
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+/*
+    background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
+*/
+}
+
+.aton-toolbar-left .aton-btn {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
+}
+
+
 .aton-poweredby {
     bottom: 0px;
     left: 0px;

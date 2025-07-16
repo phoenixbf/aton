@@ -31,7 +31,7 @@ let privilegeManager = new webdav.SimplePathPrivilegeManager();
 for (let u in Core.users){
     let dbuser = Core.users[u];
     if (dbuser){
-        let uname  = dbuser.username;
+        let uname  = Core.getUID(dbuser); // dbuser.username;
         let bAdmin = dbuser.admin;
 
         let user = userManager.addUser(uname, dbuser.password, bAdmin);
@@ -86,7 +86,7 @@ const server = new webdav.WebDAVServer({
 // link physical fs
 for (let u in Core.users){
     let dbuser = Core.users[u];
-    let uname = dbuser.username;
+    let uname  = Core.getUID(dbuser); //dbuser.username;
 
     let upathCollection = Core.DIR_COLLECTIONS + uname + "/";
     let upathScenes     = Core.DIR_SCENES + uname + "/";

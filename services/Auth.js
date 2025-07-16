@@ -121,7 +121,7 @@ Auth.findUser = (username)=>{
 // Unique user ID
 Auth.getUID = (req)=>{
 	if (!req.user) return undefined;
-	return req.user.username;
+	return Core.getUID(req.user);
 };
 
 Auth.isUserAuth = (req, username)=>{

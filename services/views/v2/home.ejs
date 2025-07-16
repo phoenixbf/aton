@@ -29,13 +29,13 @@ window.addEventListener( 'load', ()=>{
 /*
         elStaffPickBand.append(ATON.UI.createCard({
                 title: "test",
-                cover: "/res/aton-header.jpg",
+                cover: "/res/xxx.jpg",
+                stdcover: "/res/aton-header.jpg",
                 subtitle: ATON.UI.createElementFromHTMLString("<p>Lorem Ipsum.</p>"),
                 footer: ATON.UI.createElementFromHTMLString("<p>Lorem Ipsum.</p>"),
                 //useblurtint: true
         }));
 */
-
         // Content
         ATON.REQ.get("scenes/", entries =>{
 
@@ -47,7 +47,7 @@ window.addEventListener( 'load', ()=>{
                                         title: S.title,
                                         sid: S.sid,
                                         keywords: S.kwords,
-                                        size: "large",
+                                        //size: "large",
                                         useblurtint: true
                                 })
                         );
@@ -55,7 +55,7 @@ window.addEventListener( 'load', ()=>{
 
                 ATON.UI.createPublicScenesGallery({
                         containerid: "pubscenes",
-                        //size:"small",
+                        size:"small",
                         entries: entries,
                         <% if (samples) { %> samples: true <% } %>
                 });
@@ -163,11 +163,11 @@ window.addEventListener( 'load', ()=>{
         
 
         <!-- Staff Pick -->
-        <div id="staffpick" class="shuGalleryContainer">
+        <div id="staffpick" class="shuGalleryContainer" style="padding: 0px;">
                 <div class="shuSectionTitleContainer">
                         <h2><i class='bi bi-star-fill' style='vertical-align:middle; margin-right: 8px;'></i>Staff Pick</h2>
                 </div>
-                <div id="staffpickband" class="aton-hscrollable" ></div>
+                <div id="staffpickband" class="aton-hscrollable" style="background-color: var(--bs-secondary-bg);" ></div>
         </div>
 
         <!-- Apps -->

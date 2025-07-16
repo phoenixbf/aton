@@ -342,14 +342,76 @@ Core.loadConfigFile = (jsonfile, defconf)=>{
 
 };
 
-Core.getUserCollectionFolder = (user)=>{
-	return path.join( Core.DIR_COLLECTIONS, user.username );
+
+// SSL certs
+Core.getCertPath = ()=>{
+	let cpath = Core.config.services.main.pathCert;
+	
+	if (cpath && cpath.length>4) return cpath;
+	return path.join(Core.DIR_CUST_CERTS,'server.crt');
+};
+Core.getKeyPath = ()=>{
+	let cpath = Core.config.services.main.pathKey;
+
+	if (cpath && cpath.length>4) return cpath;
+	return path.join(Core.DIR_CUST_CERTS,'server.key');
 };
 
-Core.touchCollectionFolder = (user)=>{
-	if (user === undefined) return;
 
-	let dirColl = Core.getUserCollectionFolder(user);
+// Users
+//=======================================
+Core.getUID = (U)=>{
+	if (!U) return undefined;
+	return U.username;
+};
+
+Core.createNewUser = (entry)=>{
+	if (entry === undefined) return false;
+
+	// Add new entry into users json
+	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+	Core.users.push(entry);
+	
+	let uconfig = path.join(Core.DIR_CONFIG,"users.json");
+	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
+
+	Core.touchCollectionFolder(entry);
+
+	console.log("Created new user: "+entry);
+
+	return true;
+};
+
+//TODO:
+Core.deleteUser = (uid)=>{
+	if (uid === undefined) return false;
+
+	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
+	let num = Core.users.length;
+
+	for (let u=0; u<num; u++){
+		let U = Core.users[u];
+		if (Core.getUID(U) === uid){
+			Core.users.splice(u,1);
+
+			let uconfig = path.join(Core.DIR_CONFIG,"users.json");
+			fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
+
+			return true;
+		}
+	}
+
+	return false;
+};
+
+Core.getUserCollectionFolder = (uid)=>{
+	return path.join( Core.DIR_COLLECTIONS, uid );
+};
+
+Core.touchCollectionFolder = (uid)=>{
+	if (uid === undefined) return;
+
+	let dirColl = Core.getUserCollectionFolder(uid);
 
 	if (!fs.existsSync(dirColl)){
 		try {
@@ -374,64 +436,8 @@ Core.touchUserCollectionFolders = ()=>{
 	for (let i = 0; i < len; i++){
 		let U = Core.users[i];
 
-		Core.touchCollectionFolder( U );
+		Core.touchCollectionFolder( Core.getUID(U) );
 	}
-};
-
-
-// SSL certs
-Core.getCertPath = ()=>{
-	let cpath = Core.config.services.main.pathCert;
-	
-	if (cpath && cpath.length>4) return cpath;
-	return path.join(Core.DIR_CUST_CERTS,'server.crt');
-};
-Core.getKeyPath = ()=>{
-	let cpath = Core.config.services.main.pathKey;
-
-	if (cpath && cpath.length>4) return cpath;
-	return path.join(Core.DIR_CUST_CERTS,'server.key');
-};
-
-
-// Users
-//=======================================
-Core.createNewUser = (entry)=>{
-	if (entry === undefined) return false;
-
-	// Add new entry into users json
-	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
-	Core.users.push(entry);
-	
-	let uconfig = path.join(Core.DIR_CONFIG,"users.json");
-	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
-
-	Core.touchCollectionFolder(entry);
-
-	console.log("Created new user: "+entry);
-
-	return true;
-};
-
-//TODO:
-Core.deleteUser = (username)=>{
-	if (username === undefined) return false;
-
-	Core.users = Core.loadConfigFile("users.json", Core.CONF_USERS);
-	let num = Core.users.length;
-
-	for (let u=0; u<num; u++){
-		if (Core.users[u].username === username){
-			Core.users.splice(u,1);
-
-			let uconfig = path.join(Core.DIR_CONFIG,"users.json");
-			fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
-
-			return true;
-		}
-	}
-
-	return false;
 };
 
 // Utils

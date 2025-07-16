@@ -893,6 +893,7 @@ UI.createNodeTrasformControl = (options)=>{
 Create a generic card.
 - options.size: "small" or "large", if not present standard size
 - options.cover: cover image url
+- options.stdcover: default cover img (if cover not found / on fetch error)
 - options.url: landing url when selecting the main cover
 - options.keywords: keywords object (eg. {"term_a":1, "term_b":1 }) to filter this card
 - options.title: card title
@@ -931,9 +932,17 @@ UI.createCard = (options)=>{
         }
 
         // Cover
-        //if (options.url){
-            el.innerHTML += "<div class='aton-card-cover'><a href='"+options.url+"'><img src='"+options.cover+"' class='card-img-top'></a></div>";
-        //}
+        let elcov = ATON.UI.createElementFromHTMLString(`<div class='aton-card-cover'><a href='${options.url}'></a></div>`);
+
+        let im = document.createElement("img");
+        im.classList.add("card-img-top");
+        im.src = options.cover;
+        if (options.stdcover) im.onerror = ()=>{
+            im.src = options.stdcover;
+        };
+
+        elcov.getElementsByTagName("a")[0].append(im);
+        el.append(elcov);
     }
     
     // Body

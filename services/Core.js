@@ -35,6 +35,7 @@ const FileStore      = require('session-file-store')(session);
 // Local modules
 const BaseAPI = require("./API/v1.js");
 const Maat    = require("./maat/Maat.js");
+const User    = require("./User.js");
 
 
 Core = {};
@@ -283,7 +284,7 @@ Core.init = ()=>{
 	//const maatport = (Core.config.services.maat)? Core.config.services.maat.PORT : 8891;
 	//Core._maatEP = "http://localhost:"+maatport+"/";
 
-	console.log("DB users: "+Core.users.length);
+	console.log("Num. users: "+Core.users.length);
 
 	// Retrieve network interfaces
 	const nif  = networkInterfaces();

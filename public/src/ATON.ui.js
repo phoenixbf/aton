@@ -395,7 +395,6 @@ UI.createButton = (options)=>{
     el.setAttribute("type","button");
 
     if (options.variant) el.classList.add("btn-"+options.variant); // Bootstrap button variants (primary, info, ...)
-    if (options.classes) el.className = el.className + " " + options.classes;
 
     if (options.text) el.innerHTML = "<span class='aton-btn-text'>"+options.text+"</span>";
 
@@ -411,6 +410,8 @@ UI.createButton = (options)=>{
     }
 
     if (options.onpress) el.onclick = options.onpress;
+
+    if (options.classes) el.className = el.className + " " + options.classes;
 
     return el;
 };
@@ -977,6 +978,10 @@ UI.createCard = (options)=>{
         elFooter.append(options.footer);
         elbody.append(elFooter);
     }
+
+    el.append(
+        UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle'>XX</span>")
+    );
 
     return el;
 };

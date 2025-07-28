@@ -20,7 +20,7 @@
 :root {
     --aton-blur-radius: 15px;
     --aton-colors-accent: #F2CB05;
-    --aton-colors-accent-rgb: 242,203,5 
+    --aton-colors-accent-rgb: 242,203,5;
 }
 
 /*
@@ -536,7 +536,7 @@ a {
 
     transition: all .1s ease-in-out;
 
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 .aton-card:hover {
@@ -613,6 +613,12 @@ a {
 
 .aton-card-h400 {
     height: 400px;
+}
+
+.aton-card-accent {
+    box-shadow: 0px 0px 20px rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+    /*border-color: rgba(var(--aton-colors-accent-rgb), 0.5);*/
+
 }
 
 

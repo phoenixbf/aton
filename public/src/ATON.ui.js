@@ -545,6 +545,8 @@ UI.createDropdown = (options)=>{
 
     el.append( elBtn );
 
+    if (options.classes) elBtn.className = elBtn.className + " " + options.classes;
+
     if (options.items){
         let elList = document.createElement("ul");
 
@@ -978,11 +980,11 @@ UI.createCard = (options)=>{
         elFooter.append(options.footer);
         elbody.append(elFooter);
     }
-
+/*
     el.append(
-        UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle'>XX</span>")
+        UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle rounded-circle'>XX</span>")
     );
-
+*/
     return el;
 };
 
@@ -1024,6 +1026,7 @@ UI.createSceneCard = (options)=>{
         keywords: kw,
         size: options.size,
         useblurtint: options.useblurtint,
+        classes: options.classes,
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
         url: ATON.PATH_FE + sid,
         subtitle: elSub,
@@ -1144,7 +1147,7 @@ UI.createLiveFilter = (options)=>{
 
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}">`);
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" >`);
 
     const elInGroup = document.createElement("div");
     elInGroup.classList.add("input-group"); //,"mb-2");
@@ -1216,6 +1219,7 @@ UI.createPublicScenesGallery = (options) => {
                     sid: scene.sid,
                     showuser: true,
                     keywords: scene.kwords,
+                    classes: options.classes,
                     useblurtint: true,
                     size: options.size
                 });
@@ -1262,6 +1266,7 @@ UI.createOwnScenesGallery = (options)=>{
                         sid: scene.sid,
                         keywords: scene.kwords,
                         useblurtint: true,
+                        classes: options.classes,
                         size: options.size
                     });
     

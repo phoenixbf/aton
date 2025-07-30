@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" href="<%= appicon %>" sizes="256x256" type="image/png">
+
+    <!-- Add iOS meta tags and icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content='<%= title %>' >
+    <link rel="apple-touch-icon" href="<%= appicon %>">
+
+    <meta name="description" content="ATON official front-end">
+
+    <!-- OpenGraph tags -->
+    <meta property="og:title" content="<%= title %>" />
+    <meta property="og:description" content="ATON official front-end" />
+    <meta property="og:image" content="<%= appicon %>" />
+    <meta property="og:image:secure_url" content="<%= appicon %>" /> 
+    <meta property="og:image:type" content="image/png" /> 
+    <meta property="og:image:width" content="256" /> 
+    <meta property="og:image:height" content="256" />
+
+	<!-- PWA manifest -->
+	<link rel="manifest" href="/hathor/v2/app.webmanifest">
+
+    <title><%= title %></title>
+    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+    <style>
+        .hathor-main-toolbar {
+            top: 0px;
+            position: absolute;
+
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+
+            overflow-y: auto;
+            /*height: 100%;*/
+
+            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            border-radius: var(--bs-border-radius);
+            
+            margin: 4px;
+
+            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+            backdrop-filter: blur(var(--aton-blur-radius));
+        }
+        .hathor-bottom-toolbar {
+            display: inline-block;
+            
+            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            border-radius: var(--bs-border-radius);
+            
+            margin: 4px;
+
+            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+            backdrop-filter: blur(var(--aton-blur-radius));
+        }
+    </style>
+
+    <!-- Vendors -->
+	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+    <script type="module" src="/src/ATON.js"></script>
+<!--
+    <script type="text/javascript" src="../dist/ATON.min.js"></script>
+-->
+
+    <script type="module" src="/hathor/v2/main.js"></script>
+    <script>
+        // We init Hathor onload
+        window.addEventListener( 'load', ()=>{
+            let flist = [];
+            <% flareslist.forEach((fid)=>{ %>
+                flist.push("<%= fid %>");
+            <% }); %>
+
+            HATHOR.requireFlares( flist );
+
+            HATHOR.setSceneToLoad("<%= sid %>");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="sideToolbar" class="hathor-main-toolbar"></div>
+
+    <div style="position:absolute; bottom:0px; width:100%; text-align:center;">
+        <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
+    </div>
+
+    <div class="aton-poweredby" >
+        <a href="https://aton.ispc.cnr.it/site/" target="_blank"><img src="/res/aton-logo.png"></a>
+    </div>
+</body>
+

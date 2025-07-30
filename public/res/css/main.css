@@ -107,6 +107,10 @@ a {
     color: var(--bs-body-color);
 }
 
+::selection {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.3);
+}
+
 /*=========================================
     ATON cascading classes (aton-*)
     to be applied on top of bootstrap 5
@@ -240,6 +244,15 @@ a {
 }
 
 .aton-toolbar-left .aton-btn {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
+}
+
+.aton-toolbar-bottom {
+    bottom: 0px;
+    display: inline-block;
+    position: absolute;
+}
+.aton-toolbar-bottom .aton-btn {
     background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
 }
 

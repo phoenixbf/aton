@@ -42,6 +42,30 @@ Render.setup = (app)=>{
 	
 		res.render("hathor/index", d);
 	});
+
+	// Hathor v2
+	app.get("/v2/s/:user/:usid", (req,res,next)=>{
+        let user = req.params.user;
+        let usid = req.params.usid;
+
+        let sid = user+"/"+usid;
+
+		let d = {};
+		d.sid   = sid;
+		d.title = d.sid;
+		d.appicon = "/hathor/appicon.png";
+		
+		d.flareslist = [];
+		//for (let fid in Core.flares) d.flareslist.push(fid);
+	
+		let S = Core.readSceneJSON(d.sid);
+		if (S){
+			if (S.title) d.title = S.title;
+			d.appicon = "/api/cover/"+d.sid;
+		}
+	
+		res.render("hathor/v2/index", d);
+	});
 	
 	// Automatically create 3D scene from item url and redirect to Hathor
 	app.get("/i", (req,res,next)=>{ // /^\/i\/(.*)$/

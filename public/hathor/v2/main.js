@@ -45,5 +45,46 @@ HATHOR.setupLogic = ()=>{
             });
     });
 
+    ATON.on("Tap", (e)=>{
+        // Handle sem annotations first
+        if (ATON._hoveredSemNode){
+            HATHOR.showAnnotationContent(ATON._hoveredSemNode)
+        }
+        else {
+            ATON.UI.hideSidePanel();
+        }
+    });
 
+
+};
+
+// Sem Annotations
+//===========================================
+HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+    if (S === undefined) return undefined;
+    
+    let descr = S.getDescription();
+    if (descr === undefined) return undefined;
+
+    descr = JSON.parse(descr);
+    return descr;
+};
+
+HATHOR.showAnnotationContent = (semid)=>{
+    if (!semid) return;
+
+    // TODO: audio sound
+
+    let htmlContent = HATHOR.getHTMLDescriptionFromSemNode(semid);
+    if (!htmlContent) return;
+
+    let elContent = ATON.UI.createElementFromHTMLString("<div>"+htmlContent+"</div>");
+
+    ATON.UI.setSidePanelRight();
+
+    ATON.UI.showSidePanel({
+        header: semid,
+        body: elContent
+    });
 };

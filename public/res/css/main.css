@@ -300,6 +300,10 @@ a {
     backdrop-filter: blur(var(--aton-blur-radius));  
 }
 
+.aton-sidepanel {
+    width: 35%;
+}
+
 /* Input decorators
 =======================*/
 .aton-input-x {
@@ -432,6 +436,26 @@ a {
 .aton-btn-section-highlight:hover {
     border-bottom: var(--aton-colors-accent) solid 4px;
 }
+
+.aton-btn-highlight {
+/*
+    border: var(--aton-colors-accent) solid 1px;
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.3);
+*/
+    --bs-btn-bg: rgba(var(--aton-colors-accent-rgb), 0.2);
+    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.5);
+    --bs-btn-color: var(--bs-btn-color);
+
+    --bs-btn-hover-bg: rgba(var(--aton-colors-accent-rgb), 0.2);
+    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.9);
+    --bs-btn-hover-color: var(--bs-btn-color);
+/*
+    -webkit-box-shadow: inset 0 0px 5px var(--bs-body-color);
+    -moz-box-shadow: inset 0 0px 5px var(--bs-body-color);
+    box-shadow: inset 0 0px 5px var(--bs-body-color);
+*/
+}
+
 
 /* Dropdowns
 ============*/

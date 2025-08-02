@@ -220,6 +220,11 @@ UI.setSidePanelLeft = ()=>{
     UI.elSidePanel.classList.add('offcanvas-start');
 }
 
+UI.setSidePanelRight = ()=>{
+    UI.elSidePanel.classList.remove('offcanvas-start');
+    UI.elSidePanel.classList.add('offcanvas-end');
+}
+
 
 
 /*===============================

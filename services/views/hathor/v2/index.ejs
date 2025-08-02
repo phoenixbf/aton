@@ -64,6 +64,20 @@
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
             backdrop-filter: blur(var(--aton-blur-radius));
         }
+
+        .hathor-user-toolbar {
+            top: 0px;
+            right: 0px;
+            position: absolute;
+
+            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            border-radius: var(--bs-border-radius);
+            
+            margin: 4px;
+
+            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+            backdrop-filter: blur(var(--aton-blur-radius));
+        }
     </style>
 
     <!-- Vendors -->
@@ -98,6 +112,8 @@
     <div style="position:absolute; bottom:0px; width:100%; text-align:center;">
         <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
     </div>
+
+    <div id="userToolbar" class="hathor-user-toolbar"></div>
 
     <div class="aton-poweredby" >
         <a href="https://aton.ispc.cnr.it/site/" target="_blank"><img src="/res/aton-logo.png"></a>

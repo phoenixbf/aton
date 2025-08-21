@@ -115,7 +115,7 @@ UI._setupBase = ()=>{
 
     // Centralized side panel
     UI.elSidePanel = UI.createElementFromHTMLString(`
-        <div class="offcanvas offcanvas-end aton-std-bg" tabindex="-1" aria-labelledby="offcanvasExampleLabel"></div>
+        <div class="offcanvas offcanvas-end aton-std-bg aton-sidepanel" tabindex="-1"></div>
 	`); // offcanvas-md
 
     UI.sidepanel = new bootstrap.Offcanvas(UI.elSidePanel);
@@ -183,6 +183,15 @@ UI.hideModal = ()=>{
 /*===============================
     Side panel
 ===============================*/
+
+/**
+Show centralized side panel (offcanvas)
+- options.header: main title (string)
+- options.headelement: optional header HTML element
+- options.body: main content of the side panel 
+
+@param {object} options - UI options object
+*/
 UI.showSidePanel = (options)=>{
     if (!options) return;
 
@@ -193,6 +202,8 @@ UI.showSidePanel = (options)=>{
         el.classList.add("offcanvas-header");
 
         el.innerHTML = "<h4 class='offcanvas-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+
+        if (options.headelement) el.prepend(options.headelement);
 
         UI.elSidePanel.append(el);
     }
@@ -210,16 +221,25 @@ UI.showSidePanel = (options)=>{
     UI._bSidePanel = true;
 };
 
+/**
+Hide centralized side panel (offcanvas)
+*/
 UI.hideSidePanel = ()=>{
     UI.sidepanel.hide();
     UI._bSidePanel = false;
 };
 
+/**
+Set centralized side panel (offcanvas) sliding from left
+*/
 UI.setSidePanelLeft = ()=>{
     UI.elSidePanel.classList.remove('offcanvas-end');
     UI.elSidePanel.classList.add('offcanvas-start');
 }
 
+/**
+Set centralized side panel (offcanvas) sliding from right
+*/
 UI.setSidePanelRight = ()=>{
     UI.elSidePanel.classList.remove('offcanvas-start');
     UI.elSidePanel.classList.add('offcanvas-end');
@@ -429,6 +449,8 @@ UI.createButton = (options)=>{
 
     if (options.classes) el.className = el.className + " " + options.classes;
 
+    if (options.tooltip) el.setAttribute("title", options.tooltip);
+
     return el;
 };
 
@@ -442,12 +464,37 @@ Create home button
 UI.createButtonHome = (options)=>{
     const std = {
         icon: "home",
+        tooltip: "Go home",
         onpress: ()=>{
             ATON.Nav.requestHome(0.3);
         }
     };
 
     return UI.createButton({ ...std, ...options });
+};
+
+/**
+Create fullscreen button
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonFullscreen = (options)=>{
+    const std = {
+        icon: "fullscreen",
+        tooltip: "Fullscreen",
+        onpress: ()=>{
+            ATON.toggleFullScreen();
+        }
+    };
+
+    const el = UI.createButton({ ...std, ...options });
+
+    ATON.on("Fullscreen", (b)=>{
+        if (b) el.classList.add("aton-btn-highlight");
+        else el.classList.remove("aton-btn-highlight");
+    });
+
+    return el;
 };
 
 /**
@@ -458,6 +505,7 @@ Create back button
 UI.createButtonBack = (options)=>{
     const std = {
         icon: "back",
+        tooltip: "Go back",
         onpress: ()=>{
             history.back();
         }
@@ -474,6 +522,7 @@ Create VR button. Hidden if not supported by device
 UI.createButtonVR = (options)=>{
     const std = {
         icon: "vr",
+        tooltip: "Immersive VR",
         onpress: ()=>{
             ATON.XR.toggle("immersive-vr");
         }
@@ -497,6 +546,7 @@ Create AR button. Hidden if not supported by device
 UI.createButtonAR = (options)=>{
     const std = {
         icon: "ar",
+        tooltip: "Augmented Reality",
         onpress: ()=>{
             ATON.XR.toggle("immersive-ar");
         }
@@ -520,6 +570,7 @@ Create Device Orientation button. Hidden if not supported by device
 UI.createButtonDeviceOrientation = (options)=>{
     const std = {
         icon: "devori",
+        tooltip: "Device Orientation",
         onpress: ()=>{
             if (ATON.Nav.isDevOri()){
                 ATON.Nav.restorePreviousNavMode();
@@ -540,19 +591,23 @@ UI.createButtonDeviceOrientation = (options)=>{
 Create a dropdown
 - options.title: the dropdown button title
 - options.icon: icon for dropdown button
-- options.items: an array of objects with "title" (string) and "url" (string) properties. An optional icon can be provided
+- options.items: an array of objects with "title" (string) and "url" (string) properties, an optional "icon" can be provided. Alternatively, a custom HTML element "el" can be provided as item.
+- options.classes: optional list of space-separated CSS classes (e.g.: "myclass_A myclass_B") for the main HTML element
+- options.btnclasses: optional list of space-separated CSS classes (e.g.: "myclass_A myclass_B") for the main button element
+- options.dropdownclasses: optional list of space-separated CSS classes (e.g.: "myclass_A myclass_B") for the dropdown menu element
 
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createDropdown = (options)=>{
-    if (!options.items) return undefined;
+    //if (!options.items) return undefined;
 
-    let el = document.createElement('div');
-    el.classList.add("btn-group");
+    if (!options.title) options.title = "Dropdown";
+
+    let el = ATON.UI.createContainer({ classes:"dropdown" });
 
     let elBtn = UI.createElementFromHTMLString(`
-        <button type="button" class="btn aton-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
+        <button type="button" class="btn aton-btn dropdown-toggle px-2" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
     `);
 
     if (options.variant) elBtn.classList.add("btn-"+options.variant);
@@ -561,13 +616,15 @@ UI.createDropdown = (options)=>{
 
     el.append( elBtn );
 
-    if (options.classes) elBtn.className = elBtn.className + " " + options.classes;
-
     if (options.items){
         let elList = document.createElement("ul");
 
-        elList.classList.add("dropdown-menu", "dropdown-menu-sm-end", "aton-dropdown-menu");
-        //if (options.align) elList.classList.add(options.align);
+        elList.classList.add("dropdown-menu","aton-dropdown-menu");
+        if (options.align){
+            if (options.align==="right")  elList.classList.add("dropdown-menu-sm-end");
+        }
+
+        if (options.dropdownclasses) elList.className = elList.className + " " + options.dropdownclasses;
 
         for (let i=0; i<options.items.length; i++){
             let E = options.items[i];
@@ -575,8 +632,9 @@ UI.createDropdown = (options)=>{
             let elItem;
 
             if (E.el){
-                elItem = E.el;
-                elItem.classList.add("dropdown-item", "aton-dropdown-item");
+                elItem = UI.createContainer({classes:"dropdown-item aton-dropdown-item"});
+                //elItem.classList.add("dropdown-item", "aton-dropdown-item");
+                elItem.append(E.el);
             }
             else elItem = UI.createElementFromHTMLString(`
                 <a class="dropdown-item aton-dropdown-item" href="${E.url}">${E.title}</a>
@@ -592,12 +650,16 @@ UI.createDropdown = (options)=>{
         el.append(elList);
     }
 
+    if (options.btnclasses) elBtn.className = elBtn.className + " " + options.btnclasses;
+    if (options.classes)    el.className = el.className + " " + options.classes;
+    
+
     return el;
 };
 
 /**
 Create a tabs group.
-- options.items: an array of objects (tabs) with "title" (string) and "content" (DOM element) properties. An optional "icon" can also be assigned per tab
+- options.items: an array of objects (tabs) with "title" (string) and "content" (HTML element) properties. An optional "icon" can also be assigned per tab, as well as "classes" to style a specific tab
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1242,6 +1304,65 @@ UI.createKeyword = (options)=>{
     return el;
 };
 
+UI.createLayersControl = (options)=>{
+    let el = ATON.UI.createContainer();
+
+    let root = ATON.getRootScene();
+
+    for (let c in root.children){
+        const N = root.children[c];
+        
+        if (N.nid){
+            const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
+
+            if (!N.visible) elNode.classList.add("aton-layer-hidden");
+
+            const elActionsC = ATON.UI.createContainer({style: "display:inline-block; margin-right:4px"});
+            elNode.append(elActionsC);
+
+            const elVis = ATON.UI.createButton({
+                icon: "visibility",// "bi-eye-fill",
+                size: "small",
+                classes: (N.visible)? "aton-btn-highlight" : undefined,
+                onpress: ()=>{
+                    if (N.visible){
+                        N.hide();
+                        elVis.classList.remove("aton-btn-highlight");
+                        elNode.classList.add("aton-layer-hidden");
+                    }
+                    else {
+                        N.show();
+                        elVis.classList.add("aton-btn-highlight");
+                        elNode.classList.remove("aton-layer-hidden");
+                    } 
+                        
+                }
+            });
+
+            elActionsC.append(elVis);
+
+            //if (options.setupActions) options.setupActions(elActionsC);
+
+            if (options.manager){
+                const elManage = ATON.UI.createButton({
+                    icon: "settings",
+                    onpress: ()=>{
+                        options.manager(N.nid);
+                    }
+                });
+
+                elActionsC.append(elManage)
+            }
+
+            elNode.append(N.nid);
+
+            el.append(elNode);
+        }
+    }
+
+    return el;
+};
+
 /**
 Create a range/slider
 - options.range: min and max values pair (e.g. [0,10])
@@ -1307,6 +1428,112 @@ UI.createSlider = (options)=>{
         if (elValue) elValue.innerText = elInput.value;
         options.onchange(elInput.value);
     };
+
+    return el;
+};
+
+/**
+Create an input text field
+- options.label: optional label for the input field
+- options.placeholder: optional placeholder
+- options.list: array of strings (datalist)
+- options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
+- options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createInputText = (options)=>{
+    let baseid = ATON.Utils.generateID("txtfield");
+    
+    let el = ATON.UI.createContainer({classes: "input-group" });
+    el.id = baseid;
+
+    let label = "";
+
+    if (options.label){
+        label = options.label;
+        el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
+    }
+
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control" aria-label="${label}" type="search" >`);
+    elInput.id = baseid + "-input";
+
+    if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
+
+    if (options.oninput) elInput.oninput = ()=>{
+        options.oninput( elInput.value );
+    };
+    if (options.onchange) elInput.onchange = ()=>{
+        options.onchange(elInput.value);
+    };
+
+    el.append(elInput);
+
+    if (options.list){
+        const L = options.list;
+
+        elInput.setAttribute("list", baseid+"-list");
+        let elDatalist = UI.createElementFromHTMLString("<datalist id='"+baseid+"-list'></datalist>");
+
+        for (let i in L){
+            let itemname = L[i];
+            if (options.listnames) itemname = options.listnames[i];
+
+            elDatalist.append(
+                UI.createElementFromHTMLString("<option value='"+L[i]+"'>"+itemname+"</option>")
+            );
+        }
+        
+        el.append(elDatalist);
+    }
+
+    return el;
+};
+
+UI.createInput3DModel = (options)=>{
+    let el = ATON.UI.createContainer();
+    
+    if (!options) options = {};
+
+    ATON.checkAuth(
+        (u)=>{
+            ATON.REQ.get("items/"+u.username+"/models/", entries => {
+
+                const itemnames = entries.map(item => {
+                    return item.replace(u.username+"/models/", "");
+                });
+             
+                let elIT = ATON.UI.createInputText({
+                    label: options.label,
+                    placeholder: "3D model URL...",
+                    list: entries,
+                    listnames: itemnames,
+                    oninput: options.oninput,
+                    onchange: options.onchange
+                });
+        
+                el.append( elIT );
+
+                let elInput = elIT.getElementsByTagName("input")[0];
+/*
+                if (options.actionbutton){
+                    elIT.append( options.actionbutton );
+                }
+*/
+
+                elIT.append( ATON.UI.createButton({
+                    icon: options.actionicon? options.actionicon : "collection-item",
+                    text: options.actiontext,
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        if (options.onaction) options.onaction( elInput.value );
+                    }
+                }));
+
+            });
+        }
+    );
 
     return el;
 };

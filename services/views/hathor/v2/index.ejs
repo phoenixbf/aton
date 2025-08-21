@@ -33,33 +33,33 @@
     <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
+    <!-- Third parties -->
+    <link type="text/css" rel="stylesheet" href="/hathor/v2/thirdparty/jodit.min.css" />
+
     <style>
+        :root {
+            --hathor-ui-margin: 4px;
+        }
+
         .hathor-main-toolbar {
-            top: 0px;
-            position: absolute;
-
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-
-            overflow-y: auto;
-            /*height: 100%;*/
+            margin: var(--hathor-ui-margin);
+/*
+            margin-left: 0px;
+*/
+            max-height: calc(100% - (var(--hathor-ui-margin)*2));
 
             background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
             border-radius: var(--bs-border-radius);
-            
-            margin: 4px;
 
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
             backdrop-filter: blur(var(--aton-blur-radius));
         }
         .hathor-bottom-toolbar {
             display: inline-block;
+            margin: var(--hathor-ui-margin);
             
-            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
             border-radius: var(--bs-border-radius);
-            
-            margin: 4px;
 
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
             backdrop-filter: blur(var(--aton-blur-radius));
@@ -70,10 +70,10 @@
             right: 0px;
             position: absolute;
 
-            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            margin: var(--hathor-ui-margin);
+
+            background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
             border-radius: var(--bs-border-radius);
-            
-            margin: 4px;
 
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
             backdrop-filter: blur(var(--aton-blur-radius));
@@ -83,6 +83,7 @@
     <!-- Vendors -->
 	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
     <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="/hathor/v2/thirdparty/jodit.min.js"></script>
 
     <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
     <script type="module" src="/src/ATON.js"></script>
@@ -107,7 +108,7 @@
 </head>
 
 <body>
-    <div id="sideToolbar" class="hathor-main-toolbar"></div>
+    <div id="sideToolbar" class="aton-toolbar-left hathor-main-toolbar"></div>
 
     <div style="position:absolute; bottom:0px; width:100%; text-align:center;">
         <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
@@ -115,8 +116,8 @@
 
     <div id="userToolbar" class="hathor-user-toolbar"></div>
 
-    <div class="aton-poweredby" >
-        <a href="https://aton.ispc.cnr.it/site/" target="_blank"><img src="/res/aton-logo.png"></a>
+    <div class="aton-poweredby" style="right:0px; left:auto;">
+        Powered by <a href="https://aton.ispc.cnr.it/site/" target="_blank">ATON</a>
     </div>
 </body>
 

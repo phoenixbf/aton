@@ -5,6 +5,7 @@ UI.setup = ()=>{
     UI._elMainToolbar   = ATON.UI.get("sideToolbar");
     UI._elBottomToolbar = ATON.UI.get("bottomToolbar");
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
+    UI._elWYSIWYG       = undefined;
 
     ATON.UI.setSidePanelLeft();
 
@@ -26,6 +27,12 @@ UI.setup = ()=>{
 /*
     UI General
 =====================================*/
+UI.setTheme = (theme)=>{
+    ATON.UI.setTheme(theme);
+
+    //if (UI.WYSIWYG) TODO:
+};
+
 UI.hideMainElements = (b)=>{
     UI._elMainToolbar.classList.add("d-none");
     UI._elBottomToolbar.classList.add("d-none");
@@ -35,6 +42,18 @@ UI.showMainElements = (b)=>{
     UI._elMainToolbar.classList.remove("d-none");
     UI._elBottomToolbar.classList.remove("d-none");
     UI._elUserToolbar.classList.remove("d-none");
+};
+
+/*
+    Semantic
+=====================================*/
+UI.showSemanticPanel = (title, elContent)=>{
+    ATON.UI.setSidePanelRight();
+
+    ATON.UI.showSidePanel({
+        header: title,
+        body: elContent
+    });
 };
 
 /*
@@ -51,6 +70,20 @@ UI.createXRButton = ()=>{
     return ATON.UI.createButton({
         icon: "xr",
         onpress: UI.modalXR
+    });
+};
+
+UI.createToolButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "hathor",
+        onpress: UI.sideTool
+    });
+};
+
+UI.createLayersButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "layers",
+        onpress: UI.sideLayers
     });
 };
 
@@ -78,6 +111,12 @@ UI.buildStandardToolbar = ()=>{
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
+        ATON.UI.createButtonFullscreen(),
+        UI.createMainButton(),
+        UI.createMainButton(),
+        UI.createMainButton(),
+        UI.createMainButton(),
+        UI.createLayersButton(),
         //UI.createUserButton(),
         UI.createXRButton(),
         ATON.UI.createButtonHome()
@@ -154,9 +193,178 @@ UI.modalXR = ()=>{
 };
 
 /*
+    WYSIWYG Editor
+=====================================*/
+UI.WYSIWYGeditorInit = ()=>{
+    UI.WYSIWYG = Jodit.make('#WYSIWYGeditor', {
+        theme: "dark",
+
+        buttons: 'source,|,about,print,bold',
+        buttonsMD: 'source,|,about,print,bold',
+        buttonsSM: 'source,|,about,print,bold',
+        buttonsXS: 'source,|,about,print,bold',
+
+        extraButtons: [
+            {
+                name: 'insertDate',
+                iconURL: ATON.UI.resolveIconURL("user"),
+                exec: (editor)=>{
+                    UI.WYSIWYGeditorInsert(new Date().toDateString())
+                }
+            }
+        ]
+    });
+
+    UI._elWYSIWYG = ATON.UI.get("WYSIWYGeditor");
+};
+
+UI.WYSIWYGeditorInsert = (html)=>{
+    if (!UI.WYSIWYG) return;
+    
+    UI.WYSIWYG.s.insertHTML(html);
+    UI.WYSIWYG.synchronizeValues(); // For history saving
+};
+
+UI.WYSIWYGeditorGetHTML = ()=>{
+    if (!UI._elWYSIWYG) return undefined;
+    
+    return UI._elWYSIWYG.value;
+};
+
+/*
     Side Panels
 =====================================*/
+UI.sideTool = ()=>{
+    ATON.UI.setSidePanelLeft();
 
+    ATON.UI.showSidePanel({
+        header: "Test Tool",
+        //body: ATON.UI.createElementFromHTMLString(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`)
+        body: ATON.UI.createContainer({
+            items:[
+/*
+                ATON.UI.createInputText({
+                    label: "test",
+                    list: ["x","y"]
+                }),
+*/
+                ATON.UI.createInput3DModel({
+                    actionicon: "add",
+                    onaction: (url)=>{
+                        if (url && url.length>1) ATON.createSceneNode().load(url).attachToRoot();
+                    }
+                }),
+                ATON.UI.createLayersControl()
+            ]
+        })
+    });
+
+    //UI.WYSIWYGeditorInit();
+}
+
+UI.sideLayers = ()=>{
+    ATON.UI.setSidePanelLeft();
+
+    ATON.UI.showSidePanel({
+        header: "Layers",
+        body: ATON.UI.createContainer({
+            items:[
+                ATON.UI.createLayersControl({
+                    manager: (nid)=>{
+                        UI.sideManageLayer(nid);
+                    }
+                })
+            ]
+        })
+    });
+};
+
+UI.createLayerModels = (N)=>{
+    let el = ATON.UI.createContainer();
+
+    let elList = ATON.UI.createContainer({ classes: "list-group" });
+    el.append(elList);
+
+    for (let u in N._reqURLs){
+        const elItem = ATON.UI.createElementFromHTMLString(`
+            <div class='list-group-item aton-collection-item'>${u}</div>
+        `);
+/*
+        elItem.prepend( ATON.UI.createButton({
+            icon: "trash",
+            size: "small"
+        }));
+*/
+        elList.append( elItem );
+    }
+
+    el.append( ATON.UI.createInput3DModel({
+        actionicon: "add",
+        onaction: (url)=>{
+            if (!url) return;
+            if (url.length<2) return;
+            
+            N.load(url);
+            
+            elList.append( ATON.UI.createElementFromHTMLString(`
+                <div class='list-group-item aton-collection-item'>${url}</div>
+            `));
+        }
+    }) );
+
+    return el;
+};
+
+UI.sideManageLayer = (nid)=>{
+    let N = ATON.getSceneNode(nid);
+    if (!N) return;
+
+    ATON.UI.setSidePanelLeft();
+
+    let elBody = ATON.UI.createContainer();
+    
+    elBody.append( ATON.UI.createButton({
+        text: "Focus",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.Nav.requestPOVbyNode(N, 0.2);
+        }
+    }) );
+    
+    elBody.append( ATON.UI.createTreeGroup({
+        items:[
+            {
+                title: "Items",
+                open: true,
+                content: UI.createLayerModels(N)
+            },
+            {
+                title: "Transform",
+                open: true,
+                content: ATON.UI.createNodeTrasformControl({
+                    node: nid,
+                    position: true,
+                    scale: true,
+                    rotation: true
+                })
+            },
+            {
+                title: "Material",
+                //content:
+            }
+
+        ]
+    }) );
+
+    ATON.UI.showSidePanel({
+        header: "Layer '"+nid+"'",
+        headelement: ATON.UI.createButton({
+            icon: "back",
+            onpress: UI.sideLayers
+        }),
+        body: elBody
+    });
+};
 
 
 export default UI;

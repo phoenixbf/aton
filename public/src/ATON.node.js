@@ -44,6 +44,8 @@ constructor(id, type){
 
     this.kwords = undefined;
 
+    this._reqURLs = {};
+
     this._bCloneOnLoadHit = true;
 
     // Transform list (instancing)
@@ -670,6 +672,9 @@ load(url, onComplete){
     if (url === undefined) return this;
     
     let N = this;
+
+    // Log request
+    N._reqURLs[url] = true;
 
     url = ATON.Utils.resolveCollectionURL(url);
 

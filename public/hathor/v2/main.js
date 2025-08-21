@@ -81,10 +81,5 @@ HATHOR.showAnnotationContent = (semid)=>{
 
     let elContent = ATON.UI.createElementFromHTMLString("<div>"+htmlContent+"</div>");
 
-    ATON.UI.setSidePanelRight();
-
-    ATON.UI.showSidePanel({
-        header: semid,
-        body: elContent
-    });
+    HATHOR.UI.showSemanticPanel(semid, elContent);
 };

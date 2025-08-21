@@ -238,13 +238,16 @@ a {
     text-align: center;
     display: flex;
     flex-direction: column;
-/*
-    background-color: rgba(var(--bs-body-bg-rgb), 0.7) !important;
-*/
-}
 
-.aton-toolbar-left .aton-btn {
-    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important; 
+    overflow-y: auto;
+    max-height: 100%;
+/*
+    background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+*/
 }
 
 .aton-toolbar-bottom {
@@ -300,9 +303,12 @@ a {
     backdrop-filter: blur(var(--aton-blur-radius));  
 }
 
-.aton-sidepanel {
-    width: 35%;
+@media screen and (min-width: 700px) {
+    .aton-sidepanel {
+        max-width: 40%;
+    }
 }
+
 
 /* Input decorators
 =======================*/
@@ -310,13 +316,27 @@ a {
     border-color: rgba(255,0,0, 0.2);
     /*background-color: rgba(255,0,0, 0.1) !important;*/
 }
+.aton-input-x:focus {
+    border-color: rgba(255,0,0, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
 .aton-input-y {
     border-color: rgba(0,255,0, 0.2);
     /*background-color: rgba(0,255,0, 0.1) !important;*/
 }
+.aton-input-y:focus {
+    border-color: rgba(0,255,0, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
 .aton-input-z {
     border-color: rgba(0,0,255, 0.2);
     /*background-color: rgba(0,0,255, 0.1) !important;*/
+}
+.aton-input-z:focus {
+    border-color: rgba(0,0,255, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 0, 255, 0.5);
 }
 
 /* Buttons & Icons
@@ -552,6 +572,53 @@ a {
     padding-left: 10px;
     border-left: dotted var(--bs-body-color) 2px;
 }
+
+/* Layers / Items
+========================*/
+.aton-layer {
+    padding: 4px;
+    display: block;
+
+    white-space: nowrap;
+
+    margin: 4px;
+    margin-left: 8px;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5);
+    /*border-left: solid var(--bs-body-color) 1px;*/
+
+    border-radius: var(--bs-border-radius);
+
+    /*line-height: 20px;*/
+
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+/*
+    border-left: dotted var(--bs-body-color) 2px;
+*/
+}
+
+.aton-layer:hover {
+    background-color: rgba(var(--bs-body-bg-rgb), 1.0);
+}
+
+.aton-layer-hidden {
+    opacity: 0.5;
+}
+
+.aton-collection-item {
+    font-size: smaller;
+    
+    overflow: hidden;
+    text-overflow: ellipsis;
+/*
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5);
+*/
+}
+
 
 /* Cards
 ========================*/

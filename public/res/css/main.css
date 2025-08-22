@@ -310,35 +310,6 @@ a {
 }
 
 
-/* Input decorators
-=======================*/
-.aton-input-x {
-    border-color: rgba(255,0,0, 0.2);
-    /*background-color: rgba(255,0,0, 0.1) !important;*/
-}
-.aton-input-x:focus {
-    border-color: rgba(255,0,0, 0.5);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(255, 0, 0, 0.5);
-}
-
-.aton-input-y {
-    border-color: rgba(0,255,0, 0.2);
-    /*background-color: rgba(0,255,0, 0.1) !important;*/
-}
-.aton-input-y:focus {
-    border-color: rgba(0,255,0, 0.5);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 255, 0, 0.5);
-}
-
-.aton-input-z {
-    border-color: rgba(0,0,255, 0.2);
-    /*background-color: rgba(0,0,255, 0.1) !important;*/
-}
-.aton-input-z:focus {
-    border-color: rgba(0,0,255, 0.5);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 0, 255, 0.5);
-}
-
 /* Buttons & Icons
 =================*/
 .aton-icon {
@@ -581,8 +552,8 @@ a {
 
     white-space: nowrap;
 
-    margin: 4px;
-    margin-left: 8px;
+    margin: 2px;
+    /*margin-left: 8px;*/
 
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
     /*border-left: solid var(--bs-body-color) 1px;*/
@@ -610,10 +581,20 @@ a {
 }
 
 .aton-collection-item {
-    font-size: smaller;
-    
+    /*font-size: smaller;*/
+
+    display: block;
+
     overflow: hidden;
     text-overflow: ellipsis;
+
+    border-bottom: dotted var(--bs-body-color) 2px;
+
+    padding: 4px;
+
+    margin-top: 8px;
+    margin-bottom: 8px;
+
 /*
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
 */
@@ -722,7 +703,13 @@ a {
 .aton-card-accent {
     box-shadow: 0px 0px 20px rgba(var(--aton-colors-accent-rgb), 0.5) !important;
     /*border-color: rgba(var(--aton-colors-accent-rgb), 0.5);*/
+}
 
+.aton-card-badge {
+    /*color: var(--bs-body-bg);*/
+    color: white;
+    text-shadow: 0px 0px 16px var(--aton-colors-accent);
+    margin: 12px;
 }
 
 
@@ -775,6 +762,41 @@ a {
 
     padding: 4px;
     border-radius: var(--bs-border-radius);
+}
+
+
+/* Input decorators
+=======================*/
+.aton-input:focus {
+    border-color: rgba(var(--aton-colors-accent-rgb), 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(var(--aton-colors-accent-rgb), 0.5);
+}
+
+.aton-input-x {
+    border-color: rgba(255,0,0, 0.2);
+    /*background-color: rgba(255,0,0, 0.1) !important;*/
+}
+.aton-input-x:focus {
+    border-color: rgba(255,0,0, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(255, 0, 0, 0.5);
+}
+
+.aton-input-y {
+    border-color: rgba(0,255,0, 0.2);
+    /*background-color: rgba(0,255,0, 0.1) !important;*/
+}
+.aton-input-y:focus {
+    border-color: rgba(0,255,0, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 255, 0, 0.5);
+}
+
+.aton-input-z {
+    border-color: rgba(0,0,255, 0.2);
+    /*background-color: rgba(0,0,255, 0.1) !important;*/
+}
+.aton-input-z:focus {
+    border-color: rgba(0,0,255, 0.5);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 0, 255, 0.5);
 }
 
 input[type="range"] {

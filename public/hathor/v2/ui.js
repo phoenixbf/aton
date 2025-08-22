@@ -1,3 +1,11 @@
+/*===========================================================================
+
+    "Hathor" v2
+    UI routines
+
+    Author: B. Fanini
+
+===========================================================================*/
 let UI = {};
 
 UI.setup = ()=>{
@@ -265,15 +273,60 @@ UI.sideTool = ()=>{
 UI.sideLayers = ()=>{
     ATON.UI.setSidePanelLeft();
 
+    // Layers list
+    let elLayers = ATON.UI.createContainer();
+
+    const appendNewLayer = (nid)=>{
+        const elLayer = ATON.UI.createLayerControl({
+            node: nid,
+            actions: [
+                ATON.UI.createButton({
+                    icon: "settings",
+                    size: "small",
+                    onpress: ()=>{
+                        UI.sideManageLayer(nid);
+                    }
+                })
+            ]
+        });
+
+        //console.log(ATON.UI.getComponent(elLayer,"actions"));
+
+        elLayers.append( elLayer );
+    };
+
+    let root = ATON.getRootScene();
+    for (let c in root.children){
+        const N = root.children[c];
+        
+        if (N.nid) appendNewLayer(N.nid);
+    }
+
+    const elNewLayer = ATON.UI.createInputText({
+        placeholder: "New Layer..."
+    });
+
+    let elInput = ATON.UI.getComponent(elNewLayer,"input");
+
+    elNewLayer.append( ATON.UI.createButton({
+        icon: "add",
+        classes: "btn-default",
+        onpress: ()=>{
+            let layer = elInput.value;
+            
+            if (HATHOR.ED.createLayer({nid: layer})){
+                appendNewLayer(layer);
+                elInput.value = "";
+            }
+        }
+    }));
+
     ATON.UI.showSidePanel({
         header: "Layers",
         body: ATON.UI.createContainer({
             items:[
-                ATON.UI.createLayersControl({
-                    manager: (nid)=>{
-                        UI.sideManageLayer(nid);
-                    }
-                })
+                elLayers,
+                elNewLayer
             ]
         })
     });
@@ -282,13 +335,33 @@ UI.sideLayers = ()=>{
 UI.createLayerModels = (N)=>{
     let el = ATON.UI.createContainer();
 
-    let elList = ATON.UI.createContainer({ classes: "list-group" });
+    let elList = ATON.UI.createContainer({
+        //classes: "list-group"
+        //style: "margin-left: -8px"
+    });
+
     el.append(elList);
 
-    for (let u in N._reqURLs){
-        const elItem = ATON.UI.createElementFromHTMLString(`
-            <div class='list-group-item aton-collection-item'>${u}</div>
+    const createItem = (url)=>{
+        const fname = ATON.Utils.getFilename(url);
+
+        // list-group-item 
+        let el = ATON.UI.createElementFromHTMLString(`
+            <div class='aton-collection-item'>${fname}</div>
         `);
+
+/*
+        el.prepend( ATON.UI.createButton({
+            icon: "trash",
+            size: "small",
+            variant: "danger"
+        }) );
+*/
+        return el;
+    };
+
+    for (let u in N._reqURLs){
+        const elItem = createItem(u);
 /*
         elItem.prepend( ATON.UI.createButton({
             icon: "trash",
@@ -306,9 +379,7 @@ UI.createLayerModels = (N)=>{
             
             N.load(url);
             
-            elList.append( ATON.UI.createElementFromHTMLString(`
-                <div class='list-group-item aton-collection-item'>${url}</div>
-            `));
+            elList.append( createItem(url) );
         }
     }) );
 

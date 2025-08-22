@@ -178,6 +178,15 @@ app.use('/dav', createProxyMiddleware({
 }));
 */
 
+// 404
+//==================================
+/*
+//TODO:
+app.use((req, res, next) => {
+	//res.status(404).send('<h1>Page not found</h1>');
+});
+*/
+
 // Collect & setup flares (if found)
 //==================================
 Core.setupFlares(app);

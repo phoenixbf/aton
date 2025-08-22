@@ -15,6 +15,8 @@ A set UI blueprints for ATON apps, based on Bootstrap v5
 let UI = {};
 UI._parser = new DOMParser;
 
+UI.COMP_ATTR = "data-aton-comp";
+
 UI.SCENES_SORTER = (entryA, entryB)=>{
 	let a = new Date(entryA.creationDate);
 	let b = new Date(entryB.creationDate);
@@ -408,6 +410,22 @@ UI.createContainer = (options)=>{
     }
 
     return el;
+};
+
+/*===============================
+    Components
+===============================*/
+UI.registerElementAsComponent = (el, name)=>{
+    el.setAttribute(UI.COMP_ATTR, name);
+};
+
+UI.getComponent = (el, name)=>{
+    if (!el) return undefined;
+
+    let R = el.querySelectorAll("["+UI.COMP_ATTR+"='"+name+"']");
+    if (!R) return undefined;
+
+    return R[0];
 };
 
 /*===============================
@@ -985,6 +1003,13 @@ Create a generic card.
 - options.footer: custom footer element
 - options.useblurtint: use special blur effect on this card
 
+Components:
+- "img"
+- "body"
+- "title"
+- "subtitle"
+- "footer"
+
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
@@ -1026,12 +1051,18 @@ UI.createCard = (options)=>{
         };
 
         elcov.getElementsByTagName("a")[0].append(im);
+
+        UI.registerElementAsComponent(im, "img");
+
         el.append(elcov);
     }
     
     // Body
     let elbody = document.createElement('div');
     elbody.classList.add("card-body","aton-card-body");
+
+    UI.registerElementAsComponent(elbody, "body");
+
     el.append(elbody);
 
     // Title
@@ -1039,6 +1070,8 @@ UI.createCard = (options)=>{
     elTitle.classList.add("card-title", "aton-card-title");
     elTitle.innerHTML = "Title";
     elbody.append(elTitle);
+
+    UI.registerElementAsComponent(elTitle, "title");
 
     if (options.title){
         elTitle.innerHTML = options.title;
@@ -1051,6 +1084,8 @@ UI.createCard = (options)=>{
         let elSub = ATON.UI.createElementFromHTMLString(`<div class='card-subtitle mb-2 text-body-secondary'></div>`);
 
         elSub.append(options.subtitle);
+        UI.registerElementAsComponent(elSub, "subtitle");
+
         elbody.append(elSub);
     }
 
@@ -1059,11 +1094,13 @@ UI.createCard = (options)=>{
         let elFooter = document.createElement('div');
         elFooter.classList.add("card-footer");
         elFooter.append(options.footer);
+        UI.registerElementAsComponent(elFooter, "footer");
+
         elbody.append(elFooter);
     }
 
     if (options.badge){
-        let elB = UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle rounded-circle'></span>"); // rounded-circle
+        let elB = UI.createElementFromHTMLString("<span class='position-absolute top-0 start-0 translate-middle aton-card-badge'></span>"); // rounded-circle
         
         elB.append(options.badge);
         el.append(elB);
@@ -1124,10 +1161,13 @@ UI.createSceneCard = (options)=>{
 
 /**
 Create a live filter, search as user is typing
-- options.filterclass: items class to filter (eg. "aton-scene-card")
+- options.filterclass: items class to filter (eg. "aton-scene-card") in the current document
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
 - options.oninput: custom routine on keyboard input. If not provided uses filterclass option
+
+Components:
+- "input"
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1143,7 +1183,10 @@ UI.createLiveFilter = (options)=>{
 
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" >`);
+
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" >`);
+
+    UI.registerElementAsComponent(elInput, "input");
 
     const elInGroup = document.createElement("div");
     elInGroup.classList.add("input-group"); //,"mb-2");
@@ -1304,9 +1347,78 @@ UI.createKeyword = (options)=>{
     return el;
 };
 
-UI.createLayersControl = (options)=>{
+/**
+Create layer control. By default it allows basic switching (on/off)
+- options.node: node ID (string) of the ATON node
+- options.actions: optional list (array) of HTML elements (e.g. buttons) being added to this layer actions
+
+Components: "actions"
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createLayerControl = (options)=>{
+    let nid = options.node;
+    let N = ATON.getSceneNode(nid);
+
+    const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
+
+    if (!N.visible) elNode.classList.add("aton-layer-hidden");
+
+    const elActionsC = ATON.UI.createContainer({style: "display:inline-block; margin-right:4px"});
+    UI.registerElementAsComponent(elActionsC, "actions");
+
+    elNode.append(elActionsC);
+
+    const elVis = ATON.UI.createButton({
+        icon: "visibility",// "bi-eye-fill",
+        size: "small",
+        classes: (N.visible)? "aton-btn-highlight" : undefined,
+        onpress: ()=>{
+            if (N.visible){
+                N.hide();
+                elVis.classList.remove("aton-btn-highlight");
+                elNode.classList.add("aton-layer-hidden");
+            }
+            else {
+                N.show();
+                elVis.classList.add("aton-btn-highlight");
+                elNode.classList.remove("aton-layer-hidden");
+            } 
+                
+        }
+    });
+
+    elActionsC.append(elVis);
+
+    if (options.actions){
+        for (let a in options.actions){
+            let elAction = options.actions[a];
+            elActionsC.append(elAction);
+        }
+    }
+
+    elNode.append(N.nid);
+    return elNode;
+};
+
+UI.createBasicLayersManager = (options)=>{
     let el = ATON.UI.createContainer();
 
+    for (let c in root.children){
+        const N = root.children[c];
+        
+        if (N.nid){
+            let elLayer = ATON.UI.createLayerControl({
+                node: N.nid,
+            });
+
+            el.append(elLayer);
+        }
+    }
+
+    return el;
+/*
     let root = ATON.getRootScene();
 
     for (let c in root.children){
@@ -1346,6 +1458,7 @@ UI.createLayersControl = (options)=>{
             if (options.manager){
                 const elManage = ATON.UI.createButton({
                     icon: "settings",
+                    size: "small",
                     onpress: ()=>{
                         options.manager(N.nid);
                     }
@@ -1361,6 +1474,7 @@ UI.createLayersControl = (options)=>{
     }
 
     return el;
+*/
 };
 
 /**
@@ -1401,7 +1515,7 @@ UI.createSlider = (options)=>{
     }
 
     let elInput = UI.createElementFromHTMLString(`
-        <input type="range" class="aton-range" list="ticks-${baseid}" min="${min}" max="${max}" step="${step}" id="${baseid}">
+        <input type="range" class="aton-range aton-input" list="ticks-${baseid}" min="${min}" max="${max}" step="${step}" id="${baseid}">
     `);
 
     if (options.value !== undefined) elInput.value = options.value;
@@ -1440,6 +1554,10 @@ Create an input text field
 - options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
 - options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
 
+Components:
+- "input"
+- "datalist"
+
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
@@ -1456,7 +1574,9 @@ UI.createInputText = (options)=>{
         el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
     }
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control" aria-label="${label}" type="search" >`);
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="search" >`);
+    UI.registerElementAsComponent(elInput, "input");
+
     elInput.id = baseid + "-input";
 
     if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
@@ -1475,13 +1595,14 @@ UI.createInputText = (options)=>{
 
         elInput.setAttribute("list", baseid+"-list");
         let elDatalist = UI.createElementFromHTMLString("<datalist id='"+baseid+"-list'></datalist>");
+        UI.registerElementAsComponent(elDatalist, "datalist");
 
         for (let i in L){
             let itemname = L[i];
             if (options.listnames) itemname = options.listnames[i];
 
             elDatalist.append(
-                UI.createElementFromHTMLString("<option value='"+L[i]+"'>"+itemname+"</option>")
+                UI.createElementFromHTMLString("<option value='"+L[i]+"'></option>") // "+itemname+"
             );
         }
         
@@ -1528,6 +1649,7 @@ UI.createInput3DModel = (options)=>{
                     classes: "btn-default",
                     onpress: ()=>{
                         if (options.onaction) options.onaction( elInput.value );
+                        elInput.value = "";
                     }
                 }));
 
@@ -1545,8 +1667,8 @@ UI.createLoginForm = (options)=>{
     let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
     let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
 
-    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
-    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
+    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
+    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
 
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);
@@ -1567,10 +1689,12 @@ UI.createLoginForm = (options)=>{
 
     if (options.header) el.append(options.header);
     else el.append( UI.createElementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
+    //else el.append( ATON.UI.createElementFromHTMLString(`<img src="${ATON.PATH_RES}aton-logo.png" style="width:50px; height:auto; margin-bottom:20px">`) );
 
     el.append(elUsername);
     el.append(elPassword);
-    el.append(elEnter);
+    
+    el.append( UI.createContainer({ items:[ elEnter ], classes:"d-grid gap-2" }) );
 
     return el;
 };

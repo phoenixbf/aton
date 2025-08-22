@@ -18,7 +18,7 @@ window.addEventListener( 'load', ()=>{
         //elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
 
         let elSearch = ATON.UI.createLiveFilter({
-                filterclass: "aton-btn",
+                //filterclass: "aton-btn",
                 onfocus: ()=>{
 
                 },
@@ -27,7 +27,7 @@ window.addEventListener( 'load', ()=>{
                 }
         })
 
-        elSearchInput = elSearch.getElementsByTagName('input')[0];
+        elSearchInput = ATON.UI.getComponent(elSearch,"input");
         elNavCont.append(elSearch);
 
         let elMainTasks = ATON.UI.get("maintasks");

@@ -6,6 +6,7 @@
 
 ===========================================================================*/
 import UI from "./ui.js";
+import ED from "./editor.js";
 
 /**
 Hathor front-end (official ATON front-end)
@@ -15,12 +16,11 @@ let HATHOR = ATON.App.realize();
 window.HATHOR = HATHOR;
 
 HATHOR.UI = UI;
+HATHOR.ED = ED;
 
 
 HATHOR._sidToLoad = HATHOR.params.get('s');
 HATHOR._tb        = HATHOR.params.get('tb');
-
-HATHOR._bEditor   = false;
 
 
 HATHOR.setSceneToLoad = (sid)=>{

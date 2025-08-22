@@ -27,7 +27,7 @@ window.addEventListener( 'load', ()=>{
                 }
         })
 
-        elSearchInput = elSearch.getElementsByTagName('input')[0];
+        elSearchInput = ATON.UI.getComponent(elSearch,"input");
         elNavCont.append(elSearch);
 
         // My scene gallery

@@ -34,7 +34,11 @@ window.addEventListener( 'load', ()=>{
     ATON.realize();
     ATON.UI.addBasicEvents();
 
-    ATON.App.loadScene("samples/venus", ()=>{
+    ATON.App.loadScene("samples/welcome", ()=>{
+
+        // TEST
+        ATON.createSceneNode("3DGS").load("bastet/models/butterfly.spz").attachToRoot();
+
         ATON.Nav.requestHome(1.0);
 
         ATON.UI.showModal({
@@ -112,12 +116,14 @@ window.addEventListener( 'load', ()=>{
                     {
                         title: "Transform",
                         //icon: "settings",
+/*
                         content: ATON.UI.createNodeTrasformControl({
                             node: "main",
                             position: true,
                             scale: true,
                             rotation: true
                         })
+*/
                     },
                     {
                         title: "Lorem",

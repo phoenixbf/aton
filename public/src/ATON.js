@@ -635,6 +635,9 @@ ATON.realize = ( bNoRender )=>{
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
+
+    ATON._3DGSR = undefined;
+
     //console.log(ATON._renderer);
 
     //ATON._renderer.domElement.style.filter = "blur(10px)";
@@ -847,8 +850,9 @@ ATON.realize = ( bNoRender )=>{
     ATON._bPauseQuery    = false;
     ATON._bCenteredQuery = false;
     
-    ATON._bqScene = false;
-    ATON._bqSem   = false;
+    ATON._bqScene     = false;
+    ATON._bqSem       = false;
+    ATON._bqSceneCont = true;
 
     ATON._qSync    = 0;
     ATON._qSyncInt = 1;
@@ -2548,10 +2552,11 @@ ATON._handleQueries = ()=>{
 
     ATON._handleQueryUI();
 
-    if (ATON._bqScene) ATON._handleQueryScene();
-    if (ATON._bqSem) ATON._handleQuerySemantics();
+    if (ATON._bqScene /*&& ATON._bqSceneCont*/){
+        ATON._handleQueryScene();
+    }
     
-    //ATON._handleQueryUI();
+    if (ATON._bqSem) ATON._handleQuerySemantics();
 
     if (ATON.Nav._bLocValidator) ATON.Nav.locomotionValidator();
 

@@ -79,7 +79,7 @@ import { TilesFadePlugin, ImplicitTilingPlugin, DeepZoomImagePlugin, UpdateOnCha
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
-////import { IFCLoader } from "web-ifc-three/IFCLoader";
+import * as SPARK from "@sparkjsdev/spark";
 
 
 // Add the extension functions
@@ -156,9 +156,7 @@ window.THREE        = THREE;
 window.ThreeMeshUI  = ThreeMeshUI;
 window.ThreeMeshBVH = ThreeMeshBVH;
 window.TILES        = TILES;
-//window.IFCLoader    = IFCLoader;
-
-//window.GS3D = GS3D;
+window.SPARK        = SPARK;
 
 window.CustomShaderMaterial = CustomShaderMaterial;
 

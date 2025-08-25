@@ -50,6 +50,7 @@
     "@gltf-transform/core": "^4.2.1",
     "@gltf-transform/extensions": "^4.2.1",
     "@gltf-transform/functions": "^4.2.1",
+    "@sparkjsdev/spark": "^0.1.8",
     "3d-tiles-renderer": "0.4.14",
     "body-parser": "^2.2.0",
     "chalk": "4.1.2",

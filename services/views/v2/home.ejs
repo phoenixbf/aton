@@ -12,7 +12,7 @@ window.addEventListener( 'load', ()=>{
         // Hero
         let elHero = document.getElementById("hero");
         if (elHero.children.length <= 0){
-                console.log(elHero)
+                //console.log(elHero)
                 ATON.UI.loadPartial("/common/hero.html","hero");
         }
 
@@ -57,7 +57,7 @@ window.addEventListener( 'load', ()=>{
 
                 ATON.UI.createPublicScenesGallery({
                         containerid: "pubscenes",
-                        size:"small",
+                        //size:"small",
                         entries: entries,
                         <% if (samples) { %> samples: true <% } %>
                 });

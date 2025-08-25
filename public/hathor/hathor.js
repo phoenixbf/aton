@@ -900,10 +900,12 @@ HATHOR.setupEventHandlers = ()=>{
         //}
 
         if (k==='a'){
+            if (ATON._bqScene) ATON._handleQueryScene();
             ATON.SemFactory.stopCurrentConvex();
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
         }
         if (k==='s'){
+            if (ATON._bqScene) ATON._handleQueryScene();
             ATON.SemFactory.addSurfaceConvexPoint();
         }
 
@@ -913,7 +915,10 @@ HATHOR.setupEventHandlers = ()=>{
             else HATHOR.popupEnvironment();
         }
 
-        if (k==='m') HATHOR.measure();
+        if (k==='m'){
+            if (ATON._bqScene) ATON._handleQueryScene();
+            HATHOR.measure();
+        }
 
         if (k==='c') ATON.FE.popupScreenShot();
 

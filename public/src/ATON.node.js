@@ -694,27 +694,73 @@ load(url, onComplete){
         return N;
     }
 
-    // IFC
+    // 3DGS
+    if (ext === "spz" || ext === "splat" || ext === "ksplat" /*|| url.endsWith("-sogs.zip")*/){
+
+        // If not there, realize dedicated 3DGS renderer
+        if (!ATON._3DGSR){
+            ATON._3DGSR = new SPARK.SparkRenderer({ renderer: ATON._renderer });
+            ATON._rootVisible.add( ATON._3DGSR );
+
+            ATON._3DGSR.maxStdDev = Math.sqrt(5);
+            ATON._3DGSR.clipXY = 1.1;
+            //ATON._3DGSR.maxPixelRadius = 128.0; // 
+            //ATON._3DGSR.focalAdjustment = 2.0;
+            //ATON._3DGSR.enable2DGS = true;
+            //ATON._3DGSR.falloff = 0.0;
+            
+            //ATON._3DGSR.defaultView.stochastic = true;
 /*
-    if ( ext === "ifc" && ATON._ifcLoader!==undefined ){
-        // TODO:
+            ATON._3DGSR.autoUpdate = false;
+            let bFirst = true;
 
-        ATON._ifcLoader.load(url, (ifcmodel)=>{
-            N.add( ifcmodel );
+            ATON.addUpdateRoutine(()=>{
+                if (bFirst){
+                    ATON._3DGSR.update({ scene: ATON._rootVisible });
+                    bFirst = false;
+                    return;
+                }
 
-            ATON._bqScene = true;
+                if (ATON.Nav._dOri < 0.01) return;
+                if (ATON.Nav._dPos < 0.001) return;
 
-            ATON.Utils.modelVisitor(N, ifcmodel);
+                ATON._3DGSR.update({ scene: ATON._rootVisible });
+            });
+*/          
 
-            if (N.bPickable) N.enablePicking();
-            N.dirtyBound();
+            const maxpd = 0.9;
+            ATON.setAdaptiveDensityRange(0.1, maxpd);
+            ATON.setDefaultPixelDensity(maxpd);
+        }
 
-            if (onComplete) onComplete();
+        ATON._assetReqNew(url);
+
+        new SPARK.SplatMesh({ 
+            url: url,
+            editable: false,
+            onLoad: (data)=>{
+                ATON.Utils.modelVisitor(N, data);
+                
+                N.add( data );
+
+                //data.opacity = 0.1;
+                
+                ATON._assetReqComplete(url);
+
+                // TODO:
+                N.disablePicking();
+                
+                //if (N.bPickable) N.enablePicking();
+                //ATON._bqScene = true;
+
+                if (onComplete) onComplete();
+            }
         });
-
+        
         return N;
     }
-*/
+
+
     // Check custom resource handlers if any match
     if ( ATON._resHandler){
         for (let rh in ATON._resHandler){
@@ -805,38 +851,6 @@ load(url, onComplete){
             if (onComplete) onComplete();
         });
 
-/*
-        ATON._aLoader.load( url+"__LOD2-d.gltf", (data)=>{
-            let model = data.scene || data.scene[0];
-            ATON._modelVisitor(model);
-
-            let C = new THREE.Vector3();
-            let bb = new THREE.Box3().setFromObject( model ).getCenter(C);
-            model.position.set(-C.x,-C.y,-C.z);
-
-            let lod = new THREE.LOD();
-            lod.position.set(C.x,C.y,C.z);
-            lod.matrixAutoUpdate = true;
-            lod.addLevel(model, 40.0);
-            N.add(lod);
-
-            //N.add( model );
-
-            resolve(model);
-            console.log("ATON model "+url+" loaded");
-
-            ATON._aLoader.load( url+"__LOD1-d.gltf", (data2)=>{
-                let model2 = data2.scene || data2.scene[0];
-                ATON._modelVisitor(model2);
-
-                model2.position.set(-C.x,-C.y,-C.z);
-                
-                lod.addLevel(model2, 0.0);
-            });
-            
-            ATON._assetReqComplete(url);
-        });
-*/
     });
 
     // Register

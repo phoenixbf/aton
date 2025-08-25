@@ -539,7 +539,7 @@ XR.toggle = (sessiontype)=>{
     if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
-    if (XR.currSession === null){
+    if (!XR.currSession){ //  === null
         let sessionInit = {
             optionalFeatures: [
                 //"local",
@@ -557,6 +557,7 @@ XR.toggle = (sessiontype)=>{
             if ( sessionInit.optionalFeatures === undefined ) sessionInit.optionalFeatures = [];
 
             //sessionInit.requiredFeatures = [ 'hit-test' ];
+            //sessionInit.requiredFeatures.push("local-floor");
 /*
             let overlay = document.createElement('div');
 			overlay.style.display = 'none';
@@ -565,7 +566,8 @@ XR.toggle = (sessiontype)=>{
             sessionInit.optionalFeatures.push( 'dom-overlay' );
             sessionInit.domOverlay = { root: overlay };
 */
-            sessionInit.optionalFeatures.push( 'light-estimation' );
+            sessionInit.optionalFeatures.push("light-estimation");
+            sessionInit.optionalFeatures.push("depth-sensing");
         }
 
         XR._bReqPresenting = true;

@@ -15,7 +15,7 @@ XR.STD_TELEP_DURATION = 0.03;
 XR.HAND_R = 0;
 XR.HAND_L = 1;
 
-XR.MOBILE_DENSITY_F   = 0.5;
+XR.LOW_DENSITY_F   = 0.5;
 XR.MAX_QUERY_DISTANCE = 40.0; // Max distance query in first person (XR session)
 
 
@@ -24,9 +24,9 @@ XR.init = ()=>{
     ATON._renderer.xr.enabled = true;
     ATON._renderer.xr.setReferenceSpaceType( 'local' );
     
-    // WebXR density
-    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * XR.MOBILE_DENSITY_F);
-    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
+    // WebXR fb
+    if (ATON.device.isMobile || ATON.device.lowGPU) ATON._renderer.xr.setFramebufferScaleFactor(XR.LOW_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(1.0);
 
     XR._bPresenting = false;
     XR.currSession = null;

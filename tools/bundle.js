@@ -1,12 +1,13 @@
 /*!
     @preserve
 
-    Bundle including:
+    Bundle includes:
     - THREE.js library (https://threejs.org/)
     - THREE mesh BVH (https://www.npmjs.com/package/three-mesh-bvh)
     - THREE mesh UI (https://www.npmjs.com/package/three-mesh-ui)
     - 3D Tiles Renderer (https://github.com/NASA-AMMOS/3DTilesRendererJS)
     - THREE custom shader material (https://www.npmjs.com/package/three-custom-shader-material)
+    - SPARK 3D Gaussian Splatting renderer for THREE.js (https://sparkjs.dev/)
     
 =================================================================================================*/
 
@@ -58,7 +59,10 @@ import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 //import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js';
 import { LightProbeGenerator } from 'three/examples/jsm/lights/LightProbeGenerator.js';
+
 import { XREstimatedLight } from 'three/addons/webxr/XREstimatedLight.js';
+import { XRControllerModelFactory } from 'three/addons/webxr/XRControllerModelFactory.js';
+import { XRHandModelFactory } from 'three/addons/webxr/XRHandModelFactory.js';
 
 //import { BasisTextureLoader } from "three/examples/jsm/loaders/BasisTextureLoader.js";
 import { KTX2Loader } from 'three/examples/jsm/loaders/KTX2Loader.js';
@@ -67,7 +71,8 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 
-import ThreeMeshUI from '../_prv/three-mesh-ui/src/three-mesh-ui.js';
+//import ThreeMeshUI from '../_prv/three-mesh-ui/src/three-mesh-ui.js';
+import ThreeMeshUI from "three-mesh-ui/build/three-mesh-ui.module.js";
 //import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
 
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
@@ -133,7 +138,10 @@ THREE.EXRLoader  = EXRLoader;
 //THREE.RoughnessMipmapper  = RoughnessMipmapper;
 THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;
-THREE.XREstimatedLight    = XREstimatedLight;
+
+THREE.XREstimatedLight         = XREstimatedLight;
+THREE.XRControllerModelFactory = XRControllerModelFactory;
+THREE.XRHandModelFactory       = XRHandModelFactory;
 
 THREE.TransformControls = TransformControls;
 
@@ -167,5 +175,5 @@ export {
     ThreeMeshUI,
     ThreeMeshBVH,
     TILES,
-    //GS3D
+    SPARK
 };

@@ -95,6 +95,7 @@
     "three": "0.179.1",
     "three-custom-shader-material": "6.3.7",
     "three-mesh-bvh": "0.9.1",
+    "three-mesh-ui": "^6.5.4",
     "webdav-server": "^2.6.2",
     "ws": "^8.18.3",
     "zlibjs": "^0.3.1"

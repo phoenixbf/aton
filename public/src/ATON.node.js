@@ -845,7 +845,7 @@ load(url, onComplete){
         (err)=>{
             //console.log(err);
             //reject(model);
-            console.log("%cError loading model "+url, "color:red");
+            console.log("%cError loading model "+url+" ("+err+")", "color:red");
 
             /*if (N.type === ATON.NTYPES.SCENE)*/ ATON._assetReqComplete(url);
             if (onComplete) onComplete();

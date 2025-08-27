@@ -43,12 +43,14 @@
 
         .hathor-main-toolbar {
             margin: var(--hathor-ui-margin);
+
+            z-index: 100 !important;
 /*
             margin-left: 0px;
 */
             max-height: calc(100% - (var(--hathor-ui-margin)*2));
 
-            background-color: rgba(var(--bs-body-bg-rgb), 0.4) !important;
+            background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
             border-radius: var(--bs-border-radius);
 
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
@@ -77,6 +79,12 @@
 
             -webkit-backdrop-filter: blur(var(--aton-blur-radius));
             backdrop-filter: blur(var(--aton-blur-radius));
+        }
+
+        .hathor-side-panel {
+            z-index: 10 !important;
+
+            padding-left: 50px;
         }
     </style>
 

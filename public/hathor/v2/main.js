@@ -52,6 +52,7 @@ HATHOR.setupLogic = ()=>{
         }
         else {
             ATON.UI.hideSidePanel();
+            HATHOR.UI.closeToolPanel();
         }
     });
 

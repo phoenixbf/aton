@@ -224,7 +224,7 @@ Show centralized side panel (offcanvas)
 @param {object} options - UI options object
 */
 UI.showSidePanel = (options)=>{
-    if (!options) return;
+    if (!options) options = {};
 
     UI.elSidePanel.innerHTML = "";
 

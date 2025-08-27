@@ -13,9 +13,16 @@ UI.setup = ()=>{
     UI._elMainToolbar   = ATON.UI.get("sideToolbar");
     UI._elBottomToolbar = ATON.UI.get("bottomToolbar");
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
-    UI._elWYSIWYG       = undefined;
 
-    ATON.UI.setSidePanelLeft();
+    // Dedicated side panel
+    UI._elSidePanel = ATON.UI.createElementFromHTMLString(`
+        <div class="offcanvas offcanvas-start aton-std-bg aton-sidepanel hathor-side-panel" tabindex="-1">
+        </div>
+    `);
+    UI._sidepanel = new bootstrap.Offcanvas(UI._elSidePanel);
+    document.body.append(UI._elSidePanel);
+
+    UI._elWYSIWYG = undefined;
 
     if (HATHOR._tb) UI.buildCustomToolbar();
     else UI.buildStandardToolbar();
@@ -53,15 +60,19 @@ UI.showMainElements = (b)=>{
 };
 
 /*
-    Semantic
+    Semantics
 =====================================*/
 UI.showSemanticPanel = (title, elContent)=>{
-    ATON.UI.setSidePanelRight();
+    UI.closeToolPanel();
 
     ATON.UI.showSidePanel({
         header: title,
         body: elContent
     });
+};
+
+UI.closeSemanticPanel = ()=>{
+    ATON.UI.hideSidePanel();
 };
 
 /*
@@ -240,12 +251,47 @@ UI.WYSIWYGeditorGetHTML = ()=>{
 };
 
 /*
-    Side Panels
+    Side Panels (tools)
 =====================================*/
-UI.sideTool = ()=>{
-    ATON.UI.setSidePanelLeft();
+UI.openToolPanel = (options)=>{
+    if (!options) options = {};
 
-    ATON.UI.showSidePanel({
+    UI._elSidePanel.innerHTML = "";
+
+    if (options.header){
+        let el = document.createElement('div');
+        el.classList.add("offcanvas-header");
+
+        el.innerHTML = "<h4 class='offcanvas-title'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+
+        if (options.headelement) el.prepend(options.headelement);
+
+        UI._elSidePanel.append(el);
+    }
+
+    if (options.body){
+        let el = document.createElement('div');
+        el.classList.add("offcanvas-body");
+
+        el.append(options.body);
+
+        UI._elSidePanel.append(el);
+    }
+
+    UI._sidepanel.show();
+    //UI._bSidePanel = true;
+
+    UI.closeSemanticPanel();
+};
+
+UI.closeToolPanel = ()=>{
+    UI._sidepanel.hide();
+    //UI._bSidePanel = false;
+};
+
+
+UI.sideTool = ()=>{
+    UI.openToolPanel({
         header: "Test Tool",
         //body: ATON.UI.createElementFromHTMLString(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`)
         body: ATON.UI.createContainer({
@@ -271,8 +317,6 @@ UI.sideTool = ()=>{
 }
 
 UI.sideLayers = ()=>{
-    ATON.UI.setSidePanelLeft();
-
     // Layers list
     let elLayers = ATON.UI.createContainer();
 
@@ -321,7 +365,7 @@ UI.sideLayers = ()=>{
         }
     }));
 
-    ATON.UI.showSidePanel({
+    UI.openToolPanel({
         header: "Layers",
         body: ATON.UI.createContainer({
             items:[
@@ -390,8 +434,6 @@ UI.sideManageLayer = (nid)=>{
     let N = ATON.getSceneNode(nid);
     if (!N) return;
 
-    ATON.UI.setSidePanelLeft();
-
     let elBody = ATON.UI.createContainer();
     
     elBody.append( ATON.UI.createButton({
@@ -427,7 +469,7 @@ UI.sideManageLayer = (nid)=>{
         ]
     }) );
 
-    ATON.UI.showSidePanel({
+    UI.openToolPanel({
         header: "Layer '"+nid+"'",
         headelement: ATON.UI.createButton({
             icon: "back",

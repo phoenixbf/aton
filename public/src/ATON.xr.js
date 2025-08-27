@@ -15,6 +15,9 @@ XR.STD_TELEP_DURATION = 0.03;
 XR.HAND_R = 0;
 XR.HAND_L = 1;
 
+XR.HAND_PRIMARY   = 0;
+XR.HAND_SECONDARY = 1;
+
 XR.LOW_DENSITY_F   = 0.5;
 XR.MAX_QUERY_DISTANCE = 40.0; // Max distance query in first person (XR session)
 
@@ -167,11 +170,8 @@ XR.setupControllers = ()=>{
     XR._pointerLineGeom = undefined;
     XR._pointerLineMesh = undefined;
 
-    XR.gpad0 = undefined;
-    XR.gpad1 = undefined;
-
-    XR._cPrimary   = undefined;
-    XR._cSecondary = undefined;
+    XR._cPrimary   = XR.controller0;
+    XR._cSecondary = XR.controller1;
 };
 
 XR.setControllersMaterial = (material)=>{
@@ -793,33 +793,38 @@ XR.getControllerSpace = (i)=>{
 
 /**
 Get controller world location
-@param {number} i - the controller ID (0 or 1)
+@param {number} hand - the hand (ATON.XR.HAND_PRIMARY or ATON.XR.HAND_SECONDARY)
 @returns {THREE.Vector3}
 */
-XR.getControllerWorldLocation = (i)=>{
+XR.getControllerWorldLocation = (hand)=>{
+    if (hand===XR.HAND_PRIMARY) return XR._cPrimary.userData.pos;
+    else return XR._cSecondary.userData.pos;
+/*
     if (i === 1) return XR.controller1.userData.pos;
     else return XR.controller0.userData.pos;
+*/
 };
 
 /**
 Get controller world direction
-@param {number} i - the controller ID (0 or 1)
+@param {number} hand - the hand (ATON.XR.HAND_PRIMARY or ATON.XR.HAND_SECONDARY)
 @returns {THREE.Vector3}
 */
-XR.getControllerWorldDirection = (i)=>{
-    if (i === 1) return XR.controller1.userData.dir;
-    else return XR.controller0.userData.dir;
+XR.getControllerWorldDirection = (hand)=>{
+    if (hand===XR.HAND_PRIMARY) return XR._cPrimary.userData.dir;
+    else return XR._cSecondary.userData.dir;
 };
 
 /**
 Get controller world orientation
-@param {number} i - the controller ID (0 or 1)
+@param {number} hand - the hand (ATON.XR.HAND_PRIMARY or ATON.XR.HAND_SECONDARY)
 @returns {THREE.Quaternion}
 */
-XR.getControllerWorldOrientation = (i)=>{
+XR.getControllerWorldOrientation = (hand)=>{
     let Q = new THREE.Quaternion();
-    if (i === 1) XR.controller1.getWorldQuaternion(Q);
-    else XR.controller0.getWorldQuaternion(Q);
+
+    if (hand===XR.HAND_PRIMARY) XR._cPrimary.getWorldQuaternion(Q);
+    else XR._cSecondary.getWorldQuaternion(Q);
 
     return Q;
 };
@@ -882,19 +887,20 @@ XR.update = ()=>{
 };
 
 // Get VR controller axes values
-XR.getAxisValue = (c)=>{
+XR.getAxisValue = (hand)=>{
     let V = new THREE.Vector2(0.0,0.0);
 
-    let C = (c === XR.HAND_L)? XR.controller1 : XR.controller0;
-    if (C === undefined) return V;
+    let C = (hand===XR.HAND_PRIMARY)? XR.getPrimaryController() : XR.getSecondaryController();
 
-    if (C.gm === undefined || C.gm.axes === undefined) return V;
+    const gm = C.userData.gm;
 
-    let x0 = C.gm.axes[0];
-    let x1 = C.gm.axes[2];
+    if (!gm || !gm.axes) return V;
 
-    let y0 = C.gm.axes[1];
-    let y1 = C.gm.axes[3];
+    let x0 = gm.axes[0];
+    let x1 = gm.axes[2];
+
+    let y0 = gm.axes[1];
+    let y1 = gm.axes[3];
 
     V.x = (x0 > 0.0)? -x0 : x1;
     V.y = (y0 > 0.0)? y0 : -y1;

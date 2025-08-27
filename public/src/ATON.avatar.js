@@ -96,13 +96,9 @@ setMuted(b){
     this.bMuted = b;
 }
 
+// to deprecate
 getAvatarMaterialByUID(uid){
-    //if (uid === undefined) return 0;
-
-    let avaMats = ATON.MatHub.materials.avatars;
-    let mi = (uid % avaMats.length); //uid? (uid % avaMats.length) : 0;
-    
-    return avaMats[mi];
+    return ATON.Photon.getAvatarMaterialByUID(uid);
 }
 
 _buildLabel(){
@@ -231,7 +227,7 @@ realize(){
     let g = new THREE.SphereGeometry( 0.2, 16, 16 );
 
     if (ATON.Photon.customAvatarMaterial) this.usermaterial = ATON.Photon.customAvatarMaterial();
-    else this.usermaterial = this.getAvatarMaterialByUID(this.userid);
+    else this.usermaterial = ATON.Photon.getAvatarMaterialByUID(this.userid);
 
     let smesh = new THREE.Mesh( g, this.usermaterial );
 

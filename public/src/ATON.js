@@ -1170,11 +1170,7 @@ ATON.setDefaultPixelDensity = (d)=>{
     if (ATON.FX.composer) ATON.FX.composer.setPixelRatio(d);
 
     // WebXR density
-    if (ATON._renderer.xr === undefined) return;
-
-    if (ATON.device.isMobile) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.MOBILE_DENSITY_F);
-    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
-    //ATON._renderer.xr.setFramebufferScaleFactor(1.0);
+    ATON.XR.setDensity(d);
 };
 
 /**
@@ -1829,7 +1825,7 @@ ATON.setMainPanorama = (path)=>{
             });
 
             // CHECK: tweak required for Apple
-            enableInlineVideo(ATON._elPanoVideo);
+            //enableInlineVideo(ATON._elPanoVideo);
         }
 
         tpano = new THREE.VideoTexture( ATON._elPanoVideo );

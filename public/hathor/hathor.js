@@ -557,8 +557,8 @@ HATHOR.suiSetup = ()=>{
     HATHOR.suiToolbar = ATON.SUI.createToolbar( buttons );
 
     // wrist sui
-    let pi2 = (Math.PI * 0.5);
-    HATHOR.suiToolbar.setPosition(-0.1,0,0.1).setRotation(-pi2,-pi2,pi2).setScale(0.5);
+    const pi2 = (Math.PI * 0.5);
+    HATHOR.suiToolbar.setPosition(-0.1,0.05,0.1).setScale(0.4).setRotation(-pi2,0,pi2)
 
     HATHOR.suiToolbar.attachToRoot();
     HATHOR.suiToolbar.hide();
@@ -741,7 +741,7 @@ HATHOR.setupEventHandlers = ()=>{
     // Immersive Sessions
     ATON.on("XRcontrollerConnected", (c)=>{
         if (c === ATON.XR.HAND_L){
-            ATON.XR.controller1.add(HATHOR.suiToolbar);
+            ATON.XR.getSecondaryController().add(HATHOR.suiToolbar);
             HATHOR.suiToolbar.show();  
         }
 

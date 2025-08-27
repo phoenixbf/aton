@@ -884,4 +884,12 @@ Photon.clearAllAvatars = ()=>{
     }
 };
 
+Photon.getAvatarMaterialByUID = (uid)=>{
+
+    const avaMats = ATON.MatHub.materials.avatars;
+    let mi = (uid % avaMats.length); //uid? (uid % avaMats.length) : 0;
+    
+    return avaMats[mi];
+};
+
 export default Photon;

@@ -25,8 +25,7 @@ XR.init = ()=>{
     ATON._renderer.xr.setReferenceSpaceType( 'local' );
     
     // WebXR fb
-    if (ATON.device.isMobile || ATON.device.lowGPU) ATON._renderer.xr.setFramebufferScaleFactor(XR.LOW_DENSITY_F);
-    else ATON._renderer.xr.setFramebufferScaleFactor(1.0);
+    XR.setDensity(1.0);
 
     XR._bPresenting = false;
     XR.currSession = null;
@@ -47,7 +46,7 @@ XR.init = ()=>{
     XR._fromPos = new THREE.Vector3();
     XR._reqPos  = new THREE.Vector3();
 
-    //XR.gControllers = undefined;
+/*
     XR.gControllers = ATON.createUINode();
     XR.gControllers.disablePicking();
     XR.rig.add( XR.gControllers );
@@ -68,34 +67,11 @@ XR.init = ()=>{
 
     XR.gpad0 = undefined;
     XR.gpad1 = undefined;
+*/
+    XR.setupControllers();
 
     // AR light-estimation
-/*
-    XR._arEstLight = new THREE.XREstimatedLight( ATON._renderer );
-    XR._arEstLP = undefined;
-
-    XR._arEstLight.addEventListener( 'estimationstart' , () => {
-        ATON._rootVisible.add( XR._arEstLight );
-
-        if ( XR._arEstLight.environment ) {
-            //ATON._rootVisible.environment = xrLight.environment;
-            ATON._rootVisible.setEnvMap( XR._arEstLight.environment );
-
-            if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = false;
-
-            XR._arEstLP = window.setInterval(()=>{
-                ATON.updateLightProbes();
-            }, 1000);
-        }
-    });
-    
-    XR._arEstLight.addEventListener( 'estimationend', () => {
-        ATON._rootVisible.remove( XR._arEstLight );
-        //ATON._rootVisible.environment = null;
-        if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = true;
-        window.clearInterval( XR._arEstLP );
-    } );
-*/
+    // XR.setupARLightEstimation();
 
     XR._urlHand = ATON.PATH_RES+"models/hand/hand.glb";
 
@@ -119,14 +95,213 @@ XR.init = ()=>{
     });
 
     ATON.on("VRC_IDassigned", (uid)=>{
-        let rh = ATON.getUINode("Rhand");
-        let lh = ATON.getUINode("Lhand");
-
-        let avMats = ATON.MatHub.materials.avatars;
-        let am = avMats[uid % avMats.length];
-        if (lh) lh.setMaterial(am);
-        if (rh) rh.setMaterial(am);
+        XR.setControllersMaterial( ATON.Photon.getAvatarMaterialByUID(uid) );
     });
+};
+
+XR.setDensity = (d)=>{
+    if (ATON._renderer.xr === undefined) return;
+
+    if (ATON.device.isMobile || ATON.device.lowGPU) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.LOW_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
+};
+
+
+XR.setupControllers = ()=>{
+    XR.gControllers = ATON.createUINode();
+    XR.gControllers.disablePicking();
+
+    XR.rig.add( XR.gControllers );
+    //XR.gControllers.attachToRoot();
+
+    const rXR = ATON._renderer.xr;
+
+    XR._bGaze = true;
+
+    XR.controller0 = rXR.getController( 0 );
+    XR.gControllers.add(XR.controller0);
+    XR.setupBaseController( XR.controller0 );
+    
+    XR.controller1 = rXR.getController( 1 );
+    XR.gControllers.add(XR.controller1);
+    XR.setupBaseController( XR.controller1 );
+
+    XR.controller0.userData.pos = new THREE.Vector3();
+    XR.controller1.userData.pos = new THREE.Vector3();
+    XR.controller0.userData.dir = new THREE.Vector3(0,1,0);
+    XR.controller1.userData.dir = new THREE.Vector3(0,1,0);
+
+    XR.controllerModelFactory = new THREE.XRControllerModelFactory(null, ()=>{
+        if (ATON.Photon.uid !== undefined) XR.setControllersMaterial( ATON.Photon.getAvatarMaterialByUID(ATON.Photon.uid) );
+        else XR.setControllersMaterial(ATON.MatHub.materials.controllerRay);
+    });
+
+	XR.handModelFactory = new THREE.XRHandModelFactory(null, ()=>{
+        if (ATON.Photon.uid !== undefined) XR.setControllersMaterial( ATON.Photon.getAvatarMaterialByUID(ATON.Photon.uid) );
+        else XR.setControllersMaterial(ATON.MatHub.materials.controllerRay);
+    });
+
+    XR._lastPosR = undefined;
+    XR._lastPosL = undefined;
+
+
+    // Hand 0
+    XR.controllerGrip0 = rXR.getControllerGrip( 0 );
+    XR.controllerGrip0.add( XR.controllerModelFactory.createControllerModel( XR.controllerGrip0 ) );
+    XR.gControllers.add( XR.controllerGrip0 );
+
+    XR.hand0 = rXR.getHand( 0 );
+    XR.hand0.add( XR.handModelFactory.createHandModel( XR.hand0 ) );
+    XR.gControllers.add( XR.hand0 );
+
+
+    // Hand 1
+    XR.controllerGrip1 = rXR.getControllerGrip( 1 );
+    XR.controllerGrip1.add( XR.controllerModelFactory.createControllerModel( XR.controllerGrip1 ) );
+    XR.gControllers.add( XR.controllerGrip1 );
+
+    XR.hand1 = rXR.getHand( 1 );
+    XR.hand1.add( XR.handModelFactory.createHandModel( XR.hand1 ) );
+    XR.gControllers.add( XR.hand1 );
+
+    XR._pointerLineGeom = undefined;
+    XR._pointerLineMesh = undefined;
+
+    XR.gpad0 = undefined;
+    XR.gpad1 = undefined;
+
+    XR._cPrimary   = undefined;
+    XR._cSecondary = undefined;
+};
+
+XR.setControllersMaterial = (material)=>{
+    
+    XR.controllerGrip0.traverse((o) => {
+        if (o.isMesh){
+            o.material = material;
+            ///o.material.needsUpdate = true;
+            //console.log(o);
+        }
+    });
+
+    XR.controllerGrip1.traverse((o) => {
+        if (o.isMesh){
+            o.material = material;
+            ///o.material.needsUpdate = true;
+            //console.log(o);
+        }
+    });
+ 
+};
+
+XR.setupBaseController = (C)=>{
+    C.userData.isConnected = false;
+
+    C.addEventListener('connected', ( event )=>{
+        C.userData.isConnected = true;
+        
+        const data = event.data;
+        C.userData.hand = data.handedness;
+        C.userData.gm   = data.gamepad;
+
+        if (data.targetRayMode === 'gaze'){
+            XR._bGaze = true;
+            return;
+        }
+
+        if (data.targetRayMode === 'tracked-pointer') {
+            XR._bGaze = false;
+
+            if (!C.userData.hand){
+                XR.setupControllerAsPrimary(C);
+                return;
+            }
+            else {
+                if (C.userData.hand === "left"){
+                    XR.setupControllerAsSecondary(C);
+                    ATON.fire("XRcontrollerConnected", XR.HAND_L);
+                    console.log("Secondary Controller");
+                }
+                else {
+                    XR.setupControllerAsPrimary(C);
+                    ATON.fire("XRcontrollerConnected", XR.HAND_R);
+                    console.log("Primary Controller");
+                }
+            }
+
+            return;
+        }
+    });
+
+    C.addEventListener('disconnected', (event)=>{
+        C.userData.isConnected = false;
+        // TODO:
+    });
+
+    // Main trigger
+    C.addEventListener( 'selectstart',  ()=>{
+        ATON.fire("XRselectStart", XR.getControllerHand(C) );
+    });
+    C.addEventListener( 'selectend',  ()=>{ 
+        ATON.fire("XRselectEnd", XR.getControllerHand(C) );
+    });
+
+    // Squeeze
+    C.addEventListener( 'squeezestart', ()=>{
+        ATON.fire("XRsqueezeStart", XR.getControllerHand(C) );
+    });
+    C.addEventListener( 'squeezeend', ()=>{
+        ATON.fire("XRsqueezeEnd", XR.getControllerHand(C) );
+    });
+};
+
+XR.getControllerHand = (C)=>{
+    let h = XR.HAND_R;
+
+    if (C.userData.hand){
+        if (C.userData.hand === "left") return XR.HAND_L;
+    }
+
+    return h;
+}
+
+XR.setupControllerAsPrimary = (C)=>{
+    C.userData.isPrimary = true;
+    XR._cPrimary = C;
+
+    let raytick = 0.003;
+    let raylen  = 1.0;
+
+    XR._pointerLineGeom = new THREE.CylinderGeometry( raytick,raytick, raylen, 4 );
+    //XR._pointerLineGeom = new THREE.CylinderGeometry( raytick,raytick, raylen, 4 );
+
+    XR._pointerLineGeom.rotateX( -Math.PI / 2 );
+    XR._pointerLineGeom.translate(0,0,-(raylen*0.5));
+
+    XR._pointerLineMesh = new THREE.Mesh( XR._pointerLineGeom, ATON.MatHub.materials.controllerRay );
+    C.add( /*mesh.clone()*/ XR._pointerLineMesh );
+    XR._pointerLineMesh.visible = false;
+};
+
+XR.setupControllerAsSecondary = (C)=>{
+    C.userData.isPrimary = false;
+    XR._cSecondary = C;
+};
+
+XR.getPrimaryController = ()=>{
+    return XR._cPrimary;
+/*
+    if (XR.controller0.userData.isPrimary) return XR.controller0;
+    return XR.controller1;
+*/
+};
+
+XR.getSecondaryController = ()=>{
+    return XR._cSecondary;
+/*
+    if (!XR.controller0.userData.isPrimary) return XR.controller0;
+    return XR.controller1;
+*/
 };
 
 
@@ -150,6 +325,33 @@ XR.isPresenting = ()=>{
     return XR._bPresenting;
 };
 
+XR.setupARLightEstimation = ()=>{
+    XR._arEstLight = new THREE.XREstimatedLight( ATON._renderer );
+    XR._arEstLP    = undefined;
+
+    XR._arEstLight.addEventListener( 'estimationstart' , () => {
+        ATON._rootVisible.add( XR._arEstLight );
+
+        if ( XR._arEstLight.environment ) {
+            //ATON._rootVisible.environment = xrLight.environment;
+            ATON._rootVisible.setEnvMap( XR._arEstLight.environment );
+
+            if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = false;
+
+            XR._arEstLP = window.setInterval(()=>{
+                ATON.updateLightProbes();
+            }, 1000);
+        }
+    });
+    
+    XR._arEstLight.addEventListener( 'estimationend', () => {
+        ATON._rootVisible.remove( XR._arEstLight );
+        //ATON._rootVisible.environment = null;
+        if (ATON._dMainL && ATON._dMainL.visible) ATON._dMainL.visible = true;
+        window.clearInterval( XR._arEstLP );
+    } );
+}
+
 
 XR.teleportOnQueriedPoint = ()=>{
     if (!ATON.Nav.currentQueryValidForLocomotion()) return false;
@@ -164,35 +366,19 @@ XR.teleportOnQueriedPoint = ()=>{
     return true;
 };
 
-/* Deprecated
-XR.defaultSelectHandler = (c)=>{
-
-    if (XR._sessionType === "immersive-vr") XR.teleportOnQueriedPoint();
-
-    ATON.FE.playAudioFromSemanticNode(ATON._hoveredSemNode);
-    
-    //ATON.Nav.setMotionAmount(3.0);
-};
-
-XR._handleUISelection = ()=>{
-    if (ATON._hoveredUI === undefined) return false;
-
-    let H = ATON.getUINode(ATON._hoveredUI);
-    if (H && H.onSelect) H.onSelect();
-    
-    return true;
-}
-*/
-
 // Helper routine to setup a ray-caster
 XR.setupQueryRay = (rc)=>{
     if (rc === undefined) return;
 
-    // We have at least one 6DOF controller
-    if (XR.controller0) rc.set( XR.controller0pos, XR.controller0dir );
+    // No controllers connected, use HMD-aligned query
+    if (!XR.controller0.userData.isConnected && !XR.controller1.userData.isConnected){
+        rc.set( ATON.Nav.getCurrentEyeLocation(), ATON.Nav.getCurrentDirection() );
+        return;
+    }
 
-    // else use HMD-aligned query
-    else rc.set( ATON.Nav.getCurrentEyeLocation(), ATON.Nav.getCurrentDirection() );
+    // We have at least one 6DOF controller
+    if (XR.controller0.userData.isPrimary) rc.set( XR.controller0.userData.pos, XR.controller0.userData.dir );
+    else rc.set( XR.controller1.userData.pos, XR.controller1.userData.dir );
 };
 
 
@@ -205,7 +391,7 @@ XR.setRefSpaceLocation = (p)=>{
     XR.rig.position.copy(p);
 };
 
-
+/* DEPRECATED
 // Right
 XR._setupControllerR = (C, bAddRep)=>{
     if (XR.controller0) return;
@@ -264,6 +450,7 @@ XR._setupControllerL = (C, bAddRep)=>{
     
     ATON.fire("XRcontrollerConnected", XR.HAND_L);
 };
+*/
 
 XR.setupSceneForAR = ()=>{
     if (XR._sessionType !== "immersive-ar") return;
@@ -295,17 +482,18 @@ XR.onSessionStarted = ( session )=>{
     XR._bReqPresenting = false;
 
 	session.addEventListener( 'end', XR.onSessionEnded );
-    session.isImmersive = true;
+    //session.isImmersive = true;
 
     console.log(XR._sessionType + " session started.");
 
     //console.log(session);
 
-    // If any streaming is ongoing, terminate it
-    ATON.MediaFlow.stopAllStreams();
-
     if (XR._sessionType === "immersive-ar"){
         ATON._renderer.xr.setReferenceSpaceType( 'local' );
+        //ATON.toggleCenteredQuery(true);
+    }
+    else {
+        session.isImmersive = true;
     }
 
     // Promised
@@ -313,140 +501,26 @@ XR.onSessionStarted = ( session )=>{
         XR.currSession = session;
         console.log(XR.currSession);
 
-        for (let c = 0; c < 2; c++){
-            const C = ATON._renderer.xr.getController(c);
-
-            if (C && !C.userData.bXRconfig){
-                //console.log(C);
-
-                C.visible = false;
-                C.userData.bXRconfig = true;
-
-                C.addEventListener( 'connected', (e) => {
-                    //console.log( e.data.handedness );
-                    let hand = e.data.handedness;
-                    C.gm = e.data.gamepad;
-
-                    C.visible = true;
-                    
-                    //console.log(e.data);
-                    console.log("Hand "+hand);
-                    console.log("GamePad "+C.gm);
-
-                    if (hand === "left")  XR._setupControllerL(C, true);
-                    else {
-                        if (hand === "right") XR._setupControllerR(C, true);
-                        else { // FIXME:
-
-                            //XR._setupControllerR(C, false);
-                            
-                            C.addEventListener('selectstart', ()=>{
-                                //if (XR._handleUISelection()) return;
-                                ATON.fire("XRselectStart", XR.HAND_R);
-                                
-                                console.log("Head-aligned select");
-                            });
-                            C.addEventListener('selectend', ()=>{ 
-                                ATON.fire("XRselectEnd", XR.HAND_R);
-                            });
-
-                            ATON.fire("XRcontrollerConnected", XR.HAND_R);
-                        }
-                    }
-                });
-            }
-        }
-
-        // AR sessions
+        // AR session
         if (XR._sessionType === "immersive-ar"){
+
+            //ATON.UI.ARoverlay.style.display = '';
 
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;
 
             //XR.setupSceneForAR();
 
-            // Mobile AR
-/*
-            let c0 = ATON._renderer.xr.getController(0);
-            if (c0 && ATON.device.isMobile){
-                XR.controller0 = ATON._renderer.xr.getController(0);
-
-                XR.controller0.addEventListener('selectstart', ()=>{
-                    //if (XR._handleUISelection()) return;
-                    ATON.fire("XRselectStart", XR.HAND_R);
-                    
-                    console.log("Head-aligned select");
-                });
-                XR.controller0.addEventListener('selectend', ()=>{ 
-                    ATON.fire("XRselectEnd", XR.HAND_R);
-                });
-
-                XR.gControllers.add( XR.controller0 );
-            }
-*/
-
-/*
-            XR._bPresenting = true;
-            ATON.Nav._bInteracting = false;
-    
-            console.log("AR now presenting");
-    
-            ATON.fire("XRmode", true);
-            return;
-*/
+            // get xrRefSpace
+            /*
+            session.requestReferenceSpace('local').then((refSpace) => {
+                xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
+            });
+            */
         }
 
-        // get xrRefSpace
-        /*
-        session.requestReferenceSpace('local').then((refSpace) => {
-            xrRefSpace = refSpace.getOffsetReferenceSpace(new XRRigidTransform({x: 0, y: 1.5, z: 0}));
-        });
-        */
-
+        // VR session
         else {
-/*
-            for (let c = 0; c < 2; c++){
-                const C = ATON._renderer.xr.getController(c);
-
-                if (C !== undefined && !C.userData.bXRconfig){
-                    //console.log(C);
-
-                    C.visible = false;
-                    C.userData.bXRconfig = true;
-
-                    C.addEventListener( 'connected', (e) => {
-                        //console.log( e.data.handedness );
-                        let hand = e.data.handedness;
-                        C.gm = e.data.gamepad;
-                        
-                        //console.log(e.data);
-                        console.log("Hand "+hand);
-                        console.log("GamePad "+C.gm);
-
-                        if (hand === "left")  XR._setupControllerL(C, true);
-                        else {
-                            if (hand === "right") XR._setupControllerR(C, true);
-                            else { // FIXME:
-
-                                //XR._setupControllerR(C, false);
-                                
-                                C.addEventListener('selectstart', ()=>{
-                                    //if (XR._handleUISelection()) return;
-                                    ATON.fire("XRselectStart", XR.HAND_R);
-                                    
-                                    console.log("Head-aligned select");
-                                });
-                                C.addEventListener('selectend', ()=>{ 
-                                    ATON.fire("XRselectEnd", XR.HAND_R);
-                                });
-
-                                ATON.fire("XRcontrollerConnected", XR.HAND_R);
-                            }
-                        }
-                    });
-                }
-            }
-*/
 
             // reparent current camera to the XR rig
             XR.rig.add( ATON.Nav._camera );
@@ -455,8 +529,9 @@ XR.onSessionStarted = ( session )=>{
             //console.log(ATON.Nav._currPOV.pos);
         }
 
+
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-        ATON.Nav._updCamera( C );
+        if (C) ATON.Nav._updCamera( C );
 
         XR._bPresenting = true;
         ATON.Nav._bInteracting = false;
@@ -465,8 +540,9 @@ XR.onSessionStarted = ( session )=>{
 
         //XR.setupControllersUI();
 
-        ATON.fire("XRmode", true);
-
+        // If any streaming is ongoing, terminate it
+        ATON.MediaFlow.stopAllStreams();
+        
         ATON.rewindAllPlayingMedia();
 
         ATON.toggleShadows(false); // disable shadows for XR sessions
@@ -488,6 +564,8 @@ XR.onSessionStarted = ( session )=>{
             //ATON.Utils.updateTSetsCamera();
             if (ATON.SUI.getSelectorRadius()>ATON.FE.STD_SEL_RAD) ATON.SUI.setSelectorRadius(ATON.FE.STD_SEL_RAD);
         }, 2000);
+
+        ATON.fire("XRmode", true);
     });
 };
 
@@ -505,12 +583,12 @@ XR.onSessionEnded = ( /*event*/ )=>{
         //XR.resetSceneOffsets();
 
         if (ATON._mMainPano) ATON._mMainPano.visible = true;
+        
+        //ATON.UI.ARoverlay.style.display = 'none';
     }
 
     //XR.rig.position.set(0.0,0.0,0.0);
     XR.setRefSpaceLocation( new THREE.Vector3(0,0,0) );
-
-    ATON.fire("XRmode", false);
 
     ATON._qSyncInt = 1; // Query interval (unused)
 
@@ -527,6 +605,8 @@ XR.onSessionEnded = ( /*event*/ )=>{
     ATON.MRes.estimateTSErrorTarget();
 
     console.log("Quit XR");
+
+    ATON.fire("XRmode", false);
 };
 
 /**
@@ -534,12 +614,21 @@ Toggle immersive VR/AR mode
 @param {string} sessiontype - Can be "immersive-vr" or "immersive-ar", if undefined defaults to immersive VR
 */
 XR.toggle = (sessiontype)=>{
+    if (!sessiontype) sessiontype = "immersive-vr";
+
     XR.setSessionType(sessiontype);
 
-    if (!ATON.device.xrSupported[XR._sessionType]) return;
+    //if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
-    if (!XR.currSession){ //  === null
+    if (!XR.currSession && !XR._bReqPresenting){ //  === null
+        let sessionInit = {};
+        sessionInit.optionalFeatures = [];
+
+        //sessionInit.optionalFeatures.push("high-fixed-foveation-level");
+        //sessionInit.optionalFeatures.push('hand-tracking');
+
+/*
         let sessionInit = {
             optionalFeatures: [
                 //"local",
@@ -552,9 +641,8 @@ XR.toggle = (sessiontype)=>{
                 //"high-fixed-foveation-level",
             ]
         };
-
+*/
         if (XR._sessionType === "immersive-ar"){
-            if ( sessionInit.optionalFeatures === undefined ) sessionInit.optionalFeatures = [];
 
             //sessionInit.requiredFeatures = [ 'hit-test' ];
             //sessionInit.requiredFeatures.push("local-floor");
@@ -566,8 +654,14 @@ XR.toggle = (sessiontype)=>{
             sessionInit.optionalFeatures.push( 'dom-overlay' );
             sessionInit.domOverlay = { root: overlay };
 */
-            sessionInit.optionalFeatures.push("light-estimation");
-            sessionInit.optionalFeatures.push("depth-sensing");
+
+/*
+            ATON.UI.setupARoverlay();
+            sessionInit.optionalFeatures.push( "dom-overlay" );
+            sessionInit.domOverlay = { root: ATON.UI.ARoverlay };
+*/
+            //sessionInit.optionalFeatures.push("depth-sensing");
+            //sessionInit.optionalFeatures.push("light-estimation");
         }
 
         XR._bReqPresenting = true;
@@ -577,6 +671,15 @@ XR.toggle = (sessiontype)=>{
     // Exit XR
     else {
         XR.currSession.end();
+/*
+        if (navigator.xr.offerSession !== undefined){
+            navigator.xr.offerSession( XR._sessionType, sessionInit )
+                .then( onSessionStarted )
+                .catch( ( err ) => {
+                    console.warn( err );
+                });
+        }
+*/
     }
 };
 
@@ -634,49 +737,6 @@ XR.setupControllerUI = (h, bAddRep)=>{
     }
 };
 
-// FIXME:
-XR.switchHands = ()=>{
-
-/*
-    let C0 = new THREE.Group();
-    for (let cr in XR.controller0.children){
-        C0.add(XR.controller0.children[cr]);
-    }
-
-    let C1 = new THREE.Group();
-    for (let cl in XR.controller1.children){
-        C1.add(XR.controller1.children[cl]);
-    }
-
-    //XR.controller1.removeChildren();
-    //XR.controller0.removeChildren();
-
-    return;
-
-    for (let c in C1.children){
-        XR.controller0.add(C1.children[c]);
-    }
-    for (let c in C0.children){
-        XR.controller1.add(C0.children[c]);
-    }
-*/
-    let H = XR.controller1;
-    XR.controller1 = XR.controller0;
-    XR.controller0 = H;
-
-    //XR.controller0 = ATON._renderer.xr.getController(1);
-    //XR.controller1 = ATON._renderer.xr.getController(0);
-
-    for (let c in XR.controller0.children) XR.controller0.remove(XR.controller0.children[c]);
-    for (let c in XR.controller1.children) XR.controller1.remove(XR.controller1.children[c]);
-    XR.gControllers.removeChildren();
-
-    XR.setupControllerUI(XR.HAND_L);
-    XR.setupControllerUI(XR.HAND_R);
-
-    console.log("VR controllers switched");
-};
-
 
 /* DEPRECATED
 XR.setupControllersUI = ()=>{
@@ -725,10 +785,10 @@ XR.setupControllersUI = ()=>{
 };
 */
 
-// Not working
+//
 XR.getControllerSpace = (i)=>{
-   if (i === 1) XR.getControllerGrip(1);
-   else XR.getControllerGrip(0);
+   if (i === 1) return XR.controllerGrip1;
+   else return XR.controllerGrip0;
 };
 
 /**
@@ -737,8 +797,8 @@ Get controller world location
 @returns {THREE.Vector3}
 */
 XR.getControllerWorldLocation = (i)=>{
-    if (i === 1) return XR.controller1pos;
-    else return XR.controller0pos;
+    if (i === 1) return XR.controller1.userData.pos;
+    else return XR.controller0.userData.pos;
 };
 
 /**
@@ -747,8 +807,8 @@ Get controller world direction
 @returns {THREE.Vector3}
 */
 XR.getControllerWorldDirection = (i)=>{
-    if (i === 1) return XR.controller1dir;
-    else return XR.controller0dir;
+    if (i === 1) return XR.controller1.userData.dir;
+    else return XR.controller0.userData.dir;
 };
 
 /**
@@ -764,6 +824,7 @@ XR.getControllerWorldOrientation = (i)=>{
     return Q;
 };
 
+/*
 XR._deltaMotionController = (C)=>{
     if (C === XR.HAND_L && XR._lastPosL === undefined) return;
     if (C === XR.HAND_R && XR._lastPosR === undefined) return;
@@ -782,29 +843,25 @@ XR._deltaMotionController = (C)=>{
     if (C === XR.HAND_L) XR._lastPosL = p;
     else XR._lastPosR = p;
 };
+*/
 
 XR.update = ()=>{
+    if (XR._bGaze) return;
+    //if (XR._sessionType==="immersive-ar") return;
 
-/*
-    //if (XR._bPresenting) ATON.Utils.updateTSetsCamera();
-    if (XR._bPresenting){
-        let C = ATON._renderer.xr.getCamera();
-        ATON.Utils.updateTSetsCamera( C );
-    }
-*/
     // R controller
     if (XR.controller0 && XR.controller0.visible){
-        XR.controller0.getWorldPosition(XR.controller0pos);
-        XR.controller0.getWorldDirection(XR.controller0dir);
-        XR.controller0dir.negate();
+        XR.controller0.getWorldPosition(XR.controller0.userData.pos);
+        XR.controller0.getWorldDirection(XR.controller0.userData.dir);
+        XR.controller0.userData.dir.negate();
 
         //XR._deltaMotionController(XR.HAND_R);
     }
     // L controller
     if (XR.controller1 && XR.controller1.visible){
-        XR.controller1.getWorldPosition(XR.controller1pos);
-        XR.controller1.getWorldDirection(XR.controller1dir);
-        XR.controller1dir.negate(); 
+        XR.controller1.getWorldPosition(XR.controller1.userData.pos);
+        XR.controller1.getWorldDirection(XR.controller1.userData.dir);
+        XR.controller1.userData.dir.negate(); 
 
         //XR._deltaMotionController(XR.HAND_L);
     }

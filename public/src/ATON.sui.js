@@ -736,12 +736,15 @@ SUI.update = ()=>{
         if (ATON.XR._bPresenting){
             if (SUI.bShowInfo) SUI.infoNode.visible = true;
 
-            if (ATON.XR.controller0){
-                SUI.infoNode.position.copy(ATON.XR.controller0pos); //.lerpVectors(ATON._queryDataSem.p, ATON.XR.controller0pos, 0.8);
-                SUI.infoNode.position.x -= (ATON.XR.controller0dir.x * 0.1);
-                SUI.infoNode.position.y -= (ATON.XR.controller0dir.y * 0.1); // + 0.1;
-                SUI.infoNode.position.z -= (ATON.XR.controller0dir.z * 0.1);
-                SUI.infoNode.setScale(1.0);
+            if (!ATON.XR._bGaze){
+                let C = ATON.XR.getPrimaryController();
+                if (C){
+                    SUI.infoNode.position.copy(C.userData.pos);          //.lerpVectors(ATON._queryDataSem.p, C.userData.pos, 0.8);
+                    SUI.infoNode.position.x -= (C.userData.dir.x * 0.1);
+                    SUI.infoNode.position.y -= (C.userData.dir.y * 0.1); // + 0.1;
+                    SUI.infoNode.position.z -= (C.userData.dir.z * 0.1);
+                    SUI.infoNode.setScale(1.0);
+                }
             }
             else {
                 SUI.infoNode.position.lerpVectors(ATON._queryDataSem.p, ATON.Nav._currPOV.pos, 0.1);

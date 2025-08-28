@@ -48,15 +48,15 @@ UI.setTheme = (theme)=>{
     //if (UI.WYSIWYG) TODO:
 };
 
-UI.hideMainElements = (b)=>{
-    UI._elMainToolbar.classList.add("d-none");
-    UI._elBottomToolbar.classList.add("d-none");
-    UI._elUserToolbar.classList.add("d-none");
+UI.hideMainElements = ()=>{
+    ATON.UI.hideElement(UI._elMainToolbar); //.classList.add("d-none");
+    ATON.UI.hideElement(UI._elBottomToolbar); //.classList.add("d-none");
+    ATON.UI.hideElement(UI._elUserToolbar); //.classList.add("d-none");
 };
-UI.showMainElements = (b)=>{
-    UI._elMainToolbar.classList.remove("d-none");
-    UI._elBottomToolbar.classList.remove("d-none");
-    UI._elUserToolbar.classList.remove("d-none");
+UI.showMainElements = ()=>{
+    ATON.UI.showElement(UI._elMainToolbar); //.classList.remove("d-none");
+    ATON.UI.showElement(UI._elBottomToolbar); //.classList.remove("d-none");
+    ATON.UI.showElement(UI._elUserToolbar); //.classList.remove("d-none");
 };
 
 /*

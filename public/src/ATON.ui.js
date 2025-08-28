@@ -281,6 +281,32 @@ UI.setSidePanelRight = ()=>{
 /*===============================
     Utilities
 ===============================*/
+/**
+Make a given HTML element visibile
+@param {HTMLElement} el - the HTML element
+*/
+UI.showElement = (el)=>{
+    el.classList.remove("d-none");
+};
+
+/**
+Make a given HTML element hidden
+@param {HTMLElement} el - the HTML element
+*/
+UI.hideElement = (el)=>{
+    el.classList.add("d-none");
+};
+
+/**
+Make a given HTML element visibile or hidden
+@param {HTMLElement} el - the HTML element
+@param {bool} bVisible - visibility
+*/
+UI.toggleElement = (el, bVisible)=>{
+    if (bVisible) UI.showElement(el);
+    else UI.hideElement(el);
+};
+
 
 UI.addBasicEvents = ()=>{
     let canvas = document.querySelector('canvas');
@@ -577,9 +603,9 @@ UI.createButtonVR = (options)=>{
 
     let el = UI.createButton({ ...std, ...options });
 
-    if (!ATON.device.xrSupported['immersive-vr']) el.classList.add('d-none');
+    if (!ATON.device.xrSupported['immersive-vr']) ATON.UI.hideElement(el);
     ATON.on("XR_support", d => {
-        if (ATON.device.xrSupported['immersive-vr']) el.classList.remove('d-none');
+        if (ATON.device.xrSupported['immersive-vr']) ATON.UI.showElement(el);
     });
 
     return el;
@@ -601,9 +627,9 @@ UI.createButtonAR = (options)=>{
 
     let el = UI.createButton({ ...std, ...options });
 
-    if (!ATON.device.xrSupported['immersive-ar']) el.classList.add('d-none');
+    if (!ATON.device.xrSupported['immersive-ar']) ATON.UI.hideElement(el);
     ATON.on("XR_support", d => {
-        if (ATON.device.xrSupported['immersive-ar']) el.classList.remove('d-none');
+        if (ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(el);
     });
 
     return el;
@@ -629,7 +655,7 @@ UI.createButtonDeviceOrientation = (options)=>{
     };
 
     let el = UI.createButton({ ...std, ...options });
-    if (!ATON.Utils.isConnectionSecure() || !ATON.Utils.isMobile()) el.classList.add('d-none');
+    if (!ATON.Utils.isConnectionSecure() || !ATON.Utils.isMobile()) ATON.UI.hideElement(el);
 
     return el;
 };
@@ -1213,7 +1239,7 @@ UI.createLiveFilter = (options)=>{
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" >`);
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" spellcheck="false" >`);
 
     UI.registerElementAsComponent(elInput, "input");
 
@@ -1232,7 +1258,8 @@ UI.createLiveFilter = (options)=>{
         if (v.length < 3) {
             for (let item of filterItems) {
                 // Using Bootstrap 5 class `d-none`
-                item.classList.remove('d-none');
+                //item.classList.remove('d-none');
+                ATON.UI.showElement(item);
             }
 
             return;
@@ -1242,10 +1269,12 @@ UI.createLiveFilter = (options)=>{
             let attr = item.getAttribute('data-search-term');
 
             if (attr && (attr.includes(v) || v.length < 1)) {
-                item.classList.remove('d-none');
+                //item.classList.remove('d-none');
+                ATON.UI.showElement(item);
             }
             else {
-                item.classList.add('d-none');
+                //item.classList.add('d-none');
+                ATON.UI.hideElement(item);
             }
         }
 
@@ -1549,6 +1578,8 @@ UI.createSlider = (options)=>{
 
     if (options.value !== undefined) elInput.value = options.value;
 
+    if (options.classes) el.className = el.className + " " + options.classes;
+
     el.append(elInput);
 
 /*
@@ -1603,7 +1634,7 @@ UI.createInputText = (options)=>{
         el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
     }
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="search" >`);
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="search" spellcheck="false" >`);
     UI.registerElementAsComponent(elInput, "input");
 
     elInput.id = baseid + "-input";
@@ -1696,8 +1727,8 @@ UI.createLoginForm = (options)=>{
     let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
     let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
 
-    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username">`);
-    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password">`);
+    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username" spellcheck="false" >`);
+    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password" spellcheck="false" >`);
 
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);

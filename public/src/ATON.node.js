@@ -180,7 +180,7 @@ hide(){
         ATON._dMainL.shadow.needsUpdate = true;
     }
 
-    if (bPrev){
+    if (bPrev && this.type===ATON.NTYPES.SCENE){
         ATON.updateLightProbes();
     }
 
@@ -204,7 +204,7 @@ show(){
         if (ATON._dMainL!==undefined && ATON._dMainL.shadow!==undefined) ATON._dMainL.shadow.needsUpdate = true;
     }
 
-    if (!bPrev){
+    if (!bPrev && this.type===ATON.NTYPES.SCENE){
         ATON.updateLightProbes();
     }
 

@@ -887,8 +887,8 @@ Utils.exportNode = (node, filename)=>{
     }
 };
 
-Utils.takeScreenshot = (size, filename)=>{
-    let img = new Image();
+Utils.takeScreenshot = (size, filename, bBase64)=>{
+    //let img = new Image();
 
     console.log("Screenshot with size:"+size);
 
@@ -914,7 +914,7 @@ Utils.takeScreenshot = (size, filename)=>{
     }
 
     let b64img = ATON._renderer.domElement.toDataURL();
-    img.src = b64img;
+    //img.src = b64img;
 
     if (filename){
         Utils._dlink.href = b64img.replace("image/png", "image/octet-stream");
@@ -923,6 +923,31 @@ Utils.takeScreenshot = (size, filename)=>{
     }
 
     ATON._onResize();
+
+    if (bBase64){
+        return b64img;
+    }
+
+    let img = new Image();
+    img.src = b64img;
+
+    return img;
+};
+
+Utils.takeScreenshotFromPOV = (pov, size, filename, bBase64)=>{
+    if (!pov) return;
+
+    //let origPOV = ATON.Nav._currPOV.clone();
+
+    ATON.Nav._camera.position.copy(pov.pos);
+    ATON.Nav._controls.target.copy(pov.target);
+    ATON.Nav._controls.update();
+    ATON.Nav._camera.updateProjectionMatrix();
+
+    ATON.getRootUI().hide();
+    let img = Utils.takeScreenshot(size, filename, bBase64);
+    ATON.getRootUI().show();
+
     return img;
 };
 

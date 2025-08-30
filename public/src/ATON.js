@@ -477,7 +477,7 @@ ATON._onResize = ()=>{
         }
     }
     
-    console.log("onResize");
+    //console.log("onResize");
 };
 
 ATON._onMouseWheel = (e)=>{
@@ -2376,7 +2376,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
 // Update routines
 //==============================================================
 ATON._onFrame = ()=>{
-    // TODO: add pause render
+    if (ATON.XR._bReqPresenting) return;
 
     ATON._dt = ATON._clock.getDelta();
     //ATON._fps = (1.0 / ATON._dt);

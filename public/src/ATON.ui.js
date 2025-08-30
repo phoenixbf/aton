@@ -1052,6 +1052,7 @@ Create a generic card.
 - options.cover: cover image url
 - options.stdcover: default cover img (if cover not found / on fetch error)
 - options.url: landing url when selecting the main cover
+- options.onactivate: alternatively to url, a routine on cover activation
 - options.keywords: keywords object (eg. {"term_a":1, "term_b":1 }) to filter this card
 - options.title: card title
 - options.subtitle: custom subtitle element
@@ -1096,18 +1097,27 @@ UI.createCard = (options)=>{
         }
 
         // Cover
-        let elcov = ATON.UI.createElementFromHTMLString(`<div class='aton-card-cover'><a href='${options.url}'></a></div>`);
+        let elcov = ATON.UI.createElementFromHTMLString(`<div class='aton-card-cover'></div>`);
 
-        let im = document.createElement("img");
-        im.classList.add("card-img-top");
-        im.src = options.cover;
-        if (options.stdcover) im.onerror = ()=>{
-            im.src = options.stdcover;
+        let elImg = document.createElement("img");
+        elImg.classList.add("card-img-top");
+        elImg.src = options.cover;
+        if (options.stdcover) elImg.onerror = ()=>{
+            elImg.src = options.stdcover;
         };
 
-        elcov.getElementsByTagName("a")[0].append(im);
+        if (options.onactivate){
+            elcov.append( elImg );
+            elcov.onclick = options.onactivate;
+        }
+        else if (options.url) {
+            let elA = ATON.UI.createElementFromHTMLString(`<a href='${options.url}'></a>`);
+            elA.append( elImg );
+            
+            elcov.append( elA );
+        }
 
-        UI.registerElementAsComponent(im, "img");
+        UI.registerElementAsComponent(elImg, "img");
 
         el.append(elcov);
     }

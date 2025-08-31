@@ -2376,7 +2376,7 @@ ATON._handleDynamicRenderProfiles = ()=>{
 // Update routines
 //==============================================================
 ATON._onFrame = ()=>{
-    if (ATON.XR._bReqPresenting) return;
+    //if (ATON.XR._bReqPresenting) return;
 
     ATON._dt = ATON._clock.getDelta();
     //ATON._fps = (1.0 / ATON._dt);

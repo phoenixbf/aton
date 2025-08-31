@@ -36,9 +36,6 @@ window.addEventListener( 'load', ()=>{
 
     ATON.App.loadScene("samples/welcome", ()=>{
 
-        // TEST
-        ATON.createSceneNode("3DGS").load("bastet/models/butterfly.spz").attachToRoot();
-
         ATON.Nav.requestHome(1.0);
 
         ATON.UI.showModal({
@@ -61,6 +58,9 @@ window.addEventListener( 'load', ()=>{
                                         });
                                         ATON.UI.hideModal();
                                     }
+                                }),
+                                ATON.UI.createAudioRecorder({
+                                    textrec: "Record vocal note"
                                 }),
                                 ATON.UI.createSlider({
                                     label: "Slider A",

@@ -35,6 +35,18 @@
 /*=========================================
     Base
 =========================================*/
+@keyframes pulseAccent {
+    0% {
+        background-color: rgba(0,0,0, 0.0);
+    }
+    50% {
+        background-color: rgba(var(--aton-colors-accent-rgb), 0.5);
+    }
+    100% {
+        background-color: rgba(0,0,0, 0.0);
+    }
+}
+
 
 body {
     margin: 0px;
@@ -443,6 +455,12 @@ a {
 .aton-btn-primary {
     background-color: var(--aton-colors-accent);
 /*    border-color: var(--bs-body-color-rgb);*/
+}
+
+.aton-recording-bg {
+    animation-name: pulseAccent;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
 }
 
 .aton-btn-section-highlight {

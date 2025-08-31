@@ -150,7 +150,7 @@ UI.setupARoverlay = ()=>{
     path.setAttribute( 'stroke-width', 2 );
     svg.appendChild( path );
 
-    console.log(UI.ARoverlay)
+    //console.log(UI.ARoverlay)
 };
 
 /*========================================
@@ -1726,6 +1726,110 @@ UI.createInput3DModel = (options)=>{
             });
         }
     );
+
+    return el;
+};
+
+/**
+Create an audio recorder
+- options.iconrec: icon for record audio button (e.g. "rec")
+- options.textrec: optional text for recording button
+- options.textplay: optional text for replay audio button
+- options.onaudio: handler when audio is ready (e.g.: (data)=>{ }), data is base64
+
+Components:
+- "input"
+- "datalist"
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createAudioRecorder = (options)=>{
+
+    let el, elRec,elStop,elPlay;
+    let audio = undefined;
+
+    elRec = ATON.UI.createButton({
+        icon: (options.iconrec)? options.iconrec : "rec",
+        classes: "btn-default",
+        text: options.textrec,
+        tooltip: "Record new audio",
+        onpress: ()=>{
+            ATON.MediaFlow.startRecording();
+
+            elStop.classList.remove("d-none");
+            elRec.classList.add("d-none");
+            elPlay.setAttribute("disabled",true);
+        }
+    });
+
+    elStop = ATON.UI.createButton({
+        icon: "cancel",
+        classes: "d-none btn-default aton-recording-bg",
+        text: options.textrec,
+        tooltip: "Stop recording audio",
+        onpress: ()=>{
+            ATON.MediaFlow.stopRecording();
+        }
+    });
+
+    ATON.on("AudioRecordCompleted", (b64)=>{
+        if (!b64) return;
+
+        audio = new Audio();
+        audio.src = b64;
+
+        audio.onended = (e)=>{
+            elPlay.classList.remove("aton-btn-highlight");
+        };
+/*
+        audio.onloadedmetadata = (e)=>{
+            audio.duration
+        };
+*/
+        elStop.classList.add("d-none");
+        elRec.classList.remove("d-none");
+
+        elPlay.removeAttribute("disabled");
+
+        if (options.onaudio) options.onaudio(b64);
+    });
+
+    //elAudio = ATON.UI.createElementFromHTMLString("<audio class='margin:auto' controls ></audio>");
+
+    elPlay = ATON.UI.createButton({
+        icon: "play",
+        tooltip: "Play recorded audio",
+        text: options.textplay,
+        classes: "btn-default",
+        onpress: ()=>{
+            if (!audio) return;
+
+            // already playing
+            if (audio.duration > 0 && !audio.paused){
+                audio.pause();
+                audio.currentTime = 0;
+
+                elPlay.classList.remove("aton-btn-highlight");
+            }
+            else {
+                audio.play();
+                elPlay.classList.add("aton-btn-highlight");
+            }
+        }
+    });
+
+    elPlay.setAttribute("disabled",true);
+
+    el = ATON.UI.createContainer({
+        classes: "btn-group",
+        //style: "vertical-align: middle;"
+    });
+
+    //el.append(elRow);
+    el.append( elRec, elStop, elPlay );
+
+    if (options.classes) el.className = el.className + " " + options.classes;
 
     return el;
 };

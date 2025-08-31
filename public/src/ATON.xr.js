@@ -31,7 +31,7 @@ XR.init = ()=>{
     XR.setDensity(1.0);
 
     XR._bPresenting = false;
-    XR.currSession = null;
+    XR.currSession  = null;
     XR._sessionType = "immersive-vr";
     XR._bReqPresenting = false;
 
@@ -310,8 +310,8 @@ Set session type
 @param {string} type - Can be "immersive-vr" or "immersive-ar"
 */
 XR.setSessionType = (type)=>{
-    if (type === undefined) return;
-    if (type !== "immersive-vr" && type !== "immersive-ar") return;
+    if (type === undefined) type = "immersive-vr";
+    //if (type !== "immersive-vr" && type !== "immersive-ar") return;
 
     XR._sessionType = type;
     console.log("Session type: "+type);
@@ -493,8 +493,13 @@ XR.onSessionStarted = ( session )=>{
         //ATON.toggleCenteredQuery(true);
     }
     else {
+        //ATON._renderer.xr.setReferenceSpaceType( 'local' );
         session.isImmersive = true;
     }
+
+    // If any streaming is ongoing, terminate it
+    //ATON.MediaFlow.stopAllStreams();
+    //ATON.rewindAllPlayingMedia();
 
     // Promised
 	ATON._renderer.xr.setSession( session ).then(()=>{
@@ -504,7 +509,7 @@ XR.onSessionStarted = ( session )=>{
         // AR session
         if (XR._sessionType === "immersive-ar"){
 
-            //ATON.UI.ARoverlay.style.display = '';
+            ATON.UI.ARoverlay.style.display = '';
 
             ATON._mainRoot.background = null;
             if (ATON._mMainPano) ATON._mMainPano.visible = false;
@@ -529,7 +534,6 @@ XR.onSessionStarted = ( session )=>{
             //console.log(ATON.Nav._currPOV.pos);
         }
 
-
         let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
         if (C) ATON.Nav._updCamera( C );
 
@@ -538,17 +542,10 @@ XR.onSessionStarted = ( session )=>{
 
         console.log("XR now presenting");
 
-        //XR.setupControllersUI();
-
-        // If any streaming is ongoing, terminate it
-        ATON.MediaFlow.stopAllStreams();
-        
-        ATON.rewindAllPlayingMedia();
-
         ATON.toggleShadows(false); // disable shadows for XR sessions
 
         // for immersive sessions we (re)set selector radius to 10cm
-        if (ATON.SUI.getSelectorRadius()>ATON.FE.STD_SEL_RAD) ATON.SUI.setSelectorRadius(ATON.FE.STD_SEL_RAD);
+        if (ATON.SUI.getSelectorRadius() > 0.1) ATON.SUI.setSelectorRadius(0.1);
 
         //console.log(session);
 
@@ -559,11 +556,13 @@ XR.onSessionStarted = ( session )=>{
 
         ATON.MRes.estimateTSErrorTarget();
 
+/*
         // FIXME: needed bc selector radius is not applied
         setTimeout( ()=>{
             //ATON.Utils.updateTSetsCamera();
             if (ATON.SUI.getSelectorRadius()>ATON.FE.STD_SEL_RAD) ATON.SUI.setSelectorRadius(ATON.FE.STD_SEL_RAD);
         }, 2000);
+*/
 
         ATON.fire("XRmode", true);
     });
@@ -584,7 +583,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
         if (ATON._mMainPano) ATON._mMainPano.visible = true;
         
-        //ATON.UI.ARoverlay.style.display = 'none';
+        ATON.UI.ARoverlay.style.display = 'none';
     }
 
     //XR.rig.position.set(0.0,0.0,0.0);
@@ -614,14 +613,16 @@ Toggle immersive VR/AR mode
 @param {string} sessiontype - Can be "immersive-vr" or "immersive-ar", if undefined defaults to immersive VR
 */
 XR.toggle = (sessiontype)=>{
-    if (!sessiontype) sessiontype = "immersive-vr";
+    //if (XR._bReqPresenting) return; // Request in progress
 
     XR.setSessionType(sessiontype);
 
     //if (!ATON.device.xrSupported[XR._sessionType]) return;
 
     // Enter XR
-    if (!XR.currSession && !XR._bReqPresenting){ //  === null
+    if (XR.currSession === null){
+        XR._bReqPresenting = true;
+        
         let sessionInit = {};
         sessionInit.optionalFeatures = [];
 
@@ -655,19 +656,19 @@ XR.toggle = (sessiontype)=>{
             sessionInit.domOverlay = { root: overlay };
 */
 
-/*
+
             ATON.UI.setupARoverlay();
             sessionInit.optionalFeatures.push( "dom-overlay" );
             sessionInit.domOverlay = { root: ATON.UI.ARoverlay };
-*/
+
             //sessionInit.optionalFeatures.push("depth-sensing");
             //sessionInit.optionalFeatures.push("light-estimation");
         }
 
-        XR._bReqPresenting = true;
         navigator.xr.requestSession( XR._sessionType, sessionInit ).then( XR.onSessionStarted );
         //console.log(navigator.xr);
     }
+
     // Exit XR
     else {
         XR.currSession.end();
@@ -683,6 +684,7 @@ XR.toggle = (sessiontype)=>{
     }
 };
 
+// DEPRECATED
 XR.setupControllerUI = (h, bAddRep)=>{
     let raytick = 0.003;
     let raylen  = 1.0;

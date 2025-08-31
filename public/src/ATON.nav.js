@@ -146,7 +146,7 @@ Nav.getCurrentDirection = ()=>{
 };
 
 /**
-Grab current POV and return a copy.
+Grab a copy of current POV.
 @returns {POV}
 @example
 let pov = ATON.Nav.copyCurrentPOV();

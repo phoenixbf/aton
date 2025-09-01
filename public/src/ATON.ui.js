@@ -232,7 +232,7 @@ UI.showSidePanel = (options)=>{
         let el = document.createElement('div');
         el.classList.add("offcanvas-header");
 
-        el.innerHTML = "<h4 class='offcanvas-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+        el.innerHTML = "<h4 class='offcanvas-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' aria-label='Close' onclick='ATON.UI.hideSidePanel()'></button>"; // data-bs-dismiss='offcanvas'
 
         if (options.headelement) el.prepend(options.headelement);
 
@@ -416,7 +416,7 @@ UI.resolveIconURL = (icon)=>{
 
 UI.createIcon = (iconurl)=>{
     if (iconurl.startsWith("bi-")) 
-        return UI.createElementFromHTMLString("<i class='bi "+iconurl+"' style='font-size:1.5em; vertical-align:middle; margin-right:4px'></i>");
+        return UI.createElementFromHTMLString("<i class='bi "+iconurl+"' style='font-size:1.5em; vertical-align:middle;'></i>");
     else 
         return UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(iconurl)+"'>");
 };
@@ -661,6 +661,42 @@ UI.createButtonDeviceOrientation = (options)=>{
 };
 
 /**
+Create a QR button
+- options.text: optional text for button
+- options.title: custom title for QR modal
+- options.url: optional custom url (by default current URL)
+- options.content: optional content (HTML element) after the QR code 
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonQR = (options)=>{
+    if (!options) options = {};
+
+    let el = UI.createButton({
+        icon: "qr",
+        text: options.text,
+        onpress: ()=>{
+            let url = options.url? options.url : window.location.href;
+            let elQR = ATON.UI.createContainer({ classes: "aton-QR-container" });
+            new QRCode(elQR, url);
+
+            UI.showModal({
+                header: options.title? options.title : "QR code",
+                body: ATON.UI.createContainer({
+                    style: "text-align:center",
+                    items:[
+                        elQR,
+                        options.content
+                    ]
+                })
+            });
+        }
+    });
+
+    return el;
+};
+
+/**
 Create a dropdown
 - options.title: the dropdown button title
 - options.icon: icon for dropdown button
@@ -680,7 +716,7 @@ UI.createDropdown = (options)=>{
     let el = ATON.UI.createContainer({ classes:"dropdown" });
 
     let elBtn = UI.createElementFromHTMLString(`
-        <button type="button" class="btn aton-btn dropdown-toggle px-2" data-bs-toggle="dropdown" aria-expanded="false">${options.title}</button>
+        <button type="button" class="btn aton-btn dropdown-toggle px-2" data-bs-toggle="dropdown" aria-expanded="false"><span class="aton-btn-text">${options.title}</span></button>
     `);
 
     if (options.variant) elBtn.classList.add("btn-"+options.variant);

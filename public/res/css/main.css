@@ -325,7 +325,7 @@ a {
 /* Buttons & Icons
 =================*/
 .aton-icon {
-    margin-right: 4px;
+/*     margin-right: 4px; */
     width: 1em;
     height: 1em; 
     vertical-align: middle;
@@ -778,6 +778,29 @@ a {
     margin: 2px;
     padding: 4px;
 }
+
+.aton-QR-container {
+    display: block;
+
+    text-align: center;
+    background-color: white;
+
+    padding: 20px;
+    border-radius: var(--bs-border-radius);
+
+    width: 100%;
+    max-width: 400px;
+    max-height: 400px;
+    height: auto;
+
+    margin: auto;
+}
+
+.aton-QR-container img {
+    width: 100%;
+    height: auto;
+}
+
 
 /* Ranges / Sliders
 ========================*/

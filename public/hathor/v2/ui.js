@@ -131,7 +131,7 @@ UI.buildStandardToolbar = ()=>{
     UI._elMainToolbar.append(
         UI.createMainButton(),
         ATON.UI.createButtonFullscreen(),
-        UI.createMainButton(),
+        ATON.UI.createButtonQR(),
         UI.createMainButton(),
         UI.createMainButton(),
         UI.createMainButton(),

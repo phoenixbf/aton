@@ -856,6 +856,8 @@ UI.createTreeGroup = (options)=>{
 Create a vector control
 - options.vector: target THREE.Vector3 to be manipulated
 - options.step: step value
+- options.label: a label for this control (e.g.: "position")
+- options.reset: an array of 3 values for a reset button (e.g.: [0,0,0])
 - options.onupdate: a routine called when vector is changed/updated
 
 @param {object} options - UI options object
@@ -881,6 +883,26 @@ UI.createVectorControl = (options)=>{
             <input type="number" class="form-control aton-input-z" placeholder="z" aria-label="z" step="${step}" value="${posz}">
         </div>
     `);
+
+    if (options.label){
+        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text'>"+options.label+"</span>"));
+    }
+
+    if (options.reset){
+        let R = options.reset;
+        el.append(ATON.UI.createButton({
+            icon: "cancel",
+            classes: "btn-default",
+            onpress: ()=>{
+                elInputX.value = R[0];
+                elInputY.value = R[1];
+                elInputZ.value = R[2];
+
+                if (V) V.set(R[0],R[1],R[2]);
+                if (options.onupdate) options.onupdate();
+            }
+        }))
+    }
 
     el.id = baseid;
 
@@ -909,6 +931,28 @@ UI.createVectorControl = (options)=>{
         if (options.onupdate) options.onupdate();
     };
 
+    // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
+    let onpaste = (ev)=>{
+        ev.preventDefault();
+
+        let clip = ev.clipboardData.getData('text');
+        clip = clip.split(",");
+        if (clip.length === 3){
+            elInputX.value = parseFloat(clip[0]);
+            elInputY.value = parseFloat(clip[1]);
+            elInputZ.value = parseFloat(clip[2]);
+
+            if (V){
+                V.set(elInputX.value, elInputY.value, elInputZ.value);
+                if (options.onupdate) options.onupdate();
+            }
+        }
+    };
+
+    elInputX.onpaste = onpaste;
+    elInputY.onpaste = onpaste;
+    elInputZ.onpaste = onpaste;
+
     return el;
 };
 
@@ -916,6 +960,7 @@ UI.createVectorControl = (options)=>{
 Create a quaternion control
 - options.quat: target THREE.Quaternion to be manipulated
 - options.step: step value
+- options.reset: an array of 4 values for a reset button (e.g.: [1,0,0,0])
 - options.onupdate: a routine called when Quaternion is changed/updated
 
 @param {object} options - UI options object
@@ -943,6 +988,27 @@ UI.createQuaternionControl = (options)=>{
             <input type="number" class="form-control" placeholder="w" aria-label="w" step="${step}" value="${w}">
         </div>
     `);
+
+    if (options.label){
+        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text'>"+options.label+"</span>"));
+    }
+
+    if (options.reset){
+        let R = options.reset;
+        el.append(ATON.UI.createButton({
+            icon: "cancel",
+            classes: "btn-default",
+            onpress: ()=>{
+                elInputX.value = R[0];
+                elInputY.value = R[1];
+                elInputZ.value = R[2];
+                elInputW.value = R[3];
+
+                if (V) V.set(R[0],R[1],R[2],R[3]);
+                if (options.onupdate) options.onupdate();
+            }
+        }))
+    }
 
     el.id = baseid;
 
@@ -972,12 +1038,36 @@ UI.createQuaternionControl = (options)=>{
         if (options.onupdate) options.onupdate();
     };
 
-    elInputZ.oninput = ()=>{
+    elInputW.oninput = ()=>{
         let v = elInputW.value;
 
         if (Q) Q.w = v;
         if (options.onupdate) options.onupdate();
     };
+
+    // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
+    let onpaste = (ev)=>{
+        ev.preventDefault();
+
+        let clip = ev.clipboardData.getData('text');
+        clip = clip.split(",");
+        if (clip.length === 3){
+            elInputX.value = parseFloat(clip[0]);
+            elInputY.value = parseFloat(clip[1]);
+            elInputZ.value = parseFloat(clip[2]);
+            elInputW.value = parseFloat(clip[3]);
+
+            if (Q){
+                Q.set(elInputX.value, elInputY.value, elInputZ.value, elInputW.value);
+                if (options.onupdate) options.onupdate();
+            }
+        }
+    };
+
+    elInputX.onpaste = onpaste;
+    elInputY.onpaste = onpaste;
+    elInputZ.onpaste = onpaste;
+    elInputW.onpaste = onpaste;
 
     return el;
 };
@@ -1002,15 +1092,21 @@ UI.createNodeTrasformControl = (options)=>{
     let N = undefined;
     if (options.node) N = ATON.getSceneNode( options.node );
 
+/*
+    let origPos = [N.position.x, N.position.y, N.position.z];
+    let origRot = [N.rotation.x, N.rotation.y, N.rotation.z];
+    let origScl = [N.scale.x, N.scale.y, N.scale.z];
+*/
     // Position
     if (options.position){
 
         let elPos = UI.createVectorControl({
             vector: N.position,
-            step: options.position.step
+            step: options.position.step,
+            reset: [0,0,0]
         });
 
-        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elPos.id+"'>Position</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
         el.append( elPos );
     }
 
@@ -1019,10 +1115,11 @@ UI.createNodeTrasformControl = (options)=>{
 
         let elScale = UI.createVectorControl({
             vector: N.scale,
-            step: options.scale.step
+            step: options.scale.step,
+            reset: [1,1,1]
         });
 
-        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elScale.id+"'>Scale</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
         el.append( elScale );
     }
 
@@ -1031,7 +1128,8 @@ UI.createNodeTrasformControl = (options)=>{
 
         let elRot = UI.createVectorControl({
             vector: N.rotation,
-            step: options.rotation.step
+            step: options.rotation.step,
+            reset: [0,0,0]
         });
 /*
         let elRot = UI.createQuaternionControl({
@@ -1039,7 +1137,7 @@ UI.createNodeTrasformControl = (options)=>{
             step: options.rotation.step
         });     
 */
-        el.append( UI.createElementFromHTMLString("<label class='form-label' for='"+elRot.id+"'>Rotation</label>") );
+        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
     }
 

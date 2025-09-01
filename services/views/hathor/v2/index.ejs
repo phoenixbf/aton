@@ -2,117 +2,124 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" href="<%= appicon %>" sizes="256x256" type="image/png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="<%= appicon %>" sizes="256x256" type="image/png">
 
-    <!-- Add iOS meta tags and icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content='<%= title %>' >
-    <link rel="apple-touch-icon" href="<%= appicon %>">
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content='<%= title %>' >
+<link rel="apple-touch-icon" href="<%= appicon %>">
 
-    <meta name="description" content="ATON official front-end">
+<meta name="description" content="ATON official front-end">
 
-    <!-- OpenGraph tags -->
-    <meta property="og:title" content="<%= title %>" />
-    <meta property="og:description" content="ATON official front-end" />
-    <meta property="og:image" content="<%= appicon %>" />
-    <meta property="og:image:secure_url" content="<%= appicon %>" /> 
-    <meta property="og:image:type" content="image/png" /> 
-    <meta property="og:image:width" content="256" /> 
-    <meta property="og:image:height" content="256" />
+<!-- OpenGraph tags -->
+<meta property="og:title" content="<%= title %>" />
+<meta property="og:description" content="ATON official front-end" />
+<meta property="og:image" content="<%= appicon %>" />
+<meta property="og:image:secure_url" content="<%= appicon %>" /> 
+<meta property="og:image:type" content="image/png" /> 
+<meta property="og:image:width" content="256" /> 
+<meta property="og:image:height" content="256" />
 
-	<!-- PWA manifest -->
-	<link rel="manifest" href="/hathor/v2/app.webmanifest">
+<!-- PWA manifest -->
+<link rel="manifest" href="/hathor/v2/app.webmanifest">
 
-    <title><%= title %></title>
-    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" type="text/css" href="/res/css/main.css">
+<title><%= title %></title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
-    <!-- Third parties -->
-    <link type="text/css" rel="stylesheet" href="/hathor/v2/thirdparty/jodit.min.css" />
+<!-- Third parties -->
+<link type="text/css" rel="stylesheet" href="/hathor/v2/thirdparty/jodit.min.css" />
 
-    <style>
-        :root {
-            --hathor-ui-margin: 4px;
-        }
+<style>
+:root {
+    --hathor-ui-margin: 4px;
+}
 
-        .hathor-main-toolbar {
-            margin: var(--hathor-ui-margin);
+.hathor-main-toolbar {
+    margin: var(--hathor-ui-margin);
 
-            z-index: 100 !important;
+    z-index: 100 !important;
 /*
-            margin-left: 0px;
+    margin-left: 0px;
 */
-            max-height: calc(100% - (var(--hathor-ui-margin)*2));
+    max-height: calc(100% - (var(--hathor-ui-margin)*2));
 
-            background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
-            border-radius: var(--bs-border-radius);
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
 
-            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
-            backdrop-filter: blur(var(--aton-blur-radius));
-        }
-        .hathor-bottom-toolbar {
-            display: inline-block;
-            margin: var(--hathor-ui-margin);
-            
-            background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
-            border-radius: var(--bs-border-radius);
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+.hathor-bottom-toolbar {
+    display: inline-block;
+    margin: var(--hathor-ui-margin);
+    
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
+    border-radius: var(--bs-border-radius);
 
-            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
-            backdrop-filter: blur(var(--aton-blur-radius));
-        }
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
 
-        .hathor-user-toolbar {
-            top: 0px;
-            right: 0px;
-            position: absolute;
+.hathor-user-toolbar {
+    top: 0px;
+    right: 0px;
+    position: absolute;
 
-            margin: var(--hathor-ui-margin);
+    margin: var(--hathor-ui-margin);
 
-            background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
-            border-radius: var(--bs-border-radius);
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
+    border-radius: var(--bs-border-radius);
 
-            -webkit-backdrop-filter: blur(var(--aton-blur-radius));
-            backdrop-filter: blur(var(--aton-blur-radius));
-        }
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
 
-        .hathor-side-panel {
-            z-index: 10 !important;
+.hathor-side-panel {
+    z-index: 10 !important;
 
-            padding-left: 50px;
-        }
-    </style>
+    padding-left: 50px;
+}
 
-    <!-- Vendors -->
-	<script type="text/javascript" src="/vendors/vendors.min.js"></script>
-    <script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script type="text/javascript" src="/hathor/v2/thirdparty/jodit.min.js"></script>
+.hathor-text-block {
+    font-size: smaller;
+    text-align: justify;
+    margin: 4px;
+}
+    
+</style>
 
-    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
-    <script type="module" src="/src/ATON.js"></script>
+<!-- Vendors -->
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/hathor/v2/thirdparty/jodit.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
 <!--
-    <script type="text/javascript" src="../dist/ATON.min.js"></script>
+<script type="text/javascript" src="../dist/ATON.min.js"></script>
 -->
 
-    <script type="module" src="/hathor/v2/main.js"></script>
-    <script>
-        // We init Hathor onload
-        window.addEventListener( 'load', ()=>{
-            let flist = [];
-            <% flareslist.forEach((fid)=>{ %>
-                flist.push("<%= fid %>");
-            <% }); %>
+<script type="module" src="/hathor/v2/main.js"></script>
+<script>
+    // We init Hathor onload
+    window.addEventListener( 'load', ()=>{
+        let flist = [];
+        <% flareslist.forEach((fid)=>{ %>
+            flist.push("<%= fid %>");
+        <% }); %>
 
-            HATHOR.requireFlares( flist );
+        HATHOR.requireFlares( flist );
 
-            HATHOR.setSceneToLoad("<%= sid %>");
-        });
-    </script>
+        HATHOR.setSceneToLoad("<%= sid %>");
+    });
+</script>
 </head>
 
 <body>

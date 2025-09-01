@@ -47,6 +47,12 @@ window.addEventListener( 'load', ()=>{
                         icon: "home",
                         content: ATON.UI.createContainer({
                             items: [
+                                ATON.UI.createVectorControl({
+                                    vector: new THREE.Vector3(),
+                                    label: "position",
+                                    reset: [0,0,0]
+                                }),
+
                                 ATON.UI.createButton({
                                     variant:"primary",
                                     text:"Open side panel",

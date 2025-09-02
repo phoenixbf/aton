@@ -1316,6 +1316,7 @@ Create a scene card.
 - options.keywords: keywords object (eg. {"gold":1, "silver":1 })
 - options.title: scene title
 - options.subtitle: custom subtitle (if not provided, defaults to user)
+- options.url: custom url to open the scene (typically a custom app/viewer)
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1349,7 +1350,7 @@ UI.createSceneCard = (options)=>{
         useblurtint: options.useblurtint,
         classes: options.classes,
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
-        url: ATON.PATH_FE + sid,
+        url: options.url? options.url : ATON.PATH_FE + sid,
         subtitle: elSub,
         footer: options.footer,
         badge: options.badge

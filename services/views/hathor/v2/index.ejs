@@ -110,12 +110,16 @@
 <script>
     // We init Hathor onload
     window.addEventListener( 'load', ()=>{
-        let flist = [];
-        <% flareslist.forEach((fid)=>{ %>
-            flist.push("<%= fid %>");
-        <% }); %>
 
-        HATHOR.requireFlares( flist );
+        // Flares
+        let flist = ATON._fReqList;
+        if (flist.length===0){
+            <% flareslist.forEach((fid)=>{ %>
+                flist.push("<%= fid %>");
+            <% }); %>
+
+            HATHOR.requireFlares( flist );
+        }
 
         HATHOR.setSceneToLoad("<%= sid %>");
     });

@@ -126,6 +126,9 @@ ATON._resMappers = [];
 // Clip-planes
 ATON._clipPlanes = [];
 
+// Suspend
+ATON._bSuspend = false;
+
 /**
 Set ATON base url (root)
 @param {string} baseurl - baseurl
@@ -312,12 +315,14 @@ ATON._setupBaseListeners = ()=>{
 
             console.log("Suspend");
             ATON.renderPause();
+            ATON._bSuspend = true;
         }
         else {
             if (ATON.XR._bPresenting) return;
             
             console.log("Resume");
             ATON.renderResume();
+            ATON._bSuspend = false;
         }
     }, false);
 

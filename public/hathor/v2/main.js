@@ -9,7 +9,7 @@ import UI from "./ui.js";
 import ED from "./editor.js";
 
 /**
-Hathor front-end (official ATON front-end)
+Hathor V2 front-end (official ATON front-end)
 @namespace HATHOR
 */
 let HATHOR = ATON.App.realize();

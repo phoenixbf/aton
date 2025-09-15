@@ -70,6 +70,20 @@ MatHub.addDefaults = ()=>{
         opacity: 0.0
     });
 
+    MatHub.materials.invisible = new THREE.ShaderMaterial({ 
+        vertexShader: MatHub.getDefVertexShader(),
+        fragmentShader:`
+            varying vec3 vPositionW;
+		    varying vec3 vNormalW;
+            varying vec3 vNormalV;
+
+		    void main(){
+                gl_FragColor = vec4(0,0,0,1);
+                discard;
+            }
+        `,
+    });
+
     // Default UI
     MatHub.materials.defUI = new THREE.ShaderMaterial({
         uniforms: {

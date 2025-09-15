@@ -268,6 +268,8 @@ HATHOR.customUIList = (list)=>{
         if (uiname === "ar") ATON.FE.uiAddButtonAR("idTopToolbar");
         if (uiname === "xr") ATON.FE.uiAddButton("idTopToolbar", "xr", HATHOR.popupXR, "Immersive, Augmented or Mixed Reality");
 
+        if (uiname === "devori") ATON.FE.uiAddButtonDeviceOrientation("idTopToolbar");
+
         if (uiname === "qr") ATON.FE.uiAddButtonQR("idTopToolbar");
         if (uiname === "share" && !ATON.Utils.isLocalhost()) ATON.FE.uiAddButton("idTopToolbar", "share", HATHOR.popupShare, "Share");
         

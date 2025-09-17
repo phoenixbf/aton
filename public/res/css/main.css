@@ -478,19 +478,25 @@ a {
     background-color: rgba(var(--aton-colors-accent-rgb), 0.3);
 */
     --bs-btn-bg: rgba(var(--aton-colors-accent-rgb), 0.3);
-    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.5);
+    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.0);
     --bs-btn-color: var(--bs-btn-color);
 
     --bs-btn-hover-bg: rgba(var(--aton-colors-accent-rgb), 0.5);
-    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 1.0);
+    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.0);
     --bs-btn-hover-color: var(--bs-btn-color);
+
 /*
     -webkit-box-shadow: inset 0 0px 5px var(--bs-body-color);
     -moz-box-shadow: inset 0 0px 5px var(--bs-body-color);
     box-shadow: inset 0 0px 5px var(--bs-body-color);
 */
+
 }
 
+/* .aton-btn-highlight img {
+    filter: invert(100%) !important;
+}
+ */
 
 /* Dropdowns
 ============*/

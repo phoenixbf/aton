@@ -714,20 +714,26 @@ load(url, onComplete){
             ATON._3DGSR.autoUpdate = false;
             let bFirst = true;
 
-            ATON.addUpdateRoutine(()=>{
-                if (bFirst){
-                    ATON._3DGSR.update({ scene: ATON._rootVisible });
-                    bFirst = false;
-                    return;
+            const uPar  = { scene: ATON._rootVisible };
+            const msInt = 60;
+
+            window.setInterval(
+                ()=>{
+                    if (bFirst){
+                        ATON._3DGSR.update({ scene: ATON._rootVisible });
+                        bFirst = false;
+                        return;
+                    }
+
+                    if (ATON.Nav._dOri < 0.001) return;
+                    if (ATON.Nav._dPos < 0.0001) return;
+
+                    ATON._3DGSR.update( uPar );
                 }
 
-                if (ATON.Nav._dOri < 0.01) return;
-                if (ATON.Nav._dPos < 0.001) return;
-
-                ATON._3DGSR.update({ scene: ATON._rootVisible });
-            });
-*/          
-
+                , msInt
+            );
+*/
             const maxpd = 0.9;
             ATON.setAdaptiveDensityRange(0.1, maxpd);
             ATON.setDefaultPixelDensity(maxpd);

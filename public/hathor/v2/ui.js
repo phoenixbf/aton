@@ -106,14 +106,29 @@ UI.createLayersButton = ()=>{
     });
 };
 
+UI._onUser = (username)=>{
+	if (!UI._elUserBTN) return;
+
+	if (username){
+		//console.log(username);
+		UI._elUserBTN.classList.add("aton-btn-highlight");
+		UI._elUserBTN.append(ATON.UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
+	}
+	else {
+		UI._elUserBTN.classList.remove("aton-btn-highlight");
+		UI._elUserBTN.removeChild(UI._elUserBTN.lastChild);
+	}
+};
+
 UI.createUserButton = ()=>{
     UI._elUserBTN = ATON.UI.createButton({
         icon: "user",
+		classes: "px-2",
         onpress: UI.modalUser
     });
 
     ATON.checkAuth((u)=>{
-        UI._elUserBTN.classList.add("aton-btn-highlight");
+        UI._onUser(u.username);
     });
 
     return UI._elUserBTN;
@@ -179,10 +194,13 @@ UI.modalUser = ()=>{
                     onpress: ()=>{
                         ATON.REQ.logout();
                         ATON.UI.hideModal();
-                        if (UI._elUserBTN) UI._elUserBTN.classList.remove("aton-btn-highlight");
+                        
+                        UI._onUser();
                     }
                 })
             );
+
+            UI.closeToolPanel();
 
             ATON.UI.showModal({
                 header: u.username,
@@ -191,12 +209,14 @@ UI.modalUser = ()=>{
         },
         // Not logged
         ()=>{
+            UI.closeToolPanel();
+            
             ATON.UI.showModal({
                 header: "User",
                 body: ATON.UI.createLoginForm({
                     onSuccess: (r)=>{
                         ATON.UI.hideModal();
-                        if (UI._elUserBTN) UI._elUserBTN.classList.add("aton-btn-highlight");
+                        UI._onUser(r.username);
                     },
                     onFail: ()=>{
                         // TODO:

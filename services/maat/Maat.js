@@ -509,7 +509,7 @@ Maat.getPublicScenes = ()=>{
 Maat.getUserScenes = (uid)=>{
 	return new Promise((resolve, reject)=>{
 		Maat.scanScenes(()=>{
-			let R = Maat.db.scenes.filter((s)=>{ return (s.sid.startsWith(uid)); });
+			let R = Maat.db.scenes.filter((s)=>{ return (s.sid.startsWith(uid+"/")); });
 			resolve( R );
 		});
 	});
@@ -539,7 +539,7 @@ Maat.getScenesByKeyword = (kw, uid)=>{
 		Maat.scanScenes(()=>{
 			if (uid !== undefined){
 				let R = Maat.db.scenes.filter((s)=>{
-					return (s.sid.startsWith(uid) && s.kwords !== undefined && s.kwords[kw] !== undefined);
+					return (s.sid.startsWith(uid+"/") && s.kwords !== undefined && s.kwords[kw] !== undefined);
 				});
 
 				resolve(R);

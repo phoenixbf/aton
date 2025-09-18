@@ -481,7 +481,7 @@ a {
     --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.0);
     --bs-btn-color: var(--bs-btn-color);
 
-    --bs-btn-hover-bg: rgba(var(--aton-colors-accent-rgb), 0.5);
+    --bs-btn-hover-bg: rgba(var(--aton-colors-accent-rgb), 0.4);
     --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.0);
     --bs-btn-hover-color: var(--bs-btn-color);
 
@@ -490,6 +490,7 @@ a {
     -moz-box-shadow: inset 0 0px 5px var(--bs-body-color);
     box-shadow: inset 0 0px 5px var(--bs-body-color);
 */
+
 
 }
 

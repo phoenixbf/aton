@@ -878,6 +878,38 @@ HATHOR.setupEventHandlers = ()=>{
 
         if (k==='x') HATHOR.popupExportSemShapes();
 
+        // Temp. clip/sections
+        if (k==='1'){
+            let p = ATON.getSceneQueriedPoint();
+            if (!p) return;
+
+            if (!HATHOR._cliP) HATHOR._cliP = ATON.addClipPlane( new THREE.Vector3(0,-1,0), p );
+            else {
+                HATHOR._cliP.constant = p.y;
+                HATHOR._cliP.normal.set(0,-1,0);
+            }
+        }
+        if (k==='2'){
+            let p = ATON.getSceneQueriedPoint();
+            if (!p) return;
+
+            if (!HATHOR._cliP) HATHOR._cliP = ATON.addClipPlane( new THREE.Vector3(-1,0,0), p );
+            else {
+                HATHOR._cliP.constant = p.x;
+                HATHOR._cliP.normal.set(-1,0,0);
+            }
+        }
+        if (k==='3'){
+            let p = ATON.getSceneQueriedPoint();
+            if (!p) return;
+
+            if (!HATHOR._cliP) HATHOR._cliP = ATON.addClipPlane( new THREE.Vector3(0,0,-1), p );
+            else {
+                HATHOR._cliP.constant = p.z;
+                HATHOR._cliP.normal.set(0,0,-1);
+            }
+        }
+
         if (k==='u') ATON.FE.popupUser();
 
         if (k === '('){

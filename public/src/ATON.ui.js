@@ -1755,6 +1755,7 @@ UI.createSlider = (options)=>{
 Create an input text field
 - options.label: optional label for the input field
 - options.placeholder: optional placeholder
+- options.value: initial value
 - options.list: array of strings (datalist)
 - options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
 - options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
@@ -1783,6 +1784,8 @@ UI.createInputText = (options)=>{
     UI.registerElementAsComponent(elInput, "input");
 
     elInput.id = baseid + "-input";
+
+    if (options.value) elInput.value = String(options.value);
 
     if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
 

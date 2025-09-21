@@ -27,6 +27,8 @@ UI.setup = ()=>{
     if (HATHOR._tb) UI.buildCustomToolbar();
     else UI.buildStandardToolbar();
 
+    UI.buildTC();
+
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
 
@@ -58,6 +60,35 @@ UI.showMainElements = ()=>{
     ATON.UI.showElement(UI._elBottomToolbar); //.classList.remove("d-none");
     ATON.UI.showElement(UI._elUserToolbar); //.classList.remove("d-none");
 };
+
+UI.enterEditorMode = ()=>{
+    UI._elMainToolbar.classList.add("hathor-main-toolbar-editor");
+};
+UI.exitEditorMode = ()=>{
+    UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
+};
+
+/*
+    SUI
+=====================================*/
+UI.buildTC = ()=>{
+    UI._tc = new THREE.TransformControls( ATON.Nav._camera, ATON._renderer.domElement );
+
+    UI._tc.addEventListener('dragging-changed', ( event )=>{
+        let bDrag = event.value;
+
+        ATON.Nav.setUserControl(!bDrag);
+        ATON._bPauseQuery = bDrag;
+
+        if (!bDrag){
+            ATON.recomputeSceneBounds();
+            ATON.updateLightProbes();
+            console.log(UI._tc.object)
+        }
+    });
+
+    ATON.getRootUI().add(UI._tc.getHelper());
+}
 
 /*
     Semantics
@@ -106,6 +137,7 @@ UI.createLayersButton = ()=>{
     });
 };
 
+/*
 UI._onUser = (username)=>{
 	if (!UI._elUserBTN) return;
 
@@ -133,7 +165,7 @@ UI.createUserButton = ()=>{
 
     return UI._elUserBTN;
 };
-
+*/
 
 /*
     Main Toolbar
@@ -151,12 +183,19 @@ UI.buildStandardToolbar = ()=>{
         UI.createMainButton(),
         UI.createMainButton(),
         UI.createLayersButton(),
-        //UI.createUserButton(),
+
         UI.createXRButton(),
         ATON.UI.createButtonHome()
     );
 
-    UI._elUserToolbar.append( UI.createUserButton() );
+    //UI._elUserToolbar.append( UI.createUserButton() );
+    UI._elUserToolbar.append(
+        ATON.UI.createButtonUser({
+            onmodalopen: ()=>{
+                UI.closeToolPanel();
+            }
+        })
+    );
 };
 
 UI.buildCustomToolbar = ()=>{
@@ -179,7 +218,7 @@ UI.modalHathor = ()=>{
 
     });
 };
-
+/*
 UI.modalUser = ()=>{
 
     ATON.checkAuth(
@@ -226,6 +265,7 @@ UI.modalUser = ()=>{
         }
     );
 };
+*/
 
 UI.modalXR = ()=>{
     //TODO:
@@ -441,7 +481,11 @@ UI.createLayerModels = (N)=>{
             if (!url) return;
             if (url.length<2) return;
             
-            N.load(url);
+            //N.load(url);
+            HATHOR.ED.addModel({
+                url: url,
+                nid: N.nid
+            })
             
             elList.append( createItem(url) );
         }
@@ -453,6 +497,8 @@ UI.createLayerModels = (N)=>{
 UI.sideManageLayer = (nid)=>{
     let N = ATON.getSceneNode(nid);
     if (!N) return;
+
+    if (UI._tc) UI._tc.attach( N );
 
     let elBody = ATON.UI.createContainer();
     

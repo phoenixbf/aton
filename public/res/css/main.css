@@ -119,9 +119,9 @@ a {
     color: var(--bs-body-color);
 }
 
-::selection {
-    background-color: rgba(var(--aton-colors-accent-rgb), 0.3);
-}
+::selection { background-color: rgba(var(--aton-colors-accent-rgb), 0.3); }
+::-moz-selection { background-color: rgba(var(--aton-colors-accent-rgb), 0.3); }
+::-webkit-selection { background-color: rgba(var(--aton-colors-accent-rgb), 0.3); }
 
 /*=========================================
     ATON cascading classes (aton-*)
@@ -367,6 +367,10 @@ a {
     --bs-btn-disabled-bg: #0d6efd;
     --bs-btn-disabled-border-color: #0d6efd;
 */
+}
+
+[data-bs-theme=dark] .btn-accent .aton-icon {
+    filter: invert(100%);
 }
 
 .btn-default {

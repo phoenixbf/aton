@@ -18,9 +18,14 @@ window.HATHOR = HATHOR;
 HATHOR.UI = UI;
 HATHOR.ED = ED;
 
-
+// URL params
 HATHOR._sidToLoad = HATHOR.params.get('s');
 HATHOR._tb        = HATHOR.params.get('tb');
+
+HATHOR.MODE_STD    = 0;
+HATHOR.MODE_EDITOR = 1;
+
+HATHOR._mode = HATHOR.MODE_STD;
 
 
 HATHOR.setSceneToLoad = (sid)=>{
@@ -32,8 +37,22 @@ HATHOR.setup = ()=>{
     ATON.UI.addBasicEvents();
 
     HATHOR.UI.setup();
+    HATHOR.ED.setup();
 
     HATHOR.setupLogic();
+};
+
+// Editor
+HATHOR.enterEditorMode = ()=>{
+    HATHOR._mode = HATHOR.MODE_EDITOR;
+
+    HATHOR.UI.enterEditorMode();
+};
+ 
+HATHOR.exitEditorMode = ()=>{
+    HATHOR._mode = HATHOR.MODE_STD;
+
+    HATHOR.UI.exitEditorMode();
 };
 
 HATHOR.setupLogic = ()=>{

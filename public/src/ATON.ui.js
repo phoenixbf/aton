@@ -697,6 +697,104 @@ UI.createButtonQR = (options)=>{
 };
 
 /**
+Create a quick user authentication button (login/logout)
+- options.onmodalopen: optional routine when user modal is opened
+- options.onlogin: optional routine on user login
+- options.onlogout: optional routine on user logout
+- options.titlelogin: optional title for login modal
+- options.titlelogged: optional title for logged modal
+- options.modallogged: optional content (HTML Element) for modal content when user is logged
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonUser = (options)=>{
+    if (!options) options = {};
+
+    let elUserBTN;
+
+    const updUserBTN = (username)=>{
+        if (username){
+            //console.log(username);
+            //elUserBTN.classList.add("aton-btn-highlight");
+            elUserBTN.classList.add("btn-accent");
+            elUserBTN.append(UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
+        }
+        else {
+            //elUserBTN.classList.remove("aton-btn-highlight");
+            elUserBTN.classList.remove("btn-accent");
+            elUserBTN.removeChild(elUserBTN.lastChild);
+        }
+    };
+
+    elUserBTN = ATON.UI.createButton({
+        icon: "bi-person-fill", //"user",
+		//classes: "px-2",
+        onpress: ()=>{
+            if (options.onmodalopen) options.onmodalopen();
+
+            ATON.checkAuth(
+                // Logged
+                (u)=>{
+                    let elBody = ATON.UI.createContainer();
+
+                    let elLogout = ATON.UI.createContainer({ classes: "d-grid gap-2" });
+                    elLogout.append(
+                        ATON.UI.createButton({
+                            text: "Logout",
+                            icon: "exit",
+                            classes: "aton-btn-highlight",
+                            onpress: ()=>{
+                                ATON.REQ.logout();
+                                UI.hideModal();
+
+                                updUserBTN();
+                                
+                                if (options.onlogout) options.onlogout();
+                            }
+                        })
+                    );
+
+                    if (options.modallogged) elBody.append(options.modallogged);
+                    elBody.append(elLogout);
+
+                    ATON.UI.showModal({
+                        header: (options.titlelogged)? options.titlelogged : u.username,
+                        body: elBody
+                    })
+                },
+
+                // Not logged
+                ()=>{
+
+                    updUserBTN();
+
+                    ATON.UI.showModal({
+                        header: (options.titlelogin)? options.titlelogin : "Authentication",
+                        body: ATON.UI.createLoginForm({
+                            onSuccess: (r)=>{
+                                UI.hideModal();
+                                updUserBTN(r.username);
+
+                                if (options.onlogin) options.onlogin();
+                            },
+                            onFail: ()=>{
+                                //TODO:
+                            }
+                        })
+                    })
+                }
+            );
+        }
+    });
+
+    ATON.checkAuth((u)=>{
+        updUserBTN(u.username);
+    });
+
+    return elUserBTN;
+};
+
+/**
 Create a dropdown
 - options.title: the dropdown button title
 - options.icon: icon for dropdown button
@@ -2010,5 +2108,7 @@ UI.createLoginForm = (options)=>{
 
     return el;
 };
+
+
 
 export default UI;

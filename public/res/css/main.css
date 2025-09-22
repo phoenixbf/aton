@@ -440,6 +440,7 @@ a {
     min-height: 40px;
 
     vertical-align: middle;
+    overflow: hidden;
 }
 
 .aton-btn-text {
@@ -676,7 +677,7 @@ a {
 
     transition: all .1s ease-in-out;
 
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
 
 .aton-card:hover {

@@ -378,20 +378,27 @@ UI.sideTool = ()=>{
 
 UI.sideLayers = ()=>{
     // Layers list
-    let elLayers = ATON.UI.createContainer();
+    let elLayers = ATON.UI.createContainer({
+        style: "margin-bottom: 4px;"
+    });
 
     const appendNewLayer = (nid)=>{
         const elLayer = ATON.UI.createLayerControl({
             node: nid,
+            mainaction: UI.sideManageLayer,
+/*
             actions: [
                 ATON.UI.createButton({
                     icon: "settings",
                     size: "small",
+
                     onpress: ()=>{
                         UI.sideManageLayer(nid);
                     }
+
                 })
             ]
+*/
         });
 
         //console.log(ATON.UI.getComponent(elLayer,"actions"));

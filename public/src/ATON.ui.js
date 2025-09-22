@@ -1682,19 +1682,40 @@ UI.createLayerControl = (options)=>{
     let nid = options.node;
     let N = ATON.getSceneNode(nid);
 
-    const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
+    //const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
 
+    let elNode = ATON.UI.createContainer({
+		classes: "btn-group",
+        style: "width:100%",
+        //style: "display:block; !important"
+	});
+
+    let elMain = ATON.UI.createButton({
+        text: nid,
+        classes: "btn-default",
+        onpress: (options.mainaction)? ()=>{
+            options.mainaction(nid);   
+        } : undefined
+    });
+/*
+    if (options.mainaction) elNode.onclick = ()=>{
+        options.mainaction(nid);
+    }
+*/
     if (!N.visible) elNode.classList.add("aton-layer-hidden");
 
-    const elActionsC = ATON.UI.createContainer({style: "display:inline-block; margin-right:4px"});
+    const elActionsC = ATON.UI.createContainer({
+        classes: "btn-group",
+        style: "display:inline-block; margin-right:0px"
+    });
     UI.registerElementAsComponent(elActionsC, "actions");
-
     elNode.append(elActionsC);
 
     const elVis = ATON.UI.createButton({
         icon: "visibility",// "bi-eye-fill",
-        size: "small",
+        //size: "small",
         classes: (N.visible)? "aton-btn-highlight" : undefined,
+        //style: "max-width: 40px; !important",
         onpress: ()=>{
             if (N.visible){
                 N.hide();
@@ -1705,21 +1726,23 @@ UI.createLayerControl = (options)=>{
                 N.show();
                 elVis.classList.add("aton-btn-highlight");
                 elNode.classList.remove("aton-layer-hidden");
-            } 
-                
+            }   
         }
     });
 
     elActionsC.append(elVis);
+    //elNode.append(elVis);
 
     if (options.actions){
         for (let a in options.actions){
             let elAction = options.actions[a];
             elActionsC.append(elAction);
+            //elNode.append(elAction);
         }
     }
 
-    elNode.append(N.nid);
+    //elNode.append(N.nid);
+    elNode.append(elMain);
     return elNode;
 };
 

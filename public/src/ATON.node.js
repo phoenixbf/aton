@@ -710,7 +710,7 @@ load(url, onComplete){
             //ATON._3DGSR.falloff = 0.0;
             
             //ATON._3DGSR.defaultView.stochastic = true;
-
+/*
             ATON._3DGSR.autoUpdate = false;
             let bFirst = true;
 
@@ -733,7 +733,7 @@ load(url, onComplete){
                 
                 msInt
             );
-
+*/
             const maxpd = 0.9;
             ATON.setAdaptiveDensityRange(0.1, maxpd);
             ATON.setDefaultPixelDensity(maxpd);

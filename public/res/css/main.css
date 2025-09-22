@@ -429,7 +429,7 @@ a {
 .aton-btn {
     /*background-color: var(--bs-body-bg) !important;*/
     white-space: nowrap;
-    padding: 4px;
+    padding: 2px;
 /*
     padding-left: 0.5em;
     padding-right: 0.5em;
@@ -437,7 +437,8 @@ a {
     margin: 2px;
 
     min-width: 40px;
-    min-height: 40px;
+    /* min-height: 40px; */
+    height: 40px;
 
     vertical-align: middle;
     overflow: hidden;

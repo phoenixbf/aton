@@ -376,7 +376,7 @@ Core.createNewUser = (entry)=>{
 	let uconfig = path.join(Core.DIR_CONFIG,"users.json");
 	fs.writeFileSync(uconfig, JSON.stringify(Core.users, null, 4));
 
-	Core.touchCollectionFolder(entry);
+	Core.touchCollectionFolder(entry.username);
 
 	console.log("Created new user: "+entry);
 
@@ -423,13 +423,13 @@ Core.touchCollectionFolder = (uid)=>{
 		}
 	}
 
-/*
 	let dirModels = path.join(dirColl,"/models/");
 	let dirPano   = path.join(dirColl,"/pano/");
+	let dirMedia  = path.join(dirColl,"/media/");
 
 	if (!fs.existsSync(dirModels)) makeDir.sync(dirModels);
 	if (!fs.existsSync(dirPano)) makeDir.sync(dirPano);
-*/
+	if (!fs.existsSync(dirMedia)) makeDir.sync(dirMedia);
 };
 
 Core.touchUserCollectionFolders = ()=>{

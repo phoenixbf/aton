@@ -169,6 +169,15 @@ UI.hideCenteredOverlay = ()=>{
 /*===============================
     Main Modal (popup)
 ===============================*/
+
+/**
+Show centralized modal
+- options.header: main title (string)
+- options.body: main content of the side panel 
+- options.footer: optional footer HTML element
+
+@param {object} options - UI options object
+*/
 UI.showModal = (options)=>{
     if (!options) return;
 
@@ -203,6 +212,9 @@ UI.showModal = (options)=>{
     UI._bModal = true;
 };
 
+/**
+Hide (close) centralized modal
+*/
 UI.hideModal = ()=>{
     // Clear
     UI.elModalContent.innerHTML = "";
@@ -253,7 +265,7 @@ UI.showSidePanel = (options)=>{
 };
 
 /**
-Hide centralized side panel (offcanvas)
+Hide (close) centralized side panel (offcanvas)
 */
 UI.hideSidePanel = ()=>{
     UI.sidepanel.hide();
@@ -261,7 +273,7 @@ UI.hideSidePanel = ()=>{
 };
 
 /**
-Set centralized side panel (offcanvas) sliding from left
+Setup centralized side panel (offcanvas) sliding from left
 */
 UI.setSidePanelLeft = ()=>{
     UI.elSidePanel.classList.remove('offcanvas-end');
@@ -269,7 +281,7 @@ UI.setSidePanelLeft = ()=>{
 }
 
 /**
-Set centralized side panel (offcanvas) sliding from right
+Setup centralized side panel (offcanvas) sliding from right
 */
 UI.setSidePanelRight = ()=>{
     UI.elSidePanel.classList.remove('offcanvas-start');
@@ -711,18 +723,24 @@ UI.createButtonUser = (options)=>{
     if (!options) options = {};
 
     let elUserBTN;
+    let elUserN = UI.createElementFromHTMLString("<span class='aton-btn-text'></span>");
+    elUserN.classList.add("d-none");
 
     const updUserBTN = (username)=>{
         if (username){
             //console.log(username);
             //elUserBTN.classList.add("aton-btn-highlight");
             elUserBTN.classList.add("btn-accent");
-            elUserBTN.append(UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
+            elUserN.innerHTML = username;
+            elUserN.classList.remove("d-none");
+            //elUserBTN.append(UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
         }
         else {
             //elUserBTN.classList.remove("aton-btn-highlight");
             elUserBTN.classList.remove("btn-accent");
-            elUserBTN.removeChild(elUserBTN.lastChild);
+            elUserN.innerHTML = "";
+            elUserN.classList.add("d-none");
+            //elUserBTN.removeChild(elUserBTN.lastChild);
         }
     };
 
@@ -786,6 +804,8 @@ UI.createButtonUser = (options)=>{
             );
         }
     });
+
+    elUserBTN.append(elUserN);
 
     ATON.checkAuth((u)=>{
         updUserBTN(u.username);

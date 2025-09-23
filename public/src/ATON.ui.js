@@ -760,7 +760,7 @@ UI.createButtonUser = (options)=>{
                         ATON.UI.createButton({
                             text: "Logout",
                             icon: "exit",
-                            classes: "aton-btn-highlight",
+                            classes: "btn-accent",
                             onpress: ()=>{
                                 ATON.REQ.logout();
                                 UI.hideModal();

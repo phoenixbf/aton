@@ -686,16 +686,8 @@ load(url, onComplete){
     
     let ext = ATON.Utils.getFileExtension(url);
 
-    // Cesium 3D Tiles datasets
-    if ( ext === "json" || ext === "dzi" ){
-        ATON.MRes.loadTileSetFromURL(url, N);
-        //ATON._bqScene = true;
-        if (onComplete) onComplete();
-        return N;
-    }
-
     // 3DGS
-    if (ext === "spz" || ext === "splat" || ext === "ksplat" /*|| url.endsWith("-sogs.zip")*/){
+    if (ext === "spz" || ext === "splat" || ext === "ksplat" || url.endsWith("meta.json") /*|| url.endsWith("-sogs.zip")*/){
 
         // If not there, realize dedicated 3DGS renderer
         if (!ATON._3DGSR){
@@ -745,7 +737,7 @@ load(url, onComplete){
             url: url,
             editable: false,
             onLoad: (data)=>{
-                ATON.Utils.modelVisitor(N, data);
+                //ATON.Utils.modelVisitor(N, data);
                 
                 N.add( data );
 
@@ -763,6 +755,14 @@ load(url, onComplete){
             }
         });
         
+        return N;
+    }
+
+    // Cesium 3D Tiles datasets
+    if ( ext === "json" || ext === "dzi" ){
+        ATON.MRes.loadTileSetFromURL(url, N);
+        //ATON._bqScene = true;
+        if (onComplete) onComplete();
         return N;
     }
 

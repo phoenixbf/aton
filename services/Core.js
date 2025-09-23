@@ -422,7 +422,7 @@ Core.touchCollectionFolder = (uid)=>{
 			return;
 		}
 	}
-
+/*
 	let dirModels = path.join(dirColl,"/models/");
 	let dirPano   = path.join(dirColl,"/pano/");
 	let dirMedia  = path.join(dirColl,"/media/");
@@ -430,6 +430,7 @@ Core.touchCollectionFolder = (uid)=>{
 	if (!fs.existsSync(dirModels)) makeDir.sync(dirModels);
 	if (!fs.existsSync(dirPano)) makeDir.sync(dirPano);
 	if (!fs.existsSync(dirMedia)) makeDir.sync(dirMedia);
+*/
 };
 
 Core.touchUserCollectionFolders = ()=>{

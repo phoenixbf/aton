@@ -738,6 +738,7 @@ load(url, onComplete){
             editable: false,
             onLoad: (data)=>{
                 //ATON.Utils.modelVisitor(N, data);
+                data.quaternion.set(1, 0, 0, 0);
                 
                 N.add( data );
 

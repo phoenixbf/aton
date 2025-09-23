@@ -422,15 +422,35 @@ Core.touchCollectionFolder = (uid)=>{
 			return;
 		}
 	}
-/*
+
 	let dirModels = path.join(dirColl,"/models/");
 	let dirPano   = path.join(dirColl,"/pano/");
 	let dirMedia  = path.join(dirColl,"/media/");
 
-	if (!fs.existsSync(dirModels)) makeDir.sync(dirModels);
-	if (!fs.existsSync(dirPano)) makeDir.sync(dirPano);
-	if (!fs.existsSync(dirMedia)) makeDir.sync(dirMedia);
-*/
+	if (!fs.existsSync(dirModels)){
+		try {
+			makeDir.sync(dirModels);
+		} catch (e){
+			console.log(e);
+		}
+	}
+
+	if (!fs.existsSync(dirPano)){
+		try {
+			makeDir.sync(dirPano);
+		} catch (e){
+			console.log(e);
+		}
+	}
+
+	if (!fs.existsSync(dirMedia)){
+		try {
+			makeDir.sync(dirMedia);
+		} catch (e){
+			console.log(e);
+		}
+	}
+
 };
 
 Core.touchUserCollectionFolders = ()=>{

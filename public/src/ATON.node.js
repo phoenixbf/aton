@@ -695,7 +695,7 @@ load(url, onComplete){
             ATON._rootVisible.add( ATON._3DGSR );
 
             ATON._3DGSR.maxStdDev = Math.sqrt(5);
-            ATON._3DGSR.clipXY = 1.1;
+            ATON._3DGSR.clipXY = 1.0;
             //ATON._3DGSR.maxPixelRadius = 128.0; // 
             //ATON._3DGSR.focalAdjustment = 2.0;
             //ATON._3DGSR.enable2DGS = true;

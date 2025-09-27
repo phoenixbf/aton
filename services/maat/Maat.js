@@ -232,14 +232,10 @@ Maat.scanApps = (onComplete)=>{
 
 	Maat.needScan.apps = false;
 
-	let O    = {};
-	O.cwd    = Core.DIR_WAPPS;
-	O.follow = true;
-
 	console.log("Scanning web-apps...");
 
 	//let files = fg.sync("*/app.webmanifest", O);
-	fg("*/app.webmanifest", O).then(files => {
+	fg("*/app.webmanifest", Core.APPS_GLOB_OPTS).then(files => {
 		Maat.db.apps = [];
 
 		for (let f in files){

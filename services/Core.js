@@ -74,13 +74,27 @@ Core.users   = [];        // users config
 
 Core.SCENES_GLOB_OPTS = {
 	cwd: Core.DIR_SCENES,
-	follow: true
+	follow: true,
+	onlyFiles: true
 };
 
 Core.COLLECTIONS_GLOB_OPTS = {
 	cwd: Core.DIR_COLLECTIONS,
 	follow: true,
+	onlyFiles: true
 	//ignore: ["*/Data/*","*/tiles/*"]
+};
+
+Core.APPS_GLOB_OPTS = {
+	cwd: Core.DIR_WAPPS,
+	follow: true,
+	onlyFiles: true
+};
+
+Core.FLARES_GLOB_OPTS = {
+	cwd: Core.DIR_FLARES,
+	follow: true,
+	onlyFiles: true
 };
 
 // Modules setup
@@ -102,14 +116,9 @@ Core.flares = {};
 
 Core.setupFlares = (app)=>{
 	if (!fs.existsSync(Core.DIR_FLARES)) return;
-	
-	// From flares
-	let O    = {};
-	O.cwd    = Core.DIR_FLARES; //Core.DIR_PUBLIC;
-	O.follow = true;
 
 	// Collect all flares
-	let plugins = fg.sync("**/flare.json", O);
+	let plugins = fg.sync("**/flare.json", Core.FLARES_GLOB_OPTS);
 	for (let f in plugins){
 		let flarename = path.dirname(plugins[f]);
 		let pp = Core.DIR_FLARES + plugins[f];

@@ -629,6 +629,7 @@ ATON.realize = ( bNoRender )=>{
         //canvas: document.getElementById("View3D"),
         
         antialias: (ATON.device.lowGPU)? false : true,
+        //antialias: false,
         alpha: true,     // required for AR
 
         //logarithmicDepthBuffer: true, // issues with postfx (SSAO)

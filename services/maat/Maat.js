@@ -638,12 +638,9 @@ Maat.getScenesKeywords = ()=>{
 			resolve( Maat.db.kwords );
 		});
 	});
+	//Maat.scanScenes();
 
-/*
-	Maat.scanScenes();
-
-	return Maat.db.kwords;
-*/
+	//return Maat.db.kwords;
 };
 
 Maat.getStats = ()=>{

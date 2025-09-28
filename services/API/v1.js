@@ -139,8 +139,10 @@ app.get("/api/scenes/", function(req,res,next){
 	* @apiSuccess {Array} list List of scenes
 */
 app.get("/api/keywords", (req,res)=>{
-	let kk = Core.Maat.getScenesKeywords();
-	res.send(kk);
+	//let kk = Core.Maat.getScenesKeywords();
+	Core.Maat.getScenesKeywords().then((kk)=>{
+		res.send(kk);
+	})
 });
 
 /**

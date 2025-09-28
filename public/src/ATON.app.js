@@ -380,7 +380,7 @@ App.run = ()=>{
     //ATON.on("AllFlaresReady",()=>{
         if (App.setup) App.setup();
         else {
-            ATON.FE.realize();
+            ATON.realize();
             console.log("App [Warn]: your App should define a setup() routine");
         }
     

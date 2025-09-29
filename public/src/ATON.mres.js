@@ -164,13 +164,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
-/*
+
     let FP = new TILES.TilesFadePlugin();
-    FP.fadeRootTiles = true;
-    FP.fadeDuration  = 500;
+    FP.fadeRootTiles = false;
+    FP.fadeDuration  = 1000;
     
     ts.registerPlugin( FP );
-*/
+
 
     if (cesiumReq){
         ts.fetchOptions.headers = {};

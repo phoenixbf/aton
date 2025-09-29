@@ -167,7 +167,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = false;
-    FP.fadeDuration  = 1000;
+    FP.fadeDuration  = 500;
     
     ts.registerPlugin( FP );
 

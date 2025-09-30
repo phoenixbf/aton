@@ -690,46 +690,7 @@ load(url, onComplete){
     if (ext === "spz" || ext === "splat" || ext === "ksplat" || url.endsWith("meta.json") /*|| url.endsWith("-sogs.zip")*/){
 
         // If not there, realize dedicated 3DGS renderer
-        if (!ATON._3DGSR){
-            ATON._3DGSR = new SPARK.SparkRenderer({ renderer: ATON._renderer });
-            ATON._rootVisible.add( ATON._3DGSR );
-
-            ATON._3DGSR.maxStdDev = Math.sqrt(5);
-            ATON._3DGSR.clipXY = 1.0;
-            //ATON._3DGSR.maxPixelRadius = 128.0; // 
-            //ATON._3DGSR.focalAdjustment = 2.0;
-            //ATON._3DGSR.enable2DGS = true;
-            //ATON._3DGSR.falloff = 0.0;
-            
-            //ATON._3DGSR.defaultView.stochastic = true;
-/*
-            ATON._3DGSR.autoUpdate = false;
-            let bFirst = true;
-
-            const uPar  = { scene: ATON._rootVisible };
-            const msInt = 60;
-
-            window.setInterval(
-                ()=>{
-                    if (bFirst){
-                        ATON._3DGSR.update({ scene: ATON._rootVisible });
-                        bFirst = false;
-                        return;
-                    }
-
-                    if (ATON.Nav._dOri < 0.001) return;
-                    if (ATON.Nav._dPos < 0.0001) return;
-
-                    ATON._3DGSR.update( uPar );
-                }, 
-                
-                msInt
-            );
-*/
-            const maxpd = 0.9;
-            ATON.setAdaptiveDensityRange(0.1, maxpd);
-            ATON.setDefaultPixelDensity(maxpd);
-        }
+        ATON.GS.realize();
 
         ATON._assetReqNew(url);
 

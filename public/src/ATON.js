@@ -45,6 +45,7 @@ import CC from "./ATON.cc.js";
 import MRes from "./ATON.mres.js";
 import ASCII from "./ATON.ascii.js";
 import REQ from "./ATON.req.js";
+import GS from "./ATON.gs.js";
 
 // Classes
 ATON.Node       = Node;
@@ -76,6 +77,7 @@ ATON.XPFNetwork = XPFNetwork;
 ATON.MRes       = MRes;
 ATON.ASCII      = ASCII;
 ATON.REQ        = REQ;
+ATON.GS         = GS;
 
 //==============================================================
 // Consts
@@ -642,8 +644,6 @@ ATON.realize = ( bNoRender )=>{
 
     ATON._renderer = new THREE.WebGLRenderer(wglopts);
     ATON._renderer.setSize( window.innerWidth, window.innerHeight );
-
-    ATON._3DGSR = undefined;
 
     //console.log(ATON._renderer);
 

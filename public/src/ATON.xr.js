@@ -105,8 +105,8 @@ XR.init = ()=>{
 XR.setDensity = (d)=>{
     if (ATON._renderer.xr === undefined) return;
 
-    if (ATON.device.isMobile || ATON.device.lowGPU) ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd * ATON.XR.LOW_DENSITY_F);
-    else ATON._renderer.xr.setFramebufferScaleFactor(ATON._stdpxd);
+    if (ATON.device.isMobile || ATON.device.lowGPU) ATON._renderer.xr.setFramebufferScaleFactor(d * ATON.XR.LOW_DENSITY_F);
+    else ATON._renderer.xr.setFramebufferScaleFactor(d);
 };
 
 

@@ -23,6 +23,7 @@ let users = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 //console.log(conf);
 
+let UserManager = {};
 
 // Command-line
 const optDefs = [
@@ -33,39 +34,44 @@ const optDefs = [
     { name: 'mail', type: String },  //
 ];
 
-let args = commandLineArgs(optDefs);
+UserManager.args = commandLineArgs(optDefs);
 
-if (!args.op){
-    console.log("No operation specified");
-    return;
-}
-
-// Operations
-if (args.op === "new"){
-    let uid = args.uid;
-    let pwd = args.pwd;
-
-    if (!uid || !pwd){
-        console.log("--uid and --pwd are both required.");
+UserManager.run = ()=>{
+    if (!UserManager.args.op){
+        console.log("No operation specified");
         return;
     }
 
-    for (let i in users){
-        let U = users[i];
-        if (U.username===uid){
-            console.log("User "+uid+" already exists.")
+    // Operations
+    if (UserManager.args.op === "new"){
+        let uid = UserManager.args.uid;
+        let pwd = UserManager.args.pwd;
+
+        if (!uid || !pwd){
+            console.log("--uid and --pwd are both required.");
             return;
         }
+
+        for (let i in users){
+            let U = users[i];
+            if (U.username===uid){
+                console.log("User "+uid+" already exists.")
+                return;
+            }
+        }
+
+        Core.createNewUser({
+            username: uid,
+            password: pwd,
+            admin: UserManager.args.admin? true : undefined,
+            mail: UserManager.args.mail
+        });
+
+        console.log("\nNEW USER CREATED: "+uid);
+        console.log("=====================\n");
     }
+};
 
-    Core.createNewUser({
-        username: uid,
-        password: pwd,
-        admin: args.admin? true : undefined,
-        mail: args.mail
-    });
+UserManager.run();
 
-    console.log("\nNEW USER CREATED: "+uid);
-}
-
-console.log("=====================\n");
+module.exports = UserManager;

@@ -112,6 +112,7 @@ UI.closeSemanticPanel = ()=>{
 UI.createMainButton = ()=>{
     return ATON.UI.createButton({
         icon: "hathor",
+        classes: "hathor-main-btn",
         onpress: UI.modalHathor
     });
 };
@@ -179,9 +180,6 @@ UI.buildStandardToolbar = ()=>{
         UI.createMainButton(),
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
-        UI.createMainButton(),
-        UI.createMainButton(),
-        UI.createMainButton(),
         UI.createLayersButton(),
 
         UI.createXRButton(),

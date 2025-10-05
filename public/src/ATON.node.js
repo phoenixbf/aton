@@ -687,7 +687,12 @@ load(url, onComplete){
     let ext = ATON.Utils.getFileExtension(url);
 
     // 3DGS
-    if (ext === "spz" || ext === "splat" || ext === "ksplat" || url.endsWith("meta.json") /*|| url.endsWith("-sogs.zip")*/){
+    if (ext === "spz" || 
+        ext === "splat" || 
+        ext === "ksplat" || 
+        ext === "sog" || 
+        url.endsWith("meta.json")
+    ){
 
         // If not there, realize dedicated 3DGS renderer
         ATON.GS.realize();

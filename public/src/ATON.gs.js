@@ -14,6 +14,7 @@ let GS = {};
 GS._3DGSR = undefined;
 
 GS.MAX_PXRAD = 512;
+GS.MIN_PXRAD = 1;
 
 
 //Initializes the component
@@ -25,8 +26,11 @@ GS.realize = ()=>{
 
     GS._3DGSR.maxStdDev = Math.sqrt(5);
     GS._3DGSR.clipXY = 1.0;
+
+    if (ATON.device.lowGPU || ATON.device.isMobile) GS.MIN_PXRAD = 2.0;
     
-    GS._3DGSR.maxPixelRadius = GS.MAX_PXRAD; 
+    GS._3DGSR.maxPixelRadius = GS.MAX_PXRAD;
+    GS._3DGSR.minPixelRadius = GS.MIN_PXRAD;
 
     //GS._3DGSR.focalAdjustment = 2.0;
     //GS._3DGSR.enable2DGS = true;
@@ -73,12 +77,14 @@ GS.isRealized = ()=>{
 
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
-        if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
+        //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
+        GS._3DGSR.minPixelRadius++;
         console.log("GS lower perf");
     });
 
     ATON.on("RequestHigherRender", ()=>{
-        if (GS._3DGSR.maxPixelRadius < GS.MAX_PXRAD) GS._3DGSR.maxPixelRadius *= 2.0;
+        //if (GS._3DGSR.maxPixelRadius < GS.MAX_PXRAD) GS._3DGSR.maxPixelRadius *= 2.0;
+        if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
         console.log("GS higher perf");
     });
 };

@@ -27,7 +27,7 @@ GS.realize = ()=>{
     GS._3DGSR.maxStdDev = Math.sqrt(5);
     GS._3DGSR.clipXY = 1.0;
 
-    if (ATON.device.lowGPU || ATON.device.isMobile) GS.MIN_PXRAD = 2.0;
+    if (ATON.device.lowGPU || ATON.device.isMobile) GS.MIN_PXRAD = 3.0;
     
     GS._3DGSR.maxPixelRadius = GS.MAX_PXRAD;
     GS._3DGSR.minPixelRadius = GS.MIN_PXRAD;
@@ -37,30 +37,7 @@ GS.realize = ()=>{
     //GS._3DGSR.falloff = 0.0;
     
     //GS._3DGSR.defaultView.stochastic = true;
-/*
-    GS._3DGSR.autoUpdate = false;
-    let bFirst = true;
 
-    const uPar  = { scene: ATON._rootVisible };
-    const msInt = 60;
-
-    window.setInterval(
-        ()=>{
-            if (bFirst){
-                GS._3DGSR.update({ scene: ATON._rootVisible });
-                bFirst = false;
-                return;
-            }
-
-            if (ATON.Nav._dOri < 0.001) return;
-            if (ATON.Nav._dPos < 0.0001) return;
-
-            GS._3DGSR.update( uPar );
-        }, 
-        
-        msInt
-    );
-*/
     const maxpd = 0.9;
     ATON.setAdaptiveDensityRange(0.1, maxpd);
     ATON.setDefaultPixelDensity(maxpd);
@@ -68,12 +45,48 @@ GS.realize = ()=>{
     GS.setupProfiler();
 
     ATON.XR.setDensity(0.5);
+
+/*
+    GS._3DGSR.autoUpdate = false;
+
+    const uPar  = { scene: ATON._rootVisible };
+    const msInt = 60;
+
+    window.setInterval(
+        ()=>{
+            //if (ATON.Nav._dOri < 0.001) return;
+            //if (ATON.Nav._dPos < 0.0001) return;
+
+            GS._3DGSR.update( uPar );
+        }, 
+        
+        msInt
+    );
+*/
 };
 
 GS.isRealized = ()=>{
     if (GS._3DGSR) return true;
     else return false;
 }
+
+GS.visitor = (N)=>{
+    if (!N) return;
+
+    N.traverse((o)=>{
+        if (o.material){
+            o.material.clippingPlanes   = ATON._clipPlanes;
+            o.material.clipIntersection = false;
+        }
+    });
+
+    // Picking
+    N.disablePicking();
+/*
+    if (N.bPickable) N.enablePicking();
+    ATON._bqScene = true;
+*/
+};
 
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{

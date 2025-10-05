@@ -310,9 +310,12 @@ Maat._mfilter = (fpath)=>{
 	if (fpath.endsWith(".json")){
 		if (fpath.includes("/Data/")) return false;
 	}
-	else {
-		if (fpath.includes("/tiles/")) return false;
+
+	if (fpath.endsWith(".glb")){
+		if (fpath.includes("/Data/")) return false;
 	}
+	
+	if (fpath.includes("/tiles/")) return false;
 
 	return true;
 };

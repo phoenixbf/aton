@@ -703,20 +703,17 @@ load(url, onComplete){
             url: url,
             editable: false,
             onLoad: (data)=>{
-                //ATON.Utils.modelVisitor(N, data);
                 data.quaternion.set(1, 0, 0, 0);
                 
+                //ATON.Utils.modelVisitor(N, data);
+
                 N.add( data );
 
                 //data.opacity = 0.1;
                 
                 ATON._assetReqComplete(url);
 
-                // TODO:
-                N.disablePicking();
-                
-                //if (N.bPickable) N.enablePicking();
-                //ATON._bqScene = true;
+                ATON.GS.visitor(N);
 
                 if (onComplete) onComplete();
             }

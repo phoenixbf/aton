@@ -35,7 +35,7 @@ const FileStore      = require('session-file-store')(session);
 // Local modules
 const BaseAPI = require("./API/v1.js");
 const Maat    = require("./maat/Maat.js");
-const User    = require("./User.js");
+//const User    = require("./User.js");
 
 
 Core = {};

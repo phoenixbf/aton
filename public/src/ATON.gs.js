@@ -16,6 +16,8 @@ GS._3DGSR = undefined;
 GS.MAX_PXRAD = 512;
 GS.MIN_PXRAD = 1;
 
+GS.MAX_STDDEV = 2.8;
+
 
 //Initializes the component
 GS.realize = ()=>{
@@ -24,10 +26,17 @@ GS.realize = ()=>{
     GS._3DGSR = new SPARK.SparkRenderer({ renderer: ATON._renderer });
     ATON._rootVisible.add( GS._3DGSR );
 
-    GS._3DGSR.maxStdDev = Math.sqrt(5);
-    GS._3DGSR.clipXY = 1.0;
+    if (ATON.device.lowGPU || ATON.device.isMobile){
+        GS.MIN_PXRAD  = 2.0;
+        GS.MAX_STDDEV = 2.0;
+    }
 
-    if (ATON.device.lowGPU || ATON.device.isMobile) GS.MIN_PXRAD = 3.0;
+    GS._3DGSR.clipXY = 1.1;
+    
+    //GS._3DGSR.minAlpha = 0.01;
+    //GS._3DGSR.blurAmount = 0.3;
+
+    GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
     
     GS._3DGSR.maxPixelRadius = GS.MAX_PXRAD;
     GS._3DGSR.minPixelRadius = GS.MIN_PXRAD;
@@ -46,6 +55,15 @@ GS.realize = ()=>{
 
     ATON.XR.setDensity(0.5);
 
+    ATON.on("XRmode",(b)=>{
+        if (b){
+            GS._3DGSR.maxStdDev = 2.0;
+        }
+        else {
+            GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
+        }
+    });
+
 /*
     GS._3DGSR.autoUpdate = false;
 
@@ -54,7 +72,7 @@ GS.realize = ()=>{
 
     window.setInterval(
         ()=>{
-            //if (ATON.Nav._dOri < 0.001) return;
+            if (ATON.Nav._dOri < 0.001) return;
             //if (ATON.Nav._dPos < 0.0001) return;
 
             GS._3DGSR.update( uPar );
@@ -91,7 +109,7 @@ GS.visitor = (N)=>{
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
         //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
-        GS._3DGSR.minPixelRadius++;
+        if (GS._3DGSR.minPixelRadius < 32) GS._3DGSR.minPixelRadius++;
         console.log("GS lower perf");
     });
 

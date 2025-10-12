@@ -23,7 +23,11 @@ GS.MAX_STDDEV = 2.8;
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
-    GS._3DGSR = new SPARK.SparkRenderer({ renderer: ATON._renderer });
+    GS._3DGSR = new SPARK.SparkRenderer({
+        renderer: ATON._renderer, 
+        //premultipliedAlpha: false
+    });
+    
     ATON._rootVisible.add( GS._3DGSR );
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
@@ -32,6 +36,7 @@ GS.realize = ()=>{
     }
 
     GS._3DGSR.clipXY = 1.1;
+    GS._3DGSR.focalAdjustment = 2.0;
     
     //GS._3DGSR.minAlpha = 0.01;
     //GS._3DGSR.blurAmount = 0.3;

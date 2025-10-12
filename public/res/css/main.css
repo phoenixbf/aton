@@ -892,6 +892,11 @@ input[type="range"] {
 input[type="range"]:focus {
     outline: none;
 }
+
+.aton-input[type="color"] {
+    min-height: 40px;
+    margin: 0px;
+}
   
 /******** Chrome, Safari, Opera and Edge Chromium styles ********/
 /* slider track */

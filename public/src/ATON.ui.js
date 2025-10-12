@@ -2009,6 +2009,36 @@ UI.createInput3DModel = (options)=>{
     return el;
 };
 
+UI.createColorPicker = (options)=>{    
+    if (!options) options = {};
+
+    let el = ATON.UI.createContainer({classes: "input-group" });
+
+    let label = "";
+
+    if (options.label){
+        label = options.label;
+        el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
+    }
+
+    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="color">`);
+    UI.registerElementAsComponent(elInput, "input");
+
+    el.append(elInput);
+
+    if (options.color) elInput.value = options.color;
+
+    if (options.onchange) elInput.onchange = ()=>{
+        options.onchange(elInput.value);
+    };
+
+    if (options.oninput) elInput.oninput = ()=>{
+        options.oninput(elInput.value);
+    };
+
+    return el;
+};
+
 /**
 Create an audio recorder
 - options.iconrec: icon for record audio button (e.g. "rec")

@@ -579,6 +579,18 @@ UI.sideEnv = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
+    let elCP = ATON.UI.createColorPicker({
+        label: "Background color",
+        color: "#"+ATON._mainRoot.background.getHexString(),
+        onchange: (col)=>{
+            ATON.setBackgroundColor( new THREE.Color(col) );
+            console.log(col)
+        }
+    });
+
+
+    elBody.append(elCP);
+
 
     UI.openToolPanel({
         header: "Environment",

@@ -54,6 +54,13 @@ window.addEventListener( 'load', ()=>{
                                     reset: [0,0,0]
                                 }),
 
+                                ATON.UI.createColorPicker({
+                                    label: "Pick a color",
+                                    onchange: (v)=>{
+                                        console.log(v)
+                                    }
+                                }),
+
                                 ATON.UI.createButton({
                                     variant:"primary",
                                     text:"Open side panel",

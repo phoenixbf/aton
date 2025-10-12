@@ -138,6 +138,27 @@ UI.createLayersButton = ()=>{
     });
 };
 
+UI.createEnvButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "env",
+        onpress: UI.sideEnv
+    });
+};
+
+UI.createSceneButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "scene",
+        onpress: UI.sideScene
+    });
+};
+
+UI.createNavButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "nav",
+        onpress: UI.sideNav
+    });
+};
+
 /*
 UI._onUser = (username)=>{
 	if (!UI._elUserBTN) return;
@@ -178,12 +199,15 @@ UI.buildStandardToolbar = ()=>{
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
+        UI.createLayersButton(),
+        UI.createEnvButton(),
+        UI.createSceneButton(),
+        UI.createNavButton(),
+
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
-        UI.createLayersButton(),
 
-        UI.createXRButton(),
-        ATON.UI.createButtonHome()
+        UI.createXRButton()
     );
 
     //UI._elUserToolbar.append( UI.createUserButton() );
@@ -546,6 +570,18 @@ UI.sideManageLayer = (nid)=>{
             icon: "back",
             onpress: UI.sideLayers
         }),
+        body: elBody
+    });
+};
+
+UI.sideEnv = ()=>{
+    let elBody = ATON.UI.createContainer({
+        //style: "margin-bottom: 4px;"
+    });
+
+
+    UI.openToolPanel({
+        header: "Environment",
         body: elBody
     });
 };

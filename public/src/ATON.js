@@ -630,8 +630,8 @@ ATON.realize = ( bNoRender )=>{
     const wglopts = {
         //canvas: document.getElementById("View3D"),
         
-        antialias: (ATON.device.lowGPU)? false : true,
-        //antialias: false,
+        //antialias: (ATON.device.lowGPU)? false : true,
+        antialias: false,
         alpha: true,     // required for AR
 
         //logarithmicDepthBuffer: true, // issues with postfx (SSAO)

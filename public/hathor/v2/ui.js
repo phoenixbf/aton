@@ -583,8 +583,7 @@ UI.sideEnv = ()=>{
         label: "Background color",
         color: "#"+ATON._mainRoot.background.getHexString(),
         onchange: (col)=>{
-            ATON.setBackgroundColor( new THREE.Color(col) );
-            console.log(col)
+            HATHOR.ED.setBackground({ color: col });
         }
     });
 

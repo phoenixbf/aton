@@ -19,6 +19,8 @@ ED.setPersistentModifications = (b)=>{
 };
 
 ED.createLayer = (o)=>{
+    if (!o) return;
+    
     let nid = o.nid;
     if (!nid) return false;
 
@@ -56,10 +58,14 @@ ED.createLayer = (o)=>{
 };
 
 ED.deleteLayer = (o)=>{
+    if (!o) return;
+
     //TODO:
 };
 
 ED.addModel = (o)=>{
+    if (!o) return;
+
     let url = o.url;
     let nid = o.nid;
     let type = o.type? o.type : ATON.NTYPES.SCENE;
@@ -72,6 +78,26 @@ ED.addModel = (o)=>{
 
     let op = {
         a: "ADD_MODEL",
+        data: o,
+    };
+
+    ED._opList.push(op);
+};
+
+ED.setBackground = (o)=>{
+    if (!o) return;
+
+    if (o.color){
+        let col = new THREE.Color(o.color);
+        ATON.setBackgroundColor( col );
+    }
+
+    if (o.bg){
+        ATON.setMainPanorama(o.bg);
+    }
+
+    let op = {
+        a: "SET_BG",
         data: o,
     };
 

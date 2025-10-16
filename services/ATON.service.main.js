@@ -26,8 +26,8 @@ const Core = require('./Core');
 const Auth = require('./Auth');
 const Render = require('./Render');
 const API  = require("./API/v2"); // v2
-
-
+// for ejs conversion
+const ejs = require('ejs');
 // Initialize & load config files
 Core.init();
 
@@ -82,6 +82,9 @@ let app = express();
 
 //app.use(compression());
 
+// Configure EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 app.use(cors({
 	credentials: true,
 	origin: true
@@ -118,6 +121,23 @@ app.get(/^\/s\/(.*)$/, function(req,res,next){
 const CACHING_OPT = {
 	maxage: "3h"
 };
+
+// Landing page route
+app.get('/', (req, res) => {
+    // Get landing configuration
+    const landingConfig = Core.config.landing || {};
+    
+    // Pass query parameters and config to template
+    res.render('index', {
+        config: landingConfig,
+        query: req.query.q,
+        bg: req.query.bg,
+        hide: req.query.hide,
+        tb: req.query.tb,
+        title: landingConfig.title || 'ATON Framework',
+        description: landingConfig.description || 'ATON Framework'
+    });
+});
 
 app.use('/', express.static(Core.DIR_PUBLIC, CACHING_OPT ));
 

@@ -70,10 +70,15 @@ app.get("/api/getid/", function(req,res,next){
 	* @apiDescription Retrieve ATON landing page rendering options
 */
 app.get("/api/landing/", (req,res,next)=>{
-	let o = {};
-	if (Core.config.landing !== undefined) o = Core.config.landing;
-
-	res.send(o);
+    let o = {};
+    if (Core.config.landing !== undefined) o = Core.config.landing;
+    
+    // Add theme parameter support
+    if (req.query.theme) {
+        o.theme = req.query.theme;
+    }
+    
+    res.json(o);
 });
 
 // Collection

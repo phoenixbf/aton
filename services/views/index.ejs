@@ -11,27 +11,232 @@
 <!-- Add iOS meta tags and icons -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="ATON Framework">
+<meta name="apple-mobile-web-app-title" content="<%= title %>">
 <link rel="apple-touch-icon" href="/res/aton-logo.png">
-<meta name="description" content="ATON Framework">
+<meta name="description" content="<%= description %>">
 <!-- Add meta theme-color -->
 <meta name="theme-color" content="#000000" />
 
-<title>ATON Framework</title>
+<title><%= title %></title>
 <link rel="stylesheet" type="text/css" href="res/css/aton.css">
+<style>
+        :root {
+            --primary-color: <%= config.primaryColor || '#007bff' %>;
+            --secondary-color: <%= config.secondaryColor || '#6c757d' %>;
+            --background-color: <%= config.backgroundColor || '#ffffff' %>;
+            --text-color: <%= config.textColor || '#333333' %>;
+            --accent-color: <%= config.accentColor || '#28a745' %>;
+        }
+        
+        .atonBTN {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .atonBTN:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .atonBTN-green {
+            background-color: var(--accent-color);
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        
+        .atonBlockTitle {
+            color: var(--primary-color);
+        }
+        
+        .atonKeyword {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .atonKeyword:hover {
+            background-color: var(--primary-color);
+        }
+    </style>
 <script type="text/javascript" src="vendors/vendors.min.js"></script>
 <script type="text/javascript" src="dist/THREE.bundle.js"></script>
 <script type="text/javascript" src="dist/ATON.min.js"></script>
 <script type="text/javascript" src="shu/shu.js"></script>
+
+<script>
+let urlParams = new URLSearchParams(window.location.search);
+let query  = urlParams.get('q');
+let bg     = urlParams.get('bg');
+let hide   = urlParams.get('hide');
+let tb     = urlParams.get('tb');
+
+// Use EJS variables if available, fallback to URL params
+query = '<%= query %>' || query;
+bg = '<%= bg %>' || bg;
+hide = '<%= hide %>' || hide;
+tb = '<%= tb %>' || tb;
+
+let opts = {
+    view: {}
+};
+
+let ohide = {}
+if (hide){
+    hide = hide.split(",");
+    for (let i in hide) ohide[ hide[i] ] = 1;
+}
+
+if (tb) opts.view.tb = tb;
+
+let openSID = ()=>{
+    let sid = $("#sid").val();
+    if (sid && sid.length > 1) SHU.goToScene( sid );
+};
+
+let showAllScenes = ()=>{
+    $('.atonGalleryItem').each(function(){
+        $(this).show(/*"scale"*/);
+    });
+};
+
+// Search
+let search = ()=>{
+    let searchTerm = $("#sid").val().trim().toLowerCase();
+    searchTerm = searchTerm.split(" ")[0];
+
+    searchByTerm(searchTerm);
+
+    if (searchTerm.includes("/")) $("#btn-go").show();
+    else $("#btn-go").hide();
+};
+
+let searchClear = ()=>{
+    $("#sid").val("");
+    showAllScenes();
+    $("#idTCtools").hide();
+};
+
+let searchByTerm = (searchTerm)=>{
+    if (searchTerm === undefined) return;
+
+    if (searchTerm.length<3 || searchTerm.includes("/")){
+        showAllScenes();
+        return;
+    }
+
+    $('.atonGalleryItem').each(function(){
+        if ($(this).filter('[data-search-term*='+searchTerm+']').length > 0 || searchTerm.length < 1){
+            $(this).show(/*"scale"*/);
+        }
+        else $(this).hide(/*"scale"*/);
+    });
+};
+
+let onLandingData = (data)=>{
+    let htmlcontent = "";
+
+    // Custom bg color
+    if (bg){
+        $("body").css({
+            "background-color":"rgba("+bg+")",
+            "background-image":"none"
+        });
+    }
+
+    if (query){
+        if ( !ohide["term"] ) htmlcontent += "<div id='gTitle' class='atonBlockTitle'><img class='atonDefIcon' src='"+ATON.PATH_RES+"icons/gallery.png'>"+query+"</div><br>";
+        htmlcontent += "<div id='idPubGallery'></div>";
+
+        htmlcontent += "<br><br>";
+
+        $("#idMainContent").html(htmlcontent);
+
+        if (ohide["authors"]) opts.hideAuthors = true;
+
+        SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
+            searchByTerm( query );
+        }, opts );
+
+        return;
+    }
+
+    if (data.redirect !== undefined){
+        window.location.replace(data.redirect);
+        return;
+    }
+
+    if (data.gallery){
+        htmlcontent += "<br><a href='shu/scenes/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/user.png'></a>";
+        htmlcontent += "<div id='idScenes' style='display:inline-block; width:50%; max-width:500px; margin-right:15px'></div>";
+        htmlcontent += "<div id='btn-go' class='atonBTN atonBTN-green' style='display:inline-block;'><img src='"+ATON.PATH_RES+"icons/play.png'></div>";
+        if (data.samples === undefined || data.samples === true) htmlcontent += "<a href='examples/' class='atonBTN'><img src='"+ATON.PATH_RES+"icons/samples.png'></a>";
+        htmlcontent += "<br>";
+
+        htmlcontent += "<div id='idTagCloud' class='scrollableX' style='margin:10px; height:50px'></div>";
+        htmlcontent += "<div id='idTCtools'></div>";
+        htmlcontent += "<div id='idPubGallery'></div>";
+    }
+
+    htmlcontent += "<br><br>";
+
+    $("#idMainContent").html(htmlcontent);
+
+    if (data.header){
+        ATON.UI.loadPartial("/common/"+data.header, "idMainContent", true);
+    }
+    else document.getElementById("idMainContent").prepend( ATON.UI.createElementFromHTMLString("<img src='/res/aton-logo.png' style='width:100px; height:auto;'>") );
+
+    if (data.gallery){
+        SHU.createScenesInputList("idScenes", openSID, search, (scenes)=>{
+            $("#sid").attr("placeholder", "search by term, user or paste a scene-ID...");
+        });
+
+        $("#btn-go").click( openSID );
+
+        SHU.createPubScenesGallery("idPubGallery", data.samples, ()=>{
+            let akws = Object.entries(SHU.pubScenesKwords).sort((a,b)=>b[1]-a[1]).map(el=>el[0]);
+
+            for (let i in akws){
+                let k = akws[i];
+                let w = SHU.pubScenesKwords[k];
+                let f = w - 1;
+                f = 0.8 + (f * 0.1);
+                if (f > 1.5) f = 1.5;
+
+                $("#idTagCloud").append("<div id='idTC-"+k+"' class='atonKeyword atonKeywordActivable'>"+k+" <span class='atonKeywordCount'>"+w+"</span></div>");
+
+                $("#idTC-"+k).click(()=>{
+                    $("#sid").val(k);
+                    search();
+                    $("#idTCtools").show();
+
+                    $("#idKeyGallery").attr("href", "/?q="+k); 
+                    $("#idKeyGallery").html("<img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/gallery.png'>'"+k+"' Gallery");
+                });
+            }
+
+            let htTCtools = "";
+            htTCtools += "<div class='atonBTN atonBTN-text atonBTN-red' onclick='searchClear()'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/cancel.png'>Clear</div>";
+            htTCtools += "<a class='atonBTN atonBTN-text' id='idKeyGallery'><img class='atonSmallIcon' src='"+ATON.PATH_RES+"icons/gallery.png'>Gallery</a>";
+
+            $("#idTCtools").append(htTCtools);
+            $("#idTCtools").hide();
+        });
+    }
+
+    $("#btn-go").hide();
+};
+
+window.addEventListener( 'load', ()=>{
+    $.getJSON( ATON.PATH_RESTAPI+"landing", onLandingData );
+});
+
+</script>
 </head>
 
 <body class="atonDefaultBody">
         <div id='idMainContent'></div>
-<!--
-        <div class='select' style='width:50%;'>
-            <select id='sid'></select><div class='selectArrow'></div>
-        </div>
--->
 
         <!-- Footer -->
         <div class="atonToolbar atonToolbar-bottom shuFooter">
@@ -39,3 +244,4 @@
         </div>
     
 </body>
+</html>

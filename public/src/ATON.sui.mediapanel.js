@@ -109,7 +109,8 @@ load(url, onComplete){
         });
     }
 
-    this.setPickable(true);
+    //this.setPickable(true);
+    this.enablePicking();
 
     return this;
 }

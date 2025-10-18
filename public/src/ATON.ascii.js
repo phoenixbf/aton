@@ -48,6 +48,7 @@ ASCII.loadValuesFromFile = (url, delim, mainkey, onComplete)=>{
                 if (!bFields){
                     fields  = R.split(delim);
                     bFields = true;
+                    for (let i in fields) fields[i] = fields[i].trim();
                 }
                 // Single line
                 else {
@@ -55,12 +56,13 @@ ASCII.loadValuesFromFile = (url, delim, mainkey, onComplete)=>{
 
                     // Entry
                     let keyf = (mainkey>=0)? values[mainkey] : r;
+                    keyf = keyf.trim();
                     
                     D[ keyf ] = {};
                     
                     for (let v=0; v<values.length; v++){
                         if (v !== mainkey){
-                            D[ keyf ][ fields[v] ] = values[v];
+                            D[ keyf ][ fields[v] ] = values[v].trim();
                         }
                     }
                 }

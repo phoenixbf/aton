@@ -73,13 +73,18 @@ GS.realize = ()=>{
     GS._3DGSR.autoUpdate = false;
 
     const uPar  = { scene: ATON._rootVisible };
-    const msInt = 60;
+    const msInt = 100;
 
     window.setInterval(
         ()=>{
-            if (ATON.Nav._dOri < 0.001) return;
-            //if (ATON.Nav._dPos < 0.0001) return;
+            //if (!ATON.Nav._bInteracting) return;
+            //if (!ATON.Nav.isTransitioning()) return;
 
+            //if (ATON.Nav._dOri < 0.001) return;
+            //if (ATON.Nav._dPos < 0.0001) return;
+            if (ATON.Nav._dOri < 0.005 && ATON.Nav._dPos < 0.001) return;
+
+            console.log("U")
             GS._3DGSR.update( uPar );
         }, 
         

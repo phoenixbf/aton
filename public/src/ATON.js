@@ -484,6 +484,7 @@ ATON._onResize = ()=>{
         }
     }
     
+    if (ATON._anaR) ATON._anaR.setSize( window.innerWidth, window.innerHeight );
     //console.log("onResize");
 };
 
@@ -2938,6 +2939,19 @@ ATON.addClipPlane = (dir, loc)=>{
     
     return P;
 };
+
+/*
+    Misc
+=================================================*/
+ATON.enableAnaglyphRendering = ()=>{
+    ATON._anaR = new THREE.AnaglyphEffect( ATON._renderer );
+    ATON._anaR.setSize( window.innerWidth, window.innerHeight );
+
+    ATON._render = ()=>{
+        ATON._anaR.render( ATON._mainRoot, ATON.Nav._camera );
+    }
+};
+
 
 /*
     Built-in gizmos

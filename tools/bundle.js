@@ -28,6 +28,7 @@ import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPa
 import { SobelOperatorShader } from 'three/examples/jsm/shaders/SobelOperatorShader.js';
 import { SSRPass } from 'three/examples/jsm/postprocessing/SSRPass.js';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
+import { AnaglyphEffect } from 'three/addons/effects/AnaglyphEffect.js';
 import { CSM } from 'three/examples/jsm/csm/CSM.js';
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -110,6 +111,7 @@ THREE.GTAOPass            = GTAOPass;
 THREE.SobelOperatorShader = SobelOperatorShader;
 THREE.SSRPass             = SSRPass;
 THREE.BokehPass           = BokehPass;
+THREE.AnaglyphEffect      = AnaglyphEffect;
 THREE.CSM                 = CSM;
 
 THREE.GLTFLoader         = GLTFLoader;

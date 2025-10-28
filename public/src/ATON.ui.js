@@ -1641,24 +1641,28 @@ UI.createOwnScenesGallery = (options)=>{
 Create a keyword (tag)
 - options.term: the term (string)
 - options.count: optional counter for this keyword
-- options.onpress: routine to launch on click
+- options.onpress: optional routine to launch on click
+- options.onremove: optional routine when removing this keyword, adds a remove btn
 
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createKeyword = (options)=>{
-    let el;
+    let el = UI.createElementFromHTMLString(`<button type="button" class="btn btn-sm btn-outline-secondary aton-keyword"><span class='aton-keyword-text'>${options.term}</span></button>`);
+
     if (options.count){
-        el = UI.createElementFromHTMLString(`
-            <button type="button" class="btn btn-sm btn-outline-secondary aton-keyword">
-                ${options.term} <span class="badge text-bg-secondary">${options.count}</span>
-            </button>
-        `);
+        let elCount = UI.createElementFromHTMLString(`<span class="badge text-bg-secondary">${options.count}</span>`);
+        el.append(elCount);
     }
-    else {
-        el = UI.createElementFromHTMLString(`
-            <button type="button" class="btn btn-sm btn-outline-secondary aton-keyword">${options.term}</button>
-        `);
+
+    if (options.onremove){
+        let elClose = UI.createElementFromHTMLString(`<button type='button' class='btn-close btn-sm' style='margin:0px; margin-left:2px' aria-label='Close'></button>`);
+        elClose.onclick = ()=>{
+            el.remove();
+            options.onremove();
+        };
+
+        el.append(elClose);
     }
 
     if (options.classes) el.className = el.className + " " + options.classes;

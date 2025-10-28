@@ -792,6 +792,11 @@ a {
     padding: 4px;
 }
 
+.aton-keyword-text {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+}
+
 .aton-QR-container {
     display: block;
 

@@ -61,6 +61,21 @@ window.addEventListener( 'load', ()=>{
                                     }
                                 }),
 
+                                ATON.UI.createContainer({
+                                    items:[
+                                        ATON.UI.createKeyword({
+                                            term: "key1",
+                                            onremove: ()=>{
+                                            }
+                                        }),
+                                        ATON.UI.createKeyword({
+                                            term: "key2",
+                                            onremove: ()=>{
+                                            }
+                                        }),
+                                    ]
+                                }),
+
                                 ATON.UI.createButton({
                                     variant:"primary",
                                     text:"Open side panel",

@@ -206,15 +206,21 @@ Core.CONF_MAIN = {
 */
 	},
 
-	// Soon deprecated
-    landing: {
-        gallery: true,		// Show gallery (public scenes) in the landing page
-		samples: true,		// Show samples (def true)
-		//header: "",		// Custom header (HTML partial)
-		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
-		//apps: []			// List of app IDs to show
-    },
-
+landing: {
+    gallery: true,		// Show gallery (public scenes) in the landing page
+    // new customization options:
+    title: "ATON Framework",
+    description: "ATON Framework - Immersive 3D Web Applications for Cultural Heritage",
+    primaryColor: "#007bff",
+    secondaryColor: "#6c757d", 
+    backgroundColor: "#ffffff",
+    textColor: "#333333",
+    accentColor: "#28a745",
+    showLogo: true,
+    showFooter: true,
+    theme: "default", // default, dark, light, custom
+    layout: "grid" // grid, list, compact
+},
     shu: {
         samples: true,
         apps: ["app_template"],	// List of apps to display

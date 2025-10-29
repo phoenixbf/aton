@@ -780,19 +780,19 @@ a {
     margin: 0px;
 }
 
-.aton-keyword {
+.aton-chip {
     display: inline-block;
     margin: 2px;
     border-radius: 10px;
 }
 
-.aton-keyword-small {
+.aton-chip-small {
     font-size: x-small;
     margin: 2px;
     padding: 4px;
 }
 
-.aton-keyword-text {
+.aton-chip-text {
     margin-left: 0.2em;
     margin-right: 0.2em;
 }

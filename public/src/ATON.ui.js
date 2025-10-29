@@ -1638,7 +1638,7 @@ UI.createOwnScenesGallery = (options)=>{
 };
 
 /**
-Create a keyword (tag)
+Create a chip (keyword / tag)
 - options.term: the term (string)
 - options.count: optional counter for this keyword
 - options.onpress: optional routine to launch on click
@@ -1647,8 +1647,8 @@ Create a keyword (tag)
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createKeyword = (options)=>{
-    let el = UI.createElementFromHTMLString(`<button type="button" class="btn btn-sm btn-outline-secondary aton-keyword"><span class='aton-keyword-text'>${options.term}</span></button>`);
+UI.createChip = (options)=>{
+    let el = UI.createElementFromHTMLString(`<button type="button" class="btn btn-sm btn-outline-secondary aton-chip"><span class='aton-chip-text'>${options.term}</span></button>`);
 
     if (options.count){
         let elCount = UI.createElementFromHTMLString(`<span class="badge text-bg-secondary">${options.count}</span>`);

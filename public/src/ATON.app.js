@@ -137,7 +137,7 @@ Utility routine to load a config (JSON) for the App
 @param {string} jsonconf - url to JSON config
 @param {function} onLoad - routine to execute on JSON loaded
 @example
-ATON.App.loadJSONConfig("myconf.json")
+ATON.App.loadJSONConfig("myconf.json", (conf)=>{ ... })
 */
 App.loadJSONConfig = (configurl, onLoad)=>{
     ATON.Utils.getJSON(configurl, onLoad);

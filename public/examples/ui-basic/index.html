@@ -61,19 +61,12 @@ window.addEventListener( 'load', ()=>{
                                     }
                                 }),
 
-                                ATON.UI.createContainer({
-                                    items:[
-                                        ATON.UI.createChip({
-                                            term: "key1",
-                                            onremove: ()=>{
-                                            }
-                                        }),
-                                        ATON.UI.createChip({
-                                            term: "key2",
-                                            onremove: ()=>{
-                                            }
-                                        }),
-                                    ]
+                                ATON.UI.createTagsComponent({
+                                    list: ["key1","key2","key3"],
+                                    label: "Keyword",
+                                    tags: ["key3"],
+                                    onremovetag: (k)=>{ console.log("Removed ",k) },
+                                    onaddtag: (k)=>{ console.log("Added ",k) }
                                 }),
 
                                 ATON.UI.createButton({

@@ -1673,6 +1673,66 @@ UI.createChip = (options)=>{
 };
 
 /**
+Create a tags component
+- options.list: optional controlled list of tags to select from
+- options.tags: optional pre-populated tags
+- options.label: label for input tag
+- options.onaddtag: on tag added routine (e.g.: (k)=>{ console.log(k); } )
+- options.onremovetag: on tag removed routine (e.g.: (k)=>{ console.log(k); } )
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createTagsComponent = (options)=>{
+    if (!options) options = {};
+    
+    let el = UI.createContainer();
+
+    let tags = {};
+
+    let addTag = (k)=>{
+        if (tags[k]) return false;
+
+        tags[k] = 1;
+
+        el.append( UI.createChip({
+            term: k,
+            onremove: ()=>{
+                tags[k] = undefined;
+                
+                if (options.onremovetag) options.onremovetag(k);
+            }
+        }));
+
+        return true;
+    }
+
+    let elTagInput = UI.createInputText({
+        list: options.list,
+        label: options.label,
+        onchange: (k)=>{
+            k = k.trim();
+            if (k.length < 1) return;
+
+            let elInput = UI.getComponent(elTagInput, "input");
+            elInput.value = "";
+
+            if (!addTag(k)) return;
+
+            if (options.onaddtag) options.onaddtag(k);
+        }
+    });
+
+    el.append(elTagInput);
+
+    if (options.tags){
+        for (let k in options.tags) addTag(options.tags[k]);
+    }
+
+    return el;
+};
+
+/**
 Create layer control. By default it allows basic switching (on/off)
 - options.node: node ID (string) of the ATON node
 - options.actions: optional list (array) of HTML elements (e.g. buttons) being added to this layer actions

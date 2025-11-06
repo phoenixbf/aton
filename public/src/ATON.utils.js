@@ -495,6 +495,7 @@ Utils.modelVisitor = (N, model)=>{
                     console.log("Computed semantic BVH");
                 }
 
+                o.renderOrder = ATON.RO_SEM;
                 //N.setDefaultAndHighlightMaterials(ATON.MatHub.materials.semanticShape, ATON.MatHub.materials.semanticShapeHL);
             }
 

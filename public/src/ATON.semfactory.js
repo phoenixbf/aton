@@ -79,6 +79,8 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     let geom   = new THREE.ConvexGeometry( SemFactory.convexPoints ); // new THREE.ConvexBufferGeometry( SemFactory.convexPoints );
     let semesh = new THREE.Mesh( geom, ATON.MatHub.getMaterial("semanticShapeEdit") );
 
+    semesh.renderOrder = ATON.RO_SEM;
+
     //let numMeshes = SemFactory.convexMeshes.length;
 
     // First time: create semnode and add it to current sem group
@@ -189,6 +191,7 @@ SemFactory.completeConvexShape = (semid)=>{
     let S = ATON.getSemanticNode(semid) || ATON.createSemanticNode(semid);
     
     let meshape = SemFactory.currSemNode.children[0];
+    meshape.renderOrder = ATON.RO_SEM;
     
     ATON.SUI.addSemIcon(semid, meshape);
 
@@ -232,6 +235,8 @@ let S = ATON.SemFactory.createConvexShape("face", points)
 SemFactory.createConvexShape = (semid, points)=>{
     let geom   = new THREE.ConvexGeometry( points ); // CHECK: it was THREE.ConvexBufferGeometry( points );
     let semesh = new THREE.Mesh( geom, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
+    
+    semesh.renderOrder = ATON.RO_SEM;
 
     semesh.userData._convexPoints = [];
     for (let i=0; i<points.length; i++){
@@ -308,6 +313,7 @@ SemFactory.createSphere = (semid, location, radius)=>{
 
     //let g = new THREE.SphereGeometry( 1.0, 16, 16 );
     let M = new THREE.Mesh( ATON.Utils.geomUnitSphere, /*SemFactory.currMaterial*/ATON.MatHub.materials.semanticShape );
+    M.renderOrder = ATON.RO_SEM;
     
     // Note: we add multiple spheres to the same <semid> node
     let sphere = new THREE.Object3D();

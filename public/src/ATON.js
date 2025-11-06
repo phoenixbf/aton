@@ -113,7 +113,8 @@ ATON.SCALE_VERYBIG   = 10;
 ATON.SCALE_SMALL     = -5;
 ATON.SCALE_VERYSMALL = -10;
 
-
+// Render orders
+ATON.RO_SEM = 10;
 
 // Flares (plugins)
 ATON.Flares = {};

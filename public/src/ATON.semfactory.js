@@ -67,6 +67,8 @@ SemFactory.addConvexPoint = (/*semid,*/ p)=>{
     //ATON.SUI.gPoints.add( M );
 
     let iconP = new THREE.Sprite( ATON.SUI.getOrCreateSpritePointEdit() );
+    iconP.renderOrder = ATON.RO_SEM;
+
     let ss = ATON.getSceneQueriedDistance() * 0.02;
     if (ss === undefined) ss = 0.02;
     iconP.position.copy(p);

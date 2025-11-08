@@ -41,11 +41,10 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 //import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js"
 import { USDZExporter } from 'three/examples/jsm/exporters/USDZExporter.js';
 
-import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
-/*
-import { HTMLMesh } from 'three/examples/jsm/interactive/HTMLMesh.js';
-import { InteractiveGroup } from 'three/examples/jsm/interactive/InteractiveGroup.js';
-*/
+//import { CSS3DRenderer, CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import { HTMLMesh } from 'three/addons/interactive/HTMLMesh.js';
+import { InteractiveGroup } from 'three/addons/interactive/InteractiveGroup.js';
+
 import { Line2 } from 'three/addons/lines/Line2.js';
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
@@ -147,8 +146,8 @@ THREE.XRHandModelFactory       = XRHandModelFactory;
 
 THREE.TransformControls = TransformControls;
 
-THREE.CSS3DRenderer = CSS3DRenderer;
-THREE.CSS3DObject   = CSS3DObject;
+//THREE.CSS3DRenderer = CSS3DRenderer;
+//THREE.CSS3DObject   = CSS3DObject;
 
 TILES.TilesFadePlugin      = TilesFadePlugin;
 TILES.ImplicitTilingPlugin = ImplicitTilingPlugin;
@@ -156,10 +155,10 @@ TILES.DeepZoomImagePlugin  = DeepZoomImagePlugin;
 TILES.UpdateOnChangePlugin = UpdateOnChangePlugin;
 //TILES.TileCompressionPlugin = TileCompressionPlugin;
 
-/*
+
 THREE.HTMLMesh = HTMLMesh;
 THREE.InteractiveGroup = InteractiveGroup;
-*/
+
 //window.GenerateMeshBVHWorker = GenerateMeshBVHWorker;
 
 window.THREE        = THREE;

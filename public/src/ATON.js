@@ -115,6 +115,7 @@ ATON.SCALE_VERYSMALL = -10;
 
 // Render orders
 ATON.RO_SEM = 10;
+ATON.RO_SUI = ATON.RO_SEM+1;
 
 // Flares (plugins)
 ATON.Flares = {};
@@ -486,6 +487,7 @@ ATON._onResize = ()=>{
     }
     
     if (ATON._anaR) ATON._anaR.setSize( window.innerWidth, window.innerHeight );
+    if (ATON.SUI._rCSS3D) ATON.SUI._rCSS3D.setSize( window.innerWidth, window.innerHeight );
     //console.log("onResize");
 };
 

@@ -1813,6 +1813,8 @@ UI.createLayerControl = (options)=>{
 UI.createBasicLayersManager = (options)=>{
     let el = ATON.UI.createContainer();
 
+    let root = ATON.getRootScene();
+
     for (let c in root.children){
         const N = root.children[c];
         
@@ -2208,6 +2210,8 @@ UI.createAudioRecorder = (options)=>{
 };
 
 UI.createLoginForm = (options)=>{
+    if (!options) options = {};
+
     let el = document.createElement("form");
     el.classList.add("container-sm", "text-center");
 

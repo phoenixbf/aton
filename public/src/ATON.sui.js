@@ -7,6 +7,7 @@
 import Button from "./ATON.sui.button.js";
 import Label from "./ATON.sui.label.js";
 import MediaPanel from "./ATON.sui.mediapanel.js";
+//import WebView from "./ATON.sui.webview.js";
 
 /**
 ATON Spatial UI
@@ -20,6 +21,7 @@ SUI.STD_SELECTOR_TICKNESS = 1.05;
 SUI.Button     = Button;
 SUI.Label      = Label;
 SUI.MediaPanel = MediaPanel;
+//SUI.WebView    = WebView;
 
 
 
@@ -32,7 +34,7 @@ SUI.init = ()=>{
     //let gTeleport = new THREE.CylinderGeometry(0.4,0.4, 0.9, 32,1, true);
 
     let mTeleport = new THREE.Mesh( gTeleport, ATON.MatHub.getMaterial("teleportLoc") );
-    mTeleport.renderOrder = 100;
+    mTeleport.renderOrder = ATON.RO_SUI;
     SUI.fpTeleport.add( mTeleport );
     SUI.fpTeleport.disablePicking();
     SUI.fpTeleport.visible = false;
@@ -59,6 +61,7 @@ SUI.init = ()=>{
     // runtime measurement-line indicator
     let mLine = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]);
     SUI._measLine = new THREE.Line( mLine, ATON.MatHub.getMaterial("measurement"));
+    SUI._measLine.renderOrder = ATON.RO_SUI;
     SUI._measLine.visible = false;
     ATON._rootUI.add(SUI._measLine);
 
@@ -181,7 +184,7 @@ SUI.getOrCreateSpriteWalk = ()=>{
 SUI.initSelector = ()=>{
     SUI.mainSelector = ATON.createUINode();
     SUI._mSelectorSphere = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("selector") );
-    SUI._mSelectorSphere.renderOrder = 100;
+    SUI._mSelectorSphere.renderOrder = ATON.RO_SUI;
 /*
     let mSelBorder = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.getMaterial("outline"));
     mSelBorder.scale.set(SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS, SUI.STD_SELECTOR_TICKNESS);
@@ -313,6 +316,7 @@ SUI.addSemIcon = (semid, meshape)=>{
 
     // icon sprite
     let semicon = new THREE.Sprite( SUI.getOrCreateSpriteSemIcon() );
+    semicon.renderOrder = ATON.RO_SUI;
     semicon.position.copy(bs.center);
 
     //let ss = 0.06; // 0.035; //bs.radius * 0.3;
@@ -330,10 +334,12 @@ SUI.addLPIcon = (LP)=>{
     let isize = 0.1; //rn * 0.3;
 
     let lpicon = new THREE.Sprite( SUI.getOrCreateSpriteLP() );
+    lpicon.renderOrder = ATON.RO_SUI;
     lpicon.position.copy(LP.pos);
     lpicon.scale.set(isize,isize,isize);
 
     let s = new THREE.Mesh( ATON.Utils.geomUnitSphere, ATON.MatHub.materials.lp );
+    s.renderOrder = ATON.RO_SUI;
     s.scale.set(rn,rn,rn);
     s.position.copy(LP.pos);
 
@@ -477,6 +483,8 @@ SUI.buildPanelNode = (suid, url, w,h)=>{
         new THREE.PlaneGeometry( w, h, 2 ), 
         ATON.MatHub.materials.fullyTransparent
     );
+    
+    pmesh.renderOrder = ATON.RO_SUI;
     suiNode.add( pmesh );
 
     if (url !== undefined){
@@ -556,11 +564,13 @@ SUI.addMeasurementPoint = (P)=>{
     linetick *= d;
 
     let A = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
+    A.renderOrder = ATON.RO_SUI;
     A.position.copy(SUI._prevMPoint);
     A.scale.set(s,s,s);
     SUI.gMeasures.add(A);
 
     let B = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
+    B.renderOrder = ATON.RO_SUI;
     B.position.copy(P);
     B.scale.set(s,s,s);
     SUI.gMeasures.add(B);
@@ -570,7 +580,9 @@ SUI.addMeasurementPoint = (P)=>{
     //let gLine = new THREE.CylinderBufferGeometry( linetick,linetick, d, 4 );
     let gLine = new THREE.BufferGeometry().setFromPoints([SUI._prevMPoint,P]);
     
-    SUI.gMeasures.add( new THREE.Line( gLine, ATON.MatHub.getMaterial("measurement")) );
+    let mLine = new THREE.Line( gLine, ATON.MatHub.getMaterial("measurement"))
+    mLine.renderOrder = ATON.RO_SUI;
+    SUI.gMeasures.add( mLine );
 
     let L = new SUI.Label();
     L.setBaseColor(ATON.MatHub.colors.white).setTextColor(ATON.MatHub.colors.black);
@@ -650,6 +662,23 @@ SUI._updateMeasurements = ()=>{
 */
 };
 
+// CSS3D
+SUI.realizeCSS3DRenderer = ()=>{
+    if (SUI._rCSS3D) return; // Already realized
+
+    SUI._rCSS3D = new THREE.CSS3DRenderer();
+	SUI._rCSS3D.setSize( window.innerWidth, window.innerHeight );
+
+	SUI._rCSS3D.domElement.style.position      = "absolute";
+	SUI._rCSS3D.domElement.style.top           = '0';
+	SUI._rCSS3D.domElement.style.outline       = "none";
+    SUI._rCSS3D.domElement.style.border        = "none";
+	SUI._rCSS3D.domElement.style.pointerEvents = 'none';
+
+	document.body.appendChild( SUI._rCSS3D.domElement );
+};
+
+
 // Main update routine
 SUI.update = ()=>{
     if (ATON.Nav.isTransitioning() || ATON._bPauseQuery){
@@ -663,6 +692,8 @@ SUI.update = ()=>{
         //console.log("sync");
     } 
 */
+
+    //if (SUI._rCSS3D) SUI._rCSS3D.render( ATON._mainRoot, ATON.Nav._camera );
 
     // Meas-line indicator
     if (SUI._prevMPoint){

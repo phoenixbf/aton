@@ -210,6 +210,8 @@ realizeStreamPanel(){
 */
 
     //this.userlabelnode.add( this.mStream );
+
+    ATON.SUI.visitor(this);
 }
 
 getStreamPanel(){
@@ -264,6 +266,8 @@ realize(){
     }
 
     this._buildLabel();
+
+    ATON.SUI.visitor(this);
 };
 
 // TODO:
@@ -294,6 +298,8 @@ loadRepresentation(url){
     }
 
     A.usermeshnode.load(url); //.setMaterial(A.usermaterial);
+
+    ATON.SUI.visitor(this);
 
     return this;
 }

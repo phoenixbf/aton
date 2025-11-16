@@ -29,7 +29,7 @@ import { SobelOperatorShader } from 'three/examples/jsm/shaders/SobelOperatorSha
 import { SSRPass } from 'three/examples/jsm/postprocessing/SSRPass.js';
 import { BokehPass } from 'three/examples/jsm/postprocessing/BokehPass.js';
 import { AnaglyphEffect } from 'three/addons/effects/AnaglyphEffect.js';
-import { CSM } from 'three/examples/jsm/csm/CSM.js';
+import { CSM } from 'three/addons/csm/CSM.js';
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 //import { DeviceOrientationControls } from 'three/examples/jsm/controls/DeviceOrientationControls.js';
@@ -54,7 +54,7 @@ import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtil
 import { GeometryUtils } from 'three/examples/jsm/utils/GeometryUtils.js';
 import { Reflector } from 'three/addons/objects/Reflector.js';
 
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
 //import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 import { LightProbeHelper } from 'three/examples/jsm/helpers/LightProbeHelper.js';
@@ -134,8 +134,8 @@ THREE.GeometryUtils       = GeometryUtils;
 THREE.UnrealBloomPass     = UnrealBloomPass;
 THREE.Reflector           = Reflector;
 
-THREE.RGBELoader = RGBELoader;
-THREE.EXRLoader  = EXRLoader;
+THREE.HDRLoader = HDRLoader;
+THREE.EXRLoader = EXRLoader;
 //THREE.RoughnessMipmapper  = RoughnessMipmapper;
 THREE.LightProbeHelper    = LightProbeHelper;
 THREE.LightProbeGenerator = LightProbeGenerator;

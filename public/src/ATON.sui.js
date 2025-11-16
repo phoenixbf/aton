@@ -112,6 +112,18 @@ SUI.init = ()=>{
     SUI._sync = 0;
 };
 
+SUI.visitor = (N, bAlpha)=>{
+    if (!N) N = ATON.getRootUI();
+
+    N.traverse((o)=>{
+        if (o.isMesh) o.renderOrder = ATON.RO_SUI;
+        if (bAlpha && o.material){
+            o.material.transparent = true;
+            o.material.depthWrite = false;
+        }
+    });
+};
+
 // Sprites
 SUI.getOrCreateSpritePointEdit = ()=>{
     if (SUI.sprites.pointEdit) return SUI.sprites.pointEdit;

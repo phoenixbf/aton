@@ -487,7 +487,7 @@ ATON._onResize = ()=>{
     }
     
     if (ATON._anaR) ATON._anaR.setSize( window.innerWidth, window.innerHeight );
-    if (ATON.SUI._rCSS3D) ATON.SUI._rCSS3D.setSize( window.innerWidth, window.innerHeight );
+    //if (ATON.SUI._rCSS3D) ATON.SUI._rCSS3D.setSize( window.innerWidth, window.innerHeight );
     //console.log("onResize");
 };
 
@@ -688,9 +688,10 @@ ATON.realize = ( bNoRender )=>{
 
     ATON._renderer.outputColorSpace = ATON._stdEncoding;
     
+    //ATON._renderer.toneMapping = THREE.NoToneMapping;
     ATON._renderer.toneMapping = THREE.LinearToneMapping;
-    //ATON._renderer.toneMapping = THREE.CineonToneMapping;
-    //ATON._renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    ///ATON._renderer.toneMapping = THREE.CineonToneMapping;
+    ///ATON._renderer.toneMapping = THREE.ACESFilmicToneMapping;
     
     ATON._renderer.toneMappingExposure = 1.0;
     //ATON._renderer.gammaOutput = true;
@@ -1851,7 +1852,7 @@ ATON.setMainPanorama = (path)=>{
     // Static Panorama
     else {
         if (path.endsWith(".hdr")){
-            new THREE.RGBELoader().load(path, (hdr)=>{ //setDataType( THREE.UnsignedByteType )
+            new THREE.HDRLoader().load(path, (hdr)=>{ //setDataType( THREE.UnsignedByteType )
                 //hdr.generateMipmaps = true;
                 hdr.minFilter = THREE.LinearMipmapLinearFilter;
                 hdr.magFilter = THREE.LinearFilter;

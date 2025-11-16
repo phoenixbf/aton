@@ -474,7 +474,7 @@ Nav._updCamera = (c)=>{
         c.updateProjectionMatrix();
     }
 
-    ATON._setupGizmo();
+    //ATON._setupGizmo();
 
     ATON.MRes.updateTSetsCamera(c);
 };

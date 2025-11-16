@@ -1890,6 +1890,7 @@ UI.createBasicLayersManager = (options)=>{
 /**
 Create a range/slider
 - options.range: min and max values pair (e.g. [0,10])
+- options.step: optional step value (default: 1)
 - options.label: optional label for this slider
 - options.value: initial value
 - options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )

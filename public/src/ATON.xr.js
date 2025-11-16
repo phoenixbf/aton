@@ -534,8 +534,8 @@ XR.onSessionStarted = ( session )=>{
             //console.log(ATON.Nav._currPOV.pos);
         }
 
-        let C = ATON._renderer.xr.getCamera(ATON.Nav._camera);
-        if (C) ATON.Nav._updCamera( C );
+        XR._cam = ATON._renderer.xr.getCamera(/*ATON.Nav._camera*/); //.cameras[0];
+        if (XR._cam) ATON.Nav._updCamera( XR._cam );
 
         XR._bPresenting = true;
         ATON.Nav._bInteracting = false;
@@ -853,6 +853,13 @@ XR._deltaMotionController = (C)=>{
 */
 
 XR.update = ()=>{
+    // XR-cam
+/*
+    if (!XR._cam){
+        XR._cam = ATON._renderer.xr.getCamera(ATON.Nav._camera);
+        if (XR._cam) ATON.Nav._updCamera( XR._cam );
+    }
+*/
     if (XR._bGaze) return;
     //if (XR._sessionType==="immersive-ar") return;
 

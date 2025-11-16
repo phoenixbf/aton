@@ -56,7 +56,7 @@ constructor(uiid, ratio=1.0, fsize=1.0){
     let trh = ATON.SUI.STD_BTN_SIZE * 0.9;
     this._trigger = new THREE.Mesh(
         new THREE.PlaneGeometry( trw, trh, 2 ), 
-        ATON.MatHub.materials.fullyTransparent
+        ATON.MatHub.materials.invisible
     );
     this._trigger.position.set(0,0,0.002);
 
@@ -75,7 +75,7 @@ constructor(uiid, ratio=1.0, fsize=1.0){
 
     this.enablePicking();
     
-    this.traverse((o)=>{ if (o.material) o.material.depthWrite = false; });
+    ATON.SUI.visitor(this, true);
 
     ThreeMeshUI.update();
 }

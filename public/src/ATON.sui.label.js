@@ -46,6 +46,7 @@ constructor(uiid, w,h){
     });
     this.container.add(this.uiText);
 
+    ATON.SUI.visitor(this, true);
     ThreeMeshUI.update();
 
 /*

@@ -54,6 +54,7 @@ load(url, onComplete){
 
     if (!this._mediamesh){
         this._mediamesh = new THREE.Mesh( new THREE.PlaneGeometry(1,1) /*, ATON.MatHub.materials.fullyTransparent*/);
+        //this._mediamesh.renderOrder = ATON.RO_SUI;
         this.add(this._mediamesh);
     }
 
@@ -111,6 +112,7 @@ load(url, onComplete){
 
     //this.setPickable(true);
     this.enablePicking();
+    //ATON.SUI.visitor(this);
 
     return this;
 }
@@ -166,6 +168,7 @@ toggleTitle(b){
 // TODO
 setBackdrop(opacity){
     this._bd = new THREE.Mesh( new THREE.PlaneGeometry(1,1) );
+    //this._bd.renderOrder = ATON.RO_SUI;
 
     this._bd.material = new THREE.MeshStandardMaterial({
         transparent: true,

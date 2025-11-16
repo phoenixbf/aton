@@ -162,7 +162,7 @@ update(){
         this._far,
         {
             position: this.pos, 
-            size: this._res
+            //size: this._res // FIXME: seems any value different from 128 fails to render
         }
     ).texture;
     

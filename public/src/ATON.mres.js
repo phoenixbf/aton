@@ -105,10 +105,10 @@ MRes.updateTSetsCamera = (cam)=>{
 
         if (ATON._renderer.xr.isPresenting){
 
-            //const leftCam = cam.cameras[ 0 ];
+            //let leftCam = cam.cameras[ 0 ];
             //if ( leftCam ) TS.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
 
-            TS.setResolution( cam, 300,300 );
+            TS.setResolution( cam, 500,500 ); // 300
             //TS.setResolutionFromRenderer( cam, ATON._renderer );            
         }
         else {
@@ -128,7 +128,7 @@ MRes.estimateTSErrorTarget = ()=>{
     let tse = MRes._tseBase;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse *= 1.5; // += 4.0;
-    if (ATON.XR._bPresenting) tse *= 1.3; // += 3.0;
+    if (ATON.XR._bPresenting) tse *= 1.2;
 
     if (tse < 1.0)  tse = 1.0;
     //if (tse > 25.0) tse = 25.0;
@@ -435,6 +435,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 //c.castShadow    = true;
                 //c.receiveShadow = true;
                 //c.material.shadowSide = 2;
+                c.flatShading = false;
 
                 let tex = c.material.map;
                 if (tex){
@@ -442,6 +443,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     tex.magFilter = THREE.LinearFilter;
                     tex.colorSpace  = ATON._stdEncoding;
                 }
+
+                //console.log(c)
 
                 //ATON.Utils._processMatCP( c.material );
             }
@@ -526,6 +529,8 @@ MRes.update = ()=>{
     if (nts < 1) return;
 
     //ATON.Nav._camera.updateMatrixWorld();
+    //if (ATON.XR._cam) ATON.XR._cam.updateMatrixWorld();
+
     //MRes._tsTasksFF = 0;
 
     for (let ts=0; ts < nts; ts++){
@@ -545,13 +550,19 @@ MRes.update = ()=>{
 
     //console.log(MRes._tsTasks);
 
-    //let T = MRes._tsTasks.pop();
-    
     let T = MRes._tsTasks.shift();
-    if (T !== undefined){
+    if (T){
         T();
         T = null;
     }
+
+/*
+    for ( let t=0, l = MRes._tsTasks.length; t < l; t++ ) {
+        let T = MRes._tsTasks.shift();
+        if (T) T();
+    }
+    MRes._tsTasks.length = 0;
+*/
 };
 
 MRes.detectMotion = ()=>{

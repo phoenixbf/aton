@@ -90,7 +90,6 @@ MRes.setTSetsDisplayBounds = (b)=>{
 };
 
 MRes.updateTSetsCamera = (cam)=>{
-    return;
     if (cam === undefined) cam = ATON.Nav._camera;
 
     const nts = MRes._tsets.length;

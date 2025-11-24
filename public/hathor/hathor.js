@@ -939,6 +939,7 @@ HATHOR.setupEventHandlers = ()=>{
             HATHOR.popupAddSemantic(ATON.FE.SEMSHAPE_SPHERE);
         }
         if (k==='s'){
+            //ATON._handleQueryScene();
             if (ATON._bqScene) ATON._handleQueryScene();
             ATON.SemFactory.addSurfaceConvexPoint();
         }

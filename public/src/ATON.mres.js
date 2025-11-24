@@ -90,6 +90,7 @@ MRes.setTSetsDisplayBounds = (b)=>{
 };
 
 MRes.updateTSetsCamera = (cam)=>{
+    return;
     if (cam === undefined) cam = ATON.Nav._camera;
 
     const nts = MRes._tsets.length;
@@ -108,7 +109,7 @@ MRes.updateTSetsCamera = (cam)=>{
             //let leftCam = cam.cameras[ 0 ];
             //if ( leftCam ) TS.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
 
-            TS.setResolution( cam, 500,500 ); // 300
+            TS.setResolution( cam, 300,300 ); // 300
             //TS.setResolutionFromRenderer( cam, ATON._renderer );            
         }
         else {

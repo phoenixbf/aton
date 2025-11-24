@@ -55,22 +55,23 @@ FX.init = ()=>{
 
 
     // SSR - TODO: check for variable rou implementation
-/*
+
     FX.passes[FX.PASS_SSR] = new THREE.SSRPass({
         renderer: ATON._renderer,
         scene: ATON._mainRoot, 
         camera: ATON.Nav._camera,
-        //width: window.innerWidth * 0.1,
-        //height: window.innerHeight * 0.1,
         //encoding: THREE.sRGBEncoding
     });
-
+/*
     FX.passes[FX.PASS_SSR].thickness = 0.018;
-    FX.passes[FX.PASS_SSR].infiniteThick = false; //true;
+    FX.passes[FX.PASS_SSR].infiniteThick = false;
     FX.passes[FX.PASS_SSR].maxDistance = 0.1; //0.1;
+    FX.passes[FX.PASS_SSR].resolutionScale = 0.1;
+    FX.passes[FX.PASS_SSR].opacity = 0.7;
+    //FX.passes[FX.PASS_SSR].width  = window.innerWidth * 0.1;
+    //FX.passes[FX.PASS_SSR].height = window.innerHeight * 0.1;
     console.log(FX.passes[FX.PASS_SSR]);
 */
-
     // Ambient Occlusion
     FX.passes[FX.PASS_AO] = new THREE.SAOPass( ATON._mainRoot, ATON.Nav._camera, CW,CH );
     

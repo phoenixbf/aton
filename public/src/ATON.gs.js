@@ -110,10 +110,10 @@ GS.visitor = (N)=>{
 
     // Picking
     N.disablePicking();
-/*
-    if (N.bPickable) N.enablePicking();
-    ATON._bqScene = true;
-*/
+
+    //if (N.bPickable) N.enablePicking();
+    ///ATON._bqScene = true;
+
 };
 
 GS.setupProfiler = ()=>{

@@ -742,7 +742,10 @@ Nav._deltaMotions = ()=>{
 Nav.syncCurrPOV = ()=>{
     if (ATON.XR.isPresenting()){
 
-        const xrcam = ATON._renderer.xr.getCamera().cameras[0];
+        //console.log(ATON._renderer.xr.getCamera().position)
+        //console.log(ATON._renderer.xr.getCamera().quaternion)
+
+        const xrcam = ATON._renderer.xr.getCamera(); //.cameras[0];
         if (xrcam){
             Nav._currPOV.pos.copy(xrcam.position);
             Nav._qOri.copy(xrcam.quaternion);

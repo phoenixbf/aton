@@ -66,11 +66,11 @@ GS.realize = ()=>{
     ATON.on("XRmode",(b)=>{
         if (b){
             GS._3DGSR.maxStdDev = 2.0;
-            GS._3DGSR.clipXY    = 0.9;
+            //GS._3DGSR.clipXY    = 0.9;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
-            GS._3DGSR.clipXY    = 1.1;
+            //GS._3DGSR.clipXY    = 1.1;
         }
     });
 

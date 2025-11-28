@@ -647,6 +647,7 @@ UI.createButtonAR = (options)=>{
     return el;
 };
 
+
 /**
 Create Device Orientation button. Hidden if not supported by device
 @param {object} options - Optional UI options object
@@ -668,6 +669,69 @@ UI.createButtonDeviceOrientation = (options)=>{
 
     let el = UI.createButton({ ...std, ...options });
     if (!ATON.Utils.isConnectionSecure() || !ATON.Utils.isMobile()) ATON.UI.hideElement(el);
+
+    return el;
+};
+
+/**
+Create Nav switcher
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createNavSwitcher = (options)=>{
+    let el = UI.createContainer({
+		classes: "btn-group",
+        style: "width:100%",
+    });
+
+    let elFP,elOR,elDO;
+
+    elFP = UI.createButton({
+        icon: "fp",
+        //text: "First Person",
+        tooltip: "First Person",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.Nav.setFirstPersonControl();
+            elFP.classList.add("aton-btn-highlight");
+            elOR.classList.remove("aton-btn-highlight");
+            elDO.classList.remove("aton-btn-highlight");
+        }
+    });
+
+    elOR = UI.createButton({
+        icon: "nav",
+        tooltip: "Orbit",
+        //text: "Orbit",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.Nav.setOrbitControl();
+            elOR.classList.add("aton-btn-highlight");
+            elFP.classList.remove("aton-btn-highlight");
+            elDO.classList.remove("aton-btn-highlight");
+        }
+    });
+
+    elDO = UI.createButton({
+        icon: "devori",
+        //text: "Device Orientation",
+        tooltip: "Device Orientation",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.Nav.setDeviceOrientationControl();
+            elDO.classList.add("aton-btn-highlight");
+            elFP.classList.remove("aton-btn-highlight");
+            elOR.classList.remove("aton-btn-highlight");
+        }
+    });
+
+    el.append(elFP);
+    el.append(elOR);
+    if (ATON.Utils.isConnectionSecure() && ATON.Utils.isMobile()) el.append(elDO);
+
+    if (ATON.Nav.isOrbit()) elOR.classList.add("aton-btn-highlight");
+    if (ATON.Nav.isFirstPerson()) elFP.classList.add("aton-btn-highlight");
+    if (ATON.Nav.isDevOri()) elDO.classList.add("aton-btn-highlight");
 
     return el;
 };
@@ -1006,6 +1070,50 @@ UI.createTreeGroup = (options)=>{
     return el;
 }
 
+// TODO:
+UI.createAccordion = (options)=>{
+    let baseid = (options.id)? options.id : ATON.Utils.generateID("tree");
+
+    let el = UI.createContainer({
+        classes: "accordion"
+    });
+    el.id = baseid;
+
+    for (let i=0; i<options.items.length; i++){
+        let e = options.items[i];
+
+        let title   = e.title;
+        let content = e.content;
+        let stropen = e.open? "true" : "false";
+        let accid   = baseid+"-"+i;
+
+        let elAccordion = UI.createContainer({ classes: "accordion-item" });
+
+        let elH = UI.createElementFromHTMLString(`
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${accid}" aria-expanded="${stropen}" aria-controls="${accid}">${title}</button>
+            </h2>
+        `);
+
+        let elBody = UI.createElementFromHTMLString(`
+            <div id="${accid}" class="accordion-collapse collapse show" data-bs-parent="#${baseid}">
+                <div class="accordion-body"></div>
+            </div>
+        `);
+
+        elBody.append(content);
+
+        elAccordion.append(
+            elH,
+            elBody
+        );
+
+        el.append(elAccordion);
+    }
+
+    return el;
+};
+
 /**
 Create a vector control
 - options.vector: target THREE.Vector3 to be manipulated
@@ -1031,7 +1139,7 @@ UI.createVectorControl = (options)=>{
     let posz = V? V.z : 0.0;
 
     let el = UI.createElementFromHTMLString(`
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 aton-inline">
             <input type="number" class="form-control aton-input-x" placeholder="x" aria-label="x" step="${step}" value="${posx}">
             <input type="number" class="form-control aton-input-y" placeholder="y" aria-label="y" step="${step}" value="${posy}">
             <input type="number" class="form-control aton-input-z" placeholder="z" aria-label="z" step="${step}" value="${posz}">
@@ -1039,7 +1147,7 @@ UI.createVectorControl = (options)=>{
     `);
 
     if (options.label){
-        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text'>"+options.label+"</span>"));
+        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
     }
 
     if (options.reset){
@@ -1135,16 +1243,16 @@ UI.createQuaternionControl = (options)=>{
     let w = Q? Q.w : 0.0;
 
     let el = UI.createElementFromHTMLString(`
-        <div class="input-group mb-3">
-            <input type="number" class="form-control" placeholder="x" aria-label="x" step="${step}" value="${x}">
-            <input type="number" class="form-control" placeholder="y" aria-label="y" step="${step}" value="${y}">
-            <input type="number" class="form-control" placeholder="z" aria-label="z" step="${step}" value="${z}">
-            <input type="number" class="form-control" placeholder="w" aria-label="w" step="${step}" value="${w}">
+        <div class="input-group mb-3 aton-inline">
+            <input type="number" class="form-control aton-inline" placeholder="x" aria-label="x" step="${step}" value="${x}">
+            <input type="number" class="form-control aton-inline" placeholder="y" aria-label="y" step="${step}" value="${y}">
+            <input type="number" class="form-control aton-inline" placeholder="z" aria-label="z" step="${step}" value="${z}">
+            <input type="number" class="form-control aton-inline" placeholder="w" aria-label="w" step="${step}" value="${w}">
         </div>
     `);
 
     if (options.label){
-        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text'>"+options.label+"</span>"));
+        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
     }
 
     if (options.reset){
@@ -1383,14 +1491,22 @@ UI.createCard = (options)=>{
     el.append(elbody);
 
     // Title
+/*
     let elTitle = document.createElement("div");
     elTitle.classList.add("card-title", "aton-card-title");
     elTitle.innerHTML = "Title";
     elbody.append(elTitle);
 
     UI.registerElementAsComponent(elTitle, "title");
+*/
 
     if (options.title){
+        let elTitle = document.createElement("div");
+        elTitle.classList.add("card-title", "aton-card-title");
+        elbody.append(elTitle);
+
+        UI.registerElementAsComponent(elTitle, "title");
+
         elTitle.innerHTML = options.title;
         sskwords += " "+options.title.trim().toLowerCase();
         el.setAttribute("data-search-term", sskwords);
@@ -1479,7 +1595,7 @@ UI.createSceneCard = (options)=>{
 
 /**
 Create a live filter, search as user is typing
-- options.filterclass: items class to filter (eg. "aton-scene-card") in the current document
+- options.filterclass: items class to filter (eg. "aton-card") in the current document
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
 - options.oninput: custom routine on keyboard input. If not provided uses filterclass option
@@ -1507,8 +1623,8 @@ UI.createLiveFilter = (options)=>{
     UI.registerElementAsComponent(elInput, "input");
 
     const elInGroup = document.createElement("div");
-    elInGroup.classList.add("input-group"); //,"mb-2");
-    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text'><i class='bi bi-search'></i></span>"));
+    elInGroup.classList.add("input-group","aton-inline"); //,"mb-2");
+    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text aton-input'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
     if (options.oninput) elInput.oninput = options.oninput;
@@ -1978,14 +2094,14 @@ Components:
 UI.createInputText = (options)=>{
     let baseid = ATON.Utils.generateID("txtfield");
     
-    let el = ATON.UI.createContainer({classes: "input-group" });
+    let el = ATON.UI.createContainer({classes: "input-group aton-inline" });
     el.id = baseid;
 
     let label = "";
 
     if (options.label){
         label = options.label;
-        el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
+        el.append(UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+label+"</span>"));
     }
 
     let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="search" spellcheck="false" >`);
@@ -2076,16 +2192,66 @@ UI.createInput3DModel = (options)=>{
     return el;
 };
 
+UI.createInputPanorama = (options)=>{
+    let el = ATON.UI.createContainer();
+    
+    if (!options) options = {};
+
+    ATON.checkAuth(
+        (u)=>{
+            ATON.REQ.get("items/"+u.username+"/panoramas/", entries => {
+
+                console.log(entries)
+
+                const itemnames = entries.map(item => {
+                    return item.replace(u.username+"/pano/", "");
+                });
+             
+                let elIT = ATON.UI.createInputText({
+                    label: options.label,
+                    placeholder: "Panorama URL...",
+                    list: entries,
+                    listnames: itemnames,
+                    oninput: options.oninput,
+                    onchange: options.onchange
+                });
+        
+                el.append( elIT );
+
+                let elInput = elIT.getElementsByTagName("input")[0];
+/*
+                if (options.actionbutton){
+                    elIT.append( options.actionbutton );
+                }
+*/
+
+                elIT.append( ATON.UI.createButton({
+                    icon: options.actionicon? options.actionicon : "collection-item",
+                    text: options.actiontext,
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        if (options.onaction) options.onaction( elInput.value );
+                        elInput.value = "";
+                    }
+                }));
+
+            });
+        }
+    );
+
+    return el;
+};
+
 UI.createColorPicker = (options)=>{    
     if (!options) options = {};
 
-    let el = ATON.UI.createContainer({classes: "input-group" });
+    let el = ATON.UI.createContainer({classes: "input-group aton-inline" });
 
     let label = "";
 
     if (options.label){
         label = options.label;
-        el.append(UI.createElementFromHTMLString("<span class='input-group-text'>"+label+"</span>"));
+        el.append(UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+label+"</span>"));
     }
 
     let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="color">`);
@@ -2216,8 +2382,8 @@ UI.createLoginForm = (options)=>{
     let el = document.createElement("form");
     el.classList.add("container-sm", "text-center");
 
-    let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Username</span></div>`);
-    let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4"><span class="input-group-text">Password</span></div>`);
+    let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Username</span></div>`);
+    let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Password</span></div>`);
 
     let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username" spellcheck="false" >`);
     let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password" spellcheck="false" >`);

@@ -54,11 +54,14 @@ UI.hideMainElements = ()=>{
     ATON.UI.hideElement(UI._elMainToolbar); //.classList.add("d-none");
     ATON.UI.hideElement(UI._elBottomToolbar); //.classList.add("d-none");
     ATON.UI.hideElement(UI._elUserToolbar); //.classList.add("d-none");
+    ATON.UI.hideElement(UI._elSidePanel);
 };
+
 UI.showMainElements = ()=>{
     ATON.UI.showElement(UI._elMainToolbar); //.classList.remove("d-none");
     ATON.UI.showElement(UI._elBottomToolbar); //.classList.remove("d-none");
     ATON.UI.showElement(UI._elUserToolbar); //.classList.remove("d-none");
+    ATON.UI.showElement(UI._elSidePanel);
 };
 
 UI.enterEditorMode = ()=>{
@@ -67,6 +70,16 @@ UI.enterEditorMode = ()=>{
 UI.exitEditorMode = ()=>{
     UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
 };
+
+UI.createTextBlock = (content)=>{
+    let el = ATON.UI.createContainer({
+        classes: "hathor-text-block"
+    });
+
+    if (content) el.append(content);
+
+    return el;
+}
 
 /*
     SUI
@@ -401,7 +414,7 @@ UI.sideTool = ()=>{
 UI.sideLayers = ()=>{
     // Layers list
     let elLayers = ATON.UI.createContainer({
-        style: "margin-bottom: 4px;"
+        style: "margin-top: 4px;"
     });
 
     const appendNewLayer = (nid)=>{
@@ -458,8 +471,8 @@ UI.sideLayers = ()=>{
         header: "Layers",
         body: ATON.UI.createContainer({
             items:[
-                elLayers,
-                elNewLayer
+                elNewLayer,
+                elLayers
             ]
         })
     });
@@ -587,12 +600,74 @@ UI.sideEnv = ()=>{
         }
     });
 
+    let elBG = ATON.UI.createContainer({
+        //style: "width:100%; margin:0px; padding:0px"
+    });
+/*
+    elBG.append( ATON.UI.createInputPanorama({
+
+    }));
+*/    
+    ATON.checkAuth(
+        (u)=>{
+            elBG.append( ATON.UI.createLiveFilter({
+                filterclass: "aton-card"
+            }));
+
+            ATON.REQ.get("items/"+u.username+"/panoramas/", entries => {
+                for (let e in entries){
+                    let purl = entries[e];
+                    
+                    let fullurl = ATON.Utils.resolveCollectionURL(purl);
+
+                    if (!ATON.Utils.isImage(fullurl)) fullurl = ATON.PATH_RES+"pano.jpg";
+
+                    elBG.append(ATON.UI.createCard({
+                        title: purl,
+                        cover: fullurl,
+                        //size: "small",
+                        useblurtint: true,
+                        onactivate: ()=>{
+                            HATHOR.ED.setBackground({ bg: purl });
+                        }
+                    }))
+                } 
+            })
+        }
+    );
 
     elBody.append(elCP);
+    elBody.append( ATON.UI.createTreeGroup({
+        items:[
+            {
+                title: "Panorama",
+                open: true,
+                content: elBG
+            }
+        ]}
+    ));
 
 
     UI.openToolPanel({
         header: "Environment",
+        body: elBody
+    });
+};
+
+UI.sideNav = ()=>{
+    let elBody = ATON.UI.createContainer({
+        //style: "margin-bottom: 4px;"
+    });
+
+    elBody.append(
+        UI.createTextBlock("Select a navigation mode"),
+        ATON.UI.createNavSwitcher({
+
+        })
+    );
+  
+    UI.openToolPanel({
+        header: "Navigation",
         body: elBody
     });
 };

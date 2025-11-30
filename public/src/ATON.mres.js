@@ -108,7 +108,7 @@ MRes.updateTSetsCamera = (cam)=>{
             //let leftCam = cam.cameras[ 0 ];
             //if ( leftCam ) TS.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
 
-            TS.setResolution( cam, 300,300 ); // 300
+            TS.setResolution( cam, 600,600 ); // 300
             //TS.setResolutionFromRenderer( cam, ATON._renderer );            
         }
         else {

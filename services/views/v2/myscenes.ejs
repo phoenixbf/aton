@@ -13,7 +13,7 @@ window.addEventListener( 'load', ()=>{
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
 
-        //elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
+        //elNavItems.append(ATON.UI.elem("<b>My Scenes</b>"));
 
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-card",
@@ -70,7 +70,7 @@ window.addEventListener( 'load', ()=>{
                                         let DD   = cdate.getUTCDate();
                                         if (MM<10) MM = "0"+MM;
 
-                                        const elFooter = ATON.UI.createElementFromHTMLString(`
+                                        const elFooter = ATON.UI.elem(`
                                                 <div class="align-items-center justify-content-center">
                                                 </div>
                                                 `
@@ -79,7 +79,7 @@ window.addEventListener( 'load', ()=>{
                                         // Years
                                         if (!years[YYYY]){
                                                 years[YYYY] = 1;
-                                                elMyScenes.append(ATON.UI.createElementFromHTMLString(`
+                                                elMyScenes.append(ATON.UI.elem(`
                                                         <div class="shuYearTitleContainer" style="text-align: left;">
                                                                 <b>${YYYY}</b>
                                                         </div>
@@ -153,7 +153,7 @@ window.addEventListener( 'load', ()=>{
 
         // Scene settings
         let sceneSettings = (sid)=>{
-                const elBody = ATON.UI.createElementFromHTMLString(`
+                const elBody = ATON.UI.elem(`
                         <div>Here settings</div>
                 `);
 

@@ -15,7 +15,7 @@ UI.setup = ()=>{
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
 
     // Dedicated side panel
-    UI._elSidePanel = ATON.UI.createElementFromHTMLString(`
+    UI._elSidePanel = ATON.UI.elem(`
         <div class="offcanvas offcanvas-start aton-std-bg aton-sidepanel hathor-side-panel" tabindex="-1">
         </div>
     `);
@@ -80,6 +80,17 @@ UI.createTextBlock = (content)=>{
 
     return el;
 }
+
+UI.createBlockGroup = (options)=>{
+    let el = ATON.UI.createContainer({
+        classes: "btn-group",
+        style: "width:100%;"
+    });
+
+    if (options.items) for (let e in options.items) el.append(options.items[e]);
+
+    return el;
+};
 
 /*
     SUI
@@ -179,7 +190,7 @@ UI._onUser = (username)=>{
 	if (username){
 		//console.log(username);
 		UI._elUserBTN.classList.add("aton-btn-highlight");
-		UI._elUserBTN.append(ATON.UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
+		UI._elUserBTN.append(ATON.UI.elem("<span class='aton-btn-text'>"+username+"</span>"));
 	}
 	else {
 		UI._elUserBTN.classList.remove("aton-btn-highlight");
@@ -388,7 +399,7 @@ UI.closeToolPanel = ()=>{
 UI.sideTool = ()=>{
     UI.openToolPanel({
         header: "Test Tool",
-        //body: ATON.UI.createElementFromHTMLString(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`)
+        //body: ATON.UI.elem(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`)
         body: ATON.UI.createContainer({
             items:[
 /*
@@ -492,7 +503,7 @@ UI.createLayerModels = (N)=>{
         const fname = ATON.Utils.getFilename(url);
 
         // list-group-item 
-        let el = ATON.UI.createElementFromHTMLString(`
+        let el = ATON.UI.elem(`
             <div class='aton-collection-item'>${fname}</div>
         `);
 
@@ -536,6 +547,41 @@ UI.createLayerModels = (N)=>{
     return el;
 };
 
+UI.createMaterialControl = (N)=>{
+    if (!N) return undefined;
+
+    let elBody = ATON.UI.createContainer();
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createSelect({
+                    title: "Apply material...",
+                    items: [
+                        { title: "Wireframe", value: "wireframe" },
+                        { title: "Default UI", value: "defUI" },
+                        { title: "Invisible", value: "invisible" },
+                    ],
+                    onselect: (v)=>{
+                        let M = ATON.MatHub.materials[v];
+
+                        N.setMaterial(M);
+                    }
+                }),
+                ATON.UI.createButton({
+                    icon: "cancel",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        N.restoreMaterials();
+                    }
+                })
+            ]
+        })
+
+    );
+
+    return elBody;
+};
+
 UI.sideManageLayer = (nid)=>{
     let N = ATON.getSceneNode(nid);
     if (!N) return;
@@ -550,8 +596,18 @@ UI.sideManageLayer = (nid)=>{
         onpress: ()=>{
             ATON.Nav.requestPOVbyNode(N, 0.2);
         }
-    }) );
-    
+    }));
+
+    //let elMat = ATON.UI.createContainer();
+/*
+    let elFrameMat = ATON.UI.elem(`<iframe style='height:500px; margin:0;' width='100%' height='500px' frameborder='0'></iframe>`);
+    elFrameMat.src = ATON.PATH_PREVIEW+"?m=wireframe";
+    elMat.append(elFrameMat);
+
+    console.log(elFrameMat.contentWindow.APP);
+*/
+
+
     elBody.append( ATON.UI.createTreeGroup({
         items:[
             {
@@ -571,7 +627,7 @@ UI.sideManageLayer = (nid)=>{
             },
             {
                 title: "Material",
-                //content:
+                content: UI.createMaterialControl(N)
             }
 
         ]
@@ -625,6 +681,7 @@ UI.sideEnv = ()=>{
                     elBG.append(ATON.UI.createCard({
                         title: purl,
                         cover: fullurl,
+                        classes: "hathor-card-media-v",
                         //size: "small",
                         useblurtint: true,
                         onactivate: ()=>{

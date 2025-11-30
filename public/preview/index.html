@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Previewer">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON Sample</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
+
+<script type="module">
+let APP = ATON.App.realize();
+window.APP = APP;
+
+APP.currMat = undefined;
+
+APP.uiSetupMats = ()=>{
+
+    let T = ATON.UI.get("bottomToolbar");
+
+    let mitems = [];
+    for (let m in ATON.MatHub.materials){
+
+        mitems.push({
+            title: m,
+            value: m
+        })
+    }
+
+    T.append( ATON.UI.createSelect({
+        items: mitems,
+        onselect: (v)=>{
+            let M = ATON.MatHub.materials[v];
+
+            APP.nMain.setMaterial(M);
+            APP.currMat = M;
+        }
+    }));
+};
+
+APP.setup = ()=>{
+
+	// Realize base ATON and add base UI events
+    ATON.realize();
+    ATON.UI.addBasicEvents();
+
+    ATON.SUI.showSelector(false);
+
+    ATON.setMainPanorama(ATON.PATH_RES+"pano-preview.jpg");
+
+	APP.nMain = ATON.createSceneNode("main");
+    APP.nMain.attachToRoot();
+
+    let item = APP.params.get("i");
+    if (item){
+        item = ATON.Utils.resolveCollectionURL(item);
+        APP.nMain.load(item);
+    }
+
+    let mat = APP.params.get("m");
+    if (mat){
+        APP.uiSetupMats();
+
+        let M = ATON.MatHub.materials[mat];
+
+        let s = new THREE.Mesh( ATON.Utils.geomUnitSphere );
+        let c = new THREE.Mesh( ATON.Utils.geomUnitCube );
+
+        s.position.y += 1.5;
+
+        APP.nMain.add(s);
+        APP.nMain.add(c);
+
+        if (M) APP.nMain.setMaterial(M);
+
+        ATON.Nav.computeAndRequestDefaultHome();
+/*
+        APP.nMain.load(ATON.PATH_RES+"models/aton-logo.glb",()=>{
+            if (M) nMain.setMaterial(M);
+        });
+*/
+    }
+
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        console.log("All loaded");
+    });
+};
+</script>
+</head>
+
+<body>
+    <div style="position:absolute; bottom:0px; width:100%; text-align:center;">
+        <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
+    </div>
+</body>

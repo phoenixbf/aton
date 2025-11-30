@@ -444,7 +444,6 @@ a {
     margin: 2px;
 
     min-width: var(--aton-el-height);
-    /* min-height: 40px; */
     height: var(--aton-el-height);
 
     vertical-align: middle;
@@ -866,9 +865,11 @@ a {
 
 /* Input decorators
 =======================*/
+/*
 .aton-input {
     min-height: var(--aton-el-height);
 }
+*/
 
 .aton-input:focus {
     border-color: rgba(var(--aton-colors-accent-rgb), 0.5);
@@ -877,7 +878,9 @@ a {
 
 .aton-input-x {
     border-color: rgba(255,0,0, 0.2);
+/*
     height: var(--aton-el-height);
+*/
     /*background-color: rgba(255,0,0, 0.1) !important;*/
 }
 .aton-input-x:focus {
@@ -887,7 +890,9 @@ a {
 
 .aton-input-y {
     border-color: rgba(0,255,0, 0.2);
+/*
     height: var(--aton-el-height);
+*/
     /*background-color: rgba(0,255,0, 0.1) !important;*/
 }
 .aton-input-y:focus {
@@ -897,7 +902,9 @@ a {
 
 .aton-input-z {
     border-color: rgba(0,0,255, 0.2);
+/*
     height: var(--aton-el-height);
+*/
     /*background-color: rgba(0,0,255, 0.1) !important;*/
 }
 .aton-input-z:focus {

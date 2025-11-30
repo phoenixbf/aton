@@ -99,7 +99,7 @@ HATHOR.showAnnotationContent = (semid)=>{
     let htmlContent = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (!htmlContent) return;
 
-    let elContent = ATON.UI.createElementFromHTMLString("<div>"+htmlContent+"</div>");
+    let elContent = ATON.UI.elem("<div>"+htmlContent+"</div>");
 
     HATHOR.UI.showSemanticPanel(semid, elContent);
 };

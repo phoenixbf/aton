@@ -268,6 +268,8 @@ setMaterial(M){
 
     this.traverse((o) => {
         if (o.isMesh){
+            if (!o.userData.origMat) o.userData.origMat = o.material.clone();
+
             o.material = M;
             ///o.material.needsUpdate = true;
             //console.log(o);
@@ -280,6 +282,29 @@ setMaterial(M){
     for (let c in this.children){
         let C = this.children[c];
         if (C.setMaterial) C.setMaterial(M);
+    }
+
+    return this;
+}
+
+/**
+Restore original materials for this node and its children
+@example
+myNode.restoreMaterials()
+*/
+restoreMaterials(){
+    this.traverse((o) => {
+        if (o.isMesh && o.userData.origMat){
+            o.material = o.userData.origMat;
+            ///o.material.needsUpdate = true;
+            //console.log(o);
+        }
+    });
+
+    // children
+    for (let c in this.children){
+        let C = this.children[c];
+        if (C.restoreMaterials) C.restoreMaterials();
     }
 
     return this;
@@ -825,6 +850,15 @@ load(url, onComplete){
 
     // Register
     if (N._bCloneOnLoadHit) ATON._assetsManager[url] = P;
+
+    return this;
+}
+
+// TODO:
+reload(){
+    this.removeChildren();
+
+    for (let u in this._reqURLs) this.load(u);
 
     return this;
 }

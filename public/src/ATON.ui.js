@@ -51,12 +51,14 @@ UI.setTheme = (theme)=>{
 };
 
 // Utility function to create DOM element from string
-UI.createElementFromHTMLString = (html)=>{
+UI.elem = (html)=>{
     let element = UI._parser.parseFromString(html, 'text/html').body.firstElementChild;
     // TODO: compare perf with insertAdjacentHTML( 'beforeend', str );
-
-    return element;
+    return element; 
 };
+
+// backwards compat.
+UI.createElementFromHTMLString = UI.elem;
 
 // Shorter get el by ID
 UI.get = (elID)=>{
@@ -78,7 +80,7 @@ UI._setupBase = ()=>{
     UI.setTheme("dark");
 
     // Central overlay (spinners, etc.)
-    UI.elCenteredOverlay = UI.createElementFromHTMLString(`
+    UI.elCenteredOverlay = UI.elem(`
         <div class="d-flex align-items-center justify-content-center aton-centered-container">
             <div class="spinner-border aton-spinner" role="status"><span class="visually-hidden">Loading...</span></div>
         </div>
@@ -88,11 +90,11 @@ UI._setupBase = ()=>{
     UI.hideCenteredOverlay();
     
     // 2D labels
-    //UI.elLabelCon = UI.createElementFromHTMLString(`<div class='aton-floating-label-container'></div>`);
+    //UI.elLabelCon = UI.elem(`<div class='aton-floating-label-container'></div>`);
     UI.elLabelCon = document.createElement('div');
     UI.elLabelCon.classList.add("aton-floating-label-container");
 
-    //UI.elLabel    = UI.createElementFromHTMLString("<div class='aton-floating-label'></div>");
+    //UI.elLabel    = UI.elem("<div class='aton-floating-label'></div>");
     UI.elLabel = document.createElement('div');
     UI.elLabel.classList.add("aton-floating-label");
 
@@ -101,7 +103,7 @@ UI._setupBase = ()=>{
     UI.hideSemLabel();
 
     // Centralized modal dialog // modal-fullscreen-md-down
-    UI.elModal = UI.createElementFromHTMLString(`
+    UI.elModal = UI.elem(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
@@ -116,7 +118,7 @@ UI._setupBase = ()=>{
 
 
     // Centralized side panel
-    UI.elSidePanel = UI.createElementFromHTMLString(`
+    UI.elSidePanel = UI.elem(`
         <div class="offcanvas offcanvas-end aton-std-bg aton-sidepanel" tabindex="-1"></div>
 	`); // offcanvas-md
 
@@ -402,7 +404,7 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
     fetch(src)
         .then(res => res.text())
         .then(res => {
-            let elHeader = UI.createElementFromHTMLString(res);
+            let elHeader = UI.elem(res);
             //let elHeader = UI._parser.parseFromString(res, 'text/html'); //.body.childNodes;
 
             //console.log(elHeader)
@@ -428,9 +430,9 @@ UI.resolveIconURL = (icon)=>{
 
 UI.createIcon = (iconurl)=>{
     if (iconurl.startsWith("bi-")) 
-        return UI.createElementFromHTMLString("<i class='bi "+iconurl+"' style='font-size:1.5em; vertical-align:middle;'></i>");
+        return UI.elem("<i class='bi "+iconurl+"' style='font-size:1.5em; vertical-align:middle;'></i>");
     else 
-        return UI.createElementFromHTMLString("<img class='icon aton-icon' src='"+UI.resolveIconURL(iconurl)+"'>");
+        return UI.elem("<img class='icon aton-icon' src='"+UI.resolveIconURL(iconurl)+"'>");
 };
 
 UI.prependIcon = (el, icon)=>{
@@ -470,7 +472,7 @@ UI.createContainer = (options)=>{
         if (options.style) str += ` style="${options.style}"`;
     }
 
-    let el = UI.createElementFromHTMLString(`<div${str}></div>`);
+    let el = UI.elem(`<div${str}></div>`);
 
     if (options && options.items){
         for (let i in options.items) if (options.items[i]) el.append( options.items[i] );
@@ -527,7 +529,7 @@ UI.createButton = (options)=>{
     }
 
     if (options.badge){ 
-        el.append( UI.createElementFromHTMLString("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
+        el.append( UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+options.badge+"</span>"));
     }
 
     if (options.onpress) el.onclick = options.onpress;
@@ -787,7 +789,7 @@ UI.createButtonUser = (options)=>{
     if (!options) options = {};
 
     let elUserBTN;
-    let elUserN = UI.createElementFromHTMLString("<span class='aton-btn-text'></span>");
+    let elUserN = UI.elem("<span class='aton-btn-text'></span>");
     elUserN.classList.add("d-none");
 
     const updUserBTN = (username)=>{
@@ -797,7 +799,7 @@ UI.createButtonUser = (options)=>{
             elUserBTN.classList.add("btn-accent");
             elUserN.innerHTML = username;
             elUserN.classList.remove("d-none");
-            //elUserBTN.append(UI.createElementFromHTMLString("<span class='aton-btn-text'>"+username+"</span>"));
+            //elUserBTN.append(UI.elem("<span class='aton-btn-text'>"+username+"</span>"));
         }
         else {
             //elUserBTN.classList.remove("aton-btn-highlight");
@@ -897,7 +899,7 @@ UI.createDropdown = (options)=>{
 
     let el = ATON.UI.createContainer({ classes:"dropdown" });
 
-    let elBtn = UI.createElementFromHTMLString(`
+    let elBtn = UI.elem(`
         <button type="button" class="btn aton-btn dropdown-toggle px-2" data-bs-toggle="dropdown" aria-expanded="false"><span class="aton-btn-text">${options.title}</span></button>
     `);
 
@@ -927,9 +929,15 @@ UI.createDropdown = (options)=>{
                 //elItem.classList.add("dropdown-item", "aton-dropdown-item");
                 elItem.append(E.el);
             }
-            else elItem = UI.createElementFromHTMLString(`
-                <a class="dropdown-item aton-dropdown-item" href="${E.url}">${E.title}</a>
-            `);
+            else {
+                if (E.url) elItem = UI.elem(`<a class="dropdown-item aton-dropdown-item" href="${E.url}">${E.title}</a>`);
+                else if (E.onselect){
+                    elItem = UI.elem(`<span class="dropdown-item aton-dropdown-item">${E.title}</span>`);
+                    elItem.onclick = E.onselect;
+                }
+            }
+            
+
 
             let elItemLI = document.createElement("li");
             elItemLI.append( elItem );
@@ -944,6 +952,42 @@ UI.createDropdown = (options)=>{
     if (options.btnclasses) elBtn.className = elBtn.className + " " + options.btnclasses;
     if (options.classes)    el.className = el.className + " " + options.classes;
     
+
+    return el;
+};
+
+/**
+Create a select (basic dropdown)
+- options.title: the select first entry
+- options.items: an array of objects with "title" (string) and "value" (string) properties
+- options.value: initial value
+- options.
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createSelect = (options)=>{
+    let el = UI.elem(`<select class="form-select aton-input" aria-label="${options.label}"></select>`);
+
+    let title = options.title? options.title : "-- Select...";
+    el.append(UI.elem(`<option value="">-- ${title}</option>`));
+
+    if (options.items){
+        for (let i=0; i<options.items.length; i++){
+            let E = options.items[i];
+            let elO = UI.elem(`<option value="${E.value}">${E.title}</option>`);
+            if (options.value === E.value) elO.setAttribute("selected",true);
+
+            el.append(elO);
+        }
+    }
+
+    //el.onchange = options.onselect;
+    el.onchange = (e)=>{
+        let val = el.value;
+        
+        if (val.length>0) options.onselect(val);
+    }
 
     return el;
 };
@@ -1000,9 +1044,9 @@ UI.createTabsGroup = (options)=>{
         let eltabbody;
 
         if (i===0) 
-            eltabbody = UI.createElementFromHTMLString("<div class='tab-pane show active' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+            eltabbody = UI.elem("<div class='tab-pane show active' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
         else 
-            eltabbody = UI.createElementFromHTMLString("<div class='tab-pane show' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
+            eltabbody = UI.elem("<div class='tab-pane show' id='"+tabid+"' role='tabpanel' aria-labelledby='"+tabid+"-tab'></div>");
 
         eltabbody.style.padding = "10px 0px 10px 0px";
 
@@ -1054,7 +1098,7 @@ UI.createTreeGroup = (options)=>{
             
             elItem.id = baseid+"-"+i;
     
-            elItem.append( UI.createElementFromHTMLString("<summary>"+title+"</summary>") );
+            elItem.append( UI.elem("<summary>"+title+"</summary>") );
             if (content){
                 let elContent = document.createElement('div');
                 elContent.classList.add("aton-tree-item-content");
@@ -1089,13 +1133,13 @@ UI.createAccordion = (options)=>{
 
         let elAccordion = UI.createContainer({ classes: "accordion-item" });
 
-        let elH = UI.createElementFromHTMLString(`
+        let elH = UI.elem(`
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${accid}" aria-expanded="${stropen}" aria-controls="${accid}">${title}</button>
             </h2>
         `);
 
-        let elBody = UI.createElementFromHTMLString(`
+        let elBody = UI.elem(`
             <div id="${accid}" class="accordion-collapse collapse show" data-bs-parent="#${baseid}">
                 <div class="accordion-body"></div>
             </div>
@@ -1138,7 +1182,7 @@ UI.createVectorControl = (options)=>{
     let posy = V? V.y : 0.0;
     let posz = V? V.z : 0.0;
 
-    let el = UI.createElementFromHTMLString(`
+    let el = UI.elem(`
         <div class="input-group mb-3 aton-inline">
             <input type="number" class="form-control aton-input-x" placeholder="x" aria-label="x" step="${step}" value="${posx}">
             <input type="number" class="form-control aton-input-y" placeholder="y" aria-label="y" step="${step}" value="${posy}">
@@ -1147,7 +1191,7 @@ UI.createVectorControl = (options)=>{
     `);
 
     if (options.label){
-        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
+        el.prepend( ATON.UI.elem("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
     }
 
     if (options.reset){
@@ -1242,7 +1286,7 @@ UI.createQuaternionControl = (options)=>{
     let z = Q? Q.z : 0.0;
     let w = Q? Q.w : 0.0;
 
-    let el = UI.createElementFromHTMLString(`
+    let el = UI.elem(`
         <div class="input-group mb-3 aton-inline">
             <input type="number" class="form-control aton-inline" placeholder="x" aria-label="x" step="${step}" value="${x}">
             <input type="number" class="form-control aton-inline" placeholder="y" aria-label="y" step="${step}" value="${y}">
@@ -1252,7 +1296,7 @@ UI.createQuaternionControl = (options)=>{
     `);
 
     if (options.label){
-        el.prepend( ATON.UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
+        el.prepend( ATON.UI.elem("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
     }
 
     if (options.reset){
@@ -1368,7 +1412,7 @@ UI.createNodeTrasformControl = (options)=>{
             reset: [0,0,0]
         });
 
-        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
+        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
         el.append( elPos );
     }
 
@@ -1381,7 +1425,7 @@ UI.createNodeTrasformControl = (options)=>{
             reset: [1,1,1]
         });
 
-        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
+        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
         el.append( elScale );
     }
 
@@ -1399,7 +1443,7 @@ UI.createNodeTrasformControl = (options)=>{
             step: options.rotation.step
         });     
 */
-        el.append( UI.createElementFromHTMLString("<label class='form-label hathor-text-block' for='"+elRot.id+"'>Rotation</label>") );
+        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
     }
 
@@ -1457,7 +1501,7 @@ UI.createCard = (options)=>{
         }
 
         // Cover
-        let elcov = ATON.UI.createElementFromHTMLString(`<div class='aton-card-cover'></div>`);
+        let elcov = ATON.UI.elem(`<div class='aton-card-cover'></div>`);
 
         let elImg = document.createElement("img");
         elImg.classList.add("card-img-top");
@@ -1471,7 +1515,7 @@ UI.createCard = (options)=>{
             elcov.onclick = options.onactivate;
         }
         else if (options.url) {
-            let elA = ATON.UI.createElementFromHTMLString(`<a href='${options.url}'></a>`);
+            let elA = ATON.UI.elem(`<a href='${options.url}'></a>`);
             elA.append( elImg );
             
             elcov.append( elA );
@@ -1514,7 +1558,7 @@ UI.createCard = (options)=>{
 
     // Sub-title
     if (options.subtitle){
-        let elSub = ATON.UI.createElementFromHTMLString(`<div class='card-subtitle mb-2 text-body-secondary'></div>`);
+        let elSub = ATON.UI.elem(`<div class='card-subtitle mb-2 text-body-secondary'></div>`);
 
         elSub.append(options.subtitle);
         UI.registerElementAsComponent(elSub, "subtitle");
@@ -1533,7 +1577,7 @@ UI.createCard = (options)=>{
     }
 
     if (options.badge){
-        let elB = UI.createElementFromHTMLString("<span class='position-absolute top-0 start-0 translate-middle aton-card-badge'></span>"); // rounded-circle
+        let elB = UI.elem("<span class='position-absolute top-0 start-0 translate-middle aton-card-badge'></span>"); // rounded-circle
         
         elB.append(options.badge);
         el.append(elB);
@@ -1573,7 +1617,7 @@ UI.createSceneCard = (options)=>{
 
     let elSub = options.subtitle;
     if (!elSub) 
-        elSub = ATON.UI.createElementFromHTMLString(`
+        elSub = ATON.UI.elem(`
             <div><img class='icon aton-icon aton-icon-small' src='${UI.resolveIconURL("user")}'>${user}</div>
         `);
 
@@ -1618,13 +1662,13 @@ UI.createLiveFilter = (options)=>{
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" spellcheck="false" >`);
+    let elInput = UI.elem(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" spellcheck="false" >`);
 
     UI.registerElementAsComponent(elInput, "input");
 
     const elInGroup = document.createElement("div");
     elInGroup.classList.add("input-group","aton-inline"); //,"mb-2");
-    elInGroup.append(UI.createElementFromHTMLString("<span class='input-group-text aton-input'><i class='bi bi-search'></i></span>"));
+    elInGroup.append(UI.elem("<span class='input-group-text aton-input'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
     if (options.oninput) elInput.oninput = options.oninput;
@@ -1764,15 +1808,15 @@ Create a chip (keyword / tag)
 @returns {HTMLElement}
 */
 UI.createChip = (options)=>{
-    let el = UI.createElementFromHTMLString(`<button type="button" class="btn btn-sm btn-outline-secondary aton-chip"><span class='aton-chip-text'>${options.term}</span></button>`);
+    let el = UI.elem(`<button type="button" class="btn btn-sm btn-outline-secondary aton-chip"><span class='aton-chip-text'>${options.term}</span></button>`);
 
     if (options.count){
-        let elCount = UI.createElementFromHTMLString(`<span class="badge text-bg-secondary">${options.count}</span>`);
+        let elCount = UI.elem(`<span class="badge text-bg-secondary">${options.count}</span>`);
         el.append(elCount);
     }
 
     if (options.onremove){
-        let elClose = UI.createElementFromHTMLString(`<button type='button' class='btn-close btn-sm' style='margin:0px; margin-left:2px' aria-label='Close'></button>`);
+        let elClose = UI.elem(`<button type='button' class='btn-close btn-sm' style='margin:0px; margin-left:2px' aria-label='Close'></button>`);
         elClose.onclick = ()=>{
             el.remove();
             options.onremove();
@@ -1862,7 +1906,7 @@ UI.createLayerControl = (options)=>{
     let nid = options.node;
     let N = ATON.getSceneNode(nid);
 
-    //const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
+    //const elNode = UI.elem(`<div class="aton-layer"></div>`);
 
     let elNode = ATON.UI.createContainer({
 		classes: "btn-group",
@@ -1951,7 +1995,7 @@ UI.createBasicLayersManager = (options)=>{
         const N = root.children[c];
         
         if (N.nid){
-            const elNode = UI.createElementFromHTMLString(`<div class="aton-layer"></div>`);
+            const elNode = UI.elem(`<div class="aton-layer"></div>`);
 
             if (!N.visible) elNode.classList.add("aton-layer-hidden");
 
@@ -2023,8 +2067,8 @@ UI.createSlider = (options)=>{
     let elLabel = undefined;
     
     if (options.label){
-        elLabel = UI.createElementFromHTMLString("<label for='"+baseid+"' class='aton-range-label'><b>"+options.label+"</b>: </label>");
-        //elLabel = UI.createElementFromHTMLString("<span class='input-group-text'><i class='bi bi-search'></i></span>");
+        elLabel = UI.elem("<label for='"+baseid+"' class='aton-range-label'><b>"+options.label+"</b>: </label>");
+        //elLabel = UI.elem("<span class='input-group-text'><i class='bi bi-search'></i></span>");
         el.append(elLabel);
         elValue = document.createElement("span");
         elLabel.append(elValue);
@@ -2041,7 +2085,7 @@ UI.createSlider = (options)=>{
         max = options.range[1];
     }
 
-    let elInput = UI.createElementFromHTMLString(`
+    let elInput = UI.elem(`
         <input type="range" class="aton-range aton-input" list="ticks-${baseid}" min="${min}" max="${max}" step="${step}" id="${baseid}">
     `);
 
@@ -2057,7 +2101,7 @@ UI.createSlider = (options)=>{
         elDL.id = "ticks-"+baseid;
 
         for (let t=min; t<=max; t+=step){
-            elDL.append( UI.createElementFromHTMLString("<option value='"+t+"'></option>") );
+            elDL.append( UI.elem("<option value='"+t+"'></option>") );
         }
 
         el.append(elDL);
@@ -2101,10 +2145,10 @@ UI.createInputText = (options)=>{
 
     if (options.label){
         label = options.label;
-        el.append(UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+label+"</span>"));
+        el.append(UI.elem("<span class='input-group-text aton-inline'>"+label+"</span>"));
     }
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="search" spellcheck="false" >`);
+    let elInput = UI.elem(`<input class="form-control aton-input" aria-label="${label}" type="search" spellcheck="false" >`);
     UI.registerElementAsComponent(elInput, "input");
 
     elInput.id = baseid + "-input";
@@ -2126,7 +2170,7 @@ UI.createInputText = (options)=>{
         const L = options.list;
 
         elInput.setAttribute("list", baseid+"-list");
-        let elDatalist = UI.createElementFromHTMLString("<datalist id='"+baseid+"-list'></datalist>");
+        let elDatalist = UI.elem("<datalist id='"+baseid+"-list'></datalist>");
         UI.registerElementAsComponent(elDatalist, "datalist");
 
         for (let i in L){
@@ -2134,7 +2178,7 @@ UI.createInputText = (options)=>{
             if (options.listnames) itemname = options.listnames[i];
 
             elDatalist.append(
-                UI.createElementFromHTMLString("<option value='"+L[i]+"'></option>") // "+itemname+"
+                UI.elem("<option value='"+L[i]+"'></option>") // "+itemname+"
             );
         }
         
@@ -2251,10 +2295,10 @@ UI.createColorPicker = (options)=>{
 
     if (options.label){
         label = options.label;
-        el.append(UI.createElementFromHTMLString("<span class='input-group-text aton-inline'>"+label+"</span>"));
+        el.append(UI.elem("<span class='input-group-text aton-inline'>"+label+"</span>"));
     }
 
-    let elInput = UI.createElementFromHTMLString(`<input class="form-control aton-input" aria-label="${label}" type="color">`);
+    let elInput = UI.elem(`<input class="form-control aton-input" aria-label="${label}" type="color">`);
     UI.registerElementAsComponent(elInput, "input");
 
     el.append(elInput);
@@ -2337,7 +2381,7 @@ UI.createAudioRecorder = (options)=>{
         if (options.onaudio) options.onaudio(b64);
     });
 
-    //elAudio = ATON.UI.createElementFromHTMLString("<audio class='margin:auto' controls ></audio>");
+    //elAudio = ATON.UI.elem("<audio class='margin:auto' controls ></audio>");
 
     elPlay = ATON.UI.createButton({
         icon: "play",
@@ -2382,11 +2426,11 @@ UI.createLoginForm = (options)=>{
     let el = document.createElement("form");
     el.classList.add("container-sm", "text-center");
 
-    let elUsername = UI.createElementFromHTMLString(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Username</span></div>`);
-    let elPassword = UI.createElementFromHTMLString(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Password</span></div>`);
+    let elUsername = UI.elem(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Username</span></div>`);
+    let elPassword = UI.elem(`<div class="input-group mb-4 aton-inline"><span class="input-group-text">Password</span></div>`);
 
-    let elInputUN = UI.createElementFromHTMLString(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username" spellcheck="false" >`);
-    let elInputPW = UI.createElementFromHTMLString(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password" spellcheck="false" >`);
+    let elInputUN = UI.elem(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username" spellcheck="false" >`);
+    let elInputPW = UI.elem(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password" spellcheck="false" >`);
 
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);
@@ -2406,8 +2450,8 @@ UI.createLoginForm = (options)=>{
     });
 
     if (options.header) el.append(options.header);
-    else el.append( UI.createElementFromHTMLString(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
-    //else el.append( ATON.UI.createElementFromHTMLString(`<img src="${ATON.PATH_RES}aton-logo.png" style="width:50px; height:auto; margin-bottom:20px">`) );
+    else el.append( UI.elem(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
+    //else el.append( ATON.UI.elem(`<img src="${ATON.PATH_RES}aton-logo.png" style="width:50px; height:auto; margin-bottom:20px">`) );
 
     el.append(elUsername);
     el.append(elPassword);

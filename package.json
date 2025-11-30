@@ -52,7 +52,7 @@
     "@gltf-transform/functions": "^4.2.1",
     "@sparkjsdev/spark": "^0.1.10",
     "3d-tiles-renderer": "0.4.18",
-    "body-parser": "^2.2.0",
+    "body-parser": "^2.2.1",
     "chalk": "4.1.2",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",

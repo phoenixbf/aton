@@ -15,7 +15,7 @@ window.addEventListener( 'load', ()=>{
         let elNavCont  = document.getElementById("navbarSupportedContent");
         let elNavItems = document.getElementById("navbarItems");
 
-        //elNavItems.append(ATON.UI.createElementFromHTMLString("<b>My Scenes</b>"));
+        //elNavItems.append(ATON.UI.elem("<b>My Scenes</b>"));
 
         let elSearch = ATON.UI.createLiveFilter({
                 //filterclass: "aton-btn",
@@ -48,10 +48,10 @@ window.addEventListener( 'load', ()=>{
         }));
 
         let popupPreview = (path)=>{
-                let pp = "/standalone/?m=" + path;
+                let pp = ATON.PATH_PREVIEW+"?i=" + path;
                 console.log(pp)
 
-                let elFrame = ATON.UI.createElementFromHTMLString(`
+                let elFrame = ATON.UI.elem(`
                         <iframe style='height:500px; margin:0;' width='100%' height='500px' frameborder='0'></iframe>
                 `);
 

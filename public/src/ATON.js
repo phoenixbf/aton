@@ -151,6 +151,7 @@ ATON.setBaseURL = (baseurl)=>{
     ATON.PATH_SCENES     = `${ATON.BASE_URL}/scenes/`;
     ATON.PATH_RES        = `${ATON.BASE_URL}/res/`;
     ATON.PATH_FE         = `${ATON.BASE_URL}/s/`;
+    ATON.PATH_PREVIEW    = `${ATON.BASE_URL}/preview/`;
 };
 
 // Defaults to current origin

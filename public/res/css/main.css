@@ -249,9 +249,11 @@ a {
     position: absolute;
 
     text-align: center;
+    width: calc( var(--aton-el-height) + 4px);
+/*
     display: flex;
     flex-direction: column;
-
+*/
     overflow-y: auto;
     max-height: 100%;
 /*

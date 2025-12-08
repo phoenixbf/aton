@@ -2957,6 +2957,17 @@ ATON.enableAnaglyphRendering = ()=>{
     }
 };
 
+// Request/Cancel Animation Frame
+ATON.requestAnimationFrame = (cb)=>{
+    if (!ATON.XR._bPresenting) return window.requestAnimationFrame(cb);
+    return ATON.XR.currSession.requestAnimationFrame(cb);
+};
+
+ATON.cancelAnimationFrame = (handle)=>{
+    if (!ATON.XR._bPresenting) window.cancelAnimationFrame(handle);
+    else ATON.XR.currSession.cancelAnimationFrame(handle)
+};
+
 
 /*
     Built-in gizmos

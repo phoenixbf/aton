@@ -244,7 +244,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     let bPointCloud = false;
 
     // JSON loaded
-    ts.addEventListener( 'load-tile-set', ()=>{
+    ts.addEventListener( 'load-tileset', ()=>{
         console.log("TileSet loaded");
         //console.log(ts)
 

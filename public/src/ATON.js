@@ -2185,8 +2185,8 @@ ATON.toggleShadows = (b)=>{
         ATON._dMainL.castShadow = true;
         ATON._renderer.shadowMap.enabled = true;
 
-        if (ATON.device.isMobile) ATON._renderer.shadowMap.type = THREE.PCFShadowMap;
-        else ATON._renderer.shadowMap.type = THREE.PCFSoftShadowMap; // THREE.VSMShadowMap; 
+        //if (ATON.device.isMobile) ATON._renderer.shadowMap.type = THREE.PCFShadowMap;
+        //else ATON._renderer.shadowMap.type = THREE.BasicShadowMap; 
 
         //ATON._renderer.shadowMap.type    = THREE.BasicShadowMap;
         //ATON._renderer.shadowMap.type    = THREE.PCFShadowMap;

@@ -320,14 +320,28 @@ UI.modalXR = ()=>{
 /*
     WYSIWYG Editor
 =====================================*/
+UI.WYSIWYG_TOOLBAR = 'source,|,bold,italic';
+
 UI.WYSIWYGeditorInit = ()=>{
     UI.WYSIWYG = Jodit.make('#WYSIWYGeditor', {
-        theme: "dark",
+        //theme: "dark",
+        //toolbarButtonSize: 'small',
+        //height: 200,
 
-        buttons: 'source,|,about,print,bold',
-        buttonsMD: 'source,|,about,print,bold',
-        buttonsSM: 'source,|,about,print,bold',
-        buttonsXS: 'source,|,about,print,bold',
+        useSearch: false,
+        showCharsCounter: false,
+        showWordsCounter: false,
+        showXPathInStatusbar: false,
+        inline: true,
+        toolbarInlineForSelection: true,
+        showPlaceholder: false,
+
+        disablePlugins: "about,add-new-line,ai-assistant,search,print,xpath",
+
+        buttons: UI.WYSIWYG_TOOLBAR,
+        buttonsMD: UI.WYSIWYG_TOOLBAR,
+        buttonsSM: UI.WYSIWYG_TOOLBAR,
+        buttonsXS: UI.WYSIWYG_TOOLBAR,
 
         extraButtons: [
             {
@@ -399,27 +413,22 @@ UI.closeToolPanel = ()=>{
 UI.sideTool = ()=>{
     UI.openToolPanel({
         header: "Test Tool",
-        //body: ATON.UI.elem(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`)
+        body: ATON.UI.elem(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`),
+/*
         body: ATON.UI.createContainer({
             items:[
-/*
-                ATON.UI.createInputText({
-                    label: "test",
-                    list: ["x","y"]
-                }),
-*/
                 ATON.UI.createInput3DModel({
                     actionicon: "add",
                     onaction: (url)=>{
                         if (url && url.length>1) ATON.createSceneNode().load(url).attachToRoot();
                     }
-                }),
-                ATON.UI.createLayersControl()
+                })
             ]
         })
+*/
     });
 
-    //UI.WYSIWYGeditorInit();
+    UI.WYSIWYGeditorInit();
 }
 
 UI.sideLayers = ()=>{

@@ -52,6 +52,7 @@ window.addEventListener( 'load', ()=>{
                         SHU.createNavbarAuthSections("myscenes");
 
                         SHU.setPageWaiting();
+                        
                         ATON.REQ.get("scenes/"+u.username, entries => {
                                 entries.sort( ATON.UI.SCENES_SORTER );               
                                 console.log(entries);

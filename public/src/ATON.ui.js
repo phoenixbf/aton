@@ -297,17 +297,23 @@ UI.setSidePanelRight = ()=>{
 ===============================*/
 /**
 Make a given HTML element visibile
-@param {HTMLElement} el - the HTML element
+@param {HTMLElement} el - the HTML element or ID
 */
 UI.showElement = (el)=>{
+    if (typeof el === "string") el = UI.get(el);
+
+    if (!el) return;
     el.classList.remove("d-none");
 };
 
 /**
-Make a given HTML element hidden
-@param {HTMLElement} el - the HTML element
+Hide a given HTML element
+@param {HTMLElement} el - the HTML element or ID
 */
 UI.hideElement = (el)=>{
+    if (typeof el === "string") el = UI.get(el);
+
+    if (!el) return;
     el.classList.add("d-none");
 };
 
@@ -1452,9 +1458,9 @@ UI.createNodeTrasformControl = (options)=>{
 
 /**
 Create a generic card.
-- options.size: "small" or "large", if not present standard size
-- options.cover: cover image url
-- options.stdcover: default cover img (if cover not found / on fetch error)
+- options.size: "small" or "large", if not provided standard size is used
+- options.cover: cover image url or DOM element
+- options.stdcover: fallback cover img (if cover not found or fetch error)
 - options.url: landing url when selecting the main cover
 - options.onactivate: alternatively to url, a routine on cover activation
 - options.keywords: keywords object (eg. {"term_a":1, "term_b":1 }) to filter this card
@@ -1479,6 +1485,11 @@ UI.createCard = (options)=>{
 
     let el = ATON.UI.createContainer({ classes: cc });
 
+    if (Array.isArray(options.size)){
+        el.style.width  = options.size[0]+"px";
+        el.style.height = options.size[1]+"px";
+    }
+
     if (options.size==="small") el.classList.add("aton-card-small");
     if (options.size==="large") el.classList.add("aton-card-large");
 
@@ -1492,36 +1503,40 @@ UI.createCard = (options)=>{
     }
 
     if (options.cover){
-        // Blur bg
-        if (options.useblurtint){
-            let bgdiv = document.createElement('div');
-            bgdiv.classList.add("aton-card-bg");
-            bgdiv.style.backgroundImage = "url('"+options.cover+"')";
-            el.append(bgdiv);
-        }
-
-        // Cover
         let elcov = ATON.UI.elem(`<div class='aton-card-cover'></div>`);
 
-        let elImg = document.createElement("img");
-        elImg.classList.add("card-img-top");
-        elImg.src = options.cover;
-        if (options.stdcover) elImg.onerror = ()=>{
-            elImg.src = options.stdcover;
-        };
-
-        if (options.onactivate){
-            elcov.append( elImg );
-            elcov.onclick = options.onactivate;
+        if (options.cover instanceof Element){
+            elcov.append(options.cover);
         }
-        else if (options.url) {
-            let elA = ATON.UI.elem(`<a href='${options.url}'></a>`);
-            elA.append( elImg );
-            
-            elcov.append( elA );
-        }
+        else {
+            // Blur bg
+            if (options.useblurtint){
+                let bgdiv = document.createElement('div');
+                bgdiv.classList.add("aton-card-bg");
+                bgdiv.style.backgroundImage = "url('"+options.cover+"')";
+                el.append(bgdiv);
+            }
 
-        UI.registerElementAsComponent(elImg, "img");
+            let elImg = document.createElement("img");
+            elImg.classList.add("card-img-top");
+            elImg.src = options.cover;
+            if (options.stdcover) elImg.onerror = ()=>{
+                elImg.src = options.stdcover;
+            };
+
+            if (options.onactivate){
+                elcov.append( elImg );
+                elcov.onclick = options.onactivate;
+            }
+            else if (options.url) {
+                let elA = ATON.UI.elem(`<a href='${options.url}'></a>`);
+                elA.append( elImg );
+                
+                elcov.append( elA );
+            }
+
+            UI.registerElementAsComponent(elImg, "img");
+        }
 
         el.append(elcov);
     }
@@ -1618,7 +1633,7 @@ UI.createSceneCard = (options)=>{
     let elSub = options.subtitle;
     if (!elSub) 
         elSub = ATON.UI.elem(`
-            <div><img class='icon aton-icon aton-icon-small' src='${UI.resolveIconURL("user")}'>${user}</div>
+            <div><img class='icon aton-icon aton-icon-small' style='margin-right:4px' src='${UI.resolveIconURL("user")}'>${user}</div>
         `);
 
     let el = ATON.UI.createCard({
@@ -1628,7 +1643,7 @@ UI.createSceneCard = (options)=>{
         useblurtint: options.useblurtint,
         classes: options.classes,
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
-        url: options.url? options.url : ATON.PATH_FE + sid,
+        url: options.url? options.url : ATON.BASE_URL + "/v2/s/" + sid, //ATON.PATH_FE + sid,
         subtitle: elSub,
         footer: options.footer,
         badge: options.badge

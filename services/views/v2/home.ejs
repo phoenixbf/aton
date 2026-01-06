@@ -71,14 +71,14 @@ window.addEventListener( 'load', ()=>{
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-card",
                 onfocus: ()=>{
-                        elHero.style.display = "none";
-                        if (elApps) elApps.style.display = "none";
-                        //elStaffPick.style.display = "none";
+                        ATON.UI.hideElement(elHero);
+                        ATON.UI.hideElement(elApps);
+                        ATON.UI.hideElement(elStaffPick);
                 },
                 onblur: ()=>{
-                        elHero.style.display = "block";
-                        if (elApps) elApps.style.display = "block";
-                        //elStaffPick.style.display = "block";   
+                        ATON.UI.showElement(elHero);
+                        ATON.UI.showElement(elApps);
+                        ATON.UI.showElement(elStaffPick);   
                 }
         })
 

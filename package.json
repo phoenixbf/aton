@@ -46,10 +46,10 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "@gltf-transform/cli": "^4.2.1",
-    "@gltf-transform/core": "^4.2.1",
-    "@gltf-transform/extensions": "^4.2.1",
-    "@gltf-transform/functions": "^4.2.1",
+    "@gltf-transform/cli": "^4.3.0",
+    "@gltf-transform/core": "^4.3.0",
+    "@gltf-transform/extensions": "^4.3.0",
+    "@gltf-transform/functions": "^4.3.0",
     "@sparkjsdev/spark": "^0.1.10",
     "3d-tiles-renderer": "0.4.19",
     "body-parser": "^2.2.1",
@@ -88,7 +88,7 @@
     "recursive-copy": "^2.0.14",
     "session-file-store": "^1.5.0",
     "sharp": "^0.34.5",
-    "socket.io": "^4.8.1",
+    "socket.io": "^4.8.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "three": "0.182.0",
@@ -96,7 +96,7 @@
     "three-mesh-bvh": "0.9.4",
     "three-mesh-ui": "^6.5.4",
     "webdav-server": "^2.6.2",
-    "ws": "^8.18.3",
+    "ws": "^8.19.0",
     "zlibjs": "^0.3.1"
   }
 }

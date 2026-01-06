@@ -18,7 +18,7 @@ window.addEventListener( 'load', ()=>{
         //elNavItems.append(ATON.UI.elem("<b>My Scenes</b>"));
 
         let elSearch = ATON.UI.createLiveFilter({
-                //filterclass: "aton-btn",
+                filterclass: "aton-card", //"coll-item",
                 onfocus: ()=>{
 
                 },
@@ -33,7 +33,7 @@ window.addEventListener( 'load', ()=>{
         let elMainTasks = ATON.UI.get("maintasks");
         
         let elModels = ATON.UI.createContainer({classes:"shuCollectionTreeContainer"});
-        let elPano   = ATON.UI.createContainer();
+        let elPanos  = ATON.UI.createContainer({classes:"shuCollectionTreeContainer"});
         let elMedia  = ATON.UI.createContainer();
 
         elMainTasks.append(ATON.UI.createButton({
@@ -47,24 +47,26 @@ window.addEventListener( 'load', ()=>{
                 }
         }));
 
-        let popupPreview = (path)=>{
+        let popupPreview = (path, filename)=>{
                 let pp = ATON.PATH_PREVIEW+"?i=" + path;
                 console.log(pp)
 
                 let elFrame = ATON.UI.elem(`
-                        <iframe style='height:500px; margin:0;' width='100%' height='500px' frameborder='0'></iframe>
+                        <div>
+                                <iframe style='height:500px; margin:0;' width='100%' height='500px' frameborder='0' src='${pp}'></iframe>
+                        </div>
                 `);
 
                 ATON.UI.showModal({
-                        header: "Preview",
+                        header: "Preview '"+filename+"'",
                         body: elFrame
                 });
-
-                elFrame.src = pp;
         };
 
-        let realizeTree = (o, ppath)=>{
+        let realizeTree = (o, ppath, itype)=>{
                 let items = [];
+
+                let elGItems = undefined;
 
                 for (let k in o){
                         let child = o[k];
@@ -73,11 +75,170 @@ window.addEventListener( 'load', ()=>{
                         if (Object.keys(child).length <= 0){
                                 let ext = ATON.Utils.getFileExtension(k);
                                 let type;
-                                if (ext === "gltf" || ext === "glb") type = "glTF";
-                                if (ext === "json") type = "3D Tiles";
+                                let localPath = "";
+                                let cover = undefined;
+                                let onActivate = undefined;
 
-                                let localPath = uname + "/models" + ppath + k;
+                                // 3D models
+                                if (itype==="models"){
+                                        if (ext === "gltf" || ext === "glb") type = "glTF";
+                                        if (ext === "json"){
+                                                if (k.endsWith("meta.json")) type = "3DGS"; 
+                                                else type = "3DTiles";
+                                        }
+                                        if (ext === "sog" || ext === "splat" || ext === "ksplat" || ext === "spz") type = "3DGS";
 
+                                        
+                                        localPath = uname + "/models" + ppath + k;
+
+                                        onActivate = ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                popupPreview(pp,k);
+                                        }
+                                }
+
+                                // Panoramas / Media
+                                else {
+                                        if (itype==="panos") localPath = uname + "/pano" + ppath + k;
+                                        else localPath = uname + "/media" + ppath + k;
+
+                                        let fpath = ATON.PATH_COLLECTION + localPath;
+
+                                        if (k.endsWith("jpg")) cover = fpath;
+                                        else {
+                                                if (ATON.Utils.isVideo(fpath)){
+                                                        cover = ATON.UI.elem(`<video style='width:100%;height:auto' controls></video>`);
+
+                                                        cover.src = fpath;
+
+                                                        if (k.endsWith("m3u8") && Hls.isSupported()) {
+                                                                let hls = new Hls();
+                                                                hls.loadSource(fpath);
+                                                                hls.attachMedia(cover);
+                                                        }
+                                                        
+                                                }
+                                        }
+
+                                        onActivate = ()=>{
+
+                                        };
+                                }
+
+                                let kwords = localPath;
+                                kwords.replace("."," ");
+                                kwords.replace("/"," ");
+                                kwords += " "+type;
+
+                                if (!elGItems){
+                                        elGItems = ATON.UI.createContainer({
+                                                classes: "shuCollectionItemsContainer"
+                                        });
+
+                                        items.push({ content: elGItems });
+                                }
+
+                                const elFooter = ATON.UI.elem(`<div class="align-items-center justify-content-center"></div>`);
+
+                                if (itype==="models") elFooter.append( ATON.UI.createButton({
+                                        icon: "bi-eye",
+                                        //variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                popupPreview(pp,k);
+                                        }
+                                }));
+
+                                elFooter.append( ATON.UI.createButton({
+                                        icon: "bi-copy",
+                                        //variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                console.log(pp)
+                                                navigator.clipboard.writeText(pp);
+                                        }
+                                }));
+                                /*
+                                elFooter.append( ATON.UI.createButton({
+                                        icon: "scene",
+                                        //variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                        }
+                                }));
+                                */
+
+                                let elItem = ATON.UI.createCard({
+                                        title: k,
+                                        cover: cover,
+                                        classes: "aton-card-preview shuCollectionItem",
+                                        useblurtint: true,
+                                        footer: elFooter,
+                                        //badge: type,
+                                        onactivate: onActivate
+
+                                });
+/*
+                                let elItem = ATON.UI.createContainer({
+                                        classes: "btn-group coll-item",
+                                        //style: "width:300px",
+                                });
+
+                                elItem.append( ATON.UI.createButton({
+                                        icon: "bi-eye-fill",
+                                        variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                popupPreview(pp,k);
+                                        }
+                                }));
+
+                                elItem.append( ATON.UI.createButton({
+                                        icon: "bi-copy",
+                                        variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                console.log(pp)
+                                                navigator.clipboard.writeText(pp);
+                                        }
+                                }));
+
+                                elItem.append( ATON.UI.createButton({
+                                        text: type,
+                                        variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                        }
+                                }));
+
+                                elItem.append( ATON.UI.createButton({
+                                        text: k,
+                                        classes: "btn-default",
+                                        //variant: "secondary",
+                                        size: "small",
+                                        onpress: ()=>{
+                                                if (!uname) return;
+
+                                                const pp = ATON.PATH_COLLECTION + localPath;
+                                                popupPreview(pp,k);
+                                        }
+                                }));
+*/
+/*
                                 let elItem = ATON.UI.createContainer();
                                 elItem.append(
                                         //ATON.UI.createKeyword({ term: type }),
@@ -110,25 +271,24 @@ window.addEventListener( 'load', ()=>{
                                         }),
 
                                         ATON.UI.createButton({
-                                                text: /*ppath +*/ k,
+                                                text: k, // ppath +
                                                 //icon: "collection-item",
                                                 //variant: "secondary",
                                                 size: "small"
                                         })
                                 );
+*/
 
-                                elItem.setAttribute("data-search-term", k);
-
-                                items.push({
-                                        //title: k,
-                                        content: elItem
-                                });
+                                elItem.setAttribute("data-search-term", localPath);
+                                elGItems.append(elItem);
                         }
+
                         // Folder
                         else {
                                 items.push({
                                         title: k+"/",
-                                        content: realizeTree(child, ppath+k+"/")
+                                        open: true,
+                                        content: realizeTree(child, ppath+k+"/", itype)
                                 });
                         }
                 }
@@ -143,21 +303,65 @@ window.addEventListener( 'load', ()=>{
                         SHU.createNavbarAuthSections("mycollection");
 
                         let models = {};
+                        let panos  = {};
+                        let media  = {};
 
                         uname = u.username;
 
                         SHU.setPageWaiting();
+                        let tt=2;
+
                         ATON.REQ.get("items/"+uname+"/models", entries => {
-                                SHU.setPageComplete();
+                                tt--;
+                                if (tt<=0) SHU.setPageComplete();
 
                                 ATON.UI.get("countmodels").innerHTML = entries.length;
-                                
+                               
                                 entries.forEach(p => p.split('/').reduce((o, k) => o[k] = o[k] || {}, models));
-
-                                //console.log(models)
                                 
-                                elModels.append( realizeTree(models[u.username].models, "/") );
+                                elModels.append( realizeTree(models[u.username].models, "/", "models") );
                                 //elModels.append( realizeTree(models, "/") );
+
+/*
+                                for (let m in entries){
+                                        let mpath = entries[m];
+
+                                        let fname = ATON.Utils.getFilename(mpath);
+                                        let ext   = ATON.Utils.getFileExtension(mpath);
+
+                                        elModels.append( ATON.UI.createCard({
+                                                title: fname,
+                                                cover: ATON.UI.resolveIconURL("collection-item"),
+                                                classes: "shuCollectionItemCard",
+                                                useblurtint: true,
+                                                onactivate: ()=>{
+                                                        popupPreview(mpath, fname);
+                                                }
+                                        }));
+                                }
+*/
+                        });
+
+                        ATON.REQ.get("items/"+uname+"/panoramas", entries => {
+                                tt--;
+                                if (tt<=0) SHU.setPageComplete();
+
+                                ATON.UI.get("count360").innerHTML = entries.length;
+                               
+                                entries.forEach(p => p.split('/').reduce((o, k) => o[k] = o[k] || {}, panos));
+                                
+                                elPanos.append( realizeTree(panos[u.username].pano, "/", "panos") );
+                        });
+
+                        ATON.REQ.get("items/"+uname+"/media", entries => {
+                                tt--;
+                                if (tt<=0) SHU.setPageComplete();
+
+                                ATON.UI.get("countmedia").innerHTML = entries.length;
+                               
+                                entries.forEach(p => p.split('/').reduce((o, k) => o[k] = o[k] || {}, media));
+                                
+                                elMedia.append( realizeTree(media[u.username].media, "/", "media") );
                         });
                 }
         );
@@ -172,7 +376,7 @@ window.addEventListener( 'load', ()=>{
                                 },
                                 {
                                         title: "360",
-                                        content: elPano,
+                                        content: elPanos,
                                         icon: "collection-item"
                                 },
                                 {

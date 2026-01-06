@@ -492,11 +492,11 @@ a {
     background-color: rgba(var(--aton-colors-accent-rgb), 0.3);
 */
     --bs-btn-bg: rgba(var(--aton-colors-accent-rgb), 0.3);
-    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.0);
+    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.3);
     --bs-btn-color: var(--bs-btn-color);
 
     --bs-btn-hover-bg: rgba(var(--aton-colors-accent-rgb), 0.4);
-    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.0);
+    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.3);
     --bs-btn-hover-color: var(--bs-btn-color);
 
 /*
@@ -552,11 +552,12 @@ a {
 .aton-tab {
     color: var(--bs-body-color);
 }
-/*
+
 .aton-tab:hover {
-    border-bottom: solid var(--bs-body-color);
+    /*border-bottom: solid var(--bs-body-color);*/
+    color: var(--bs-body-color);
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.1);
 }
-*/
 
 .aton-tab img {
     width: 16px;
@@ -782,6 +783,21 @@ a {
     color: white;
     text-shadow: 0px 0px 16px var(--aton-colors-accent);
     margin: 12px;
+}
+
+.aton-card-preview {
+    width: 300px;
+    /*height: 150px;*/
+
+    margin: 2px;
+    padding: 0px;
+    font: x-small;
+    font-weight: lighter;
+    text-align: center;
+}
+
+.aton-card-preview .aton-card-cover {
+    max-height: 150px;
 }
 
 

@@ -164,7 +164,6 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
-
     let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = false;
     FP.fadeDuration  = 500;
@@ -192,7 +191,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     //ts.optimizeRaycast = false; // We already use BVH
 
-    // Init p-queues
+    // Shared p-queues (removed for now it seems to stall with several tsets)
+/*
     if (MRes._pqLRU === undefined){
         //ts.lruCache.maxSize = 500; //350;
         //ts.lruCache.minSize = 150; //150;
@@ -215,6 +215,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.downloadQueue = MRes._pqDownload;
         ts.parseQueue    = MRes._pqParse;
     }
+*/
+
+    ts.downloadQueue.maxJobs = 6; // 6
+    ts.parseQueue.maxJobs    = 1; // 1
+
 
     ts.setCamera( ATON.Nav._camera );
     ts.setResolutionFromRenderer( ATON.Nav._camera, ATON._renderer );

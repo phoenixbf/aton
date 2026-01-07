@@ -130,6 +130,10 @@ ATON._resMappers = [];
 // Clip-planes
 ATON._clipPlanes = [];
 
+// AF manager
+ATON._af   = {};
+ATON._afXR = {};
+
 // Suspend
 ATON._bSuspend = false;
 
@@ -2959,13 +2963,43 @@ ATON.enableAnaglyphRendering = ()=>{
 
 // Request/Cancel Animation Frame
 ATON.requestAnimationFrame = (cb)=>{
-    if (!ATON.XR._bPresenting) return window.requestAnimationFrame(cb);
-    return ATON.XR.currSession.requestAnimationFrame(cb);
+    if (!ATON.XR._bPresenting){
+        let af = window.requestAnimationFrame(cb);
+        //ATON._af[af] = 1;
+        return af;
+    }
+
+    let af = ATON.XR.currSession.requestAnimationFrame(cb);
+    //ATON._afXR[af] = 1;
+    return af;
 };
 
 ATON.cancelAnimationFrame = (handle)=>{
-    if (!ATON.XR._bPresenting) window.cancelAnimationFrame(handle);
-    else ATON.XR.currSession.cancelAnimationFrame(handle)
+    if (!ATON.XR._bPresenting){
+        window.cancelAnimationFrame(handle);
+        //if (ATON._af[handle]) ATON._af[handle] = undefined;
+    }
+    
+    else {
+        ATON.XR.currSession.cancelAnimationFrame(handle);
+        //if (ATON._afXR[handle]) ATON._afXR[handle] = undefined;
+    }
+};
+
+ATON.cancelPendingAF = ()=>{
+    for (let a in ATON._afXR){
+        if (ATON.XR.currSession) ATON.XR.currSession.cancelAnimationFrame(a);
+    }
+
+    for (let a in ATON._af){
+        window.cancelAnimationFrame(a);
+    }
+
+    ATON._afXR = {};
+    ATON._af   = {};
+
+    console.log(ATON._afXR);
+    console.log(ATON._af);
 };
 
 

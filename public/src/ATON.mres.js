@@ -164,10 +164,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
+
     let FP = new TILES.TilesFadePlugin();
     FP.fadeRootTiles = false;
-    FP.fadeDuration  = 500;
-    
+    FP.fadeDuration  = 400;
     ts.registerPlugin( FP );
 
 
@@ -186,6 +186,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
+
+    //ts.optimizedLoadStrategy = true;
+
     //ts.errorThreshold  = 100;
     //ts.loadSiblings    = false; // a few hops
 
@@ -216,9 +219,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.parseQueue    = MRes._pqParse;
     }
 */
+    ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
+    ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-    ts.downloadQueue.maxJobs = 6; // 6
-    ts.parseQueue.maxJobs    = 1; // 1
+    ts.downloadQueue.maxJobs = 8; // 6
+    ts.parseQueue.maxJobs    = 2; // 1
 
 
     ts.setCamera( ATON.Nav._camera );

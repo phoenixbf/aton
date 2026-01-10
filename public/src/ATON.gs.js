@@ -19,6 +19,8 @@ GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
 
+GS.MAX_INT_UPDATE = 100;
+
 
 //Initializes the component
 GS.realize = ()=>{
@@ -39,6 +41,7 @@ GS.realize = ()=>{
         GS.MIN_PXRAD  = 2.0;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
+        GS.MAX_INT_UPDATE = 500;
     }
     
     GS._3DGSR.minAlpha = GS.MIN_ALPHA;
@@ -55,8 +58,10 @@ GS.realize = ()=>{
     
     //GS._3DGSR.defaultView.stochastic = true;
 
+    GS.updInt = GS.MAX_INT_UPDATE;
+
     const maxpd = 0.9;
-    ATON.setAdaptiveDensityRange(0.1, maxpd);
+    ATON.setAdaptiveDensityRange(0.4, maxpd);
     ATON.setDefaultPixelDensity(maxpd);
 
     GS.setupProfiler();
@@ -74,28 +79,28 @@ GS.realize = ()=>{
         }
     });
 
-/*
+
     GS._3DGSR.autoUpdate = false;
 
     const uPar  = { scene: ATON._rootVisible };
-    const msInt = 100;
+    const upd = ()=>{
+        window.setTimeout( upd, GS.updInt );
 
-    window.setInterval(
-        ()=>{
-            //if (!ATON.Nav._bInteracting) return;
-            //if (!ATON.Nav.isTransitioning()) return;
+        //if (!ATON.Nav._bInteracting) return;
+        //if (!ATON.Nav.isTransitioning()) return;
 
-            //if (ATON.Nav._dOri < 0.001) return;
-            //if (ATON.Nav._dPos < 0.0001) return;
-            if (ATON.Nav._dOri < 0.005 && ATON.Nav._dPos < 0.001) return;
-
-            console.log("U")
-            GS._3DGSR.update( uPar );
-        }, 
+        //if (ATON.Nav._dOri < 0.001) return;
+        //if (ATON.Nav._dPos < 0.0001) return;
         
-        msInt
-    );
-*/
+        //if (ATON.Nav._dOri < 0.005 && ATON.Nav._dPos < 0.001) return;
+
+        //console.log("S")
+
+        GS._3DGSR.update( uPar );
+    };
+
+    //window.setInterval( upd, GS.updInt );
+    window.setTimeout( upd, GS.updInt );
 };
 
 GS.isRealized = ()=>{
@@ -124,15 +129,24 @@ GS.visitor = (N)=>{
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
         //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
-        if (GS._3DGSR.minPixelRadius < 32) GS._3DGSR.minPixelRadius++;
+
+        if (GS._3DGSR.minPixelRadius < 16) GS._3DGSR.minPixelRadius++;
         if (GS._3DGSR.minAlpha < 0.3) GS._3DGSR.minAlpha += 0.05;
+
+        GS.updInt += 200;
+        
         console.log("GS lower perf");
     });
 
     ATON.on("RequestHigherRender", ()=>{
         //if (GS._3DGSR.maxPixelRadius < GS.MAX_PXRAD) GS._3DGSR.maxPixelRadius *= 2.0;
+
         if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
         if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.05;
+
+        GS.updInt -= 200;
+        GS.updInt = Math.max(GS.updInt, GS.MAX_INT_UPDATE);
+
         console.log("GS higher perf");
     });
 };

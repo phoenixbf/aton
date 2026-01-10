@@ -40,8 +40,8 @@ CC.extract = (data)=>{
         }
     }
 
-    // XMP 3DC Metadata
-    CC.extractXMP3DC(data, cc);
+    // XMP Metadata
+    CC.extractXMP(data, cc);
 
     // Empty cc object
     if (Object.keys(cc).length === 0) return;
@@ -77,19 +77,19 @@ CC.compare = (A,B)=>{
 };
 
 // If found in data, extracts 3DC metadata to cc object
-// https://github.com/KhronosGroup/3DC-Metadata-Recommendations/blob/main/model3d.md
-CC.extractXMP3DC = (data, cc)=>{
+// https://github.com/KhronosGroup/glTF/blob/main/extensions/2.0/Khronos/KHR_xmp_json_ld/README.md
+CC.extractXMP = (data, cc)=>{
     if (data === undefined || cc === undefined) return;
 
     if (!data.userData) return;
     let exts = data.userData.gltfExtensions
     
     if (!exts) return;
-    if (!exts.KHR_xmp) return;
+    if (!exts.KHR_xmp_json_ld) return;
 
-    let pkts = exts.KHR_xmp.packets;
-        
+    let pkts = exts.KHR_xmp_json_ld.packets;
     if (!pkts) return;
+    
     let a = pkts[0];
 
     let lang = "en-us"; // TODO: parametrize language

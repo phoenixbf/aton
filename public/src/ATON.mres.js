@@ -187,10 +187,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
 
-    //ts.optimizedLoadStrategy = true;
+    ts.optimizedLoadStrategy = true;
+    ts.loadSiblings          = false;
 
     //ts.errorThreshold  = 100;
-    //ts.loadSiblings    = false; // a few hops
 
     //ts.optimizeRaycast = false; // We already use BVH
 
@@ -222,8 +222,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-    ts.downloadQueue.maxJobs = 8; // 6
-    ts.parseQueue.maxJobs    = 2; // 1
+    ts.downloadQueue.maxJobs = 10; // 10
+    ts.parseQueue.maxJobs    = 2; // 2
+
+    //console.log(ts.downloadQueue.maxJobs); // 25
+    //console.log(ts.parseQueue.maxJobs); // 5
 
 
     ts.setCamera( ATON.Nav._camera );
@@ -414,10 +417,12 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 bPointCloud = true;
                 MRes._bPCs  = true;
 
-                c.layers.disable(N.type); // avoid point-clouds queries for now
+                // avoid point-clouds queries for now
+                c.layers.disable(N.type);
                 c.raycast = ATON.Utils.VOID_CAST;
 
                 c.material = ATON.MatHub.materials.point;
+
 /*
                 // BVH Mesh creation
                 if (MRes._bTileBVH && c.geometry){
@@ -436,6 +441,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     console.timeEnd( 'computeBoundsTree points' );
                 }
 */
+                //ATON._bqScene = true;
             }
 
             // Apply node cascading material

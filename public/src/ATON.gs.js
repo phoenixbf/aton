@@ -130,8 +130,8 @@ GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
         //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
 
-        if (GS._3DGSR.minPixelRadius < 16) GS._3DGSR.minPixelRadius++;
-        if (GS._3DGSR.minAlpha < 0.3) GS._3DGSR.minAlpha += 0.05;
+        if (GS._3DGSR.minPixelRadius < 8) GS._3DGSR.minPixelRadius++;
+        if (GS._3DGSR.minAlpha < 0.2) GS._3DGSR.minAlpha += 0.05;
 
         GS.updInt += 200;
         

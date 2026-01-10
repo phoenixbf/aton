@@ -564,7 +564,7 @@ XR.onSessionStarted = ( session )=>{
         }, 2000);
 */
 
-        //ATON.cancelPendingAF();
+        ATON.flushPendingAF();
 
         ATON.fire("XRmode", true);
     });

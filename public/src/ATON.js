@@ -131,8 +131,7 @@ ATON._resMappers = [];
 ATON._clipPlanes = [];
 
 // AF manager
-ATON._af   = {};
-ATON._afXR = {};
+ATON._afPending = new Map();
 
 // Suspend
 ATON._bSuspend = false;
@@ -2963,43 +2962,57 @@ ATON.enableAnaglyphRendering = ()=>{
 
 // Request/Cancel Animation Frame
 ATON.requestAnimationFrame = (cb)=>{
-    if (!ATON.XR._bPresenting){
-        let af = window.requestAnimationFrame(cb);
-        //ATON._af[af] = 1;
-        return af;
-    }
+    let handle;
 
-    let af = ATON.XR.currSession.requestAnimationFrame(cb);
-    //ATON._afXR[af] = 1;
-    return af;
+    if (!ATON.XR._bPresenting){
+        handle = window.requestAnimationFrame(()=>{
+            ATON._afPending.delete(handle);
+            cb();
+        });
+
+        ATON._afPending.set(handle, cb);
+        return handle;
+    }
+    else {
+        handle = ATON.XR.currSession.requestAnimationFrame(()=>{
+            ATON._afPending.delete(handle);
+            cb();
+        });
+
+        ATON._afPending.set(handle, cb);
+        return handle;
+    }
 };
 
 ATON.cancelAnimationFrame = (handle)=>{
+    ATON._afPending.delete(handle);
+
     if (!ATON.XR._bPresenting){
         window.cancelAnimationFrame(handle);
-        //if (ATON._af[handle]) ATON._af[handle] = undefined;
     }
     
     else {
         ATON.XR.currSession.cancelAnimationFrame(handle);
-        //if (ATON._afXR[handle]) ATON._afXR[handle] = undefined;
     }
 };
 
 ATON.cancelPendingAF = ()=>{
-    for (let a in ATON._afXR){
-        if (ATON.XR.currSession) ATON.XR.currSession.cancelAnimationFrame(a);
-    }
+    ATON._afPending.forEach((cb,handle)=>{
+        ATON.cancelAnimationFrame(handle);
+    });
+};
 
-    for (let a in ATON._af){
-        window.cancelAnimationFrame(a);
-    }
-
-    ATON._afXR = {};
-    ATON._af   = {};
-
-    console.log(ATON._afXR);
-    console.log(ATON._af);
+ATON.flushPendingAF = ()=>{
+    ATON._afPending.forEach((cb,handle)=>{
+        if (ATON.XR.currSession){
+            ATON.XR.currSession.cancelAnimationFrame(handle);
+            cb();
+        }
+        else {
+            window.cancelAnimationFrame(handle);
+            cb();
+        }
+    });  
 };
 
 

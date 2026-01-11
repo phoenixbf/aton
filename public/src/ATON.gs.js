@@ -68,17 +68,6 @@ GS.realize = ()=>{
 
     ATON.XR.setDensity(0.5);
 
-    ATON.on("XRmode",(b)=>{
-        if (b){
-            GS._3DGSR.maxStdDev = 2.0;
-            //GS._3DGSR.clipXY    = 0.9;
-        }
-        else {
-            GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
-            //GS._3DGSR.clipXY    = 1.1;
-        }
-    });
-
 
     GS._3DGSR.autoUpdate = false;
 
@@ -92,7 +81,7 @@ GS.realize = ()=>{
         //if (ATON.Nav._dOri < 0.001) return;
         //if (ATON.Nav._dPos < 0.0001) return;
         
-        //if (ATON.Nav._dOri < 0.005 && ATON.Nav._dPos < 0.001) return;
+        if (!ATON.Nav.motionDetected()) return;
 
         //console.log("S")
 
@@ -101,6 +90,22 @@ GS.realize = ()=>{
 
     //window.setInterval( upd, GS.updInt );
     window.setTimeout( upd, GS.updInt );
+
+    // Events
+    ATON.on("XRmode",(b)=>{
+        if (b){
+            GS._3DGSR.maxStdDev = 2.0;
+            //GS._3DGSR.clipXY    = 0.9;
+        }
+        else {
+            GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
+            //GS._3DGSR.clipXY    = 1.1;
+        }
+    });
+
+    ATON.on("AllNodeRequestsCompleted",()=>{
+        GS._3DGSR.update( uPar );
+    });
 };
 
 GS.isRealized = ()=>{

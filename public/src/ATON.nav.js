@@ -33,6 +33,9 @@ Nav.MODE_ORBIT  = 0;
 Nav.MODE_FP     = 1;
 Nav.MODE_DEVORI = 2;
 
+Nav.MOTION_THRES_ORI = 0.05;
+Nav.MOTION_THRES_POS = 0.0001;// 0.000001;
+
 Nav.LocomotionNode = LocomotionNode;
 
 Nav.STD_LOC_VALIDATOR = ()=>{
@@ -112,6 +115,8 @@ Nav.init = ()=>{
 
     Nav._dOri = 0.0;
     Nav._dPos = 0.0;
+    Nav._bMotionOri = true;
+    Nav._bMotionPos = true;
 
     // Motion
     Nav._motionAmt = 0.0;
@@ -733,8 +738,26 @@ Nav._deltaMotions = ()=>{
     Nav._dOri = Nav._lastOri.angleTo( ATON.Nav._qOri );
     Nav._dPos = Nav._lastPos.distanceToSquared( Nav._currPOV.pos );
 
-    Nav._lastPos.copy( Nav._currPOV.pos );
-    Nav._lastOri.copy( ATON.Nav._qOri );
+    if (Nav._dOri > Nav.MOTION_THRES_ORI){
+        Nav._bMotionOri = true;
+        Nav._lastOri.copy( ATON.Nav._qOri );
+        //console.log("O")
+    }
+    else Nav._bMotionOri = false;
+
+    if (Nav._dPos > Nav.MOTION_THRES_POS){
+        Nav._bMotionPos = true;
+        Nav._lastPos.copy( Nav._currPOV.pos );
+        //console.log("M")
+    }
+    else Nav._bMotionPos = false;
+};
+
+Nav.motionDetected = ()=>{
+    if (Nav._bMotionOri) return true;
+    if (Nav._bMotionPos) return true;
+
+    return false;
 };
 
 

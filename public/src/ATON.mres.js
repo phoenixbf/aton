@@ -188,7 +188,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (bDZI) ts.errorTarget = 2.0;
 
     ts.optimizedLoadStrategy = true;
-    ts.loadSiblings          = false;
+    //ts.loadSiblings          = false;
 
     //ts.errorThreshold  = 100;
 
@@ -222,8 +222,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-    ts.downloadQueue.maxJobs = 10; // 10
-    ts.parseQueue.maxJobs    = 2; // 2
+    ts.downloadQueue.maxJobs = 15; // 10
+    ts.parseQueue.maxJobs    = 3; // 2
 
     //console.log(ts.downloadQueue.maxJobs); // 25
     //console.log(ts.parseQueue.maxJobs); // 5
@@ -562,7 +562,7 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    if ( MRes.detectMotion() ) return;
+    if ( ATON.Nav.motionDetected() ) return;
 
     //console.log(MRes._tsTasks);
 
@@ -586,9 +586,12 @@ MRes.detectMotion = ()=>{
     if (!ATON.Nav._bControl) return false;
 
     ///if (ATON.Nav._bInteracting) return true;
-
+/*
     if (ATON.Nav._dOri > MRes.THRES_ORI) return true;
     if (ATON.Nav._dPos > MRes.THRES_POS) return true;
+*/
+    if (ATON.Nav._bMotionOri) return true;
+    if (ATON.Nav._bMotionPos) return true;
 
     return false;
 };

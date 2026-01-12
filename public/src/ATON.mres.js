@@ -51,7 +51,8 @@ MRes.init = ()=>{
     MRes._numTilesLoaded = 0;
     MRes._numTSLoaded    = 0;
 
-    //$.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, (data) => { console.log(data); })
+    // Plugins
+    MRes._bFadeTiles = true;
 };
 
 MRes.clear = ()=>{
@@ -164,11 +165,14 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
-
-    let FP = new TILES.TilesFadePlugin();
-    FP.fadeRootTiles = false;
-    FP.fadeDuration  = 400;
-    ts.registerPlugin( FP );
+    // Use fading
+    if (MRes._bFadeTiles){
+        let FP = new TILES.TilesFadePlugin();
+        FP.fadeRootTiles = false;
+        FP.fadeDuration  = 400;
+        
+        ts.registerPlugin( FP );
+    }
 
 
     if (cesiumReq){

@@ -71,9 +71,7 @@ import { TransformControls } from 'three/examples/jsm/controls/TransformControls
 
 import CustomShaderMaterial from 'three-custom-shader-material/vanilla';
 
-//import ThreeMeshUI from '../_prv/three-mesh-ui/src/three-mesh-ui.js';
 import ThreeMeshUI from "three-mesh-ui/build/three-mesh-ui.module.js";
-//import * as ThreeMeshUI from 'three-mesh-ui/src/three-mesh-ui.js';
 
 //import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 import * as ThreeMeshBVH from 'three-mesh-bvh';
@@ -85,7 +83,6 @@ import { TilesFadePlugin, ImplicitTilingPlugin, DeepZoomImagePlugin, UpdateOnCha
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
 import * as SPARK from "@sparkjsdev/spark";
-
 
 // Add the extension functions
 THREE.BufferGeometry.prototype.computeBoundsTree = ThreeMeshBVH.computeBoundsTree;
@@ -168,8 +165,6 @@ window.TILES        = TILES;
 window.SPARK        = SPARK;
 
 window.CustomShaderMaterial = CustomShaderMaterial;
-
-//window.Loader3DTiles = Loader3DTiles;
 
 export {
     THREE,

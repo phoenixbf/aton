@@ -909,6 +909,10 @@ Nav.handlePOVtransition = ()=>{
         Nav._currPOV.target.copy(Nav._reqPOV.target);
         Nav._currPOV.fov = Nav._reqPOV.fov;
 
+        // Signal motion
+        Nav._bMotionOri = true;
+        Nav._bMotionPos = true;
+
         ATON.fire("POVTransitionCompleted", Nav._reqPOV.id);
         return;
     }

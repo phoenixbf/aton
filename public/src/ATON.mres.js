@@ -191,8 +191,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
 
+
     ts.optimizedLoadStrategy = true;
-    //ts.loadSiblings          = false;
+
+    // Unstable
+    //ts.loadSiblings = false;
 
     //ts.errorThreshold  = 100;
 
@@ -365,10 +368,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         //if (ATON.Nav.homePOV === undefined) ATON.Nav.computeAndRequestDefaultHome(0.5);
         //ATON._assetReqComplete(tsurl);
 
-        ATON.Utils._visitorCP(ts.group);
+        //ATON.Utils._visitorCP();
     });
 
-    // On single tile loaded
+    // A tile model is loaded.
     ts.addEventListener( 'load-model', ( data )=>{
         //console.log(ts.lruCache.itemList.length);
 /*
@@ -446,14 +449,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                 }
 */
                 //ATON._bqScene = true;
+                //ATON._bqSceneCont = false;
             }
 
             // Apply node cascading material
             if (N.userData.cMat) c.material = N.userData.cMat;
 
             if ( c.material ){
-                //c.castShadow    = true;
-                //c.receiveShadow = true;
                 //c.material.shadowSide = 2;
                 c.flatShading = false;
 
@@ -464,6 +466,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     tex.colorSpace  = ATON._stdEncoding;
                 }
 
+                c.material.clippingPlanes   = ATON._clipPlanes;
+                c.material.clipIntersection = false;
+                c.material.clipShadows      = true;
+                //c.material.needsUpdate      = true;
+
                 //console.log(c)
 
                 //ATON.Utils._processMatCP( c.material );
@@ -471,11 +478,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         });
 
         //console.log(ATON._renderer.info.memory);
-        ATON.fire("TileLoaded", scene);
+/*
+        ts.forEachLoadedModel((scene, tile)=>{
+            ATON.Utils._visitorCP(scene);
+        });
+*/
+        //ATON.Utils._visitorCP(scene);
 
-        ATON.Utils._visitorCP(scene);
+        ATON.fire("TileLoaded", scene);
     });
 
+    // Fired when a tile model is disposed
     ts.addEventListener( 'dispose-model', (data, tile)=>{
         ATON.Utils.cleanupVisitor( data.scene );
 
@@ -485,7 +498,50 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         //console.log(ts.group);
         //console.log("DISPOSE");
 
-        //ATON.Utils._visitorCP(ts.group);
+        //ATON.Utils._visitorCP();
+    });
+
+    // Fired when tiles start loading
+    ts.addEventListener( 'tiles-load-start', ()=>{
+        //ATON.Utils._visitorCP();
+    });
+
+    // Fired when all tiles finish loading
+    ts.addEventListener( 'tiles-load-end', ()=>{
+        console.log("all tiles loaded")
+/*
+        ts.forEachLoadedModel((scene, tile)=>{
+            ATON.Utils._visitorCP(scene);
+        });
+*/
+
+        //ATON.Utils._visitorCP();
+    });
+
+    // Fired when the content of a model is loaded.
+    ts.addEventListener( 'load-content', ()=>{
+/*
+        ts.forEachLoadedModel((scene, tile)=>{
+            ATON.Utils._visitorCP(scene);
+        });
+*/
+        //ATON.Utils._visitorCP();
+    });
+
+    // Fired when the tileset hierarchy is ready for "update to be called
+    // again due to new content having loaded or asynchronous processing finished
+    ts.addEventListener( 'needs-update', ()=>{
+/*
+        ts.forEachLoadedModel((scene, tile)=>{
+            ATON.Utils._visitorCP(scene);
+        });
+*/
+        //ATON.Utils._visitorCP();
+    });
+
+    // Fired when a tiles visibility changes
+    ts.addEventListener( 'tile-visibility-change', (scene, tile, bVis)=>{
+        ATON.Utils._visitorCP(tile);
     });
 
     if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);

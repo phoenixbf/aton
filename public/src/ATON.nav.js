@@ -783,7 +783,7 @@ Nav.syncCurrPOV = ()=>{
         Nav._currPOV.pos.y += ATON.XR.rig.position.y;
         Nav._currPOV.pos.z += ATON.XR.rig.position.z;
 
-        Nav._deltaMotions();
+        //Nav._deltaMotions();
         return;
 
 /*
@@ -814,8 +814,6 @@ Nav.syncCurrPOV = ()=>{
     cam.getWorldDirection(Nav._vDir);
     cam.getWorldQuaternion(Nav._qOri);
 
-    Nav._deltaMotions();
-
     if (Nav._mode === Nav.MODE_DEVORI){
         Nav._currPOV.pos.copy(cam.position);
         return;
@@ -832,6 +830,8 @@ Nav.syncCurrPOV = ()=>{
     
     Nav._currPOV.pos.copy(cam.position);
     Nav._currPOV.target.copy(ctrl.target);
+
+    //Nav._deltaMotions();
 };
 
 /**
@@ -999,6 +999,9 @@ Nav.update = ()=>{
 
     Nav.syncCurrPOV();
     Nav.handlePOV();
+
+    Nav._deltaMotions();
+
     Nav.syncCurrCamera();
 };
 

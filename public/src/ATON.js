@@ -2411,16 +2411,16 @@ ATON._onFrame = ()=>{
     /*if (!ATON.device.isMobile || ATON._bCenteredQuery || ATON.XR._bPresenting)*/ ATON._handleQueries();
 
     // Navigation system
-    ATON.Nav.update(); // k
+    ATON.Nav.update();
 
     // Photon
     ATON.Photon.update();
 
     // SUI
-    ATON.SUI.update(); // k
+    ATON.SUI.update();
 
     // Mat
-    ATON.MatHub.update(); // k
+    ATON.MatHub.update();
 
     // Environment/lighting
     ATON._updateEnvironment();
@@ -2435,7 +2435,6 @@ ATON._onFrame = ()=>{
 
     // XPF
     ATON.XPFNetwork.update();
-
 
     // Render frame
     ATON._render();
@@ -2467,6 +2466,7 @@ Add an update routine (continuosly executed)
 */
 ATON.addUpdateRoutine = (U)=>{
     if (U === undefined) return;
+    
     ATON._updRoutines.push(U);
 };
 
@@ -2564,7 +2564,7 @@ ATON._handleQueries = ()=>{
 
     ATON._handleQueryUI();
 
-    if (ATON._bqScene /*&& ATON._bqSceneCont*/){
+    if (ATON._bqScene && ATON._bqSceneCont){
         ATON._handleQueryScene();
     }
     

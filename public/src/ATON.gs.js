@@ -19,7 +19,7 @@ GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
 
-GS.MAX_INT_UPDATE = 100;
+GS.MIN_INT_UPDATE = 100;
 
 
 //Initializes the component
@@ -33,6 +33,9 @@ GS.realize = ()=>{
     
     ATON._rootVisible.add( GS._3DGSR );
 
+    ATON._bqSceneCont        = false;
+    ATON._bQuerySemOcclusion = false;
+
     GS._3DGSR.clipXY = 1.1;
     GS._3DGSR.focalAdjustment = 2.0;
     GS._3DGSR.preBlurAmount = 0.3;
@@ -41,7 +44,7 @@ GS.realize = ()=>{
         GS.MIN_PXRAD  = 2.0;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
-        GS.MAX_INT_UPDATE = 500;
+        GS.MIN_INT_UPDATE = 300;
     }
     
     GS._3DGSR.minAlpha = GS.MIN_ALPHA;
@@ -58,10 +61,10 @@ GS.realize = ()=>{
     
     //GS._3DGSR.defaultView.stochastic = true;
 
-    GS.updInt = GS.MAX_INT_UPDATE;
+    GS.updInt = GS.MIN_INT_UPDATE;
 
     const maxpd = 0.9;
-    ATON.setAdaptiveDensityRange(0.4, maxpd);
+    ATON.setAdaptiveDensityRange(0.3, maxpd);
     ATON.setDefaultPixelDensity(maxpd);
 
     GS.setupProfiler();
@@ -78,14 +81,12 @@ GS.realize = ()=>{
         //if (!ATON.Nav._bInteracting) return;
         //if (!ATON.Nav.isTransitioning()) return;
 
-        //if (ATON.Nav._dOri < 0.001) return;
-        //if (ATON.Nav._dPos < 0.0001) return;
-        
         if (!ATON.Nav.motionDetected()) return;
 
         //console.log("S")
 
         GS._3DGSR.update( uPar );
+        //console.log("GS upd")
     };
 
     //window.setInterval( upd, GS.updInt );
@@ -124,21 +125,20 @@ GS.visitor = (N)=>{
     });
 
     // Picking
-    N.disablePicking();
+    //N.disablePicking();
 
-    //if (N.bPickable) N.enablePicking();
-    ///ATON._bqScene = true;
-
+    if (N.bPickable) N.enablePicking();
+    ATON._bqScene = true;
 };
 
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
         //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
 
-        if (GS._3DGSR.minPixelRadius < 8) GS._3DGSR.minPixelRadius++;
-        if (GS._3DGSR.minAlpha < 0.2) GS._3DGSR.minAlpha += 0.05;
+        if (GS._3DGSR.minPixelRadius < 6) GS._3DGSR.minPixelRadius++;
+        if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.02;
 
-        GS.updInt += 200;
+        if (GS.updInt < 1000) GS.updInt += 200;
         
         console.log("GS lower perf");
     });
@@ -147,10 +147,10 @@ GS.setupProfiler = ()=>{
         //if (GS._3DGSR.maxPixelRadius < GS.MAX_PXRAD) GS._3DGSR.maxPixelRadius *= 2.0;
 
         if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
-        if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.05;
+        if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.02;
 
         GS.updInt -= 200;
-        GS.updInt = Math.max(GS.updInt, GS.MAX_INT_UPDATE);
+        GS.updInt = Math.max(GS.updInt, GS.MIN_INT_UPDATE);
 
         console.log("GS higher perf");
     });

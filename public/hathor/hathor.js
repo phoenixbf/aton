@@ -888,6 +888,8 @@ HATHOR.setupEventHandlers = ()=>{
                 HATHOR._cliP.constant = p.y;
                 HATHOR._cliP.normal.set(0,-1,0);
             }
+
+            //ATON.Utils._visitorCP();
         }
         if (k==='2'){
             let p = ATON.getSceneQueriedPoint();

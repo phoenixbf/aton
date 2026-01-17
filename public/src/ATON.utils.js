@@ -558,6 +558,7 @@ Utils._visitorCP = (N)=>{
             o.material.clippingPlanes   = ATON._clipPlanes;
             o.material.clipIntersection = false;
             o.material.clipShadows      = true;
+            o.material.needsUpdate      = true;
         }
     });
 };

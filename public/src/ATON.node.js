@@ -271,7 +271,7 @@ setMaterial(M){
             if (!o.userData.origMat) o.userData.origMat = o.material.clone();
 
             o.material = M;
-            ///o.material.needsUpdate = true;
+            o.material.needsUpdate = true;
             //console.log(o);
         }
 

@@ -173,8 +173,9 @@ hide(){
 
     this.visible = false;
 
-    //this.traverse((o) => { o.layers.disable(this.type); });
+    ///this.traverse((o) => { o.layers.disable(this.type); });
     ATON.Utils.setPicking(this, this.type, false);
+    //ATON.Utils.updatePickGraph(undefined, this.type);
 
     if (ATON._renderer.shadowMap.enabled){
         ATON._dMainL.shadow.needsUpdate = true;
@@ -197,8 +198,9 @@ show(){
 
     this.visible = true;
 
-    //if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
+    ///if (this.bPickable) ATON.Utils.setPicking(this, this.type, true); //this.traverse((o) => { o.layers.enable(this.type); });
     ATON.Utils.setPicking(this, this.type, this.bPickable);
+    //ATON.Utils.updatePickGraph(undefined, this.type);
 
     if (ATON._renderer.shadowMap.enabled){
         if (ATON._dMainL!==undefined && ATON._dMainL.shadow!==undefined) ATON._dMainL.shadow.needsUpdate = true;
@@ -521,7 +523,8 @@ attachTo(node){
         //this.toggle(N.visible);
     }
     
-    return N;
+    //return N;
+    return this;
 }
 
 /**
@@ -537,7 +540,8 @@ attachToRoot(){
 
     //this.toggle(this._rootG.visible);
     
-    return this._rootG;
+    //return this._rootG;
+    return this;
 }
 
 /**
@@ -726,7 +730,14 @@ load(url, onComplete){
 
         new SPARK.SplatMesh({ 
             url: url,
-            editable: false,
+            //editable: false,
+/*
+            enableViewToObject: true,
+            enableViewToWorld: true,
+            enableWorldToView: true,
+*/
+            //maxSh: 3,
+
             onLoad: (data)=>{
                 data.quaternion.set(1, 0, 0, 0);
                 
@@ -830,7 +841,8 @@ load(url, onComplete){
             if (N.type === ATON.NTYPES.SEM)   ATON._bqSem = true;
 
             //
-            if (N.bPickable) N.enablePicking();
+            //if (N.bPickable) N.enablePicking();
+            ATON.Utils.updatePickGraph(undefined, N.type);
 
             N.dirtyBound();
 

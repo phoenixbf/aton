@@ -564,6 +564,7 @@ XR.onSessionStarted = ( session )=>{
         }, 2000);
 */
 
+        // To be removed
         ATON.flushPendingAF();
 
         ATON.fire("XRmode", true);

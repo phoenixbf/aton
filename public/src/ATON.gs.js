@@ -13,13 +13,15 @@ let GS = {};
 
 GS._3DGSR = undefined;
 
+GS.MAX_PD = 1.0;
+
 GS.MAX_PXRAD = 512;
 GS.MIN_PXRAD = 1;
 GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
 
-GS.MIN_INT_UPDATE = 100;
+GS.MIN_INT_UPDATE = 60;
 
 
 //Initializes the component
@@ -38,13 +40,15 @@ GS.realize = ()=>{
 
     GS._3DGSR.clipXY = 1.1;
     GS._3DGSR.focalAdjustment = 2.0;
-    GS._3DGSR.preBlurAmount = 0.3;
+    //GS._3DGSR.preBlurAmount = 0.3;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.MIN_PXRAD  = 2.0;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
-        GS.MIN_INT_UPDATE = 300;
+        GS.MIN_INT_UPDATE = 200;
+
+        GS.MAX_PD = 0.8;
     }
     
     GS._3DGSR.minAlpha = GS.MIN_ALPHA;
@@ -63,27 +67,36 @@ GS.realize = ()=>{
 
     GS.updInt = GS.MIN_INT_UPDATE;
 
-    const maxpd = 0.9;
-    ATON.setAdaptiveDensityRange(0.3, maxpd);
-    ATON.setDefaultPixelDensity(maxpd);
+    ATON.setAdaptiveDensityRange( 0.4, GS.MAX_PD );
+    ATON.setDefaultPixelDensity( GS.MAX_PD );
 
     GS.setupProfiler();
 
     ATON.XR.setDensity(0.5);
 
 
+    //GS._3DGSR.autoUpdate = true;
+
     GS._3DGSR.autoUpdate = false;
 
-    const uPar  = { scene: ATON._rootVisible };
+    const uPar  = {
+        scene: ATON._rootVisible,
+        viewToWorld: ATON.Nav._camera.matrixWorld
+    };
+
     const upd = ()=>{
         window.setTimeout( upd, GS.updInt );
 
         //if (!ATON.Nav._bInteracting) return;
         //if (!ATON.Nav.isTransitioning()) return;
 
-        if (!ATON.Nav.motionDetected()) return;
+        if (!ATON.Nav.motionDetected()){
+            return;
+        }
 
         //console.log("S")
+
+        //GS._3DGSR.defaultView
 
         GS._3DGSR.update( uPar );
         //console.log("GS upd")

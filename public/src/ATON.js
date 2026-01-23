@@ -1216,7 +1216,14 @@ ATON.snodes   = {}; // Visible scene-graph
 ATON.semnodes = {}; // Semantics graph
 ATON.uinodes  = {}; // UI graph
 
-// Visible scene-graph
+ATON.getRootNode = (type)=>{
+    if (type === ATON.NTYPES.SCENE || !type) return ATON._rootVisible;
+
+    if (type === ATON.NTYPES.SEM)   return ATON._rootSem;
+    if (type === ATON.NTYPES.UI)    return ATON._rootUI;
+};
+
+// Standard scene-graph
 //=============================================
 /**
 Create a scene node (visible scene-graph)
@@ -2466,7 +2473,7 @@ Add an update routine (continuosly executed)
 */
 ATON.addUpdateRoutine = (U)=>{
     if (U === undefined) return;
-    
+
     ATON._updRoutines.push(U);
 };
 
@@ -3014,7 +3021,6 @@ ATON.flushPendingAF = ()=>{
         }
     });  
 };
-
 
 /*
     Built-in gizmos

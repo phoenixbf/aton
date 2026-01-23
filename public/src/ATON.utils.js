@@ -368,14 +368,26 @@ Utils.setPicking = (node, type, b)=>{
         else o.layers.disable(type);
     });
 
-    // children
 /*
+    // children
     for (let c in node.children){
         let C = node.children[c];
         Utils.setPicking(C, type, b);
     }
 */
 };
+
+Utils.updatePickGraph = (node, type)=>{
+    if (!node) node = ATON.getRootNode(type);
+
+    Utils.setPicking(node, type, node.bPickable);
+
+    for (let c in node.children){
+        let C = node.children[c];
+        Utils.updatePickGraph(C,type);
+    }
+
+}
 
 Utils.graphPostVisitor = (N)=>{
     //if (N.type === undefined) return;

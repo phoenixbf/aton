@@ -51,8 +51,23 @@ MRes.init = ()=>{
     MRes._numTilesLoaded = 0;
     MRes._numTSLoaded    = 0;
 
+    // Use optimized load strategy
+    MRes._bOptimizedLoad = true;
+
     // Plugins
     MRes._bFadeTiles = true;
+
+    // Events
+/*
+    ATON.on("XRmode", (b)=>{
+        for (let ts=0; ts < MRes._tsets.length; ts++){
+            const TS = MRes._tsets[ts];
+
+            if (b) TS.setXRSession( ATON.XR.currSession );
+            else TS.setXRSession( null );
+        }
+    });
+*/
 };
 
 MRes.clear = ()=>{
@@ -174,7 +189,6 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.registerPlugin( FP );
     }
 
-
     if (cesiumReq){
         ts.fetchOptions.headers = {};
 	    ts.fetchOptions.headers.Authorization = `Bearer ${cesiumReq.accessToken}`;
@@ -191,11 +205,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
 
-
-    ts.optimizedLoadStrategy = true;
-
-    // Unstable
-    //ts.loadSiblings = false;
+    ts.optimizedLoadStrategy = MRes._bOptimizedLoad;
+    //ts.loadSiblings = false; // Unstable
 
     //ts.errorThreshold  = 100;
 
@@ -265,7 +276,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     // JSON loaded
     ts.addEventListener( 'load-tileset', ()=>{
-        console.log("TileSet loaded");
+        //console.log("TileSet loaded");
         //console.log(ts)
 
         ATON._assetReqComplete(tsurl);
@@ -274,7 +285,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
         // Cesium ION
         if (cesiumReq || N.bUseGeoCoords){
-            console.log("TileSet using GeoCoords");
+            //console.log("TileSet using GeoCoords");
 
             ts.getBoundingSphere( bs );
 

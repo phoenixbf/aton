@@ -63,8 +63,13 @@ load(url, onComplete){
     let self = this;
 
     // Video stream
-    if (ATON.Utils.isVideo(url)){
-        this._vs = ATON.MediaFlow.getOrCreateVideoStream(this.nid, url, false);
+    if (ATON.Utils.isVideo(url) || url.startsWith("#")){
+        
+        if (url.startsWith("#")){
+            let uid = parseInt( url.substring(1) );
+            this._vs = ATON.MediaFlow.getOrCreateVideoStream(uid, undefined, true);
+        }
+        else this._vs = ATON.MediaFlow.getOrCreateVideoStream(this.nid, url, false);
 
         this._mediamesh.material = this._vs.matStream;
 

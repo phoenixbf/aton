@@ -335,6 +335,12 @@ MediaFlow.startOrStopRecording = ()=>{
 // Audio Streaming
 //==========================================================
 MediaFlow.startAudioStreaming = ()=>{
+    if (MediaFlow._bAudioStreaming) return;
+    if (MediaFlow._bAudioRecording) return;
+
+    MediaFlow._bAudioStreaming = true;
+    MediaFlow._bAudioRecording = true;
+
     navigator.mediaDevices.getUserMedia( MediaFlow._cAuStream )
     .then((stream)=>{
         MediaFlow._aurec = new MediaRecorder( stream, MediaFlow._oStream );
@@ -346,8 +352,8 @@ MediaFlow.startAudioStreaming = ()=>{
         ATON.fire("MediaFlow_AudioStream", true);
 
         MediaFlow._aurec.onstart = (e) => {
-            MediaFlow._bAudioStreaming = true;
-            MediaFlow._bAudioRecording = true;
+            //MediaFlow._bAudioStreaming = true;
+            //MediaFlow._bAudioRecording = true;
             MediaFlow._schunks = [];
         };
 

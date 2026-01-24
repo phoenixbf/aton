@@ -56,6 +56,7 @@ MRes.init = ()=>{
 
     // Plugins
     MRes._bFadeTiles = true;
+    MRes._bShowTBounds = false;
 
     // Events
 /*
@@ -187,6 +188,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         FP.fadeDuration  = 400;
         
         ts.registerPlugin( FP );
+    }
+
+    // Show tiles bounds
+    if (MRes._bShowTBounds){
+        let DTP = new TILES.DebugTilesPlugin();
+        ts.registerPlugin( DTP );
+        DTP.displayBoxBounds = true;
     }
 
     if (cesiumReq){

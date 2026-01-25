@@ -21,7 +21,7 @@ MRes.THRES_POS = 0.000001;
 MRes.init = ()=>{
 
     // Cesium Tilesets
-    MRes._tsets = [];
+    MRes._tsets = {};
 
     MRes._tsET = 20.0;   // Global tilesets error target (original: 6)
     MRes._tsB  = false;  // Show/Hide tiles bounds
@@ -73,7 +73,7 @@ MRes.init = ()=>{
 
 MRes.clear = ()=>{
     for (let t in MRes._tsets) MRes._tsets[t] = null;
-    MRes._tsets = [];
+    MRes._tsets = {};
 
     MRes._bPCs = false;
 };
@@ -85,10 +85,10 @@ MRes.getTSetsErrorTarget = ()=>{
 MRes.setTSetsErrorTarget = (e)=>{
     MRes._tsET = e;
 
-    const nts = MRes._tsets.length;
-    if (nts <= 0) return;
+    //const nts = MRes._tsets.length;
+    //if (nts <= 0) return;
 
-    for (let ts=0; ts<nts; ts++){
+    for (let ts in MRes._tsets){
         let TS = MRes._tsets[ts];
         TS.errorTarget = e;
     }
@@ -97,10 +97,10 @@ MRes.setTSetsErrorTarget = (e)=>{
 MRes.setTSetsDisplayBounds = (b)=>{
     MRes._tsB = b;
 
-    const nts = MRes._tsets.length;
-    if (nts <= 0) return;
+    //const nts = MRes._tsets.length;
+    //if (nts <= 0) return;
 
-    for (let ts=0; ts<nts; ts++){
+    for (let ts in MRes._tsets){
         let TS = MRes._tsets[ts];
         TS.displayBoxBounds = b; // FIXME: not working
     }
@@ -109,10 +109,10 @@ MRes.setTSetsDisplayBounds = (b)=>{
 MRes.updateTSetsCamera = (cam)=>{
     if (cam === undefined) cam = ATON.Nav._camera;
 
-    const nts = MRes._tsets.length;
-    if (nts <= 0) return;
+    //const nts = MRes._tsets.length;
+    //if (nts <= 0) return;
 
-    for (let ts=0; ts<nts; ts++){
+    for (let ts in MRes._tsets){
         const TS = MRes._tsets[ts];   
 
         //console.log(TS.cameras);
@@ -565,7 +565,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);
 
-    MRes._tsets.push(ts);
+    //MRes._tsets.push(ts);
+    MRes._tsets[tsurl] = ts;
 };
 
 MRes.loadCesiumIONAsset = (ionAssID, N)=>{
@@ -620,15 +621,15 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
 
 // Main update (view-dependent tile processing)
 MRes.update = ()=>{
-    const nts = MRes._tsets.length;
-    if (nts < 1) return;
+    //const nts = MRes._tsets.length;
+    //if (nts < 1) return;
 
     //ATON.Nav._camera.updateMatrixWorld();
     //if (ATON.XR._cam) ATON.XR._cam.updateMatrixWorld();
 
     //MRes._tsTasksFF = 0;
 
-    for (let ts=0; ts < nts; ts++){
+    for (let ts in MRes._tsets){
         const TS = MRes._tsets[ts];
         TS.update();
     }
@@ -652,9 +653,14 @@ MRes.update = ()=>{
     }
 
 /*
-    for ( let t=0, l = MRes._tsTasks.length; t < l; t++ ) {
+    let numTasks = Math.min( MRes._tsTasks.length, 2);
+
+    for ( let t=0; t < numTasks; t++ ) {
         let T = MRes._tsTasks.shift();
-        if (T) T();
+        if (T){
+            T();
+            T = null;
+        }
     }
     MRes._tsTasks.length = 0;
 */

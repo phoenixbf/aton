@@ -777,6 +777,8 @@ UI.createButtonQR = (options)=>{
         }
     });
 
+    if (ATON.Utils.isLocalhost()) ATON.UI.hideElement(el);
+
     return el;
 };
 

@@ -21,7 +21,7 @@ MRes.THRES_POS = 0.000001;
 MRes.init = ()=>{
 
     // Cesium Tilesets
-    MRes._tsets = {};
+    MRes._tsets = [];
 
     MRes._tsET = 20.0;   // Global tilesets error target (original: 6)
     MRes._tsB  = false;  // Show/Hide tiles bounds
@@ -73,7 +73,7 @@ MRes.init = ()=>{
 
 MRes.clear = ()=>{
     for (let t in MRes._tsets) MRes._tsets[t] = null;
-    MRes._tsets = {};
+    MRes._tsets = [];
 
     MRes._bPCs = false;
 };
@@ -565,8 +565,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     if (!bPointCloud) ATON.Utils.setPicking(N, N.type, true);
 
-    //MRes._tsets.push(ts);
-    MRes._tsets[tsurl] = ts;
+    MRes._tsets.push(ts);
+    //MRes._tsets[tsurl] = ts;
 };
 
 MRes.loadCesiumIONAsset = (ionAssID, N)=>{

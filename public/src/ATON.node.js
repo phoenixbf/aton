@@ -716,45 +716,8 @@ load(url, onComplete){
     let ext = ATON.Utils.getFileExtension(url);
 
     // 3DGS
-    if (ext === "spz" || 
-        ext === "splat" || 
-        ext === "ksplat" || 
-        ext === "sog" || 
-        url.endsWith("meta.json")
-    ){
-
-        // If not there, realize dedicated 3DGS renderer
-        ATON.GS.realize();
-
-        ATON._assetReqNew(url);
-
-        new SPARK.SplatMesh({ 
-            url: url,
-            //editable: false,
-/*
-            enableViewToObject: true,
-            enableViewToWorld: true,
-            enableWorldToView: true,
-*/
-            //maxSh: 3,
-
-            onLoad: (data)=>{
-                data.quaternion.set(1, 0, 0, 0);
-                
-                //ATON.Utils.modelVisitor(N, data);
-
-                N.add( data );
-
-                //data.opacity = 0.1;
-                
-                ATON._assetReqComplete(url);
-
-                ATON.GS.visitor(N);
-
-                if (onComplete) onComplete();
-            }
-        });
-        
+    if (ATON.Utils.is3DGS(url)){
+        ATON.GS.load(url, N, onComplete);
         return N;
     }
 

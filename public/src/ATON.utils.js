@@ -204,6 +204,16 @@ Utils.isImage = ( filepath )=>{
     return false;
 };
 
+Utils.is3DGS = ( filepath )=>{
+    if (filepath.endsWith(".spz")) return true;
+    if (filepath.endsWith(".splat")) return true;
+    if (filepath.endsWith(".sog")) return true;
+    if (filepath.endsWith("meta.json")) return true;
+    if (filepath.endsWith(".ksplat")) return true;
+
+    return;
+};
+
 Utils.getBaseFolder = ( filepath )=>{
     var index = filepath.lastIndexOf('/');
     if (index !== -1) return filepath.substring( 0, index + 1 );

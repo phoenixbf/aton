@@ -478,9 +478,11 @@ Nav._updCamera = (c)=>{
         c.fov = Nav._currPOV.fov;
         c.updateProjectionMatrix();
     }
-
-    //ATON._setupGizmo();
-
+/*
+    if (ATON.GS._3DGS){
+        c.add( GS._3DGSR );
+    }
+*/
     ATON.MRes.updateTSetsCamera(c);
 };
 

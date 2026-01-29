@@ -29,11 +29,13 @@ GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
     GS._3DGSR = new SPARK.SparkRenderer({
-        renderer: ATON._renderer, 
+        renderer: ATON._renderer,
+        //originDistance: 1.0
         //premultipliedAlpha: false
     });
     
     ATON._rootVisible.add( GS._3DGSR );
+    //ATON.Nav._camera.add( GS._3DGSR );
 
     ATON._bqSceneCont        = false;
     ATON._bQuerySemOcclusion = false;
@@ -126,6 +128,40 @@ GS.isRealized = ()=>{
     if (GS._3DGSR) return true;
     else return false;
 }
+
+GS.load = (url, N, onComplete)=>{
+    // If not there, realize dedicated 3DGS renderer
+    ATON.GS.realize();
+
+    ATON._assetReqNew(url);
+
+    new SPARK.SplatMesh({ 
+        url: url,
+        //editable: false,
+/*
+        enableViewToObject: true,
+        enableViewToWorld: true,
+        enableWorldToView: true,
+*/
+        //maxSh: 3,
+
+        onLoad: (data)=>{
+            data.quaternion.set(1, 0, 0, 0);
+            
+            //ATON.Utils.modelVisitor(N, data);
+
+            N.add( data );
+
+            //data.opacity = 0.1;
+            
+            ATON._assetReqComplete(url);
+
+            ATON.GS.visitor(N);
+
+            if (onComplete) onComplete();
+        }
+    });
+};
 
 GS.visitor = (N)=>{
     if (!N) return;

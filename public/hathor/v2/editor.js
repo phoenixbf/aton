@@ -19,7 +19,7 @@ ED.setPersistentModifications = (b)=>{
 };
 
 ED.createLayer = (o)=>{
-    if (!o) return;
+    if (!o) return false;
     
     let nid = o.nid;
     if (!nid) return false;

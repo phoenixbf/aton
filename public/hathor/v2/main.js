@@ -27,6 +27,15 @@ HATHOR.MODE_EDITOR = 1;
 
 HATHOR._mode = HATHOR.MODE_STD;
 
+// Tasks
+HATHOR.currTask = undefined;
+
+HATHOR.TASK_BASIC_ANN  = 1;
+HATHOR.TASK_CONVEX_ANN = 2;
+HATHOR.TASK_MEASURE_AB = 3;
+HATHOR.TASK_DIR_LIGHT  = 4;
+
+
 
 HATHOR.setSceneToLoad = (sid)=>{
     HATHOR._sidToLoad = sid;

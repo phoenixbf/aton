@@ -52,7 +52,7 @@ MRes.init = ()=>{
     MRes._numTSLoaded    = 0;
 
     // Use optimized load strategy
-    MRes._bOptimizedLoad = true;
+    MRes._bOptimizedLoad = false;
 
     // Plugins
     MRes._bFadeTiles = true;
@@ -220,8 +220,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     //ts.optimizeRaycast = false; // We already use BVH
 
-    // Shared p-queues (removed for now it seems to stall with several tsets)
 /*
+    // Shared p-queues (removed for now it seems to stall with several tsets)
     if (MRes._pqLRU === undefined){
         //ts.lruCache.maxSize = 500; //350;
         //ts.lruCache.minSize = 150; //150;
@@ -231,8 +231,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
         ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 
-        //ts.downloadQueue.maxJobs = 6; // 6
-        //ts.parseQueue.maxJobs    = 1; // 1
+        ts.downloadQueue.maxJobs = 15; // 6
+        ts.parseQueue.maxJobs    = 3; // 1
 
         MRes._pqLRU      = ts.lruCache;
         MRes._pqDownload = ts.downloadQueue;
@@ -245,6 +245,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         ts.parseQueue    = MRes._pqParse;
     }
 */
+
     ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
     ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
 

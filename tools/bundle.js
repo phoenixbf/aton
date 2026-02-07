@@ -77,8 +77,9 @@ import ThreeMeshUI from "three-mesh-ui/build/three-mesh-ui.module.js";
 import * as ThreeMeshBVH from 'three-mesh-bvh';
 //import { GenerateMeshBVHWorker } from 'three-mesh-bvh/src/workers/GenerateMeshBVHWorker.js';
 
+
 import * as TILES from '3d-tiles-renderer';
-import { TilesFadePlugin, ImplicitTilingPlugin, DeepZoomImagePlugin, UpdateOnChangePlugin } from '3d-tiles-renderer/plugins';
+import { TilesFadePlugin, ImplicitTilingPlugin, DeepZoomImagePlugin, DebugTilesPlugin, UpdateOnChangePlugin } from '3d-tiles-renderer/plugins';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
@@ -150,6 +151,7 @@ TILES.TilesFadePlugin      = TilesFadePlugin;
 TILES.ImplicitTilingPlugin = ImplicitTilingPlugin;
 TILES.DeepZoomImagePlugin  = DeepZoomImagePlugin;
 TILES.UpdateOnChangePlugin = UpdateOnChangePlugin;
+TILES.DebugTilesPlugin     = DebugTilesPlugin;
 //TILES.TileCompressionPlugin = TileCompressionPlugin;
 
 

@@ -124,11 +124,14 @@ FE.addBasicLoaderEvents = ()=>{
         }
     });
 
-    ATON.on("AllNodeRequestsCompleted", ()=>{ 
+    ATON.on("AllNodeRequestsCompleted", (bFirst)=>{ 
         $("#idLoader").hide();
         //$('#idBGcover').fadeOut("slow");
 
         if ( ATON.CC.anyCopyrightFound() ) $("#btn-cc").show();
+
+        // From here handle only first time
+        if (!bFirst) return;
         
         FE.computeSelectorRanges();
         //if (ATON.Nav.isOrbit()) ATON.SUI.setSelectorRadius( FE._selRefRadius );

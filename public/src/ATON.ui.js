@@ -335,14 +335,17 @@ UI.addBasicEvents = ()=>{
         UI.showCenteredOverlay();
     });
 
-    ATON.on("AllNodeRequestsCompleted", ()=>{ 
+    ATON.on("AllNodeRequestsCompleted", (bFirst)=>{
         UI.hideCenteredOverlay();
 
         // Handle home pov
-        if (UI._bReqHome) return;
-        if (!ATON.Nav.homePOV) ATON.Nav.computeAndRequestDefaultHome(0.5);
-		ATON.Nav.requestHomePOV(0.2);
-        UI._bReqHome = true;
+        //if (UI._bReqHome) return;
+        if (bFirst){
+            if (!ATON.Nav.homePOV) ATON.Nav.computeAndRequestDefaultHome(0.5);
+            ATON.Nav.requestHomePOV(0.2);
+        }
+
+        //UI._bReqHome = true;
     });
 
     // Semantic

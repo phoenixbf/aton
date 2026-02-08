@@ -629,6 +629,8 @@ ATON.realize = ( bNoRender )=>{
 
     // Bounds
     ATON.bounds = new THREE.Sphere();
+
+    ATON._bFirstAllReqCompleted = true;
     
     ATON._worldScale = 1.0;
     ATON._ws = 0;
@@ -1440,9 +1442,11 @@ ATON._onAllReqsCompleted = ()=>{
 
     //ATON._bDirtyLP = true;
 
-    ATON.fire("AllNodeRequestsCompleted");
+    ATON.fire("AllNodeRequestsCompleted", ATON._bFirstAllReqCompleted);
+    ATON._bFirstAllReqCompleted = false;
 
     ATON._postAllReqsCompleted();
+    //ThreeMeshUI.update();
 
     // FIXME: dirty
 //    setTimeout( ()=>{
@@ -1457,6 +1461,7 @@ ATON._onAllReqsCompleted = ()=>{
 //    }, 1000);
 };
 
+// DEPRECATED
 ATON._postAllReqsCompleted = (R)=>{
     if (R === undefined) R = ATON._rootVisible;
 
@@ -1464,7 +1469,7 @@ ATON._postAllReqsCompleted = (R)=>{
         let N = R.children[n];
 
         if (N && N.toggle){
-            ATON._postAllReqsCompleted(N);
+            //ATON._postAllReqsCompleted(N);
             N.toggle(N.visible);
 
             //if (N.bPickable !== undefined) N.setPickable(N.bPickable);

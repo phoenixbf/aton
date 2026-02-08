@@ -119,7 +119,7 @@ GS.realize = ()=>{
         }
     });
 
-    ATON.on("AllNodeRequestsCompleted",()=>{
+    ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
         GS._3DGSR.update( uPar );
     });
 };

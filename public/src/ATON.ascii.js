@@ -55,8 +55,9 @@ ASCII.loadValuesFromFile = (url, delim, mainkey, onComplete)=>{
                     let values = R.split(delim);
 
                     // Entry
-                    let keyf = (mainkey>=0)? values[mainkey] : r;
-                    keyf = keyf.trim();
+                    let keyf;
+                    if (mainkey>=0) keyf = values[mainkey].trim();
+                    else keyf = r;
                     
                     D[ keyf ] = {};
                     

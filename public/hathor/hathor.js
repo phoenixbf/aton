@@ -55,7 +55,7 @@ HATHOR.setup = ()=>{
     if (bvhParam) ATON.Utils.showBVHbounds( parseInt(bvhParam) );
 
     let tsb = ATON.FE.urlParams.get("tsb");
-    if (tsb) ATON.MRes.setTSetsDisplayBounds( true );
+    if (tsb) ATON.MRes._bShowTBounds = true; //ATON.MRes.setTSetsDisplayBounds( true );
 
     let btse = ATON.FE.urlParams.get("mret");
     if (btse) ATON.MRes.setBaseTSE( parseFloat(btse) );

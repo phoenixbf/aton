@@ -10,7 +10,8 @@
 ==================================================================================*/
 const fs          = require('fs');
 const path        = require('path');
-const nanoid      = require('nanoid');
+//const nanoid      = require('nanoid');
+const uuid        = require('uuid');
 const fsx         = require('fs-extra');
 //const axios       = require('axios');
 const fg          = require('fast-glob');
@@ -59,7 +60,7 @@ app.get("/api/examples/", function(req,res,next){
 	* @apiDescription Retrieve a general purpose unique ID
 */
 app.get("/api/getid/", function(req,res,next){
-	let id = nanoid.nanoid();
+	let id = uuid.v4().slice(-12); //nanoid.nanoid();
 	res.json(id);
 });
 

@@ -9,7 +9,7 @@
 ==================================================================================*/
 const fs          = require('fs');
 const path        = require('path');
-const nanoid      = require('nanoid');
+//const nanoid      = require('nanoid');
 const fsx         = require('fs-extra');
 const fg          = require('fast-glob');
 const sharp       = require("sharp");
@@ -217,14 +217,14 @@ API.init = (app)=>{
                 }
             });
 
-            res.send(sid);
+            res.json(sid);
             return;
         }
 
         // Brand new scene
         let R = Core.writeSceneJSON(sid, data);
 
-        if (R) res.send(sid);
+        if (R) res.json(sid);
         else res.send(false);
     });
 

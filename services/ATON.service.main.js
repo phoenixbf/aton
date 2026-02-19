@@ -18,8 +18,6 @@ const path        = require('path');
 const cors        = require('cors');
 const chalk       = require('chalk');
 
-const glob   = require("glob");
-const nanoid = require("nanoid");
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 const Core = require('./Core');

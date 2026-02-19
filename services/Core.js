@@ -13,7 +13,8 @@ const path        = require('path');
 const jsonpatch   = require('fast-json-patch');
 const del         = require('del');
 const makeDir     = require('make-dir');
-const { nanoid }  = require('nanoid');
+//const { nanoid }  = require('nanoid');
+const uuid        = require('uuid');
 const fsx         = require('fs-extra');
 //const axios       = require('axios');
 //const chokidar    = require('chokidar');
@@ -317,7 +318,13 @@ Core.init = ()=>{
 		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
 	}
 
-	//Core.populateFEScripts();
+/*
+	console.log( Core.generateUserSID() );
+	console.log( Core.generateUserSID() );
+	console.log( Core.generateUserSID() );
+	console.log( Core.generateUserSID() );
+	console.log( Core.generateUserSID() );
+*/
 };
 
 // Touch config folders
@@ -549,7 +556,11 @@ Core.existsScene = (sid)=>{;
 
 // Generate timestamped user SID
 Core.generateUserSID = ()=>{
-	let sid = Core.generateTodayString() + '-' + nanoid(10);
+	//let sid = Core.generateTodayString() + '-' + nanoid(10);
+	
+	let sid = Core.generateTodayString() + "-";
+	sid += uuid.v4().slice(-12);
+
 	return sid;
 };
 

@@ -832,6 +832,20 @@ HATHOR.setupEventHandlers = ()=>{
     ATON.FE.useMouseWheelToScaleSelector();
 
     ATON.on("KeyPress", (k)=>{
+        if (k==='+'){
+            let f = ATON.Nav.getFOV() + 1.0;
+            ATON.Nav.setFOV(f);
+        }
+        if (k==='-'){
+            let f = ATON.Nav.getFOV() - 1.0;
+            ATON.Nav.setFOV(f);
+        }
+
+        if (k==='PageUp'){
+        }
+        if (k==='PageDown'){
+        }
+
         if (k === 'Delete'){
             if (ATON.SemFactory.deleteSemanticNode(ATON._hoveredSemNode)){
 

@@ -454,25 +454,7 @@ ATON._setupBaseListeners = ()=>{
 
         ATON.fire("KeyUp", e.key);
         //ATON.fire("KeyUp/"+e.key);
-    }, false);
-
-    // Defaults
-    ATON.on("KeyPress", (k)=>{
-
-        if (k==='+'){
-            let f = ATON.Nav.getFOV() + 1.0;
-            ATON.Nav.setFOV(f);
-        }
-        if (k==='-'){
-            let f = ATON.Nav.getFOV() - 1.0;
-            ATON.Nav.setFOV(f);
-        }
-
-        if (k==='PageUp'){
-        }
-        if (k==='PageDown'){
-        }
-    });         
+    }, false);        
 };
 
 ATON._onResize = ()=>{
@@ -925,6 +907,11 @@ ATON.realize = ( bNoRender )=>{
     ATON.focusOn3DView();
 
     ATON._bInitialized = true;
+};
+
+ATON.setColorSpace = (cs)=>{
+	ATON._stdEncoding = cs;
+	ATON._renderer.outputColorSpace = cs;
 };
 
 // TODO

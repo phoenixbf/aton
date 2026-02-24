@@ -678,9 +678,9 @@ Maat.getStats = ()=>{
 		let U = Maat.db.collections[u];	
 		
 		if (U){
-			Maat.db.stats.models += U.models.length;
-			Maat.db.stats.panos  += U.panos.length;
-			Maat.db.stats.media  += U.media.length;
+			if (U.models) Maat.db.stats.models += U.models.length;
+			if (U.panos)  Maat.db.stats.panos  += U.panos.length;
+			if (U.media)  Maat.db.stats.media  += U.media.length;
 		}
 	}
 

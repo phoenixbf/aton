@@ -610,7 +610,7 @@ Core.deleteScene = (sid)=>{
 	let D = Core.getSceneFolder(sid);
 	console.log("Deleting "+D);
 	//if (fs.existsSync(D)) fs.rmdirSync(D, { recursive: true }); // note: NodeJS > 12.0
-	if (fs.existsSync(D)) del(D, {force: true});
+	if (fs.existsSync(D)) del.deleteSync(D, {force: true});
 };
 
 Core.readSceneJSON = (sid)=>{

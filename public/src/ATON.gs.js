@@ -37,8 +37,10 @@ GS.realize = ()=>{
     ATON._rootVisible.add( GS._3DGSR );
     //ATON.Nav._camera.add( GS._3DGSR );
 
+/*
     ATON._bqSceneCont        = false;
     ATON._bQuerySemOcclusion = false;
+*/
 
     GS._3DGSR.clipXY = 1.1;
     GS._3DGSR.focalAdjustment = 2.0;
@@ -174,10 +176,11 @@ GS.visitor = (N)=>{
     });
 
     // Picking
-    //N.disablePicking();
-
+    N.disablePicking();
+/*
     if (N.bPickable) N.enablePicking();
     ATON._bqScene = true;
+*/
 };
 
 GS.setupProfiler = ()=>{

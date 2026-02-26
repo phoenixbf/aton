@@ -83,7 +83,7 @@ GS.realize = ()=>{
 
     GS._3DGSR.autoUpdate = false;
 
-    const uPar  = {
+    GS._3DGSR.uPar = {
         scene: ATON._rootVisible,
         viewToWorld: ATON.Nav._camera.matrixWorld
     };
@@ -102,7 +102,7 @@ GS.realize = ()=>{
 
         //GS._3DGSR.defaultView
 
-        GS._3DGSR.update( uPar );
+        GS._3DGSR.update( GS._3DGSR.uPar );
         //console.log("GS upd")
     };
 
@@ -122,8 +122,18 @@ GS.realize = ()=>{
     });
 
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
-        GS._3DGSR.update( uPar );
+        GS._3DGSR.update( GS._3DGSR.uPar );
     });
+    ATON.on("NodeChange", d =>{
+        console.log(d)
+        GS._3DGSR.update( GS._3DGSR.uPar );
+    });
+};
+
+GS.update = ()=>{
+    if (!GS._3DGSR.uPar) return;
+
+    GS._3DGSR.update( GS._3DGSR.uPar );
 };
 
 GS.isRealized = ()=>{

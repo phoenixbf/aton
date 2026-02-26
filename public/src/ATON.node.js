@@ -181,8 +181,9 @@ hide(){
         ATON._dMainL.shadow.needsUpdate = true;
     }
 
-    if (bPrev && this.type===ATON.NTYPES.SCENE){
-        ATON.updateLightProbes();
+    if (bPrev){
+        if (this.type === ATON.NTYPES.SCENE) ATON.updateLightProbes();
+        ATON.fire("NodeChange",{ nid: this.nid, vis: false });
     }
 
     return this;
@@ -206,8 +207,9 @@ show(){
         if (ATON._dMainL!==undefined && ATON._dMainL.shadow!==undefined) ATON._dMainL.shadow.needsUpdate = true;
     }
 
-    if (!bPrev && this.type===ATON.NTYPES.SCENE){
-        ATON.updateLightProbes();
+    if (!bPrev){
+        if (this.type === ATON.NTYPES.SCENE) ATON.updateLightProbes();
+        ATON.fire("NodeChange",{ nid: this.nid, vis: true });
     }
 
     return this;

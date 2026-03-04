@@ -1,1 +1,0 @@
-3D model by S. Menconero (CNR ISPC)

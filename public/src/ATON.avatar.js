@@ -242,6 +242,10 @@ realize(){
 
     this.add(this.usermeshnode);
 
+    this.usertorsonode = ATON.createUINode();
+    this.usertorsonode.setMaterial(this.usermaterial);
+    this.usertorsonode.setCloneOnLoadHit(false);
+    this.add(this.usertorsonode);
 
     // Talk UI
     this.userauinode = new THREE.Sprite( ATON.Photon.uspritemats[this.userid % ATON.Photon.uspritemats.length] );
@@ -290,14 +294,19 @@ destroy(){
 */
 
 // Loads custom avatar representation (3D model)
-loadRepresentation(url){
+loadRepresentation(headurl, torsourl){
     let A = this;
 
     if (A.usermeshnode.children[0] !== undefined){
         A.usermeshnode.remove(A.usermeshnode.children[0]);
     }
 
-    A.usermeshnode.load(url); //.setMaterial(A.usermaterial);
+    A.usermeshnode.load(headurl); //.setMaterial(A.usermaterial);
+
+    if (torsourl){
+        if (A.usertorsonode.children[0]) A.usertorsonode.remove(A.usertorsonode.children[0]);
+        A.usertorsonode.load(torsourl);
+    }
 
     ATON.SUI.visitor(this);
 
@@ -458,11 +467,16 @@ handleStateTransition(){
         this.usermeshnode.quaternion.copy(ts.quaternion);
         //this.scale.set(ts.scale,ts.scale,ts.scale);
 
+        this.usertorsonode.quaternion.copy(ts.quaternion);
+
         return;
     }
 
     this.position.lerpVectors(cs.position, ts.position, this._tProgress);
     this.usermeshnode.quaternion.slerp(ts.quaternion, this._tProgress);
+
+    this.usertorsonode.quaternion.copy(this.usermeshnode.quaternion);
+
     //THREE.Quaternion.slerp( cs.quaternion, ts.quaternion, this.usermeshnode.quaternion, this._tProgress);
 
     //let sc = THREE.MathUtils.lerp(cs.scale, ts.scale, this._tProgress);

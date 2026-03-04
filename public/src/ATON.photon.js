@@ -841,7 +841,10 @@ Photon.touchAvatar = (uid)=>{
         let ava = new Photon.Avatar(uid);
         ava.attachTo(Photon.avaGroup);
         
-        ava.loadRepresentation(ATON.PATH_RES+"models/vrc/head.glb");
+        ava.loadRepresentation(
+            ATON.PATH_RES+"models/photon/head.glb", 
+            //ATON.PATH_RES+"models/photon/torso.glb"
+        );
         //console.log(Photon.avaGroup);
 
         Photon.avatarList[uid] = ava;

@@ -197,7 +197,9 @@ for (let fid in Core.flares){
 // START
 //==================================
 http.createServer(app).listen(PORT, ()=>{
-	Core.logGreen("\nATON up and running!");
+	Core.printLogo();
+	
+	console.log("\nATON up and running!");
 	console.log("- OFFLINE: http://localhost:"+PORT);
 	for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): http://"+Core.nets[n][0]+":"+PORT);
 	
@@ -212,7 +214,7 @@ if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 	};
 
 	https.createServer(httpsOptions, app).listen(PORT_SECURE, ()=>{ 
-		Core.logGreen("\nHTTPS ATON up and running!");
+		console.log("\nHTTPS ATON up and running!");
 		console.log("- OFFLINE: https://localhost:"+PORT_SECURE);
 		for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): https://"+Core.nets[n][0]+":"+PORT_SECURE);
 		

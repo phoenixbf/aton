@@ -59,7 +59,6 @@ MRes.init = ()=>{
     MRes._bShowTBounds = false;
 
     // Events
-/*
     ATON.on("XRmode", (b)=>{
         for (let ts=0; ts < MRes._tsets.length; ts++){
             const TS = MRes._tsets[ts];
@@ -68,7 +67,6 @@ MRes.init = ()=>{
             else TS.setXRSession( null );
         }
     });
-*/
 };
 
 MRes.clear = ()=>{

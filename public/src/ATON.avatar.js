@@ -370,7 +370,7 @@ requestFocus(fp){
     if (fp === undefined) return;
     if (this._tFocCall >= 0.0) return; // already requested
 
-    this._tFocCall = ATON._clock.elapsedTime;
+    this._tFocCall = ATON._clock.getElapsed();
 
     this._currFocusPos.copy(this.userfpnode.position);
 
@@ -399,7 +399,7 @@ handleFocusTransition(){
 
     let D = ATON.Photon.USER_STATE_FREQ; //this._tStateDur;
 
-    let t = (ATON._clock.elapsedTime - this._tFocCall) / D;
+    let t = (ATON._clock.getElapsed() - this._tFocCall) / D;
 
     // End
     if (t >= 1.0){
@@ -431,7 +431,7 @@ requestStateTransition(S){
     //if (S.position === undefined || S.position === null) return;
     //if (S.quaternion === undefined || S.quaternion === null) return;
 
-    this._tStateCall = ATON._clock.elapsedTime;
+    this._tStateCall = ATON._clock.getElapsed();
 
     this._currState.position.copy(this.position);
     this._currState.quaternion.copy(this.quaternion);
@@ -451,7 +451,7 @@ handleStateTransition(){
     let D = ATON.Photon.USER_STATE_FREQ; //this._tStateDur;
 
     if (D <= 0.0) this._tProgress = 1.0;
-    else this._tProgress = (ATON._clock.elapsedTime - this._tStateCall) / D;
+    else this._tProgress = (ATON._clock.getElapsed() - this._tStateCall) / D;
 
     let cs = this._currState;
     let ts = this._tgtState;

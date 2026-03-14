@@ -606,8 +606,11 @@ ATON.realize = ( bNoRender )=>{
     //THREE.Object3D.DefaultUp = new THREE.Vector3(0,0,1); // mismatches WebXR y-up
 
     // Global time
+    ATON._clock = new THREE.Timer();
+    ATON._clock.connect( document ); // use Page Visibility API
+    
     // uses performance.now() if it is available, otherwise the less accurate Date.now().
-    ATON._clock = new THREE.Clock(true);
+    //ATON._clock = new THREE.Clock(true);
 
     // Bounds
     ATON.bounds = new THREE.Sphere();
@@ -1119,11 +1122,12 @@ ATON.getTimedGazeProgress = ()=>{
 };
 
 /**
-Get current elapsed time (global clock) since ATON initialization
+Get current elapsed time (global clock) in seconds since ATON initialization
 @returns {number}
 */
 ATON.getElapsedTime = ()=>{
-    return ATON._clock.elapsedTime;
+    //return ATON._clock.elapsedTime;
+    return ATON._clock.getElapsed();
 };
 
 /**
@@ -2392,8 +2396,11 @@ ATON._handleDynamicRenderProfiles = ()=>{
 ATON._onFrame = ()=>{
     //if (ATON.XR._bReqPresenting) return;
 
+    ATON._clock.update();
     ATON._dt = ATON._clock.getDelta();
-    //ATON._fps = (1.0 / ATON._dt);
+
+    //ATON._dt = ATON._clock.getDelta();
+    ///ATON._fps = (1.0 / ATON._dt);
     
     ATON._markFPS();
 
@@ -2576,7 +2583,7 @@ ATON._handleQueries = ()=>{
     if (ATON._tHover === undefined) return;
     //console.log(ATON._tHover);
 
-    const d = ATON._clock.elapsedTime - ATON._tHover;
+    const d = ATON._clock.getElapsed() - ATON._tHover;
     if (d >= ATON._tgiDur){
         ATON._stdActivation();
 
@@ -2806,7 +2813,7 @@ ATON._handleQuerySemantics = ()=>{
             let S = ATON.getSemanticNode(hsn);
             if (S && S.onHover) S.onHover();
 
-            ATON._tHover = ATON._clock.elapsedTime;
+            ATON._tHover = ATON._clock.getElapsed();
         }
     }
 
@@ -2889,7 +2896,7 @@ ATON._handleQueryUI = ()=>{
             const S = ATON.getUINode(hui);
             if (S && S.onHover) S.onHover();
 
-            ATON._tHover = ATON._clock.elapsedTime;
+            ATON._tHover = ATON._clock.getElapsed();
         }
     }
 };

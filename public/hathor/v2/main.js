@@ -112,3 +112,17 @@ HATHOR.showAnnotationContent = (semid)=>{
 
     HATHOR.UI.showSemanticPanel(semid, elContent);
 };
+
+// Tasks
+//===========================================
+HATHOR.setCurrentTask = (task)=>{
+    HATHOR.currTask = task;
+
+    // hide UI elems
+};
+
+HATHOR.endCurrentTask = ()=>{
+    HATHOR.currTask = undefined;
+
+    
+};

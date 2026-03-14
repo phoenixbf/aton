@@ -899,7 +899,7 @@ Nav.handlePOVtransition = ()=>{
     if (Nav._tPOVcall < 0.0) return;
 
     if (Nav.POVtransitionDuration <= 0.0) Nav._tPOVprogress = 1.0;
-    else Nav._tPOVprogress = (ATON._clock.elapsedTime - Nav._tPOVcall) / Nav.POVtransitionDuration;
+    else Nav._tPOVprogress = (ATON._clock.getElapsed() - Nav._tPOVcall) / Nav.POVtransitionDuration;
 
     // End
     if (Nav._tPOVprogress >= 1.0){
@@ -938,7 +938,7 @@ Nav.handleXRtransition = ()=>{
     if (Nav._tPOVcall < 0.0) return;
 
     if (Nav.POVtransitionDuration <= 0.0) Nav._tPOVprogress = 1.0;
-    else Nav._tPOVprogress = (ATON._clock.elapsedTime - Nav._tPOVcall) / Nav.POVtransitionDuration;
+    else Nav._tPOVprogress = (ATON._clock.getElapsed() - Nav._tPOVcall) / Nav.POVtransitionDuration;
 
     // End
     if (Nav._tPOVprogress >= 1.0){
@@ -1062,7 +1062,7 @@ Nav.requestPOV = (pov, duration, bApplyWorldScale)=>{
         }
     }
 
-    Nav._tPOVcall = ATON._clock.elapsedTime;
+    Nav._tPOVcall = ATON._clock.getElapsed();
     ATON.fire("POVTransitionRequested", pov.id);
 };
 

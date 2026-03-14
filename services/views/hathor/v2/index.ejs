@@ -51,6 +51,8 @@
     margin: var(--hathor-ui-margin);
 
     z-index: 100 !important;
+    overflow-x: hidden;
+
 /*
     margin-left: 0px;
 */
@@ -62,13 +64,24 @@
     -webkit-backdrop-filter: blur(var(--aton-blur-radius));
     backdrop-filter: blur(var(--aton-blur-radius));
 }
+
 .hathor-main-toolbar-editor {
-    border: solid 1px var(--aton-colors-accent);
+    outline: solid 2px var(--aton-colors-accent);
+}
+
+.hathor-bottom-toolbar-container {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
 }
 
 .hathor-bottom-toolbar {
     display: inline-block;
     margin: var(--hathor-ui-margin);
+
+    pointer-events: initial;
     
     background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
     border-radius: var(--bs-border-radius);
@@ -162,7 +175,7 @@
 <body>
     <div id="sideToolbar" class="aton-toolbar-left hathor-main-toolbar"></div>
 
-    <div style="position:absolute; bottom:0px; width:100%; text-align:center;">
+    <div class="hathor-bottom-toolbar-container">
         <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
     </div>
 

@@ -132,6 +132,60 @@ UI.closeSemanticPanel = ()=>{
     ATON.UI.hideSidePanel();
 };
 
+UI.modalAnnotation = (semid)=>{
+    let semtype = HATHOR.currTask;
+    if (!semtype) return;
+
+    let elBody = ATON.UI.createContainer({});
+
+    let semlist = [];
+    for (let s in ATON.semnodes){
+        if (s !== ATON.ROOT_NID /*&& !s.startsWith(ATON.XPFNetwork.SEMGROUP_PREFIX)*/) semlist.push(s);
+    }
+
+    let elSemID = ATON.UI.createInputText({
+        list: semlist,
+        label: "Semantic ID",
+        onchange: (id)=>{
+            id = id.trim();
+            if (id.length < 1){
+                ATON.UI.hideElement(elCreateAnn);
+                return;
+            }
+
+            ATON.UI.showElement(elCreateAnn);
+        }
+    });
+
+    let elCreateAnn = ATON.UI.createButton({
+        text: "Add",
+        classes: "btn-accent",
+        //icon: ,
+        onpress: ()=>{
+
+            HATHOR.endCurrentTask();
+        }
+    });
+
+    ATON.UI.hideElement(elCreateAnn);
+
+    elBody.append(elSemID);
+    elBody.append( UI.WYSIWYGeditorCreate() );
+    elBody.append( ATON.UI.createContainer({
+        classes: "btn-group",
+        style: "width:100%",
+        items:[ elCreateAnn ]
+    }))
+    
+
+    ATON.UI.showModal({
+        header: semid? "Edit '"+semid+"'" : "New Annotation",
+        body: elBody
+    });
+
+    UI.WYSIWYGeditorInit();
+};
+
 /*
     Buttons
 =====================================*/
@@ -274,54 +328,7 @@ UI.modalHathor = ()=>{
 
     });
 };
-/*
-UI.modalUser = ()=>{
 
-    ATON.checkAuth(
-        // Logged
-        (u)=>{
-            let elBody = ATON.UI.createContainer({ classes: "d-grid gap-2" });
-            elBody.append(
-                ATON.UI.createButton({
-                    text: "Logout",
-                    icon: "exit",
-                    classes: "aton-btn-highlight",
-                    onpress: ()=>{
-                        ATON.REQ.logout();
-                        ATON.UI.hideModal();
-                        
-                        UI._onUser();
-                    }
-                })
-            );
-
-            UI.closeToolPanel();
-
-            ATON.UI.showModal({
-                header: u.username,
-                body: elBody
-            })
-        },
-        // Not logged
-        ()=>{
-            UI.closeToolPanel();
-            
-            ATON.UI.showModal({
-                header: "User",
-                body: ATON.UI.createLoginForm({
-                    onSuccess: (r)=>{
-                        ATON.UI.hideModal();
-                        UI._onUser(r.username);
-                    },
-                    onFail: ()=>{
-                        // TODO:
-                    }
-                })
-            })
-        }
-    );
-};
-*/
 
 UI.modalXR = ()=>{
     //TODO:
@@ -331,6 +338,10 @@ UI.modalXR = ()=>{
     WYSIWYG Editor
 =====================================*/
 UI.WYSIWYG_TOOLBAR = "source,|,bold,italic,eraser,ul,ol,font,paragraph,|,hr,table,link,symbols";
+
+UI.WYSIWYGeditorCreate = ()=>{
+    return ATON.UI.elem(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`);
+};
 
 UI.WYSIWYGeditorInit = ()=>{
     UI.WYSIWYG = Jodit.make('#WYSIWYGeditor', {
@@ -838,9 +849,9 @@ UI.buildTaskToolbar = (task)=>{
             icon: "bi-check-lg",
             classes: "btn-accent",
             onpress: ()=>{
-                //
+                UI.modalAnnotation();
                 
-                HATHOR.endCurrentTask();
+                //HATHOR.endCurrentTask();
             }
         }));        
     }

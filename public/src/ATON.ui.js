@@ -1629,6 +1629,10 @@ UI.createSceneCard = (options)=>{
     if (!sid) sid = "samples/welcome";
 
     let pp = sid.split("/");
+    if (pp.length !== 2){
+        console.log("Invalid Scene ID");
+    }
+
     user = pp[0];
     usid = pp[1];
 
@@ -1648,7 +1652,7 @@ UI.createSceneCard = (options)=>{
         useblurtint: options.useblurtint,
         classes: options.classes,
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
-        url: options.url? options.url : ATON.BASE_URL + "/v2/s/" + sid, //ATON.PATH_FE + sid,
+        url: options.url? options.url : ATON.PATH_FE + sid, //ATON.BASE_URL + "/v2/s/" + sid,
         subtitle: elSub,
         footer: options.footer,
         badge: options.badge

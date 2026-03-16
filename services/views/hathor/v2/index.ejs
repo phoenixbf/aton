@@ -40,11 +40,10 @@
 :root {
     --hathor-ui-margin: 4px;
 
-    --jd-color-background-default: var(--bs-body-color);
+    --jd-color-panel: rgba(var(--bs-body-color-rgb), 0.9);
+    --jd-color-icon: white;
+    --jd-color-background-default: rgba(var(--bs-body-color-rgb), 0.9) !important;
     --jd-color-border: var(--bs-body-bg-color);
-    --jd-color-panel: var(--bs-body-bg-color);
-    --jd-color-icon: var(--bs-body-color);
-
 }
 
 .hathor-main-toolbar {
@@ -90,6 +89,27 @@
     backdrop-filter: blur(var(--aton-blur-radius));
 }
 
+.hathor-tasks-container {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.hathor-tasks {
+    display: inline-block;
+    margin: var(--hathor-ui-margin);
+
+    pointer-events: initial;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
 .hathor-user-toolbar {
     top: 0px;
     right: 0px;
@@ -121,6 +141,8 @@
 }
 
 .hathor-text-block {
+    display: block;
+
     font-size: smaller;
     text-align: justify;
     margin: 4px;
@@ -138,7 +160,62 @@
 
     width: 100%;
 }
-    
+
+/*
+    WYSIWYG Editor
+======================================================*/
+.jodit-container {
+    border-radius: var(--bs-border-radius);
+}
+
+.jodit-workplace {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5);
+    padding: 4px;
+}
+
+.jodit-wysiwyg {
+    padding: 4px;
+}
+
+.jodit-popup {
+    color: var(--aton-colors-accent);
+}
+
+.jodit-toolbar-button {
+    color: white !important;
+}
+.jodit-toolbar-button:hover {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+}
+
+.jodit-toolbar-button__button {
+    color: white;
+}
+.jodit-toolbar-button__button:hover {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+}
+.jodit-toolbar-button__text {
+    color: white;
+}
+.jodit-toolbar-button__trigger {
+    color: white !important;
+}
+
+.jodit-dialog__panel {
+    color: white !important;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.8);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.jodit-ui-button {
+    color: white !important;
+}
+.jodit-ui-button_variant_primary {
+    color: black;
+    background-color: var(--aton-colors-accent);
+} 
 </style>
 
 <!-- Vendors -->
@@ -174,6 +251,10 @@
 
 <body>
     <div id="sideToolbar" class="aton-toolbar-left hathor-main-toolbar"></div>
+
+    <div class="hathor-tasks-container">
+        <div class="hathor-tasks" id="tasks"></div>
+    </div>
 
     <div class="hathor-bottom-toolbar-container">
         <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>

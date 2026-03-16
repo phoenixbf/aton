@@ -74,6 +74,8 @@ HATHOR.setupLogic = ()=>{
     });
 
     ATON.on("Tap", (e)=>{
+        HATHOR.handleTaskOnTap(e);
+
         // Handle sem annotations first
         if (ATON._hoveredSemNode){
             HATHOR.showAnnotationContent(ATON._hoveredSemNode)
@@ -118,11 +120,30 @@ HATHOR.showAnnotationContent = (semid)=>{
 HATHOR.setCurrentTask = (task)=>{
     HATHOR.currTask = task;
 
-    // hide UI elems
+    HATHOR.UI.buildTaskToolbar(task);
 };
 
 HATHOR.endCurrentTask = ()=>{
     HATHOR.currTask = undefined;
 
-    
+    if (ATON.SemFactory.isBuildingShape()){
+        ATON.SemFactory.stopCurrentConvex();
+    }
+
+    HATHOR.UI.clearTaskToolbar();
+};
+
+// Handle tap on current task if any
+HATHOR.handleTaskOnTap = (e)=>{
+    if (!HATHOR.currTask) return;
+
+    if (HATHOR.currTask === HATHOR.TASK_BASIC_ANN){
+        if (ATON._bqScene) ATON._handleQueryScene();
+        ATON.SemFactory.stopCurrentConvex();
+    }
+
+    if (HATHOR.currTask === HATHOR.TASK_CONVEX_ANN){
+        if (ATON._bqScene) ATON._handleQueryScene();
+        ATON.SemFactory.addSurfaceConvexPoint();
+    }
 };

@@ -13,6 +13,7 @@ UI.setup = ()=>{
     UI._elMainToolbar   = ATON.UI.get("sideToolbar");
     UI._elBottomToolbar = ATON.UI.get("bottomToolbar");
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
+    UI._elTasks         = ATON.UI.get("tasks");
 
     // Dedicated side panel
     UI._elSidePanel = ATON.UI.elem(`
@@ -31,6 +32,7 @@ UI.setup = ()=>{
 
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
+        if (HATHOR.currTask) return;
 
         if (b){
             UI.hideMainElements();
@@ -162,6 +164,13 @@ UI.createLayersButton = ()=>{
     });
 };
 
+UI.createSemanticsButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "bi-pencil-square",
+        onpress: UI.sideSemantics
+    });
+};
+
 UI.createEnvButton = ()=>{
     return ATON.UI.createButton({
         icon: "env",
@@ -227,6 +236,7 @@ UI.buildStandardToolbar = ()=>{
         UI.createEnvButton(),
         UI.createSceneButton(),
         UI.createNavButton(),
+        UI.createSemanticsButton(),
 
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
@@ -320,7 +330,7 @@ UI.modalXR = ()=>{
 /*
     WYSIWYG Editor
 =====================================*/
-UI.WYSIWYG_TOOLBAR = 'source,|,bold,italic';
+UI.WYSIWYG_TOOLBAR = "source,|,bold,italic,eraser,ul,ol,font,paragraph,|,hr,table,link,symbols";
 
 UI.WYSIWYGeditorInit = ()=>{
     UI.WYSIWYG = Jodit.make('#WYSIWYGeditor', {
@@ -333,7 +343,7 @@ UI.WYSIWYGeditorInit = ()=>{
         showWordsCounter: false,
         showXPathInStatusbar: false,
         inline: true,
-        toolbarInlineForSelection: true,
+        //toolbarInlineForSelection: true,
         showPlaceholder: false,
 
         disablePlugins: "about,add-new-line,ai-assistant,search,print,xpath",
@@ -351,7 +361,11 @@ UI.WYSIWYGeditorInit = ()=>{
                     UI.WYSIWYGeditorInsert(new Date().toDateString())
                 }
             }
-        ]
+        ],
+
+        uploader: {
+            insertImageAsBase64URI: true
+        }
     });
 
     UI._elWYSIWYG = ATON.UI.get("WYSIWYGeditor");
@@ -429,6 +443,8 @@ UI.sideTool = ()=>{
     });
 
     UI.WYSIWYGeditorInit();
+
+    UI.WYSIWYGeditorInsert("<div><h1>This is a test</h1>This is a test!</div>")
 }
 
 UI.sideLayers = ()=>{
@@ -738,5 +754,101 @@ UI.sideNav = ()=>{
     });
 };
 
+UI.sideSemantics = ()=>{
+    let elBody = ATON.UI.createContainer({
+        //style: "margin-bottom: 4px;"
+    });
+
+    elBody.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
+    elBody.append(
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:100%",
+            items: [
+                ATON.UI.createButton({
+                    text: "Basic",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
+                    }
+                })
+            ]
+        })    
+    );
+
+    elBody.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
+    elBody.append(
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:100%",
+            items: [
+                ATON.UI.createButton({
+                    text: "Free Form",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
+                    }
+                })
+            ]
+        })    
+    );
+
+    UI.openToolPanel({
+        header: "Semantic Annotations",
+        body: elBody
+    });
+};
+
+// Tasks
+UI.buildTaskToolbar = (task)=>{
+    if (!task) return;
+
+    UI._elTasks.innerHTML = "";
+    UI.hideMainElements();
+
+    if (task === HATHOR.TASK_BASIC_ANN){
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Cancel",
+            icon: "bi-x-lg",
+            classes: "btn-default",
+            onpress: ()=>{
+                //if (ATON._bqScene) ATON._handleQueryScene();
+                //ATON.SemFactory.stopCurrentConvex();
+                
+                HATHOR.endCurrentTask();
+            }
+        }));
+    }
+
+    if (task === HATHOR.TASK_CONVEX_ANN){
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Cancel",
+            icon: "bi-x-lg",
+            classes: "btn-default",
+            onpress: ()=>{
+                //if (ATON._bqScene) ATON._handleQueryScene();
+                //ATON.SemFactory.stopCurrentConvex();
+                
+                HATHOR.endCurrentTask();
+            }
+        }));
+
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Complete",
+            icon: "bi-check-lg",
+            classes: "btn-accent",
+            onpress: ()=>{
+                //
+                
+                HATHOR.endCurrentTask();
+            }
+        }));        
+    }
+};
+
+UI.clearTaskToolbar = ()=>{
+    UI._elTasks.innerHTML = "";
+    UI.showMainElements();
+};
 
 export default UI;

@@ -53,7 +53,7 @@ window.addEventListener( 'load', ()=>{
         let sampleskw = {};
 
         let createExampleKeyword = (k, bSmall)=>{
-                return ATON.UI.createKeyword({
+                return ATON.UI.createChip({
                         term: k,
                         classes: bSmall? "aton-keyword-small" : undefined,
                         onpress: ()=>{

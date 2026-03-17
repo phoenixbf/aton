@@ -35,7 +35,8 @@ HATHOR.TASK_CONVEX_ANN = 2;
 HATHOR.TASK_MEASURE_AB = 3;
 HATHOR.TASK_DIR_LIGHT  = 4;
 
-
+HATHOR.SEM_SHAPE_SPHERE = 0;
+HATHOR.SEM_SHAPE_CONVEX = 1;
 
 HATHOR.setSceneToLoad = (sid)=>{
     HATHOR._sidToLoad = sid;
@@ -56,12 +57,19 @@ HATHOR.enterEditorMode = ()=>{
     HATHOR._mode = HATHOR.MODE_EDITOR;
 
     HATHOR.UI.enterEditorMode();
+    HATHOR.ED.setPersistentModifications(true);
 };
  
 HATHOR.exitEditorMode = ()=>{
     HATHOR._mode = HATHOR.MODE_STD;
 
     HATHOR.UI.exitEditorMode();
+    HATHOR.ED.setPersistentModifications(false);
+};
+
+HATHOR.isEditorMode = ()=>{
+    if (HATHOR._mode === HATHOR.MODE_EDITOR) return true;
+    return false;
 };
 
 HATHOR.setupLogic = ()=>{
@@ -86,6 +94,38 @@ HATHOR.setupLogic = ()=>{
         }
     });
 
+    ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
+        
+        if (!bFirst) return; // First time
+
+        let ed = HATHOR.params.get('e');
+        if (ed) HATHOR.enterEditorMode();
+    });
+
+    // Handle general auth logic
+    ATON.on("Login", (d)=>{
+        if (d) ATON.Photon.setUsername(d.username);
+    });
+
+    ATON.on("Logout",()=>{
+        HATHOR.exitEditorMode();
+        UI._elEd.classList.remove("aton-btn-highlight");
+    });
+
+    // Keyboard
+    ATON.on("KeyPress", (k)=>{
+        if (k==='+'){
+            let f = ATON.Nav.getFOV() + 1.0;
+            ATON.Nav.setFOV(f);
+        }
+        if (k==='-'){
+            let f = ATON.Nav.getFOV() - 1.0;
+            ATON.Nav.setFOV(f);
+        }
+
+        if (k==='g') HATHOR.UI.sideLayers();
+        if (k==='s') HATHOR.UI.sideSemantics();
+    });
 
 };
 
@@ -115,6 +155,15 @@ HATHOR.showAnnotationContent = (semid)=>{
     HATHOR.UI.showSemanticPanel(semid, elContent);
 };
 
+HATHOR.validateSemID = (semid)=>{
+    const invalid = { semid: undefined, valid: false };
+
+    semid = semid.trim();
+    if (semid.length < 1) return invalid;
+
+    return { semid: semid, valid: true };
+};
+
 // Tasks
 //===========================================
 HATHOR.setCurrentTask = (task)=>{
@@ -140,6 +189,8 @@ HATHOR.handleTaskOnTap = (e)=>{
     if (HATHOR.currTask === HATHOR.TASK_BASIC_ANN){
         if (ATON._bqScene) ATON._handleQueryScene();
         ATON.SemFactory.stopCurrentConvex();
+
+        HATHOR.UI.modalAnnotation();
     }
 
     if (HATHOR.currTask === HATHOR.TASK_CONVEX_ANN){

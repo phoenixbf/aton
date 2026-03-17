@@ -1395,11 +1395,14 @@ Create a node transform control. If "position", "scale" and "rotation" propertie
 - options.position: enable position/location manipulation
 - options.scale: enable scale manipulation
 - options.rotation: enable rotation manipulation
+- options.onupdateposition: routine when position changed
+- options.onupdaterotation: routine when position changed
+- options.onupdatescale: routine when position changed
 
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createNodeTrasformControl = (options)=>{
+UI.createNodeTransformControl = (options)=>{
     let baseid = ATON.Utils.generateID("ftrans");
     
     let el = document.createElement('div');
@@ -1420,7 +1423,8 @@ UI.createNodeTrasformControl = (options)=>{
         let elPos = UI.createVectorControl({
             vector: N.position,
             step: options.position.step,
-            reset: [0,0,0]
+            reset: [0,0,0],
+            onupdate: options.onupdateposition
         });
 
         el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
@@ -1433,7 +1437,8 @@ UI.createNodeTrasformControl = (options)=>{
         let elScale = UI.createVectorControl({
             vector: N.scale,
             step: options.scale.step,
-            reset: [1,1,1]
+            reset: [1,1,1],
+            onupdate: options.onupdatescale
         });
 
         el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
@@ -1446,7 +1451,8 @@ UI.createNodeTrasformControl = (options)=>{
         let elRot = UI.createVectorControl({
             vector: N.rotation,
             step: options.rotation.step,
-            reset: [0,0,0]
+            reset: [0,0,0],
+            onupdate: options.onupdaterotation
         });
 /*
         let elRot = UI.createQuaternionControl({

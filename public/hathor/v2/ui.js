@@ -68,9 +68,11 @@ UI.showMainElements = ()=>{
 
 UI.enterEditorMode = ()=>{
     UI._elMainToolbar.classList.add("hathor-main-toolbar-editor");
+    if (UI._elEd) UI._elEd.classList.add("aton-btn-highlight");
 };
 UI.exitEditorMode = ()=>{
     UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
+    if (UI._elEd) UI._elEd.classList.remove("aton-btn-highlight");
 };
 
 UI.createTextBlock = (content)=>{
@@ -133,8 +135,11 @@ UI.closeSemanticPanel = ()=>{
 };
 
 UI.modalAnnotation = (semid)=>{
-    let semtype = HATHOR.currTask;
-    if (!semtype) return;
+    let semshape; // get type of semantic annotation (basic, freeform, ...)
+    if (HATHOR.currTask === HATHOR.TASK_BASIC_ANN)  semshape = HATHOR.SEM_SHAPE_SPHERE;
+    if (HATHOR.currTask === HATHOR.TASK_CONVEX_ANN) semshape = HATHOR.SEM_SHAPE_CONVEX;
+
+    let parentSemID = ATON.ROOT_NID;
 
     let elBody = ATON.UI.createContainer({});
 
@@ -146,30 +151,57 @@ UI.modalAnnotation = (semid)=>{
     let elSemID = ATON.UI.createInputText({
         list: semlist,
         label: "Semantic ID",
-        onchange: (id)=>{
-            id = id.trim();
-            if (id.length < 1){
+
+        // Live validation of semid
+        oninput: (v)=>{
+            let V = HATHOR.validateSemID(v);
+
+            if ( !V.valid ){
                 ATON.UI.hideElement(elCreateAnn);
                 return;
             }
 
+            semid = V.semid;
+
             ATON.UI.showElement(elCreateAnn);
+        },
+/*
+        onchange: (v)=>{
+            v = v.trim();
+            if (v.length < 1){
+                return;
+            }
         }
+*/
     });
 
+    // Finalize semantic shape
     let elCreateAnn = ATON.UI.createButton({
-        text: "Add",
+        text: semid? "Update" : "Add",
         classes: "btn-accent",
         //icon: ,
         onpress: ()=>{
+            if (!semid) return;
 
+            // Retrieve content from editor, if any
+            let semcontent = UI.WYSIWYGeditorGetHTML().trim();
+            if (semcontent.length > 0) semcontent = JSON.stringify(semcontent);
+            else semcontent = undefined;
+
+            HATHOR.ED.addSemNode({
+                nid: semid,
+                parentnid: parentSemID,
+                content: semcontent,
+                shape: semshape
+            });
+
+            ATON.UI.hideModal();
             HATHOR.endCurrentTask();
         }
     });
+    if (!semid) ATON.UI.hideElement(elCreateAnn);
 
-    ATON.UI.hideElement(elCreateAnn);
-
-    elBody.append(elSemID);
+    if (!semid) elBody.append(elSemID);
     elBody.append( UI.WYSIWYGeditorCreate() );
     elBody.append( ATON.UI.createContainer({
         classes: "btn-group",
@@ -299,13 +331,8 @@ UI.buildStandardToolbar = ()=>{
     );
 
     //UI._elUserToolbar.append( UI.createUserButton() );
-    UI._elUserToolbar.append(
-        ATON.UI.createButtonUser({
-            onmodalopen: ()=>{
-                UI.closeToolPanel();
-            }
-        })
-    );
+    UI._elUser = UI.createButtonUser();
+    UI._elUserToolbar.append( UI._elUser );
 };
 
 UI.buildCustomToolbar = ()=>{
@@ -319,9 +346,53 @@ UI.buildCustomToolbar = ()=>{
     }
 };
 
+// Custom Hathor user button
+UI.createButtonUser = ()=>{
+    let elLoggedContent = ATON.UI.createContainer({
+        style:"margin-bottom:16px"
+    });
+
+    let bEditor = HATHOR.isEditorMode();
+    console.log(bEditor);
+
+    UI._elEd = ATON.UI.createButton({
+        text: "Editor Mode",
+        classes: "btn-default",
+        onpress: ()=>{
+            bEditor = HATHOR.isEditorMode();
+
+            if (bEditor){
+                HATHOR.exitEditorMode();
+            }
+            else {
+                HATHOR.enterEditorMode();
+            } 
+
+            ATON.UI.hideModal();
+        }
+    });
+
+    elLoggedContent.append(
+        UI.createTextBlock("Enter or leave Editor Mode"),
+        UI.createBlockGroup({items:[ UI._elEd ]})
+    );
+
+    let el = ATON.UI.createButtonUser({
+        onmodalopen: ()=>{
+            UI.closeToolPanel();
+        },
+        modallogged: elLoggedContent,
 /*
-    Modals
-=====================================*/
+        onlogout: ()=>{
+            HATHOR.exitEditorMode();
+            UI._elEd.classList.remove("aton-btn-highlight");
+        }
+*/
+    });
+
+    return el;
+};
+
 UI.modalHathor = ()=>{
     ATON.UI.showModal({
         header: "Hathor"
@@ -654,11 +725,31 @@ UI.sideManageLayer = (nid)=>{
             {
                 title: "Transform",
                 open: true,
-                content: ATON.UI.createNodeTrasformControl({
+                content: ATON.UI.createNodeTransformControl({
                     node: nid,
                     position: true,
                     scale: true,
-                    rotation: true
+                    rotation: true,
+                    onupdateposition: ()=>{
+                        HATHOR.ED.transformLayer({
+                            nid: nid,
+                            pos: [N.position.x, N.position.y, N.position.z]
+                        })
+                    },
+
+                    onupdaterotation: ()=>{
+                        HATHOR.ED.transformLayer({
+                            nid: nid,
+                            rot: [N.rotation.x, N.rotation.y, N.rotation.z]
+                        })
+                    },
+
+                    onupdatescale: ()=>{
+                        HATHOR.ED.transformLayer({
+                            nid: nid,
+                            scl: [N.scale.x, N.scale.y, N.scale.z]
+                        })
+                    }
                 })
             },
             {

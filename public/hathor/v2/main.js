@@ -114,6 +114,8 @@ HATHOR.setupLogic = ()=>{
 
     // Keyboard
     ATON.on("KeyPress", (k)=>{
+        if (UI._bSidePanel || ATON.UI._bSidePanel || ATON.UI._bModal) return;
+
         if (k==='+'){
             let f = ATON.Nav.getFOV() + 1.0;
             ATON.Nav.setFOV(f);

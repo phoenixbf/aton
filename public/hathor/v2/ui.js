@@ -22,6 +22,7 @@ UI.setup = ()=>{
     `);
     UI._sidepanel = new bootstrap.Offcanvas(UI._elSidePanel);
     document.body.append(UI._elSidePanel);
+    UI._bSidePanel = false;
 
     UI._elWYSIWYG = undefined;
 
@@ -111,6 +112,8 @@ UI.buildTC = ()=>{
         if (!bDrag){
             ATON.recomputeSceneBounds();
             ATON.updateLightProbes();
+
+            HATHOR.ED.dirtyNodeTransformReq(UI._tc.object, true,true,true);
             console.log(UI._tc.object)
         }
     });
@@ -495,14 +498,14 @@ UI.openToolPanel = (options)=>{
     }
 
     UI._sidepanel.show();
-    //UI._bSidePanel = true;
+    UI._bSidePanel = true;
 
     UI.closeSemanticPanel();
 };
 
 UI.closeToolPanel = ()=>{
     UI._sidepanel.hide();
-    //UI._bSidePanel = false;
+    UI._bSidePanel = false;
 };
 
 
@@ -578,7 +581,7 @@ UI.sideLayers = ()=>{
         onpress: ()=>{
             let layer = elInput.value;
             
-            if (HATHOR.ED.createLayer({nid: layer})){
+            if (HATHOR.ED.createNode({nid: layer})){
                 appendNewLayer(layer);
                 elInput.value = "";
             }
@@ -731,24 +734,15 @@ UI.sideManageLayer = (nid)=>{
                     scale: true,
                     rotation: true,
                     onupdateposition: ()=>{
-                        HATHOR.ED.transformLayer({
-                            nid: nid,
-                            pos: [N.position.x, N.position.y, N.position.z]
-                        })
+                        HATHOR.ED.dirtyNodeTransformReq(N, true,false,false);
                     },
 
                     onupdaterotation: ()=>{
-                        HATHOR.ED.transformLayer({
-                            nid: nid,
-                            rot: [N.rotation.x, N.rotation.y, N.rotation.z]
-                        })
+                        HATHOR.ED.dirtyNodeTransformReq(N, false,true,false);
                     },
 
                     onupdatescale: ()=>{
-                        HATHOR.ED.transformLayer({
-                            nid: nid,
-                            scl: [N.scale.x, N.scale.y, N.scale.z]
-                        })
+                        HATHOR.ED.dirtyNodeTransformReq(N, false,false,true);
                     }
                 })
             },

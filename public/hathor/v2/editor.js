@@ -15,6 +15,7 @@ ED.setup = ()=>{
 
     //ED.resetPatchesQueue();
     //window.setInterval( ED.processPatchesQueue, 2000 );
+    window.setInterval( ED.processNodesPatches, 2000 );
 };
 
 ED.setPersistentModifications = (b)=>{
@@ -22,6 +23,7 @@ ED.setPersistentModifications = (b)=>{
     ATON.SceneHub.setEditMode(b);
 };
 
+/*
 // Patches queue
 ED.resetPatchesQueue = ()=>{
     ED._patchesQueue = [];
@@ -36,9 +38,71 @@ ED.processPatchesQueue = ()=>{
 
     // TODO
 };
+*/
+
+ED.dirtyNodeTransformReq = (N, pos,rot,scale)=>{
+    if (!N) return;
+
+    if (!N.userData.ED) N.userData.ED = {};
+    if (!N.userData.ED.transform) N.userData.ED.transform = {};
+
+    if (pos)   N.userData.ED.transform.pos = 1;
+    if (rot)   N.userData.ED.transform.rot = 1;
+    if (scale) N.userData.ED.transform.scl = 1;
+};
+
+ED.clearNodeTransformReq = (N)=>{
+    if (!N) return;
+    if (!N.userData.ED) return;
+    if (!N.userData.ED.transform) return;
+
+    N.userData.ED.transform = {};
+};
+
+ED.processNodesPatches = ()=>{
+    //if (!ED._bPersistent) return true;
+
+    for (let n in ATON.semnodes){
+        let N = ATON.semnodes[n];
+
+        if (N.userData.ED && N.userData.ED.transform){
+            let T = N.userData.ED.transform;
+
+            ED.transformNode({
+                nid: N.nid,
+                type: ATON.NTYPES.SCENE,
+                pos: T.pos? [N.position.x,N.position.y,N.position.z] : undefined,
+                rot: T.rot? [N.rotation.x,N.rotation.y,N.rotation.z] : undefined,
+                scl: T.scl? [N.scale.x,N.scale.y,N.scale.z] : undefined,
+            });
+
+            ED.clearNodeTransformReq(N); // Clear dirty
+        }
+
+    }
+
+    for (let n in ATON.snodes){
+        let N = ATON.snodes[n];
+
+        if (N.userData.ED && N.userData.ED.transform){
+            let T = N.userData.ED.transform;
+
+            ED.transformNode({
+                nid: N.nid,
+                type: ATON.NTYPES.SCENE,
+                pos: T.pos? [N.position.x,N.position.y,N.position.z] : undefined,
+                rot: T.rot? [N.rotation.x,N.rotation.y,N.rotation.z] : undefined,
+                scl: T.scl? [N.scale.x,N.scale.y,N.scale.z] : undefined,
+            });
+
+            ED.clearNodeTransformReq(N); // Clear dirty
+        }
+    }
+};
 
 
-ED.createLayer = (o)=>{
+
+ED.createNode = (o)=>{
     if (!o) return false;
     
     let nid = o.nid;
@@ -63,11 +127,14 @@ ED.createLayer = (o)=>{
     }
 
     let op = {
-        a: "createLayer",
+        a: "createNode",
         data: o,
     };
 
     ED._opList.push(op);
+
+    //====== Collab
+    if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;
@@ -93,16 +160,19 @@ ED.createLayer = (o)=>{
     return true;
 };
 
-ED.deleteLayer = (o)=>{
+ED.deleteNode = (o)=>{
     if (!o) return;
 
     //TODO:
+
+    //====== Collab
+    if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;
 };
 
-ED.transformLayer = (o)=>{
+ED.transformNode = (o)=>{
     if (!o) return false;
     
     let nid = o.nid;
@@ -123,27 +193,36 @@ ED.transformLayer = (o)=>{
 
     if (o.pos){
         pos = o.pos;
+        pos[0] = parseFloat(pos[0]).toFixed(3);
+        pos[1] = parseFloat(pos[1]).toFixed(3);
+        pos[2] = parseFloat(pos[2]).toFixed(3);
+
         if (o.apply) N.setPosition(pos[0],pos[1],pos[2]);
     }
 
     if (o.rot){
         rot = o.rot;
+        rot[0] = parseFloat(rot[0]).toFixed(3);
+        rot[1] = parseFloat(rot[1]).toFixed(3);
+        rot[2] = parseFloat(rot[2]).toFixed(3);
+
         if (o.apply) N.setRotation(rot[0],rot[1],rot[2]);
     }
 
     if (o.scl){
         scl = o.scl;
+        scl[0] = parseFloat(scl[0]).toFixed(3);
+        scl[1] = parseFloat(scl[1]).toFixed(3);
+        scl[2] = parseFloat(scl[2]).toFixed(3);
+
         if (o.apply) N.setScale(scl[0],scl[1],scl[2]);
     }
 
-    console.log(pos,rot,scl)
-
-    return;
+    //====== Collab
+    if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;
-
-    // TODO: manage via intervals, frequent changes
 
     let E = {};
     if (graph === ATON.NTYPES.SEM){
@@ -168,6 +247,8 @@ ED.transformLayer = (o)=>{
     }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
+
+    return true;
 };
 
 ED.addModel = (o)=>{
@@ -189,6 +270,9 @@ ED.addModel = (o)=>{
     };
 
     ED._opList.push(op);
+
+    //====== Collab
+    if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;
@@ -236,6 +320,9 @@ ED.setBackground = (o)=>{
 
     ED._opList.push(op);
 
+    //====== Collab
+    if (o.remote) return true;
+
     //====== Persistent
     if (!ED._bPersistent) return true;
 };
@@ -264,6 +351,9 @@ ED.addSemNode = (o)=>{
     };
 
     ED._opList.push(op);
+
+    //====== Collab
+    if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;

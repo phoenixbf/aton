@@ -8,14 +8,14 @@
 ===========================================================================*/
 let ED = {};
 
+ED.PATCHES_MAX_INT = 2000;
+
 ED.setup = ()=>{
     ED._bPersistent = false;
 
     ED._opList = [];
 
-    //ED.resetPatchesQueue();
-    //window.setInterval( ED.processPatchesQueue, 2000 );
-    window.setInterval( ED.processNodesPatches, 2000 );
+    window.setInterval( ED.processNodesPatches, ED.PATCHES_MAX_INT );
 };
 
 ED.setPersistentModifications = (b)=>{
@@ -161,15 +161,47 @@ ED.createNode = (o)=>{
 };
 
 ED.deleteNode = (o)=>{
-    if (!o) return;
+    if (!o) return false;
+    
+    let nid = o.nid;
+    if (!nid) return false;
 
-    //TODO:
+    let graph = ATON.NTYPES.SCENE;
+    if (o.type) graph = o.type;
+
+    let N = undefined;
+
+    if (graph === ATON.NTYPES.SEM) N = ATON.getSemanticNode(nid);
+    else N = ATON.getSceneNode(nid);
+
+    if (!N) return false;
+
+    N.parent.removeChild( N );
+
+    if (graph === ATON.NTYPES.SEM) ATON.semnodes[nid] = null;
+    else ATON.snodes[nid] = null;
 
     //====== Collab
     if (o.remote) return true;
 
     //====== Persistent
     if (!ED._bPersistent) return true;
+
+    let E = {};
+    if (graph === ATON.NTYPES.SEM){
+        E.semanticgraph = {};
+        E.semanticgraph.nodes = {};
+        E.semanticgraph.nodes[nid] = {};
+    }
+    else {
+        E.scenegraph = {};
+        E.scenegraph.nodes = {};
+        E.scenegraph.nodes[nid] = {};
+    }
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL );
+
+    return true;
 };
 
 ED.transformNode = (o)=>{
@@ -193,27 +225,27 @@ ED.transformNode = (o)=>{
 
     if (o.pos){
         pos = o.pos;
-        pos[0] = parseFloat(pos[0]).toFixed(3);
-        pos[1] = parseFloat(pos[1]).toFixed(3);
-        pos[2] = parseFloat(pos[2]).toFixed(3);
+        pos[0] = ATON.Utils.roundFloat(pos[0], 3);
+        pos[1] = ATON.Utils.roundFloat(pos[1], 3);
+        pos[2] = ATON.Utils.roundFloat(pos[2], 3);
 
         if (o.apply) N.setPosition(pos[0],pos[1],pos[2]);
     }
 
     if (o.rot){
         rot = o.rot;
-        rot[0] = parseFloat(rot[0]).toFixed(3);
-        rot[1] = parseFloat(rot[1]).toFixed(3);
-        rot[2] = parseFloat(rot[2]).toFixed(3);
+        rot[0] = ATON.Utils.roundFloat(rot[0], 3);
+        rot[1] = ATON.Utils.roundFloat(rot[1], 3);
+        rot[2] = ATON.Utils.roundFloat(rot[2], 3);
 
         if (o.apply) N.setRotation(rot[0],rot[1],rot[2]);
     }
 
     if (o.scl){
         scl = o.scl;
-        scl[0] = parseFloat(scl[0]).toFixed(3);
-        scl[1] = parseFloat(scl[1]).toFixed(3);
-        scl[2] = parseFloat(scl[2]).toFixed(3);
+        scl[0] = ATON.Utils.roundFloat(scl[0], 3);
+        scl[1] = ATON.Utils.roundFloat(scl[1], 3);
+        scl[2] = ATON.Utils.roundFloat(scl[2], 3);
 
         if (o.apply) N.setScale(scl[0],scl[1],scl[2]);
     }
@@ -304,9 +336,11 @@ ED.addModel = (o)=>{
 ED.setBackground = (o)=>{
     if (!o) return;
 
+    let bgcol = undefined;
+
     if (o.color){
-        let col = new THREE.Color(o.color);
-        ATON.setBackgroundColor( col );
+        bgcol = new THREE.Color(o.color);
+        ATON.setBackgroundColor( bgcol );
     }
 
     if (o.bg){
@@ -325,6 +359,25 @@ ED.setBackground = (o)=>{
 
     //====== Persistent
     if (!ED._bPersistent) return true;
+    
+    let E = {};
+    E.environment = {};
+
+    if (o.bg){
+        E.environment.mainpano = {};
+        E.environment.mainpano.url = o.bg;
+    }
+
+    if (bgcol){
+        E.environment.bgcolor = [
+            ATON.Utils.roundFloat(bgcol.r, 2),
+            ATON.Utils.roundFloat(bgcol.g, 2),
+            ATON.Utils.roundFloat(bgcol.b, 2)
+
+        ];
+    }
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
 };
 
 ED.addSemNode = (o)=>{

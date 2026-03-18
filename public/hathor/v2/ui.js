@@ -700,13 +700,29 @@ UI.sideManageLayer = (nid)=>{
 
     let elBody = ATON.UI.createContainer();
     
-    elBody.append( ATON.UI.createButton({
-        text: "Focus",
-        classes: "btn-default",
-        onpress: ()=>{
-            ATON.Nav.requestPOVbyNode(N, 0.2);
-        }
-    }));
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Focus",
+                    icon: "bi-crosshair",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        ATON.Nav.requestPOVbyNode(N, 0.2);
+                    }
+                }),
+
+                ATON.UI.createButton({
+                    text: "Delete",
+                    icon: "trash",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        UI.modalDeleteNode(nid);
+                    }
+                })
+            ]
+        })
+    );  
 
     //let elMat = ATON.UI.createContainer();
 /*
@@ -760,6 +776,43 @@ UI.sideManageLayer = (nid)=>{
             icon: "back",
             onpress: UI.sideLayers
         }),
+        body: elBody
+    });
+};
+
+UI.modalDeleteNode = (nid, type)=>{
+    if (!type) type = ATON.NTYPES.SCENE;
+
+    let elBody = ATON.UI.createContainer();
+    elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete layer ${nid}?</p>`) );
+
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "NO",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
+                }),
+                ATON.UI.createButton({
+                    text: "YES",
+                    icon: "trash",
+                    classes: "btn-accent",
+                    onpress: ()=>{
+                        HATHOR.ED.deleteNode({
+                            nid: nid,
+                            type: type
+                        })
+                        ATON.UI.hideModal();
+                        UI.sideLayers();
+                    }
+                })
+            ]
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Delete layer",
         body: elBody
     });
 };

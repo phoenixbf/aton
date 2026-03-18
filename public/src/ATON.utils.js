@@ -244,6 +244,11 @@ Utils.URLify = (string)=>{
     return string;
 };
 
+Utils.roundFloat = (n, dec)=>{
+    if (!dec) dec = 1;
+    return parseFloat( parseFloat(n).toFixed(dec) );
+};
+
 Utils.resolveCollectionURL = (url)=>{
     if (!url) return "";
 

@@ -99,7 +99,12 @@ HATHOR.setupLogic = ()=>{
         if (!bFirst) return; // First time
 
         let ed = HATHOR.params.get('e');
-        if (ed) HATHOR.enterEditorMode();
+        if (ed){
+        ATON.checkAuth(
+            (u)=>{
+                HATHOR.enterEditorMode();
+            });
+        }
     });
 
     // Handle general auth logic

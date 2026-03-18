@@ -40,19 +40,22 @@ ED.processPatchesQueue = ()=>{
 };
 */
 
-ED.dirtyNodeTransformReq = (N, pos,rot,scale)=>{
+ED.dirtyNodeTransformReq = (N, attributes)=>{
     if (!N) return;
 
+    if (!N.userData) N.userData = {};
     if (!N.userData.ED) N.userData.ED = {};
     if (!N.userData.ED.transform) N.userData.ED.transform = {};
 
-    if (pos)   N.userData.ED.transform.pos = 1;
-    if (rot)   N.userData.ED.transform.rot = 1;
-    if (scale) N.userData.ED.transform.scl = 1;
+    for (let i=0; i<attributes.length; i++){
+        let a = attributes[i];
+        N.userData.ED.transform[a] = 1; 
+    }
 };
 
 ED.clearNodeTransformReq = (N)=>{
     if (!N) return;
+    if (!N.userData) return;
     if (!N.userData.ED) return;
     if (!N.userData.ED.transform) return;
 
@@ -86,6 +89,8 @@ ED.processNodesPatches = ()=>{
 
         if (N.userData.ED && N.userData.ED.transform){
             let T = N.userData.ED.transform;
+
+            console.log(T)
 
             ED.transformNode({
                 nid: N.nid,
@@ -250,6 +255,11 @@ ED.transformNode = (o)=>{
         if (o.apply) N.setScale(scl[0],scl[1],scl[2]);
     }
 
+    if (o.geocoords !== undefined){
+        if (o.apply) N.bUseGeoCoords = o.geocoords;
+        N.reload();
+    }
+
     //====== Collab
     if (o.remote) return true;
 
@@ -276,6 +286,8 @@ ED.transformNode = (o)=>{
         if (pos) E.scenegraph.nodes[nid].transform.position = pos;
         if (rot) E.scenegraph.nodes[nid].transform.rotation = rot;
         if (scl) E.scenegraph.nodes[nid].transform.scale    = scl;
+
+        if (o.geocoords !== undefined) E.scenegraph.nodes[nid].transform.bUseGeoCoords = o.geocoords;
     }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );

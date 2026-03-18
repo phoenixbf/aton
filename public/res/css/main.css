@@ -896,6 +896,7 @@ a {
 
 .aton-input-x {
     border-color: rgba(255,0,0, 0.2);
+    font-size: smaller;
 /*
     height: var(--aton-el-height);
 */
@@ -908,6 +909,7 @@ a {
 
 .aton-input-y {
     border-color: rgba(0,255,0, 0.2);
+    font-size: smaller;
 /*
     height: var(--aton-el-height);
 */
@@ -920,6 +922,7 @@ a {
 
 .aton-input-z {
     border-color: rgba(0,0,255, 0.2);
+    font-size: smaller;
 /*
     height: var(--aton-el-height);
 */

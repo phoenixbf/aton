@@ -685,6 +685,41 @@ UI.createButtonDeviceOrientation = (options)=>{
 };
 
 /**
+Create a two-state switch button
+- options.onswitch: routine when switched, argument is status (on/off)
+- options.status: initial bool status (on/off)
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonSwitch = (options)=>{
+    let bSwitch = options.status? true : false;
+
+    let el;
+
+    options.onpress = ()=>{
+        if (bSwitch){
+            el.classList.remove("aton-btn-highlight");
+            bSwitch = false;
+        }
+        else {
+            el.classList.add("aton-btn-highlight");
+            bSwitch = true;
+        }
+
+        if (options.onswitch) options.onswitch(bSwitch);
+    };
+    
+    el = UI.createButton(options);
+    
+    if (bSwitch){
+        el.classList.add("aton-btn-highlight");
+        bSwitch = true;
+    }
+
+    return el;
+};
+
+/**
 Create Nav switcher
 @param {object} options - Optional UI options object
 @returns {HTMLElement}
@@ -1227,6 +1262,10 @@ UI.createVectorControl = (options)=>{
     let elInputY = el.children[1];
     let elInputZ = el.children[2];
 
+    UI.registerElementAsComponent(elInputX, "inputX");
+    UI.registerElementAsComponent(elInputY, "inputY");
+    UI.registerElementAsComponent(elInputZ, "inputZ");
+
     elInputX.oninput = ()=>{
         let v = elInputX.value;
 
@@ -1334,6 +1373,11 @@ UI.createQuaternionControl = (options)=>{
     let elInputZ = el.children[2];
     let elInputW = el.children[3];
 
+    UI.registerElementAsComponent(elInputX, "inputX");
+    UI.registerElementAsComponent(elInputY, "inputY");
+    UI.registerElementAsComponent(elInputZ, "inputZ");
+    UI.registerElementAsComponent(elInputW, "inputW");
+
     elInputX.oninput = ()=>{
         let v = elInputX.value;
 
@@ -1396,8 +1440,8 @@ Create a node transform control. If "position", "scale" and "rotation" propertie
 - options.scale: enable scale manipulation
 - options.rotation: enable rotation manipulation
 - options.onupdateposition: routine when position changed
-- options.onupdaterotation: routine when position changed
-- options.onupdatescale: routine when position changed
+- options.onupdaterotation: routine when rotation changed
+- options.onupdatescale: routine when scale changed
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1429,6 +1473,8 @@ UI.createNodeTransformControl = (options)=>{
 
         el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
         el.append( elPos );
+
+        UI.registerElementAsComponent(elPos, "positionControl");
     }
 
     // Scale
@@ -1443,6 +1489,8 @@ UI.createNodeTransformControl = (options)=>{
 
         el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
         el.append( elScale );
+
+        UI.registerElementAsComponent(elScale, "scaleControl");
     }
 
     // Rotation
@@ -1462,6 +1510,8 @@ UI.createNodeTransformControl = (options)=>{
 */
         el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
+
+        UI.registerElementAsComponent(elRot, "rotationControl");
     }
 
     return el;

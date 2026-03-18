@@ -831,7 +831,7 @@ load(url, onComplete){
     return this;
 }
 
-// TODO:
+// TODO
 reload(){
     this.removeChildren();
 

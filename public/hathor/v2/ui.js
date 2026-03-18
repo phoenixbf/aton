@@ -113,7 +113,7 @@ UI.buildTC = ()=>{
             ATON.recomputeSceneBounds();
             ATON.updateLightProbes();
 
-            HATHOR.ED.dirtyNodeTransformReq(UI._tc.object, true,true,true);
+            HATHOR.ED.dirtyNodeTransformReq(UI._tc.object, ["pos","rot","scl"]);
             console.log(UI._tc.object)
         }
     });
@@ -733,6 +733,23 @@ UI.sideManageLayer = (nid)=>{
     console.log(elFrameMat.contentWindow.APP);
 */
 
+    let elTrans = ATON.UI.createNodeTransformControl({
+        node: nid,
+        position: true,
+        scale: true,
+        rotation: true,
+        onupdateposition: ()=>{
+            HATHOR.ED.dirtyNodeTransformReq(N, ["pos"]);
+        },
+
+        onupdaterotation: ()=>{
+            HATHOR.ED.dirtyNodeTransformReq(N, ["rot"]);
+        },
+
+        onupdatescale: ()=>{
+            HATHOR.ED.dirtyNodeTransformReq(N, ["scl"]);
+        }
+    });
 
     elBody.append( ATON.UI.createTreeGroup({
         items:[
@@ -744,22 +761,28 @@ UI.sideManageLayer = (nid)=>{
             {
                 title: "Transform",
                 open: true,
-                content: ATON.UI.createNodeTransformControl({
-                    node: nid,
-                    position: true,
-                    scale: true,
-                    rotation: true,
-                    onupdateposition: ()=>{
-                        HATHOR.ED.dirtyNodeTransformReq(N, true,false,false);
-                    },
+                content: ATON.UI.createContainer({
+                    items:[
+                        elTrans,
 
-                    onupdaterotation: ()=>{
-                        HATHOR.ED.dirtyNodeTransformReq(N, false,true,false);
-                    },
-
-                    onupdatescale: ()=>{
-                        HATHOR.ED.dirtyNodeTransformReq(N, false,false,true);
-                    }
+                        UI.createBlockGroup({
+                            items:[
+                                ATON.UI.createButtonSwitch({
+                                    text: "Use Geo Coords",
+                                    classes: "btn-default",
+                                    icon: "bi-globe-europe-africa",
+                                    status: N.bUseGeoCoords,
+                                    onswitch: (b)=>{
+                                        HATHOR.ED.transformNode({
+                                            nid: nid,
+                                            apply: true,
+                                            geocoords: b
+                                        })
+                                    }
+                                })
+                            ]
+                        })
+                    ]
                 })
             },
             {

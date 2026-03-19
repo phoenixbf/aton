@@ -1888,7 +1888,7 @@ Create a chip (keyword / tag)
 @returns {HTMLElement}
 */
 UI.createChip = (options)=>{
-    let el = UI.elem(`<button type="button" class="btn btn-sm btn-outline-secondary aton-chip"><span class='aton-chip-text'>${options.term}</span></button>`);
+    let el = UI.elem(`<button type="button" class="btn btn-sm btn-default aton-chip"><span class='aton-chip-text'>${options.term}</span></button>`);
 
     if (options.count){
         let elCount = UI.elem(`<span class="badge text-bg-secondary">${options.count}</span>`);
@@ -1917,6 +1917,7 @@ Create a tags component
 - options.list: optional controlled list of tags to select from
 - options.tags: optional pre-populated tags
 - options.label: label for input tag
+- options.placeholder: placeholder for input tag
 - options.onaddtag: on tag added routine (e.g.: (k)=>{ console.log(k); } )
 - options.onremovetag: on tag removed routine (e.g.: (k)=>{ console.log(k); } )
 
@@ -1950,6 +1951,7 @@ UI.createTagsComponent = (options)=>{
     let elTagInput = UI.createInputText({
         list: options.list,
         label: options.label,
+        placeholder: options.placeholder,
         onchange: (k)=>{
             k = k.trim();
             if (k.length < 1) return;

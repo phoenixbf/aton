@@ -71,7 +71,7 @@ ED.processNodesPatches = ()=>{
         if (N.userData.ED && N.userData.ED.transform){
             let T = N.userData.ED.transform;
 
-            ED.transformNode({
+            ED.editNode({
                 nid: N.nid,
                 type: ATON.NTYPES.SCENE,
                 pos: T.pos? [N.position.x,N.position.y,N.position.z] : undefined,
@@ -90,9 +90,9 @@ ED.processNodesPatches = ()=>{
         if (N.userData.ED && N.userData.ED.transform){
             let T = N.userData.ED.transform;
 
-            console.log(T)
+            //console.log(T)
 
-            ED.transformNode({
+            ED.editNode({
                 nid: N.nid,
                 type: ATON.NTYPES.SCENE,
                 pos: T.pos? [N.position.x,N.position.y,N.position.z] : undefined,
@@ -181,10 +181,8 @@ ED.deleteNode = (o)=>{
 
     if (!N) return false;
 
-    N.parent.removeChild( N );
-
-    if (graph === ATON.NTYPES.SEM) ATON.semnodes[nid] = null;
-    else ATON.snodes[nid] = null;
+    if (graph === ATON.NTYPES.SEM) ATON.deleteSemanticNode(nid);
+    else ATON.deleteSceneNode(nid);
 
     //====== Collab
     if (o.remote) return true;
@@ -193,23 +191,20 @@ ED.deleteNode = (o)=>{
     if (!ED._bPersistent) return true;
 
     let E = {};
-    if (graph === ATON.NTYPES.SEM){
-        E.semanticgraph = {};
-        E.semanticgraph.nodes = {};
-        E.semanticgraph.nodes[nid] = {};
-    }
-    else {
-        E.scenegraph = {};
-        E.scenegraph.nodes = {};
-        E.scenegraph.nodes[nid] = {};
-    }
+
+    let gr = "scenegraph";
+    if (graph === ATON.NTYPES.SEM) gr = "semanticgraph";
+
+    E[gr] = {};
+    E[gr].nodes = {};
+    E[gr].nodes[nid] = {};
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL );
 
     return true;
 };
 
-ED.transformNode = (o)=>{
+ED.editNode = (o)=>{
     if (!o) return false;
     
     let nid = o.nid;
@@ -234,7 +229,7 @@ ED.transformNode = (o)=>{
         pos[1] = ATON.Utils.roundFloat(pos[1], 3);
         pos[2] = ATON.Utils.roundFloat(pos[2], 3);
 
-        if (o.apply) N.setPosition(pos[0],pos[1],pos[2]);
+        if (o.applytransform) N.setPosition(pos[0],pos[1],pos[2]);
     }
 
     if (o.rot){
@@ -243,7 +238,7 @@ ED.transformNode = (o)=>{
         rot[1] = ATON.Utils.roundFloat(rot[1], 3);
         rot[2] = ATON.Utils.roundFloat(rot[2], 3);
 
-        if (o.apply) N.setRotation(rot[0],rot[1],rot[2]);
+        if (o.applytransform) N.setRotation(rot[0],rot[1],rot[2]);
     }
 
     if (o.scl){
@@ -252,12 +247,17 @@ ED.transformNode = (o)=>{
         scl[1] = ATON.Utils.roundFloat(scl[1], 3);
         scl[2] = ATON.Utils.roundFloat(scl[2], 3);
 
-        if (o.apply) N.setScale(scl[0],scl[1],scl[2]);
+        if (o.applytransform) N.setScale(scl[0],scl[1],scl[2]);
     }
 
     if (o.geocoords !== undefined){
-        if (o.apply) N.bUseGeoCoords = o.geocoords;
+        if (o.applytransform) N.bUseGeoCoords = o.geocoords;
         N.reload();
+    }
+
+    if (o.mat){
+        let M = ATON.MatHub.materials[o.mat];
+        if (M) N.setMaterial(M);
     }
 
     //====== Collab
@@ -267,30 +267,71 @@ ED.transformNode = (o)=>{
     if (!ED._bPersistent) return true;
 
     let E = {};
-    if (graph === ATON.NTYPES.SEM){
-        E.semanticgraph = {};
-        E.semanticgraph.nodes = {};
-        E.semanticgraph.nodes[nid] = {};
-        E.semanticgraph.nodes[nid].transform = {};
 
-        if (pos) E.semanticgraph.nodes[nid].transform.position = pos;
-        if (rot) E.semanticgraph.nodes[nid].transform.rotation = rot;
-        if (scl) E.semanticgraph.nodes[nid].transform.scale    = scl;
+    let gr = "scenegraph";
+    if (graph === ATON.NTYPES.SEM) gr = "semanticgraph";
+
+    E[gr] = {};
+    E[gr].nodes = {};
+    E[gr].nodes[nid] = {};
+
+    // Transform
+    if (pos || rot || scl){
+        E[gr].nodes[nid].transform = {};
+
+        if (pos) E[gr].nodes[nid].transform.position = pos;
+        if (rot) E[gr].nodes[nid].transform.rotation = rot;
+        if (scl) E[gr].nodes[nid].transform.scale    = scl;
     }
-    else {
-        E.scenegraph = {};
-        E.scenegraph.nodes = {};
-        E.scenegraph.nodes[nid] = {};
-        E.scenegraph.nodes[nid].transform = {};
 
-        if (pos) E.scenegraph.nodes[nid].transform.position = pos;
-        if (rot) E.scenegraph.nodes[nid].transform.rotation = rot;
-        if (scl) E.scenegraph.nodes[nid].transform.scale    = scl;
+    if (o.geocoords !== undefined) E[gr].nodes[nid].transform.bUseGeoCoords = o.geocoords;
 
-        if (o.geocoords !== undefined) E.scenegraph.nodes[nid].transform.bUseGeoCoords = o.geocoords;
+    // Node material
+    if (o.mat){
+        E[gr].nodes[nid].material = o.mat;
     }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
+
+    return true;
+};
+
+ED.removeNodeMaterial = (o)=>{
+    if (!o) return false;
+    
+    let nid = o.nid;
+    if (!nid) return false;
+
+    let graph = ATON.NTYPES.SCENE;
+    if (o.type) graph = o.type;
+
+    let N = undefined;
+    if (graph === ATON.NTYPES.SEM) N = ATON.getSemanticNode(nid);
+    else N = ATON.getSceneNode(nid);
+
+    if (!N) return false;
+
+    N.restoreMaterials().reload();
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+
+    let gr = "scenegraph";
+    if (graph === ATON.NTYPES.SEM) gr = "semanticgraph";
+
+    E[gr] = {};
+    E[gr].nodes = {};
+    E[gr].nodes[nid] = {};
+    E[gr].nodes[nid].material = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL );
+
+    console.log(E)
 
     return true;
 };
@@ -323,22 +364,16 @@ ED.addModel = (o)=>{
 
     let E = {};
 
-    if (type === ATON.NTYPES.SEM){
-        E.semanticgraph = {};
-        E.semanticgraph.nodes = {};
-        E.semanticgraph.nodes[nid] = {};
-        E.semanticgraph.nodes[nid].urls = [];
+    let gr = "scenegraph";
+    if (type === ATON.NTYPES.SEM) gr = "semanticgraph";
 
-        for (let url in N._reqURLs) E.semanticgraph.nodes[nid].urls.push(url);
-    }
-    else {
-        E.scenegraph = {};
-        E.scenegraph.nodes = {};
-        E.scenegraph.nodes[nid] = {};
-        E.scenegraph.nodes[nid].urls = [];
+    E[gr] = {};
+    E[gr].nodes = {};
+    E[gr].nodes[nid] = {};
 
-        for (let url in N._reqURLs) E.scenegraph.nodes[nid].urls.push(url);
-    }
+    E[gr].nodes[nid].urls = [];
+
+    for (let url in N._reqURLs) E[gr].nodes[nid].urls.push(url);
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
 
@@ -438,6 +473,56 @@ ED.addSemNode = (o)=>{
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
     console.log(E)
+};
+
+// Scene general/info data
+ED.sceneInfo = (o)=>{
+    if (!ATON.SceneHub.currData) return false;
+
+    if (o.kwords){
+        for (let k in o.kwords){
+            if (!ATON.SceneHub.currData.kwords) ATON.SceneHub.currData.kwords = {};
+            ATON.SceneHub.currData.kwords[k] = 1;
+        }
+    }
+
+    if (o.title) ATON.SceneHub.setTitle( o.title );
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    if (o.kwords) E.kwords = o.kwords;
+    if (o.title) E.title = o.title;
+    if (o.visibility !== undefined) E.visibility = o.visibility;
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+
+    return true;
+}
+
+ED.deleteSceneKeyword = (o)=>{
+    if (!ATON.SceneHub.currData) return false;
+    if (!o.kword) return false;
+
+    delete ATON.SceneHub.currData.kwords[o.kword];
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.kwords = {};
+    E.kwords[o.kword] = 1;
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
+
+    return true;
 };
 
 export default ED;

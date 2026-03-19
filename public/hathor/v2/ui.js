@@ -323,14 +323,15 @@ UI.buildStandardToolbar = ()=>{
         UI.createMainButton(),
         UI.createLayersButton(),
         UI.createEnvButton(),
-        UI.createSceneButton(),
         UI.createNavButton(),
         UI.createSemanticsButton(),
 
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
 
-        UI.createXRButton()
+        UI.createXRButton(),
+
+        UI.createSceneButton()
     );
 
     //UI._elUserToolbar.append( UI.createUserButton() );
@@ -532,6 +533,193 @@ UI.sideTool = ()=>{
     UI.WYSIWYGeditorInsert("<div><h1>This is a test</h1>This is a test!</div>")
 }
 
+/*========================
+    SCENE
+========================*/
+UI.sideScene = ()=>{
+    if (!ATON.SceneHub.currData) return;
+
+    let scenedata = ATON.SceneHub.currData;
+    let sid = ATON.SceneHub.getSID();
+
+    if (!sid) return;
+
+    let elBody = ATON.UI.createContainer({});
+
+    elBody.append(
+        UI.createTextBlock("Set a main title and description for this scene"),
+        ATON.UI.createInputText({
+            //label: "Title",
+            placeholder: "Title",
+            value: ATON.SceneHub.getTitle(),
+            onchange: (title)=>{
+                HATHOR.ED.sceneInfo({title: title});
+            }
+        })
+    );
+
+    //elBody.append( UI.createTextBlock("Set description"));
+    elBody.append(
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:100%",
+            items: [
+                ATON.UI.createButton({
+                    text: "Set description",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        //
+                    }
+                })
+            ]
+        })    
+    );
+
+    let elKeywordsSection = ATON.UI.createContainer({/* classes: "hathor-tags-container"*/ });
+    let elCoverSection = ATON.UI.createContainer({});
+    let elVisSection = ATON.UI.createContainer({});
+
+    elBody.append( ATON.UI.createTreeGroup({
+        items:[
+            {
+                title: "Keywords",
+                open: false,
+                content: elKeywordsSection
+            },
+            {
+                title: "Cover",
+                open: true,
+                content: elCoverSection
+            },
+            {
+                title: "Visibility",
+                open: false,
+                content: elVisSection,
+            }
+        ]
+    }));
+
+    // Keywords
+    ATON.REQ.get("scenes/keywords", kk => {
+        console.log(kk)
+
+        let globallist = [];
+        for (let k in kk) globallist.push(k);
+
+        let scenekwords = [];
+        if (ATON.SceneHub.currData && ATON.SceneHub.currData.kwords){
+            const skw = ATON.SceneHub.currData.kwords;
+            for (let k in skw) scenekwords.push(k);
+        }
+
+        elKeywordsSection.append(
+            UI.createTextBlock("Please pick one or more keywords to classify this scene. If the scene is public users can find it through these terms."),
+
+            ATON.UI.createTagsComponent({
+                //label: "Keyword",
+                list: globallist,
+                tags: scenekwords,
+                placeholder: "Pick a keyword...",
+                onaddtag: (k)=>{
+                    let O = {};
+                    O.kwords = {};
+                    O.kwords[k]=1;
+
+                    HATHOR.ED.sceneInfo(O);
+                },
+                onremovetag: (k)=>{
+                    HATHOR.ED.deleteSceneKeyword({
+                        kword: k
+                    });
+                }
+            })
+        );
+    });
+
+    // Cover
+    let elCover = ATON.UI.createCard({
+        title: "Cover image",
+        //size: "large",
+        //classes: "hathor-card-media-v",
+        cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
+        onactivate: ()=>{
+
+        }
+    });
+
+    let img = ATON.UI.getComponent(elCover, "img");
+
+    let elShot = ATON.UI.createButton({
+        text: "Set current view as cover",
+        classes: "btn-accent",
+        onpress: ()=>{
+            let cover = ATON.Utils.takeScreenshot(256);
+
+            ATON.Utils.postJSON(ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover", { img: cover.src }, (r)=>{
+                img.src = cover.src;
+            });
+        }
+    });
+
+    elCoverSection.append(
+        ATON.UI.createContainer({
+            style:"text-align: center",
+            items: [elCover, elShot]
+        })
+    );
+
+    // Visibility
+    const setVis = (v)=>{
+        HATHOR.ED.sceneInfo({ visibility: v });
+
+        if (v===0){
+            elPublicBtn.classList.remove("aton-btn-highlight");
+            elUnlistedBtn.classList.add("aton-btn-highlight");
+        }
+        if (v===1){
+            elUnlistedBtn.classList.remove("aton-btn-highlight");
+            elPublicBtn.classList.add("aton-btn-highlight");   
+        }
+    };
+
+    let elUnlistedBtn = ATON.UI.createButton({
+        icon: "bi-eye-slash-fill",
+        classes: "btn-default",
+        onpress: ()=>{
+            setVis(0);
+        }
+    });
+    let elPublicBtn = ATON.UI.createButton({
+        icon: "bi-people-fill",
+        classes: "btn-default",
+        onpress: ()=>{
+            setVis(1);
+        }
+    });
+
+    if (scenedata.visibility) setVis(1);
+    else setVis(0);
+
+    let elVis = UI.createBlockGroup({
+        items: [elUnlistedBtn,elPublicBtn]
+    })
+
+    elVisSection.append(
+        ATON.UI.elem("<p class='hathor-text-block'>This allows to control the visibility of your scene. Unlisted <i class='bi bi-eye-slash-fill'></i>: only people having this link can access the scene. Public <i class='bi bi-people-fill'></i>: the scene is listed and accessible in the main landing page, and it is also searchable by users</p>"),
+        elVis
+    );
+
+    // Panel
+    UI.openToolPanel({
+        header: "Scene",
+        body: elBody
+    });
+};
+
+
+/*========================
+    LAYERS
+========================*/
 UI.sideLayers = ()=>{
     // Layers list
     let elLayers = ATON.UI.createContainer({
@@ -667,23 +855,32 @@ UI.createMaterialControl = (N)=>{
                 ATON.UI.createSelect({
                     title: "Apply material...",
                     items: [
+                        { title: "Use original", value: "_" },
                         { title: "Wireframe", value: "wireframe" },
                         { title: "Default UI", value: "defUI" },
                         { title: "Invisible", value: "invisible" },
                     ],
                     onselect: (v)=>{
-                        let M = ATON.MatHub.materials[v];
-
-                        N.setMaterial(M);
+                        if (v === "_"){
+                            HATHOR.ED.removeNodeMaterial({ nid: N.nid });
+                        }
+                        else {
+                            HATHOR.ED.editNode({
+                                nid: N.nid,
+                                mat: v
+                            });    
+                        }
                     }
                 }),
+/*
                 ATON.UI.createButton({
                     icon: "cancel",
                     classes: "btn-default",
                     onpress: ()=>{
-                        N.restoreMaterials();
+                        HATHOR.ED.removeNodeMaterial({ nid: N.nid });
                     }
                 })
+*/
             ]
         })
 
@@ -773,9 +970,9 @@ UI.sideManageLayer = (nid)=>{
                                     icon: "bi-globe-europe-africa",
                                     status: N.bUseGeoCoords,
                                     onswitch: (b)=>{
-                                        HATHOR.ED.transformNode({
+                                        HATHOR.ED.editNode({
                                             nid: nid,
-                                            apply: true,
+                                            applytransform: true,
                                             geocoords: b
                                         })
                                     }

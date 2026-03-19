@@ -53,6 +53,13 @@ API.init = (app)=>{
 */
     });
 
+    // Retrieve a weighted list of keywords for all scenes
+    app.get(API.BASE + "scenes/keywords", (req,res)=>{
+        Core.Maat.getScenesKeywords().then((kk)=>{
+            res.send(kk);
+        })
+    });
+
     // List user scenes
     app.get(API.BASE + "scenes/:user", (req,res)=>{
         // Only auth users
@@ -268,6 +275,40 @@ API.init = (app)=>{
             res.sendFile(coverfile);
         }
 */
+    });
+
+    app.post(API.BASE+"scenes/:user/:usid/cover", (req,res)=>{
+        // Only auth user can delete a scene
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        // Only own scenes
+        let uname = req.params.user;
+        if (Core.Auth.getUID(req) !== uname){
+            res.status(401).send(false);
+            return;
+        }
+
+        let U = uname;
+        let S = req.params.usid;
+
+        if (!U || !S){
+            res.send(false);
+            return;
+        }
+
+        let sid = U+"/"+S;
+
+        let O = req.body;
+        let img = O.img;
+        
+        img = img.replace(/^data:image\/png;base64,/, "");
+
+        Core.generateCoverForScene(sid, img, ()=>{
+            res.send(true);
+        });
     });
 
     /*===============================

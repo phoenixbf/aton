@@ -613,7 +613,7 @@ a {
 
     padding-left: 10px;
 
-    border-left: dotted var(--bs-body-color) 2px;
+    border-left: dotted rgba(var(--bs-body-color-rgb),0.2) 2px;
 }
 
 /* Layers / Items

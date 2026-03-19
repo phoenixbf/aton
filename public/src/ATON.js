@@ -1256,6 +1256,19 @@ ATON.getRootScene = ()=>{
     return ATON._rootVisible;
 };
 
+/**
+Delete a scene node
+@param {string} id - the node ID to remove
+*/
+ATON.deleteSceneNode = (id)=>{
+    let N = ATON.getSceneNode(id);
+    if (!N) return;
+
+    N.parent.removeChild( N );
+
+    delete ATON.snodes[id];
+};
+
 // Semantics, shape descriptors
 //=============================================
 
@@ -1297,11 +1310,24 @@ ATON.getRootSemantics = ()=>{
     return ATON._rootSem;
 };
 
-// UI graph
+/**
+Delete a semantic node
+@param {string} id - the node ID to remove
+*/
+ATON.deleteSceneNode = (id)=>{
+    let N = ATON.getSemanticNode(id);
+    if (!N) return;
+
+    N.parent.removeChild( N );
+
+    delete ATON.semnodes[id];
+};
+
+// SUI graph
 //=============================================
 
 /**
-Create a UI node
+Create a SUI node
 @param {string} id - a string representing unique ID of the node (optional)
 @returns {Node}
 */
@@ -1310,7 +1336,7 @@ ATON.createUINode = (id)=>{
 };
 
 /**
-Get a previously created UI node
+Get a previously created SUI node
 @param {string} id - the node ID
 @returns {Node}
 */
@@ -1320,11 +1346,24 @@ ATON.getUINode = (id)=>{
 };
 
 /**
-Get root of UI graph
+Get root of SUI graph
 @returns {Node}
 */
 ATON.getRootUI = ()=>{
     return ATON._rootUI;
+};
+
+/**
+Delete a SUI node
+@param {string} id - the node ID to remove
+*/
+ATON.deleteUINode = (id)=>{
+    let N = ATON.getUINode(id);
+    if (!N) return;
+
+    N.parent.removeChild( N );
+
+    delete ATON.uinodes[id];
 };
 
 

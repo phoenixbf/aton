@@ -856,19 +856,31 @@ SceneHub.currSceneHasHomeConfig = ()=>{
     return true;
 };
 
-// FIXME: should modify local currData + send patch in edit mode
+SceneHub.getSID = ()=>{
+    if (!SceneHub.currData) return undefined;
+    return SceneHub.currID;
+};
+
 SceneHub.setTitle = (title)=>{
-    SceneHub._title = title;
+    if (SceneHub.currData === undefined) return false;
+    SceneHub.currData.title = title;
+    //SceneHub._title = title;
 };
 SceneHub.getTitle = ()=>{
-    return SceneHub._title;
+    if (SceneHub.currData === undefined) return undefined;
+    return SceneHub.currData.title;
+    //return SceneHub._title;
 }
 
 SceneHub.setDescription = (descr)=>{
-    SceneHub._descr = descr;
+    //SceneHub._descr = descr;
+    if (SceneHub.currData === undefined) return false;
+    SceneHub.currData.description = descr;
 };
 SceneHub.getDescription = ()=>{
-    return SceneHub._descr;
+    //return SceneHub._descr;
+    if (SceneHub.currData === undefined) return undefined;
+    return SceneHub.currData.description;
 };
 
 

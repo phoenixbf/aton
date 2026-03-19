@@ -279,7 +279,7 @@ setMaterial(M){
             //console.log(o);
         }
 
-        if (o.type) this.userData.cMat = M;
+        //if (o.type) this.userData.cMat = M;
     });
 
     // children
@@ -297,10 +297,15 @@ Restore original materials for this node and its children
 myNode.restoreMaterials()
 */
 restoreMaterials(){
+    if (this.userData.cMat){
+        this.userData.cMat.dispose();
+        this.userData.cMat = undefined;
+    };
+
     this.traverse((o) => {
-        if (o.isMesh && o.userData.origMat){
+        if (o.material && o.userData.origMat){
             o.material = o.userData.origMat;
-            ///o.material.needsUpdate = true;
+            o.material.needsUpdate = true;
             //console.log(o);
         }
     });

@@ -105,7 +105,7 @@ UI._setupBase = ()=>{
     // Centralized modal dialog // modal-fullscreen-md-down
     UI.elModal = UI.elem(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
             </div>
         </div>

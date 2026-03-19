@@ -249,35 +249,35 @@ UI.createToolButton = ()=>{
 
 UI.createLayersButton = ()=>{
     return ATON.UI.createButton({
-        icon: "layers",
+        icon: "layers2",
         onpress: UI.sideLayers
     });
 };
 
 UI.createSemanticsButton = ()=>{
     return ATON.UI.createButton({
-        icon: "bi-pencil-square",
+        icon: "annotation",
         onpress: UI.sideSemantics
     });
 };
 
 UI.createEnvButton = ()=>{
     return ATON.UI.createButton({
-        icon: "env",
+        icon: "env2",
         onpress: UI.sideEnv
     });
 };
 
 UI.createSceneButton = ()=>{
     return ATON.UI.createButton({
-        icon: "scene",
+        icon: "scene2",
         onpress: UI.sideScene
     });
 };
 
 UI.createNavButton = ()=>{
     return ATON.UI.createButton({
-        icon: "nav",
+        icon: "nav2",
         onpress: UI.sideNav
     });
 };
@@ -405,8 +405,8 @@ UI.modalHathor = ()=>{
         ATON.UI.elem(`
             <div style='text-align:center'>
                 <img src='${ATON.BASE_URL}/hathor/appicon.png' style='width:100px; height:auto'>
-                <br><b>Hathor - v2.0</b>
-                <br><i>Hathor</i> is the official ATON built-in front-end
+                <br><b>Hathor - v2 (beta)</b>
+                <br><span style='font-size:smaller'><i>Hathor</i> is the official ATON built-in front-end</span>
             </div>
         `)
     )
@@ -1105,7 +1105,7 @@ UI.sideEnv = ()=>{
         items:[
             {
                 title: "Panorama",
-                open: true,
+                open: false,
                 content: elBG
             }
         ]}

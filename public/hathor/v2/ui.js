@@ -398,9 +398,21 @@ UI.createButtonUser = ()=>{
 };
 
 UI.modalHathor = ()=>{
-    ATON.UI.showModal({
-        header: "Hathor"
+    let elBody = ATON.UI.createContainer({});
 
+    elBody.append(
+        ATON.UI.elem(`
+            <div style='text-align:center'>
+                <img src='${ATON.BASE_URL}/hathor/appicon.png' style='width:100px; height:auto'>
+                <br><b>Hathor - v2.0</b>
+                <br><i>Hathor</i> is the official ATON built-in front-end
+            </div>
+        `)
+    )
+
+    ATON.UI.showModal({
+        header: "Hathor",
+        body: elBody
     });
 };
 

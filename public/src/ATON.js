@@ -1314,7 +1314,7 @@ ATON.getRootSemantics = ()=>{
 Delete a semantic node
 @param {string} id - the node ID to remove
 */
-ATON.deleteSceneNode = (id)=>{
+ATON.deleteSemanticNode = (id)=>{
     let N = ATON.getSemanticNode(id);
     if (!N) return;
 

@@ -215,7 +215,8 @@ UI.modalAnnotation = (semid)=>{
 
     ATON.UI.showModal({
         header: semid? "Edit '"+semid+"'" : "New Annotation",
-        body: elBody
+        body: elBody,
+        wide: true
     });
 
     UI.WYSIWYGeditorInit();

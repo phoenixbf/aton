@@ -105,7 +105,7 @@ UI._setupBase = ()=>{
     // Centralized modal dialog // modal-fullscreen-md-down
     UI.elModal = UI.elem(`
         <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="uiModal">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
             </div>
         </div>
@@ -177,6 +177,7 @@ Show centralized modal
 - options.header: main title (string)
 - options.body: main content of the side panel 
 - options.footer: optional footer HTML element
+- options.wide: optional bool for a wide modal
 
 @param {object} options - UI options object
 */
@@ -185,6 +186,11 @@ UI.showModal = (options)=>{
 
     // Clear
     UI.elModalContent.innerHTML = "";
+
+    // Wide
+    if (options.wide) ATON.UI.get("uiModal").classList.add("modal-lg");
+    else ATON.UI.get("uiModal").classList.remove("modal-lg");
+
 
     if (options.header){
         let el = document.createElement('div');

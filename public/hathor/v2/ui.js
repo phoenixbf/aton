@@ -270,7 +270,7 @@ UI.createEnvButton = ()=>{
 
 UI.createSceneButton = ()=>{
     return ATON.UI.createButton({
-        icon: "scene2",
+        icon: "info2",
         onpress: UI.sideScene
     });
 };
@@ -742,7 +742,7 @@ UI.sideLayers = ()=>{
     const appendNewLayer = (nid)=>{
         const elLayer = ATON.UI.createLayerControl({
             node: nid,
-            mainaction: UI.sideManageLayer,
+            mainlayeraction: HATHOR.isEditorMode()? UI.sideManageLayer : ()=>{ ATON.Nav.requestPOVbyNode(ATON.getSceneNode(nid), 0.2); },
 /*
             actions: [
                 ATON.UI.createButton({
@@ -793,7 +793,7 @@ UI.sideLayers = ()=>{
         header: "Layers",
         body: ATON.UI.createContainer({
             items:[
-                elNewLayer,
+                HATHOR.isEditorMode()? elNewLayer : undefined,
                 elLayers
             ]
         })

@@ -25,6 +25,8 @@ let API = {};
 API.BASE = "/api/v2/";
 API.DOCS = "/apiv2-docs";
 
+API.MSG_SUCCESS = { success: true };
+
 Core.API = API;
 
 // Main setup

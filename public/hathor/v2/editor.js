@@ -284,7 +284,10 @@ ED.editNode = (o)=>{
         if (scl) E[gr].nodes[nid].transform.scale    = scl;
     }
 
-    if (o.geocoords !== undefined) E[gr].nodes[nid].transform.bUseGeoCoords = o.geocoords;
+    if (o.geocoords !== undefined){
+        E[gr].nodes[nid].transform = {};
+        E[gr].nodes[nid].transform.bUseGeoCoords = o.geocoords;
+    }
 
     // Node material
     if (o.mat){

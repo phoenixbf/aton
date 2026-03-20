@@ -42,7 +42,7 @@ window.addEventListener( 'load', ()=>{
                 //classes: "aton-btn-primary",
                 //size: "large",
                 onpress: ()=>{
-                        //
+                        SHU.createNewScene();
                 }
         }));
 
@@ -96,15 +96,21 @@ window.addEventListener( 'load', ()=>{
                                                 }
                                         }
 
-                                        elFooter.append(ATON.UI.createButton({
-                                                icon: "bi-gear-fill",
-                                                text: "Manage",
-                                                size: "small",
-                                                //variant: "secondary",
-                                                onpress: ()=>{
-                                                        sceneSettings(scene.sid);
-                                                }
-                                        }));
+                                        elFooter.append(
+                                                ATON.UI.createContainer({
+                                                        classes: "btn-group",
+                                                        style: "width:100%;",
+                                                        items:[
+                                                                ATON.UI.createButton({
+                                                                        icon: "bi-gear-fill",
+                                                                        text: "Manage",
+                                                                        size: "small",
+                                                                        //variant: "secondary",
+                                                                        onpress: ()=>{ sceneSettings(scene.sid); }
+                                                                })
+                                                        ]
+                                                })
+                                        );
                         
                                         let card = ATON.UI.createSceneCard({
                                                 title: scene.title? scene.title : scene.sid,
@@ -154,9 +160,39 @@ window.addEventListener( 'load', ()=>{
 
         // Scene settings
         let sceneSettings = (sid)=>{
-                const elBody = ATON.UI.elem(`
-                        <div>Here settings</div>
-                `);
+                const elBody = ATON.UI.createContainer({});
+
+                let elSceneActions = ATON.UI.createContainer({
+                        classes: "btn-group",
+                        style: "width:100%;",
+                });
+
+                elSceneActions.append(
+                        ATON.UI.createButton({
+                                text: "Edit this scene",
+                                classes: "btn-accent",
+                                onpress: ()=>{
+                                        window.location.href="/v2/s/"+sid+"?e=1";
+                                }
+                        }),
+
+                        ATON.UI.createButton({
+                                text: "Delete this scene",
+                                classes: "btn-default",
+                                icon: "trash",
+                                onpress: ()=>{
+                                        SHU.deleteScene({
+                                                sid: sid,
+                                                onsuccess: ()=>{
+                                                        ATON.UI.hideModal();
+                                                        window.location.reload(true);
+                                                }
+                                        });
+                                }
+                        }),
+                );
+
+                elBody.append(elSceneActions);
 
                 ATON.UI.showModal({
                         header: sid,

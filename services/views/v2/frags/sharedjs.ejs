@@ -6,6 +6,19 @@
 let SHU = {};
 window.SHU = SHU;
 
+SHU.SCENE_BASE = {
+    visibility:0,
+
+    scenegraph: {
+        nodes: {
+            main: {}
+        },
+        edges: {
+            ".": ["main"]
+        }
+    }
+};
+
 SHU.setPageWaiting = ()=>{
     ATON.UI.showCenteredOverlay();
 };
@@ -56,6 +69,41 @@ SHU.createNavbarAuthSections = (section)=>{
         elNavbar.append( ATON.UI.createButton( items[i] ) );
     }
 
+};
+
+SHU.createNewScene = (options)=>{
+    if (!options) options = {};
+
+    ATON.checkAuth(
+        (u)=>{
+            let O = {
+                data: SHU.SCENE_BASE
+            }
+
+            ATON.REQ.post("scenes/", O, (sid)=>{
+                console.log(sid);
+
+                if (options.onsuccess) options.onsuccess();
+                else window.location.href="/v2/s/"+sid+"?e=1";
+            });
+        }
+    );
+};
+
+SHU.deleteScene = (options)=>{
+    if (!options) return;
+    if (!options.sid) return;
+
+    ATON.checkAuth(
+        (u)=>{
+            ATON.REQ.delete("scenes/"+options.sid, (b)=>{
+                console.log(b);
+
+                if (options.onsuccess) options.onsuccess();
+                else window.location.href="/v2/myscenes/";
+            });
+        }
+    );  
 };
 
 </script>

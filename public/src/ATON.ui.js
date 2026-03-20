@@ -1981,8 +1981,56 @@ UI.createTagsComponent = (options)=>{
 };
 
 /**
+Create a block item list with secondary actions
+- options.mainaction: main action on item click
+- options.text: item text
+- options.actions: optional list (array) of buttons being added to this item as secondary actions
+
+Components: "actions"
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createBlockItem = (options)=>{
+    let el = ATON.UI.createContainer({
+		classes: "btn-group",
+        style: "width:100%",
+        //style: "display:block; !important"
+	});
+
+    let elActionsC = ATON.UI.createContainer({
+        classes: "btn-group",
+        style: "display:inline-block; margin-left:0px"
+    });
+
+    let elMain = ATON.UI.createButton({
+        text: options.text,
+        classes: "btn-default",
+        onpress: (options.mainaction)? options.mainaction : undefined
+    });
+
+    if (options.actions){
+        for (let a in options.actions){
+            let elAction = options.actions[a];
+
+            elActionsC.append(elAction);
+        }
+    }
+
+    el.append(
+        elMain,
+        elActionsC
+    );
+
+    UI.registerElementAsComponent(elActionsC, "actions");
+
+    return el;
+};
+
+/**
 Create layer control. By default it allows basic switching (on/off)
 - options.node: node ID (string) of the ATON node
+- options.mainlayeraction: main action on layer click, with nodeID argument
 - options.actions: optional list (array) of HTML elements (e.g. buttons) being added to this layer actions
 
 Components: "actions"
@@ -1994,36 +2042,9 @@ UI.createLayerControl = (options)=>{
     let nid = options.node;
     let N = ATON.getSceneNode(nid);
 
-    //const elNode = UI.elem(`<div class="aton-layer"></div>`);
+    let elVis, elNode;
 
-    let elNode = ATON.UI.createContainer({
-		classes: "btn-group",
-        style: "width:100%",
-        //style: "display:block; !important"
-	});
-
-    let elMain = ATON.UI.createButton({
-        text: nid,
-        classes: "btn-default",
-        onpress: (options.mainaction)? ()=>{
-            options.mainaction(nid);   
-        } : undefined
-    });
-/*
-    if (options.mainaction) elNode.onclick = ()=>{
-        options.mainaction(nid);
-    }
-*/
-    if (!N.visible) elNode.classList.add("aton-layer-hidden");
-
-    const elActionsC = ATON.UI.createContainer({
-        classes: "btn-group",
-        style: "display:inline-block; margin-right:0px"
-    });
-    UI.registerElementAsComponent(elActionsC, "actions");
-    elNode.append(elActionsC);
-
-    const elVis = ATON.UI.createButton({
+    elVis = ATON.UI.createButton({
         icon: "visibility",// "bi-eye-fill",
         //size: "small",
         classes: (N.visible)? "aton-btn-highlight" : undefined,
@@ -2042,19 +2063,16 @@ UI.createLayerControl = (options)=>{
         }
     });
 
-    elActionsC.append(elVis);
-    //elNode.append(elVis);
+    elNode = UI.createBlockItem({
+        text: nid,
+        mainaction: (options.mainlayeraction)? ()=>{ options.mainlayeraction(nid); } : undefined,
+        actions: [
+            elVis
+        ]
+    });
 
-    if (options.actions){
-        for (let a in options.actions){
-            let elAction = options.actions[a];
-            elActionsC.append(elAction);
-            //elNode.append(elAction);
-        }
-    }
+    if (!N.visible) elNode.classList.add("aton-layer-hidden");
 
-    //elNode.append(N.nid);
-    elNode.append(elMain);
     return elNode;
 };
 

@@ -60,13 +60,21 @@ window.addEventListener( 'load', ()=>{
                                         console.log(v)
                                     }
                                 }),
-
+/*
                                 ATON.UI.createTagsComponent({
                                     list: ["key1","key2","key3"],
                                     label: "Keyword",
                                     tags: ["key3"],
                                     onremovetag: (k)=>{ console.log("Removed ",k) },
                                     onaddtag: (k)=>{ console.log("Added ",k) }
+                                }),
+*/
+                                ATON.UI.createBlockItem({
+                                    text: "test",
+                                    actions: [
+                                        ATON.UI.createButtonHome({classes:"btn-accent"}),
+                                        ATON.UI.createButtonBack()
+                                    ]
                                 }),
 
                                 ATON.UI.createNavSwitcher({

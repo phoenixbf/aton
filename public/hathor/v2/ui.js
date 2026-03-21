@@ -135,13 +135,20 @@ UI.modalAnnotation = (semid)=>{
             let V = HATHOR.validateSemID(v);
 
             if ( !V.valid ){
-                ATON.UI.hideElement(elCreateAnn);
+                //ATON.UI.hideElement(elCreateAnn);
+                elCreateAnn.setAttribute("disabled",true);
                 return;
             }
 
             semid = V.semid;
 
-            ATON.UI.showElement(elCreateAnn);
+            let html = HATHOR.getHTMLDescriptionFromSemNode(semid);
+            if (html){
+                UI.WYSIWYGeditorInsert(html, true);
+            }
+
+            //ATON.UI.showElement(elCreateAnn);
+            elCreateAnn.removeAttribute("disabled");
         },
 /*
         onchange: (v)=>{
@@ -177,7 +184,8 @@ UI.modalAnnotation = (semid)=>{
             HATHOR.endCurrentTask();
         }
     });
-    if (!semid) ATON.UI.hideElement(elCreateAnn);
+
+    if (!semid) elCreateAnn.setAttribute("disabled",true); //ATON.UI.hideElement(elCreateAnn);
 
     if (!semid) elBody.append(elSemID);
     elBody.append( UI.WYSIWYGeditorCreate() );
@@ -426,7 +434,7 @@ UI.WYSIWYGeditorInit = ()=>{
         buttonsMD: UI.WYSIWYG_TOOLBAR,
         buttonsSM: UI.WYSIWYG_TOOLBAR,
         buttonsXS: UI.WYSIWYG_TOOLBAR,
-
+/*
         extraButtons: [
             {
                 name: 'insertDate',
@@ -436,6 +444,7 @@ UI.WYSIWYGeditorInit = ()=>{
                 }
             }
         ],
+*/
 
         uploader: {
             insertImageAsBase64URI: true
@@ -445,10 +454,13 @@ UI.WYSIWYGeditorInit = ()=>{
     UI._elWYSIWYG = ATON.UI.get("WYSIWYGeditor");
 };
 
-UI.WYSIWYGeditorInsert = (html)=>{
+// Insert custom HTML in current cursor location or overwrite entire content
+UI.WYSIWYGeditorInsert = (html, bOverwrite)=>{
     if (!UI.WYSIWYG) return;
-    
+
+    if (bOverwrite) UI.WYSIWYG.value = "";
     UI.WYSIWYG.s.insertHTML(html);
+    
     UI.WYSIWYG.synchronizeValues(); // For history saving
 };
 
@@ -1116,8 +1128,10 @@ UI.sideSemantics = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
-    elBody.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
-    elBody.append(
+    let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+
+    elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
+    elSemBasic.append(
         ATON.UI.createContainer({
             classes: "btn-group",
             style: "width:100%",
@@ -1133,8 +1147,10 @@ UI.sideSemantics = ()=>{
         })    
     );
 
-    elBody.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
-    elBody.append(
+    let elSemConvex = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+
+    elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
+    elSemConvex.append(
         ATON.UI.createContainer({
             classes: "btn-group",
             style: "width:100%",
@@ -1149,6 +1165,8 @@ UI.sideSemantics = ()=>{
             ]
         })    
     );
+
+    elBody.append( elSemBasic, elSemConvex );
 
     let elSemList = ATON.UI.createContainer({});
     

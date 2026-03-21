@@ -6,6 +6,7 @@
 
 ===========================================================================*/
 import UI from "./ui.js";
+import SUI from "./sui.js";
 import ED from "./editor.js";
 
 /**
@@ -15,8 +16,9 @@ Hathor V2 front-end (official ATON front-end)
 let HATHOR = ATON.App.realize();
 window.HATHOR = HATHOR;
 
-HATHOR.UI = UI;
-HATHOR.ED = ED;
+HATHOR.UI  = UI;
+HATHOR.SUI = SUI;
+HATHOR.ED  = ED;
 
 // URL params
 HATHOR._sidToLoad = HATHOR.params.get('s');
@@ -47,6 +49,7 @@ HATHOR.setup = ()=>{
     ATON.UI.addBasicEvents();
 
     HATHOR.UI.setup();
+    HATHOR.SUI.setup();
     HATHOR.ED.setup();
 
     HATHOR.setupLogic();
@@ -57,6 +60,7 @@ HATHOR.enterEditorMode = ()=>{
     HATHOR._mode = HATHOR.MODE_EDITOR;
 
     HATHOR.UI.enterEditorMode();
+    HATHOR.SUI.enterEditorMode();
     HATHOR.ED.setPersistentModifications(true);
 };
  
@@ -64,6 +68,7 @@ HATHOR.exitEditorMode = ()=>{
     HATHOR._mode = HATHOR.MODE_STD;
 
     HATHOR.UI.exitEditorMode();
+    HATHOR.SUI.exitEditorMode();
     HATHOR.ED.setPersistentModifications(false);
 };
 
@@ -81,6 +86,24 @@ HATHOR.setupLogic = ()=>{
             });
     });
 
+    ATON.on("SceneJSONLoaded",()=>{
+        let ed = HATHOR.params.get('e');
+        if (ed){
+        ATON.checkAuth(
+            (u)=>{
+                HATHOR.enterEditorMode();
+            });
+        }
+    });
+
+    ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
+        // Everytime
+        
+        if (!bFirst) return; // First time
+
+        //...
+    });
+
     ATON.on("Tap", (e)=>{
         HATHOR.handleTaskOnTap(e);
 
@@ -94,25 +117,14 @@ HATHOR.setupLogic = ()=>{
         }
     });
 
-    ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
-        
-        if (!bFirst) return; // First time
-
-        let ed = HATHOR.params.get('e');
-        if (ed){
-        ATON.checkAuth(
-            (u)=>{
-                HATHOR.enterEditorMode();
-            });
-        }
-    });
-
     // Handle general auth logic
     ATON.on("Login", (d)=>{
-        if (d) ATON.Photon.setUsername(d.username);
+        if (!d) return;
+        
+        ATON.Photon.setUsername(d.username);
     });
 
-    ATON.on("Logout",()=>{
+    ATON.on("Logout", ()=>{
         HATHOR.exitEditorMode();
         UI._elEd.classList.remove("aton-btn-highlight");
     });

@@ -29,8 +29,6 @@ UI.setup = ()=>{
     if (HATHOR._tb) UI.buildCustomToolbar();
     else UI.buildStandardToolbar();
 
-    UI.buildTC();
-
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
         if (HATHOR.currTask) return;
@@ -98,30 +96,6 @@ UI.createBlockGroup = (options)=>{
 };
 
 /*
-    SUI
-=====================================*/
-UI.buildTC = ()=>{
-    UI._tc = new THREE.TransformControls( ATON.Nav._camera, ATON._renderer.domElement );
-
-    UI._tc.addEventListener('dragging-changed', ( event )=>{
-        let bDrag = event.value;
-
-        ATON.Nav.setUserControl(!bDrag);
-        ATON._bPauseQuery = bDrag;
-
-        if (!bDrag){
-            ATON.recomputeSceneBounds();
-            ATON.updateLightProbes();
-
-            HATHOR.ED.dirtyNodeTransformReq(UI._tc.object, ["pos","rot","scl"]);
-            console.log(UI._tc.object)
-        }
-    });
-
-    ATON.getRootUI().add(UI._tc.getHelper());
-}
-
-/*
     Semantics
 =====================================*/
 UI.showSemanticPanel = (title, elContent)=>{
@@ -137,6 +111,7 @@ UI.closeSemanticPanel = ()=>{
     ATON.UI.hideSidePanel();
 };
 
+// Create/Finalize annotation with semID
 UI.modalAnnotation = (semid)=>{
     let semshape; // get type of semantic annotation (basic, freeform, ...)
     if (HATHOR.currTask === HATHOR.TASK_BASIC_ANN)  semshape = HATHOR.SEM_SHAPE_SPHERE;
@@ -906,7 +881,7 @@ UI.sideManageLayer = (nid)=>{
     let N = ATON.getSceneNode(nid);
     if (!N) return;
 
-    if (UI._tc) UI._tc.attach( N );
+    HATHOR.SUI.attachGizmoToNode(N);
 
     let elBody = ATON.UI.createContainer();
     
@@ -1174,6 +1149,43 @@ UI.sideSemantics = ()=>{
             ]
         })    
     );
+
+    let elSemList = ATON.UI.createContainer({});
+    
+    for (let semid in ATON.semnodes){
+        if (semid !== ATON.ROOT_NID){
+            let S = ATON.getSemanticNode(semid);
+
+            elSemList.append(
+                ATON.UI.createBlockItem({
+                    text: semid,
+                    mainaction: ()=>{
+                        ATON.Nav.requestPOVbyNode(S, 0.2);
+                    },
+                    actions:[
+                        ATON.UI.createButtonSwitch({
+                            icon: "visibility",
+                            status: S.visible,
+                            onswitch: (b)=>{
+                                if (b) S.show();
+                                else S.hide();
+                            }
+                        })
+                    ]
+                })
+            );
+        }
+    }
+
+    elBody.append(ATON.UI.createTreeGroup({
+        items:[
+            {
+                title: "Annotations list",
+                open: false,
+                content: elSemList
+            }
+        ]
+    }));
 
     UI.openToolPanel({
         header: "Semantic Annotations",

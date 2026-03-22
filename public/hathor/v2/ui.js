@@ -98,11 +98,33 @@ UI.createBlockGroup = (options)=>{
 /*
     Semantics
 =====================================*/
-UI.showSemanticPanel = (title, elContent)=>{
+UI.showSemanticPanel = (semid)=>{
     UI.closeToolPanel();
 
+    // TODO: audio sound
+
+    let htmlContent = HATHOR.getHTMLDescriptionFromSemNode(semid);
+    if (!htmlContent) return;
+
+    let elContent = ATON.UI.elem("<div>"+htmlContent+"</div>");
+
+    let editbtns = [];
+
+    if (HATHOR.isEditorMode()){
+        editbtns.push(
+            ATON.UI.createButton({
+                icon: "annotation",
+                onpress: ()=>{
+                    UI.modalAnnotation(semid);
+                    ATON.UI.hideSidePanel();
+                }
+            }),
+        );
+    }
+
     ATON.UI.showSidePanel({
-        header: title,
+        header: semid,
+        actions: editbtns,
         body: elContent
     });
 };
@@ -111,11 +133,14 @@ UI.closeSemanticPanel = ()=>{
     ATON.UI.hideSidePanel();
 };
 
-// Create/Finalize annotation with semID
+// Create, finalize or update annotation
 UI.modalAnnotation = (semid)=>{
-    let semshape; // get type of semantic annotation (basic, freeform, ...)
+    let semshape; // shape of semantic annotation (basic, freeform, ...)
+    
     if (HATHOR.currTask === HATHOR.TASK_BASIC_ANN)  semshape = HATHOR.SEM_SHAPE_SPHERE;
     if (HATHOR.currTask === HATHOR.TASK_CONVEX_ANN) semshape = HATHOR.SEM_SHAPE_CONVEX;
+
+    let html = undefined; // HTML content
 
     let parentSemID = ATON.ROOT_NID;
 
@@ -142,7 +167,7 @@ UI.modalAnnotation = (semid)=>{
 
             semid = V.semid;
 
-            let html = HATHOR.getHTMLDescriptionFromSemNode(semid);
+            html = HATHOR.getHTMLDescriptionFromSemNode(semid);
             if (html){
                 UI.WYSIWYGeditorInsert(html, true);
             }
@@ -185,14 +210,29 @@ UI.modalAnnotation = (semid)=>{
         }
     });
 
-    if (!semid) elCreateAnn.setAttribute("disabled",true); //ATON.UI.hideElement(elCreateAnn);
+    let elDelete = undefined;
 
-    if (!semid) elBody.append(elSemID);
+    if (!semid){
+        elCreateAnn.setAttribute("disabled",true); //ATON.UI.hideElement(elCreateAnn);
+        elBody.append(elSemID);
+    }
+    else {
+        elDelete = ATON.UI.createButton({
+            text: "Delete",
+            icon: "trash",
+            classes: "btn-accent",
+            onpress: ()=>{
+                //ATON.UI.hideModal();
+                UI.modalDeleteSemanticID(semid);
+            }
+        })
+    }
+
     elBody.append( UI.WYSIWYGeditorCreate() );
     elBody.append( ATON.UI.createContainer({
         classes: "btn-group",
         style: "width:100%",
-        items:[ elCreateAnn ]
+        items:[ elDelete, elCreateAnn ]
     }))
     
 
@@ -203,6 +243,151 @@ UI.modalAnnotation = (semid)=>{
     });
 
     UI.WYSIWYGeditorInit();
+
+    // Populate with existing content from semID
+    if (semid){
+        html = HATHOR.getHTMLDescriptionFromSemNode(semid);
+        if (html) UI.WYSIWYGeditorInsert(html, true);
+    }
+};
+
+// Side panel for semantics
+UI.sideSemantics = ()=>{
+    let elBody = ATON.UI.createContainer({
+        //style: "margin-bottom: 4px;"
+    });
+
+    let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+
+    elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
+    elSemBasic.append(
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:100%",
+            items: [
+                ATON.UI.createButton({
+                    text: "Basic",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
+                    }
+                })
+            ]
+        })    
+    );
+
+    let elSemConvex = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+
+    elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
+    elSemConvex.append(
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:100%",
+            items: [
+                ATON.UI.createButton({
+                    text: "Free Form",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
+                    }
+                })
+            ]
+        })    
+    );
+
+    elBody.append( elSemBasic, elSemConvex );
+
+    let elSemList = undefined;
+    
+    for (let semid in ATON.semnodes){
+        if (semid !== ATON.ROOT_NID){
+            let S = ATON.getSemanticNode(semid);
+
+            if (!elSemList) elSemList = ATON.UI.createContainer({});
+
+            elSemList.append(
+                ATON.UI.createBlockItem({
+                    text: semid,
+                    mainaction: ()=>{
+                        ATON.Nav.requestPOVbyNode(S, 0.2);
+                    },
+                    actions:[
+                        ATON.UI.createButton({
+                            icon: "annotation",
+                            classes: "btn-default",
+                            onpress: ()=>{
+                                UI.modalAnnotation(semid);
+                                UI.closeToolPanel();
+                            }
+                        }),
+
+                        ATON.UI.createButtonSwitch({
+                            icon: "visibility",
+                            status: S.visible,
+                            onswitch: (b)=>{
+                                if (b) S.show();
+                                else S.hide();
+                            }
+                        })
+                    ]
+                })
+            );
+        }
+    }
+
+    if (elSemList) elBody.append(ATON.UI.createTreeGroup({
+        style: "margin-top: 16px",
+        items:[
+            {
+                title: "Annotations list",
+                open: true,
+                content: elSemList
+            }
+        ]
+    }));
+
+    UI.openToolPanel({
+        header: "Semantic Annotations",
+        body: elBody
+    });
+};
+
+// Delete a Sem ID
+UI.modalDeleteSemanticID = (semid)=>{
+    let S = ATON.getSemanticNode(semid);
+    if (!S) return;
+
+    let elBody = ATON.UI.createContainer();
+    elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete semantic ID '${semid}'?</p>`) );
+
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "NO",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
+                }),
+                ATON.UI.createButton({
+                    text: "YES",
+                    icon: "trash",
+                    classes: "btn-accent",
+                    onpress: ()=>{
+                        HATHOR.ED.deleteNode({
+                            nid: semid,
+                            type: ATON.NTYPES.SEM
+                        })
+                        ATON.UI.hideModal();
+                    }
+                })
+            ]
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Delete layer",
+        body: elBody
+    });
 };
 
 /*
@@ -723,7 +908,7 @@ UI.sideScene = ()=>{
 UI.sideLayers = ()=>{
     // Layers list
     let elLayers = ATON.UI.createContainer({
-        style: "margin-top: 4px;"
+        style: "margin-top: 16px;"
     });
 
     const appendNewLayer = (nid)=>{
@@ -1123,94 +1308,6 @@ UI.sideNav = ()=>{
     });
 };
 
-UI.sideSemantics = ()=>{
-    let elBody = ATON.UI.createContainer({
-        //style: "margin-bottom: 4px;"
-    });
-
-    let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
-
-    elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
-    elSemBasic.append(
-        ATON.UI.createContainer({
-            classes: "btn-group",
-            style: "width:100%",
-            items: [
-                ATON.UI.createButton({
-                    text: "Basic",
-                    classes: "btn-default",
-                    onpress: ()=>{
-                        HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
-                    }
-                })
-            ]
-        })    
-    );
-
-    let elSemConvex = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
-
-    elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
-    elSemConvex.append(
-        ATON.UI.createContainer({
-            classes: "btn-group",
-            style: "width:100%",
-            items: [
-                ATON.UI.createButton({
-                    text: "Free Form",
-                    classes: "btn-default",
-                    onpress: ()=>{
-                        HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
-                    }
-                })
-            ]
-        })    
-    );
-
-    elBody.append( elSemBasic, elSemConvex );
-
-    let elSemList = ATON.UI.createContainer({});
-    
-    for (let semid in ATON.semnodes){
-        if (semid !== ATON.ROOT_NID){
-            let S = ATON.getSemanticNode(semid);
-
-            elSemList.append(
-                ATON.UI.createBlockItem({
-                    text: semid,
-                    mainaction: ()=>{
-                        ATON.Nav.requestPOVbyNode(S, 0.2);
-                    },
-                    actions:[
-                        ATON.UI.createButtonSwitch({
-                            icon: "visibility",
-                            status: S.visible,
-                            onswitch: (b)=>{
-                                if (b) S.show();
-                                else S.hide();
-                            }
-                        })
-                    ]
-                })
-            );
-        }
-    }
-
-    elBody.append(ATON.UI.createTreeGroup({
-        items:[
-            {
-                title: "Annotations list",
-                open: false,
-                content: elSemList
-            }
-        ]
-    }));
-
-    UI.openToolPanel({
-        header: "Semantic Annotations",
-        body: elBody
-    });
-};
-
 // Tasks
 UI.buildTaskToolbar = (task)=>{
     if (!task) return;
@@ -1219,17 +1316,35 @@ UI.buildTaskToolbar = (task)=>{
     UI.hideMainElements();
 
     if (task === HATHOR.TASK_BASIC_ANN){
-        HATHOR.UI._elTasks.append(ATON.UI.createButton({
-            text: "Cancel",
-            icon: "bi-x-lg",
-            classes: "btn-default",
-            onpress: ()=>{
-                //if (ATON._bqScene) ATON._handleQueryScene();
-                //ATON.SemFactory.stopCurrentConvex();
-                
-                HATHOR.endCurrentTask();
-            }
-        }));
+        let selRange = ATON.SUI.getSelectorRange();
+
+        HATHOR.UI._elTasks.append(
+            ATON.UI.createButton({
+                text: "Cancel",
+                icon: "bi-x-lg",
+                classes: "btn-default",
+                onpress: ()=>{
+                    //if (ATON._bqScene) ATON._handleQueryScene();
+                    //ATON.SemFactory.stopCurrentConvex();
+                    
+                    HATHOR.endCurrentTask();
+                }
+            }),
+
+            ATON.UI.createContainer({
+                style: "display:inline-block;",
+                items:[
+                    ATON.UI.createSlider({
+                        range: selRange,
+                        step: (selRange[1]-selRange[0]) * 0.01,
+                        //label: "Radius",
+                        oninput: (r)=>{
+                            ATON.SUI.setSelectorRadius(r);
+                        }
+                    })
+                ]
+            })
+        );
     }
 
     if (task === HATHOR.TASK_CONVEX_ANN){

@@ -144,6 +144,12 @@ HATHOR.setupLogic = ()=>{
 
         if (k==='g') HATHOR.UI.sideLayers();
         if (k==='s') HATHOR.UI.sideSemantics();
+
+        if (k === 'Delete'){
+            if (ATON._hoveredSemNode){
+                HATHOR.UI.modalDeleteSemanticID( ATON._hoveredSemNode );
+            }
+        }
     });
 
 };
@@ -164,14 +170,7 @@ HATHOR.getHTMLDescriptionFromSemNode = (semid)=>{
 HATHOR.showAnnotationContent = (semid)=>{
     if (!semid) return;
 
-    // TODO: audio sound
-
-    let htmlContent = HATHOR.getHTMLDescriptionFromSemNode(semid);
-    if (!htmlContent) return;
-
-    let elContent = ATON.UI.elem("<div>"+htmlContent+"</div>");
-
-    HATHOR.UI.showSemanticPanel(semid, elContent);
+    HATHOR.UI.showSemanticPanel(semid);
 };
 
 HATHOR.validateSemID = (semid)=>{

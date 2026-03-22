@@ -212,7 +212,13 @@ SUI.initSelector = ()=>{
 
     SUI._selOffset = new THREE.Vector3();
 
+    SUI._selRange = [0.01, 50.0]; // 3D Selector ranges
+
     SUI._bShowSelector = true;
+};
+
+SUI.getSelectorRange = ()=>{
+    return SUI._selRange;
 };
 
 // note: before adding LPs

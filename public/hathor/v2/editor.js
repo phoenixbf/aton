@@ -438,12 +438,18 @@ ED.addSemNode = (o)=>{
     let P = ATON.getSemanticNode(parentnid);
 
     let S = undefined;
-    if (shape === HATHOR.SEM_SHAPE_SPHERE) S = ATON.SemFactory.createSurfaceSphere(nid);
-    if (shape === HATHOR.SEM_SHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(nid);
+
+    if (shape !== undefined){
+        if (shape === HATHOR.SEM_SHAPE_SPHERE) S = ATON.SemFactory.createSurfaceSphere(nid);
+        if (shape === HATHOR.SEM_SHAPE_CONVEX) S = ATON.SemFactory.completeConvexShape(nid);
+
+        S.attachTo(P);
+    }
+    else {
+        S = ATON.getSemanticNode(nid);
+    }
 
     if (!S || !P) return;
-
-    S.attachTo(P);
 
     if (o.content) S.setDescription(o.content);
     if (o.audio)   S.setAudio(o.audio);

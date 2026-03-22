@@ -1539,6 +1539,9 @@ ATON.recomputeSceneBounds = ( ubs )=>{
 
     if (ATON.bounds.radius <= 0.0) return;
 
+    ATON.SUI._selRange[0] = ATON.bounds.radius * 0.001;
+    ATON.SUI._selRange[1] = ATON.bounds.radius * 0.5;
+
     // Shadows
     if (ATON._renderer.shadowMap.enabled){
         ATON._rootVisible.traverse((o) => {

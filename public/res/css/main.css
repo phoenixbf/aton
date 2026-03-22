@@ -670,9 +670,9 @@ a {
 
     overflow: hidden;
     text-overflow: ellipsis;
-
+/*
     border-bottom: dotted var(--bs-body-color) 2px;
-
+*/
     padding: 4px;
 
     margin-top: 8px;
@@ -681,6 +681,10 @@ a {
 /*
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
 */
+}
+
+.aton-collection-item:hover {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.1);
 }
 
 

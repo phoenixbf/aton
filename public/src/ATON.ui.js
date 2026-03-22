@@ -238,6 +238,7 @@ UI.hideModal = ()=>{
 /**
 Show centralized side panel (offcanvas)
 - options.header: main title (string)
+- options.actions: optional list (array) of secondary action elements (e.g. buttons) in header
 - options.headelement: optional header HTML element
 - options.body: main content of the side panel 
 
@@ -253,6 +254,10 @@ UI.showSidePanel = (options)=>{
         el.classList.add("offcanvas-header");
 
         el.innerHTML = "<h4 class='offcanvas-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' aria-label='Close' onclick='ATON.UI.hideSidePanel()'></button>"; // data-bs-dismiss='offcanvas'
+
+        if (options.actions){
+            for (let e in options.actions) el.prepend( options.actions[e] );
+        }
 
         if (options.headelement) el.prepend(options.headelement);
 
@@ -2299,9 +2304,20 @@ UI.createInput3DModel = (options)=>{
     
     if (!options) options = {};
 
+    // Placeholder element
+    let phold = ATON.UI.createInputText({
+        label: options.label,
+        placeholder: "Loading collection..."
+    });
+
+    phold.setAttribute("disabled",true);
+    el.append( phold );
+
     ATON.checkAuth(
         (u)=>{
             ATON.REQ.get("items/"+u.username+"/models/", entries => {
+
+                el.innerHTML = "";
 
                 const itemnames = entries.map(item => {
                     return item.replace(u.username+"/models/", "");

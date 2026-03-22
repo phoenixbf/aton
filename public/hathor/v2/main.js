@@ -126,7 +126,6 @@ HATHOR.setupLogic = ()=>{
 
     ATON.on("Logout", ()=>{
         HATHOR.exitEditorMode();
-        UI._elEd.classList.remove("aton-btn-highlight");
     });
 
     // Keyboard

@@ -67,11 +67,13 @@ UI.showMainElements = ()=>{
 
 UI.enterEditorMode = ()=>{
     UI._elMainToolbar.classList.add("hathor-main-toolbar-editor");
-    if (UI._elEd) UI._elEd.classList.add("aton-btn-highlight");
+    if (UI._elModeED)  UI._elModeED.classList.add("aton-btn-highlight");
+    if (UI._elModeSTD) UI._elModeSTD.classList.remove("aton-btn-highlight");
 };
 UI.exitEditorMode = ()=>{
     UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
-    if (UI._elEd) UI._elEd.classList.remove("aton-btn-highlight");
+    if (UI._elModeED)  UI._elModeED.classList.remove("aton-btn-highlight");
+    if (UI._elModeSTD) UI._elModeSTD.classList.add("aton-btn-highlight");
 };
 
 UI.createTextBlock = (content)=>{
@@ -145,6 +147,7 @@ UI.modalAnnotation = (semid)=>{
     let parentSemID = ATON.ROOT_NID;
 
     let elBody = ATON.UI.createContainer({});
+    let elFooter = ATON.UI.createContainer({ classes: "w-100" });
 
     let semlist = [];
     for (let s in ATON.semnodes){
@@ -229,9 +232,9 @@ UI.modalAnnotation = (semid)=>{
     }
 
     elBody.append( UI.WYSIWYGeditorCreate() );
-    elBody.append( ATON.UI.createContainer({
-        classes: "btn-group",
-        style: "width:100%",
+
+    elFooter.append( ATON.UI.createContainer({
+        classes: "btn-group w-100",
         items:[ elDelete, elCreateAnn ]
     }))
     
@@ -239,6 +242,7 @@ UI.modalAnnotation = (semid)=>{
     ATON.UI.showModal({
         header: semid? "Edit '"+semid+"'" : "New Annotation",
         body: elBody,
+        footer: elFooter,
         wide: true
     });
 
@@ -528,6 +532,31 @@ UI.createButtonUser = ()=>{
     let bEditor = HATHOR.isEditorMode();
     console.log(bEditor);
 
+    UI._elModeSTD = ATON.UI.createButton({
+        text: "Standard Mode",
+        classes: "btn-default",
+        onpress: ()=>{
+            HATHOR.exitEditorMode();
+        }
+    });
+
+    UI._elModeED = ATON.UI.createButton({
+        text: "Editor Mode",
+        classes: "btn-default",
+        onpress: ()=>{
+            HATHOR.enterEditorMode();
+        }
+    });
+
+    if (bEditor){
+        UI._elModeED.classList.add("aton-btn-highlight");
+        UI._elModeSTD.classList.remove("aton-btn-highlight");
+    }
+    else {
+        UI._elModeED.classList.remove("aton-btn-highlight");
+        UI._elModeSTD.classList.add("aton-btn-highlight");      
+    }
+/*
     UI._elEd = ATON.UI.createButton({
         text: "Editor Mode",
         classes: "btn-default",
@@ -544,10 +573,10 @@ UI.createButtonUser = ()=>{
             ATON.UI.hideModal();
         }
     });
-
+*/
     elLoggedContent.append(
         UI.createTextBlock("Enter or leave Editor Mode"),
-        UI.createBlockGroup({items:[ UI._elEd ]})
+        UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
     );
 
     let el = ATON.UI.createButtonUser({
@@ -823,7 +852,7 @@ UI.sideScene = ()=>{
 
     // Cover
     let elCover = ATON.UI.createCard({
-        title: "Cover image",
+        title: "Current scene cover",
         //size: "large",
         //classes: "hathor-card-media-v",
         cover: ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover",
@@ -836,7 +865,7 @@ UI.sideScene = ()=>{
 
     let elShot = ATON.UI.createButton({
         text: "Set current view as cover",
-        classes: "btn-accent",
+        classes: "btn-accent w-100",
         onpress: ()=>{
             let cover = ATON.Utils.takeScreenshot(256);
 
@@ -1189,9 +1218,10 @@ UI.modalDeleteNode = (nid, type)=>{
     if (!type) type = ATON.NTYPES.SCENE;
 
     let elBody = ATON.UI.createContainer();
+    let elFooter = ATON.UI.createContainer({classes: "w-100"});
     elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete layer ${nid}?</p>`) );
 
-    elBody.append(
+    elFooter.append(
         UI.createBlockGroup({
             items:[
                 ATON.UI.createButton({
@@ -1218,7 +1248,8 @@ UI.modalDeleteNode = (nid, type)=>{
 
     ATON.UI.showModal({
         header: "Delete layer",
-        body: elBody
+        body: elBody,
+        footer: elFooter
     });
 };
 
@@ -1299,6 +1330,22 @@ UI.sideNav = ()=>{
         UI.createTextBlock("Select a navigation mode"),
         ATON.UI.createNavSwitcher({
 
+        })
+    );
+
+    elBody.append(
+        ATON.UI.createTreeGroup({
+            items:[
+                {
+                    title: "Viewpoints (POV)"
+                },
+                {
+                    title: "Paths"
+                },
+                {
+                    title: "Locomotion Nodes"
+                }
+            ]
         })
     );
   

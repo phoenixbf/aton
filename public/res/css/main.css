@@ -363,7 +363,7 @@ a {
 }
 
 .btn-accent {
-    --bs-btn-bg: var(--aton-colors-accent);
+    --bs-btn-bg: rgba(var(--aton-colors-accent-rgb), 0.9);
     --bs-btn-border-color: rgba(var(--aton-colors-accent-rgb), 0.0);
     --bs-btn-color: #222;
 

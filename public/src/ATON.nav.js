@@ -98,6 +98,7 @@ Nav.init = ()=>{
     Nav._reqPOV  = new ATON.POV(); // requested POV for transition
 
     Nav.homePOV = undefined; //new ATON.POV();
+    Nav.startPOVID = undefined;
 
     Nav._tPOVcall = -1.0;
     Nav._tPOVprogress = 0.0;

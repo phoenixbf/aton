@@ -100,7 +100,7 @@ FE._handleHomeReq = ()=>{
         return;
     }
     
-    ATON.Nav.requestHome(1.0);
+    ATON.Nav.requestHome(0.1);
     //console.log(ATON.Nav.homePOV);
 };
 
@@ -115,7 +115,11 @@ FE.addBasicLoaderEvents = ()=>{
 
     ATON.on("SceneJSONLoaded",()=>{
         if (ATON.SceneHub.getDescription()) $("#btn-info").show();
-        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(1.0);
+
+        if (ATON.Nav.startPOVID){
+            ATON.Nav.setHomePOV( ATON.Nav.povlist[ATON.Nav.startPOVID] );
+        }
+        if (ATON.Nav.homePOV !== undefined) ATON.Nav.requestHome(0.1);
 
         // If we have an XPF network and no home set, move to first XPF
         if (ATON.XPFNetwork._list.length>0 && ATON.Nav.homePOV === undefined){

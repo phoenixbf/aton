@@ -878,7 +878,7 @@ UI.createButtonUser = (options)=>{
                 (u)=>{
                     let elBody = ATON.UI.createContainer();
 
-                    let elLogout = ATON.UI.createContainer({ classes: "d-grid gap-2" });
+                    let elLogout = ATON.UI.createContainer({ classes: "d-grid gap-2 w-100" });
                     elLogout.append(
                         ATON.UI.createButton({
                             text: "Logout",
@@ -900,7 +900,8 @@ UI.createButtonUser = (options)=>{
 
                     ATON.UI.showModal({
                         header: (options.titlelogged)? options.titlelogged : u.username,
-                        body: elBody
+                        body: elBody,
+                        //footer: elLogout
                     })
                 },
 

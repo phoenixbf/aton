@@ -43,6 +43,9 @@ HATHOR.setup = ()=>{
     HATHOR.paramUIP   = ATON.FE.urlParams.get('uip');
     HATHOR.paramTB    = ATON.FE.urlParams.get('tb');
     HATHOR.paramBack  = ATON.FE.urlParams.get('back');
+    HATHOR.paramPOV   = ATON.FE.urlParams.get('pov');
+
+    if (HATHOR.paramPOV) ATON.Nav.startPOVID = String(HATHOR.paramPOV);
 
     if (HATHOR.paramRLOG){
         console.log   = ATON.Photon.log;
@@ -705,7 +708,11 @@ HATHOR.setupEventHandlers = ()=>{
             //HATHOR._bVRCreq = true;
         }
         //if (HATHOR._bVRCreq) ATON.Photon.connect();
-
+/*
+        if (HATHOR.paramPOV){
+            ATON.Nav.requestPOV( ATON.Nav.povlist[HATHOR.paramPOV], 0.0 );
+        }
+*/
         if (ATON.SceneHub.getDescription()) HATHOR.popupSceneInfo();
 
         HATHOR.uiUpdatePOVs();

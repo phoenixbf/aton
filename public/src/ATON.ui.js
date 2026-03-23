@@ -2069,12 +2069,13 @@ UI.createLayerControl = (options)=>{
         }
     });
 
+    let actions = options.actions? options.actions : [];
+    actions.push(elVis);
+
     elNode = UI.createBlockItem({
         text: nid,
         mainaction: (options.mainlayeraction)? ()=>{ options.mainlayeraction(nid); } : undefined,
-        actions: [
-            elVis
-        ]
+        actions: actions
     });
 
     if (!N.visible) elNode.classList.add("aton-layer-hidden");
@@ -2239,6 +2240,8 @@ Create an input text field
 - options.list: array of strings (datalist)
 - options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
 - options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
+- options.onsubmit: routine to submit text (e.g.: (val)=>{ console.log(val); })
+- options.icon: icon for submission action
 
 Components:
 - "input"
@@ -2295,6 +2298,22 @@ UI.createInputText = (options)=>{
         }
         
         el.append(elDatalist);
+    }
+
+    if (options.onsubmit){
+        el.append(
+            UI.createButton({
+                icon: options.icon? options.icon : "bi-check2",
+                classes: "btn-default",
+                onpress: ()=>{
+                    let val = elInput.value;
+                    if (val.length < 1) return;
+
+                    options.onsubmit( val );
+                    elInput.value = "";
+                }
+            })
+        );
     }
 
     return el;

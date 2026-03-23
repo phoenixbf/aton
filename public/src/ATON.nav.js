@@ -180,12 +180,22 @@ Nav.addPOV = (pov, id)=>{
 };
 
 /**
+Remove a previously registered viewpoint (POV)
+
+@param {string} id - the POV ID to remove
+*/
+Nav.removePOV = (id)=>{
+    if (!id) return;
+    if (!Nav.povlist[id]) return;
+
+    delete Nav.povlist[id];
+};
+
+/**
 Clear all viewpoints (POVs)
 */
 Nav.clearPOVs = ()=>{
-    for (let p in ATON.Nav.povlist){
-        delete Nav.povlist[p];
-    }
+    for (let p in ATON.Nav.povlist) Nav.removePOV(p);
 };
 
 /**

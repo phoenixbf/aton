@@ -261,6 +261,9 @@ UI.sideSemantics = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
+    let elEnrich = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+    elBody.append(elEnrich);
+
     let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
 
     elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
@@ -270,7 +273,7 @@ UI.sideSemantics = ()=>{
             style: "width:100%",
             items: [
                 ATON.UI.createButton({
-                    text: "Basic",
+                    text: "Basic &rarr;",
                     classes: "btn-default",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
@@ -289,7 +292,7 @@ UI.sideSemantics = ()=>{
             style: "width:100%",
             items: [
                 ATON.UI.createButton({
-                    text: "Free Form",
+                    text: "Free Form &rarr;",
                     classes: "btn-default",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
@@ -299,7 +302,7 @@ UI.sideSemantics = ()=>{
         })    
     );
 
-    elBody.append( elSemBasic, elSemConvex );
+    elEnrich.append( elSemBasic, elSemConvex );
 
     let elSemList = undefined;
     
@@ -307,7 +310,7 @@ UI.sideSemantics = ()=>{
         if (semid !== ATON.ROOT_NID){
             let S = ATON.getSemanticNode(semid);
 
-            if (!elSemList) elSemList = ATON.UI.createContainer({});
+            if (!elSemList) elSemList = ATON.UI.createContainer({ classes: "hathor-panel-section"});
 
             elSemList.append(
                 ATON.UI.createBlockItem({
@@ -526,7 +529,7 @@ UI.buildCustomToolbar = ()=>{
 // Custom Hathor user button
 UI.createButtonUser = ()=>{
     let elLoggedContent = ATON.UI.createContainer({
-        style:"margin-bottom:16px"
+        classes: "hathor-panel-section"
     });
 
     let bEditor = HATHOR.isEditorMode();
@@ -760,7 +763,9 @@ UI.sideScene = ()=>{
 
     let elBody = ATON.UI.createContainer({});
 
-    elBody.append(
+    let elGeneralSection = ATON.UI.createContainer({});
+
+    elGeneralSection.append(
         UI.createTextBlock("Set a main title and description for this scene"),
         ATON.UI.createInputText({
             //label: "Title",
@@ -773,7 +778,7 @@ UI.sideScene = ()=>{
     );
 
     //elBody.append( UI.createTextBlock("Set description"));
-    elBody.append(
+    elGeneralSection.append(
         ATON.UI.createContainer({
             classes: "btn-group",
             style: "width:100%",
@@ -795,6 +800,11 @@ UI.sideScene = ()=>{
 
     elBody.append( ATON.UI.createTreeGroup({
         items:[
+            {
+                title: "General",
+                open: true,
+                content: elGeneralSection
+            },
             {
                 title: "Keywords",
                 open: false,
@@ -937,13 +947,24 @@ UI.sideScene = ()=>{
 UI.sideLayers = ()=>{
     // Layers list
     let elLayers = ATON.UI.createContainer({
-        style: "margin-top: 16px;"
+        classes: "hathor-panel-section"
     });
 
     const appendNewLayer = (nid)=>{
         const elLayer = ATON.UI.createLayerControl({
             node: nid,
-            mainlayeraction: HATHOR.isEditorMode()? UI.sideManageLayer : ()=>{ ATON.Nav.requestPOVbyNode(ATON.getSceneNode(nid), 0.2); },
+            mainlayeraction: ()=>{ ATON.Nav.requestPOVbyNode(ATON.getSceneNode(nid), 0.2); },
+            actions: HATHOR.isEditorMode()? [
+                ATON.UI.createButton({
+                    icon: "edit",
+                    classes: "btn-default",
+
+                    onpress: ()=>{
+                        UI.sideManageLayer(nid);
+                    }
+
+                })
+            ] : []
 /*
             actions: [
                 ATON.UI.createButton({
@@ -972,9 +993,16 @@ UI.sideLayers = ()=>{
     }
 
     const elNewLayer = ATON.UI.createInputText({
-        placeholder: "New Layer..."
+        placeholder: "New Layer...",
+        icon: "add",
+        onsubmit: (layer)=>{        
+            if (HATHOR.ED.createNode({nid: layer})){
+                appendNewLayer(layer);
+            }
+        }
     });
 
+/*
     let elInput = ATON.UI.getComponent(elNewLayer,"input");
 
     elNewLayer.append( ATON.UI.createButton({
@@ -989,6 +1017,7 @@ UI.sideLayers = ()=>{
             }
         }
     }));
+*/
 
     UI.openToolPanel({
         header: "Layers",
@@ -1326,18 +1355,101 @@ UI.sideNav = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
-    elBody.append(
-        UI.createTextBlock("Select a navigation mode"),
-        ATON.UI.createNavSwitcher({
+    let elNavModes = ATON.UI.createContainer({classes: "hathor-panel-section"});
+    elBody.append(elNavModes);
 
+    elNavModes.append(
+        UI.createTextBlock("Select a navigation mode"),
+        ATON.UI.createNavSwitcher({})
+    );
+
+    let elPOVs = ATON.UI.createContainer();
+    let elPOVlist = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+
+    let refreshPOVList = ()=>{
+        elPOVlist.innerHTML = "";
+        let numpovs = 0;
+
+        for (let pov in ATON.Nav.povlist){
+            let POV = ATON.Nav.povlist[pov];
+            numpovs++;
+
+            if (numpovs===1) elPOVlist.append(
+                UI.createTextBlock("List of viewpoints in this scene")
+            );
+
+            elPOVlist.append(
+                ATON.UI.createBlockItem({
+                    text: pov,
+                    mainaction: ()=>{
+                        ATON.Nav.requestPOV( POV );
+                    },
+                    actions:[
+                        ATON.UI.createButton({
+                            icon: "trash",
+                            classes: "btn-default",
+                            onpress: ()=>{
+                                HATHOR.ED.deletePOV({povid: pov});
+                                refreshPOVList();
+                            }
+                        })
+                    ]
+                })
+
+            );
+        }
+    };
+
+    elPOVs.append(
+        UI.createTextBlock("Use current viewpoint as:"),
+
+        ATON.UI.createButton({
+            icon: "home",
+            text: "Home",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                let pov = ATON.Nav.copyCurrentPOV();
+                
+                HATHOR.ED.addPOV({
+                    povid: "home",
+                    pos: [pov.pos.x, pov.pos.y, pov.pos.z],
+                    tgt: [pov.target.x, pov.target.y, pov.target.z],
+                    fov: pov.fov
+                });
+
+                refreshPOVList();
+            }
+        }),
+
+        ATON.UI.createInputText({
+            placeholder: "New viewpoint...",
+            icon: "add",
+            classes: "w-100",
+            onsubmit: (povid)=>{
+                let pov = ATON.Nav.copyCurrentPOV();
+
+                HATHOR.ED.addPOV({
+                    povid: povid,
+                    pos: [pov.pos.x, pov.pos.y, pov.pos.z],
+                    tgt: [pov.target.x, pov.target.y, pov.target.z],
+                    fov: pov.fov
+                });
+
+                refreshPOVList();
+            }
         })
     );
+
+    elPOVs.append(elPOVlist);
+    refreshPOVList();
 
     elBody.append(
         ATON.UI.createTreeGroup({
             items:[
                 {
-                    title: "Viewpoints (POV)"
+                    title: "Viewpoints (POV)",
+                    open: true,
+                    content: elPOVs
                 },
                 {
                     title: "Paths"

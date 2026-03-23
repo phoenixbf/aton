@@ -484,6 +484,59 @@ ED.addSemNode = (o)=>{
     console.log(E)
 };
 
+// Nav
+ED.addPOV = (o)=>{
+    let povid = o.povid;
+    if (!povid) return false;
+
+    let pos = o.pos;
+    let tgt = o.tgt;
+    let fov = o.fov;
+
+    let P = new ATON.POV();
+    if (pos) P.setPosition(pos[0],pos[1],pos[2]);
+    if (tgt) P.setTarget(tgt[0],tgt[1],tgt[2]);
+    if (fov) P.setFOV(fov);
+
+    if (povid === "home") ATON.Nav.setHomePOV( P );
+    else ATON.Nav.addPOV(P, povid);
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.viewpoints = {};
+    E.viewpoints[povid] = {};
+
+    if (pos) E.viewpoints[povid].position = pos;
+    if (tgt) E.viewpoints[povid].target   = tgt;
+    if (fov) E.viewpoints[povid].fov      = fov;
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+};
+
+ED.deletePOV = (o)=>{
+    let povid = o.povid;
+    if (!povid) return false;
+
+    ATON.Nav.removePOV(povid);
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.viewpoints = {};
+    E.viewpoints[povid] = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL );
+};
+
 // Scene general/info data
 ED.sceneInfo = (o)=>{
     if (!ATON.SceneHub.currData) return false;

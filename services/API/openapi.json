@@ -229,6 +229,77 @@
             }
         },
 
+        "/api/v2/scenes/{user}/{usid}/cover":{
+            "get":{
+                "tags":["Scenes"],
+                "summary": "Get cover image",
+                "description": "....",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "The user ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "usid",
+                        "in": "path",
+                        "description": "User scene-ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns cover image",
+                        "content":{
+                        }
+                    }
+                }
+            },
+
+            "post":{
+                "tags":["Scenes"],
+                "summary": "Set a cover image",
+                "description": "It sets a cover image for a given scene (256 x 256). Only authenticated users.",
+
+                "requestBody":{
+                    "description": "Body img attribute contains image data (base64) for the cover",
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type": "object",
+                                "properties": {
+                                    "img":{
+                                        "type":"string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+
+                "responses":{
+                    "200":{
+                        "description": "Successful operation, returns true",
+                        "content":{
+                        }
+                    },
+                    "401":{
+                        "description": "Unauthorized. User not authenticated or scene does not belong to requesting user",
+                        "content":{
+                        }
+                    }
+                }
+            }
+        },
+
         "/api/v2/items/{user}/models":{
             "get":{
                 "tags":["Items"],

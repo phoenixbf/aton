@@ -143,6 +143,8 @@ HATHOR.setupLogic = ()=>{
 
         if (k==='g') HATHOR.UI.sideLayers();
         if (k==='s') HATHOR.UI.sideSemantics();
+        if (k==='n') HATHOR.UI.sideNav();
+        if (k==='v') HATHOR.UI.sideViewpoint();
 
         if (k === 'Delete'){
             if (ATON._hoveredSemNode){

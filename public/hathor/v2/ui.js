@@ -156,7 +156,7 @@ UI.modalAnnotation = (semid)=>{
 
     let elSemID = ATON.UI.createInputText({
         list: semlist,
-        label: "Semantic ID",
+        label: "Semantic ID *",
 
         // Live validation of semid
         oninput: (v)=>{
@@ -222,8 +222,8 @@ UI.modalAnnotation = (semid)=>{
     else {
         elDelete = ATON.UI.createButton({
             text: "Delete",
-            icon: "trash",
-            classes: "btn-accent",
+            icon: "delete",
+            classes: "btn-default",
             onpress: ()=>{
                 //ATON.UI.hideModal();
                 UI.modalDeleteSemanticID(semid);
@@ -320,7 +320,7 @@ UI.sideSemantics = ()=>{
                     },
                     actions:[
                         ATON.UI.createButton({
-                            icon: "annotation",
+                            icon: "edit",
                             classes: "btn-default",
                             onpress: ()=>{
                                 UI.modalAnnotation(semid);
@@ -377,7 +377,7 @@ UI.modalDeleteSemanticID = (semid)=>{
                 }),
                 ATON.UI.createButton({
                     text: "YES",
-                    icon: "trash",
+                    icon: "delete",
                     classes: "btn-accent",
                     onpress: ()=>{
                         HATHOR.ED.deleteNode({
@@ -424,7 +424,7 @@ UI.createToolButton = ()=>{
 
 UI.createLayersButton = ()=>{
     return ATON.UI.createButton({
-        icon: "layers2",
+        icon: "layers",
         onpress: UI.sideLayers
     });
 };
@@ -438,21 +438,21 @@ UI.createSemanticsButton = ()=>{
 
 UI.createEnvButton = ()=>{
     return ATON.UI.createButton({
-        icon: "env2",
+        icon: "env",
         onpress: UI.sideEnv
     });
 };
 
 UI.createSceneButton = ()=>{
     return ATON.UI.createButton({
-        icon: "info2",
+        icon: "info",
         onpress: UI.sideScene
     });
 };
 
 UI.createNavButton = ()=>{
     return ATON.UI.createButton({
-        icon: "nav2",
+        icon: "nav",
         onpress: UI.sideNav
     });
 };
@@ -695,6 +695,8 @@ UI.openToolPanel = (options)=>{
 
     UI._elSidePanel.innerHTML = "";
 
+    HATHOR.SUI.detachGizmo();
+
     if (options.header){
         let el = document.createElement('div');
         el.classList.add("offcanvas-header");
@@ -875,7 +877,7 @@ UI.sideScene = ()=>{
 
     let elShot = ATON.UI.createButton({
         text: "Set current view as cover",
-        classes: "btn-accent w-100",
+        classes: "btn-default w-100",
         onpress: ()=>{
             let cover = ATON.Utils.takeScreenshot(256);
 
@@ -1154,7 +1156,7 @@ UI.sideManageLayer = (nid)=>{
 
                 ATON.UI.createButton({
                     text: "Delete",
-                    icon: "trash",
+                    icon: "delete",
                     classes: "btn-default",
                     onpress: ()=>{
                         UI.modalDeleteNode(nid);
@@ -1236,7 +1238,7 @@ UI.sideManageLayer = (nid)=>{
     UI.openToolPanel({
         header: "Layer '"+nid+"'",
         headelement: ATON.UI.createButton({
-            icon: "back",
+            icon: "left",
             onpress: UI.sideLayers
         }),
         body: elBody
@@ -1260,7 +1262,7 @@ UI.modalDeleteNode = (nid, type)=>{
                 }),
                 ATON.UI.createButton({
                     text: "YES",
-                    icon: "trash",
+                    icon: "delete",
                     classes: "btn-accent",
                     onpress: ()=>{
                         HATHOR.ED.deleteNode({
@@ -1366,9 +1368,34 @@ UI.sideNav = ()=>{
     let elPOVs = ATON.UI.createContainer();
     let elPOVlist = ATON.UI.createContainer({ classes: "hathor-panel-section" });
 
+    let appendPOVitem = (P, povid)=>{
+        elPOVlist.append(
+            ATON.UI.createBlockItem({
+                text: povid,
+                icon: (povid==="home")? "home" : undefined,
+                mainaction: ()=>{
+                    ATON.Nav.requestPOV( P, 0.5 );
+                },
+                actions:[
+                    ATON.UI.createButton({
+                        icon: "delete",
+                        classes: "btn-default",
+                        onpress: ()=>{
+                            HATHOR.ED.deletePOV({povid: povid});
+                            refreshPOVList();
+                            HATHOR.SUI.buildPOVs();
+                        }
+                    })
+                ]
+            })
+        );
+    }
+
     let refreshPOVList = ()=>{
         elPOVlist.innerHTML = "";
         let numpovs = 0;
+
+        //appendPOVitem(ATON.Nav._homePOV, "home");
 
         for (let pov in ATON.Nav.povlist){
             let POV = ATON.Nav.povlist[pov];
@@ -1378,28 +1405,22 @@ UI.sideNav = ()=>{
                 UI.createTextBlock("List of viewpoints in this scene")
             );
 
-            elPOVlist.append(
-                ATON.UI.createBlockItem({
-                    text: pov,
-                    mainaction: ()=>{
-                        ATON.Nav.requestPOV( POV );
-                    },
-                    actions:[
-                        ATON.UI.createButton({
-                            icon: "trash",
-                            classes: "btn-default",
-                            onpress: ()=>{
-                                HATHOR.ED.deletePOV({povid: pov});
-                                refreshPOVList();
-                            }
-                        })
-                    ]
-                })
-
-            );
+            appendPOVitem(POV, pov);
         }
     };
 
+    elPOVs.append(
+        ATON.UI.createButton({
+            text: "Current Viewpoint",
+            icon: "pov",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                UI.sideViewpoint();
+            }
+        })
+    );
+
+/*
     elPOVs.append(
         UI.createTextBlock("Use current viewpoint as:"),
 
@@ -1418,6 +1439,7 @@ UI.sideNav = ()=>{
                 });
 
                 refreshPOVList();
+                HATHOR.SUI.buildPOVs();
             }
         }),
 
@@ -1436,10 +1458,11 @@ UI.sideNav = ()=>{
                 });
 
                 refreshPOVList();
+                HATHOR.SUI.buildPOVs();
             }
         })
     );
-
+*/
     elPOVs.append(elPOVlist);
     refreshPOVList();
 
@@ -1466,6 +1489,108 @@ UI.sideNav = ()=>{
         body: elBody
     });
 };
+
+UI.sideViewpoint = (povid)=>{
+    let elBody = ATON.UI.createContainer({
+        //style: "margin-bottom: 4px;"
+    });
+
+    let elPOVparams = ATON.UI.createContainer({});
+    let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section"});
+
+    let POV = (povid)? ATON.Nav.povlist[povid] : ATON.Nav.copyCurrentPOV();
+
+    elPOVparams.append(
+        ATON.UI.elem("<span class='aton-form-label'>Eye (position)</span>"),
+        ATON.UI.createVectorControl({
+            vector: POV.pos,
+            onupdate: ()=>{
+                if (isNaN(POV.pos.x) || isNaN(POV.pos.y) || isNaN(POV.pos.z)) return;
+
+                ATON.Nav.requestPOV(POV, 0.1);
+            }
+        }),
+
+        ATON.UI.elem("<span class='aton-form-label'>Target</span>"),
+        ATON.UI.createVectorControl({
+            vector: POV.target,
+            onupdate: ()=>{
+                if (isNaN(POV.target.x) || isNaN(POV.target.y) || isNaN(POV.target.z)) return;
+
+                ATON.Nav.requestPOV(POV, 0.1);
+            }
+        }),
+
+        ATON.UI.elem("<span class='aton-form-label'>FoV (field of view)</span>"),
+        ATON.UI.createNumericInput({
+            range: [5.0, 100.0],
+            step: 1.0,
+            value: POV.fov,
+            onupdate: (v)=>{
+                if (v < 5.0) return;
+                if (v > 100.0) return;
+
+                POV.fov = v;
+                ATON.Nav.requestPOV(POV, 0.1);
+            }
+        })
+    );
+
+    elBody.append(elPOVparams);
+
+    elCurrPOV.append(
+        //UI.createTextBlock("Use current viewpoint as:"),
+
+        ATON.UI.createButton({
+            icon: "home",
+            text: "Set as Home",
+            classes: "btn-default",
+            onpress: ()=>{
+                let pov = ATON.Nav.copyCurrentPOV();
+                
+                HATHOR.ED.addPOV({
+                    povid: "home",
+                    pos: [pov.pos.x, pov.pos.y, pov.pos.z],
+                    tgt: [pov.target.x, pov.target.y, pov.target.z],
+                    fov: pov.fov
+                });
+
+                //refreshPOVList();
+                HATHOR.SUI.buildPOVs();
+            }
+        }),
+
+        ATON.UI.createInputText({
+            placeholder: "New viewpoint...",
+            icon: "add",
+            classes: "w-100",
+            onsubmit: (povid)=>{
+                let pov = ATON.Nav.copyCurrentPOV();
+
+                HATHOR.ED.addPOV({
+                    povid: povid,
+                    pos: [pov.pos.x, pov.pos.y, pov.pos.z],
+                    tgt: [pov.target.x, pov.target.y, pov.target.z],
+                    fov: pov.fov
+                });
+
+                //refreshPOVList();
+                HATHOR.SUI.buildPOVs();
+            }
+        })
+    );
+
+    if (!povid) elBody.append(elCurrPOV);
+
+    UI.openToolPanel({
+        header: (povid)? "Viewpoint '"+povid+"'" : "Current viewpoint",
+        body: elBody,
+        headelement: ATON.UI.createButton({
+            icon: "left",
+            onpress: UI.sideNav
+        }),
+    });
+}
 
 // Tasks
 UI.buildTaskToolbar = (task)=>{

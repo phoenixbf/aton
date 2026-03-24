@@ -195,10 +195,10 @@ SceneHub.getJSONsemanticSpheresList = (semid)=>{
         let sphere = S.children[s];
         if (sphere.type){
             SL.push([
-                parseFloat(sphere.position.x.toPrecision(SceneHub.FLOAT_PREC)), 
-                parseFloat(sphere.position.y.toPrecision(SceneHub.FLOAT_PREC)), 
-                parseFloat(sphere.position.z.toPrecision(SceneHub.FLOAT_PREC)), 
-                parseFloat(sphere.scale.x.toPrecision(SceneHub.FLOAT_PREC))
+                ATON.Utils.roundFloat(sphere.position.x, SceneHub.FLOAT_PREC),
+                ATON.Utils.roundFloat(sphere.position.y, SceneHub.FLOAT_PREC),
+                ATON.Utils.roundFloat(sphere.position.z, SceneHub.FLOAT_PREC),
+                ATON.Utils.roundFloat(sphere.scale.x, SceneHub.FLOAT_PREC)
             ]);
         }
     }

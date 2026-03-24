@@ -11,6 +11,7 @@ let SUI = {};
 SUI.GRID_SIZE      = 10;
 SUI.GRID_DIVISIONS = 10;
 
+SUI.V_ZERO = new THREE.Vector3();
 
 SUI.setup = ()=>{
     SUI._rootED = ATON.createUINode().attachToRoot();
@@ -99,20 +100,44 @@ SUI.detachGizmo = ()=>{
 };
 
 SUI.buildPOVs = ()=>{
-    return;
+    //return;
     
     let build = ()=>{
         for (let pov in ATON.Nav.povlist){
             let POV = ATON.Nav.povlist[pov];
 
-            //let cNode = SUI._mCam.clone();
-            //cNode.as("POV-"+pov);
+            let cNode = SUI._mCam.clone();
+            cNode.as("POV-"+pov);
 
+            let D = new THREE.Vector3();
+            D.x = POV.target.x - POV.pos.x;
+            D.y = POV.target.y - POV.pos.y;
+            D.z = POV.target.z - POV.pos.z;
+/*
+            D.normalize();
+
+            let conesize = 1.0;
+            let gfov = new THREE.ConeGeometry( 0.7*conesize, conesize, 4, 1, true );
+            gfov.rotateX(Math.PI*0.5);
+            gfov.translate(0,0,-0.5*conesize);
+
+            let mfov = new THREE.Mesh( gfov, SUI._matDef );
+            mfov.lookAt(-D.x, -D.y, -D.z);
+            mfov.raycast = ATON.Utils.VOID_CAST;
+            cNode.add(mfov);
+*/
+
+            let gL = new THREE.BufferGeometry().setFromPoints([SUI.V_ZERO, new THREE.Vector3(0,0,D.length())]);
+            let L = new THREE.Line(gL);
+            L.raycast = ATON.Utils.VOID_CAST;
+            cNode.add(L);
+
+/*
             let cNode = ATON.createUINode().setMaterial( ATON.MatHub.materials.defUI );
             cNode.load(ATON.PATH_RES + "models/cam.glb", ()=>{
                 //cNode.disablePicking();
             });
-
+*/
             //let cNode = ATON.createUINode("H_SUI-"+pov);
             //cNode.add( new THREE.Mesh(ATON.Utils.geomUnitCube, ATON.MatHub.materials.invisible ) );
             cNode.attachTo(SUI._gPOVs);
@@ -122,8 +147,8 @@ SUI.buildPOVs = ()=>{
             cNode.position.copy(POV.pos);
             cNode.orientToLocation(POV.target);
             cNode.disablePicking();
-
-            let trigger = ATON.createSemanticNode("POV-"+pov);
+/*
+            let trigger = ATON.createSemanticNode(); // "POV-"+pov
             trigger.position.copy(POV.pos);
             trigger.setScale(0.2);
             trigger.add( new THREE.Mesh(ATON.Utils.geomUnitCube, ATON.MatHub.materials.invisible ) );            
@@ -136,10 +161,9 @@ SUI.buildPOVs = ()=>{
             };
 
             trigger.attachTo(SUI._gPOVs).enablePicking();
-
+*/
             //cNode.enablePicking();
             //ATON.SUI.visitor(cNode, true);
-
 
 /*
             let trigger = ATON.createUINode("SUI-"+pov);
@@ -163,8 +187,8 @@ SUI.buildPOVs = ()=>{
     if (!SUI._gPOVs){
         SUI._gPOVs = ATON.createUINode();
         SUI._gPOVs.attachTo(SUI._rootED);
-        build();
-        //SUI._mCam = ATON.createUINode().setMaterial( SUI._matDef ).load(ATON.PATH_RES + "models/cam.glb", build);
+        //build();
+        SUI._mCam = ATON.createUINode().setMaterial( SUI._matDef ).load(ATON.PATH_RES + "models/cam.glb", build);
     }
     else {
         SUI._gPOVs.removeChildren();

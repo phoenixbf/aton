@@ -687,6 +687,11 @@ a {
     background-color: rgba(var(--bs-body-bg-rgb), 0.1);
 }
 
+.aton-collection-item img {
+    height: 24px;
+    width: auto;
+}
+
 
 /* Cards
 ========================*/
@@ -864,6 +869,13 @@ a {
     height: auto;
 }
 
+
+.aton-form-label {
+    display: block;
+    font-size: small;
+    margin-bottom: 2px;
+    margin-left: 4px;
+}
 
 /* Ranges / Sliders
 ========================*/

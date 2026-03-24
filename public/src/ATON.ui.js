@@ -31,10 +31,17 @@ UI.SCENES_SORTER = (entryA, entryB)=>{
 
 
 UI.init = ()=>{
-    if (!window.bootstrap) return;
-    if (!window.bootstrap.Offcanvas) return; // tmp hack
+    if (!window.bootstrap){
+        console.log("ERROR: bootstrap not found");
+        return;
+    }
+        
+    if (!window.bootstrap.Offcanvas){
+        console.log("ERROR: bootstrap not found");
+        return;
+    }
 
-    UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/";
+    UI.PATH_RES_ICONS = ATON.PATH_RES+"icons/v2/";
 
     UI._bModal     = false;
     UI._bSidePanel = false;
@@ -744,7 +751,7 @@ UI.createNavSwitcher = (options)=>{
     let elFP,elOR,elDO;
 
     elFP = UI.createButton({
-        icon: "fp",
+        icon: "nav-fp",
         //text: "First Person",
         tooltip: "First Person",
         classes: "btn-default",
@@ -757,7 +764,7 @@ UI.createNavSwitcher = (options)=>{
     });
 
     elOR = UI.createButton({
-        icon: "nav",
+        icon: "nav-orbit",
         tooltip: "Orbit",
         //text: "Orbit",
         classes: "btn-default",
@@ -868,7 +875,7 @@ UI.createButtonUser = (options)=>{
     };
 
     elUserBTN = ATON.UI.createButton({
-        icon: "bi-person-fill", //"user",
+        icon: "user", // "bi-person"
 		//classes: "px-2",
         onpress: ()=>{
             if (options.onmodalopen) options.onmodalopen();
@@ -1216,6 +1223,39 @@ UI.createAccordion = (options)=>{
     return el;
 };
 
+UI.createNumericInput = (options)=>{
+    options = options? options : {};
+
+    let el = UI.elem(`
+        <div class="input-group mb-3 aton-inline">
+            <input type="number" class="form-control aton-input">
+        </div>
+    `);
+
+    let elInput = el.children[0];
+
+    if (options.value) elInput.setAttribute("value", options.value);
+    if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
+    if (options.step) elInput.setAttribute("step", options.step);
+    if (options.range){
+        elInput.setAttribute("min", options.range[0]);
+        elInput.setAttribute("max", options.range[1]);
+    }
+
+    elInput.oninput = ()=>{
+        let v = elInput.value;
+        if (v.length < 1) return;
+
+        if (options.onupdate) options.onupdate(v);
+    };
+
+    if (options.label){
+        el.prepend( ATON.UI.elem("<span class='input-group-text aton-inline'>"+options.label+"</span>"));
+    }
+
+    return el;
+};
+
 /**
 Create a vector control
 - options.vector: target THREE.Vector3 to be manipulated
@@ -1280,6 +1320,7 @@ UI.createVectorControl = (options)=>{
 
     elInputX.oninput = ()=>{
         let v = elInputX.value;
+        if (v.length < 1) return;
 
         if (V) V.x = v;
         if (options.onupdate) options.onupdate();
@@ -1287,6 +1328,7 @@ UI.createVectorControl = (options)=>{
 
     elInputY.oninput = ()=>{
         let v = elInputY.value;
+        if (v.length < 1) return;
 
         if (V) V.y = v;
         if (options.onupdate) options.onupdate();
@@ -1294,6 +1336,7 @@ UI.createVectorControl = (options)=>{
 
     elInputZ.oninput = ()=>{
         let v = elInputZ.value;
+        if (v.length < 1) return;
 
         if (V) V.z = v;
         if (options.onupdate) options.onupdate();
@@ -1392,6 +1435,7 @@ UI.createQuaternionControl = (options)=>{
 
     elInputX.oninput = ()=>{
         let v = elInputX.value;
+        if (v.length < 1) return;
 
         if (Q) Q.x = v;
         if (options.onupdate) options.onupdate();
@@ -1399,6 +1443,7 @@ UI.createQuaternionControl = (options)=>{
 
     elInputY.oninput = ()=>{
         let v = elInputY.value;
+        if (v.length < 1) return;
 
         if (Q) Q.y = v;
         if (options.onupdate) options.onupdate();
@@ -1406,6 +1451,7 @@ UI.createQuaternionControl = (options)=>{
 
     elInputZ.oninput = ()=>{
         let v = elInputZ.value;
+        if (v.length < 1) return;
 
         if (Q) Q.z = v;
         if (options.onupdate) options.onupdate();
@@ -1413,6 +1459,7 @@ UI.createQuaternionControl = (options)=>{
 
     elInputW.oninput = ()=>{
         let v = elInputW.value;
+        if (v.length < 1) return;
 
         if (Q) Q.w = v;
         if (options.onupdate) options.onupdate();
@@ -1483,7 +1530,7 @@ UI.createNodeTransformControl = (options)=>{
             onupdate: options.onupdateposition
         });
 
-        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elPos.id+"'>Position</label>") );
+        el.append( UI.elem("<label class='form-label aton-form-label' for='"+elPos.id+"'>Position</label>") );
         el.append( elPos );
 
         UI.registerElementAsComponent(elPos, "positionControl");
@@ -1499,7 +1546,7 @@ UI.createNodeTransformControl = (options)=>{
             onupdate: options.onupdatescale
         });
 
-        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elScale.id+"'>Scale</label>") );
+        el.append( UI.elem("<label class='form-label aton-form-label' for='"+elScale.id+"'>Scale</label>") );
         el.append( elScale );
 
         UI.registerElementAsComponent(elScale, "scaleControl");
@@ -1520,7 +1567,7 @@ UI.createNodeTransformControl = (options)=>{
             step: options.rotation.step
         });     
 */
-        el.append( UI.elem("<label class='form-label hathor-text-block' for='"+elRot.id+"'>Rotation</label>") );
+        el.append( UI.elem("<label class='form-label aton-form-label' for='"+elRot.id+"'>Rotation</label>") );
         el.append( elRot );
 
         UI.registerElementAsComponent(elRot, "rotationControl");
@@ -2579,7 +2626,7 @@ UI.createLoginForm = (options)=>{
 
     let elEnter = ATON.UI.createButton({
         text: "Login",
-        icon: "bi-person-fill",
+        icon: "user",
         variant: "accent",
         classes: "px-4",
         //size: "large",
@@ -2592,8 +2639,8 @@ UI.createLoginForm = (options)=>{
     });
 
     if (options.header) el.append(options.header);
-    else el.append( UI.elem(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
-    //else el.append( ATON.UI.elem(`<img src="${ATON.PATH_RES}aton-logo.png" style="width:50px; height:auto; margin-bottom:20px">`) );
+    //else el.append( UI.elem(`<i class="bi bi-person" style="font-size:3em;"></i>`) );
+    //else el.append( ATON.UI.elem(`<img src="${UI.PATH_RES_ICONS}user.png" style="width:50px; height:auto; margin-bottom:20px">`) );
 
     el.append(elUsername);
     el.append(elPassword);

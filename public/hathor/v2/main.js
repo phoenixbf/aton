@@ -94,6 +94,8 @@ HATHOR.setupLogic = ()=>{
                 HATHOR.enterEditorMode();
             });
         }
+
+        HATHOR.UI.modalSceneDescription();
     });
 
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{

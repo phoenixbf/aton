@@ -115,7 +115,7 @@ UI.showSemanticPanel = (semid)=>{
     if (HATHOR.isEditorMode()){
         editbtns.push(
             ATON.UI.createButton({
-                icon: "annotation",
+                icon: "edit",
                 onpress: ()=>{
                     UI.modalAnnotation(semid);
                     ATON.UI.hideSidePanel();
@@ -758,6 +758,11 @@ UI.sideTool = ()=>{
 UI.sideScene = ()=>{
     if (!ATON.SceneHub.currData) return;
 
+    if (!HATHOR.isEditorMode()){
+        UI.modalSceneDescription();
+        return;
+    }
+
     let scenedata = ATON.SceneHub.currData;
     let sid = ATON.SceneHub.getSID();
 
@@ -774,6 +779,7 @@ UI.sideScene = ()=>{
             placeholder: "Title",
             value: ATON.SceneHub.getTitle(),
             onchange: (title)=>{
+                title = title.trim();
                 HATHOR.ED.sceneInfo({title: title});
             }
         })
@@ -879,7 +885,7 @@ UI.sideScene = ()=>{
         text: "Set current view as cover",
         classes: "btn-default w-100",
         onpress: ()=>{
-            let cover = ATON.Utils.takeScreenshot(256);
+            let cover = ATON.Utils.takeScreenshotFromPOV(ATON.Nav._currPOV, 256);
 
             ATON.Utils.postJSON(ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover", { img: cover.src }, (r)=>{
                 img.src = cover.src;
@@ -939,6 +945,52 @@ UI.sideScene = ()=>{
     UI.openToolPanel({
         header: "Scene",
         body: elBody
+    });
+};
+
+UI.modalSceneDescription = ()=>{
+    let title = ATON.SceneHub.getTitle();
+    let descr = ATON.SceneHub.getDescription();
+
+    let elBody = ATON.UI.createContainer();
+
+    //if (!title && !descr) return;
+    //if (descr.length < 1 && title.length < 1) return;
+
+    if (!title) title = "Untitled";
+
+    if (descr){
+        descr = JSON.parse(descr).trim();
+        if (descr.length < 1) descr = "<p>No description</p>";
+    }
+    else descr = "<p>No description</p>";
+
+    elBody.append( ATON.UI.elem(descr) );
+
+    let elFooter = ATON.UI.createContainer({ classes: "w-100"});
+/*
+    elFooter.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButtonVR({
+                    //size: "large",
+                    text: "VR",
+                    classes: "btn-accent"
+                }),
+                ATON.UI.createButtonAR({
+                    //size: "large",
+                    text: "AR",
+                    classes: "btn-accent"
+                })
+            ]
+        })
+    );
+*/
+
+    ATON.UI.showModal({
+        header: title,
+        body: elBody,
+        footer: elFooter
     });
 };
 
@@ -1500,10 +1552,15 @@ UI.sideViewpoint = (povid)=>{
 
     let POV = (povid)? ATON.Nav.povlist[povid] : ATON.Nav.copyCurrentPOV();
 
+    POV.pos    = ATON.Utils.roundVector3(POV.pos, 3);
+    POV.target = ATON.Utils.roundVector3(POV.target, 3);
+    //POV.fov    = ATON.Utils.rounFloat(POV.fov, 0);
+
     elPOVparams.append(
         ATON.UI.elem("<span class='aton-form-label'>Eye (position)</span>"),
         ATON.UI.createVectorControl({
             vector: POV.pos,
+            step: 0.1,
             onupdate: ()=>{
                 if (isNaN(POV.pos.x) || isNaN(POV.pos.y) || isNaN(POV.pos.z)) return;
 
@@ -1514,6 +1571,7 @@ UI.sideViewpoint = (povid)=>{
         ATON.UI.elem("<span class='aton-form-label'>Target</span>"),
         ATON.UI.createVectorControl({
             vector: POV.target,
+            step: 0.1,
             onupdate: ()=>{
                 if (isNaN(POV.target.x) || isNaN(POV.target.y) || isNaN(POV.target.z)) return;
 

@@ -249,6 +249,14 @@ Utils.roundFloat = (n, dec)=>{
     return parseFloat( parseFloat(n).toFixed(dec) );
 };
 
+Utils.roundVector3 = (V, dec)=>{
+    V.x = Utils.roundFloat(V.x, dec);
+    V.y = Utils.roundFloat(V.y, dec);
+    V.z = Utils.roundFloat(V.z, dec);
+
+    return V;
+};
+
 Utils.resolveCollectionURL = (url)=>{
     if (!url) return "";
 

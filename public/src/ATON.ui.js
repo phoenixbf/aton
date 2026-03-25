@@ -1262,7 +1262,8 @@ Create a vector control
 - options.step: step value
 - options.label: a label for this control (e.g.: "position")
 - options.reset: an array of 3 values for a reset button (e.g.: [0,0,0])
-- options.onupdate: a routine called when vector is changed/updated
+- options.onupdate: a routine called when any vector field (x, y or z) is changed/updated
+- options.onfocus: a routine called when focusing on this vector control
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1323,7 +1324,7 @@ UI.createVectorControl = (options)=>{
         if (v.length < 1) return;
 
         if (V) V.x = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(V);
     };
 
     elInputY.oninput = ()=>{
@@ -1331,7 +1332,7 @@ UI.createVectorControl = (options)=>{
         if (v.length < 1) return;
 
         if (V) V.y = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(V);
     };
 
     elInputZ.oninput = ()=>{
@@ -1339,7 +1340,7 @@ UI.createVectorControl = (options)=>{
         if (v.length < 1) return;
 
         if (V) V.z = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(V);
     };
 
     // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
@@ -1364,6 +1365,12 @@ UI.createVectorControl = (options)=>{
     elInputY.onpaste = onpaste;
     elInputZ.onpaste = onpaste;
 
+    if (options.onfocus){
+        elInputX.onfocus = options.onfocus;
+        elInputY.onfocus = options.onfocus;
+        elInputZ.onfocus = options.onfocus;
+    }
+
     return el;
 };
 
@@ -1372,7 +1379,8 @@ Create a quaternion control
 - options.quat: target THREE.Quaternion to be manipulated
 - options.step: step value
 - options.reset: an array of 4 values for a reset button (e.g.: [1,0,0,0])
-- options.onupdate: a routine called when Quaternion is changed/updated
+- options.onupdate: a routine called when any Quaternion field is changed/updated
+- options.onfocus: a routine called when focusing on this vector control
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1438,7 +1446,7 @@ UI.createQuaternionControl = (options)=>{
         if (v.length < 1) return;
 
         if (Q) Q.x = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(Q);
     };
 
     elInputY.oninput = ()=>{
@@ -1446,7 +1454,7 @@ UI.createQuaternionControl = (options)=>{
         if (v.length < 1) return;
 
         if (Q) Q.y = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(Q);
     };
 
     elInputZ.oninput = ()=>{
@@ -1454,7 +1462,7 @@ UI.createQuaternionControl = (options)=>{
         if (v.length < 1) return;
 
         if (Q) Q.z = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(Q);
     };
 
     elInputW.oninput = ()=>{
@@ -1462,7 +1470,7 @@ UI.createQuaternionControl = (options)=>{
         if (v.length < 1) return;
 
         if (Q) Q.w = v;
-        if (options.onupdate) options.onupdate();
+        if (options.onupdate) options.onupdate(Q);
     };
 
     // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
@@ -1489,6 +1497,13 @@ UI.createQuaternionControl = (options)=>{
     elInputZ.onpaste = onpaste;
     elInputW.onpaste = onpaste;
 
+    if (options.onfocus){
+        elInputX.onfocus = options.onfocus;
+        elInputY.onfocus = options.onfocus;
+        elInputZ.onfocus = options.onfocus;
+        elInputW.onfocus = options.onfocus;
+    }
+
     return el;
 };
 
@@ -1501,6 +1516,9 @@ Create a node transform control. If "position", "scale" and "rotation" propertie
 - options.onupdateposition: routine when position changed
 - options.onupdaterotation: routine when rotation changed
 - options.onupdatescale: routine when scale changed
+- options.onfocusposition: routine when focusing on position fields
+- options.onfocusrotation: routine when focusing on rotation fields
+- options.onfocusscale: routine when focusing on scale fields
 
 @param {object} options - UI options object
 @returns {HTMLElement}
@@ -1527,7 +1545,8 @@ UI.createNodeTransformControl = (options)=>{
             vector: N.position,
             step: options.position.step,
             reset: [0,0,0],
-            onupdate: options.onupdateposition
+            onupdate: options.onupdateposition,
+            onfocus: options.onfocusposition
         });
 
         el.append( UI.elem("<label class='form-label aton-form-label' for='"+elPos.id+"'>Position</label>") );
@@ -1543,7 +1562,8 @@ UI.createNodeTransformControl = (options)=>{
             vector: N.scale,
             step: options.scale.step,
             reset: [1,1,1],
-            onupdate: options.onupdatescale
+            onupdate: options.onupdatescale,
+            onfocus: options.onfocusscale
         });
 
         el.append( UI.elem("<label class='form-label aton-form-label' for='"+elScale.id+"'>Scale</label>") );
@@ -1559,7 +1579,8 @@ UI.createNodeTransformControl = (options)=>{
             vector: N.rotation,
             step: options.rotation.step,
             reset: [0,0,0],
-            onupdate: options.onupdaterotation
+            onupdate: options.onupdaterotation,
+            onfocus: options.onfocusrotation
         });
 /*
         let elRot = UI.createQuaternionControl({

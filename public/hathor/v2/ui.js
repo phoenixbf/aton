@@ -76,6 +76,8 @@ UI.exitEditorMode = ()=>{
     UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
     if (UI._elModeED)  UI._elModeED.classList.remove("aton-btn-highlight");
     if (UI._elModeSTD) UI._elModeSTD.classList.add("aton-btn-highlight");
+
+    HATHOR.SUI.detachGizmo();
 };
 
 UI.createTextBlock = (content)=>{
@@ -694,7 +696,7 @@ UI.openToolPanel = (options)=>{
         let el = document.createElement('div');
         el.classList.add("offcanvas-header");
 
-        el.innerHTML = "<h4 class='offcanvas-title'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close'></button>";
+        el.innerHTML = "<h4 class='offcanvas-title'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='offcanvas' aria-label='Close' onclick='HATHOR.UI.closeToolPanel()'></button>";
 
         if (options.headelement) el.prepend(options.headelement);
 
@@ -719,6 +721,8 @@ UI.openToolPanel = (options)=>{
 UI.closeToolPanel = ()=>{
     UI._sidepanel.hide();
     UI._bSidePanel = false;
+
+    HATHOR.SUI.detachGizmo();
 };
 
 /*========================
@@ -1221,8 +1225,6 @@ UI.sideManageLayer = (nid)=>{
     let N = ATON.getSceneNode(nid);
     if (!N) return;
 
-    HATHOR.SUI.attachGizmoToNode(N);
-
     let elBody = ATON.UI.createContainer();
     
     elBody.append(
@@ -1273,6 +1275,19 @@ UI.sideManageLayer = (nid)=>{
 
         onupdatescale: ()=>{
             HATHOR.ED.dirtyNodeTransformReq(N, ["scl"]);
+        },
+
+        onfocusposition: ()=>{
+            HATHOR.SUI.attachGizmoToNode(N);
+            HATHOR.SUI.setGizmoMode("translate");
+        },
+        onfocusrotation: ()=>{
+            HATHOR.SUI.attachGizmoToNode(N);
+            HATHOR.SUI.setGizmoMode("rotate");
+        },
+        onfocusscale: ()=>{
+            HATHOR.SUI.attachGizmoToNode(N);
+            HATHOR.SUI.setGizmoMode("scale");
         }
     });
 

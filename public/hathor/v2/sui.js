@@ -86,6 +86,12 @@ SUI.buildGizmoTC = ()=>{
     SUI._rootED.add(SUI._tc.getHelper());
 };
 
+SUI.setGizmoMode = (mode)=>{
+    if (!SUI._tc) return;
+
+    SUI._tc.setMode(mode);
+};
+
 SUI.attachGizmoToNode = (N)=>{
     if (!N) return;
     if (!SUI._tc) return;

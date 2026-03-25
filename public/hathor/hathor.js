@@ -983,7 +983,7 @@ HATHOR.setupEventHandlers = ()=>{
         if (k==='b') ATON.SUI.showSelector( !ATON.SUI._bShowSelector );
 
         if (k==='#'){
-            let bShadows = !ATON._renderer.shadowMap.enabled;
+            let bShadows = !ATON.areShadowsEnabled(); //!ATON._renderer.shadowMap.enabled;
             ATON.toggleShadows(bShadows);
 
             let E = {};
@@ -1100,7 +1100,7 @@ HATHOR.setupEventHandlers = ()=>{
             E.environment = {};
             E.environment.mainlight = {};
             E.environment.mainlight.direction = [D.x,D.y,D.z];
-            E.environment.mainlight.shadows = ATON._renderer.shadowMap.enabled;
+            E.environment.mainlight.shadows = ATON.areShadowsEnabled(); //ATON._renderer.shadowMap.enabled;
 
             ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
             ATON.Photon.fire("AFE_AddSceneEdit", E);
@@ -1956,7 +1956,7 @@ HATHOR.popupEnvironment = ()=>{
     htmlcontent += "<div style='text-align:left'>";
 
     let bMainLight = ATON.isMainLightEnabled();
-    let bShadows = ATON._renderer.shadowMap.enabled;
+    let bShadows = ATON.areShadowsEnabled(); //ATON._renderer.shadowMap.enabled;
 
     htmlcontent += "<div style='text-align:center;'>Exposure (<span id='idExpVal'></span>)<br>";
     htmlcontent += "<input id='idExposure' type='range' min='0.05' max='10.0' step='0.05' >";

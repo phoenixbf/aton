@@ -1484,7 +1484,7 @@ ATON._onAllReqsCompleted = ()=>{
         ATON.updateLightProbes();
 
         // Lazy shadows updates (performances)
-        if (ATON._renderer.shadowMap.enabled && ATON._bShadowsFixedBound && ATON._aniMixers.length === 0){
+        if (ATON.areShadowsEnabled() && ATON._bShadowsFixedBound && ATON._aniMixers.length === 0){
             ATON._dMainL.shadow.autoUpdate = false;
             console.log("Lazy shadows");
         }
@@ -1543,7 +1543,7 @@ ATON.recomputeSceneBounds = ( ubs )=>{
     ATON.SUI._selRange[1] = ATON.bounds.radius * 0.5;
 
     // Shadows
-    if (ATON._renderer.shadowMap.enabled){
+    if (ATON.areShadowsEnabled()){
         ATON._rootVisible.traverse((o) => {
             if (o.isMesh){
                 o.castShadow = true;
@@ -2123,7 +2123,7 @@ ATON.setMainLightDirection = (v)=>{
 
     ATON._dMainL.position.set(-d.x,-d.y,-d.z);
 
-    if (ATON._renderer.shadowMap.enabled) ATON._dMainL.shadow.needsUpdate = true;
+    if (ATON.areShadowsEnabled()) ATON._dMainL.shadow.needsUpdate = true;
 
     ATON.toggleMainLight(true);
 };
@@ -2150,7 +2150,7 @@ ATON.toggleMainLight = (b)=>{
     }
     else {
         if (numLPs > 0) ATON.setNeutralAmbientLight(0.0);
-        else ATON.setNeutralAmbientLight(ATON.AMB_L);
+        else ATON.setNeutralAmbientLight(1); //ATON.setNeutralAmbientLight(ATON.AMB_L);
     }
 };
 
@@ -2263,6 +2263,10 @@ ATON.toggleShadows = (b)=>{
     }
 };
 
+ATON.areShadowsEnabled = ()=>{
+    return ATON._renderer.shadowMap.enabled;
+};
+
 ATON.updateDirShadows = (/*p*/)=>{
     if (ATON._dMainLdir === undefined) return;
     if (ATON._dMainLpos === undefined) return;
@@ -2292,7 +2296,7 @@ ATON.updateDirShadows = (/*p*/)=>{
 };
 
 ATON._updateEnvironment = ()=>{
-    if (!ATON._renderer.shadowMap.enabled) return;
+    if (!ATON.areShadowsEnabled()) return;
     if (ATON._bShadowsFixedBound) return;
 
     ATON.updateDirShadows();

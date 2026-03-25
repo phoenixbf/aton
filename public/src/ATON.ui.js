@@ -1058,6 +1058,38 @@ UI.createSelect = (options)=>{
 };
 
 /**
+Create a checkbox
+- options.label: the checkbox label
+- options.value: initial value (bool)
+- options.onchange: routine when checkbox changes state ((b)=>{ console.log(b) })
+
+@param {object} options - UI options object
+@returns {HTMLElement}
+*/
+UI.createCheckbox = (options)=>{
+    if (!options) options = {};
+
+    let baseid = ATON.Utils.generateID("checkbox");
+
+    let el = UI.elem(`
+        <div style='display:block'>
+            <input class="form-check-input aton-input" type="checkbox" id="${baseid}">
+            <label class="form-check-label aton-input" for="${baseid}">${options.label}</label>
+        </div>
+    `);
+
+    let elInput = el.children[0];
+    if (options.value) elInput.setAttribute("checked",true);
+
+    if (options.onchange) elInput.onclick = ()=>{
+        let b = elInput.checked;
+        options.onchange(b);
+    }
+
+    return el;
+};
+
+/**
 Create a tabs group.
 - options.items: an array of objects (tabs) with "title" (string) and "content" (HTML element) properties. An optional "icon" can also be assigned per tab, as well as "classes" to style a specific tab
 
@@ -2236,12 +2268,15 @@ Create a range/slider
 - options.value: initial value
 - options.oninput: on input routine (e.g.: (val)=>{ console.log(val); } )
 - options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
+- options.classes: optional classes for slider
 
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
 UI.createSlider = (options)=>{
     let el = UI.createContainer({classes: "aton-range-container"});
+    el.classList
+
     let baseid = ATON.Utils.generateID("slider");
     
     let elValue = undefined;
@@ -2296,6 +2331,8 @@ UI.createSlider = (options)=>{
         if (elValue) elValue.innerText = elInput.value;
         options.onchange(elInput.value);
     };
+
+    if (options.classes) el.className = el.className + " " + options.classes;
 
     return el;
 };

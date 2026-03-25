@@ -935,9 +935,11 @@ UI.modalSceneDescription = ()=>{
 
     let elBody = ATON.UI.createContainer();
 
-    //if (!title && !descr) return;
-    //if (descr.length < 1 && title.length < 1) return;
+    if (!title || !descr) return;
+    if (descr.length < 1 || title.length < 1) return;
 
+    descr = JSON.parse(descr).trim();
+/*
     if (!title) title = "Untitled";
 
     if (descr){
@@ -945,7 +947,7 @@ UI.modalSceneDescription = ()=>{
         if (descr.length < 1) descr = "<p>No description</p>";
     }
     else descr = "<p>No description</p>";
-
+*/
     elBody.append( ATON.UI.elem(descr) );
 
     let elFooter = ATON.UI.createContainer({ classes: "w-100"});
@@ -1387,6 +1389,8 @@ UI.sideEnv = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
+    let elLighting = ATON.UI.createContainer();
+
     let elCP = ATON.UI.createColorPicker({
         label: "Background color",
         color: "#"+ATON._mainRoot.background.getHexString(),
@@ -1439,9 +1443,50 @@ UI.sideEnv = ()=>{
                 title: "Panorama",
                 open: false,
                 content: elBG
+            },
+            {
+                title: "Lighting",
+                open: true,
+                content: elLighting
             }
         ]}
     ));
+
+    // Light
+    elLighting.append(
+        ATON.UI.createButton({
+            text: "Set main light &rarr;",
+            classes: "btn-default w-100",
+            icon: "light",
+            onpress: ()=>{
+                HATHOR.setCurrentTask(HATHOR.TASK_DIR_LIGHT)
+            }
+        }),
+
+        ATON.UI.createButtonSwitch({
+            text: "Shadows",
+            classes: "btn-default w-100",
+            status: ATON.areShadowsEnabled(),
+            onswitch: (b)=>{
+                let ld = ATON.getMainLightDirection();
+                HATHOR.ED.setLighting({
+                    shadows: b,
+                    dir: [ld.x, ld.y, ld.z]
+                });
+            }
+        }),
+
+        ATON.UI.createSlider({
+            label: "Exposure",
+            range: [0.05, 10.0],
+            step: 0.05,
+            value: ATON.getExposure(),
+            classes: "w-100",
+            oninput: (e)=>{
+                HATHOR.ED.setLighting({ exp: e });
+            }
+        })
+    );
 
 
     UI.openToolPanel({
@@ -1713,9 +1758,6 @@ UI.buildTaskToolbar = (task)=>{
                 icon: "bi-x-lg",
                 classes: "btn-default",
                 onpress: ()=>{
-                    //if (ATON._bqScene) ATON._handleQueryScene();
-                    //ATON.SemFactory.stopCurrentConvex();
-                    
                     HATHOR.endCurrentTask();
                 }
             }),
@@ -1741,10 +1783,7 @@ UI.buildTaskToolbar = (task)=>{
             text: "Cancel",
             icon: "bi-x-lg",
             classes: "btn-default",
-            onpress: ()=>{
-                //if (ATON._bqScene) ATON._handleQueryScene();
-                //ATON.SemFactory.stopCurrentConvex();
-                
+            onpress: ()=>{ 
                 HATHOR.endCurrentTask();
             }
         }));
@@ -1755,11 +1794,36 @@ UI.buildTaskToolbar = (task)=>{
             classes: "btn-accent",
             onpress: ()=>{
                 UI.modalAnnotation();
-                
-                //HATHOR.endCurrentTask();
             }
         }));        
     }
+
+    if (task === HATHOR.TASK_DIR_LIGHT){
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Disable",
+            icon: "delete",
+            classes: "btn-default",
+            onpress: ()=>{
+                HATHOR.ED.disableMainLight();
+
+                HATHOR.endCurrentTask();
+            }
+        }));
+
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Ok",
+            icon: "bi-check-lg",
+            classes: "btn-accent",
+            onpress: ()=>{
+                
+                HATHOR.ED.setLighting({
+                    dir: [HATHOR._cLightDir.x, HATHOR._cLightDir.y, HATHOR._cLightDir.z]
+                });
+                
+                HATHOR.endCurrentTask();
+            }
+        }));
+    } 
 };
 
 UI.clearTaskToolbar = ()=>{

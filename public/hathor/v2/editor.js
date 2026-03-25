@@ -430,6 +430,62 @@ ED.setBackground = (o)=>{
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
 };
 
+ED.setLighting = (o)=>{
+
+    if (o.dir){
+        o.dir[0] = ATON.Utils.roundFloat(o.dir[0], 2);
+        o.dir[1] = ATON.Utils.roundFloat(o.dir[1], 2);
+        o.dir[2] = ATON.Utils.roundFloat(o.dir[2], 2);
+
+        ATON.setMainLightDirection( new THREE.Vector3(o.dir[0],o.dir[1],o.dir[2]) );
+        ATON.toggleMainLight(true);
+    }
+
+    if (o.shadows !== undefined) ATON.toggleShadows(o.shadows);
+    if (o.exp){
+        o.exp = ATON.Utils.roundFloat(o.exp, 1);
+        ATON.setExposure(o.exp);
+    }
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.environment = {};
+    
+    if (o.dir){
+        E.environment.mainlight = {};
+        E.environment.mainlight.direction = o.dir;
+
+        if (o.shadows !== undefined) E.environment.mainlight.shadows = o.shadows;
+    }
+    
+    if (o.exp) E.environment.exposure = o.exp;
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+};
+
+ED.disableMainLight = (o)=>{
+    if (!o) o = {};
+
+    ATON.toggleMainLight(false);
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.environment = {};
+    E.environment.mainlight = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
+}
+
 ED.addSemNode = (o)=>{
     let nid = o.nid;
     let parentnid = o.parentnid;

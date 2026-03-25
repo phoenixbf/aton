@@ -45,6 +45,10 @@ HATHOR.setSceneToLoad = (sid)=>{
 };
 
 HATHOR.setup = ()=>{
+
+    HATHOR._bLD = false;
+    HATHOR._cLightDir = new THREE.Vector3();
+
     ATON.realize();
     ATON.UI.addBasicEvents();
 
@@ -148,11 +152,17 @@ HATHOR.setupLogic = ()=>{
         if (k==='n') HATHOR.UI.sideNav();
         if (k==='v') HATHOR.UI.sideViewpoint();
 
+        if (k==='l') HATHOR._bLD = true;
+
         if (k === 'Delete'){
             if (ATON._hoveredSemNode){
                 HATHOR.UI.modalDeleteSemanticID( ATON._hoveredSemNode );
             }
         }
+    });
+
+    ATON.on("KeyUp",(k)=>{
+        if (k==='l') HATHOR._bLD = false;
     });
 
 };
@@ -217,5 +227,22 @@ HATHOR.handleTaskOnTap = (e)=>{
     if (HATHOR.currTask === HATHOR.TASK_CONVEX_ANN){
         if (ATON._bqScene) ATON._handleQueryScene();
         ATON.SemFactory.addSurfaceConvexPoint();
+    }
+};
+
+// Main update
+HATHOR.update = ()=>{
+
+    if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && (HATHOR._bLD || ATON.Utils.isMobile())){
+        const sx = ATON._screenPointerCoords.x;
+        const sy = ATON._screenPointerCoords.y;
+
+        HATHOR._cLightDir.x = -Math.cos(sx * Math.PI);
+        HATHOR._cLightDir.y = -sy * 4.0;
+        HATHOR._cLightDir.z = -Math.sin(sx * Math.PI);
+
+        HATHOR._cLightDir.normalize();
+
+        ATON.setMainLightDirection(HATHOR._cLightDir);
     }
 };

@@ -822,13 +822,13 @@ UI.sideScene = ()=>{
         }
 
         elKeywordsSection.append(
-            UI.createTextBlock("Please pick one or more keywords to classify this scene. If the scene is public users can find it through these terms."),
+            UI.createTextBlock("Pick or create keywords to classify this scene. If the scene is public users can find it through these terms."),
 
             ATON.UI.createTagsComponent({
                 //label: "Keyword",
                 list: globallist,
                 tags: scenekwords,
-                placeholder: "Pick a keyword...",
+                placeholder: "Pick or add a keyword...",
                 onaddtag: (k)=>{
                     let O = {};
                     O.kwords = {};

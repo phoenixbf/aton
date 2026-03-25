@@ -549,6 +549,7 @@ ED.sceneInfo = (o)=>{
     }
 
     if (o.title) ATON.SceneHub.setTitle( o.title );
+    if (o.descr) ATON.SceneHub.setDescription( o.descr );
 
     //====== Collab
     if (o.remote) return true;
@@ -559,6 +560,8 @@ ED.sceneInfo = (o)=>{
     let E = {};
     if (o.kwords) E.kwords = o.kwords;
     if (o.title) E.title = o.title;
+    if (o.descr) E.description = o.descr;
+
     if (o.visibility !== undefined) E.visibility = o.visibility;
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);

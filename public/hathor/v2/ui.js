@@ -6,7 +6,11 @@
     Author: B. Fanini
 
 ===========================================================================*/
+import WYSIWYG from "./WYSIWYG.js";
+
 let UI = {};
+
+UI.WYSIWYG = WYSIWYG;
 
 UI.setup = ()=>{
 
@@ -23,8 +27,6 @@ UI.setup = ()=>{
     UI._sidepanel = new bootstrap.Offcanvas(UI._elSidePanel);
     document.body.append(UI._elSidePanel);
     UI._bSidePanel = false;
-
-    UI._elWYSIWYG = undefined;
 
     if (HATHOR._tb) UI.buildCustomToolbar();
     else UI.buildStandardToolbar();
@@ -172,7 +174,7 @@ UI.modalAnnotation = (semid)=>{
 
             html = HATHOR.getHTMLDescriptionFromSemNode(semid);
             if (html){
-                UI.WYSIWYGeditorInsert(html, true);
+                UI.WYSIWYG.insert(html, true);
             }
 
             //ATON.UI.showElement(elCreateAnn);
@@ -197,7 +199,7 @@ UI.modalAnnotation = (semid)=>{
             if (!semid) return;
 
             // Retrieve content from editor, if any
-            let semcontent = UI.WYSIWYGeditorGetHTML().trim();
+            let semcontent = UI.WYSIWYG.getHTML().trim();
             if (semcontent.length > 0) semcontent = JSON.stringify(semcontent);
             else semcontent = undefined;
 
@@ -231,7 +233,7 @@ UI.modalAnnotation = (semid)=>{
         })
     }
 
-    elBody.append( UI.WYSIWYGeditorCreate() );
+    elBody.append( UI.WYSIWYG.createElement() );
 
     elFooter.append( ATON.UI.createContainer({
         classes: "btn-group w-100",
@@ -246,12 +248,12 @@ UI.modalAnnotation = (semid)=>{
         wide: true
     });
 
-    UI.WYSIWYGeditorInit();
+    UI.WYSIWYG.init();
 
     // Populate with existing content from semID
     if (semid){
         html = HATHOR.getHTMLDescriptionFromSemNode(semid);
-        if (html) UI.WYSIWYGeditorInsert(html, true);
+        if (html) UI.WYSIWYG.insert(html, true);
     }
 };
 
@@ -625,6 +627,7 @@ UI.modalXR = ()=>{
 /*
     WYSIWYG Editor
 =====================================*/
+/*
 UI.WYSIWYG_TOOLBAR = "source,|,bold,italic,eraser,ul,ol,font,paragraph,|,hr,table,link,symbols";
 
 UI.WYSIWYGeditorCreate = ()=>{
@@ -651,17 +654,6 @@ UI.WYSIWYGeditorInit = ()=>{
         buttonsMD: UI.WYSIWYG_TOOLBAR,
         buttonsSM: UI.WYSIWYG_TOOLBAR,
         buttonsXS: UI.WYSIWYG_TOOLBAR,
-/*
-        extraButtons: [
-            {
-                name: 'insertDate',
-                iconURL: ATON.UI.resolveIconURL("user"),
-                exec: (editor)=>{
-                    UI.WYSIWYGeditorInsert(new Date().toDateString())
-                }
-            }
-        ],
-*/
 
         uploader: {
             insertImageAsBase64URI: true
@@ -686,6 +678,7 @@ UI.WYSIWYGeditorGetHTML = ()=>{
     
     return UI._elWYSIWYG.value;
 };
+*/
 
 /*
     Side Panels (tools)
@@ -728,30 +721,6 @@ UI.closeToolPanel = ()=>{
     UI._bSidePanel = false;
 };
 
-
-UI.sideTool = ()=>{
-    UI.openToolPanel({
-        header: "Test Tool",
-        body: ATON.UI.elem(`<textarea id="WYSIWYGeditor" name="editor"></textarea>`),
-/*
-        body: ATON.UI.createContainer({
-            items:[
-                ATON.UI.createInput3DModel({
-                    actionicon: "add",
-                    onaction: (url)=>{
-                        if (url && url.length>1) ATON.createSceneNode().load(url).attachToRoot();
-                    }
-                })
-            ]
-        })
-*/
-    });
-
-    UI.WYSIWYGeditorInit();
-
-    UI.WYSIWYGeditorInsert("<div><h1>This is a test</h1>This is a test!</div>")
-}
-
 /*========================
     SCENE
 ========================*/
@@ -778,10 +747,16 @@ UI.sideScene = ()=>{
             //label: "Title",
             placeholder: "Title",
             value: ATON.SceneHub.getTitle(),
+            onsubmit: (title)=>{
+                title = title.trim();
+                HATHOR.ED.sceneInfo({title: title});
+            }
+/*
             onchange: (title)=>{
                 title = title.trim();
                 HATHOR.ED.sceneInfo({title: title});
             }
+*/
         })
     );
 
@@ -792,10 +767,12 @@ UI.sideScene = ()=>{
             style: "width:100%",
             items: [
                 ATON.UI.createButton({
-                    text: "Set description",
+                    text: "Edit description",
+                    icon: "edit",
                     classes: "btn-default",
                     onpress: ()=>{
-                        //
+                        UI.modalEditSceneDescription();
+                        UI.closeToolPanel();
                     }
                 })
             ]
@@ -993,6 +970,60 @@ UI.modalSceneDescription = ()=>{
         footer: elFooter
     });
 };
+
+UI.modalEditSceneDescription = ()=>{
+    let html = undefined; // HTML content
+
+    let descr = ATON.SceneHub.getDescription();
+    if (descr) html = JSON.parse(descr).trim();
+
+    let elBody = ATON.UI.createContainer({});
+    let elFooter = ATON.UI.createContainer({ classes: "w-100" });
+
+    // Finalize descr
+    let elSetDescr = ATON.UI.createButton({
+        text: "Set",
+        classes: "btn-accent",
+        //icon: ,
+        onpress: ()=>{
+            // Retrieve content from editor, if any
+            let content = UI.WYSIWYG.getHTML().trim();
+            if (content.length > 0) content = JSON.stringify(content);
+            else content = undefined;
+
+            console.log(content);
+
+            HATHOR.ED.sceneInfo({
+                descr: content,
+            });
+
+            ATON.UI.hideModal();
+        }
+    });
+
+    elBody.append( UI.WYSIWYG.createElement() );
+
+    elFooter.append( ATON.UI.createContainer({
+        classes: "btn-group w-100",
+        items:[ elSetDescr ]
+    }))
+    
+
+    ATON.UI.showModal({
+        header: "Edit Scene Description",
+        body: elBody,
+        footer: elFooter,
+        wide: true
+    });
+
+    UI.WYSIWYG.init();
+
+    // Populate with existing content from semID
+    if (html){
+        UI.WYSIWYG.insert(html, true);
+    }
+};
+
 
 
 /*========================
@@ -1547,8 +1578,8 @@ UI.sideViewpoint = (povid)=>{
         //style: "margin-bottom: 4px;"
     });
 
-    let elPOVparams = ATON.UI.createContainer({});
-    let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section"});
+    let elPOVparams = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+    let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section" });
 
     let POV = (povid)? ATON.Nav.povlist[povid] : ATON.Nav.copyCurrentPOV();
 
@@ -1564,7 +1595,7 @@ UI.sideViewpoint = (povid)=>{
             onupdate: ()=>{
                 if (isNaN(POV.pos.x) || isNaN(POV.pos.y) || isNaN(POV.pos.z)) return;
 
-                ATON.Nav.requestPOV(POV, 0.1);
+                ATON.Nav.requestPOV(POV, 0.0);
             }
         }),
 
@@ -1575,21 +1606,22 @@ UI.sideViewpoint = (povid)=>{
             onupdate: ()=>{
                 if (isNaN(POV.target.x) || isNaN(POV.target.y) || isNaN(POV.target.z)) return;
 
-                ATON.Nav.requestPOV(POV, 0.1);
+                ATON.Nav.requestPOV(POV, 0.0);
             }
         }),
 
-        ATON.UI.elem("<span class='aton-form-label'>FoV (field of view)</span>"),
+        ATON.UI.elem("<span class='aton-form-label'>Field of view (degrees)</span>"),
         ATON.UI.createNumericInput({
             range: [5.0, 100.0],
             step: 1.0,
             value: POV.fov,
             onupdate: (v)=>{
+                v = parseFloat(v);
+
                 if (v < 5.0) return;
                 if (v > 100.0) return;
 
-                POV.fov = v;
-                ATON.Nav.requestPOV(POV, 0.1);
+                ATON.Nav.setFOV(v);
             }
         })
     );

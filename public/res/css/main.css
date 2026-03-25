@@ -518,6 +518,8 @@ a {
 
 .aton-inline {
     height: var(--aton-el-height) !important;
+    align-items: baseline;
+    padding: 0px;
 }
 
 /* .aton-btn-highlight img {
@@ -910,11 +912,14 @@ a {
 
 /* Input decorators
 =======================*/
-/*
+
 .aton-input {
+/*
     min-height: var(--aton-el-height);
-}
 */
+    height: var(--aton-el-height) !important;
+}
+
 
 .aton-input:focus {
     border-color: rgba(var(--aton-colors-accent-rgb), 0.5);
@@ -924,6 +929,7 @@ a {
 .aton-input-x {
     border-color: rgba(255,0,0, 0.2);
     font-size: smaller;
+    height: var(--aton-el-height) !important;
 /*
     height: var(--aton-el-height);
 */
@@ -937,6 +943,7 @@ a {
 .aton-input-y {
     border-color: rgba(0,255,0, 0.2);
     font-size: smaller;
+    height: var(--aton-el-height) !important;
 /*
     height: var(--aton-el-height);
 */
@@ -950,6 +957,7 @@ a {
 .aton-input-z {
     border-color: rgba(0,0,255, 0.2);
     font-size: smaller;
+    height: var(--aton-el-height) !important;
 /*
     height: var(--aton-el-height);
 */

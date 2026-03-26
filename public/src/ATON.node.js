@@ -380,6 +380,8 @@ setShadowReceive(b){
 };
 
 setEnvMap(envtex){
+    if (this.noLP) return;
+    
     this.traverse((o) => {
         if (o.isMesh){
 			o.material.envMap  = envtex;
@@ -392,6 +394,8 @@ setEnvMap(envtex){
 }
 
 assignLightProbe(LP){
+    if (this.noLP) return;
+
     this.traverse((o) => {
         if (o.isMesh && o.geometry) ATON.Utils.assignLightProbeToMesh(LP, o);
     });

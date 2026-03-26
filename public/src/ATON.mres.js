@@ -263,6 +263,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //ts.manager.addHandler( /\.basis$/, ATON._basisLoader );
 
     N.add( ts.group );
+    N.noLP = true;
     //console.log(N)
 
     // CC extract

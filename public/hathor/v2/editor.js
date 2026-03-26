@@ -449,7 +449,9 @@ ED.setLighting = (o)=>{
 
     if (o.autolp !== undefined){
         ATON.setAutoLP(o.autolp);
-        ATON.recomputeSceneBounds();
+
+        if (o.autolp) ATON.recomputeSceneBounds();
+        else ATON.clearLightProbes();
     }
 
     //====== Collab
@@ -470,7 +472,7 @@ ED.setLighting = (o)=>{
     
     if (o.exp) E.environment.exposure = o.exp;
 
-    if (o.autolp){
+    if (o.autolp !== undefined){
         E.environment.lightprobes = {};
         E.environment.lightprobes.auto = o.autolp;
     }
@@ -494,7 +496,23 @@ ED.disableMainLight = (o)=>{
     E.environment.mainlight = {};
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
-}
+};
+
+ED.deleteLightProbes = (o)=>{
+    if (!o) o = {};
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.environment = {};
+    E.environment.mainlight = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
+};
 
 ED.addSemNode = (o)=>{
     let nid = o.nid;

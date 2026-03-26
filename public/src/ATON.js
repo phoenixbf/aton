@@ -1565,6 +1565,9 @@ ATON.recomputeSceneBounds = ( ubs )=>{
             ATON._lps[0].setPosition(ATON.bounds.center).setNear(ATON.bounds.radius);
         }
         console.log("Auto LP");
+
+        ATON.getRootScene().assignLightProbesByProximity();
+        ATON.updateLightProbes();
     }
 
     if (ATON.FX.composer){
@@ -1722,14 +1725,17 @@ ATON.clearLightProbes = ()=>{
     }
     ATON._lps = [];
 
-    ATON.setNeutralAmbientLight(1);
+    if (ATON.isMainLightEnabled()) ATON.setNeutralAmbientLight(ATON.AMB_L);
+    else ATON.setNeutralAmbientLight(1);
 
     ATON._rootVisible.traverse((o) => {
         let LP = o.userData.LP;
-        if (LP && LP instanceof ATON.LightProbe){
+        if (LP && (LP instanceof ATON.LightProbe)){
             o.material.envMap  = null;
-            o.material.envMapIntensity = null;
+            o.material.envMapIntensity = 1;
             o.material.needsUpdate     = true;
+
+            delete o.userData.LP;
         }
     });
 };

@@ -146,6 +146,7 @@ GS.load = (url, N, onComplete)=>{
     ATON.GS.realize();
 
     ATON._assetReqNew(url);
+    N.noLP = true;
 
     new SPARK.SplatMesh({ 
         url: url,

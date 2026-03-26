@@ -222,6 +222,8 @@ HATHOR.handleTaskOnTap = (e)=>{
         if (ATON._bqScene) ATON._handleQueryScene();
         ATON.SemFactory.stopCurrentConvex();
 
+        if (!ATON._queryDataScene) return;
+
         HATHOR.UI.modalAnnotation();
     }
 

@@ -447,6 +447,11 @@ ED.setLighting = (o)=>{
         ATON.setExposure(o.exp);
     }
 
+    if (o.autolp !== undefined){
+        ATON.setAutoLP(o.autolp);
+        ATON.recomputeSceneBounds();
+    }
+
     //====== Collab
     if (o.remote) return true;
 
@@ -464,6 +469,11 @@ ED.setLighting = (o)=>{
     }
     
     if (o.exp) E.environment.exposure = o.exp;
+
+    if (o.autolp){
+        E.environment.lightprobes = {};
+        E.environment.lightprobes.auto = o.autolp;
+    }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
 };

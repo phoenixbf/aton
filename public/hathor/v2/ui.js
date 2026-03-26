@@ -1519,6 +1519,21 @@ UI.sideEnv = ()=>{
             oninput: (e)=>{
                 HATHOR.ED.setLighting({ exp: e });
             }
+        }),
+
+        UI.createTextBlock("This allows to estimate a general light probe, depending on current scene bounds. Useful for PBR assets"),
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButtonSwitch({
+                    icon: "lp",
+                    text: "Automatic Light Probing",
+                    classes: "btn-default",
+                    status: ATON._bAutoLP,
+                    onswitch: (b)=>{
+                        HATHOR.ED.setLighting({ autolp: b });
+                    }
+                })
+            ]
         })
     );
 

@@ -2275,7 +2275,6 @@ Create a range/slider
 */
 UI.createSlider = (options)=>{
     let el = UI.createContainer({classes: "aton-range-container"});
-    el.classList
 
     let baseid = ATON.Utils.generateID("slider");
     

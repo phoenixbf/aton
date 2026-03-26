@@ -1859,13 +1859,24 @@ UI.buildTaskToolbar = (task)=>{
                     HATHOR.endCurrentTask();
                 }
             }),
-
+/*
+            ATON.UI.createSlider({
+                range: selRange,
+                step: (selRange[1]-selRange[0]) * 0.01,
+                //label: "Radius",
+                //classes: "w-100",
+                oninput: (r)=>{
+                    ATON.SUI.setSelectorRadius(r);
+                }
+            })
+*/
             ATON.UI.createContainer({
                 style: "display:inline-block;",
                 items:[
                     ATON.UI.createSlider({
                         range: selRange,
                         step: (selRange[1]-selRange[0]) * 0.01,
+                        value: ATON.SUI.getSelectorRadius(),
                         //label: "Radius",
                         oninput: (r)=>{
                             ATON.SUI.setSelectorRadius(r);
@@ -1873,6 +1884,7 @@ UI.buildTaskToolbar = (task)=>{
                     })
                 ]
             })
+
         );
     }
 

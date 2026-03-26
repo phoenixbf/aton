@@ -929,6 +929,7 @@ a {
     min-height: var(--aton-el-height);
 */
     height: var(--aton-el-height) !important;
+    vertical-align: middle;
 }
 
 .aton-input:focus {

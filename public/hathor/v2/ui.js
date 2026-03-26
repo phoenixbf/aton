@@ -12,6 +12,8 @@ let UI = {};
 
 UI.WYSIWYG = WYSIWYG;
 
+UI.TASK_SYMBOL = "&rarr;"; // "&#9654;";
+
 UI.setup = ()=>{
 
     UI._elMainToolbar   = ATON.UI.get("sideToolbar");
@@ -277,7 +279,7 @@ UI.sideSemantics = ()=>{
             style: "width:100%",
             items: [
                 ATON.UI.createButton({
-                    text: "Basic &rarr;",
+                    text: "Basic " + UI.TASK_SYMBOL,
                     classes: "btn-default",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
@@ -296,7 +298,7 @@ UI.sideSemantics = ()=>{
             style: "width:100%",
             items: [
                 ATON.UI.createButton({
-                    text: "Free Form &rarr;",
+                    text: "Free Form "+UI.TASK_SYMBOL,
                     classes: "btn-default",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
@@ -868,7 +870,7 @@ UI.sideScene = ()=>{
         onpress: ()=>{
             let cover = ATON.Utils.takeScreenshotFromPOV(ATON.Nav._currPOV, 256);
 
-            ATON.Utils.postJSON(ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover", { img: cover.src }, (r)=>{
+            ATON.REQ.post("scenes/"+sid+"/cover", { img: cover.src }, (r)=>{
                 img.src = cover.src;
             });
         }
@@ -1452,28 +1454,60 @@ UI.sideEnv = ()=>{
         ]}
     ));
 
-    // Light
-    elLighting.append(
-        ATON.UI.createButton({
-            text: "Set main light &rarr;",
-            classes: "btn-default w-100",
-            icon: "light",
-            onpress: ()=>{
-                HATHOR.setCurrentTask(HATHOR.TASK_DIR_LIGHT)
-            }
-        }),
+    // Lighting
+    let elSwitchShadows = ATON.UI.createButtonSwitch({
+        icon: "shadows",
+        classes: "btn-default",
+        status: ATON.areShadowsEnabled(),
+        onswitch: (b)=>{
+            let ld = ATON.getMainLightDirection();
+            HATHOR.ED.setLighting({
+                shadows: b,
+                dir: [ld.x, ld.y, ld.z]
+            });
+        }
+    });
 
-        ATON.UI.createButtonSwitch({
-            text: "Shadows",
-            classes: "btn-default w-100",
-            status: ATON.areShadowsEnabled(),
-            onswitch: (b)=>{
+    let elSwitchMainLight = ATON.UI.createButtonSwitch({
+        icon: "light",
+        classes: "btn-default",
+        status: ATON.isMainLightEnabled(),
+        onswitch: (b)=>{
+            if (b){
+                let vD = [0.58,0.58,0.58];
+
                 let ld = ATON.getMainLightDirection();
+                if (ld) vD = [ld.x, ld.y, ld.z];
+                 
                 HATHOR.ED.setLighting({
-                    shadows: b,
-                    dir: [ld.x, ld.y, ld.z]
+                    dir: vD
                 });
+
+                ATON.UI.showElement(elSwitchShadows);
             }
+            else {
+                HATHOR.ED.disableMainLight();
+                ATON.UI.hideElement(elSwitchShadows);
+            }
+            
+        }
+    });
+
+    elLighting.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Setup main light "+UI.TASK_SYMBOL,
+                    classes: "btn-default w-100",
+                    icon: "light",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_DIR_LIGHT);
+                        //ATON.Nav.setUserControl(false);
+                    }
+                }),
+                elSwitchShadows,
+                elSwitchMainLight,
+            ]
         }),
 
         ATON.UI.createSlider({
@@ -1491,6 +1525,48 @@ UI.sideEnv = ()=>{
 
     UI.openToolPanel({
         header: "Environment",
+        body: elBody
+    });
+
+    if (!ATON.isMainLightEnabled()){
+        ATON.UI.hideElement(elSwitchShadows);
+    }
+};
+
+UI.modalDeletePOV = (povid)=>{
+    if (!povid) return;
+    let POV = ATON.Nav.povlist[povid];
+    if (!POV) return; 
+
+    let elBody = ATON.UI.createContainer();
+    elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete viewpoint '${povid}'?</p>`) );
+
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "NO",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
+                }),
+                ATON.UI.createButton({
+                    text: "YES",
+                    icon: "delete",
+                    classes: "btn-accent",
+                    onpress: ()=>{
+                        HATHOR.ED.deletePOV({povid: povid});
+                        //refreshPOVList();
+                        HATHOR.SUI.buildPOVs();
+
+                        ATON.UI.hideModal();
+                    }
+                })
+            ]
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Delete Viewpoint",
         body: elBody
     });
 };
@@ -1515,7 +1591,7 @@ UI.sideNav = ()=>{
         elPOVlist.append(
             ATON.UI.createBlockItem({
                 text: povid,
-                icon: (povid==="home")? "home" : undefined,
+                icon: "pov",
                 mainaction: ()=>{
                     ATON.Nav.requestPOV( P, 0.5 );
                 },
@@ -1524,9 +1600,13 @@ UI.sideNav = ()=>{
                         icon: "delete",
                         classes: "btn-default",
                         onpress: ()=>{
+                            UI.modalDeletePOV(povid);
+                            UI.closeToolPanel();
+/*
                             HATHOR.ED.deletePOV({povid: povid});
                             refreshPOVList();
                             HATHOR.SUI.buildPOVs();
+*/
                         }
                     })
                 ]
@@ -1550,6 +1630,8 @@ UI.sideNav = ()=>{
 
             appendPOVitem(POV, pov);
         }
+
+        if (numpovs < 1) ATON.UI.hideElement(elPOVlist);
     };
 
     elPOVs.append(
@@ -1749,6 +1831,7 @@ UI.buildTaskToolbar = (task)=>{
     UI._elTasks.innerHTML = "";
     UI.hideMainElements();
 
+    // Basic semantic shape
     if (task === HATHOR.TASK_BASIC_ANN){
         let selRange = ATON.SUI.getSelectorRange();
 
@@ -1778,6 +1861,7 @@ UI.buildTaskToolbar = (task)=>{
         );
     }
 
+    // Free form semantic shape
     if (task === HATHOR.TASK_CONVEX_ANN){
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Cancel",
@@ -1798,24 +1882,38 @@ UI.buildTaskToolbar = (task)=>{
         }));        
     }
 
+    // Main light
     if (task === HATHOR.TASK_DIR_LIGHT){
-        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+
+/*
+        let elDisable = ATON.UI.createButton({
             text: "Disable",
-            icon: "delete",
+            icon: "cancel",
             classes: "btn-default",
             onpress: ()=>{
                 HATHOR.ED.disableMainLight();
-
+                HATHOR.endCurrentTask();
+            }
+        });
+*/
+/*
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Cancel",
+            icon: "bi-x-lg",
+            classes: "btn-default",
+            onpress: ()=>{ 
                 HATHOR.endCurrentTask();
             }
         }));
+*/
+        //HATHOR.UI._elTasks.append(elDisable);
+        //HATHOR.UI._elTasks.append(elShadows);
 
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Ok",
             icon: "bi-check-lg",
             classes: "btn-accent",
             onpress: ()=>{
-                
                 HATHOR.ED.setLighting({
                     dir: [HATHOR._cLightDir.x, HATHOR._cLightDir.y, HATHOR._cLightDir.z]
                 });
@@ -1823,6 +1921,9 @@ UI.buildTaskToolbar = (task)=>{
                 HATHOR.endCurrentTask();
             }
         }));
+
+        //ATON.UI.hideElement(elDisable);
+        //if (!ATON.areShadowsEnabled()) ATON.UI.hideElement(elShadows);
     } 
 };
 

@@ -211,6 +211,7 @@ HATHOR.endCurrentTask = ()=>{
     }
 
     HATHOR.UI.clearTaskToolbar();
+    ATON.Nav.setUserControl(true);
 };
 
 // Handle tap on current task if any
@@ -234,6 +235,8 @@ HATHOR.handleTaskOnTap = (e)=>{
 HATHOR.update = ()=>{
 
     if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && (HATHOR._bLD || ATON.Utils.isMobile())){
+    //if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && ){
+
         const sx = ATON._screenPointerCoords.x;
         const sy = ATON._screenPointerCoords.y;
 

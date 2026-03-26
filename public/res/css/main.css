@@ -911,6 +911,15 @@ a {
     border-radius: var(--bs-border-radius);
 }
 
+.aton-placeholder {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.2);
+    border-radius: var(--bs-border-radius);
+    display: block;
+
+    text-align: center;
+    padding: 8px;
+}
+
 
 /* Input decorators
 =======================*/

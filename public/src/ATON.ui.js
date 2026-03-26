@@ -813,7 +813,7 @@ UI.createButtonQR = (options)=>{
     if (!options) options = {};
 
     let el = UI.createButton({
-        icon: "qr",
+        icon: "share",
         text: options.text,
         onpress: ()=>{
             let url = options.url? options.url : window.location.href;
@@ -2430,12 +2430,7 @@ UI.createInput3DModel = (options)=>{
     if (!options) options = {};
 
     // Placeholder element
-    let phold = ATON.UI.createInputText({
-        label: options.label,
-        placeholder: "Loading collection..."
-    });
-
-    phold.setAttribute("disabled",true);
+    let phold = UI.elem("<span class='aton-placeholder' style='height:40px'>Loading collection...</span>");
     el.append( phold );
 
     ATON.checkAuth(

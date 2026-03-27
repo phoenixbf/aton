@@ -40,6 +40,9 @@ HATHOR.TASK_DIR_LIGHT  = 4;
 HATHOR.SEM_SHAPE_SPHERE = 0;
 HATHOR.SEM_SHAPE_CONVEX = 1;
 
+HATHOR.ID_VALIDATOR = new RegExp("^[a-zA-Z0-9. ]*$");
+
+
 HATHOR.setSceneToLoad = (sid)=>{
     HATHOR._sidToLoad = sid;
 };
@@ -98,7 +101,12 @@ HATHOR.setupLogic = ()=>{
                 HATHOR.enterEditorMode();
             });
         }
-
+        let sid = ATON.SceneHub.currID;
+/*
+        ATON.REQ.post("scenes/"+sid+"/snapshot", { snapshotname: "prev" }, (r)=>{
+            console.log(r)
+        });
+*/
         HATHOR.UI.modalSceneDescription();
     });
 

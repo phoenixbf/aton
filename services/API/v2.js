@@ -279,8 +279,9 @@ API.init = (app)=>{
 */
     });
 
+    // Create scene cover
     app.post(API.BASE+"scenes/:user/:usid/cover", (req,res)=>{
-        // Only auth user can delete a scene
+        // Only auth user can create scene cover
         if ( !Core.Auth.isUserAuth(req) ){
             res.status(401).send(false);
             return;
@@ -311,6 +312,56 @@ API.init = (app)=>{
         Core.generateCoverForScene(sid, img, ()=>{
             res.send(true);
         });
+    });
+
+    // Create scene snapshot
+    app.post(API.BASE+"scenes/:user/:usid/snapshot", (req,res)=>{
+        // Only auth user can perform snapshot
+        if ( !Core.Auth.isUserAuth(req) ){
+            res.status(401).send(false);
+            return;
+        }
+
+        // Only own scenes
+        let uname = req.params.user;
+        if (Core.Auth.getUID(req) !== uname){
+            res.status(401).send(false);
+            return;
+        }
+
+        let U = uname;
+        let S = req.params.usid;
+
+        if (!U || !S){
+            res.send(false);
+            return;
+        }
+
+        let sid = U+"/"+S;
+
+        let O = req.body;
+        let snap = O.snapshotname;
+
+        if (!snap || snap.length < 1){
+            res.send(false);
+            return;
+        }
+
+        let jsonfile = Core.getSceneJSONPath(sid);
+        let jsonsnap = path.join( Core.getSceneFolder(sid), snap + "-" + Core.STD_SCENEFILE);
+
+        console.log(jsonsnap)
+
+        fs.copyFile(jsonfile, jsonsnap, (err) => {
+            if (err) {
+                console.log("Error scene snapshot:", err);
+                res.send(false);
+                return;
+            }
+
+            res.send(true);
+        });
+
     });
 
     /*===============================

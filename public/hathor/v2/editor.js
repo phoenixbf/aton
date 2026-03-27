@@ -23,6 +23,21 @@ ED.setPersistentModifications = (b)=>{
     ATON.SceneHub.setEditMode(b);
 };
 
+ED.createSceneSnapshot = (snapid, onSuccess)=>{
+    if (!snapid) return;
+    
+    let sid = ATON.SceneHub.currID;
+    if (!sid) return;
+
+    ATON.REQ.post("scenes/"+sid+"/snapshot", { snapshotname: snapid }, (r)=>{
+        if (!r){
+            return;
+        }
+
+        if (onSuccess) onSuccess();
+    });
+};
+
 /*
 // Patches queue
 ED.resetPatchesQueue = ()=>{

@@ -2028,6 +2028,7 @@ UI.createChip = (options)=>{
 Create a tags component
 - options.list: optional controlled list of tags to select from
 - options.tags: optional pre-populated tags
+- options.validator: optional validator for tags
 - options.label: label for input tag
 - options.placeholder: placeholder for input tag
 - options.onaddtag: on tag added routine (e.g.: (k)=>{ console.log(k); } )
@@ -2064,6 +2065,18 @@ UI.createTagsComponent = (options)=>{
         list: options.list,
         label: options.label,
         placeholder: options.placeholder,
+        validator: options.validator,
+        onsubmit: (k)=>{
+            k = k.trim();
+            if (k.length < 1) return;
+
+            k = k.toLowerCase();
+
+            if (!addTag(k)) return;
+
+            if (options.onaddtag) options.onaddtag(k);
+        }
+/*
         onchange: (k)=>{
             k = k.trim();
             if (k.length < 1) return;
@@ -2075,6 +2088,7 @@ UI.createTagsComponent = (options)=>{
 
             if (options.onaddtag) options.onaddtag(k);
         }
+*/
     });
 
     el.append(elTagInput);
@@ -2346,6 +2360,7 @@ Create an input text field
 - options.onchange: on change routine (e.g.: (val)=>{ console.log(val); } )
 - options.onsubmit: routine to submit text (e.g.: (val)=>{ console.log(val); })
 - options.icon: icon for submission action
+- options.validator: routine to validate input string (v(s)=>{ ... }) returning true if valid, false otherwise
 
 Components:
 - "input"
@@ -2357,6 +2372,29 @@ Components:
 UI.createInputText = (options)=>{
     let baseid = ATON.Utils.generateID("txtfield");
     
+    let bValid = true;
+
+    let elSub = undefined;
+    if (options.onsubmit) elSub = UI.createButton({
+        icon: options.icon? options.icon : "bi-check2",
+        classes: "btn-default",
+        onpress: ()=>{
+            let val = elInput.value;
+            val = val.trim();
+
+            if (val.length < 1) return;
+            if (!bValid) return;
+
+            options.onsubmit( val );
+            elInput.value = "";
+        }
+    });
+
+    if (options.validator){
+        bValid = false;
+        elSub.setAttribute("disabled",true);
+    }
+
     let el = ATON.UI.createContainer({classes: "input-group aton-inline" });
     el.id = baseid;
 
@@ -2371,15 +2409,35 @@ UI.createInputText = (options)=>{
     UI.registerElementAsComponent(elInput, "input");
 
     elInput.id = baseid + "-input";
+    elInput.onkeydown = (event)=>{
+        if (event.keyCode == 13) return;
+    };
 
     if (options.value) elInput.value = String(options.value);
 
     if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
 
-    if (options.oninput) elInput.oninput = ()=>{
-        options.oninput( elInput.value );
+    elInput.oninput = ()=>{
+        let val = elInput.value;
+        val = val.trim();
+
+        if (options.validator){
+            if (options.validator(val)){
+                bValid = true;
+                elSub.removeAttribute("disabled");
+            }
+            else {
+                bValid = false;
+                elSub.setAttribute("disabled",true);
+            }
+        }
+
+        if (options.oninput) options.oninput( val );
     };
+
     if (options.onchange) elInput.onchange = ()=>{
+        if (!bValid) return;
+
         options.onchange(elInput.value);
     };
 
@@ -2405,19 +2463,7 @@ UI.createInputText = (options)=>{
     }
 
     if (options.onsubmit){
-        el.append(
-            UI.createButton({
-                icon: options.icon? options.icon : "bi-check2",
-                classes: "btn-default",
-                onpress: ()=>{
-                    let val = elInput.value;
-                    if (val.length < 1) return;
-
-                    options.onsubmit( val );
-                    elInput.value = "";
-                }
-            })
-        );
+        el.append( elSub );
     }
 
     return el;

@@ -21,6 +21,8 @@ UI.setup = ()=>{
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
     UI._elTasks         = ATON.UI.get("tasks");
 
+    ATON.UI.hideElement(UI._elTasks);
+
     // Dedicated side panel
     UI._elSidePanel = ATON.UI.elem(`
         <div class="offcanvas offcanvas-start aton-std-bg aton-sidepanel hathor-side-panel" tabindex="-1">
@@ -745,6 +747,23 @@ UI.sideScene = ()=>{
 
     let elBody = ATON.UI.createContainer({});
 
+    elBody.append(
+        UI.createBlockGroup({
+            items: [
+                ATON.UI.createButton({
+                    text: "Set title and description...",
+                    //icon: "edit",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        UI.modalEditSceneInfo();
+                        UI.closeToolPanel();
+                    }
+                })
+            ]
+        })
+    );
+
+/*
     let elGeneralSection = ATON.UI.createContainer({});
 
     elGeneralSection.append(
@@ -757,12 +776,6 @@ UI.sideScene = ()=>{
                 title = title.trim();
                 HATHOR.ED.sceneInfo({title: title});
             }
-/*
-            onchange: (title)=>{
-                title = title.trim();
-                HATHOR.ED.sceneInfo({title: title});
-            }
-*/
         })
     );
 
@@ -784,6 +797,7 @@ UI.sideScene = ()=>{
             ]
         })    
     );
+*/
 
     let elKeywordsSection = ATON.UI.createContainer({/* classes: "hathor-tags-container"*/ });
     let elCoverSection = ATON.UI.createContainer({});
@@ -792,13 +806,8 @@ UI.sideScene = ()=>{
     elBody.append( ATON.UI.createTreeGroup({
         items:[
             {
-                title: "General",
-                open: true,
-                content: elGeneralSection
-            },
-            {
                 title: "Keywords",
-                open: false,
+                open: true,
                 content: elKeywordsSection
             },
             {
@@ -835,6 +844,11 @@ UI.sideScene = ()=>{
                 list: globallist,
                 tags: scenekwords,
                 placeholder: "Pick or add a keyword...",
+                validator: (k)=>{
+                    if (k.length < 1) return false;
+
+                    return true;
+                },
                 onaddtag: (k)=>{
                     let O = {};
                     O.kwords = {};
@@ -979,7 +993,7 @@ UI.modalSceneDescription = ()=>{
     });
 };
 
-UI.modalEditSceneDescription = ()=>{
+UI.modalEditSceneInfo = ()=>{
     let html = undefined; // HTML content
 
     let descr = ATON.SceneHub.getDescription();
@@ -987,6 +1001,24 @@ UI.modalEditSceneDescription = ()=>{
 
     let elBody = ATON.UI.createContainer({});
     let elFooter = ATON.UI.createContainer({ classes: "w-100" });
+
+    elBody.append(
+        ATON.UI.createInputText({
+            label: "Title",
+            placeholder: "Please provide a short title...",
+            value: ATON.SceneHub.getTitle(),
+            validator: (v)=>{
+                console.log(v);
+
+                if (v.length>2) return true;
+                else return false;
+            },
+            onsubmit: (title)=>{
+                title = title.trim();
+                HATHOR.ED.sceneInfo({title: title});
+            }
+        })
+    );
 
     // Finalize descr
     let elSetDescr = ATON.UI.createButton({
@@ -1088,6 +1120,12 @@ UI.sideLayers = ()=>{
     const elNewLayer = ATON.UI.createInputText({
         placeholder: "New Layer...",
         icon: "add",
+        validator: (nid)=>{
+            if (nid.length < 1) return false;
+            if (!HATHOR.ID_VALIDATOR.test(nid)) return false;
+
+            return true;
+        },
         onsubmit: (layer)=>{        
             if (HATHOR.ED.createNode({nid: layer})){
                 appendNewLayer(layer);
@@ -1499,7 +1537,7 @@ UI.sideEnv = ()=>{
                 ATON.UI.createButton({
                     text: "Setup main light "+UI.TASK_SYMBOL,
                     classes: "btn-default w-100",
-                    icon: "light",
+                    //icon: "light",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_DIR_LIGHT);
                         //ATON.Nav.setUserControl(false);
@@ -1599,7 +1637,7 @@ UI.sideNav = ()=>{
         ATON.UI.createNavSwitcher({})
     );
 
-    let elPOVs = ATON.UI.createContainer();
+    let elPOVs = ATON.UI.createContainer({});
     let elPOVlist = ATON.UI.createContainer({ classes: "hathor-panel-section" });
 
     let appendPOVitem = (P, povid)=>{
@@ -1617,11 +1655,6 @@ UI.sideNav = ()=>{
                         onpress: ()=>{
                             UI.modalDeletePOV(povid);
                             UI.closeToolPanel();
-/*
-                            HATHOR.ED.deletePOV({povid: povid});
-                            refreshPOVList();
-                            HATHOR.SUI.buildPOVs();
-*/
                         }
                     })
                 ]
@@ -1647,8 +1680,9 @@ UI.sideNav = ()=>{
         }
 
         if (numpovs < 1) ATON.UI.hideElement(elPOVlist);
+        else ATON.UI.showElement(elPOVlist);
     };
-
+/*
     elPOVs.append(
         ATON.UI.createButton({
             text: "Current Viewpoint",
@@ -1659,34 +1693,44 @@ UI.sideNav = ()=>{
             }
         })
     );
+*/
+    let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+    elCurrPOV.append(
+        UI.createTextBlock("Current viewpoint"),
 
-/*
-    elPOVs.append(
-        UI.createTextBlock("Use current viewpoint as:"),
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    icon: "home",
+                    text: "Set as home",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        let pov = ATON.Nav.copyCurrentPOV();
+                        
+                        HATHOR.ED.addPOV({
+                            povid: "home",
+                            pos: [pov.pos.x, pov.pos.y, pov.pos.z],
+                            tgt: [pov.target.x, pov.target.y, pov.target.z],
+                            fov: pov.fov
+                        });
 
-        ATON.UI.createButton({
-            icon: "home",
-            text: "Home",
-            classes: "btn-default w-100",
-            onpress: ()=>{
-                let pov = ATON.Nav.copyCurrentPOV();
-                
-                HATHOR.ED.addPOV({
-                    povid: "home",
-                    pos: [pov.pos.x, pov.pos.y, pov.pos.z],
-                    tgt: [pov.target.x, pov.target.y, pov.target.z],
-                    fov: pov.fov
-                });
-
-                refreshPOVList();
-                HATHOR.SUI.buildPOVs();
-            }
+                        refreshPOVList();
+                        HATHOR.SUI.buildPOVs();
+                    }
+                }),
+            ]
         }),
 
         ATON.UI.createInputText({
             placeholder: "New viewpoint...",
             icon: "add",
             classes: "w-100",
+            validator: (povid)=>{
+                if (povid.length < 1) return false;
+                if (!HATHOR.ID_VALIDATOR.test(povid)) return false;
+
+                return true;
+            },
             onsubmit: (povid)=>{
                 let pov = ATON.Nav.copyCurrentPOV();
 
@@ -1702,8 +1746,8 @@ UI.sideNav = ()=>{
             }
         })
     );
-*/
-    elPOVs.append(elPOVlist);
+
+    elPOVs.append(elCurrPOV, elPOVlist);
     refreshPOVList();
 
     elBody.append(
@@ -1846,6 +1890,8 @@ UI.buildTaskToolbar = (task)=>{
     UI._elTasks.innerHTML = "";
     UI.hideMainElements();
 
+    ATON.UI.showElement(UI._elTasks);
+
     // Basic semantic shape
     if (task === HATHOR.TASK_BASIC_ANN){
         let selRange = ATON.SUI.getSelectorRange();
@@ -1857,6 +1903,7 @@ UI.buildTaskToolbar = (task)=>{
                 classes: "btn-default",
                 onpress: ()=>{
                     HATHOR.endCurrentTask();
+                    UI.sideSemantics();
                 }
             }),
 /*
@@ -1896,6 +1943,7 @@ UI.buildTaskToolbar = (task)=>{
             classes: "btn-default",
             onpress: ()=>{ 
                 HATHOR.endCurrentTask();
+                UI.sideSemantics();
             }
         }));
 
@@ -1946,6 +1994,7 @@ UI.buildTaskToolbar = (task)=>{
                 });
                 
                 HATHOR.endCurrentTask();
+                UI.sideEnv();
             }
         }));
 
@@ -1956,6 +2005,8 @@ UI.buildTaskToolbar = (task)=>{
 
 UI.clearTaskToolbar = ()=>{
     UI._elTasks.innerHTML = "";
+    ATON.UI.hideElement(UI._elTasks);
+
     UI.showMainElements();
 };
 

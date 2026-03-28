@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<%- include('frags/head'); %>
+
+<script>
+window.addEventListener( 'load', ()=>{
+        ATON.realize2D();
+        ATON.UI.setTheme("light");
+
+        let elGallery = ATON.UI.get("gallery");
+        let elHeader  = ATON.UI.get("galleryTitle");
+
+        let endpoint = "scenes/";
+        
+        const params = new URLSearchParams( window.location.search );
+
+        let kw = params.get('k');
+        if (!kw) kw = params.get('q'); // Backwards compat.
+
+        let bg = params.get('bg');
+        if (bg){
+                document.body.style.backgroundColor = "rgba("+bg+")";
+        }
+
+        let hide = params.get('hide');
+        if (hide){
+                if (hide==="term") ATON.UI.hideElement(elHeader);
+        }
+
+        let size = params.get('size');
+
+        let galid = params.get('g'); // TODO: future gallery ID
+
+        if (kw){
+                endpoint += "?k="+kw;
+                elHeader.append(ATON.UI.elem("<h2><img class='aton-icon' style='margin-right:8px' src='"+ATON.UI.PATH_RES_ICONS+"gallery.png'>"+kw+"</h2>"));
+        }
+
+        // Content
+        ATON.REQ.get(endpoint, entries =>{
+
+                for (let s in entries){
+                        const S = entries[s];
+
+                        elGallery.append(
+                                ATON.UI.createSceneCard({
+                                        title: S.title,
+                                        sid: S.sid,
+                                        keywords: S.kwords,
+                                        //classes: "aton-card-accent",
+                                        size: size? size : undefined,
+                                        useblurtint: true,
+                                })
+                        );
+                }
+        });
+
+});
+</script>
+</head>
+
+<body>
+        <!-- Gallery -->
+        <div id="gallery" class="shuGalleryContainer">
+                <div class="shuSectionTitleContainer" id="galleryTitle"></div>
+        </div>
+
+        <div id="footer" class="aton-footer">
+                <%- include('frags/footer'); %>
+        </div>
+</body>

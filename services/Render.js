@@ -102,6 +102,13 @@ Render.setup = (app)=>{
 		
 		opts.customhero = Render.customhero;
 
+		// Backwards compatibility
+		let keyword = req.query.q;
+		if (keyword){
+			res.redirect("/v2/gallery?k="+keyword);
+			return;
+		}
+
 		res.render("v2/home", opts);
 	});
 
@@ -114,6 +121,10 @@ Render.setup = (app)=>{
 	});
 	app.get("/v2/logout", (req,res,next)=>{
 		res.render("v2/logout");
+	});
+
+	app.get("/v2/gallery", (req,res,next)=>{
+		res.render("v2/gallery");
 	});
 
 	app.get("/v2/myscenes", (req,res,next)=>{

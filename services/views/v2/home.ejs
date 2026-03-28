@@ -39,10 +39,28 @@ window.addEventListener( 'load', ()=>{
         // Content
         ATON.REQ.get("scenes/", entries =>{
 
+                let spscenes = [];
+
                 for (let s in entries){
                         const S = entries[s];
 
-                        if (S.staffpick) elStaffPickBand.append(
+                        if (S.staffpick) spscenes.push(S);
+                }
+
+                ATON.UI.createPublicScenesGallery({
+                        containerid: "pubscenes",
+                        //size:"small",
+                        entries: entries,
+                        <% if (samples) { %> samples: true <% } %>
+                });
+
+                // Staff pick
+                spscenes.sort(() => Math.random() - 0.5);
+                
+                for (let s in spscenes){
+                        let S = spscenes[s];
+
+                        elStaffPickBand.append(
                                 ATON.UI.createSceneCard({
                                         title: S.title,
                                         sid: S.sid,
@@ -54,13 +72,6 @@ window.addEventListener( 'load', ()=>{
                                 })
                         );
                 }
-
-                ATON.UI.createPublicScenesGallery({
-                        containerid: "pubscenes",
-                        //size:"small",
-                        entries: entries,
-                        <% if (samples) { %> samples: true <% } %>
-                });
 
         });
 
@@ -150,7 +161,7 @@ window.addEventListener( 'load', ()=>{
 </script>
 </head>
 
-<body>
+<body class="shuBodyToolbar">
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 
@@ -169,7 +180,7 @@ window.addEventListener( 'load', ()=>{
                 <div class="shuSectionTitleContainer">
                         <h2><i class='bi bi-star' style='vertical-align:middle; margin-right: 8px;'></i>Staff Pick</h2>
                 </div>
-                <div id="staffpickband" class="aton-hscrollable" style="background-color: var(--bs-secondary-bg);" ></div>
+                <div id="staffpickband" class="shuStaffPickContainer aton-hscrollable"></div>
         </div>
 
         <!-- Apps -->

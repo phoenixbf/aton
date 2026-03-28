@@ -1,5 +1,6 @@
 /*
     ATON Front-end blueprint
+    (TO BE DEPRECATED)
 
     author: bruno.fanini_AT_gmail.com
 
@@ -8,6 +9,8 @@
 /**
 Generic front-end routines for ATON-based web-apps. 
 A set of blueprints to facilitate or support creation of a front-end
+
+WARNING: This will be soon deprecated. See ATON.UI instead
 @namespace FE
 */
 let FE = {};
@@ -22,7 +25,7 @@ FE.STD_SEL_RAD = 0.05;
 
 FE._bRealized = false;
 
-/**
+/*
 Initialize Front-end
 */
 FE.realize = ()=>{
@@ -104,7 +107,7 @@ FE._handleHomeReq = ()=>{
     //console.log(ATON.Nav.homePOV);
 };
 
-/**
+/*
 Add basic front-end events such as showing spinner while loading assets and home viewpoint setup
 */
 FE.addBasicLoaderEvents = ()=>{
@@ -360,7 +363,7 @@ FE._uiSetupBase = ()=>{
     FE.hideSemLabel();
 };
 
-/**
+/*
 Add generic icon button inside a specific div container
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 @param {string} icon - the icon. Can be shortname for default icons in /res/icons/ or URL to .png image
@@ -399,7 +402,7 @@ FE.uiSetButtonHandler = (id, handler)=>{
     $("#"+id).click( handler );
 };
 
-/**
+/*
 Add home button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -409,7 +412,7 @@ FE.uiAddButtonHome = (idcontainer)=>{
     }, "Home viewpoint");
 };
 
-/**
+/*
 Add back button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 @param {string} url - (optional) url
@@ -421,7 +424,7 @@ FE.uiAddButtonBack = (idcontainer, url)=>{
     }, "Go Back");
 };
 
-/**
+/*
 Add first-person button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -442,7 +445,7 @@ FE.uiAddButtonFirstPerson = (idcontainer)=>{
     else FE.uiSwitchButton("fp",false);
 };
 
-/**
+/*
 Add immersive-VR button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -457,7 +460,7 @@ FE.uiAddButtonVR = (idcontainer)=>{
     if (!ATON.Utils.isVRsupported()) $("#btn-vr").hide();
 };
 
-/**
+/*
 Add immersive-AR button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -483,7 +486,7 @@ FE.uiAddButtonAR = (idcontainer)=>{
     //if (!ATON.Utils.isARsupported()) $("#btn-ar").hide();
 };
 
-/**
+/*
 Add device-orientation button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -507,7 +510,7 @@ FE.uiAddButtonDeviceOrientation = (idcontainer)=>{
     else FE.uiSwitchButton("devori",false);
 };
 
-/**
+/*
 Add Navigation button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -517,7 +520,7 @@ FE.uiAddButtonNav = (idcontainer)=>{
     }, "Navigation");
 };
 
-/**
+/*
 Add talk button (Photon)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -541,7 +544,7 @@ FE.uiAddButtonTalk = (idcontainer)=>{
     else $("#btn-talk").removeClass("atonBTN-rec");
 };
 
-/**
+/*
 Add focus stream button (Photon)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -562,7 +565,7 @@ FE.uiAddButtonStreamFocus = (idcontainer)=>{
     else $("#btn-focus").removeClass("atonBTN-rec");
 };
 
-/**
+/*
 Add main videopano control button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -586,7 +589,7 @@ FE.uiAddButtonMainVideoPanoPlayPause = (idcontainer)=>{
     else $("#btn-playpause").hide();
 };
 
-/**
+/*
 Add QR-code button (hidden on localhost/offline scenarios)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -596,7 +599,7 @@ FE.uiAddButtonQR = (idcontainer)=>{
     FE.uiAddButton(idcontainer,"qr", FE.popupQR, "QR-code" );
 };
 
-/**
+/*
 Add screenshot button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -604,7 +607,7 @@ FE.uiAddButtonScreenshot = (idcontainer)=>{
     FE.uiAddButton(idcontainer,"sshot", FE.popupScreenShot, "Screenshot" );
 };
 
-/**
+/*
 Add scene information button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -613,7 +616,7 @@ FE.uiAddButtonInfo = (idcontainer)=>{
     $("#btn-info").hide();
 };
 
-/**
+/*
 Add fullscreen button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -787,7 +790,7 @@ FE._setupVRCevents = ()=>{
     FE._bVRCsetup = true;
 };
 
-/**
+/*
 Add Photon button (to connect/disconnect from collaborative sessions)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -813,7 +816,7 @@ FE.uiAddButtonPhoton = (idcontainer)=>{
 
 FE.uiAddButtonVRC = FE.uiAddButtonPhoton;
 
-/**
+/*
 Add user button (login/logout)
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -844,7 +847,7 @@ FE.uiSetEditMode = (b, idcontainer)=>{
     }
 };
 
-/**
+/*
 Add persistent editing mode button
 @param {string} idcontainer - the id of html container (e.g.: "idTopToolbar")
 */
@@ -872,7 +875,7 @@ FE.uiAddButtonEditMode = (idcontainer)=>{
     else FE.uiSwitchButton("edit",false);
 };
 
-/**
+/*
 Add UI Profile to the front-end
 @param {string} id - profile ID
 @param {function} uiFunction - function that creates UI (HTML or SUI elements) for that profile
@@ -883,7 +886,7 @@ FE.uiAddProfile = (id, uiFunction)=>{
     FE._uiProfiles[id] = uiFunction;
 };
 
-/**
+/*
 Load specific UI Profile for the front-end
 @param {string} id - profile ID
 */
@@ -1006,7 +1009,7 @@ FE.playAudioFromSemanticNode = (semid)=>{
 // Popups
 //===================================================================
 
-/**
+/*
 Show a modal popup.
 @param {string} htmlcontent - The HTML5 content for the popup
 @param {string} cssClasses - (optional) css classes for the popup
@@ -1051,7 +1054,7 @@ FE.popupShow = (htmlcontent, cssClasses)=>{
     return true;
 };
 
-/**
+/*
 Close current popup
 */
 FE.popupClose = (bNoAnim)=>{

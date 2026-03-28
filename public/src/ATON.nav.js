@@ -65,7 +65,7 @@ Nav.STD_LOC_VALIDATOR = ()=>{
         return;
     }
 
-    Nav._bValidLocomotion = true;
+    Nav.pathPlaying = undefined;
 };
 
 
@@ -129,6 +129,10 @@ Nav.init = ()=>{
     // Locomotion Graph
     Nav._locNodes = [];
     Nav._prevLN = undefined;
+
+    // POV Paths
+    Nav._povPaths = {};
+    Nav._bPlayingPath = false;
 };
 
 /**
@@ -177,6 +181,15 @@ Nav.addPOV = (pov, id)=>{
 
     pov.as(id);
     return pov;
+};
+
+/**
+Get a viewpoint (POV) by ID
+
+@param {string} id - The POV ID
+*/
+Nav.getPOV = (id)=>{
+    return Nav.povlist[id];
 };
 
 /**
@@ -926,6 +939,9 @@ Nav.handlePOVtransition = ()=>{
         Nav._bMotionOri = true;
         Nav._bMotionPos = true;
 
+        if (Nav.pathPlaying){
+            Nav.requestNextPOVinPath(Nav.pathPlaying);
+        }
         ATON.fire("POVTransitionCompleted", Nav._reqPOV.id);
         return;
     }
@@ -1325,6 +1341,136 @@ Nav.DeviceOrientationControls = function ( object ) {
     }
 
     this.connect();
+};
+
+
+// POV Paths
+
+/**
+Create a new POV Path.
+A path is a list of registered POVs, once created you can add POVs to this path.
+@param {string} path - Represents the path id
+@example
+ATON.Nav.createPOVPath("mypath");
+*/
+Nav.createPOVPath = (path)=>{
+    Nav._povPaths[path] = {};
+
+    Nav._povPaths[path].list = [];
+    Nav._povPaths[path].curr = 0;
+};
+
+/**
+Play a POV Path.
+@param {string} path - Represents the path id
+@param {number} dur - (optional) baseline duration (seconds) of transitions between POVs
+@example
+ATON.Nav.playPOVPath("mypath", 5.0);
+*/
+Nav.playPOVPath = (path, dur)=>{
+    if (!Nav._povPaths[path]) return;
+
+    Nav._povPaths[path].dur = dur? dur : 2.0;
+
+    Nav.pathPlaying = path;
+
+    Nav.requestNextPOVinPath(path);
+    Nav.toggleUserControl(false);
+};
+
+/**
+Stop a playing POV Path, if any.
+@example
+ATON.Nav.stopPOVPath();
+*/
+Nav.stopPOVPath = ()=>{
+    Nav.pathPlaying = undefined;
+    Nav.toggleUserControl(true);
+};
+
+/**
+Add a registered POV to a Path.
+If the path does not exist, it is created.
+@param {string} povid - Represents the POV id
+@param {string} path - Represents the path id
+@example
+ATON.Nav.addPOVtoPath("myview","mypath");
+*/
+Nav.addPOVtoPath = (povid, path)=>{
+    if (!path || !povid) return false;
+    if (!Nav._povPaths[path]) Nav.createPOVPath(path);
+
+    let pov = Nav.getPOV(povid);
+    if (!pov) return false;
+
+    Nav._povPaths[path].list.push(povid);
+
+    return true;
+}
+
+/**
+Request the next POV in a path.
+@param {string} path - Represents the path id
+@param {number} dur - the duration of the POV transition
+@example
+ATON.Nav.requestNextPOVinPath("mypath", 3.0);
+*/
+Nav.requestNextPOVinPath = (path, dur)=>{
+    if (!Nav._povPaths[path]) return undefined;
+
+    let P = Nav._povPaths[path];
+
+    if (dur === undefined) dur = P.dur? P.dur : 2.0;
+    if (ATON.XR._bPresenting) dur = ATON.XR.STD_TELEP_DURATION;
+
+    let numpovs = P.list.length;
+    if (numpovs < 1) return;
+
+    P.curr = (P.curr + 1) % numpovs;
+
+    let povid = P.list[P.curr];
+
+    ATON.Nav.requestPOV( Nav.getPOV(povid), dur );
+};
+
+/**
+Request the previous POV in a path.
+@param {string} path - Represents the path id
+@param {number} dur - the duration of the POV transition
+@example
+ATON.Nav.requestPrevPOVinPath("mypath", 3.0);
+*/
+Nav.requestPrevPOVinPath = (path, dur)=>{
+    if (!Nav._povPaths[path]) return undefined;
+    
+    let P = Nav._povPaths[path];
+
+    if (dur === undefined) dur = P.dur? P.dur : 2.0;
+    if (ATON.XR._bPresenting) dur = ATON.XR.STD_TELEP_DURATION;
+
+    let numpovs = P.list.length;
+    if (numpovs < 1) return;
+
+    P.curr = (P.curr - 1);
+    if (P.curr < 0) P.curr = (numpovs - 1);
+
+    let povid = P.list[ P.curr ];
+
+    ATON.Nav.requestPOV( Nav.getPOV(povid), dur );
+};
+
+/**
+Get the current POV in a path.
+@param {string} path - Represents the path id
+@returns {POV}
+*/
+Nav.getCurrPOVinPath = (path)=>{
+    if (!Nav._povPaths[path]) return undefined;
+
+    let P = Nav._povPaths[path];
+
+    let povid = P.list[ P.curr ];
+    return Nav.getPOV(povid);
 };
 
 

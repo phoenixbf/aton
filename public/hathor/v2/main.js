@@ -42,6 +42,8 @@ HATHOR.SEM_SHAPE_CONVEX = 1;
 
 HATHOR.ID_VALIDATOR = new RegExp("^[a-zA-Z0-9. ]*$");
 
+HATHOR.POVPATH_ALL = "*";
+
 
 HATHOR.setSceneToLoad = (sid)=>{
     HATHOR._sidToLoad = sid;
@@ -51,6 +53,11 @@ HATHOR.setup = ()=>{
 
     HATHOR._bLD = false;
     HATHOR._cLightDir = new THREE.Vector3();
+    
+    // POV Paths (TODO: move to Nav)
+    HATHOR._povPaths = {};
+    HATHOR._povPaths.all = {};
+    HATHOR._povPaths.all.list = [];
 
     ATON.realize();
     ATON.UI.addBasicEvents();
@@ -93,22 +100,7 @@ HATHOR.setupLogic = ()=>{
             });
     });
 
-    ATON.on("SceneJSONLoaded",()=>{
-        let ed = HATHOR.params.get('e');
-        if (ed){
-        ATON.checkAuth(
-            (u)=>{
-                HATHOR.enterEditorMode();
-            });
-        }
-        let sid = ATON.SceneHub.currID;
-/*
-        ATON.REQ.post("scenes/"+sid+"/snapshot", { snapshotname: "prev" }, (r)=>{
-            console.log(r)
-        });
-*/
-        HATHOR.UI.modalSceneDescription();
-    });
+    ATON.on("SceneJSONLoaded", HATHOR.onSceneJSONLoaded );
 
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
         // Everytime
@@ -156,7 +148,8 @@ HATHOR.setupLogic = ()=>{
         }
 
         if (k==='g') HATHOR.UI.sideLayers();
-        if (k==='s') HATHOR.UI.sideSemantics();
+        if (k==='a') HATHOR.UI.sideSemantics();
+        if (k==='s') HATHOR.UI.sideScene();
         if (k==='n') HATHOR.UI.sideNav();
         if (k==='v') HATHOR.UI.sideViewpoint();
 
@@ -173,6 +166,27 @@ HATHOR.setupLogic = ()=>{
         if (k==='l') HATHOR._bLD = false;
     });
 
+};
+
+HATHOR.onSceneJSONLoaded = ()=>{
+    let ed = HATHOR.params.get('e');
+    if (ed){
+        ATON.checkAuth(
+            (u)=>{
+                HATHOR.enterEditorMode();
+            });
+    }
+    let sid = ATON.SceneHub.currID;
+
+    // General POV UI update
+    HATHOR.UI.updatePOVs();
+
+/*
+    ATON.REQ.post("scenes/"+sid+"/snapshot", { snapshotname: "prev" }, (r)=>{
+        console.log(r)
+    });
+*/
+    HATHOR.UI.modalSceneDescription();
 };
 
 // Sem Annotations
@@ -241,7 +255,9 @@ HATHOR.handleTaskOnTap = (e)=>{
     }
 };
 
+
 // Main update
+//===========================================
 HATHOR.update = ()=>{
 
     if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && (HATHOR._bLD || ATON.Utils.isMobile())){

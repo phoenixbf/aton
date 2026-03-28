@@ -2101,7 +2101,7 @@ UI.createTagsComponent = (options)=>{
 };
 
 /**
-Create a block item list with secondary actions
+Create a block item with secondary actions, typically part of a list of items
 - options.mainaction: main action on item click
 - options.text: item text
 - options.actions: optional list (array) of buttons being added to this item as secondary actions

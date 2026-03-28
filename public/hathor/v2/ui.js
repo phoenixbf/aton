@@ -32,8 +32,15 @@ UI.setup = ()=>{
     document.body.append(UI._elSidePanel);
     UI._bSidePanel = false;
 
-    if (HATHOR._tb) UI.buildCustomToolbar();
-    else UI.buildStandardToolbar();
+    // Editor UI
+    if (HATHOR.params.get('e')){
+        UI.buildStandardInterface();
+    }
+    else {
+        if (HATHOR._tb) UI.buildCustomInterface();
+        else UI.buildStandardInterface();
+    }
+
 
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
@@ -498,9 +505,25 @@ UI.createUserButton = ()=>{
 /*
     Main Toolbar
 =====================================*/
-UI.buildStandardToolbar = ()=>{
+UI.buildStandardInterface = ()=>{
+    UI._elPOVprev = ATON.UI.createButton({
+        icon: "left",
+        onpress: ()=>{
+            ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
+        }
+    });
+
+    UI._elPOVnext = ATON.UI.createButton({
+        icon: "right",
+        onpress: ()=>{
+            ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
+        }
+    });
+
     UI._elBottomToolbar.append(
-        ATON.UI.createButtonHome()
+        UI._elPOVprev,
+        ATON.UI.createButtonHome(),
+        UI._elPOVnext
     );
 
     UI._elMainToolbar.append(
@@ -523,7 +546,7 @@ UI.buildStandardToolbar = ()=>{
     UI._elUserToolbar.append( UI._elUser );
 };
 
-UI.buildCustomToolbar = ()=>{
+UI.buildCustomInterface = ()=>{
     HATHOR._tb = String(HATHOR._tb);
     let elements = HATHOR._tb.split(",");
 
@@ -627,7 +650,30 @@ UI.modalHathor = ()=>{
 
 
 UI.modalXR = ()=>{
-    //TODO:
+    let elBody = ATON.UI.createContainer();
+    let elFooter = ATON.UI.createContainer({ classes: "w-100" });
+
+    elFooter.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButtonVR({
+                    classes: "btn-accent",
+                    text: "VR"
+                }),
+                ATON.UI.createButtonAR({
+                    classes: "btn-accent",
+                    text: "AR"
+                })
+            ]
+        })
+
+    );
+
+    ATON.UI.showModal({
+        header: "XR",
+        body: elBody,
+        footer: elFooter
+    });
 };
 
 /*
@@ -1586,6 +1632,28 @@ UI.sideEnv = ()=>{
     }
 };
 
+
+// POV (viewpoints)
+UI.updatePOVs = ()=>{
+    // Clear "all" POV-path
+    ATON.Nav.createPOVPath(HATHOR.POVPATH_ALL);
+
+    let povcount = 0;
+    for (let pov in ATON.Nav.povlist){
+        povcount++;
+        ATON.Nav.addPOVtoPath(pov, HATHOR.POVPATH_ALL);
+    }
+
+    if (povcount < 1){
+        ATON.UI.hideElement(UI._elPOVprev);
+        ATON.UI.hideElement(UI._elPOVnext);
+    }
+    else {
+        ATON.UI.showElement(UI._elPOVprev);
+        ATON.UI.showElement(UI._elPOVnext);
+    }
+};
+
 UI.modalDeletePOV = (povid)=>{
     if (!povid) return;
     let POV = ATON.Nav.povlist[povid];
@@ -1612,6 +1680,7 @@ UI.modalDeletePOV = (povid)=>{
                         HATHOR.SUI.buildPOVs();
 
                         ATON.UI.hideModal();
+                        UI.sideNav();
                     }
                 })
             ]
@@ -1679,8 +1748,18 @@ UI.sideNav = ()=>{
             appendPOVitem(POV, pov);
         }
 
-        if (numpovs < 1) ATON.UI.hideElement(elPOVlist);
-        else ATON.UI.showElement(elPOVlist);
+        UI.updatePOVs();
+
+        if (numpovs < 1){
+            ATON.UI.hideElement(elPOVlist);
+            ATON.UI.hideElement(UI._elPOVprev);
+            ATON.UI.hideElement(UI._elPOVnext);
+        }
+        else {
+            ATON.UI.showElement(elPOVlist);
+            ATON.UI.showElement(UI._elPOVprev);
+            ATON.UI.showElement(UI._elPOVnext);
+        }
     };
 /*
     elPOVs.append(

@@ -1335,8 +1335,10 @@ UI.createVectorControl = (options)=>{
                 elInputY.value = R[1];
                 elInputZ.value = R[2];
 
-                if (V) V.set(R[0],R[1],R[2]);
-                if (options.onupdate) options.onupdate();
+                if (V){
+                    V.set(R[0],R[1],R[2]);
+                    if (options.onupdate) options.onupdate(V);
+                }
             }
         }))
     }
@@ -1355,24 +1357,30 @@ UI.createVectorControl = (options)=>{
         let v = elInputX.value;
         if (v.length < 1) return;
 
-        if (V) V.x = v;
-        if (options.onupdate) options.onupdate(V);
+        if (V){
+            V.x = v;
+            if (options.onupdate) options.onupdate(V);
+        }
     };
 
     elInputY.oninput = ()=>{
         let v = elInputY.value;
         if (v.length < 1) return;
 
-        if (V) V.y = v;
-        if (options.onupdate) options.onupdate(V);
+        if (V){
+            V.y = v;
+            if (options.onupdate) options.onupdate(V);
+        }
     };
 
     elInputZ.oninput = ()=>{
         let v = elInputZ.value;
         if (v.length < 1) return;
 
-        if (V) V.z = v;
-        if (options.onupdate) options.onupdate(V);
+        if (V){
+            V.z = v;
+            if (options.onupdate) options.onupdate(V);
+        }
     };
 
     // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
@@ -1388,7 +1396,7 @@ UI.createVectorControl = (options)=>{
 
             if (V){
                 V.set(elInputX.value, elInputY.value, elInputZ.value);
-                if (options.onupdate) options.onupdate();
+                if (options.onupdate) options.onupdate(V);
             }
         }
     };
@@ -1455,8 +1463,10 @@ UI.createQuaternionControl = (options)=>{
                 elInputZ.value = R[2];
                 elInputW.value = R[3];
 
-                if (V) V.set(R[0],R[1],R[2],R[3]);
-                if (options.onupdate) options.onupdate();
+                if (Q){
+                    Q.set(R[0],R[1],R[2],R[3]);
+                    if (options.onupdate) options.onupdate(Q);
+                }
             }
         }))
     }
@@ -1477,32 +1487,40 @@ UI.createQuaternionControl = (options)=>{
         let v = elInputX.value;
         if (v.length < 1) return;
 
-        if (Q) Q.x = v;
-        if (options.onupdate) options.onupdate(Q);
+        if (Q){
+            Q.x = v;
+            if (options.onupdate) options.onupdate(Q);
+        }
     };
 
     elInputY.oninput = ()=>{
         let v = elInputY.value;
         if (v.length < 1) return;
 
-        if (Q) Q.y = v;
-        if (options.onupdate) options.onupdate(Q);
+        if (Q){
+            Q.y = v;
+            if (options.onupdate) options.onupdate(Q);
+        }
     };
 
     elInputZ.oninput = ()=>{
         let v = elInputZ.value;
         if (v.length < 1) return;
 
-        if (Q) Q.z = v;
-        if (options.onupdate) options.onupdate(Q);
+        if (Q){
+            Q.z = v;
+            if (options.onupdate) options.onupdate(Q);
+        }
     };
 
     elInputW.oninput = ()=>{
         let v = elInputW.value;
         if (v.length < 1) return;
 
-        if (Q) Q.w = v;
-        if (options.onupdate) options.onupdate(Q);
+        if (Q){
+            Q.w = v;
+            if (options.onupdate) options.onupdate(Q);
+        }
     };
 
     // Handle multi-field paste (comma separated values - eg: 2,3.5,8.1)
@@ -1519,7 +1537,7 @@ UI.createQuaternionControl = (options)=>{
 
             if (Q){
                 Q.set(elInputX.value, elInputY.value, elInputZ.value, elInputW.value);
-                if (options.onupdate) options.onupdate();
+                if (options.onupdate) options.onupdate(Q);
             }
         }
     };
@@ -1832,9 +1850,10 @@ UI.createSceneCard = (options)=>{
 /**
 Create a live filter, search as user is typing
 - options.filterclass: items class to filter (eg. "aton-card") in the current document
+- options.customfilter: custom filtering routine operating on input
 - options.onfocus: routine when input filed is focused
 - options.onblur: routine when leaving input filed
-- options.oninput: custom routine on keyboard input. If not provided uses filterclass option
+- options.oninput: routine on keyboard input
 
 Components:
 - "input"
@@ -1863,11 +1882,18 @@ UI.createLiveFilter = (options)=>{
     elInGroup.append(UI.elem("<span class='input-group-text aton-input'><i class='bi bi-search'></i></span>"));
     elInGroup.append(elInput);
 
-    if (options.oninput) elInput.oninput = options.oninput;
-    else elInput.oninput = ()=> {
-        if (!options.filterclass) return;
-
+    //if (options.oninput) elInput.oninput = options.oninput;
+    elInput.oninput = ()=> {
         let v = elInput.value.trim().toLowerCase();
+
+        if (options.oninput) options.oninput(v);
+
+        if (options.customfilter){
+            options.customfilter(v);
+            return;
+        }
+
+        if (!options.filterclass) return;
         let filterItems = document.querySelectorAll(`.${options.filterclass}`);
 
         if (v.length < 3) {
@@ -1894,6 +1920,25 @@ UI.createLiveFilter = (options)=>{
         }
 
     };
+
+    if (options.list){
+        const L = options.list;
+
+        elInput.setAttribute("list", baseid+"-list");
+        let elDatalist = UI.elem("<datalist id='"+baseid+"-list'></datalist>");
+        UI.registerElementAsComponent(elDatalist, "datalist");
+
+        for (let i in L){
+            let itemname = L[i];
+            if (options.listnames) itemname = options.listnames[i];
+
+            elDatalist.append(
+                UI.elem("<option value='"+L[i]+"'></option>") // "+itemname+"
+            );
+        }
+        
+        el.append(elDatalist);
+    }
 
     if (options.onfocus) elInput.onfocus = options.onfocus;
     if (options.onblur)  elInput.onblur  = options.onblur;

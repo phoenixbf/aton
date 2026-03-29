@@ -62,7 +62,7 @@ Core.STD_PUBFILE        = "pub.txt"; // deprecated
 Core.STD_COVERFILE_HI   = "cover.png";
 Core.STD_COVERFILE      = "cover.jpg";
 Core.STD_COVERSIZE      = 256;
-Core.STD_COVERFILE_PATH = path.join(Core.DIR_RES,"scenecover.png");
+Core.STD_COVERFILE_PATH = path.join(Core.DIR_RES,"scenecover.jpg");
 
 // Unused
 Core.STATUS_COMPLETE   = "complete";

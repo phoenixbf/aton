@@ -54,7 +54,7 @@
     "@gltf-transform/extensions": "^4.3.0",
     "@gltf-transform/functions": "^4.3.0",
     "@sparkjsdev/spark": "^0.1.10",
-    "3d-tiles-renderer": "0.4.21",
+    "3d-tiles-renderer": "0.4.23",
     "body-parser": "^2.2.2",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",

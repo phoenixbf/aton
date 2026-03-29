@@ -25,7 +25,7 @@ ED.setPersistentModifications = (b)=>{
 
 ED.createSceneSnapshot = (snapid, onSuccess)=>{
     if (!snapid) return;
-    
+
     let sid = ATON.SceneHub.currID;
     if (!sid) return;
 
@@ -74,7 +74,7 @@ ED.clearNodeTransformReq = (N)=>{
     if (!N.userData.ED) return;
     if (!N.userData.ED.transform) return;
 
-    N.userData.ED.transform = {};
+    N.userData.ED.transform = undefined;
 };
 
 ED.processNodesPatches = ()=>{

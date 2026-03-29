@@ -56,7 +56,7 @@ window.addEventListener( 'load', ()=>{
 
                 // Staff pick
                 spscenes.sort(() => Math.random() - 0.5);
-                
+
                 for (let s in spscenes){
                         let S = spscenes[s];
 
@@ -81,6 +81,19 @@ window.addEventListener( 'load', ()=>{
 
         let elSearch = ATON.UI.createLiveFilter({
                 filterclass: "aton-card",
+                oninput: (term)=>{
+                        if (term.length < 2){
+                                ATON.UI.showElement(elHero);
+                                ATON.UI.showElement(elApps);
+                                ATON.UI.showElement(elStaffPick);   
+                        }
+                        else {
+                                ATON.UI.hideElement(elHero);
+                                ATON.UI.hideElement(elApps);
+                                ATON.UI.hideElement(elStaffPick);
+                        }
+                }
+/*
                 onfocus: ()=>{
                         ATON.UI.hideElement(elHero);
                         ATON.UI.hideElement(elApps);
@@ -90,8 +103,12 @@ window.addEventListener( 'load', ()=>{
                         ATON.UI.showElement(elHero);
                         ATON.UI.showElement(elApps);
                         ATON.UI.showElement(elStaffPick);   
-                }
+                },
+*/
+                //list: []
         })
+
+
 
         elNavCont.append(elSearch);
 

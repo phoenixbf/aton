@@ -19,6 +19,8 @@ SUI.setup = ()=>{
 
     SUI._grid = undefined;
 
+    SUI._gizmoCurrNode = undefined;
+
     SUI.buildGizmoTC();
     SUI.realizeGrid();
 
@@ -78,7 +80,9 @@ SUI.buildGizmoTC = ()=>{
             let T = SUI._tc.object;
             if (T){
                 HATHOR.ED.dirtyNodeTransformReq(T, ["pos","rot","scl"]);
-                console.log(T)
+                //console.log(T)
+                
+                //if (SUI._gizmoCurrNode) HATHOR.UI.sideManageLayer(SUI._gizmoCurrNode.nid);
             }
         }
     });
@@ -96,11 +100,15 @@ SUI.attachGizmoToNode = (N)=>{
     if (!N) return;
     if (!SUI._tc) return;
 
+    SUI._gizmoCurrNode = N;
+
     SUI._tc.attach( N );
 };
 
 SUI.detachGizmo = ()=>{
     if (!SUI._tc) return;
+
+    SUI._gizmoCurrNode = undefined;
     
     SUI._tc.detach();
 };

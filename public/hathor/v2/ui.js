@@ -479,6 +479,25 @@ UI.createFXButton = ()=>{
     }); 
 };
 
+UI.createCollabButton = ()=>{
+    UI._elPhoton = ATON.UI.createButton({
+        icon: "photon",
+        onpress: UI.sideCollab
+    });
+
+    return UI._elPhoton;
+};
+
+UI.createCopyrightsButton = ()=>{
+    UI._elCC = ATON.UI.createButton({
+        //text: "Assets Copyrights",
+        icon: "cc",
+        onpress: UI.modalCopyrights
+    });
+
+    return UI._elCC;
+};
+
 /*
 UI._onUser = (username)=>{
 	if (!UI._elUserBTN) return;
@@ -546,15 +565,10 @@ UI.buildStandardInterface = ()=>{
         ATON.UI.createButtonQR(),
 
         UI.createXRButton(),
+        UI.createCollabButton(),
+        UI.createCopyrightsButton()
     );
 
-    UI._elCC = ATON.UI.createButton({
-        //text: "Assets Copyrights",
-        icon: "cc",
-        onpress: UI.modalCopyrights
-    });
-
-    UI._elMainToolbar.append(UI._elCC);
     ATON.UI.hideElement(UI._elCC);
 
     //UI._elUserToolbar.append( UI.createUserButton() );
@@ -2146,6 +2160,117 @@ UI.modalCopyrights = ()=>{
     });
 };
 
+//====================================
+// Collaborative session (Photon)
+//====================================
+UI.createChatContainer = ()=>{
+    UI._elPhotonChat = ATON.UI.createContainer({
+        classes: "aton-photon-chat-container"
+    });
+
+    return UI._elPhotonChat;
+};
+
+UI.addMessage = (o)=>{
+    if (!UI._elPhotonChat) return;
+    
+    if (!o.msg) return;
+
+    let A = ATON.Photon.avatarList[o.uid];
+
+    let elMSG = ATON.UI.elem(`
+        <span class='aton-photon-msg'>${o.msg}
+        </span>
+    `);
+
+    let elU = ATON.UI.createButton({
+        icon: "user",
+        text: (o.uid !== undefined)? A.getUsername() : "You",
+        classes: "aton-btn-photon aton-photon-chat-user",
+        onpress: ()=>{
+
+        }
+    });
+
+    elMSG.prepend( elU );
+
+    UI._elPhotonChat.append(elMSG);
+};
+
+UI.sideCollab = ()=>{
+    if (!ATON.Photon.isConnected()){
+        ATON.Photon.connect();
+        UI._elPhoton.setAttribute("disabled",true);
+        return;
+    }
+
+    let elBody = ATON.UI.createContainer();
+
+    let uname = ATON.Photon.getUsername();
+
+    elBody.append(
+/*
+        ATON.UI.createInputText({
+            //label: "Username",
+            placeholder: "Username",
+            value: uname,
+            classes: "w-100",
+            onsubmit: (u)=>{
+                if (u.length < 3) return;
+                ATON.Photon.setUsername(u);
+            }
+        }),
+*/
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createInputText({
+                    //label: "Username",
+                    placeholder: "Username",
+                    value: uname,
+                    classes: "w-100",
+                    validator: (u)=>{
+                        if (u.length < 3) return false;
+                        return true;
+                    },
+                    onsubmit: (u)=>{
+                        ATON.Photon.setUsername(u);
+                    }
+                }),
+
+                ATON.UI.createButton({
+                    //text: "Leave session",
+                    icon: "exit",
+                    classes: "btn-default aton-btn-block",
+                    onpress: ()=>{
+                        ATON.Photon.disconnect();
+                        UI.closeToolPanel();
+                    }
+                })
+            ]
+        }),
+
+        UI.createChatContainer(),
+
+        ATON.UI.createInputText({
+            //label: "Username",
+            placeholder: "Message...",
+            classes: "w-100",
+            validator: (msg)=>{
+                if (msg.length < 1) return false;
+                return true;
+            },
+            onsubmit: (msg)=>{
+                ATON.Photon.setMessage(msg);
+                UI.addMessage({msg: msg });
+            }
+        }),
+    );
+
+    UI.openToolPanel({
+        header: "Photon Session",
+        body: elBody
+    }); 
+};
 
 //====================================
 // Tasks

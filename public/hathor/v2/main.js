@@ -55,6 +55,7 @@ HATHOR.setup = ()=>{
     HATHOR._cLightDir = new THREE.Vector3();
 
     HATHOR._bRMB = false;
+    HATHOR._bCollabLogicSet = false;
     
     // POV Paths (TODO: move to Nav)
     HATHOR._povPaths = {};
@@ -138,11 +139,14 @@ HATHOR.setupLogic = ()=>{
         if (!d) return;
         
         ATON.Photon.setUsername(d.username);
+        //if (HATHOR._bCollabLogicSet) return;
     });
 
     ATON.on("Logout", ()=>{
         HATHOR.exitEditorMode();
     });
+
+    HATHOR.setupCollabLogic();
 
     // Keyboard
     ATON.on("KeyPress", (k)=>{
@@ -193,6 +197,10 @@ HATHOR.onSceneJSONLoaded = ()=>{
 
     // General POV UI update
     HATHOR.UI.updatePOVs();
+
+    if (HATHOR.params.get('c')){
+
+    }
 
 /*
     ATON.REQ.post("scenes/"+sid+"/snapshot", { snapshotname: "prev" }, (r)=>{
@@ -266,6 +274,41 @@ HATHOR.handleTaskOnTap = (e)=>{
         if (ATON._bqScene) ATON._handleQueryScene();
         ATON.SemFactory.addSurfaceConvexPoint();
     }
+};
+
+// Collab / Photon logic
+//===========================================
+HATHOR.setupCollabLogic = ()=>{
+    if (HATHOR._bCollabLogicSet) return;
+
+    ATON.on("VRC_IDassigned", (uid)=>{
+        if (!ATON.Photon.getUsername()){
+            ATON.Photon.setUsername("User #"+uid);
+        }
+
+        HATHOR.UI.sideCollab();
+
+        if (HATHOR.UI._elPhoton){
+            HATHOR.UI._elPhoton.classList.add("aton-btn-photon");
+            UI._elPhoton.removeAttribute("disabled");
+
+            let n = ATON.Photon.ucolors.length;
+            let c = (uid % n);
+
+            let strcol = ATON.Photon.ucolors[c].getStyle();
+
+            UI._elPhoton.style["background-color"] = strcol;
+        }    
+    });
+
+    ATON.on("VRC_Disconnected", ()=>{
+        if (HATHOR.UI._elPhoton){
+            HATHOR.UI._elPhoton.classList.remove("aton-btn-photon");
+            UI._elPhoton.style["background-color"] = "";
+        }
+    });
+
+    HATHOR._bCollabLogicSet = true;
 };
 
 

@@ -407,6 +407,10 @@ Photon.setUsername = (username)=>{
     Photon.socket.emit("UNAME", username);
 };
 
+Photon.getUsername = ()=>{
+    return Photon._username;
+};
+
 Photon.setMessage = (msg)=>{
     msg = msg.trim();
     if (msg.length < 1) return;

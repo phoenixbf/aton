@@ -529,6 +529,55 @@ a {
 }
  */
 
+ /* Photon
+ ===========*/
+.aton-btn-photon {
+    --bs-btn-bg: rgba(255,255,255, 0.9);
+    --bs-btn-border-color: rgba(255,255,255, 0.0);
+    --bs-btn-color: #222;
+
+    --bs-btn-hover-bg: rgba(255,255,255, 0.9);
+    --bs-btn-hover-border-color: rgba(255,255,255, 0.0);
+    --bs-btn-hover-color: #222;
+}
+
+[data-bs-theme=dark] .aton-btn-photon .aton-icon {
+    filter: invert(100%);
+}
+
+.aton-photon-chat-container {
+    display: block;
+    white-space: initial;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.9);
+
+    height: 50%;
+    min-height: 250px;
+
+    margin-top: 8px !important;
+
+    overflow-y: auto;
+
+    border-radius: var(--bs-border-radius);
+}
+
+.aton-photon-chat-user {
+    height: 24px;
+    font-size: small;
+    margin-right: 8px !important;
+}
+.aton-photon-chat-user img {
+    height: 24px;
+    width: 24px;
+}
+
+.aton-photon-msg {
+    /*width: 100% !important;*/
+    display: block;
+    word-wrap: break-word;
+    font-size: small;
+}
+
+
 /* Dropdowns
 ============*/
 .aton-dropdown-menu {

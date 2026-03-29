@@ -51,8 +51,10 @@ HATHOR.setSceneToLoad = (sid)=>{
 
 HATHOR.setup = ()=>{
 
-    HATHOR._bLD = false;
+    //HATHOR._bLD = false;
     HATHOR._cLightDir = new THREE.Vector3();
+
+    HATHOR._bRMB = false;
     
     // POV Paths (TODO: move to Nav)
     HATHOR._povPaths = {};
@@ -104,6 +106,9 @@ HATHOR.setupLogic = ()=>{
 
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
         // Everytime
+        if (ATON.CC.anyCopyrightFound()){
+            ATON.UI.showElement(UI._elCC);
+        }
         
         if (!bFirst) return; // First time
 
@@ -122,6 +127,11 @@ HATHOR.setupLogic = ()=>{
             HATHOR.UI.closeToolPanel();
         }
     });
+
+    ATON.on("MouseRightButton", b => {
+        HATHOR._bRMB = b;
+    });
+
 
     // Handle general auth logic
     ATON.on("Login", (d)=>{
@@ -147,13 +157,16 @@ HATHOR.setupLogic = ()=>{
             ATON.Nav.setFOV(f);
         }
 
+        // Side panels shortcuts
         if (k==='g') HATHOR.UI.sideLayers();
         if (k==='a') HATHOR.UI.sideSemantics();
         if (k==='s') HATHOR.UI.sideScene();
+        if (k==='e') HATHOR.UI.sideEnv();
         if (k==='n') HATHOR.UI.sideNav();
         if (k==='v') HATHOR.UI.sideViewpoint();
+        if (k==='x') HATHOR.UI.sideFX();
 
-        if (k==='l') HATHOR._bLD = true;
+        //if (k==='l') HATHOR._bLD = true;
 
         if (k === 'Delete'){
             if (ATON._hoveredSemNode){
@@ -163,7 +176,7 @@ HATHOR.setupLogic = ()=>{
     });
 
     ATON.on("KeyUp",(k)=>{
-        if (k==='l') HATHOR._bLD = false;
+        //if (k==='l') HATHOR._bLD = false;
     });
 
 };
@@ -260,7 +273,7 @@ HATHOR.handleTaskOnTap = (e)=>{
 //===========================================
 HATHOR.update = ()=>{
 
-    if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && (HATHOR._bLD || ATON.Utils.isMobile())){
+    if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && (ATON._kModCtrl || ATON.Utils.isMobile())){
     //if (HATHOR.currTask === HATHOR.TASK_DIR_LIGHT && ){
 
         const sx = ATON._screenPointerCoords.x;

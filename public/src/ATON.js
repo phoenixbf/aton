@@ -339,8 +339,12 @@ ATON._setupBaseListeners = ()=>{
     ///el.addEventListener('dblclick', ATON._doubleTap, false);
 
     el.addEventListener('mousedown', (e)=>{
-        if (e.button === 1) ATON.fire("MouseMidButton");      // middle-click
-        if (e.button === 2) ATON.fire("MouseRightButton");    // right-click
+        if (e.button === 1) ATON.fire("MouseMidButton", true);      // middle-click
+        if (e.button === 2) ATON.fire("MouseRightButton", true);    // right-click
+    });
+    el.addEventListener('mouseup', (e)=>{
+        if (e.button === 1) ATON.fire("MouseMidButton", false);      // middle-click
+        if (e.button === 2) ATON.fire("MouseRightButton", false);    // right-click
     });
 
     el.addEventListener( 'wheel', ATON._onMouseWheel, false );

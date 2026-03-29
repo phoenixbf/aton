@@ -298,7 +298,7 @@ myNode.restoreMaterials()
 */
 restoreMaterials(){
     if (this.userData.cMat){
-        this.userData.cMat.dispose();
+        //this.userData.cMat.dispose();
         this.userData.cMat = undefined;
     };
 
@@ -381,7 +381,7 @@ setShadowReceive(b){
 
 setEnvMap(envtex){
     if (this.noLP) return;
-    
+
     this.traverse((o) => {
         if (o.isMesh){
 			o.material.envMap  = envtex;
@@ -497,8 +497,10 @@ removeChild(c){
     c.parent = undefined;
 
     c.traverse((o) => {
-        if (o.geometry) o.geometry.dispose();
-        if (o.material) o.material.dispose();
+/*
+        if (o.geometry && o.geometry.dispose) o.geometry.dispose();
+        if (o.material && o.material.dispose) o.material.dispose();
+*/
     });
 
     this.remove(c);

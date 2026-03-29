@@ -2793,6 +2793,18 @@ UI.createLoginForm = (options)=>{
     return el;
 };
 
+// Misc
+UI.URLifyToHTML = (string)=>{
+    if (typeof string !== 'string') return string;
 
+    const urls = string.match(/(((ftp|https?):\/\/)[\-\w@:%_\+.~#?,&\/\/=]+)/g);
+    if (urls){
+        urls.forEach(function(url){
+            string = string.replace(url, "<a target='_blank' href='" + url + "'><img class='aton-icon-small' src='"+ATON.PATH_RES+"icons/link.png'></a>");
+        });
+    }
+
+    return string;
+};
 
 export default UI;

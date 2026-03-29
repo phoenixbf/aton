@@ -689,4 +689,40 @@ ED.deleteSceneKeyword = (o)=>{
     return true;
 };
 
+ED.addFX = (o)=>{
+
+    if (o.ao){
+        if (o.ao.i) ATON.FX.setAOintensity(o.ao.i);
+    }
+
+    if (o.bloom){
+        if (o.bloom.i) ATON.FX.setBloomStrength(o.bloom.i);
+        if (o.bloom.t) ATON.FX.setBloomThreshold(o.bloom.t);
+    }
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.fx = {};
+
+    if (o.ao){
+        E.fx.ao = {};
+        if (o.ao.i) E.fx.ao.i = o.ao.i; 
+    }
+
+    if (o.bloom){
+        E.fx.bloom = {};
+        if (o.bloom.i) E.fx.bloom.i = o.bloom.i;
+        if (o.bloom.t) E.fx.bloom.t = o.bloom.t;
+    }
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+
+    return true;
+};
+
 export default ED;

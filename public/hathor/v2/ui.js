@@ -472,6 +472,13 @@ UI.createNavButton = ()=>{
     });
 };
 
+UI.createFXButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "fx",
+        onpress: UI.sideFX
+    }); 
+};
+
 /*
 UI._onUser = (username)=>{
 	if (!UI._elUserBTN) return;
@@ -532,14 +539,23 @@ UI.buildStandardInterface = ()=>{
         UI.createEnvButton(),
         UI.createNavButton(),
         UI.createSemanticsButton(),
+        UI.createSceneButton(),
+        UI.createFXButton(),
 
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
 
         UI.createXRButton(),
-
-        UI.createSceneButton()
     );
+
+    UI._elCC = ATON.UI.createButton({
+        //text: "Assets Copyrights",
+        icon: "cc",
+        onpress: UI.modalCopyrights
+    });
+
+    UI._elMainToolbar.append(UI._elCC);
+    ATON.UI.hideElement(UI._elCC);
 
     //UI._elUserToolbar.append( UI.createUserButton() );
     UI._elUser = UI.createButtonUser();
@@ -775,9 +791,9 @@ UI.closeToolPanel = ()=>{
     HATHOR.SUI.detachGizmo();
 };
 
-/*========================
-    SCENE
-========================*/
+//====================================
+// Scene
+//====================================
 UI.sideScene = ()=>{
     if (!ATON.SceneHub.currData) return;
 
@@ -958,14 +974,14 @@ UI.sideScene = ()=>{
     };
 
     let elUnlistedBtn = ATON.UI.createButton({
-        icon: "bi-eye-slash-fill",
+        icon: "bi-eye-slash",
         classes: "btn-default",
         onpress: ()=>{
             setVis(0);
         }
     });
     let elPublicBtn = ATON.UI.createButton({
-        icon: "bi-people-fill",
+        icon: "bi-people",
         classes: "btn-default",
         onpress: ()=>{
             setVis(1);
@@ -980,7 +996,7 @@ UI.sideScene = ()=>{
     })
 
     elVisSection.append(
-        ATON.UI.elem("<p class='hathor-text-block'>This allows to control the visibility of your scene. Unlisted <i class='bi bi-eye-slash-fill'></i>: only people having this link can access the scene. Public <i class='bi bi-people-fill'></i>: the scene is listed and accessible in the main landing page, and it is also searchable by users</p>"),
+        ATON.UI.elem("<p class='hathor-text-block'>Control the visibility of your scene. Unlisted <i class='bi bi-eye-slash'></i>: only people having this link can access the scene. Public <i class='bi bi-people'></i>: the scene is accessible and searchable by users from the main landing page.</p>"),
         elVis
     );
 
@@ -1112,9 +1128,9 @@ UI.modalEditSceneInfo = ()=>{
 
 
 
-/*========================
-    LAYERS
-========================*/
+//====================================
+// Layers
+//====================================
 UI.sideLayers = ()=>{
     // Layers list
     let elLayers = ATON.UI.createContainer({
@@ -1470,6 +1486,9 @@ UI.modalDeleteNode = (nid, type)=>{
     });
 };
 
+//====================================
+// Environment
+//====================================
 UI.sideEnv = ()=>{
     let elBody = ATON.UI.createContainer({
         //style: "margin-bottom: 4px;"
@@ -1605,7 +1624,7 @@ UI.sideEnv = ()=>{
             }
         }),
 
-        UI.createTextBlock("This allows to estimate a general light probe, depending on current scene bounds. Useful for PBR assets"),
+        UI.createTextBlock("Estimate a general light probe, depending on current scene bounds. Useful for PBR assets"),
         UI.createBlockGroup({
             items:[
                 ATON.UI.createButtonSwitch({
@@ -1633,66 +1652,9 @@ UI.sideEnv = ()=>{
 };
 
 
-// POV (viewpoints)
-UI.updatePOVs = ()=>{
-    // Clear "all" POV-path
-    ATON.Nav.createPOVPath(HATHOR.POVPATH_ALL);
-
-    let povcount = 0;
-    for (let pov in ATON.Nav.povlist){
-        povcount++;
-        ATON.Nav.addPOVtoPath(pov, HATHOR.POVPATH_ALL);
-    }
-
-    if (povcount < 1){
-        ATON.UI.hideElement(UI._elPOVprev);
-        ATON.UI.hideElement(UI._elPOVnext);
-    }
-    else {
-        ATON.UI.showElement(UI._elPOVprev);
-        ATON.UI.showElement(UI._elPOVnext);
-    }
-};
-
-UI.modalDeletePOV = (povid)=>{
-    if (!povid) return;
-    let POV = ATON.Nav.povlist[povid];
-    if (!POV) return; 
-
-    let elBody = ATON.UI.createContainer();
-    elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete viewpoint '${povid}'?</p>`) );
-
-    elBody.append(
-        UI.createBlockGroup({
-            items:[
-                ATON.UI.createButton({
-                    text: "NO",
-                    classes: "btn-default",
-                    onpress: ATON.UI.hideModal
-                }),
-                ATON.UI.createButton({
-                    text: "YES",
-                    icon: "delete",
-                    classes: "btn-accent",
-                    onpress: ()=>{
-                        HATHOR.ED.deletePOV({povid: povid});
-                        //refreshPOVList();
-                        HATHOR.SUI.buildPOVs();
-
-                        ATON.UI.hideModal();
-                        UI.sideNav();
-                    }
-                })
-            ]
-        })
-    );
-
-    ATON.UI.showModal({
-        header: "Delete Viewpoint",
-        body: elBody
-    });
-};
-
+//====================================
+// Navigation
+//====================================
 UI.sideNav = ()=>{
     let elBody = ATON.UI.createContainer({
         //style: "margin-bottom: 4px;"
@@ -1797,6 +1759,15 @@ UI.sideNav = ()=>{
                         HATHOR.SUI.buildPOVs();
                     }
                 }),
+
+                ATON.UI.createButton({
+                    icon: "table",
+                    text: "Control",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        UI.sideViewpoint();
+                    }
+                })
             ]
         }),
 
@@ -1849,6 +1820,66 @@ UI.sideNav = ()=>{
   
     UI.openToolPanel({
         header: "Navigation",
+        body: elBody
+    });
+};
+
+// POV (viewpoints)
+UI.updatePOVs = ()=>{
+    // Clear "all" POV-path
+    ATON.Nav.createPOVPath(HATHOR.POVPATH_ALL);
+
+    let povcount = 0;
+    for (let pov in ATON.Nav.povlist){
+        povcount++;
+        ATON.Nav.addPOVtoPath(pov, HATHOR.POVPATH_ALL);
+    }
+
+    if (povcount < 1){
+        ATON.UI.hideElement(UI._elPOVprev);
+        ATON.UI.hideElement(UI._elPOVnext);
+    }
+    else {
+        ATON.UI.showElement(UI._elPOVprev);
+        ATON.UI.showElement(UI._elPOVnext);
+    }
+};
+
+UI.modalDeletePOV = (povid)=>{
+    if (!povid) return;
+    let POV = ATON.Nav.povlist[povid];
+    if (!POV) return; 
+
+    let elBody = ATON.UI.createContainer();
+    elBody.append( ATON.UI.elem(`<p>Are you sure you want to delete viewpoint '${povid}'?</p>`) );
+
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "NO",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
+                }),
+                ATON.UI.createButton({
+                    text: "YES",
+                    icon: "delete",
+                    classes: "btn-accent",
+                    onpress: ()=>{
+                        HATHOR.ED.deletePOV({povid: povid});
+                        //refreshPOVList();
+                        HATHOR.SUI.buildPOVs();
+
+                        ATON.UI.hideModal();
+                        UI.sideNav();
+                    }
+                })
+            ]
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Delete Viewpoint",
         body: elBody
     });
 };
@@ -1907,7 +1938,7 @@ UI.sideViewpoint = (povid)=>{
     );
 
     elBody.append(elPOVparams);
-
+/*
     elCurrPOV.append(
         //UI.createTextBlock("Use current viewpoint as:"),
 
@@ -1949,20 +1980,176 @@ UI.sideViewpoint = (povid)=>{
             }
         })
     );
+*/
 
     if (!povid) elBody.append(elCurrPOV);
 
     UI.openToolPanel({
-        header: (povid)? "Viewpoint '"+povid+"'" : "Current viewpoint",
+        header: (povid)? "Viewpoint '"+povid+"'" : "Control viewpoint",
         body: elBody,
         headelement: ATON.UI.createButton({
             icon: "left",
             onpress: UI.sideNav
         }),
     });
-}
+};
 
+//====================================
+// FX
+//====================================
+UI.sideFX = ()=>{
+    let elBody  = ATON.UI.createContainer();
+
+    // AO
+    let elFXAO = ATON.UI.createContainer();
+    elFXAO.append(
+        UI.createTextBlock("FX description"),
+        ATON.UI.createButtonSwitch({
+            text: "Enabled",
+            classes: "w-100 btn-default",
+            onswitch: (b)=>{
+                ATON.FX.togglePass(ATON.FX.PASS_AO, b);
+            }
+        }),
+        ATON.UI.createSlider({
+            range: [0.1,0.5],
+            step: 0.05,
+            value: ATON.FX.getAOintensity(),
+            label: "Intensity",
+            classes: "w-100",
+            oninput: (v)=>{
+                HATHOR.ED.addFX({ ao: {i: v} });
+            }
+        })
+    );
+
+    // Bloom
+    let elFXBloom = ATON.UI.createContainer();
+    elFXBloom.append(
+        UI.createTextBlock("FX description"),
+        ATON.UI.createButtonSwitch({
+            text: "Enabled",
+            classes: "w-100 btn-default",
+            onswitch: (b)=>{
+                ATON.FX.togglePass(ATON.FX.PASS_BLOOM, b);
+            }
+        }),
+
+        ATON.UI.createSlider({
+            range: [0.1,3.0],
+            step: 0.05,
+            value: ATON.FX.getBloomStrength(),
+            label: "Strength",
+            classes: "w-100",
+            oninput: (v)=>{
+                HATHOR.ED.addFX({ bloom: {i: v} });
+            }
+        }),
+        ATON.UI.createSlider({
+            range: [0.1,1.0],
+            step: 0.01,
+            value: ATON.FX.getBloomThreshold(),
+            label: "Threshold",
+            classes: "w-100",
+            oninput: (v)=>{
+                HATHOR.ED.addFX({ bloom: {t: v} });
+            }
+        })
+    );
+
+    // DoF
+    let elFXDOF = ATON.UI.createContainer();
+    elFXDOF.append(
+        UI.createTextBlock("FX description"),
+        ATON.UI.createButtonSwitch({
+            text: "Enabled",
+            classes: "w-100 btn-default",
+            onswitch: (b)=>{
+                ATON.FX.togglePass(ATON.FX.PASS_DOF, b);
+            }
+        }),
+
+        ATON.UI.createSlider({
+            range: [0.1,3.0],
+            step: 0.05,
+            value: ATON.FX.getAOintensity(),
+            label: "Strength",
+            classes: "w-100",
+            oninput: (v)=>{
+                HATHOR.ED.addFX({ dof: {i: v} });
+            }
+        })
+    );
+
+    elBody.append(
+        ATON.UI.createTreeGroup({
+            items:[
+                {
+                    title: "Ambient Occlusion",
+                    open: true,
+                    content: elFXAO
+                },
+                {
+                    title: "Bloom",
+                    open: true,
+                    content: elFXBloom
+                },
+            ]
+        })
+    );
+
+    UI.openToolPanel({
+        header: "Post-processing FX",
+        body: elBody
+    }); 
+};
+
+//====================================
+// Copyrights / Metadata
+//====================================
+UI.modalCopyrights = ()=>{
+    let numCC = ATON.CC.list.length;
+    if (numCC < 1) return;
+
+    let elBody = ATON.UI.createContainer();
+
+    for (let cc in ATON.CC.list){
+        let CC = ATON.CC.list[cc];
+
+        let elCC = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+        //let elCC = ATON.UI.elem("<table class='table hathor-panel-section'><tbody></tbody></table>");
+
+        for (let e in CC){
+            elCC.append(
+                ATON.UI.elem(`
+                    <div class='row'>
+                        <div class='col-md-2'><strong>${e}</strong></div>
+                        <div class='col-md-10'>${ATON.UI.URLifyToHTML(CC[e])}</div>
+                    </div>
+                `)
+/*
+                ATON.UI.elem(`
+                    <div style='display:block'>
+                    <strong>${e}</strong>: ${ATON.UI.URLifyToHTML(CC[e])}</div>`
+                )
+*/
+            );
+        }
+
+        elBody.append(elCC);
+    }
+
+    ATON.UI.showModal({
+        header: "Copyrights / Metadata",
+        body: elBody,
+        //footer: elFooter,
+    });
+};
+
+
+//====================================
 // Tasks
+//====================================
 UI.buildTaskToolbar = (task)=>{
     if (!task) return;
 

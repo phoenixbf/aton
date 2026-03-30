@@ -140,10 +140,13 @@ HATHOR.setupLogic = ()=>{
         
         ATON.Photon.setUsername(d.username);
         //if (HATHOR._bCollabLogicSet) return;
+
+        if (HATHOR.UI._elMyGall) ATON.UI.showElement(HATHOR.UI._elMyGall);
     });
 
     ATON.on("Logout", ()=>{
         HATHOR.exitEditorMode();
+        if (HATHOR.UI._elMyGall) ATON.UI.hideElement(HATHOR.UI._elMyGall);
     });
 
     HATHOR.setupCollabLogic();

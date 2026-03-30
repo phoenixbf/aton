@@ -201,7 +201,10 @@ REQ.login = (uname, passw, onSuccess, onFail)=>{
             password: passw
         },
         (r)=>{
-            if (r && onSuccess) onSuccess(r);
+            if (r && onSuccess){
+                ATON.fire("Login", r);
+                onSuccess(r);
+            }
             else if (onFail) onFail();
         },
         (e)=>{
@@ -216,7 +219,11 @@ Request logout on current node
 @param {function} onFail - Routine to handle failed login
 */
 REQ.logout = (onSuccess, onFail)=>{
-    return REQ.get("logout", onSuccess, onFail);
+    return REQ.get("logout", ()=>{
+        ATON.fire("Logout");
+        if (onSuccess) onSuccess();
+    }, 
+    onFail);
 };
 
 

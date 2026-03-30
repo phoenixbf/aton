@@ -67,6 +67,7 @@ UI.setup = ()=>{
 
     ATON.UI.hideElement(UI._elCC);
     ATON.UI.hideElement(UI._elTalkBTN);
+    ATON.UI.hideElement(UI._elMyGall);
 
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
@@ -463,6 +464,17 @@ UI.createMainButton = ()=>{
     });
 };
 
+UI.createMyGalleryButton = ()=>{
+    UI._elMyGall = ATON.UI.createButton({
+        icon: "gallery",
+        onpress: ()=>{
+            window.location.href = ATON.BASE_URL + "/v2/myscenes";
+        }
+    });
+
+    return UI._elMyGall;
+};
+
 UI.createXRButton = ()=>{
     return ATON.UI.createButton({
         icon: "xr",
@@ -583,6 +595,7 @@ UI.buildStandardInterface = ()=>{
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
+        //UI.createMyGalleryButton(),
         UI.createLayersButton(),
         UI.createEnvButton(),
         UI.createNavButton(),
@@ -605,7 +618,7 @@ UI.buildStandardInterface = ()=>{
 
 UI.buildCustomInterface = ()=>{
     UI._elMainToolbar.innerHTML = "";
-    
+
     HATHOR._tb = String(HATHOR._tb);
     let elements = HATHOR._tb.split(",");
 
@@ -633,15 +646,14 @@ UI.buildCustomInterface = ()=>{
 
 // Custom Hathor user button
 UI.createButtonUser = ()=>{
-    let elLoggedContent = ATON.UI.createContainer({
-        classes: "hathor-panel-section"
-    });
+    let elLoggedContent = ATON.UI.createContainer();
 
     let bEditor = HATHOR.isEditorMode();
     console.log(bEditor);
 
     UI._elModeSTD = ATON.UI.createButton({
         text: "Standard Mode",
+        //icon: "user",
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.exitEditorMode();
@@ -650,6 +662,7 @@ UI.createButtonUser = ()=>{
 
     UI._elModeED = ATON.UI.createButton({
         text: "Editor Mode",
+        //icon: "edit",
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.enterEditorMode();
@@ -683,8 +696,22 @@ UI.createButtonUser = ()=>{
     });
 */
     elLoggedContent.append(
-        UI.createTextBlock("Enter or leave Editor Mode"),
-        UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
+        ATON.UI.createButton({
+            text: "My Scenes",
+            icon: "gallery",
+            classes: "w-100 btn-default",
+            onpress: ()=>{
+                window.location.href = ATON.BASE_URL + "/v2/myscenes";
+            }
+        }),
+
+        ATON.UI.createContainer({
+            classes: "hathor-panel-section",
+            items:[
+                UI.createTextBlock("Switch between Standard or Editor mode in Hathor. Standard is how your 3D scene will be presented to general users, Editor allows to compose, edit and enrich your 3D scene."),
+                UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
+            ]
+        })
     );
 
     let el = ATON.UI.createButtonUser({

@@ -27,6 +27,16 @@ SHU.setPageComplete = ()=>{
     ATON.UI.hideCenteredOverlay();
 };
 
+SHU.createTextBlock = (content)=>{
+    let el = ATON.UI.createContainer({
+        classes: "shuTextBlock"
+    });
+
+    if (content) el.append(content);
+
+    return el;
+};
+
 SHU.createMainAuthDropdown = (u, section)=>{
 
     const items = [];
@@ -107,6 +117,26 @@ SHU.deleteScene = (options)=>{
             });
         }
     );  
+};
+
+SHU.cloneScene = (options)=>{
+    if (!options) return;
+    if (!options.sid) return;
+
+    ATON.checkAuth(
+        (u)=>{
+            let O = {
+                fromScene: options.sid
+            }
+
+            ATON.REQ.post("scenes/", O, (newsid)=>{
+                console.log(newsid);
+                if (!newsid) return;
+
+                if (options.onsuccess) options.onsuccess(newsid);
+            });
+        }
+    );
 };
 
 </script>

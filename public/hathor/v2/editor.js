@@ -365,7 +365,7 @@ ED.addModel = (o)=>{
     if (type === ATON.NTYPES.SCENE) N = ATON.getSceneNode(nid);
     else N = ATON.getSemanticNode(nid);
 
-    N.load(url);
+    N.setCloneOnLoadHit(false).load(url);
 
     let op = {
         a: "addModel",

@@ -1038,6 +1038,9 @@ a {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0) inset, 0 0 8px rgba(0, 0, 255, 0.5);
 }
 
+/*
+    Ranges
+*/
 input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
@@ -1059,9 +1062,9 @@ input[type="range"]:focus {
 /******** Chrome, Safari, Opera and Edge Chromium styles ********/
 /* slider track */
 input[type="range"]::-webkit-slider-runnable-track {
-    background-color: rgba(var(--bs-body-bg-rgb), 0.7);
+    background-color: rgba(var(--bs-body-color-rgb), 0.3);
     border-radius: 0.5rem;
-    height: 0.5rem;
+    height: 4px;
 }
   
   /* slider thumb */
@@ -1083,9 +1086,9 @@ input[type="range"]:focus::-webkit-slider-thumb {
   /*********** Firefox styles ***********/
 /* slider track */
 input[type="range"]::-moz-range-track {
-    background-color: rgba(var(--bs-body-bg-rgb), 0.5);
+    background-color: rgba(var(--bs-body-color-rgb), 0.3);
     border-radius: 0.5rem;
-    height: 0.5rem;
+    height: 4px;
 }
   
   /* slider thumb */

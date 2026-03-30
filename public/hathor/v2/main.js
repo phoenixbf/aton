@@ -170,6 +170,9 @@ HATHOR.setupLogic = ()=>{
         if (k==='v') HATHOR.UI.sideViewpoint();
         if (k==='x') HATHOR.UI.sideFX();
 
+        if (k==='ArrowRight') ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
+        if (k==='ArrowLeft') ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
+
         //if (k==='l') HATHOR._bLD = true;
 
         if (k === 'Delete'){

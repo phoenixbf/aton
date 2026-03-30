@@ -32,6 +32,30 @@ UI.setup = ()=>{
     document.body.append(UI._elSidePanel);
     UI._bSidePanel = false;
 
+    // Bottom toolbar
+    UI._elPOVprev = ATON.UI.createButton({
+        icon: "left",
+        onpress: ()=>{
+            ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
+        }
+    });
+
+    UI._elPOVnext = ATON.UI.createButton({
+        icon: "right",
+        onpress: ()=>{
+            ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
+        }
+    });
+
+    UI._elTalkBTN = ATON.UI.createButtonTalk();
+
+    UI._elBottomToolbar.append(
+        UI._elPOVprev,
+        ATON.UI.createButtonHome(),
+        UI._elTalkBTN,
+        UI._elPOVnext
+    );
+
     // Editor UI
     if (HATHOR.params.get('e')){
         UI.buildStandardInterface();
@@ -41,6 +65,8 @@ UI.setup = ()=>{
         else UI.buildStandardInterface();
     }
 
+    ATON.UI.hideElement(UI._elCC);
+    ATON.UI.hideElement(UI._elTalkBTN);
 
     // UI elements to hide on interaction
     ATON.on("NavInteraction", b =>{
@@ -276,48 +302,50 @@ UI.sideSemantics = ()=>{
         //style: "margin-bottom: 4px;"
     });
 
-    let elEnrich = ATON.UI.createContainer({ classes: "hathor-panel-section" });
-    elBody.append(elEnrich);
+    if (HATHOR.isEditorMode()){
+        let elEnrich = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+        elBody.append(elEnrich);
 
-    let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+        let elSemBasic = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
 
-    elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
-    elSemBasic.append(
-        ATON.UI.createContainer({
-            classes: "btn-group",
-            style: "width:100%",
-            items: [
-                ATON.UI.createButton({
-                    text: "Basic " + UI.TASK_SYMBOL,
-                    classes: "btn-default",
-                    onpress: ()=>{
-                        HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
-                    }
-                })
-            ]
-        })    
-    );
+        elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
+        elSemBasic.append(
+            ATON.UI.createContainer({
+                classes: "btn-group",
+                style: "width:100%",
+                items: [
+                    ATON.UI.createButton({
+                        text: "Basic " + UI.TASK_SYMBOL,
+                        classes: "btn-default",
+                        onpress: ()=>{
+                            HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
+                        }
+                    })
+                ]
+            })    
+        );
 
-    let elSemConvex = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
+        let elSemConvex = ATON.UI.createContainer({/*classes: "hathor-side-panel-half-container"*/});
 
-    elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
-    elSemConvex.append(
-        ATON.UI.createContainer({
-            classes: "btn-group",
-            style: "width:100%",
-            items: [
-                ATON.UI.createButton({
-                    text: "Free Form "+UI.TASK_SYMBOL,
-                    classes: "btn-default",
-                    onpress: ()=>{
-                        HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
-                    }
-                })
-            ]
-        })    
-    );
+        elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
+        elSemConvex.append(
+            ATON.UI.createContainer({
+                classes: "btn-group",
+                style: "width:100%",
+                items: [
+                    ATON.UI.createButton({
+                        text: "Free Form "+UI.TASK_SYMBOL,
+                        classes: "btn-default",
+                        onpress: ()=>{
+                            HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
+                        }
+                    })
+                ]
+            })    
+        );
 
-    elEnrich.append( elSemBasic, elSemConvex );
+        elEnrich.append( elSemBasic, elSemConvex );
+    }
 
     let elSemList = undefined;
     
@@ -327,31 +355,39 @@ UI.sideSemantics = ()=>{
 
             if (!elSemList) elSemList = ATON.UI.createContainer({ classes: "hathor-panel-section"});
 
+            let actions = [];
+
+            if (HATHOR.isEditorMode()){
+                actions.push(
+                    ATON.UI.createButton({
+                        icon: "edit",
+                        classes: "btn-default",
+                        onpress: ()=>{
+                            UI.modalAnnotation(semid);
+                            UI.closeToolPanel();
+                        }
+                    })
+                )
+            }
+
+            actions.push(
+                ATON.UI.createButtonSwitch({
+                    icon: "visibility",
+                    status: S.visible,
+                    onswitch: (b)=>{
+                        if (b) S.show();
+                        else S.hide();
+                    }
+                })
+            );
+
             elSemList.append(
                 ATON.UI.createBlockItem({
                     text: semid,
                     mainaction: ()=>{
                         ATON.Nav.requestPOVbyNode(S, 0.2);
                     },
-                    actions:[
-                        ATON.UI.createButton({
-                            icon: "edit",
-                            classes: "btn-default",
-                            onpress: ()=>{
-                                UI.modalAnnotation(semid);
-                                UI.closeToolPanel();
-                            }
-                        }),
-
-                        ATON.UI.createButtonSwitch({
-                            icon: "visibility",
-                            status: S.visible,
-                            onswitch: (b)=>{
-                                if (b) S.show();
-                                else S.hide();
-                            }
-                        })
-                    ]
+                    actions: actions
                 })
             );
         }
@@ -532,28 +568,6 @@ UI.createUserButton = ()=>{
     Main Toolbar
 =====================================*/
 UI.buildStandardInterface = ()=>{
-    UI._elPOVprev = ATON.UI.createButton({
-        icon: "left",
-        onpress: ()=>{
-            ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
-        }
-    });
-
-    UI._elPOVnext = ATON.UI.createButton({
-        icon: "right",
-        onpress: ()=>{
-            ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
-        }
-    });
-
-    UI._elTalkBTN = ATON.UI.createButtonTalk();
-
-    UI._elBottomToolbar.append(
-        UI._elPOVprev,
-        ATON.UI.createButtonHome(),
-        UI._elTalkBTN,
-        UI._elPOVnext
-    );
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
@@ -571,9 +585,6 @@ UI.buildStandardInterface = ()=>{
         UI.createCollabButton(),
         UI.createCopyrightsButton()
     );
-
-    ATON.UI.hideElement(UI._elCC);
-    ATON.UI.hideElement(UI._elTalkBTN);
 
     //UI._elUserToolbar.append( UI.createUserButton() );
     UI._elUser = UI.createButtonUser();
@@ -1818,7 +1829,9 @@ UI.sideNav = ()=>{
         })
     );
 
-    elPOVs.append(elCurrPOV, elPOVlist);
+    if (HATHOR.isEditorMode()) elPOVs.append(elCurrPOV, elPOVlist);
+    else elPOVs.append(elPOVlist);
+
     refreshPOVList();
 
     elBody.append(
@@ -1829,12 +1842,14 @@ UI.sideNav = ()=>{
                     open: true,
                     content: elPOVs
                 },
+/*
                 {
                     title: "Paths"
                 },
                 {
                     title: "Locomotion Nodes"
                 }
+*/
             ]
         })
     );
@@ -2260,12 +2275,17 @@ UI.sideCollab = ()=>{
     })
 */
     elBody.append(
+        UI.createTextBlock("Set a username for this collaborative sesssion:"),
         UI.createBlockGroup({
             items:[
                 elUname,
+            ]
+        }),
 
+        UI.createBlockGroup({
+            items:[
                 ATON.UI.createButton({
-                    //text: "Leave",
+                    text: "Leave session",
                     icon: "exit",
                     classes: "btn-default aton-btn-block",
                     onpress: ()=>{
@@ -2276,6 +2296,7 @@ UI.sideCollab = ()=>{
             ]
         }),
 
+        UI.createTextBlock("Use this chat to exchange message among participants:"),
         UI.createChatContainer(),
 
         ATON.UI.createInputText({
@@ -2294,7 +2315,7 @@ UI.sideCollab = ()=>{
     );
 
     UI.openToolPanel({
-        header: "Photon Session",
+        header: "Collaborative Session",
         body: elBody
     }); 
 };

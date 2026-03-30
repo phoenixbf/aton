@@ -546,9 +546,12 @@ UI.buildStandardInterface = ()=>{
         }
     });
 
+    UI._elTalkBTN = ATON.UI.createButtonTalk();
+
     UI._elBottomToolbar.append(
         UI._elPOVprev,
         ATON.UI.createButtonHome(),
+        UI._elTalkBTN,
         UI._elPOVnext
     );
 
@@ -570,6 +573,7 @@ UI.buildStandardInterface = ()=>{
     );
 
     ATON.UI.hideElement(UI._elCC);
+    ATON.UI.hideElement(UI._elTalkBTN);
 
     //UI._elUserToolbar.append( UI.createUserButton() );
     UI._elUser = UI.createButtonUser();
@@ -688,11 +692,11 @@ UI.modalXR = ()=>{
             items:[
                 ATON.UI.createButtonVR({
                     classes: "btn-accent",
-                    text: "VR"
+                    text: "Immersive VR"
                 }),
                 ATON.UI.createButtonAR({
                     classes: "btn-accent",
-                    text: "AR"
+                    text: "Augmented Reality"
                 })
             ]
         })
@@ -702,7 +706,8 @@ UI.modalXR = ()=>{
     ATON.UI.showModal({
         header: "XR",
         body: elBody,
-        footer: elFooter
+        footer: elFooter,
+        wide: true
     });
 };
 
@@ -2213,21 +2218,29 @@ UI.sideCollab = ()=>{
 
     let uname = ATON.Photon.getUsername();
 
-    elBody.append(
+    let elUname = ATON.UI.createInputText({
+        //label: "Username",
+        placeholder: "Username",
+        value: uname,
+        classes: "w-100",
+        clearonsub: false,
+        validator: (u)=>{
+            if (u.length < 3) return false;
+            return true;
+        },
+        onsubmit: (u)=>{
+            ATON.Photon.setUsername(u);
+        }
+    });
 /*
-        ATON.UI.createInputText({
-            //label: "Username",
-            placeholder: "Username",
-            value: uname,
-            classes: "w-100",
-            onsubmit: (u)=>{
-                if (u.length < 3) return;
-                ATON.Photon.setUsername(u);
-            }
-        }),
-*/
-        UI.createBlockGroup({
-            items:[
+    let elUname = ATON.UI.createButton({
+        text: uname,
+        classes: "btn-default"
+    });
+
+    ATON.checkAuth(u => {
+        if (u){
+            elUname.replaceWith(
                 ATON.UI.createInputText({
                     //label: "Username",
                     placeholder: "Username",
@@ -2241,10 +2254,18 @@ UI.sideCollab = ()=>{
                     onsubmit: (u)=>{
                         ATON.Photon.setUsername(u);
                     }
-                }),
+                })
+            )
+        }
+    })
+*/
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                elUname,
 
                 ATON.UI.createButton({
-                    //text: "Leave session",
+                    //text: "Leave",
                     icon: "exit",
                     classes: "btn-default aton-btn-block",
                     onpress: ()=>{

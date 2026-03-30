@@ -286,25 +286,43 @@ HATHOR.setupCollabLogic = ()=>{
             ATON.Photon.setUsername("User #"+uid);
         }
 
-        HATHOR.UI.sideCollab();
+        ATON.SUI.setSelectorColor( ATON.Photon.color );
+        ATON.plight.color = ATON.Photon.color;
+
+        ATON.checkAuth((u)=>{
+            if (u.username !== undefined) ATON.Photon.setUsername( u.username );
+            HATHOR.UI.sideCollab();
+        });
 
         if (HATHOR.UI._elPhoton){
             HATHOR.UI._elPhoton.classList.add("aton-btn-photon");
             UI._elPhoton.removeAttribute("disabled");
 
-            let n = ATON.Photon.ucolors.length;
-            let c = (uid % n);
+            //let n = ATON.Photon.ucolors.length;
+            //let c = (uid % n);
 
-            let strcol = ATON.Photon.ucolors[c].getStyle();
+            //let strcol = ATON.Photon.ucolors[c].getStyle();
+            let strcol = ATON.Photon.color.getStyle();
 
             UI._elPhoton.style["background-color"] = strcol;
-        }    
+        }
+
+        if (UI._elTalkBTN) ATON.UI.showElement(UI._elTalkBTN); 
     });
 
     ATON.on("VRC_Disconnected", ()=>{
         if (HATHOR.UI._elPhoton){
             HATHOR.UI._elPhoton.classList.remove("aton-btn-photon");
             UI._elPhoton.style["background-color"] = "";
+        }
+
+        if (UI._elTalkBTN) ATON.UI.hideElement(UI._elTalkBTN);
+    });
+
+    ATON.on("VRC_SceneState", (sstate)=>{
+        let numUsers = ATON.Photon.getNumUsers();
+        if (numUsers>1){
+            
         }
     });
 

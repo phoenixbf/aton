@@ -703,6 +703,38 @@ UI.createButtonDeviceOrientation = (options)=>{
 };
 
 /**
+Create talk button for Photon sessions
+@param {object} options - Optional UI options object
+@returns {HTMLElement}
+*/
+UI.createButtonTalk = (options)=>{
+    let el;
+
+    const std = {
+        icon: "mic",
+        tooltip: "Talk",
+        onpress: ()=>{
+            if (!ATON.Photon.isConnected()) return;
+
+            if (ATON.MediaFlow.isAudioRecording()){
+                ATON.MediaFlow.stopAudioStreaming();
+                el.classList.remove("aton-recording-bg");
+            }
+            else {
+                ATON.MediaFlow.startAudioStreaming();
+                el.classList.add("aton-recording-bg");
+            }
+        }
+    };
+
+    el = UI.createButton({ ...std, ...options });
+
+    if (!ATON.Utils.isConnectionSecure()) ATON.UI.hideElement(el);
+
+    return el;
+};
+
+/**
 Create a two-state switch button
 - options.onswitch: routine when switched, argument is status (on/off)
 - options.status: initial bool status (on/off)

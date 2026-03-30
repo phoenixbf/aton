@@ -2425,7 +2425,7 @@ UI.createInputText = (options)=>{
     let elSub = undefined;
     if (options.onsubmit) elSub = UI.createButton({
         icon: options.icon? options.icon : "bi-check2",
-        classes: "btn-default",
+        classes: "btn-accent",
         onpress: ()=>{
             let val = elInput.value;
             val = val.trim();

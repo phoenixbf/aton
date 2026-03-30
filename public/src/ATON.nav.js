@@ -65,7 +65,7 @@ Nav.STD_LOC_VALIDATOR = ()=>{
         return;
     }
 
-    Nav.pathPlaying = undefined;
+    Nav._bValidLocomotion = true;
 };
 
 

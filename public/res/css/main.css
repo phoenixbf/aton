@@ -370,7 +370,12 @@ a {
     --bs-btn-hover-bg: var(--aton-colors-accent);
     --bs-btn-hover-border-color: rgba(var(--aton-colors-accent-rgb), 1.0);
     --bs-btn-hover-color: #222;
-/*
+
+
+    --bs-btn-disabled-color: var(--bs-body-color);
+    --bs-btn-disabled-border-color: var(--bs-body-bg);
+
+    /*
     --bs-btn-color: #fff;
     --bs-btn-bg: #0d6efd;
     --bs-btn-border-color: #0d6efd;
@@ -390,6 +395,11 @@ a {
 
 [data-bs-theme=dark] .btn-accent .aton-icon {
     filter: invert(100%);
+}
+
+[data-bs-theme=dark] .btn-accent:disabled {
+    filter: invert(100%);
+    color: var(--bs-body-bg) !important;
 }
 
 .btn-default {

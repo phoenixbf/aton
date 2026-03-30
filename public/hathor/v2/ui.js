@@ -481,7 +481,7 @@ UI.createFXButton = ()=>{
 
 UI.createCollabButton = ()=>{
     UI._elPhoton = ATON.UI.createButton({
-        icon: "photon",
+        icon: "users",
         onpress: UI.sideCollab
     });
 
@@ -1793,6 +1793,7 @@ UI.sideNav = ()=>{
             validator: (povid)=>{
                 if (povid.length < 1) return false;
                 if (!HATHOR.ID_VALIDATOR.test(povid)) return false;
+                if (ATON.Nav.povlist[povid]) return false; // already exists
 
                 return true;
             },
@@ -2159,13 +2160,16 @@ UI.modalCopyrights = ()=>{
 // Collaborative session (Photon)
 //====================================
 UI.createChatContainer = ()=>{
-    UI._elPhotonChat = ATON.UI.createContainer({
-        classes: "aton-photon-chat-container"
-    });
+    if (!UI._elPhotonChat){
+        UI._elPhotonChat = ATON.UI.createContainer({
+            classes: "aton-photon-chat-container"
+        });
+    }
 
     return UI._elPhotonChat;
 };
 
+// Append a user message to the main chat container
 UI.addMessage = (o)=>{
     if (!UI._elPhotonChat) return;
     
@@ -2173,14 +2177,11 @@ UI.addMessage = (o)=>{
 
     let A = ATON.Photon.avatarList[o.uid];
 
-    let elMSG = ATON.UI.elem(`
-        <span class='aton-photon-msg'>${o.msg}
-        </span>
-    `);
+    let elMSG = ATON.UI.elem(`<span class='aton-photon-msg'>${o.msg}</span>`);
 
     let elU = ATON.UI.createButton({
         //icon: "user",
-        text: (o.uid !== undefined)? A.getUsername() : "You",
+        text: (o.uid !== ATON.Photon.uid)? A.getUsername() : "You",
         classes: "aton-btn-photon aton-photon-chat-user",
         onpress: ()=>{
             //
@@ -2258,7 +2259,7 @@ UI.sideCollab = ()=>{
 
         ATON.UI.createInputText({
             //label: "Username",
-            placeholder: "Message...",
+            placeholder: "Send a message...",
             classes: "w-100",
             validator: (msg)=>{
                 if (msg.length < 1) return false;
@@ -2266,7 +2267,7 @@ UI.sideCollab = ()=>{
             },
             onsubmit: (msg)=>{
                 ATON.Photon.setMessage(msg);
-                UI.addMessage({msg: msg });
+                UI.addMessage({msg: msg, uid: ATON.Photon.uid });
             }
         }),
     );

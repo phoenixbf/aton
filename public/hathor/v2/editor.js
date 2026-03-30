@@ -692,10 +692,12 @@ ED.deleteSceneKeyword = (o)=>{
 ED.addFX = (o)=>{
 
     if (o.ao){
+        ATON.FX.togglePass(ATON.FX.PASS_AO, true);
         if (o.ao.i) ATON.FX.setAOintensity(o.ao.i);
     }
 
     if (o.bloom){
+        ATON.FX.togglePass(ATON.FX.PASS_BLOOM, true);
         if (o.bloom.i) ATON.FX.setBloomStrength(o.bloom.i);
         if (o.bloom.t) ATON.FX.setBloomThreshold(o.bloom.t);
     }
@@ -721,6 +723,28 @@ ED.addFX = (o)=>{
     }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+
+    return true;
+};
+
+ED.removeFX = (o)=>{
+
+    if (o.ao) ATON.FX.togglePass(ATON.FX.PASS_AO, false);
+    if (o.bloom) ATON.FX.togglePass(ATON.FX.PASS_BLOOM, false);
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.fx = {};
+
+    if (o.ao) E.fx.ao = {};
+    if (o.bloom) E.fx.bloom = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
 
     return true;
 };

@@ -308,6 +308,10 @@ HATHOR.setupCollabLogic = ()=>{
         }
     });
 
+    ATON.on("VRC_UMessage", (data)=>{
+        HATHOR.UI.addMessage({ uid: data.uid, msg: data.msg });
+    });
+
     HATHOR._bCollabLogicSet = true;
 };
 

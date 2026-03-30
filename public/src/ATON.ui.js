@@ -2406,6 +2406,7 @@ Create an input text field
 - options.onsubmit: routine to submit text (e.g.: (val)=>{ console.log(val); })
 - options.icon: icon for submission action
 - options.validator: routine to validate input string (v(s)=>{ ... }) returning true if valid, false otherwise
+- options.clearonsub: clear input field on submit 
 
 Components:
 - "input"
@@ -2416,6 +2417,8 @@ Components:
 */
 UI.createInputText = (options)=>{
     let baseid = ATON.Utils.generateID("txtfield");
+
+    let bClear = (options.clearonsub!==undefined)? options.clearonsub : true;
     
     let bValid = true;
 
@@ -2431,7 +2434,8 @@ UI.createInputText = (options)=>{
             if (!bValid) return;
 
             options.onsubmit( val );
-            elInput.value = "";
+
+            if (bClear) elInput.value = "";
         }
     });
 
@@ -2454,8 +2458,17 @@ UI.createInputText = (options)=>{
     UI.registerElementAsComponent(elInput, "input");
 
     elInput.id = baseid + "-input";
+
+    // Enter key
     elInput.onkeydown = (event)=>{
-        if (event.keyCode == 13) return;
+        if (event.keyCode == 13){
+            if (!bValid) return;
+
+            if (options.onsubmit){
+                options.onsubmit( elInput.value.trim() );
+                if (bClear) elInput.value = "";
+            }
+        }
     };
 
     if (options.value) elInput.value = String(options.value);

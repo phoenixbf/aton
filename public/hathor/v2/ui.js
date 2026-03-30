@@ -1083,10 +1083,10 @@ UI.modalEditSceneInfo = ()=>{
             label: "Title",
             placeholder: "Please provide a short title...",
             value: ATON.SceneHub.getTitle(),
+            clearonsub: false,
             validator: (v)=>{
-                console.log(v);
-
                 if (v.length>2) return true;
+
                 else return false;
             },
             onsubmit: (title)=>{
@@ -1199,6 +1199,7 @@ UI.sideLayers = ()=>{
         validator: (nid)=>{
             if (nid.length < 1) return false;
             if (!HATHOR.ID_VALIDATOR.test(nid)) return false;
+            if (ATON.snodes[nid]) return false; // already exists
 
             return true;
         },
@@ -2021,8 +2022,10 @@ UI.sideFX = ()=>{
         ATON.UI.createButtonSwitch({
             text: "Enabled",
             classes: "w-100 btn-default",
+            status: ATON.FX.isPassEnabled(ATON.FX.PASS_AO),
             onswitch: (b)=>{
-                ATON.FX.togglePass(ATON.FX.PASS_AO, b);
+                if (b) HATHOR.ED.addFX({ ao: {i: 0.2} });
+                else HATHOR.ED.removeFX({ ao: {} });
             }
         }),
         ATON.UI.createSlider({
@@ -2044,8 +2047,10 @@ UI.sideFX = ()=>{
         ATON.UI.createButtonSwitch({
             text: "Enabled",
             classes: "w-100 btn-default",
+            status: ATON.FX.isPassEnabled(ATON.FX.PASS_BLOOM),
             onswitch: (b)=>{
-                ATON.FX.togglePass(ATON.FX.PASS_BLOOM, b);
+                if (b) HATHOR.ED.addFX({ bloom: {i: 0.3} });
+                else HATHOR.ED.removeFX({ bloom: {} });
             }
         }),
 
@@ -2078,21 +2083,11 @@ UI.sideFX = ()=>{
         ATON.UI.createButtonSwitch({
             text: "Enabled",
             classes: "w-100 btn-default",
+            status: ATON.FX.isPassEnabled(ATON.FX.PASS_DOF),
             onswitch: (b)=>{
-                ATON.FX.togglePass(ATON.FX.PASS_DOF, b);
+                //
             }
         }),
-
-        ATON.UI.createSlider({
-            range: [0.1,3.0],
-            step: 0.05,
-            value: ATON.FX.getAOintensity(),
-            label: "Strength",
-            classes: "w-100",
-            oninput: (v)=>{
-                HATHOR.ED.addFX({ dof: {i: v} });
-            }
-        })
     );
 
     elBody.append(
@@ -2184,13 +2179,22 @@ UI.addMessage = (o)=>{
     `);
 
     let elU = ATON.UI.createButton({
-        icon: "user",
+        //icon: "user",
         text: (o.uid !== undefined)? A.getUsername() : "You",
         classes: "aton-btn-photon aton-photon-chat-user",
         onpress: ()=>{
-
+            //
         }
     });
+
+    if (o.uid !== undefined){
+        let n = ATON.Photon.ucolors.length;
+        let c = (o.uid % n);
+
+        let strcol = ATON.Photon.ucolors[c].getStyle();
+
+        elU.style["background-color"] = strcol;
+    }
 
     elMSG.prepend( elU );
 
@@ -2228,6 +2232,7 @@ UI.sideCollab = ()=>{
                     placeholder: "Username",
                     value: uname,
                     classes: "w-100",
+                    clearonsub: false,
                     validator: (u)=>{
                         if (u.length < 3) return false;
                         return true;

@@ -58,7 +58,7 @@ UI.setup = ()=>{
 
     // Editor UI
     if (HATHOR.params.get('e')){
-        UI.buildStandardInterface();
+        UI.buildStandardInterface(); // TODO: change with ed UI
     }
     else {
         if (HATHOR._tb) UI.buildCustomInterface();
@@ -88,6 +88,10 @@ UI.setTheme = (theme)=>{
     ATON.UI.setTheme(theme);
 
     //if (UI.WYSIWYG) TODO:
+};
+
+UI.rebuildInterface = ()=>{
+
 };
 
 UI.hideMainElements = ()=>{
@@ -534,6 +538,13 @@ UI.createCopyrightsButton = ()=>{
     return UI._elCC;
 };
 
+UI.createToolsButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "tools",
+        onpress: UI.sideTools
+    }); 
+};
+
 /*
 UI._onUser = (username)=>{
 	if (!UI._elUserBTN) return;
@@ -568,6 +579,7 @@ UI.createUserButton = ()=>{
     Main Toolbar
 =====================================*/
 UI.buildStandardInterface = ()=>{
+    UI._elMainToolbar.innerHTML = "";
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
@@ -592,14 +604,31 @@ UI.buildStandardInterface = ()=>{
 };
 
 UI.buildCustomInterface = ()=>{
+    UI._elMainToolbar.innerHTML = "";
+    
     HATHOR._tb = String(HATHOR._tb);
     let elements = HATHOR._tb.split(",");
+
+    UI._elMainToolbar.append( UI.createMainButton() );
 
     for (let e in elements){
         const E = elements[e];
 
-        // TODO:
+        if (E==="nav")    UI._elMainToolbar.append(UI.createNavButton());
+        if (E==="layers") UI._elMainToolbar.append(UI.createLayersButton());
+        if (E==="cc")     UI._elMainToolbar.append(UI.createCopyrightsButton());
+        if (E==="fx")     UI._elMainToolbar.append(UI.createFXButton());
+        if (E==="tools")  UI._elMainToolbar.append(UI.createToolsButton());
+        if (E==="xr")     UI._elMainToolbar.append(UI.createXRButton());
+
+        if (E==="share")  UI._elMainToolbar.append(ATON.UI.createButtonQR());
+        if (E==="fs")     UI._elMainToolbar.append(ATON.UI.createButtonFullscreen());
+
+        if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());
     }
+
+    UI._elUser = UI.createButtonUser();
+    UI._elUserToolbar.append( UI._elUser );
 };
 
 // Custom Hathor user button

@@ -282,6 +282,15 @@ HATHOR.handleTaskOnTap = (e)=>{
         if (ATON._bqScene) ATON._handleQueryScene();
         ATON.SemFactory.addSurfaceConvexPoint();
     }
+
+    if (HATHOR.currTask === HATHOR.TASK_MEASURE_AB){
+        let P = ATON.getSceneQueriedPoint();
+        let M = ATON.SUI.addMeasurementPoint( P );
+
+        if (M === undefined) return;
+
+        HATHOR.ED.addMeasure({ measure: M });
+    }
 };
 
 // Collab / Photon logic

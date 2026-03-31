@@ -749,4 +749,54 @@ ED.removeFX = (o)=>{
     return true;
 };
 
+ED.addMeasure = (o)=>{
+    if (!o.measure) return false;
+    
+    let M = o.measure;
+    if (!M) return false;
+
+    let measid = ATON.Utils.generateID("meas");
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.measurements = {};
+    E.measurements[measid] = {};
+    E.measurements[measid].points = [
+        parseFloat( ATON.Utils.roundFloat(M.A.x, ATON.SceneHub.FLOAT_PREC) ),
+        parseFloat( ATON.Utils.roundFloat(M.A.y, ATON.SceneHub.FLOAT_PREC) ),
+        parseFloat( ATON.Utils.roundFloat(M.A.z, ATON.SceneHub.FLOAT_PREC) ),
+
+        parseFloat( ATON.Utils.roundFloat(M.B.x, ATON.SceneHub.FLOAT_PREC) ),
+        parseFloat( ATON.Utils.roundFloat(M.B.y, ATON.SceneHub.FLOAT_PREC) ),
+        parseFloat( ATON.Utils.roundFloat(M.B.z, ATON.SceneHub.FLOAT_PREC) ),
+    ];
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD);
+    return true;
+};
+
+ED.removeMeasures = (o)=>{
+    if (!o) o = {};
+
+    ATON.SUI.clearMeasurements();
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.measurements = {};
+    //if (o.measid) E.measurements[measid] = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
+    return true;
+};
+
 export default ED;

@@ -16,6 +16,223 @@ UI.TASK_SYMBOL = "&rarr;"; // "&#9654;";
 
 UI.setup = ()=>{
 
+    UI.buildBaseInterface();
+
+    // Editor UI
+    if (HATHOR.params.get('e')){
+        UI.buildEditorInterface();
+    }
+    else UI.buildStandardInterface();
+
+    ATON.UI.hideElement(UI._elCC);
+    ATON.UI.hideElement(UI._elTalkBTN);
+    ATON.UI.hideElement(UI._elMyGall);
+
+    // UI elements to hide on interaction
+    ATON.on("NavInteraction", b =>{
+        if (HATHOR.currTask) return;
+
+        if (b){
+            UI.hideMainElements();
+        }
+        else {
+            UI.showMainElements();
+        }
+    });
+};
+
+/*
+    UI General
+=====================================*/
+UI.setTheme = (theme)=>{
+    ATON.UI.setTheme(theme);
+
+    //if (UI.WYSIWYG) TODO:
+};
+
+// Side toolbar elements
+UI.createMainButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "hathor",
+        classes: "hathor-main-btn",
+        onpress: UI.modalHathor
+    });
+};
+
+UI.createMyGalleryButton = ()=>{
+    UI._elMyGall = ATON.UI.createButton({
+        icon: "gallery",
+        onpress: ()=>{
+            window.location.href = ATON.BASE_URL + "/v2/myscenes";
+        }
+    });
+
+    return UI._elMyGall;
+};
+
+UI.createXRButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "xr",
+        onpress: UI.modalXR
+    });
+};
+
+UI.createLayersButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "layers",
+        onpress: UI.sideLayers
+    });
+};
+
+UI.createSemanticsButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "annotation",
+        onpress: UI.sideSemantics
+    });
+};
+
+UI.createEnvButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "env",
+        onpress: UI.sideEnv
+    });
+};
+
+UI.createSceneButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "info",
+        onpress: UI.sideScene
+    });
+};
+
+UI.createNavButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "nav",
+        onpress: UI.sideNav
+    });
+};
+
+UI.createFXButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "fx",
+        onpress: UI.sideFX
+    }); 
+};
+
+UI.createCollabButton = ()=>{
+    UI._elPhoton = ATON.UI.createButton({
+        icon: "users",
+        onpress: UI.sideCollab
+    });
+
+    return UI._elPhoton;
+};
+
+UI.createCopyrightsButton = ()=>{
+    UI._elCC = ATON.UI.createButton({
+        //text: "Assets Copyrights",
+        icon: "cc",
+        onpress: UI.modalCopyrights
+    });
+
+    return UI._elCC;
+};
+
+UI.createToolsButton = ()=>{
+    return ATON.UI.createButton({
+        icon: "tools",
+        onpress: UI.sideTools
+    }); 
+};
+
+// Custom Hathor user button
+UI.createButtonUser = ()=>{
+    let elLoggedContent = ATON.UI.createContainer();
+
+    let bEditor = HATHOR.isEditorMode();
+    console.log(bEditor);
+
+    UI._elModeSTD = ATON.UI.createButton({
+        text: "Standard Mode",
+        //icon: "user",
+        classes: "btn-default",
+        onpress: ()=>{
+            HATHOR.exitEditorMode();
+        }
+    });
+
+    UI._elModeED = ATON.UI.createButton({
+        text: "Editor Mode",
+        //icon: "edit",
+        classes: "btn-default",
+        onpress: ()=>{
+            HATHOR.enterEditorMode();
+        }
+    });
+
+    if (bEditor){
+        UI._elModeED.classList.add("aton-btn-highlight");
+        UI._elModeSTD.classList.remove("aton-btn-highlight");
+    }
+    else {
+        UI._elModeED.classList.remove("aton-btn-highlight");
+        UI._elModeSTD.classList.add("aton-btn-highlight");      
+    }
+/*
+    UI._elEd = ATON.UI.createButton({
+        text: "Editor Mode",
+        classes: "btn-default",
+        onpress: ()=>{
+            bEditor = HATHOR.isEditorMode();
+
+            if (bEditor){
+                HATHOR.exitEditorMode();
+            }
+            else {
+                HATHOR.enterEditorMode();
+            } 
+
+            ATON.UI.hideModal();
+        }
+    });
+*/
+    elLoggedContent.append(
+        ATON.UI.createButton({
+            text: "My Scenes",
+            icon: "gallery",
+            classes: "w-100 btn-default",
+            onpress: ()=>{
+                window.location.href = ATON.BASE_URL + "/v2/myscenes";
+            }
+        }),
+
+        ATON.UI.createContainer({
+            classes: "hathor-panel-section",
+            items:[
+                UI.createTextBlock("Switch between Standard or Editor mode in Hathor. Standard is how your 3D scene will be presented to general users, Editor allows to compose, edit and enrich your 3D scene."),
+                UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
+            ]
+        })
+    );
+
+    let el = ATON.UI.createButtonUser({
+        onmodalopen: ()=>{
+            UI.closeToolPanel();
+        },
+        modallogged: elLoggedContent,
+/*
+        onlogout: ()=>{
+            HATHOR.exitEditorMode();
+            UI._elEd.classList.remove("aton-btn-highlight");
+        }
+*/
+    });
+
+    return el;
+};
+
+// Base UI
+UI.buildBaseInterface = ()=>{
     UI._elMainToolbar   = ATON.UI.get("sideToolbar");
     UI._elBottomToolbar = ATON.UI.get("bottomToolbar");
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
@@ -56,43 +273,88 @@ UI.setup = ()=>{
         UI._elPOVnext
     );
 
-    // Editor UI
-    if (HATHOR.params.get('e')){
-        UI.buildEditorInterface();
-    }
-    else {
-        if (HATHOR._tb) UI.buildCustomInterface();
-        else UI.buildStandardInterface();
-    }
-
-    ATON.UI.hideElement(UI._elCC);
-    ATON.UI.hideElement(UI._elTalkBTN);
-    ATON.UI.hideElement(UI._elMyGall);
-
-    // UI elements to hide on interaction
-    ATON.on("NavInteraction", b =>{
-        if (HATHOR.currTask) return;
-
-        if (b){
-            UI.hideMainElements();
-        }
-        else {
-            UI.showMainElements();
-        }
-    });
+    UI._elUser = UI.createButtonUser();
+    UI._elUserToolbar.append( UI._elUser );
 };
 
-/*
-    UI General
-=====================================*/
-UI.setTheme = (theme)=>{
-    ATON.UI.setTheme(theme);
+// Standard UI toolbar
+UI.buildStandardInterface = ()=>{
+    UI._elMainToolbar.innerHTML = "";
 
-    //if (UI.WYSIWYG) TODO:
+    if (HATHOR._tb){
+        HATHOR._tb = String(HATHOR._tb);
+        let elements = HATHOR._tb.split(",");
+
+        UI.buildCustomInterface(elements);
+        return;
+    }
+
+    UI._elMainToolbar.append(
+        UI.createMainButton(),
+        //UI.createMyGalleryButton(),
+        UI.createLayersButton(),
+        UI.createEnvButton(),
+        UI.createToolsButton(),
+        UI.createNavButton(),
+        //UI.createSemanticsButton(),
+        UI.createFXButton(),
+        UI.createSceneButton(),
+
+        UI.createCollabButton(),
+
+        ATON.UI.createButtonFullscreen(),
+        ATON.UI.createButtonQR(),
+
+        UI.createXRButton(),
+        UI.createCopyrightsButton()
+    );
 };
 
-UI.rebuildInterface = ()=>{
+// Editor UI toolbar
+UI.buildEditorInterface = ()=>{
+    UI._elMainToolbar.innerHTML = "";
 
+    UI._elMainToolbar.append(
+        UI.createMainButton(),
+        //UI.createMyGalleryButton(),
+        UI.createLayersButton(),
+        UI.createEnvButton(),
+        UI.createToolsButton(),
+        UI.createNavButton(),
+        UI.createSemanticsButton(),
+        UI.createFXButton(),
+        UI.createSceneButton(),
+
+        UI.createCollabButton(),
+
+        ATON.UI.createButtonFullscreen(),
+        ATON.UI.createButtonQR(),
+
+        UI.createXRButton(),
+        UI.createCopyrightsButton()
+    );
+};
+
+// Custom UI (url) toolbar
+UI.buildCustomInterface = (elements)=>{
+    // Hathor default button
+    UI._elMainToolbar.append( UI.createMainButton() );
+
+    for (let e in elements){
+        const E = elements[e];
+
+        if (E==="nav")    UI._elMainToolbar.append(UI.createNavButton());
+        if (E==="layers") UI._elMainToolbar.append(UI.createLayersButton());
+        if (E==="cc")     UI._elMainToolbar.append(UI.createCopyrightsButton());
+        if (E==="fx")     UI._elMainToolbar.append(UI.createFXButton());
+        if (E==="tools")  UI._elMainToolbar.append(UI.createToolsButton());
+        if (E==="xr")     UI._elMainToolbar.append(UI.createXRButton());
+
+        if (E==="share")  UI._elMainToolbar.append(ATON.UI.createButtonQR());
+        if (E==="fs")     UI._elMainToolbar.append(ATON.UI.createButtonFullscreen());
+
+        if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());
+    }
 };
 
 UI.hideMainElements = ()=>{
@@ -459,308 +721,6 @@ UI.modalDeleteSemanticID = (semid)=>{
     });
 };
 
-/*
-    Side Panels buttons
-=====================================*/
-UI.createMainButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "hathor",
-        classes: "hathor-main-btn",
-        onpress: UI.modalHathor
-    });
-};
-
-UI.createMyGalleryButton = ()=>{
-    UI._elMyGall = ATON.UI.createButton({
-        icon: "gallery",
-        onpress: ()=>{
-            window.location.href = ATON.BASE_URL + "/v2/myscenes";
-        }
-    });
-
-    return UI._elMyGall;
-};
-
-UI.createXRButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "xr",
-        onpress: UI.modalXR
-    });
-};
-
-UI.createLayersButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "layers",
-        onpress: UI.sideLayers
-    });
-};
-
-UI.createSemanticsButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "annotation",
-        onpress: UI.sideSemantics
-    });
-};
-
-UI.createEnvButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "env",
-        onpress: UI.sideEnv
-    });
-};
-
-UI.createSceneButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "info",
-        onpress: UI.sideScene
-    });
-};
-
-UI.createNavButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "nav",
-        onpress: UI.sideNav
-    });
-};
-
-UI.createFXButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "fx",
-        onpress: UI.sideFX
-    }); 
-};
-
-UI.createCollabButton = ()=>{
-    UI._elPhoton = ATON.UI.createButton({
-        icon: "users",
-        onpress: UI.sideCollab
-    });
-
-    return UI._elPhoton;
-};
-
-UI.createCopyrightsButton = ()=>{
-    UI._elCC = ATON.UI.createButton({
-        //text: "Assets Copyrights",
-        icon: "cc",
-        onpress: UI.modalCopyrights
-    });
-
-    return UI._elCC;
-};
-
-UI.createToolsButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "tools",
-        onpress: UI.sideTools
-    }); 
-};
-
-/*
-UI._onUser = (username)=>{
-	if (!UI._elUserBTN) return;
-
-	if (username){
-		//console.log(username);
-		UI._elUserBTN.classList.add("aton-btn-highlight");
-		UI._elUserBTN.append(ATON.UI.elem("<span class='aton-btn-text'>"+username+"</span>"));
-	}
-	else {
-		UI._elUserBTN.classList.remove("aton-btn-highlight");
-		UI._elUserBTN.removeChild(UI._elUserBTN.lastChild);
-	}
-};
-
-UI.createUserButton = ()=>{
-    UI._elUserBTN = ATON.UI.createButton({
-        icon: "user",
-		classes: "px-2",
-        onpress: UI.modalUser
-    });
-
-    ATON.checkAuth((u)=>{
-        UI._onUser(u.username);
-    });
-
-    return UI._elUserBTN;
-};
-*/
-
-/*
-    Main Toolbar
-=====================================*/
-UI.buildStandardInterface = ()=>{
-    UI._elMainToolbar.innerHTML = "";
-    UI._elUserToolbar.innerHTML = "";
-
-    UI._elMainToolbar.append(
-        UI.createMainButton(),
-        //UI.createMyGalleryButton(),
-        UI.createLayersButton(),
-        UI.createEnvButton(),
-        UI.createToolsButton(),
-        UI.createNavButton(),
-        //UI.createSemanticsButton(),
-        UI.createFXButton(),
-        UI.createSceneButton(),
-
-        UI.createCollabButton(),
-
-        ATON.UI.createButtonFullscreen(),
-        ATON.UI.createButtonQR(),
-
-        UI.createXRButton(),
-        UI.createCopyrightsButton()
-    );
-
-    //UI._elUserToolbar.append( UI.createUserButton() );
-    UI._elUser = UI.createButtonUser();
-    UI._elUserToolbar.append( UI._elUser );
-};
-
-UI.buildEditorInterface = ()=>{
-    UI._elMainToolbar.innerHTML = "";
-    UI._elUserToolbar.innerHTML = "";
-
-    UI._elMainToolbar.append(
-        UI.createMainButton(),
-        //UI.createMyGalleryButton(),
-        UI.createLayersButton(),
-        UI.createEnvButton(),
-        UI.createToolsButton(),
-        UI.createNavButton(),
-        UI.createSemanticsButton(),
-        UI.createFXButton(),
-        UI.createSceneButton(),
-
-        UI.createCollabButton(),
-
-        ATON.UI.createButtonFullscreen(),
-        ATON.UI.createButtonQR(),
-
-        UI.createXRButton(),
-        UI.createCopyrightsButton()
-    );
-
-    //UI._elUserToolbar.append( UI.createUserButton() );
-    UI._elUser = UI.createButtonUser();
-    UI._elUserToolbar.append( UI._elUser );
-};
-
-UI.buildCustomInterface = ()=>{
-    UI._elMainToolbar.innerHTML = "";
-
-    HATHOR._tb = String(HATHOR._tb);
-    let elements = HATHOR._tb.split(",");
-
-    UI._elMainToolbar.append( UI.createMainButton() );
-
-    for (let e in elements){
-        const E = elements[e];
-
-        if (E==="nav")    UI._elMainToolbar.append(UI.createNavButton());
-        if (E==="layers") UI._elMainToolbar.append(UI.createLayersButton());
-        if (E==="cc")     UI._elMainToolbar.append(UI.createCopyrightsButton());
-        if (E==="fx")     UI._elMainToolbar.append(UI.createFXButton());
-        if (E==="tools")  UI._elMainToolbar.append(UI.createToolsButton());
-        if (E==="xr")     UI._elMainToolbar.append(UI.createXRButton());
-
-        if (E==="share")  UI._elMainToolbar.append(ATON.UI.createButtonQR());
-        if (E==="fs")     UI._elMainToolbar.append(ATON.UI.createButtonFullscreen());
-
-        if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());
-    }
-
-    UI._elUser = UI.createButtonUser();
-    UI._elUserToolbar.append( UI._elUser );
-};
-
-// Custom Hathor user button
-UI.createButtonUser = ()=>{
-    let elLoggedContent = ATON.UI.createContainer();
-
-    let bEditor = HATHOR.isEditorMode();
-    console.log(bEditor);
-
-    UI._elModeSTD = ATON.UI.createButton({
-        text: "Standard Mode",
-        //icon: "user",
-        classes: "btn-default",
-        onpress: ()=>{
-            HATHOR.exitEditorMode();
-        }
-    });
-
-    UI._elModeED = ATON.UI.createButton({
-        text: "Editor Mode",
-        //icon: "edit",
-        classes: "btn-default",
-        onpress: ()=>{
-            HATHOR.enterEditorMode();
-        }
-    });
-
-    if (bEditor){
-        UI._elModeED.classList.add("aton-btn-highlight");
-        UI._elModeSTD.classList.remove("aton-btn-highlight");
-    }
-    else {
-        UI._elModeED.classList.remove("aton-btn-highlight");
-        UI._elModeSTD.classList.add("aton-btn-highlight");      
-    }
-/*
-    UI._elEd = ATON.UI.createButton({
-        text: "Editor Mode",
-        classes: "btn-default",
-        onpress: ()=>{
-            bEditor = HATHOR.isEditorMode();
-
-            if (bEditor){
-                HATHOR.exitEditorMode();
-            }
-            else {
-                HATHOR.enterEditorMode();
-            } 
-
-            ATON.UI.hideModal();
-        }
-    });
-*/
-    elLoggedContent.append(
-        ATON.UI.createButton({
-            text: "My Scenes",
-            icon: "gallery",
-            classes: "w-100 btn-default",
-            onpress: ()=>{
-                window.location.href = ATON.BASE_URL + "/v2/myscenes";
-            }
-        }),
-
-        ATON.UI.createContainer({
-            classes: "hathor-panel-section",
-            items:[
-                UI.createTextBlock("Switch between Standard or Editor mode in Hathor. Standard is how your 3D scene will be presented to general users, Editor allows to compose, edit and enrich your 3D scene."),
-                UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
-            ]
-        })
-    );
-
-    let el = ATON.UI.createButtonUser({
-        onmodalopen: ()=>{
-            UI.closeToolPanel();
-        },
-        modallogged: elLoggedContent,
-/*
-        onlogout: ()=>{
-            HATHOR.exitEditorMode();
-            UI._elEd.classList.remove("aton-btn-highlight");
-        }
-*/
-    });
-
-    return el;
-};
-
 UI.modalHathor = ()=>{
     let elBody = ATON.UI.createContainer({});
 
@@ -824,7 +784,7 @@ UI.modalHathor = ()=>{
 
         ATON.UI.createContainer({
             classes: "btn-group",
-            style: "width:50%; align-items:center; margin-top:8px",
+            style: "width:100%; margin-top:8px",
             items:[ elDark, elLight ]
         })
     );
@@ -2333,6 +2293,49 @@ UI.modalCopyrights = ()=>{
 UI.sideTools = ()=>{
     let elBody = ATON.UI.createContainer();
 
+    let elMeasSection = ATON.UI.createContainer();
+
+    elMeasSection.append(
+        UI.createTextBlock("Add series of point-to-point measurements (AB)"),
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Add AB measurements "+ UI.TASK_SYMBOL,
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.setCurrentTask(HATHOR.TASK_MEASURE_AB);
+                    }
+                })
+            ]
+        }),
+
+        //UI.createTextBlock("Remove all"),
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Clear all measurements",
+                    icon: "delete",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        HATHOR.ED.removeMeasures();
+                    }
+                })
+            ]
+        })
+    );
+
+    elBody.append(
+        ATON.UI.createTreeGroup({
+            items:[
+                {
+                    title: "Measure",
+                    open: true,
+                    content: elMeasSection
+                }
+            ]
+        })
+    )
+
     UI.openToolPanel({
         header: "Tools",
         body: elBody
@@ -2563,30 +2566,6 @@ UI.buildTaskToolbar = (task)=>{
     // Main light
     if (task === HATHOR.TASK_DIR_LIGHT){
 
-/*
-        let elDisable = ATON.UI.createButton({
-            text: "Disable",
-            icon: "cancel",
-            classes: "btn-default",
-            onpress: ()=>{
-                HATHOR.ED.disableMainLight();
-                HATHOR.endCurrentTask();
-            }
-        });
-*/
-/*
-        HATHOR.UI._elTasks.append(ATON.UI.createButton({
-            text: "Cancel",
-            icon: "bi-x-lg",
-            classes: "btn-default",
-            onpress: ()=>{ 
-                HATHOR.endCurrentTask();
-            }
-        }));
-*/
-        //HATHOR.UI._elTasks.append(elDisable);
-        //HATHOR.UI._elTasks.append(elShadows);
-
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Ok",
             icon: "bi-check-lg",
@@ -2603,7 +2582,19 @@ UI.buildTaskToolbar = (task)=>{
 
         //ATON.UI.hideElement(elDisable);
         //if (!ATON.areShadowsEnabled()) ATON.UI.hideElement(elShadows);
-    } 
+    }
+
+    if (task === HATHOR.TASK_MEASURE_AB){
+        HATHOR.UI._elTasks.append(ATON.UI.createButton({
+            text: "Done",
+            icon: "bi-check-lg",
+            classes: "btn-accent",
+            onpress: ()=>{
+                HATHOR.endCurrentTask();
+                UI.sideTools();
+            }
+        })); 
+    }
 };
 
 UI.clearTaskToolbar = ()=>{

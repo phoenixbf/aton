@@ -71,10 +71,20 @@ UI.createMyGalleryButton = ()=>{
 };
 
 UI.createXRButton = ()=>{
-    return ATON.UI.createButton({
+    let el = ATON.UI.createButton({
         icon: "xr",
         onpress: UI.modalXR
     });
+
+    if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(el);
+    else ATON.UI.hideElement(el);
+
+    ATON.on("XR_support", d => {
+        if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(el);
+        else ATON.UI.hideElement(el);
+    });
+
+    return el;
 };
 
 UI.createLayersButton = ()=>{
@@ -308,6 +318,8 @@ UI.buildStandardInterface = ()=>{
         UI.createXRButton(),
         UI.createCopyrightsButton()
     );
+
+    if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
 };
 
 // Editor UI toolbar
@@ -333,6 +345,8 @@ UI.buildEditorInterface = ()=>{
         UI.createXRButton(),
         UI.createCopyrightsButton()
     );
+
+    if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
 };
 
 // Custom UI (url) toolbar
@@ -355,6 +369,8 @@ UI.buildCustomInterface = (elements)=>{
 
         if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());
     }
+
+    if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
 };
 
 UI.hideMainElements = ()=>{

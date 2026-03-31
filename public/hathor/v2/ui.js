@@ -58,7 +58,7 @@ UI.setup = ()=>{
 
     // Editor UI
     if (HATHOR.params.get('e')){
-        UI.buildStandardInterface(); // TODO: change with ed UI
+        UI.buildEditorInterface();
     }
     else {
         if (HATHOR._tb) UI.buildCustomInterface();
@@ -96,30 +96,36 @@ UI.rebuildInterface = ()=>{
 };
 
 UI.hideMainElements = ()=>{
-    ATON.UI.hideElement(UI._elMainToolbar); //.classList.add("d-none");
-    ATON.UI.hideElement(UI._elBottomToolbar); //.classList.add("d-none");
-    ATON.UI.hideElement(UI._elUserToolbar); //.classList.add("d-none");
+    ATON.UI.hideElement(UI._elMainToolbar);
+    ATON.UI.hideElement(UI._elBottomToolbar);
+    ATON.UI.hideElement(UI._elUserToolbar);
     ATON.UI.hideElement(UI._elSidePanel);
 };
 
 UI.showMainElements = ()=>{
-    ATON.UI.showElement(UI._elMainToolbar); //.classList.remove("d-none");
-    ATON.UI.showElement(UI._elBottomToolbar); //.classList.remove("d-none");
-    ATON.UI.showElement(UI._elUserToolbar); //.classList.remove("d-none");
+    ATON.UI.showElement(UI._elMainToolbar);
+    ATON.UI.showElement(UI._elBottomToolbar);
+    ATON.UI.showElement(UI._elUserToolbar);
     ATON.UI.showElement(UI._elSidePanel);
 };
 
 UI.enterEditorMode = ()=>{
+    UI.buildEditorInterface();
+
     UI._elMainToolbar.classList.add("hathor-main-toolbar-editor");
     if (UI._elModeED)  UI._elModeED.classList.add("aton-btn-highlight");
     if (UI._elModeSTD) UI._elModeSTD.classList.remove("aton-btn-highlight");
 };
+
 UI.exitEditorMode = ()=>{
+    UI.buildStandardInterface();
+
     UI._elMainToolbar.classList.remove("hathor-main-toolbar-editor");
     if (UI._elModeED)  UI._elModeED.classList.remove("aton-btn-highlight");
     if (UI._elModeSTD) UI._elModeSTD.classList.add("aton-btn-highlight");
 
     HATHOR.SUI.detachGizmo();
+    //UI.buildStandardInterface();
 };
 
 UI.createTextBlock = (content)=>{
@@ -454,7 +460,7 @@ UI.modalDeleteSemanticID = (semid)=>{
 };
 
 /*
-    Buttons
+    Side Panels buttons
 =====================================*/
 UI.createMainButton = ()=>{
     return ATON.UI.createButton({
@@ -479,13 +485,6 @@ UI.createXRButton = ()=>{
     return ATON.UI.createButton({
         icon: "xr",
         onpress: UI.modalXR
-    });
-};
-
-UI.createToolButton = ()=>{
-    return ATON.UI.createButton({
-        icon: "hathor",
-        onpress: UI.sideTool
     });
 };
 
@@ -592,22 +591,54 @@ UI.createUserButton = ()=>{
 =====================================*/
 UI.buildStandardInterface = ()=>{
     UI._elMainToolbar.innerHTML = "";
+    UI._elUserToolbar.innerHTML = "";
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
         //UI.createMyGalleryButton(),
         UI.createLayersButton(),
         UI.createEnvButton(),
+        UI.createToolsButton(),
         UI.createNavButton(),
-        UI.createSemanticsButton(),
-        UI.createSceneButton(),
+        //UI.createSemanticsButton(),
         UI.createFXButton(),
+        UI.createSceneButton(),
+
+        UI.createCollabButton(),
 
         ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
 
         UI.createXRButton(),
+        UI.createCopyrightsButton()
+    );
+
+    //UI._elUserToolbar.append( UI.createUserButton() );
+    UI._elUser = UI.createButtonUser();
+    UI._elUserToolbar.append( UI._elUser );
+};
+
+UI.buildEditorInterface = ()=>{
+    UI._elMainToolbar.innerHTML = "";
+    UI._elUserToolbar.innerHTML = "";
+
+    UI._elMainToolbar.append(
+        UI.createMainButton(),
+        //UI.createMyGalleryButton(),
+        UI.createLayersButton(),
+        UI.createEnvButton(),
+        UI.createToolsButton(),
+        UI.createNavButton(),
+        UI.createSemanticsButton(),
+        UI.createFXButton(),
+        UI.createSceneButton(),
+
         UI.createCollabButton(),
+
+        ATON.UI.createButtonFullscreen(),
+        ATON.UI.createButtonQR(),
+
+        UI.createXRButton(),
         UI.createCopyrightsButton()
     );
 
@@ -733,15 +764,79 @@ UI.createButtonUser = ()=>{
 UI.modalHathor = ()=>{
     let elBody = ATON.UI.createContainer({});
 
+    let elDark = ATON.UI.createButton({
+        //text: "Dark theme",
+        icon: "bi-moon-stars",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.UI.setTheme("dark");
+            elDark.classList.add("aton-btn-highlight");
+            elLight.classList.remove("aton-btn-highlight");
+        }
+
+    });
+
+    let elLight = ATON.UI.createButton({
+        //text: "Light theme",
+        icon: "bi-sun",
+        classes: "btn-default",
+        onpress: ()=>{
+            ATON.UI.setTheme("light");
+            elLight.classList.add("aton-btn-highlight");
+            elDark.classList.remove("aton-btn-highlight");
+        }
+
+    });
+
     elBody.append(
         ATON.UI.elem(`
-            <div style='text-align:center'>
+            <div style='text-align:center; margin:8px'>
                 <img src='${ATON.BASE_URL}/hathor/appicon.png' style='width:100px; height:auto'>
                 <br><b>Hathor - v2 (beta)</b>
-                <br><span style='font-size:smaller'><i>Hathor</i> is the official ATON built-in front-end</span>
+                <br><span style='font-size:smaller'><i>Hathor</i> is the official front-end of ATON</span>
             </div>
-        `)
-    )
+        `),
+
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Help",
+                    icon: "help",
+                    classes: "btn-default",
+                    onpress: UI.modalHelp
+                }),
+                ATON.UI.createButton({
+                    text: "Settings",
+                    icon: "settings",
+                    classes: "btn-default",
+                    onpress: UI.modalSettings
+                }),
+                ATON.UI.createButton({
+                    text: "Online",
+                    icon: "link",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        window.open(HATHOR.WEBSITE_URL, '_blank')
+                    }
+                })
+            ]
+        }),
+
+        ATON.UI.createContainer({
+            classes: "btn-group",
+            style: "width:50%; align-items:center; margin-top:8px",
+            items:[ elDark, elLight ]
+        })
+    );
+
+    if (ATON.UI._theme && ATON.UI._theme === "light"){
+        elLight.classList.add("aton-btn-highlight");
+        elDark.classList.remove("aton-btn-highlight");
+    }
+    else {
+        elLight.classList.remove("aton-btn-highlight");
+        elDark.classList.add("aton-btn-highlight");
+    }
 
     ATON.UI.showModal({
         header: "Hathor",
@@ -2231,6 +2326,19 @@ UI.modalCopyrights = ()=>{
         //footer: elFooter,
     });
 };
+
+//====================================
+// Tools
+//====================================
+UI.sideTools = ()=>{
+    let elBody = ATON.UI.createContainer();
+
+    UI.openToolPanel({
+        header: "Tools",
+        body: elBody
+    }); 
+};
+
 
 //====================================
 // Collaborative session (Photon)

@@ -85,6 +85,8 @@ SUI.buildGizmoTC = ()=>{
                 //if (SUI._gizmoCurrNode) HATHOR.UI.sideManageLayer(SUI._gizmoCurrNode.nid);
             }
         }
+
+        if (SUI._gizmoCurrNode) ATON.fire("NodeChange", { nid: SUI._gizmoCurrNode.nid });
     });
 
     SUI._rootED.add(SUI._tc.getHelper());

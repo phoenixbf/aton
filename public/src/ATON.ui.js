@@ -55,6 +55,7 @@ UI.init = ()=>{
 
 UI.setTheme = (theme)=>{
     document.body.setAttribute("data-bs-theme",theme);
+    UI._theme = theme;
 };
 
 // Utility function to create DOM element from string

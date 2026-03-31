@@ -44,6 +44,8 @@ HATHOR.ID_VALIDATOR = new RegExp("^[a-zA-Z0-9. ]*$");
 
 HATHOR.POVPATH_ALL = "*";
 
+HATHOR.WEBSITE_URL = "https://osiris.itabc.cnr.it/aton/index.php/overview/hathor/";
+
 
 HATHOR.setSceneToLoad = (sid)=>{
     HATHOR._sidToLoad = sid;
@@ -328,7 +330,7 @@ HATHOR.setupCollabLogic = ()=>{
     ATON.on("VRC_SceneState", (sstate)=>{
         let numUsers = ATON.Photon.getNumUsers();
         if (numUsers>1){
-            
+
         }
     });
 

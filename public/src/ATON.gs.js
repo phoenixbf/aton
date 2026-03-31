@@ -125,7 +125,7 @@ GS.realize = ()=>{
         GS._3DGSR.update( GS._3DGSR.uPar );
     });
     ATON.on("NodeChange", d =>{
-        console.log(d)
+        //console.log(d)
         GS._3DGSR.update( GS._3DGSR.uPar );
     });
 };

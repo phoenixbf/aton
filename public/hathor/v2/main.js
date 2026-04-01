@@ -174,6 +174,7 @@ HATHOR.setupLogic = ()=>{
         if (k==='n') HATHOR.UI.sideNav();
         if (k==='v') HATHOR.UI.sideViewpoint();
         if (k==='x') HATHOR.UI.sideFX();
+        if (k==='t') HATHOR.UI.sideTools();
 
         if (k==='ArrowRight') ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
         if (k==='ArrowLeft') ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);

@@ -727,7 +727,7 @@ a {
 }
 
 .aton-collection-item {
-    /*font-size: smaller;*/
+    font-size: smaller;
 
     display: block;
 
@@ -741,6 +741,8 @@ a {
     margin-top: 8px;
     margin-bottom: 8px;
 
+    border-radius: var(--bs-border-radius);
+
 /*
     background-color: rgba(var(--bs-body-bg-rgb), 0.5);
 */
@@ -753,6 +755,11 @@ a {
 .aton-collection-item img {
     height: 24px;
     width: auto;
+    margin-right: 8px;
+}
+
+[data-bs-theme=light] .aton-collection-item img {
+    filter: invert(100%);
 }
 
 

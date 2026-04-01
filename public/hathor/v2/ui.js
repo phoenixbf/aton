@@ -1396,7 +1396,7 @@ UI.createLayerModels = (N)=>{
 
         // list-group-item 
         let el = ATON.UI.elem(`
-            <div class='aton-collection-item'>${fname}</div>
+            <div class='aton-collection-item'><img src='${ATON.UI.resolveIconURL("collection-item")}'>${fname}</div>
         `);
 
 /*
@@ -1420,21 +1420,23 @@ UI.createLayerModels = (N)=>{
         elList.append( elItem );
     }
 
-    el.append( ATON.UI.createInput3DModel({
-        actionicon: "add",
-        onaction: (url)=>{
-            if (!url) return;
-            if (url.length<2) return;
-            
-            //N.load(url);
-            HATHOR.ED.addModel({
-                url: url,
-                nid: N.nid
-            })
-            
-            elList.append( createItem(url) );
-        }
-    }) );
+    el.append(
+        ATON.UI.createInput3DModel({
+            actionicon: "add",
+            onaction: (url)=>{
+                if (!url) return;
+                if (url.length<2) return;
+                
+                //N.load(url);
+                HATHOR.ED.addModel({
+                    url: url,
+                    nid: N.nid
+                })
+                
+                elList.append( createItem(url) );
+            }
+        })
+    );
 
     return el;
 };
@@ -1672,11 +1674,19 @@ UI.sideEnv = ()=>{
 */    
     ATON.checkAuth(
         (u)=>{
-            elBG.append( ATON.UI.createLiveFilter({
-                filterclass: "aton-card"
-            }));
+            elBG.append(
+                UI.createTextBlock("Filter static or dynamic panoramic content, including equirectangular images, video-streams or HDR data.")
+            );
+
+            elBG.append(
+                ATON.UI.createLiveFilter({
+                    classes: "w-100",
+                    filterclass: "aton-card"
+                })
+            );
 
             ATON.REQ.get("items/"+u.username+"/panoramas/", entries => {
+
                 for (let e in entries){
                     let purl = entries[e];
                     
@@ -1684,18 +1694,35 @@ UI.sideEnv = ()=>{
 
                     if (!ATON.Utils.isImage(fullurl)) fullurl = ATON.PATH_RES+"pano.jpg";
 
-                    elBG.append(ATON.UI.createCard({
-                        title: purl,
-                        cover: fullurl,
-                        classes: "hathor-card-media-v",
-                        //size: "small",
-                        useblurtint: true,
-                        onactivate: ()=>{
-                            HATHOR.ED.setBackground({ bg: purl });
-                        }
-                    }))
+                    elBG.append(
+                        ATON.UI.createCard({
+                            title: purl,
+                            cover: fullurl,
+                            classes: "hathor-card-media-v",
+                            //size: "small",
+                            useblurtint: true,
+                            onactivate: ()=>{
+                                HATHOR.ED.setBackground({ bg: purl });
+                            }
+                        })
+                    )
                 } 
-            })
+            });
+
+            if (ATON._mMainPano) elBG.prepend(
+                UI.createBlockGroup({
+                    items:[
+                        ATON.UI.createButton({
+                            text: "Remove Panorama",
+                            icon: "delete",
+                            classes: "btn-default",
+                            onpress: ()=>{
+                                HATHOR.ED.removeBackground({ bg: true });
+                            }
+                        }),
+                    ]
+                })
+            )
         }
     );
 

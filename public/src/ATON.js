@@ -1829,7 +1829,7 @@ ATON.setMainPanorama = (path)=>{
 */
 
     // Geometry
-    if (ATON._mMainPano === undefined){
+    if (!ATON._mMainPano){
         ATON._gMainPano = new THREE.SphereGeometry( /*ATON.Nav.STD_FAR * 0.8*/1.0, 60,60 );
         //ATON._gMainPano = new THREE.SphereGeometry( ATON.Nav.STD_FAR * 0.8, 60,60 );
         
@@ -1849,6 +1849,8 @@ ATON.setMainPanorama = (path)=>{
         ATON.setMainPanoramaRadius(ATON.Nav.STD_FAR * 0.8);
         ///ATON.setMainPanoramaRadius(100.0);
     }
+
+    ATON._mMainPano.visible = true;
 
     // Panoramic Video
     if (ATON.Utils.isVideo(path)){
@@ -1956,6 +1958,12 @@ ATON.setMainPanorama = (path)=>{
     }
 };
 
+ATON.removeMainPanorama = ()=>{
+    if (!ATON._mMainPano) return;
+
+    ATON._mMainPano.visible = false;
+};
+
 /**
 Play main videopanorama (if any loaded)
 @example
@@ -2009,7 +2017,7 @@ ATON.stopAndRemoveMainPanorama = ()=>{
 
 ATON._realizeOrUpdateMainPano = (tpano)=>{
     // We already created a main pano
-    if (ATON._matMainPano !== undefined){
+    if (ATON._matMainPano){
         ATON._matMainPano.map = tpano;
         //ATON._matMainPano.emissive = tpano;
 

@@ -445,6 +445,24 @@ ED.setBackground = (o)=>{
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );
 };
 
+ED.removeBackground = (o)=>{
+    if (o.bg){
+        ATON.removeMainPanorama();
+    }
+
+    //====== Collab
+    if (o.remote) return true;
+
+    //====== Persistent
+    if (!ED._bPersistent) return true;
+
+    let E = {};
+    E.environment = {};
+    if (o.bg) E.environment.mainpano = {};
+
+    ATON.SceneHub.patch( E, ATON.SceneHub.MODE_DEL);
+};
+
 ED.setLighting = (o)=>{
 
     if (o.dir){

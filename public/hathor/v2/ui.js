@@ -769,7 +769,7 @@ UI.modalHathor = ()=>{
             <div style='text-align:center; margin:8px'>
                 <img src='${ATON.BASE_URL}/hathor/appicon.png' style='width:100px; height:auto'>
                 <br><b>Hathor - v2 (beta)</b>
-                <br><span style='font-size:smaller'><i>Hathor</i> is the official front-end of ATON</span>
+                <br><span style='font-size:smaller'><i>Hathor</i> is the official front-end of ATON framework</span>
             </div>
         `),
 
@@ -2320,6 +2320,7 @@ UI.sideTools = ()=>{
                     classes: "btn-default",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_MEASURE_AB);
+                        ATON.UI.setCursorStyle("crosshair");
                     }
                 })
             ]

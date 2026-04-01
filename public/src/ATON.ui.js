@@ -58,6 +58,13 @@ UI.setTheme = (theme)=>{
     UI._theme = theme;
 };
 
+UI.setCursorStyle = (cur)=>{
+    let canvas = ATON._renderer.domElement;
+    if (!canvas) return;
+
+    canvas.style.cursor = cur;
+};
+
 // Utility function to create DOM element from string
 UI.elem = (html)=>{
     let element = UI._parser.parseFromString(html, 'text/html').body.firstElementChild;
@@ -367,7 +374,7 @@ UI.addBasicEvents = ()=>{
         //UI._bReqHome = true;
     });
 
-    // Semantic
+    // Semantic shapes
     ATON.on("SemanticNodeHover", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S === undefined) return;
@@ -376,10 +383,11 @@ UI.addBasicEvents = ()=>{
 
         S.highlight();
 
-        canvas.style.cursor = 'pointer';
+        UI.setCursorStyle("pointer");
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.hide();
     });
+
     ATON.on("SemanticNodeLeave", (semid)=>{
         let S = ATON.getSemanticNode(semid);
         if (S === undefined) return;
@@ -387,18 +395,20 @@ UI.addBasicEvents = ()=>{
         UI.hideSemLabel();
 
         S.restoreDefaultMaterial();
-        canvas.style.cursor = 'grab';
+
+        UI.setCursorStyle("grab");
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
     });
 
+    // Semantic masks
     ATON.on("SemanticMaskHover", semid => {
         UI.showSemLabel(semid);
-        canvas.style.cursor = 'pointer';
+        UI.setCursorStyle("pointer");
     });
     ATON.on("SemanticMaskLeave", semid => {
         UI.hideSemLabel();
-        canvas.style.cursor = 'grab';
+        UI.setCursorStyle("grab");
     });
 
     ATON.addUpdateRoutine( UI.update );

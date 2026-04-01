@@ -262,6 +262,7 @@ HATHOR.endCurrentTask = ()=>{
     }
 
     HATHOR.UI.clearTaskToolbar();
+    ATON.UI.setCursorStyle("auto");
     ATON.Nav.setUserControl(true);
 };
 

@@ -1916,7 +1916,7 @@ UI.createLiveFilter = (options)=>{
     let placeholder = "Search";
     if (options.placeholder) placeholder = options.placeholder;
 
-    let elInput = UI.elem(`<input class="form-control me-2 aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" spellcheck="false" >`);
+    let elInput = UI.elem(`<input class="form-control aton-input" type="search" placeholder="${placeholder}" aria-label="Search" id="${inputid}" spellcheck="false" >`);
 
     UI.registerElementAsComponent(elInput, "input");
 
@@ -2360,6 +2360,20 @@ UI.createBasicLayersManager = (options)=>{
 
     return el;
 */
+};
+
+UI.createMediaItem = (options)=>{
+    if (ATON.Utils.isImage(options.url)){
+        let el = UI.elem(`<img src='${options.url}'></img>`);
+        return el;
+    }
+
+    if (ATON.Utils.isVideo(options.url)){
+        let el = UI.elem(`<video src='${options.url}'></video>`);
+        return el;
+    }
+
+    return UI.createContainer();
 };
 
 /**

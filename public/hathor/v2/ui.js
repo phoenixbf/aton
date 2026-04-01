@@ -561,7 +561,10 @@ UI.modalAnnotation = (semid)=>{
         })
     }
 
-    elBody.append( UI.WYSIWYG.createElement() );
+    elBody.append(
+        UI.WYSIWYG.createElement(),
+        //UI.WYSIWYG.createToolbar() 
+    );
 
     elFooter.append( ATON.UI.createContainer({
         classes: "btn-group w-100",
@@ -1131,6 +1134,7 @@ UI.sideScene = ()=>{
     };
 
     let elUnlistedBtn = ATON.UI.createButton({
+        text: "Unlisted",
         icon: "bi-eye-slash",
         classes: "btn-default",
         onpress: ()=>{
@@ -1138,7 +1142,8 @@ UI.sideScene = ()=>{
         }
     });
     let elPublicBtn = ATON.UI.createButton({
-        icon: "bi-people",
+        text: "Public",
+        icon: "public",
         classes: "btn-default",
         onpress: ()=>{
             setVis(1);
@@ -1153,7 +1158,7 @@ UI.sideScene = ()=>{
     })
 
     elVisSection.append(
-        ATON.UI.elem("<p class='hathor-text-block'>Control the visibility of your scene. Unlisted <i class='bi bi-eye-slash'></i>: only people having this link can access the scene. Public <i class='bi bi-people'></i>: the scene is accessible and searchable by users from the main landing page.</p>"),
+        ATON.UI.elem("<p class='hathor-text-block'>Control the visibility of your scene. Unlisted: only people having this link can access the scene. Public: the scene is accessible and searchable by users from the main landing page.</p>"),
         elVis
     );
 

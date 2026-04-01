@@ -21,6 +21,19 @@ WYSIWYG.createElement = ()=>{
     return WYSIWYG.el;
 };
 
+// TODO:
+WYSIWYG.createToolbar = ()=>{
+    let el = HATHOR.UI.createBlockGroup({
+        items:[
+            ATON.UI.createInputText({
+
+            })
+        ]
+    });
+
+    return el;
+};
+
 WYSIWYG.init = ()=>{
     WYSIWYG.editor = Jodit.make('#WYSIWYGeditor', {
         //theme: "dark",

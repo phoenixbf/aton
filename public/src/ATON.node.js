@@ -397,6 +397,8 @@ assignLightProbe(LP){
     if (this.noLP) return;
 
     this.traverse((o) => {
+        if (this.noLP) return;
+        
         if (o.isMesh && o.geometry) ATON.Utils.assignLightProbeToMesh(LP, o);
     });
 

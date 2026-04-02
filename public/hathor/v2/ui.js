@@ -602,13 +602,11 @@ UI.sideSemantics = ()=>{
 
         elSemBasic.append( UI.createTextBlock("Add a basic (spherical) annotation on any surface"));
         elSemBasic.append(
-            ATON.UI.createContainer({
-                classes: "btn-group",
-                style: "width:100%",
+            UI.createBlockGroup({
                 items: [
                     ATON.UI.createButton({
                         text: "Basic " + UI.TASK_SYMBOL,
-                        classes: "btn-default",
+                        classes: "hathor-btn-task",
                         onpress: ()=>{
                             HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
                         }
@@ -621,13 +619,11 @@ UI.sideSemantics = ()=>{
 
         elSemConvex.append( UI.createTextBlock("Add a free form (convex hull) annotation on any surface"));
         elSemConvex.append(
-            ATON.UI.createContainer({
-                classes: "btn-group",
-                style: "width:100%",
+            UI.createBlockGroup({
                 items: [
                     ATON.UI.createButton({
                         text: "Free Form "+UI.TASK_SYMBOL,
-                        classes: "btn-default",
+                        classes: "hathor-btn-task",
                         onpress: ()=>{
                             HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
                         }
@@ -1791,7 +1787,7 @@ UI.sideEnv = ()=>{
             items:[
                 ATON.UI.createButton({
                     text: "Setup main light "+UI.TASK_SYMBOL,
-                    classes: "btn-default w-100",
+                    classes: "w-100 hathor-btn-task",
                     //icon: "light",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_DIR_LIGHT);
@@ -2312,8 +2308,8 @@ UI.modalCopyrights = ()=>{
             elCC.append(
                 ATON.UI.elem(`
                     <div class='row'>
-                        <div class='col-md-2'><strong>${e}</strong></div>
-                        <div class='col-md-10'>${ATON.UI.URLifyToHTML(CC[e])}</div>
+                        <div class='col-md-3'><strong>${e}</strong></div>
+                        <div class='col-md-8'>${ATON.UI.URLifyToHTML(CC[e])}</div>
                     </div>
                 `)
 /*
@@ -2349,7 +2345,7 @@ UI.sideTools = ()=>{
             items:[
                 ATON.UI.createButton({
                     text: "Add AB measurements "+ UI.TASK_SYMBOL,
-                    classes: "btn-default",
+                    classes: "hathor-btn-task",
                     onpress: ()=>{
                         HATHOR.setCurrentTask(HATHOR.TASK_MEASURE_AB);
                         ATON.UI.setCursorStyle("crosshair");

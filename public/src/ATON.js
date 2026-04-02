@@ -1748,19 +1748,9 @@ ATON.clearLightProbes = ()=>{
 ATON._updLP = ()=>{
     for (let i in ATON._lps) ATON._lps[i].update();
 
-/*
-    // OLD: indirect LP based on first LP (for now)
-    if (ATON._lps[0]){
-        if (ATON._indLP) ATON._mainRoot.remove(ATON._indLP);
-
-        ATON._indLP = THREE.LightProbeGenerator.fromCubeRenderTarget( ATON._renderer, ATON._lps[0]._prevCCtarget );
-        ATON._indLP.intensity = 1.0;
-
-        ATON._mainRoot.add( ATON._indLP );
-    }
-*/
-
     ATON._rootVisible.traverse((o) => {
+        if (o.noLP) return;
+
         let LP = o.userData.LP;
         if (LP !== undefined && LP instanceof ATON.LightProbe){
             o.material.envMap  = LP.getEnvTex();
@@ -3083,51 +3073,6 @@ ATON.flushPendingAF = ()=>{
             cb();
         }
     });  
-};
-
-/*
-    Built-in gizmos
-================================================*/
-ATON.useGizmo = (b)=>{
-    ATON._bGizmo = b;
-
-    ATON._setupGizmo();
-};
-
-ATON._setupGizmo = ()=>{
-    return; // TODO
-
-    if (!ATON._bGizmo){
-        if (ATON._gizmo) ATON._gizmo.detach();
-        return;
-    }
-
-    if (ATON.Nav._camera === undefined) return;
-    if (ATON._renderer === undefined) return;
-
-    if (ATON._gizmo === undefined){
-        ATON._gizmo = new THREE.TransformControls( ATON.Nav._camera, ATON._renderer.domElement );
-        ATON._rootUI.add(ATON._gizmo);
-
-        ATON._gizmo.setMode("rotate");
-
-        ATON._gizmo.addEventListener('dragging-changed', function( event ){
-            let bDrag = event.value;
-
-            ATON.Nav.setUserControl(!bDrag);
-            ATON._bPauseQuery = bDrag;
-
-            if (!bDrag){
-                ATON.recomputeSceneBounds();
-                ATON.updateLightProbes();
-                console.log(ATON._gizmo.object)
-            }
-        });
-    }
-    else {
-        ATON._gizmo.camera = ATON.Nav._camera;
-        ATON._gizmo.detach();
-    }
 };
 
 export default ATON;

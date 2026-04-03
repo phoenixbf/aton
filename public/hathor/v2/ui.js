@@ -320,6 +320,14 @@ UI.buildStandardInterface = ()=>{
     );
 
     if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
+/*
+    else {
+        let numCC = ATON.CC.list.length;
+        UI._elCC.append(
+            ATON.UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+numCC+"</span>")
+        );
+    }
+*/
 };
 
 // Editor UI toolbar
@@ -347,6 +355,14 @@ UI.buildEditorInterface = ()=>{
     );
 
     if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
+/*
+    else {
+        let numCC = ATON.CC.list.length;
+        UI._elCC.append(
+            ATON.UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+numCC+"</span>")
+        );
+    }
+*/
 };
 
 // Custom UI (url) toolbar
@@ -2081,7 +2097,7 @@ UI.sideViewpoint = (povid)=>{
     });
 
     let elPOVparams = ATON.UI.createContainer({ classes: "hathor-panel-section" });
-    let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section" });
+    //let elCurrPOV = ATON.UI.createContainer({ classes: "hathor-panel-section" });
 
     let POV = (povid)? ATON.Nav.povlist[povid] : ATON.Nav.copyCurrentPOV();
 
@@ -2173,7 +2189,7 @@ UI.sideViewpoint = (povid)=>{
     );
 */
 
-    if (!povid) elBody.append(elCurrPOV);
+    //if (!povid) elBody.append(elCurrPOV);
 
     UI.openToolPanel({
         header: (povid)? "Viewpoint '"+povid+"'" : "Control viewpoint",

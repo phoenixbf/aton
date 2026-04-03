@@ -50,12 +50,22 @@ UI.init = ()=>{
 
     UI._bReqHome = false;
 
+    UI._bInput = false;
+
     UI._setupBase();
 };
 
 UI.setTheme = (theme)=>{
     document.body.setAttribute("data-bs-theme",theme);
     UI._theme = theme;
+};
+
+UI.inputFocus = (b)=>{
+    UI._bInput = b;
+};
+
+UI.isInputFocused = ()=>{
+    return UI._bInput;
 };
 
 UI.setCursorStyle = (cur)=>{
@@ -1309,6 +1319,9 @@ UI.createNumericInput = (options)=>{
 
     let elInput = el.children[0];
 
+    elInput.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInput.onblur  = ()=>{ UI._bInput = false; };
+
     if (options.value) elInput.setAttribute("value", options.value);
     if (options.placeholder) elInput.setAttribute("placeholder", options.placeholder);
     if (options.step) elInput.setAttribute("step", options.step);
@@ -1396,6 +1409,15 @@ UI.createVectorControl = (options)=>{
     UI.registerElementAsComponent(elInputY, "inputY");
     UI.registerElementAsComponent(elInputZ, "inputZ");
 
+    elInputX.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputX.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputY.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputY.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputZ.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputZ.onblur  = ()=>{ UI._bInput = false; };
+
     elInputX.oninput = ()=>{
         let v = elInputX.value;
         if (v.length < 1) return;
@@ -1447,13 +1469,13 @@ UI.createVectorControl = (options)=>{
     elInputX.onpaste = onpaste;
     elInputY.onpaste = onpaste;
     elInputZ.onpaste = onpaste;
-
+/*
     if (options.onfocus){
         elInputX.onfocus = options.onfocus;
         elInputY.onfocus = options.onfocus;
         elInputZ.onfocus = options.onfocus;
     }
-
+*/
     return el;
 };
 
@@ -1526,6 +1548,18 @@ UI.createQuaternionControl = (options)=>{
     UI.registerElementAsComponent(elInputZ, "inputZ");
     UI.registerElementAsComponent(elInputW, "inputW");
 
+    elInputX.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputX.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputY.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputY.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputZ.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputZ.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputW.onfocus = ()=>{ UI._bInput = true; if (options.onfocus) options.onfocus(); };
+    elInputW.onblur  = ()=>{ UI._bInput = false; };
+
     elInputX.oninput = ()=>{
         let v = elInputX.value;
         if (v.length < 1) return;
@@ -1589,14 +1623,14 @@ UI.createQuaternionControl = (options)=>{
     elInputY.onpaste = onpaste;
     elInputZ.onpaste = onpaste;
     elInputW.onpaste = onpaste;
-
+/*
     if (options.onfocus){
         elInputX.onfocus = options.onfocus;
         elInputY.onfocus = options.onfocus;
         elInputZ.onfocus = options.onfocus;
         elInputW.onfocus = options.onfocus;
     }
-
+*/
     return el;
 };
 
@@ -2516,6 +2550,9 @@ UI.createInputText = (options)=>{
 
     elInput.id = baseid + "-input";
 
+    elInput.onfocus = ()=>{ UI._bInput = true; };
+    elInput.onblur  = ()=>{ UI._bInput = false; };
+
     // Enter key
     elInput.onkeydown = (event)=>{
         if (event.keyCode == 13){
@@ -2703,6 +2740,9 @@ UI.createColorPicker = (options)=>{
     let elInput = UI.elem(`<input class="form-control aton-input" aria-label="${label}" type="color">`);
     UI.registerElementAsComponent(elInput, "input");
 
+    elInput.onfocus = ()=>{ UI._bInput = true; };
+    elInput.onblur  = ()=>{ UI._bInput = false; };
+
     el.append(elInput);
 
     if (options.color) elInput.value = options.color;
@@ -2833,6 +2873,12 @@ UI.createLoginForm = (options)=>{
 
     let elInputUN = UI.elem(`<input id="uname" type="text" maxlength="30" class="form-control aton-input" aria-label="Username" aria-describedby="inputGroup-sizing-sm" placeholder="Username" spellcheck="false" >`);
     let elInputPW = UI.elem(`<input id="passw" type="password" maxlength="30" class="form-control aton-input" aria-label="Password" aria-describedby="inputGroup-sizing-sm" placeholder="Password" spellcheck="false" >`);
+
+    elInputUN.onfocus = ()=>{ UI._bInput = true; };
+    elInputUN.onblur  = ()=>{ UI._bInput = false; };
+
+    elInputPW.onfocus = ()=>{ UI._bInput = true; };
+    elInputPW.onblur  = ()=>{ UI._bInput = false; };
 
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);

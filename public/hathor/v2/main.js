@@ -122,7 +122,7 @@ HATHOR.setupLogic = ()=>{
         HATHOR.handleTaskOnTap(e);
 
         // Handle sem annotations first
-        if (ATON._hoveredSemNode){
+        if (ATON._hoveredSemNode && !HATHOR.currTask){
             HATHOR.showAnnotationContent(ATON._hoveredSemNode)
         }
         else {
@@ -133,6 +133,15 @@ HATHOR.setupLogic = ()=>{
 
     ATON.on("MouseRightButton", b => {
         HATHOR._bRMB = b;
+/*
+        if (b){
+            if (ATON._hoveredSemNode){
+                if (HATHOR.isEditorMode()){
+                    HATHOR.UI.modalAnnotation(ATON._hoveredSemNode);
+                }
+            }
+        }
+*/
     });
 
 
@@ -170,7 +179,12 @@ HATHOR.setupLogic = ()=>{
 
         // Side panels shortcuts
         if (k==='g') HATHOR.UI.sideLayers();
-        if (k==='a') HATHOR.UI.sideSemantics();
+        if (k==='a'){
+            if (ATON._hoveredSemNode && HATHOR.isEditorMode()){
+                HATHOR.UI.modalAnnotation(ATON._hoveredSemNode);
+            }
+            else HATHOR.UI.sideSemantics();
+        }
         if (k==='s') HATHOR.UI.sideScene();
         if (k==='e') HATHOR.UI.sideEnv();
         if (k==='n') HATHOR.UI.sideNav();

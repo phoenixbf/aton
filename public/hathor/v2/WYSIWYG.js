@@ -12,6 +12,7 @@ WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,eraser,ul,ol,font,paragraph,|,hr,tab
 
 WYSIWYG.el     = undefined;
 WYSIWYG.editor = undefined;
+WYSIWYG._elED  = undefined;
 
 
 
@@ -22,12 +23,39 @@ WYSIWYG.createElement = ()=>{
 };
 
 // TODO:
-WYSIWYG.createToolbar = ()=>{
+WYSIWYG.createToolbar = (options)=>{
+    if (!options) options = {};
+
+    let S = ATON.getSemanticNode(options.semid);
+
     let el = HATHOR.UI.createBlockGroup({
         items:[
-            ATON.UI.createInputText({
+            ATON.UI.createInputMedia({
+                actionicon: "add",
+                label: "Insert media",
+                placeholder: "URL...",
+                onaction: (url)=>{
+                    if (!url) return;
+                    if (url.length<2) return;
 
+                    let el = ATON.UI.createMediaItem({url: url});
+
+                    let ED = document.getElementsByClassName("jodit-wysiwyg");
+                    ED[0].focus();
+
+                    let html = el.outerHTML;
+
+                    WYSIWYG.insert( html );
+                }
+            }),
+/*
+            ATON.UI.createAudioRecorder({
+                textrec: "Vocal note",
+                onaudio: (b64)=>{
+                    if (S) S.setAudio(b64);
+                }
             })
+*/
         ]
     });
 

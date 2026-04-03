@@ -2397,13 +2397,15 @@ UI.createBasicLayersManager = (options)=>{
 };
 
 UI.createMediaItem = (options)=>{
-    if (ATON.Utils.isImage(options.url)){
-        let el = UI.elem(`<img src='${options.url}'></img>`);
+    let url = ATON.Utils.resolveCollectionURL(options.url);
+
+    if (ATON.Utils.isImage(url)){
+        let el = UI.elem(`<img src='${url}'></img>`);
         return el;
     }
 
-    if (ATON.Utils.isVideo(options.url)){
-        let el = UI.elem(`<video src='${options.url}'></video>`);
+    if (ATON.Utils.isVideo(url)){
+        let el = UI.elem(`<video controls controlsList="nodownload"><source src="${url}"></video>`);
         return el;
     }
 
@@ -2643,6 +2645,60 @@ UI.createInput3DModel = (options)=>{
                 let elIT = ATON.UI.createInputText({
                     label: options.label,
                     placeholder: "3D model URL...",
+                    list: entries,
+                    listnames: itemnames,
+                    oninput: options.oninput,
+                    onchange: options.onchange
+                });
+        
+                el.append( elIT );
+
+                let elInput = elIT.getElementsByTagName("input")[0];
+/*
+                if (options.actionbutton){
+                    elIT.append( options.actionbutton );
+                }
+*/
+
+                elIT.append( ATON.UI.createButton({
+                    icon: options.actionicon? options.actionicon : "collection-item",
+                    text: options.actiontext,
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        if (options.onaction) options.onaction( elInput.value );
+                        elInput.value = "";
+                    }
+                }));
+
+            });
+        }
+    );
+
+    return el;
+};
+
+UI.createInputMedia = (options)=>{
+    let el = ATON.UI.createContainer();
+    
+    if (!options) options = {};
+
+    // Placeholder element
+    let phold = UI.elem("<span class='aton-placeholder' style='height:40px'>Loading media...</span>");
+    el.append( phold );
+
+    ATON.checkAuth(
+        (u)=>{
+            ATON.REQ.get("items/"+u.username+"/media/", entries => {
+
+                el.innerHTML = "";
+
+                const itemnames = entries.map(item => {
+                    return item.replace(u.username+"/media/", "");
+                });
+             
+                let elIT = ATON.UI.createInputText({
+                    label: options.label,
+                    placeholder: options.placeholder? options.placeholder : "Media URL...",
                     list: entries,
                     listnames: itemnames,
                     oninput: options.oninput,

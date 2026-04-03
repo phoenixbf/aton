@@ -301,6 +301,7 @@ UI.buildStandardInterface = ()=>{
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
+        ATON.UI.createButtonFullscreen(),
         //UI.createMyGalleryButton(),
         UI.createLayersButton(),
         UI.createEnvButton(),
@@ -312,7 +313,6 @@ UI.buildStandardInterface = ()=>{
 
         UI.createCollabButton(),
 
-        ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
 
         UI.createXRButton(),
@@ -336,6 +336,7 @@ UI.buildEditorInterface = ()=>{
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
+        ATON.UI.createButtonFullscreen(),
         //UI.createMyGalleryButton(),
         UI.createLayersButton(),
         UI.createEnvButton(),
@@ -347,7 +348,6 @@ UI.buildEditorInterface = ()=>{
 
         UI.createCollabButton(),
 
-        ATON.UI.createButtonFullscreen(),
         ATON.UI.createButtonQR(),
 
         UI.createXRButton(),
@@ -579,7 +579,7 @@ UI.modalAnnotation = (semid)=>{
 
     elBody.append(
         UI.WYSIWYG.createElement(),
-        //UI.WYSIWYG.createToolbar() 
+        UI.WYSIWYG.createToolbar({ semid: semid }) 
     );
 
     elFooter.append( ATON.UI.createContainer({
@@ -959,6 +959,8 @@ UI.openToolPanel = (options)=>{
 UI.closeToolPanel = ()=>{
     UI._sidepanel.hide();
     UI._bSidePanel = false;
+
+    ATON.UI.inputFocus(false);
 
     HATHOR.SUI.detachGizmo();
 };
@@ -1572,6 +1574,11 @@ UI.sideManageLayer = (nid)=>{
         }
     });
 
+    let elRot = ATON.UI.getComponent(elTrans, "rotationControl");
+    let elInX = ATON.UI.getComponent(elRot, "inputX");
+    let elInY = ATON.UI.getComponent(elRot, "inputY");
+    let elInZ = ATON.UI.getComponent(elRot, "inputZ");
+
     elBody.append( ATON.UI.createTreeGroup({
         items:[
             {
@@ -1585,6 +1592,27 @@ UI.sideManageLayer = (nid)=>{
                 content: ATON.UI.createContainer({
                     items:[
                         elTrans,
+
+                        UI.createBlockGroup({
+                            items:[
+                                ATON.UI.createButton({
+                                    text: "Z &#9656; Y",
+                                    classes: "btn-default",
+                                    onpress: ()=>{
+                                        elInX.value = -(Math.PI * 0.5);
+                                        elInX.oninput();
+                                    }
+                                }),
+                                ATON.UI.createButton({
+                                    text: "Z &#9656; -Y",
+                                    classes: "btn-default",
+                                    onpress: ()=>{
+                                        elInX.value = (Math.PI * 0.5);
+                                        elInX.oninput();
+                                    }
+                                })
+                            ]
+                        }),
 
                         UI.createBlockGroup({
                             items:[

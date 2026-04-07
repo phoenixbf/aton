@@ -54,6 +54,7 @@ UI.setTheme = (theme)=>{
 UI.createMainButton = ()=>{
     return ATON.UI.createButton({
         icon: "hathor",
+        tooltip: "Hathor",
         classes: "hathor-main-btn",
         onpress: UI.modalHathor
     });
@@ -67,71 +68,108 @@ UI.createMyGalleryButton = ()=>{
         }
     });
 
+    UI._elTB.push(UI._elMyGall);
     return UI._elMyGall;
 };
 
 UI.createXRButton = ()=>{
-    let el = ATON.UI.createButton({
+    UI._elXR = ATON.UI.createButton({
         icon: "xr",
+        tooltip: "AR and VR",
         onpress: UI.modalXR
     });
 
-    if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(el);
-    else ATON.UI.hideElement(el);
+    if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(UI._elXR);
+    else ATON.UI.hideElement(UI._elXR);
 
     ATON.on("XR_support", d => {
-        if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(el);
-        else ATON.UI.hideElement(el);
+        if (ATON.device.xrSupported['immersive-vr'] || ATON.device.xrSupported['immersive-ar']) ATON.UI.showElement(UI._elXR);
+        else ATON.UI.hideElement(UI._elXR);
     });
 
-    return el;
+    UI._elTB.push(UI._elXR);
+
+    return UI._elXR;
 };
 
 UI.createLayersButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elLayers = ATON.UI.createButton({
         icon: "layers",
+        tooltip: "Manage layers",
         onpress: UI.sideLayers
     });
+
+    UI._elTB.push(UI._elLayers);
+
+    return UI._elLayers;
 };
 
 UI.createSemanticsButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elSem = ATON.UI.createButton({
         icon: "annotation",
+        tooltip: "Create and manage semantic annotations",
         onpress: UI.sideSemantics
     });
+
+    UI._elTB.push(UI._elSem);
+
+    return UI._elSem;
 };
 
 UI.createEnvButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elEnv = ATON.UI.createButton({
         icon: "env",
+        tooltip: "Environment setup",
         onpress: UI.sideEnv
     });
+
+    UI._elTB.push(UI._elEnv);
+
+    return UI._elEnv;
 };
 
 UI.createSceneButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elScene = ATON.UI.createButton({
         icon: "info",
+        tooltip: "Scene general information",
         onpress: UI.sideScene
     });
+
+    UI._elTB.push(UI._elScene);
+
+    return UI._elScene;
 };
 
 UI.createNavButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elNav = ATON.UI.createButton({
         icon: "nav",
+        tooltip: "Navigation",
         onpress: UI.sideNav
     });
+
+    UI._elTB.push(UI._elNav);
+
+    return UI._elNav;
 };
 
 UI.createFXButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elFX = ATON.UI.createButton({
         icon: "fx",
+        tooltip: "Post-processing Effects",
         onpress: UI.sideFX
-    }); 
+    });
+
+    if (ATON.device.lowGPU || ATON.device.isMobile) ATON.UI.hideElement(UI._elFX);
+
+    UI._elTB.push(UI._elFX);
+
+    return UI._elFX;
 };
 
 UI.createCollabButton = ()=>{
     UI._elPhoton = ATON.UI.createButton({
         icon: "users",
+        tooltip: "Collaborative session",
         onpress: UI.sideCollab
     });
 
@@ -142,6 +180,7 @@ UI.createCopyrightsButton = ()=>{
     UI._elCC = ATON.UI.createButton({
         //text: "Assets Copyrights",
         icon: "cc",
+        tooltip: "Copyrights/metadata information",
         onpress: UI.modalCopyrights
     });
 
@@ -149,10 +188,15 @@ UI.createCopyrightsButton = ()=>{
 };
 
 UI.createToolsButton = ()=>{
-    return ATON.UI.createButton({
+    UI._elTools = ATON.UI.createButton({
         icon: "tools",
+        tooltip: "Tools",
         onpress: UI.sideTools
-    }); 
+    });
+
+    UI._elTB.push(UI._elTools);
+
+    return UI._elTools;
 };
 
 // Custom Hathor user button
@@ -290,6 +334,7 @@ UI.buildBaseInterface = ()=>{
 // Standard UI toolbar
 UI.buildStandardInterface = ()=>{
     UI._elMainToolbar.innerHTML = "";
+    UI._elTB = [];
 
     if (HATHOR._tb){
         HATHOR._tb = String(HATHOR._tb);
@@ -319,20 +364,13 @@ UI.buildStandardInterface = ()=>{
         UI.createCopyrightsButton()
     );
 
-    if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
-/*
-    else {
-        let numCC = ATON.CC.list.length;
-        UI._elCC.append(
-            ATON.UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+numCC+"</span>")
-        );
-    }
-*/
+    UI.postToolbar();
 };
 
 // Editor UI toolbar
 UI.buildEditorInterface = ()=>{
     UI._elMainToolbar.innerHTML = "";
+    UI._elTB = [];
 
     UI._elMainToolbar.append(
         UI.createMainButton(),
@@ -354,15 +392,7 @@ UI.buildEditorInterface = ()=>{
         UI.createCopyrightsButton()
     );
 
-    if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
-/*
-    else {
-        let numCC = ATON.CC.list.length;
-        UI._elCC.append(
-            ATON.UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+numCC+"</span>")
-        );
-    }
-*/
+    UI.postToolbar();
 };
 
 // Custom UI (url) toolbar
@@ -386,7 +416,24 @@ UI.buildCustomInterface = (elements)=>{
         if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());
     }
 
+    UI.postToolbar();
+};
+
+UI.postToolbar = ()=>{
     if (!ATON.CC.anyCopyrightFound()) ATON.UI.hideElement(UI._elCC);
+/*
+    else {
+        let numCC = ATON.CC.list.length;
+        UI._elCC.append(
+            ATON.UI.elem("<span class='position-absolute top-0 start-100 translate-middle badge rounded-pill'>"+numCC+"</span>")
+        );
+    }
+*/
+};
+
+UI.highlightTBPanel = (el)=>{
+    for (let e in UI._elTB) UI._elTB[e].classList.remove("aton-btn-highlight");
+    if (el) el.classList.add("aton-btn-highlight");
 };
 
 UI.hideMainElements = ()=>{
@@ -708,6 +755,7 @@ UI.sideSemantics = ()=>{
         ]
     }));
 
+    UI.highlightTBPanel(UI._elSem);
     UI.openToolPanel({
         header: "Semantic Annotations",
         body: elBody
@@ -961,6 +1009,7 @@ UI.closeToolPanel = ()=>{
     UI._bSidePanel = false;
 
     ATON.UI.inputFocus(false);
+    UI.highlightTBPanel();
 
     HATHOR.SUI.detachGizmo();
 };
@@ -1177,6 +1226,7 @@ UI.sideScene = ()=>{
     );
 
     // Panel
+    UI.highlightTBPanel(UI._elScene);
     UI.openToolPanel({
         header: "Scene",
         body: elBody
@@ -1389,6 +1439,7 @@ UI.sideLayers = ()=>{
     }));
 */
 
+    UI.highlightTBPanel(UI._elLayers);
     UI.openToolPanel({
         header: "Layers",
         body: ATON.UI.createContainer({
@@ -1642,6 +1693,7 @@ UI.sideManageLayer = (nid)=>{
         ]
     }) );
 
+    UI.highlightTBPanel(UI._elLayers);
     UI.openToolPanel({
         header: "Layer '"+nid+"'",
         headelement: ATON.UI.createButton({
@@ -1870,7 +1922,7 @@ UI.sideEnv = ()=>{
         })
     );
 
-
+    UI.highlightTBPanel(UI._elEnv);
     UI.openToolPanel({
         header: "Environment",
         body: elBody
@@ -2002,7 +2054,7 @@ UI.sideNav = ()=>{
         }),
 
         ATON.UI.createInputText({
-            placeholder: "New viewpoint...",
+            placeholder: "Save this view as...",
             icon: "add",
             classes: "w-100",
             validator: (povid)=>{
@@ -2053,6 +2105,7 @@ UI.sideNav = ()=>{
         })
     );
   
+    UI.highlightTBPanel(UI._elNav);
     UI.openToolPanel({
         header: "Navigation",
         body: elBody
@@ -2219,6 +2272,7 @@ UI.sideViewpoint = (povid)=>{
 
     //if (!povid) elBody.append(elCurrPOV);
 
+    UI.highlightTBPanel(UI._elNav);
     UI.openToolPanel({
         header: (povid)? "Viewpoint '"+povid+"'" : "Control viewpoint",
         body: elBody,
@@ -2327,6 +2381,7 @@ UI.sideFX = ()=>{
         })
     );
 
+    UI.highlightTBPanel(UI._elFX);
     UI.openToolPanel({
         header: "Post-processing FX",
         body: elBody
@@ -2425,6 +2480,7 @@ UI.sideTools = ()=>{
         })
     )
 
+    UI.highlightTBPanel(UI._elTools);
     UI.openToolPanel({
         header: "Tools",
         body: elBody
@@ -2570,6 +2626,7 @@ UI.sideCollab = ()=>{
         }),
     );
 
+    UI.highlightTBPanel();
     UI.openToolPanel({
         header: "Collaborative Session",
         body: elBody

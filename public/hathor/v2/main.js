@@ -153,6 +153,9 @@ HATHOR.setupLogic = ()=>{
         //if (HATHOR._bCollabLogicSet) return;
 
         if (HATHOR.UI._elMyGall) ATON.UI.showElement(HATHOR.UI._elMyGall);
+
+        let ed = HATHOR.params.get('e');
+        if (ed) HATHOR.enterEditorMode();
     });
 
     ATON.on("Logout", ()=>{
@@ -216,6 +219,9 @@ HATHOR.onSceneJSONLoaded = ()=>{
         ATON.checkAuth(
             (u)=>{
                 HATHOR.enterEditorMode();
+            },
+            ()=>{
+                HATHOR.UI._elUser.click();
             });
     }
     let sid = ATON.SceneHub.currID;

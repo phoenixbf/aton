@@ -956,12 +956,12 @@ UI.createButtonUser = (options)=>{
                     );
 
                     if (options.modallogged) elBody.append(options.modallogged);
-                    elBody.append(elLogout);
+                    //elBody.append(elLogout);
 
                     ATON.UI.showModal({
                         header: (options.titlelogged)? options.titlelogged : u.username,
                         body: elBody,
-                        //footer: elLogout
+                        footer: elLogout
                     })
                 },
 
@@ -970,19 +970,21 @@ UI.createButtonUser = (options)=>{
 
                     updUserBTN();
 
+                    let elBody = ATON.UI.createLoginForm({
+                        onSuccess: (r)=>{
+                            UI.hideModal();
+                            updUserBTN(r.username);
+
+                            if (options.onlogin) options.onlogin();
+                        },
+                        onFail: ()=>{
+                            //TODO:
+                        }
+                    });
+
                     ATON.UI.showModal({
                         header: (options.titlelogin)? options.titlelogin : "Authentication",
-                        body: ATON.UI.createLoginForm({
-                            onSuccess: (r)=>{
-                                UI.hideModal();
-                                updUserBTN(r.username);
-
-                                if (options.onlogin) options.onlogin();
-                            },
-                            onFail: ()=>{
-                                //TODO:
-                            }
-                        })
+                        body: elBody
                     })
                 }
             );

@@ -599,7 +599,7 @@ Create home button
 UI.createButtonHome = (options)=>{
     const std = {
         icon: "home",
-        tooltip: "Go home",
+        tooltip: "Home viewpoint",
         onpress: ()=>{
             ATON.Nav.requestHome(0.3);
         }

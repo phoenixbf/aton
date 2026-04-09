@@ -306,6 +306,7 @@ UI.buildBaseInterface = ()=>{
     // Bottom toolbar
     UI._elPOVprev = ATON.UI.createButton({
         icon: "left",
+        tooltip: "Previous viewpoint",
         onpress: ()=>{
             ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
         }
@@ -313,6 +314,7 @@ UI.buildBaseInterface = ()=>{
 
     UI._elPOVnext = ATON.UI.createButton({
         icon: "right",
+        tooltip: "Next viewpoint",
         onpress: ()=>{
             ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
         }
@@ -509,6 +511,7 @@ UI.showSemanticPanel = (semid)=>{
         editbtns.push(
             ATON.UI.createButton({
                 icon: "edit",
+                classes: "btn-default",
                 onpress: ()=>{
                     UI.modalAnnotation(semid);
                     ATON.UI.hideSidePanel();
@@ -2608,7 +2611,7 @@ UI.sideCollab = ()=>{
             ]
         }),
 
-        UI.createTextBlock("Use this chat to exchange message among participants:"),
+        UI.createTextBlock("Use this chat to exchange messages among participants:"),
         UI.createChatContainer(),
 
         ATON.UI.createInputText({
@@ -2631,6 +2634,89 @@ UI.sideCollab = ()=>{
         header: "Collaborative Session",
         body: elBody
     }); 
+};
+
+//====================================
+// Help
+//====================================
+UI.modalHelp = ()=>{
+    let elBody = ATON.UI.createContainer();
+
+    // Shortcuts
+    let elKeyb = ATON.UI.createContainer();
+    elKeyb.append(
+        ATON.UI.elem(`
+            <div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>?</span></div>
+                    <div class='col-md-8'>Open this help</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>s</span></div>
+                    <div class='col-md-8'>Open scene info panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>n</span></div>
+                    <div class='col-md-8'>Navigation panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>v</span></div>
+                    <div class='col-md-8'>Current viewpoint setup</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>a</span></div>
+                    <div class='col-md-8'>Semantic annotation panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>e</span></div>
+                    <div class='col-md-8'>Environment settings panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>t</span></div>
+                    <div class='col-md-8'>Tools panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>+</span></div>
+                    <div class='col-md-8'>Increase Field of View (FoV)</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>-</span></div>
+                    <div class='col-md-8'>Decrease Field of View (FoV)</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>Right arrow</span></div>
+                    <div class='col-md-8'>Next viewpoint</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>Left arrow</span></div>
+                    <div class='col-md-8'>Previous viewpoint</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>ESC</span></div>
+                    <div class='col-md-8'>Stop current task, if any</div>
+                </div>
+            </div>
+        `)
+    );
+
+
+    elBody.append(
+        ATON.UI.createTabsGroup({
+            items:[
+                {
+                    title: "Shortcuts",
+                    content: elKeyb
+                }
+            ]
+        })
+    )
+
+
+    ATON.UI.showModal({
+        header: "Help",
+        body: elBody,
+        //footer: elFooter,
+    });
 };
 
 //====================================

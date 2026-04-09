@@ -180,6 +180,8 @@ HATHOR.setupLogic = ()=>{
             ATON.Nav.setFOV(f);
         }
 
+        if (k==='Escape') HATHOR.endCurrentTask();
+
         // Side panels shortcuts
         if (k==='g') HATHOR.UI.sideLayers();
         if (k==='a'){
@@ -194,6 +196,7 @@ HATHOR.setupLogic = ()=>{
         if (k==='v') HATHOR.UI.sideViewpoint();
         if (k==='x') HATHOR.UI.sideFX();
         if (k==='t') HATHOR.UI.sideTools();
+        if (k==='?') HATHOR.UI.modalHelp();
 
         if (k==='ArrowRight') ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
         if (k==='ArrowLeft') ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);

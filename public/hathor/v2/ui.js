@@ -889,6 +889,36 @@ UI.modalHathor = ()=>{
 
 UI.modalXR = ()=>{
     let elBody = ATON.UI.createContainer();
+
+    if (ATON.device.xrSupported['immersive-vr']){
+        elBody.append(
+            UI.createTextBlock("Enter immersive VR sesssion"),
+            UI.createBlockGroup({
+                items:[
+                    ATON.UI.createButtonVR({
+                        classes: "btn-accent",
+                        text: "Immersive VR"
+                    })
+                ]
+            })
+        );
+    }
+
+    if (ATON.device.xrSupported['immersive-ar']){
+        elBody.append(
+            UI.createTextBlock("Enter Augmented Reality sesssion"),
+            UI.createBlockGroup({
+                items:[
+                    ATON.UI.createButtonAR({
+                        classes: "btn-accent",
+                        text: "Augmented Reality"
+                    })
+                ]
+            })
+        );
+    }
+
+/*
     let elFooter = ATON.UI.createContainer({ classes: "w-100" });
 
     elFooter.append(
@@ -904,14 +934,14 @@ UI.modalXR = ()=>{
                 })
             ]
         })
-
     );
+*/
 
     ATON.UI.showModal({
         header: "XR",
         body: elBody,
-        footer: elFooter,
-        wide: true
+        //footer: elFooter,
+        //wide: true
     });
 };
 

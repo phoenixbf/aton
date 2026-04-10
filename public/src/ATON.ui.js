@@ -705,7 +705,7 @@ Create Device Orientation button. Hidden if not supported by device
 */
 UI.createButtonDeviceOrientation = (options)=>{
     const std = {
-        icon: "devori",
+        icon: "nav-devori",
         tooltip: "Device Orientation",
         onpress: ()=>{
             if (ATON.Nav.isDevOri()){
@@ -830,7 +830,7 @@ UI.createNavSwitcher = (options)=>{
     });
 
     elDO = UI.createButton({
-        icon: "devori",
+        icon: "nav-devori",
         //text: "Device Orientation",
         tooltip: "Device Orientation",
         classes: "btn-default",

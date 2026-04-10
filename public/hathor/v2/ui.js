@@ -1845,6 +1845,7 @@ UI.sideEnv = ()=>{
     // Lighting
     let elSwitchShadows = ATON.UI.createButtonSwitch({
         icon: "shadows",
+        tooltip: "Shadows ON/OFF",
         classes: "btn-default",
         status: ATON.areShadowsEnabled(),
         onswitch: (b)=>{
@@ -1858,6 +1859,7 @@ UI.sideEnv = ()=>{
 
     let elSwitchMainLight = ATON.UI.createButtonSwitch({
         icon: "light",
+        tooltip: "Main directional light ON/OFF",
         classes: "btn-default",
         status: ATON.isMainLightEnabled(),
         onswitch: (b)=>{
@@ -1886,6 +1888,7 @@ UI.sideEnv = ()=>{
             items:[
                 ATON.UI.createButton({
                     text: "Setup main light "+UI.TASK_SYMBOL,
+                    tooltip: "Configure main light direction",
                     classes: "w-100 hathor-btn-task",
                     //icon: "light",
                     onpress: ()=>{
@@ -2650,19 +2653,26 @@ UI.modalHelp = ()=>{
             <div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-orbit")}'></div>
-                    <div class='col-md-8'>Orbit Mode: move your camera around a target</div>
+                    <div class='col-md-8'><b>Orbit Mode</b>: move your camera around a target</div>
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-fp")}'></div>
-                    <div class='col-md-8'>First Person Mode: use teleport to move around through a white circle on walkable surfaces</div>
+                    <div class='col-md-8'><b>First Person Mode</b>: use teleport to move around through a white circle on walkable surfaces</div>
                 </div>
             </div>
         `)
     );
 
-    elNav.append(
+    if (ATON.device.isMobile) elNav.append(
         ATON.UI.elem(`
             <div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-devori")}'></div>
+                    <div class='col-md-8'><b>Device Orientation Mode</b>: use your device to look around and teleport via double-tap to move around through a white circle on walkable surfaces</div>
+                </div>
+
+                <hr>
+
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-pinch.png"}'></div>
                     <div class='col-md-8'>Pinch to dolly your camera (orbit mode)</div>

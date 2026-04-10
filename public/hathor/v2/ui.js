@@ -2642,6 +2642,47 @@ UI.sideCollab = ()=>{
 UI.modalHelp = ()=>{
     let elBody = ATON.UI.createContainer();
 
+    // Nav
+    let elNav = ATON.UI.createContainer();
+
+    elNav.append(
+        ATON.UI.elem(`
+            <div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-orbit")}'></div>
+                    <div class='col-md-8'>Orbit Mode: move your camera around a target</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-fp")}'></div>
+                    <div class='col-md-8'>First Person Mode: use teleport to move around through a white circle on walkable surfaces</div>
+                </div>
+            </div>
+        `)
+    );
+
+    elNav.append(
+        ATON.UI.elem(`
+            <div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-pinch.png"}'></div>
+                    <div class='col-md-8'>Pinch to dolly your camera (orbit mode)</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-tap.png"}'></div>
+                    <div class='col-md-8'>Drag to move your camera, or tap on specific semantic areas to activate them</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-twofingers.png"}'></div>
+                    <div class='col-md-8'>Drag two fingers to pan your camera (orbit mode)</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-doubletap.png"}'></div>
+                    <div class='col-md-8'>Double tap to retarget on specific surface location (orbit mode) or teleport to location (first person mode)</div>
+                </div>
+            </div>
+        `)
+    );
+
     // Shortcuts
     let elKeyb = ATON.UI.createContainer();
     elKeyb.append(
@@ -2703,6 +2744,10 @@ UI.modalHelp = ()=>{
     elBody.append(
         ATON.UI.createTabsGroup({
             items:[
+                {
+                    title: "Navigation",
+                    content: elNav
+                },
                 {
                     title: "Shortcuts",
                     content: elKeyb

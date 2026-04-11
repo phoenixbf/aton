@@ -207,8 +207,8 @@ UI.createButtonUser = ()=>{
     console.log(bEditor);
 
     UI._elModeSTD = ATON.UI.createButton({
-        text: "Standard Mode",
-        //icon: "user",
+        text: "Presentation Mode", // standard
+        icon: "bi-easel",
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.exitEditorMode();
@@ -217,7 +217,7 @@ UI.createButtonUser = ()=>{
 
     UI._elModeED = ATON.UI.createButton({
         text: "Editor Mode",
-        //icon: "edit",
+        icon: "edit",
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.enterEditorMode();
@@ -263,7 +263,7 @@ UI.createButtonUser = ()=>{
         ATON.UI.createContainer({
             classes: "hathor-panel-section",
             items:[
-                UI.createTextBlock("Switch between Standard or Editor mode in Hathor. Standard is how your 3D scene will be presented to general users, Editor allows to compose, edit and enrich your 3D scene."),
+                UI.createTextBlock("Switch between Presentation or Editor mode in Hathor. Presentation is how your 3D scene will be presented to general users, while Editor allows to compose, edit and enrich your 3D scene."),
                 UI.createBlockGroup({items:[ UI._elModeSTD, UI._elModeED ]})
             ]
         })
@@ -283,6 +283,11 @@ UI.createButtonUser = ()=>{
     });
 
     return el;
+};
+
+// Open custom user modal
+UI.openUserModal = ()=>{
+    if (UI._elUser) UI._elUser.click();
 };
 
 // Base UI
@@ -333,7 +338,7 @@ UI.buildBaseInterface = ()=>{
     UI._elUserToolbar.append( UI._elUser );
 };
 
-// Standard UI toolbar
+// Standard/Presentation UI toolbar
 UI.buildStandardInterface = ()=>{
     UI._elMainToolbar.innerHTML = "";
     UI._elTB = [];
@@ -410,7 +415,10 @@ UI.buildCustomInterface = (elements)=>{
         if (E==="cc")     UI._elMainToolbar.append(UI.createCopyrightsButton());
         if (E==="fx")     UI._elMainToolbar.append(UI.createFXButton());
         if (E==="tools")  UI._elMainToolbar.append(UI.createToolsButton());
+        
         if (E==="xr")     UI._elMainToolbar.append(UI.createXRButton());
+        if (E==="ar")     UI._elMainToolbar.append(ATON.UI.createButtonAR());
+        if (E==="vr")     UI._elMainToolbar.append(ATON.UI.createButtonVR());
 
         if (E==="share")  UI._elMainToolbar.append(ATON.UI.createButtonQR());
         if (E==="fs")     UI._elMainToolbar.append(ATON.UI.createButtonFullscreen());

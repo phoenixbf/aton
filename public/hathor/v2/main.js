@@ -182,6 +182,10 @@ HATHOR.setupLogic = ()=>{
 
         if (k==='Escape') HATHOR.endCurrentTask();
 
+        // Modifiers
+        //if (k ==="Shift")  ATON.Nav.setUserControl(false);
+        //if (k==="Control") ATON.Nav.setUserControl(false);
+
         // Side panels shortcuts
         if (k==='g') HATHOR.UI.sideLayers();
         if (k==='a'){
@@ -197,6 +201,7 @@ HATHOR.setupLogic = ()=>{
         if (k==='x') HATHOR.UI.sideFX();
         if (k==='t') HATHOR.UI.sideTools();
         if (k==='?') HATHOR.UI.modalHelp();
+        if (k==='u') HATHOR.UI.openUserModal();
 
         if (k==='ArrowRight') ATON.Nav.requestNextPOVinPath(HATHOR.POVPATH_ALL);
         if (k==='ArrowLeft') ATON.Nav.requestPrevPOVinPath(HATHOR.POVPATH_ALL);
@@ -208,10 +213,76 @@ HATHOR.setupLogic = ()=>{
                 HATHOR.UI.modalDeleteSemanticID( ATON._hoveredSemNode );
             }
         }
+
+        if (k==='f'){
+            ATON.Nav.setUserControl(false);
+
+            if (ATON._queryDataScene){
+                ATON.SUI.showSelector(true);
+
+                ATON.Photon.setFocusStreaming(true);
+                ATON.FX.setDOFfocus( ATON._queryDataScene.d );
+            }
+        }
     });
 
     ATON.on("KeyUp",(k)=>{
         //if (k==='l') HATHOR._bLD = false;
+
+        // Modifiers
+        //if (k ==="Shift")  ATON.Nav.setUserControl(true);
+        //if (k==="Control") ATON.Nav.setUserControl(true);
+
+        if (k==='f'){
+            ATON.Nav.setUserControl(true);
+
+            ATON.Photon.setFocusStreaming(false);
+            if (!HATHOR.isEditorMode()) ATON.SUI.showSelector(false);
+
+/*
+            if (ATON.FX.isPassEnabled(ATON.FX.PASS_DOF)){
+                let k = ATON.FX.getDOFfocus().toPrecision(ATON.SceneHub.FLOAT_PREC);
+
+                ATON.SceneHub.patch({
+                    fx:{ 
+                        dof:{
+                            f: k
+                        }
+                    }
+                }, ATON.SceneHub.MODE_ADD);
+            }
+*/
+        }
+    });
+
+
+    // Mouse
+    ATON.on("MouseWheel", (d)=>{
+        let f = 0.9;
+        let selRange = ATON.SUI.getSelectorRange();
+
+        if (ATON._kModCtrl){
+            let ff = ATON.Nav.getFOV();
+            
+            if (d > 0.0) ff += 1.0;
+            else ff -= 1.0;
+
+            ATON.Nav.setFOV(ff);
+            return;
+        }
+
+        if (ATON._kModShift || ATON.Photon._bStreamFocus){
+            let r = ATON.SUI.mainSelector.scale.x;
+
+            if (d > 0.0) r *= f;
+            else r /= f;
+
+            if (r < selRange[0]) r = selRange[0];
+            if (r > selRange[1]) r = selRange[1];
+
+            ATON.SUI.setSelectorRadius(r);
+            return;
+        }
     });
 
 };
@@ -224,7 +295,7 @@ HATHOR.onSceneJSONLoaded = ()=>{
                 HATHOR.enterEditorMode();
             },
             ()=>{
-                HATHOR.UI._elUser.click();
+                HATHOR.UI.openUserModal();
             });
     }
     let sid = ATON.SceneHub.currID;

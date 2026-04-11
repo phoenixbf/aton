@@ -241,6 +241,7 @@ Show or hide selector
 */
 SUI.showSelector = (b)=>{
     SUI._bShowSelector = b;
+    SUI.mainSelector.visible = b;
 };
 
 /**

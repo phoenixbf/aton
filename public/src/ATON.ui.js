@@ -1789,6 +1789,7 @@ UI.createCard = (options)=>{
 
             let elImg = document.createElement("img");
             elImg.classList.add("card-img-top");
+            elImg.setAttribute("loading","lazy");
             elImg.src = options.cover;
             if (options.stdcover) elImg.onerror = ()=>{
                 elImg.src = options.stdcover;

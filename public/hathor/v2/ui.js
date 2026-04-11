@@ -2695,7 +2695,7 @@ UI.modalHelp = ()=>{
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.UI.resolveIconURL("nav-fp")}'></div>
-                    <div class='col-md-8'><b>First Person Mode</b>: use teleport to move around through a white circle on walkable surfaces</div>
+                    <div class='col-md-8'><b>First Person Mode</b>: move around by teleport using a white circle on walkable surfaces</div>
                 </div>
             </div>
         `)
@@ -2734,6 +2734,7 @@ UI.modalHelp = ()=>{
     else elNav.append(
         ATON.UI.elem(`
             <div>
+                <hr>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/mouse-lb.png"}'></div>
                     <div class='col-md-8'>Hold your mouse <b>left button</b> to control your camera in orbit or first-person modes. Single click on specific semantic areas to activate them, double-click to retarget on specific surface location (orbit mode) or teleport to location (first person mode)</div>

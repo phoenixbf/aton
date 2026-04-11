@@ -2730,6 +2730,25 @@ UI.modalHelp = ()=>{
             </div>
         `)
     );
+    // Not mobile
+    else elNav.append(
+        ATON.UI.elem(`
+            <div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/mouse-lb.png"}'></div>
+                    <div class='col-md-8'>Hold your mouse <b>left button</b> to control your camera in orbit or first-person modes. Single click on specific semantic areas to activate them, double-click to retarget on specific surface location (orbit mode) or teleport to location (first person mode)</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/mouse-rb.png"}'></div>
+                    <div class='col-md-8'>Hold your mouse <b>right button</b> to pan</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/mouse.png"}'></div>
+                    <div class='col-md-8'>Use your mouse wheel to dolly or control selector radius</div>
+                </div>
+            </div>
+        `)
+    );
 
     // Shortcuts
     let elKeyb = ATON.UI.createContainer();
@@ -2763,6 +2782,10 @@ UI.modalHelp = ()=>{
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>t</span></div>
                     <div class='col-md-8'>Tools panel</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>f</span></div>
+                    <div class='col-md-8'>Focus: hold this key to activate focus sphere (radius can controlled by mouse wheel). Within collaborative sessions focus is streamed to other participants</div>
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>+</span></div>

@@ -272,7 +272,7 @@ HATHOR.setupLogic = ()=>{
         }
 
         if (ATON._kModShift || ATON.Photon._bStreamFocus){
-            let r = ATON.SUI.mainSelector.scale.x;
+            let r = ATON.SUI.getSelectorRadius();
 
             if (d > 0.0) r *= f;
             else r /= f;

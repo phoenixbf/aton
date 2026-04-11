@@ -831,7 +831,9 @@ SUI.update = ()=>{
     }
 
     if (SUI.mainSelector.visible && ATON.Photon._bStreamFocus){
-        let ss = SUI._selectorRad * (1.0 + (Math.cos(ATON._clock.getElapsed()*10.0) * 0.2) );
+        let time = ATON._clock.getElapsed();
+        let ss = SUI._selectorRad * (1.0 + (Math.cos(time*10.0) * 0.05) );
+        
         SUI.mainSelector.scale.set(ss,ss,ss);
 
         let fp = ATON.getSceneFocalPoint();

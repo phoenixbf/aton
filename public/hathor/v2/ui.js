@@ -1944,8 +1944,8 @@ UI.sideEnv = ()=>{
         }),
 
         ATON.UI.createSlider({
-            label: "Exposure",
-            range: [0.05, 10.0],
+            label: "General Exposure",
+            range: [0.05, 5.0],
             step: 0.05,
             value: ATON.getExposure(),
             classes: "w-100",

@@ -197,9 +197,18 @@ Utils.isVideo = ( filepath )=>{
 Utils.isImage = ( filepath )=>{
     let ext = Utils.getFileExtension(filepath);
 
-    if (ext === "jpg")  return true;
+    if (ext === "jpg") return true;
     if (ext === "png") return true;
     if (ext === "ktx" || ext === "ktx2") return true;
+
+    return false;
+};
+
+Utils.isAudio = ( filepath )=>{
+    let ext = Utils.getFileExtension(filepath);
+
+    if (ext === "wav") return true;
+    if (ext === "mp3") return true;
 
     return false;
 };
@@ -208,10 +217,11 @@ Utils.is3DGS = ( filepath )=>{
     if (filepath.endsWith(".spz")) return true;
     if (filepath.endsWith(".splat")) return true;
     if (filepath.endsWith(".sog")) return true;
-    if (filepath.endsWith("meta.json")) return true;
+    if (filepath.endsWith("meta.json")) return true; // soon deprecated
     if (filepath.endsWith(".ksplat")) return true;
+    if (filepath.endsWith(".rad")) return true;
 
-    return;
+    return false;
 };
 
 Utils.getBaseFolder = ( filepath )=>{

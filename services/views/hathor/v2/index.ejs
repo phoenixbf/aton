@@ -104,6 +104,34 @@
     padding: 4px;
 
     pointer-events: initial;
+    vertical-align: middle;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.hathor-tasks-descr-container {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.hathor-task-descr {
+    display: inline-block;
+    max-width: 400px;
+
+    color: var(--bs-body-color);
+
+    font-size: small;
+    text-align: center;
+
+    padding: 8px;
+    margin: 8px;
 
     background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
     border-radius: var(--bs-border-radius);
@@ -368,6 +396,9 @@
 
     <div class="hathor-tasks-container">
         <div class="hathor-tasks" id="tasks"></div>
+    </div>
+    <div class="hathor-tasks-descr-container">
+        <div class="hathor-task-descr" id="task-descr"></div>
     </div>
 
     <div class="hathor-bottom-toolbar-container">

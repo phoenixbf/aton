@@ -296,8 +296,10 @@ UI.buildBaseInterface = ()=>{
     UI._elBottomToolbar = ATON.UI.get("bottomToolbar");
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
     UI._elTasks         = ATON.UI.get("tasks");
+    UI._elTaskDescr     = ATON.UI.get("task-descr");
 
     ATON.UI.hideElement(UI._elTasks);
+    ATON.UI.hideElement(UI._elTaskDescr);
 
     // Dedicated side panel
     UI._elSidePanel = ATON.UI.elem(`
@@ -683,6 +685,7 @@ UI.sideSemantics = ()=>{
                         classes: "hathor-btn-task",
                         onpress: ()=>{
                             HATHOR.setCurrentTask(HATHOR.TASK_BASIC_ANN);
+                            ATON.UI.setCursorStyle("crosshair");
                         }
                     })
                 ]
@@ -700,6 +703,7 @@ UI.sideSemantics = ()=>{
                         classes: "hathor-btn-task",
                         onpress: ()=>{
                             HATHOR.setCurrentTask(HATHOR.TASK_CONVEX_ANN);
+                            ATON.UI.setCursorStyle("crosshair");
                         }
                     })
                 ]
@@ -2839,17 +2843,26 @@ UI.modalHelp = ()=>{
 //====================================
 // Tasks
 //====================================
+UI.createTaskDescr = (text)=>{
+    return ATON.UI.elem("<div class='hathor-task-descr'>"+text+"</div>");
+};
+
 UI.buildTaskToolbar = (task)=>{
     if (!task) return;
 
     UI._elTasks.innerHTML = "";
+    UI._elTaskDescr.innerHTML = "";
+
     UI.hideMainElements();
 
     ATON.UI.showElement(UI._elTasks);
+    ATON.UI.showElement(UI._elTaskDescr);
 
     // Basic semantic shape
     if (task === HATHOR.TASK_BASIC_ANN){
         let selRange = ATON.SUI.getSelectorRange();
+
+        UI._elTaskDescr.innerHTML = "Use slider to control radius of selector. Tap or click on a surface to add the semantic annotation";
 
         HATHOR.UI._elTasks.append(
             ATON.UI.createButton({
@@ -2892,6 +2905,8 @@ UI.buildTaskToolbar = (task)=>{
 
     // Free form semantic shape
     if (task === HATHOR.TASK_CONVEX_ANN){
+        UI._elTaskDescr.innerHTML = "Tap or click on a surface to add a new point for the semantic annotation shape. At least 4 points are required to create the shape";
+
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Cancel",
             icon: "bi-x-lg",
@@ -2914,6 +2929,8 @@ UI.buildTaskToolbar = (task)=>{
 
     // Main light
     if (task === HATHOR.TASK_DIR_LIGHT){
+        if (ATON.device.isMobile) UI._elTaskDescr.innerHTML = "Tap anywhere to set the directional light";
+        else UI._elTaskDescr.innerHTML = "Hold CTRL to move the directional light";
 
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Ok",
@@ -2934,6 +2951,8 @@ UI.buildTaskToolbar = (task)=>{
     }
 
     if (task === HATHOR.TASK_MEASURE_AB){
+        UI._elTaskDescr.innerHTML = "Tap or click on a surface to add a new point for the measurement. Each pair will create a point-to-point measurement";
+
         HATHOR.UI._elTasks.append(ATON.UI.createButton({
             text: "Done",
             icon: "bi-check-lg",
@@ -2948,7 +2967,10 @@ UI.buildTaskToolbar = (task)=>{
 
 UI.clearTaskToolbar = ()=>{
     UI._elTasks.innerHTML = "";
+    UI._elTaskDescr.innerHTML = "";
+
     ATON.UI.hideElement(UI._elTasks);
+    ATON.UI.hideElement(UI._elTaskDescr);
 
     UI.showMainElements();
 };

@@ -28,6 +28,22 @@ GS.MIN_INT_UPDATE = 60;
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
+    // V2.0
+
+    GS._3DGSR = new SPARK.SparkRenderer({
+        renderer: ATON._renderer,
+        pagedExtSplats: true
+        //target: { width, height, doubleBuffer: true },
+    });
+
+    //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
+    GS._3DGSR.lodSplatScale = 0.5;
+
+    ATON._rootVisible.add( GS._3DGSR );
+
+    return;
+
+
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
         //originDistance: 1.0
@@ -148,8 +164,9 @@ GS.load = (url, N, onComplete)=>{
     ATON._assetReqNew(url);
     N.noLP = true;
 
-    new SPARK.SplatMesh({ 
+    let splats = new SPARK.SplatMesh({
         url: url,
+        paged: url.endsWith(".rad")? true : false,
         //editable: false,
 /*
         enableViewToObject: true,
@@ -160,18 +177,28 @@ GS.load = (url, N, onComplete)=>{
 
         onLoad: (data)=>{
             data.quaternion.set(1, 0, 0, 0);
-            
-            //ATON.Utils.modelVisitor(N, data);
+            //data.rotation.set(Math.PI,0,0);
 
             N.add( data );
 
-            //data.opacity = 0.1;
-            
-            ATON._assetReqComplete(url);
+            //data.opacity = 0.1;          
 
+            ATON._assetReqComplete(url);
             ATON.GS.visitor(N);
 
             if (onComplete) onComplete();
+
+/* v2.0
+            splats.createLodSplats({ quality: false, rgbaArray: splats.splatRgba }).then(()=>{
+                splats.enableLod = true;
+                ATON._assetReqComplete(url);
+
+                ATON.GS.visitor(N);
+
+                if (onComplete) onComplete();
+            });
+*/
+
         }
     });
 };

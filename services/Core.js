@@ -323,7 +323,7 @@ Core.init = ()=>{
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 	// 3D models base formats
-	Core.mpattern = "*.gltf,*.glb,*tileset.json,*.dzi,*.spz,*.splat,*.ksplat,meta.json,*.sog"; //,*-sogs.zip";
+	Core.mpattern = "*.gltf,*.glb,*tileset.json,*.dzi,*.spz,*.splat,*.ksplat,*.sog,*.rad,meta.json"; //,*-sogs.zip";
 
 	// Panoramic content
 	Core.panopattern = "*.jpg,*.hdr,*.exr,*.mp4,*.webm,*.m3u8";

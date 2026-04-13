@@ -1299,7 +1299,7 @@ UI.modalSceneDescription = ()=>{
     }
     else descr = "<p>No description</p>";
 */
-    elBody.append( ATON.UI.elem(descr) );
+    elBody.append( ATON.UI.elem("<div>"+descr+"</div>") );
 
     let elFooter = ATON.UI.createContainer({ classes: "w-100"});
 /*

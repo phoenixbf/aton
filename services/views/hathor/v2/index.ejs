@@ -46,6 +46,15 @@
     --jd-color-border: var(--bs-body-bg-color);
 }
 
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+}
+.modal-body video {
+    max-width: 100%;
+    height: auto;
+}
+
 .hathor-main-toolbar {
     margin: var(--hathor-ui-margin);
 
@@ -249,14 +258,8 @@
     margin: 24px;
 }
 
-/*
-.hathor-help-text:hover {
-    background-color: rgba(var(--aton-colors-accent-rgb), 0.1);
-}
-*/
-
 .hathor-help-text img {
-    height: 42px;
+    height: 42px !important;
     width: auto;
     filter: none;
 }
@@ -264,15 +267,17 @@
 [data-bs-theme=light] .hathor-help-text img {
     filter: invert(100%);
 }
+/*
+.hathor-help-img {
+    height: 42px !important;
+    width: auto;
+    filter: none;
+}
 
-.modal-body img {
-    max-width: 100%;
-    height: auto;
+[data-bs-theme=light] .hathor-help-img {
+    filter: invert(100%);
 }
-.modal-body video {
-    max-width: 100%;
-    height: auto;
-}
+*/
 
 .offcanvas-header {
 /*

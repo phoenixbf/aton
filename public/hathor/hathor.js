@@ -1890,7 +1890,7 @@ HATHOR.popupPOV = ()=>{
 HATHOR.popupGraphs = ()=>{
     let htmlcontent= "<div class='atonPopupTitle'>Layers</div>";
 
-    ATON.useGizmo(true);
+    //ATON.useGizmo(true);
 
     htmlcontent += "<div>";
     

@@ -207,7 +207,7 @@ UI.createButtonUser = ()=>{
     console.log(bEditor);
 
     UI._elModeSTD = ATON.UI.createButton({
-        text: "Presentation Mode", // standard
+        text: "Presentation", // standard
         icon: "bi-easel",
         classes: "btn-default",
         onpress: ()=>{
@@ -217,7 +217,7 @@ UI.createButtonUser = ()=>{
     });
 
     UI._elModeED = ATON.UI.createButton({
-        text: "Editor Mode",
+        text: "Editor",
         icon: "edit",
         classes: "btn-default",
         onpress: ()=>{
@@ -2735,7 +2735,7 @@ UI.modalHelp = ()=>{
 
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-pinch.png"}'></div>
-                    <div class='col-md-8'>Pinch to dolly your camera (orbit mode)</div>
+                    <div class='col-md-8'>Pinch to dolly (orbit mode): move your camera along view direction to get closer or farther to target</div>
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><img src='${ATON.PATH_RES+"help/hand-tap.png"}'></div>

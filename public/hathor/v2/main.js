@@ -53,6 +53,8 @@ HATHOR.setSceneToLoad = (sid)=>{
 
 HATHOR.setup = ()=>{
 
+    HATHOR._sceneowner = undefined;
+
     //HATHOR._bLD = false;
     HATHOR._cLightDir = new THREE.Vector3();
 
@@ -288,18 +290,36 @@ HATHOR.setupLogic = ()=>{
 };
 
 HATHOR.onSceneJSONLoaded = ()=>{
+    // Store scene owner
+    HATHOR._sceneowner = ATON.SceneHub.getOwner();
+
     let ed = HATHOR.params.get('e');
+
+    ATON.checkAuth(
+        (u)=>{
+            if (u.username===HATHOR._sceneowner){
+                if (ed) HATHOR.enterEditorMode();
+            }
+            else {
+                HATHOR.UI._elModeED.setAttribute("disabled",true);
+            }
+        },
+        ()=>{
+            if (ed) HATHOR.UI.openUserModal();
+        }
+    );
+/*
     if (ed){
         ATON.checkAuth(
             (u)=>{
-                HATHOR.enterEditorMode();
+                if (u.username===HATHOR._sceneowner) HATHOR.enterEditorMode();
             },
             ()=>{
                 HATHOR.UI.openUserModal();
             });
     }
     let sid = ATON.SceneHub.currID;
-
+*/
     // General POV UI update
     HATHOR.UI.updatePOVs();
 

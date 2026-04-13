@@ -883,5 +883,14 @@ SceneHub.getDescription = ()=>{
     return SceneHub.currData.description;
 };
 
+SceneHub.getOwner = ()=>{
+    if (!SceneHub.currID) return undefined;
+
+    let u = SceneHub.currID.split("/");
+    if (u.length < 2) return undefined;
+
+    return u[0];
+};
+
 
 export default SceneHub;

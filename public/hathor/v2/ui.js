@@ -2765,8 +2765,12 @@ UI.modalHelp = ()=>{
                     <div class='col-md-8'>Open this help</div>
                 </div>
                 <div class='row hathor-help-text'>
+                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>u</span></div>
+                    <div class='col-md-8'>User modal</div>
+                </div>
+                <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>s</span></div>
-                    <div class='col-md-8'>Open scene info panel</div>
+                    <div class='col-md-8'>Scene info panel</div>
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>n</span></div>

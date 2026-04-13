@@ -359,7 +359,10 @@ HATHOR.endCurrentTask = ()=>{
     }
 
     HATHOR.UI.clearTaskToolbar();
-    ATON.UI.setCursorStyle("auto");
+    ATON.UI.setCursorStyle("grab");
+
+    ATON.SUI.cancelMeasurement();
+
     ATON.Nav.setUserControl(true);
 };
 

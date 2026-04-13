@@ -555,7 +555,9 @@ SUI.addMeasurementPoint = (P)=>{
     SUI.gMeasures.add(M);
 */
 
-    // First time
+    let A = undefined;
+
+    // First point
     if (SUI._prevMPoint === undefined){
         SUI._prevMPoint = P;
         
@@ -568,7 +570,13 @@ SUI.addMeasurementPoint = (P)=>{
         //mlArr[5] = P.z;
 
         //SUI._measLine.geometry.attributes.position.needsUpdate = true;
-
+/*
+        A = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
+        A.renderOrder = ATON.RO_SUI;
+        A.position.copy(SUI._prevMPoint);
+        A.scale.set(s,s,s);
+        SUI.gMeasures.add(A);
+*/
         //SUI._measLine.visible = true;
         return undefined;
     }
@@ -582,7 +590,7 @@ SUI.addMeasurementPoint = (P)=>{
     s *= d;
     linetick *= d;
 
-    let A = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
+    A = new THREE.Mesh( ATON.Utils.geomUnitCube, ATON.MatHub.getMaterial("measurement"));
     A.renderOrder = ATON.RO_SUI;
     A.position.copy(SUI._prevMPoint);
     A.scale.set(s,s,s);
@@ -637,6 +645,11 @@ SUI.addMeasurementPoint = (P)=>{
     SUI._prevMPoint = undefined;
 
     return R;   
+};
+
+SUI.cancelMeasurement = ()=>{
+    SUI._measLine.visible = false;
+    SUI._prevMPoint = undefined;
 };
 
 SUI.clearMeasurements = ()=>{

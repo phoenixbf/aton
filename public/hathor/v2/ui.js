@@ -212,6 +212,7 @@ UI.createButtonUser = ()=>{
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.exitEditorMode();
+            ATON.UI.hideModal();
         }
     });
 
@@ -221,6 +222,7 @@ UI.createButtonUser = ()=>{
         classes: "btn-default",
         onpress: ()=>{
             HATHOR.enterEditorMode();
+            ATON.UI.hideModal();
         }
     });
 
@@ -639,7 +641,7 @@ UI.modalAnnotation = (semid)=>{
 
     elBody.append(
         UI.WYSIWYG.createElement(),
-        UI.WYSIWYG.createToolbar({ semid: semid }) 
+        UI.WYSIWYG.createToolbar({ semid: semid })
     );
 
     elFooter.append( ATON.UI.createContainer({
@@ -1374,7 +1376,10 @@ UI.modalEditSceneInfo = ()=>{
         }
     });
 
-    elBody.append( UI.WYSIWYG.createElement() );
+    elBody.append(
+        UI.WYSIWYG.createElement(),
+        UI.WYSIWYG.createToolbar()
+    );
 
     elFooter.append( ATON.UI.createContainer({
         classes: "btn-group w-100",
@@ -2002,23 +2007,29 @@ UI.sideNav = ()=>{
     let elPOVlist = ATON.UI.createContainer({ classes: "hathor-panel-section" });
 
     let appendPOVitem = (P, povid)=>{
+        let actions = [];
+
+        if (HATHOR.isEditorMode()){
+            actions.push(
+                ATON.UI.createButton({
+                    icon: "delete",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        UI.modalDeletePOV(povid);
+                        UI.closeToolPanel();
+                    }
+                })
+            );
+        }
+
         elPOVlist.append(
             ATON.UI.createBlockItem({
                 text: povid,
-                icon: "pov",
+                //icon: (povid==="home")? "home" : "pov",
                 mainaction: ()=>{
                     ATON.Nav.requestPOV( P, 0.5 );
                 },
-                actions:[
-                    ATON.UI.createButton({
-                        icon: "delete",
-                        classes: "btn-default",
-                        onpress: ()=>{
-                            UI.modalDeletePOV(povid);
-                            UI.closeToolPanel();
-                        }
-                    })
-                ]
+                actions: actions
             })
         );
     }
@@ -2027,18 +2038,23 @@ UI.sideNav = ()=>{
         elPOVlist.innerHTML = "";
         let numpovs = 0;
 
-        //appendPOVitem(ATON.Nav._homePOV, "home");
-
+/*
+        const SD = ATON.SceneHub.currData;
+        if (SD && SD.viewpoints){
+            if (SD.viewpoints["home"]){
+                numpovs++;
+                appendPOVitem(ATON.Nav.homePOV, "home");
+            }
+        }
+*/
         for (let pov in ATON.Nav.povlist){
             let POV = ATON.Nav.povlist[pov];
             numpovs++;
 
-            if (numpovs===1) elPOVlist.append(
-                UI.createTextBlock("List of viewpoints in this scene")
-            );
-
             appendPOVitem(POV, pov);
         }
+
+        if (numpovs>0) elPOVlist.prepend( UI.createTextBlock("List of viewpoints in this scene") );
 
         UI.updatePOVs();
 
@@ -2074,6 +2090,7 @@ UI.sideNav = ()=>{
                 ATON.UI.createButton({
                     icon: "home",
                     text: "Set as home",
+                    placeholder: "Set current viewpoint as home",
                     classes: "btn-default",
                     onpress: ()=>{
                         let pov = ATON.Nav.copyCurrentPOV();
@@ -2092,7 +2109,8 @@ UI.sideNav = ()=>{
 
                 ATON.UI.createButton({
                     icon: "table",
-                    text: "Control",
+                    text: "Setup",
+                    placeholder: "Setup viewpoint values",
                     classes: "btn-default",
                     onpress: ()=>{
                         UI.sideViewpoint();
@@ -2761,60 +2779,64 @@ UI.modalHelp = ()=>{
         ATON.UI.elem(`
             <div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>?</span></div>
-                    <div class='col-md-8'>Open this help</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>?</span></div>
+                    <div class='col-md-6'>Open this help</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>u</span></div>
-                    <div class='col-md-8'>User modal</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>u</span></div>
+                    <div class='col-md-6'>User modal</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>s</span></div>
-                    <div class='col-md-8'>Scene info panel</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>s</span></div>
+                    <div class='col-md-6'>Scene info panel</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>n</span></div>
-                    <div class='col-md-8'>Navigation panel</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>n</span></div>
+                    <div class='col-md-6'>Navigation panel</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>v</span></div>
-                    <div class='col-md-8'>Current viewpoint setup</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>v</span></div>
+                    <div class='col-md-6'>Current viewpoint setup</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>a</span></div>
-                    <div class='col-md-8'>Semantic annotation panel</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>a</span></div>
+                    <div class='col-md-6'>Semantic annotation panel</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>e</span></div>
-                    <div class='col-md-8'>Environment settings panel</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>e</span></div>
+                    <div class='col-md-6'>Environment settings panel</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>t</span></div>
-                    <div class='col-md-8'>Tools panel</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>t</span></div>
+                    <div class='col-md-6'>Tools panel</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>f</span></div>
-                    <div class='col-md-8'>Focus: hold this key to activate focus sphere (radius can controlled by mouse wheel). Within collaborative sessions focus is streamed to other participants</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>f</span></div>
+                    <div class='col-md-6'>Focus: hold this key to activate focus sphere (radius can controlled by mouse wheel). Within collaborative sessions focus is streamed to other participants</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>+</span></div>
-                    <div class='col-md-8'>Increase Field of View (FoV)</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>+</span></div>
+                    <div class='col-md-6'>Increase Field of View (FoV)</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>-</span></div>
-                    <div class='col-md-8'>Decrease Field of View (FoV)</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>-</span></div>
+                    <div class='col-md-6'>Decrease Field of View (FoV)</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>Right arrow</span></div>
-                    <div class='col-md-8'>Next viewpoint</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>Shift + Mouse wheel</span></div>
+                    <div class='col-md-6'>Control selector radius</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>Left arrow</span></div>
-                    <div class='col-md-8'>Previous viewpoint</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>Right arrow</span></div>
+                    <div class='col-md-6'>Next viewpoint</div>
                 </div>
                 <div class='row hathor-help-text'>
-                    <div class='col-md-4' style='text-align:center'><span class='hathor-shortcut'>ESC</span></div>
-                    <div class='col-md-8'>Stop current task, if any</div>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>Left arrow</span></div>
+                    <div class='col-md-6'>Previous viewpoint</div>
+                </div>
+                <div class='row hathor-help-text'>
+                    <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>ESC</span></div>
+                    <div class='col-md-6'>Stop current task, if any</div>
                 </div>
             </div>
         `)

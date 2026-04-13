@@ -183,7 +183,7 @@ HATHOR.setupLogic = ()=>{
         if (k==='Escape') HATHOR.endCurrentTask();
 
         // Modifiers
-        //if (k ==="Shift")  ATON.Nav.setUserControl(false);
+        if (k ==="Shift")  ATON.Nav.setUserControl(false);
         //if (k==="Control") ATON.Nav.setUserControl(false);
 
         // Side panels shortcuts
@@ -230,7 +230,7 @@ HATHOR.setupLogic = ()=>{
         //if (k==='l') HATHOR._bLD = false;
 
         // Modifiers
-        //if (k ==="Shift")  ATON.Nav.setUserControl(true);
+        if (k ==="Shift")  ATON.Nav.setUserControl(true);
         //if (k==="Control") ATON.Nav.setUserControl(true);
 
         if (k==='f'){

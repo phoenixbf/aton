@@ -2020,8 +2020,14 @@ UI.createLiveFilter = (options)=>{
         el.append(elDatalist);
     }
 
-    if (options.onfocus) elInput.onfocus = options.onfocus;
-    if (options.onblur)  elInput.onblur  = options.onblur;
+    elInput.onfocus = ()=>{
+        UI._bInput = true;
+        if (options.onfocus) options.onfocus();
+    };
+    elInput.onblur = ()=>{
+        UI._bInput = false;
+        if (options.onblur) options.onblur();
+    };
 
     el.append(elInGroup);
 

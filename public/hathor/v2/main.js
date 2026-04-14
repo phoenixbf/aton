@@ -98,6 +98,17 @@ HATHOR.isEditorMode = ()=>{
     return false;
 };
 
+HATHOR.checkEditPermissions = (uid)=>{
+    if (!HATHOR._sceneowner) HATHOR.UI._elModeED.setAttribute("disabled",true);
+
+    if (uid === HATHOR._sceneowner){
+        HATHOR.UI._elModeED.removeAttribute("disabled");
+    }
+    else {
+        HATHOR.UI._elModeED.setAttribute("disabled",true);
+    }
+};
+
 HATHOR.setupLogic = ()=>{
     // All flares ready
     ATON.on("AllFlaresReady",()=>{
@@ -153,6 +164,8 @@ HATHOR.setupLogic = ()=>{
         
         ATON.Photon.setUsername(d.username);
         //if (HATHOR._bCollabLogicSet) return;
+
+        HATHOR.checkEditPermissions(d.username);
 
         if (HATHOR.UI._elMyGall) ATON.UI.showElement(HATHOR.UI._elMyGall);
 
@@ -300,9 +313,8 @@ HATHOR.onSceneJSONLoaded = ()=>{
             if (u.username===HATHOR._sceneowner){
                 if (ed) HATHOR.enterEditorMode();
             }
-            else {
-                HATHOR.UI._elModeED.setAttribute("disabled",true);
-            }
+
+            HATHOR.checkEditPermissions(u.username);
         },
         ()=>{
             if (ed) HATHOR.UI.openUserModal();

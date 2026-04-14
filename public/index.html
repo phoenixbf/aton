@@ -140,7 +140,7 @@ let onLandingData = (data)=>{
     $("#idMainContent").html(htmlcontent);
 
     if (data.header){
-        ATON.UI.loadPartial("/common/"+data.header, "idMainContent", true);
+        ATON.UI.loadPartial("/common/"+data.header, "idMainContent", true, onHeader);
     }
     //else htmlcontent += "<img src='/res/aton-logo.png' style='width:100px; height:auto;'><br>";
     else document.getElementById("idMainContent").prepend( ATON.UI.createElementFromHTMLString("<img src='/res/aton-logo.png' style='width:100px; height:auto;'>") );
@@ -187,6 +187,41 @@ let onLandingData = (data)=>{
     }
 
     $("#btn-go").hide();
+};
+
+let onHeader = ()=>{
+    // Counter to V2
+    let elC = document.getElementById("countdown");
+    console.log(elC)
+    if (!elC) return;
+
+    // Set the date we're counting down to
+    var countDownDate = new Date("Apr 15, 2026 15:00").getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+    // Get today's date and time
+    var now = new Date().getTime();
+
+    // Find the distance between now and the count down date
+    var distance = countDownDate - now;
+
+    // Time calculations for days, hours, minutes and seconds
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the result in the element with id="demo"
+    elC.innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+    // If the count down is finished, write some text
+    if (distance < 0) {
+        clearInterval(x);
+        elC.innerHTML = "";
+    }
+    }, 1000);
 };
 
 window.addEventListener( 'load', ()=>{

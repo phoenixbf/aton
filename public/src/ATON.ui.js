@@ -465,10 +465,10 @@ UI.loadPartial = (src, parentid, bPrepend, onComplete)=>{
                 if (bPrepend) document.getElementById(parentid).prepend(elHeader); //document.querySelector(`#${parentid}`).prepend(elHeader); 
                 else document.getElementById(parentid).append(elHeader); //document.querySelector(`#${parentid}`).append(elHeader);
             }
+
+            if (onComplete) onComplete();
         })
         .catch(err => `Error fetching partial: ${err}`);
-
-    if (onComplete) onComplete();
 };
 
 UI.resolveIconURL = (icon)=>{

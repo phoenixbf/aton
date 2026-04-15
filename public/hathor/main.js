@@ -142,6 +142,8 @@ HATHOR.setupLogic = ()=>{
             ATON.UI.hideSidePanel();
             //HATHOR.UI.closeToolPanel();
         }
+
+        //HATHOR.handleLayerPicking();
     });
 
     ATON.on("MouseRightButton", b => {
@@ -345,6 +347,25 @@ HATHOR.onSceneJSONLoaded = ()=>{
     });
 */
     HATHOR.UI.modalSceneDescription();
+};
+
+HATHOR.handleLayerPicking = ()=>{
+    if (!HATHOR.isEditorMode()) return;
+    if (!ATON._queryDataScene) return;
+
+    let o = ATON._queryDataScene.o;
+    if (!o) return;
+
+    //let bFound = false;
+    while (o){
+        if (o.nid){
+            //bFound = true;
+            HATHOR.UI.sideManageLayer(o.nid);
+            return;
+        }
+        
+        o = o.parent;
+    }
 };
 
 // Sem Annotations

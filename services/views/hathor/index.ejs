@@ -2,108 +2,435 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="icon" href="<%= appicon %>" sizes="256x256" type="image/png">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="<%= appicon %>" sizes="256x256" type="image/png">
 
-    <!-- Add iOS meta tags and icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="apple-mobile-web-app-title" content='<%= title %>' >
-    <link rel="apple-touch-icon" href="<%= appicon %>">
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content='<%= title %>' >
+<link rel="apple-touch-icon" href="<%= appicon %>">
 
-    <meta name="description" content="ATON official front-end">
+<meta name="description" content="ATON official front-end">
 
-    <!-- OpenGraph tags -->
-    <meta property="og:title" content="<%= title %>" />
-    <meta property="og:description" content="ATON official front-end" />
-    <meta property="og:image" content="<%= appicon %>" />
-    <meta property="og:image:secure_url" content="<%= appicon %>" /> 
-    <meta property="og:image:type" content="image/png" /> 
-    <meta property="og:image:width" content="256" /> 
-    <meta property="og:image:height" content="256" />
+<!-- OpenGraph tags -->
+<meta property="og:title" content="<%= title %>" />
+<meta property="og:description" content="ATON official front-end" />
+<meta property="og:image" content="<%= appicon %>" />
+<meta property="og:image:secure_url" content="<%= appicon %>" /> 
+<meta property="og:image:type" content="image/png" /> 
+<meta property="og:image:width" content="256" /> 
+<meta property="og:image:height" content="256" />
 
-	<!-- PWA manifest -->
-	<link rel="manifest" href="/hathor/app.webmanifest">
+<!-- PWA manifest -->
+<link rel="manifest" href="/hathor/app.webmanifest">
 
-    <!-- Add meta theme-color -->
-    <meta name="theme-color" content="#000000" />
+<title><%= title %></title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
 
-    <title><%= title %></title>
-    <link rel="stylesheet" type="text/css" href="/res/css/aton.css">
-    <link rel="stylesheet" href="/hathor/vendors/sceditor/minified/themes/square.min.css">
+<!-- Third parties -->
+<link type="text/css" rel="stylesheet" href="/hathor/thirdparty/jodit.min.css" />
 
-    <!-- Vendors -->
-    <script type="text/javascript" src="/vendors/vendors.min.js"></script>
-    <script src="/hathor/vendors/sceditor/minified/jquery.sceditor.xhtml.min.js"></script>
-    <script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<style>
+:root {
+    --hathor-ui-margin: 4px;
+
+    --jd-color-panel: rgba(var(--bs-body-color-rgb), 0.9);
+    --jd-color-icon: white;
+    --jd-color-background-default: rgba(var(--bs-body-color-rgb), 0.9) !important;
+    --jd-color-border: var(--bs-body-bg-color);
+}
+
+.modal-body img {
+    max-width: 100%;
+    height: auto;
+}
+.modal-body video {
+    max-width: 100%;
+    height: auto;
+}
+
+.hathor-main-toolbar {
+    margin: var(--hathor-ui-margin);
+
+    z-index: 100 !important;
+    overflow-x: hidden;
+
+/*
+    margin-left: 0px;
+*/
+    max-height: calc(100% - (var(--hathor-ui-margin)*2));
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    ::-webkit-scrollbar, ::-webkit-scrollbar-button { 
+        display: none;
+    }
+}
+
+.hathor-main-toolbar-editor {
+    outline: solid 2px var(--aton-colors-accent);
+}
+
+.hathor-bottom-toolbar-container {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.hathor-bottom-toolbar {
+    display: inline-block;
+    margin: var(--hathor-ui-margin);
+
+    pointer-events: initial;
     
-    <script type="module" src="/src/ATON.js"></script>
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.hathor-tasks-container {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.hathor-tasks {
+    display: inline-block;
+    margin: var(--hathor-ui-margin);
+
+    padding: 4px;
+
+    pointer-events: initial;
+    vertical-align: middle;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.hathor-tasks-descr-container {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.hathor-task-descr {
+    display: inline-block;
+    max-width: 400px;
+
+    color: var(--bs-body-color);
+
+    font-size: small;
+    text-align: center;
+
+    padding: 8px;
+    margin: 8px;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    border: solid var(--aton-colors-accent) 2px;
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.hathor-btn-task {
+    --bs-btn-bg: rgba(var(--bs-body-color-rgb), 0.1);
+    --bs-btn-border-color: rgba(var(--aton-colors-accent-rgb), 0.7);
+    --bs-btn-color: var(--bs-btn-color);
+
+    --bs-btn-hover-bg: rgba(var(--bs-body-color-rgb), 0.2);
+    --bs-btn-hover-border-color: rgba(var(--aton-colors-accent-rgb), 1.0);
+    --bs-btn-hover-color: var(--bs-btn-color);
+}
+
+.hathor-user-toolbar {
+    top: 0px;
+    right: 0px;
+    position: absolute;
+
+    margin: var(--hathor-ui-margin);
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.hathor-main-btn {
+    --bs-btn-bg: rgba(var(--bs-body-bg-rgb), 1.0);
+    --bs-btn-border-color: rgba(var(--bs-body-color-rgb), 0.0);
+    --bs-btn-color: var(--bs-btn-color);
+
+    --bs-btn-hover-bg: rgba(var(--bs-body-bg-rgb), 1.0);
+    --bs-btn-hover-border-color: rgba(var(--bs-body-color-rgb), 0.0);
+    --bs-btn-hover-color: var(--bs-btn-color);
+}
+
+.hathor-side-panel {
+    z-index: 10 !important;
+
+    padding-left: 50px;
+}
+
+.hathor-side-panel-half-container {
+    width: 50%;
+    display: inline-block;
+
+/*
+    border: dotted rgba(var(--bs-body-color-rgb),0.2) 1px;
+    border-radius: var(--bs-border-radius);
+*/
+}
+
+.hathor-text-block {
+    display: block;
+    color: rgba(var(--bs-body-color-rgb), 0.7);
+
+    font-size: smaller;
+    text-align: left;
+
+    margin: 4px;
+    margin-top: 8px;
+}
+
+.hathor-card-media-v {
+    font-size: small;
+    font-weight: normal;
+
+    margin: 0px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+
+    padding: 0px;
+
+    width: 100%;
+}
+
+.hathor-panel-section {
+    margin-top: 16px;
+    margin-bottom: 16px;
+
+    padding: 8px;
+/*
+    border: solid rgba(var(--bs-body-color-rgb), 0.3) 1px;
+*/
+    border-radius: var(--bs-border-radius);
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.2) !important;
+}
+
+.hathor-tags-container {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+    border-radius: var(--bs-border-radius);
+}
+
+.hathor-shortcut {
+    background-color: var(--bs-body-bg);
+    border-radius: var(--bs-border-radius);
+    
+    padding: 8px;
+
+    font-weight: bold;
+}
+
+.hathor-help-text {
+    font-size: smaller;
+    text-align: left;
+    margin: 24px;
+}
+
+.hathor-help-text img {
+    height: 42px !important;
+    width: auto;
+    filter: none;
+}
+
+[data-bs-theme=light] .hathor-help-text img {
+    filter: invert(100%);
+}
+/*
+.hathor-help-img {
+    height: 42px !important;
+    width: auto;
+    filter: none;
+}
+
+[data-bs-theme=light] .hathor-help-img {
+    filter: invert(100%);
+}
+*/
+
+.offcanvas-header {
+/*
+    background-color: rgba(var(--bs-body-bg-rgb), 0.5) !important;
+
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.1) !important;
+*/
+}
+
+/*
+    WYSIWYG Editor
+======================================================*/
+.jodit-container {
+    border-radius: var(--bs-border-radius);
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.jodit-workplace {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.3);
+    padding: 4px;
+    border: solid rgba(var(--bs-body-color-rgb), 0.1) 1px;
+
+    min-height: 100px !important;
+}
+
+.jodit-workplace img {
+    max-width: 100%;
+    height: auto;
+}
+
+.jodit-workplace video {
+    max-width: 100%;
+    height: auto;
+}
+
+.jodit-wysiwyg {
+    padding: 4px;
+}
+
+.jodit-popup {
+    color: var(--aton-colors-accent);
+}
+
+.jodit-toolbar__box {
+    width: 100%;
+/*
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+*/
+
+}
+
+.jodit-toolbar-button {
+    color: white !important;
+}
+.jodit-toolbar-button:hover {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+}
+
+.jodit-toolbar-button__button {
+    color: white;
+}
+.jodit-toolbar-button__button:hover {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+}
+.jodit-toolbar-button__text {
+    color: white;
+}
+.jodit-toolbar-button__trigger {
+    color: white !important;
+}
+
+.jodit-tabs__buttons {
+    background-color: rgba(var(--bs-body-bg-rgb), 0.8) !important;
+}
+
+.jodit-dialog__panel {
+    color: white !important;
+    background-color: rgba(var(--bs-body-bg-rgb), 0.8);
+
+    -webkit-backdrop-filter: blur(var(--aton-blur-radius));
+    backdrop-filter: blur(var(--aton-blur-radius));
+}
+
+.jodit-ui-button {
+    color: white !important;
+}
+.jodit-ui-button:hover {
+    background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
+}
+
+.jodit-ui-button_variant_primary {
+    color: black !important;
+    background-color: var(--aton-colors-accent) !important;
+} 
+</style>
+
+<!-- Vendors -->
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="/hathor/thirdparty/jodit.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+<script type="module" src="/src/ATON.js"></script>
 <!--
-    <script type="text/javascript" src="../dist/ATON.min.js"></script>
+<script type="text/javascript" src="../dist/ATON.min.js"></script>
 -->
 
-    <% scripts.forEach(function(js){ %>
-        <script src="<%= js %>" defer ></script>
-    <% }); %>
+<script type="module" src="/hathor/main.js"></script>
+<script>
+    // We init Hathor onload
+    window.addEventListener( 'load', ()=>{
 
-    <script type="module" src="/hathor/hathor.js"></script>
-    <script>
-        // We init Hathor onload
-        window.addEventListener( 'load', ()=>{
-            let flist = [];
+        // Flares
+        let flist = ATON._fReqList;
+        if (flist.length===0){
             <% flareslist.forEach((fid)=>{ %>
                 flist.push("<%= fid %>");
             <% }); %>
 
             HATHOR.requireFlares( flist );
+        }
 
-            HATHOR.setSceneToLoad("<%= sid %>");
-            //HATHOR.run();
-        });
-    </script>
+        HATHOR.setSceneToLoad("<%= sid %>");
+    });
+</script>
 </head>
 
-<body oncontextmenu="()=>{ return false; }">
-    
-<!-- 
-    <div id="idLogContainer" class="atonVRCsidePanel" style="display: none;">
-        <div id="idLog" class="atonVRCchat"></div>
+<body>
+    <div id="sideToolbar" class="aton-toolbar-left hathor-main-toolbar"></div>
+
+    <div class="hathor-tasks-container">
+        <div class="hathor-tasks" id="tasks"></div>
     </div>
--->
+    <div class="hathor-tasks-descr-container">
+        <div class="hathor-task-descr" id="task-descr"></div>
+    </div>
 
-    <!-- <canvas id='View3D'></canvas> -->
+    <div class="hathor-bottom-toolbar-container">
+        <div id="bottomToolbar" class="hathor-bottom-toolbar"></div>
+    </div>
 
-    <!-- Top Toolbar -->
-    <div id="idTopToolbar" class="atonToolbar atonToolbar-top-left scrollableX"></div>
+    <div id="userToolbar" class="hathor-user-toolbar"></div>
 
-    <!-- Bottom Toolbar -->
-    <div id="idBottomToolbar" class="atonToolbar atonToolbar-bottom scrollableX"></div>
-    <div id="idBottomRToolbar" class="atonToolbar atonToolbar-bottom-right"></div>
-
-
-    <!-- Semantic Side Panel -->
-    <div id="idSemPanelBG" class="atonSidePanelBG" style="display:none"></div>
-    <div id="idSemPanel" class="atonSidePanelContainer" style="display:none"></div>
-
-    <!-- Info
-    <div id="idInfoContainer" class="infoContainer"><div class="infoTitle">Title</div><br>
-    <div class="infoContent">Lorem ipsum dolor sit amet</div></div>
-     -->
-     
-
-    <!-- Main Popup -->
-    <div id="idPopup" class="atonPopupContainer" style="display:none;"></div>
-
-    <!-- Loader -->
-    <div id="idLoader" class="atonCenterLoader" style="display:none;"></div>
-    <div id="idBGcover" class="atonBGcover" style="display:none;"></div>
-
-    <!-- Powered by -->
-    <div id='idPoweredBy' class="poweredBy" >
-        Powered by <a href="http://osiris.itabc.cnr.it/aton/" target="_blank">ATON</a>
+    <div class="aton-poweredby" style="right:0px; left:auto;">
+        Powered by <a href="https://aton.ispc.cnr.it/site/" target="_blank">ATON</a>
     </div>
 </body>
 

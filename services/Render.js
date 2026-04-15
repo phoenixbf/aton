@@ -24,6 +24,7 @@ Render.setup = (app)=>{
 	// Hathor
 	//================================================
 	// Main front-end from sid
+/*
 	app.get(/^\/s\/(.*)$/, (req,res,next)=>{
 		let d = {};
 		d.sid   = req.params[0];
@@ -42,9 +43,10 @@ Render.setup = (app)=>{
 	
 		res.render("hathor/index", d);
 	});
+*/
 
 	// Hathor v2
-	app.get("/v2/s/:user/:usid", (req,res,next)=>{
+	app.get("/s/:user/:usid", (req,res,next)=>{
         let user = req.params.user;
         let usid = req.params.usid;
 
@@ -64,7 +66,7 @@ Render.setup = (app)=>{
 			d.appicon = "/api/cover/"+d.sid;
 		}
 	
-		res.render("hathor/v2/index", d);
+		res.render("hathor/index", d);
 	});
 	
 	// Automatically create 3D scene from item url and redirect to Hathor
@@ -93,7 +95,7 @@ Render.setup = (app)=>{
 
 	// Main
 	//================================================
-	app.get("/v2", (req,res,next)=>{
+	app.get("/", (req,res,next)=>{
 		Render.customhero = fs.existsSync(Core.DIR_CONFIGPUB+"hero.html");
 		
 		let opts = Core.config.shu;
@@ -105,50 +107,50 @@ Render.setup = (app)=>{
 		// Backwards compatibility
 		let keyword = req.query.q;
 		if (keyword){
-			res.redirect("/v2/gallery?k="+keyword);
+			res.redirect("/gallery?k="+keyword);
 			return;
 		}
 
-		res.render("v2/home", opts);
+		res.render("home", opts);
 	});
 
-	app.get("/v2/examples", (req,res,next)=>{
-		res.render("v2/examples");
+	app.get("/examples", (req,res,next)=>{
+		res.render("examples");
 	});
 
-	app.get("/v2/login", (req,res,next)=>{
-		res.render("v2/login");
+	app.get("/login", (req,res,next)=>{
+		res.render("login");
 	});
-	app.get("/v2/logout", (req,res,next)=>{
-		res.render("v2/logout");
-	});
-
-	app.get("/v2/gallery", (req,res,next)=>{
-		res.render("v2/gallery");
+	app.get("/logout", (req,res,next)=>{
+		res.render("logout");
 	});
 
-	app.get("/v2/myscenes", (req,res,next)=>{
+	app.get("/gallery", (req,res,next)=>{
+		res.render("gallery");
+	});
+
+	app.get("/myscenes", (req,res,next)=>{
         if ( !Core.Auth.isUserAuth(req) ){
-			res.redirect("/v2/login?u=/v2/myscenes");
+			res.redirect("/login?u=/myscenes");
 			return;
         }
 
 		let opts = {};
 		opts.user = req.user.username;
 
-		res.render("v2/myscenes", opts);
+		res.render("myscenes", opts);
 	});
 
-	app.get("/v2/mycollection", (req,res,next)=>{
+	app.get("/mycollection", (req,res,next)=>{
         if ( !Core.Auth.isUserAuth(req) ){
-			res.redirect("/v2/login?u=/v2/mycollection");
+			res.redirect("/login?u=/mycollection");
 			return;
         }
 
 		let opts = {};
 		opts.user = req.user.username;
 
-		res.render("v2/mycollection", opts);
+		res.render("mycollection", opts);
 	});
 
 };

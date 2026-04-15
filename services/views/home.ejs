@@ -108,7 +108,7 @@ window.addEventListener( 'load', ()=>{
                 text: "Login",
                 //variant: "accent",
                 onpress: ()=>{
-                        window.location.href = "/v2/login/?u=/v2/myscenes" //+"?u="+window.location.href;
+                        window.location.href = "/login/?u=/myscenes" //+"?u="+window.location.href;
 /*
                         ATON.UI.showModal({
                                 //header: "Login",
@@ -139,7 +139,7 @@ window.addEventListener( 'load', ()=>{
                                 //icon: "user",
                                 text: u.username,
                                 onpress: ()=>{
-                                        //window.location.href = "/v2/login"+"?u="+window.location.href;
+                                        //window.location.href = "/login"+"?u="+window.location.href;
                                 }
                         }));
 */
@@ -149,13 +149,13 @@ window.addEventListener( 'load', ()=>{
                                 ATON.UI.createButton({
                                         text: "Collection",
                                         icon: "collection-item",
-                                        onpress: ()=>{ window.location.href = "/v2/mycollection"; }
+                                        onpress: ()=>{ window.location.href = "/mycollection"; }
                                 }),
 
                                 ATON.UI.createButton({
                                         text: "Scenes",
                                         icon: "scene",
-                                        onpress: ()=>{ window.location.href = "/v2/myscenes"; }
+                                        onpress: ()=>{ window.location.href = "/myscenes"; }
                                 }),
                         );
 */

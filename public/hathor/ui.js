@@ -64,7 +64,7 @@ UI.createMyGalleryButton = ()=>{
     UI._elMyGall = ATON.UI.createButton({
         icon: "gallery",
         onpress: ()=>{
-            window.location.href = ATON.BASE_URL + "/v2/myscenes";
+            window.location.href = ATON.BASE_URL + "/myscenes";
         }
     });
 
@@ -258,7 +258,7 @@ UI.createButtonUser = ()=>{
             icon: "gallery",
             classes: "w-100 btn-default",
             onpress: ()=>{
-                window.location.href = ATON.BASE_URL + "/v2/myscenes";
+                window.location.href = ATON.BASE_URL + "/myscenes";
             }
         }),
 

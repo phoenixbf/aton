@@ -255,16 +255,11 @@ Core.CONF_MAIN = {
 
 		maat: {
 			PORT: 8891
-		},
-
-/*		Custom node modules (found in /config/modules/)
-		custom_modules:[
-			"myCustomModule.js"
-		]
-*/
+		}
 	},
 
 	// Soon deprecated
+/*
     landing: {
         gallery: true,		// Show gallery (public scenes) in the landing page
 		samples: true,		// Show samples (def true)
@@ -272,11 +267,15 @@ Core.CONF_MAIN = {
 		//redirect: "",		// Redirect to URL (e.g. specific web-app: "a/app_template")
 		//apps: []			// List of app IDs to show
     },
+*/
+	hathor: {
+		//flares: [],		// List of flares for Hathor
+	},
 
     shu: {
         samples: true,
-        apps: ["app_template"],	// List of apps to display
-		staffpick: {}			// List of staff picked scene-IDs
+        apps: [],			// List of apps to display (e.g. "app_template")
+		staffpick: {}		// List of staff picked scene-IDs
     }
 };
 

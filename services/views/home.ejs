@@ -45,6 +45,11 @@ window.addEventListener( 'load', ()=>{
                 });
 
                 // Staff pick
+                if (spscenes.length < 1){
+                        ATON.UI.hideElement(elStaffPick);
+                        return;
+                }
+                
                 spscenes.sort(() => Math.random() - 0.5);
 
                 for (let s in spscenes){

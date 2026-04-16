@@ -8,7 +8,7 @@
 ===========================================================================*/
 let WYSIWYG = {};
 
-WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link,image,video";
+WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link"; // image,video
 
 WYSIWYG.el     = undefined;
 WYSIWYG.editor = undefined;
@@ -22,7 +22,7 @@ WYSIWYG.createElement = ()=>{
     return WYSIWYG.el;
 };
 
-// TODO:
+
 WYSIWYG.createToolbar = (options)=>{
     if (!options) options = {};
 

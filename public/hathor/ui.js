@@ -641,13 +641,21 @@ UI.modalAnnotation = (semid)=>{
 
     elBody.append(
         UI.WYSIWYG.createElement(),
-        UI.WYSIWYG.createToolbar({ semid: semid })
+        //UI.WYSIWYG.createToolbar({ semid: semid })
     );
 
-    elFooter.append( ATON.UI.createContainer({
-        classes: "btn-group w-100",
-        items:[ elDelete, elCreateAnn ]
-    }))
+    elFooter.append(
+        ATON.UI.createContainer({
+            classes: "btn-group w-100",
+            items:[ UI.WYSIWYG.createToolbar() ]
+        }),
+
+        ATON.UI.createContainer({
+            classes: "btn-group w-100",
+            style:"margin-top:16px",
+            items:[ elDelete, elCreateAnn ]
+        })
+    )
     
 
     ATON.UI.showModal({
@@ -1379,13 +1387,21 @@ UI.modalEditSceneInfo = ()=>{
 
     elBody.append(
         UI.WYSIWYG.createElement(),
-        UI.WYSIWYG.createToolbar()
+        //UI.WYSIWYG.createToolbar()
     );
 
-    elFooter.append( ATON.UI.createContainer({
-        classes: "btn-group w-100",
-        items:[ elSetDescr ]
-    }))
+    elFooter.append(
+        ATON.UI.createContainer({
+            classes: "btn-group w-100",
+            items:[ UI.WYSIWYG.createToolbar() ]
+        }),
+
+        ATON.UI.createContainer({
+            classes: "btn-group w-100",
+            style: "margin-top:16px",
+            items:[ elSetDescr ]
+        }
+    ))
     
 
     ATON.UI.showModal({

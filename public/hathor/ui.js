@@ -1324,7 +1324,8 @@ UI.modalSceneDescription = ()=>{
     ATON.UI.showModal({
         header: title,
         body: elBody,
-        footer: elFooter
+        footer: elFooter,
+        wide: true
     });
 };
 

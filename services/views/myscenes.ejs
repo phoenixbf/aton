@@ -32,7 +32,11 @@ window.addEventListener( 'load', ()=>{
 
         // My scene gallery
         let elMyScenes = ATON.UI.get("myscenes");
+        
         let elKeywords = ATON.UI.get("keywords");
+        let elKWContainer = ATON.UI.get("keywords-container");
+        ATON.UI.hideElement(elKWContainer);
+
         let elMainTasks = ATON.UI.get("maintasks");
 
         elMainTasks.append(ATON.UI.createButton({
@@ -129,31 +133,24 @@ window.addEventListener( 'load', ()=>{
 
                                 let numKWs = Object.keys(kwords).length;
 
-                                ATON.UI.get("numkeywords").innerHTML = numKWs;
+                                if (numKWs > 1){
+                                        ATON.UI.showElement(elKWContainer);
 
-                                for (let k in kwords){
-                                        // elKWs
-                                        elKeywords.append(ATON.UI.createChip({
-                                                term: k,
-                                                count: kwords[k],
-                                                onpress: ()=>{
-                                                        elSearchInput.value = k;
-                                                        elSearchInput.focus();
-                                                        elSearchInput.oninput();
-                                                }
-                                        }));
+                                        ATON.UI.get("numkeywords").innerHTML = numKWs;
+
+                                        for (let k in kwords){
+                                                // elKWs
+                                                elKeywords.append(ATON.UI.createChip({
+                                                        term: k,
+                                                        count: kwords[k],
+                                                        onpress: ()=>{
+                                                                elSearchInput.value = k;
+                                                                elSearchInput.focus();
+                                                                elSearchInput.oninput();
+                                                        }
+                                                }));
+                                        }
                                 }
-                                
-/*
-                                elKeywords.append(ATON.UI.createTreeGroup({
-                                        items:[
-                                                {
-                                                        title: "Keywords",
-                                                        content: elKWs
-                                                }
-                                        ]
-                                }));
-*/
                         });
                 }
         );
@@ -259,7 +256,7 @@ window.addEventListener( 'load', ()=>{
                         <h2>My Scenes</h2>
                         Total: <span id="numscenes">0</span>
 
-                        <div style="display: block; margin-top: 8px;">
+                        <div id="keywords-container" style="display: block; margin-top: 8px;">
                                 <div class="d-inline-flex gap-1">
                                         <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#keywords" aria-expanded="false" aria-controls="collapseExample">Keywords (<span id="numkeywords">0</span>)</button>
                                 </div>

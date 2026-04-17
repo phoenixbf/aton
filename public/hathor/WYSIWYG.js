@@ -8,7 +8,7 @@
 ===========================================================================*/
 let WYSIWYG = {};
 
-WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link"; // image,video
+WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link,video"; // image,video
 
 WYSIWYG.el     = undefined;
 WYSIWYG.editor = undefined;
@@ -75,6 +75,14 @@ WYSIWYG.init = ()=>{
         inline: true,
         //toolbarInlineForSelection: true,
         showPlaceholder: false,
+        //editHTMLDocumentMode: true,
+
+        // Check sec.
+        cleanHTML: {
+            //allowTags: 'p,a[href],strong,em,ul,ol,li,br,img[src,alt]'
+            denyTags: 'object',
+            sandboxIframesInContent: false
+        },
 
         disablePlugins: "about,add-new-line,ai-assistant,search,print,xpath",
 
@@ -86,14 +94,24 @@ WYSIWYG.init = ()=>{
         extraButtons: [
             {
                 name: 'insertDate',
-                iconURL: ATON.UI.resolveIconURL("user"),
+                iconURL: ATON.UI.resolveIconURL("settings"),
                 exec: (editor)=>{
-                    UI.WYSIWYGeditorInsert(new Date().toDateString())
+                    //UI.WYSIWYGeditorInsert(new Date().toDateString())
+                    WYSIWYG.insert(`<iframe width="560" height="315" src="https://www.youtube.com/embed/EoarG7_pSNw?si=mhznORenpiO5sENG" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`)
                 }
             }
         ],
 */
-
+/*
+        events: {
+            afterPaste: (event)=>{
+                console.log( editor.getEditorValue() );
+            },
+            processPaste: (event)=>{
+                console.log("process paste", event);
+            },
+        },
+*/
         uploader: {
             insertImageAsBase64URI: true
         }

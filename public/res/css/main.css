@@ -334,6 +334,11 @@ a {
     height: auto;
 }
 
+.aton-sidepanel iframe {
+    width: 100%;
+    height: 300px;
+}
+
 @media screen and (min-width: 700px) {
     .aton-sidepanel {
         max-width: 40%;

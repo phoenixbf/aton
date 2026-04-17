@@ -186,6 +186,7 @@ HATHOR.setupLogic = ()=>{
     ATON.on("KeyPress", (k)=>{
         //if (UI._bSidePanel || ATON.UI._bSidePanel || ATON.UI._bModal) return;
         //if (UI._sidepanel._isShown || ATON.UI.sidepanel._isShown || ATON.UI.modal._isShown) return;
+        
         if (ATON.UI.isInputFocused()) return;
 
         if (k==='+'){

@@ -122,9 +122,13 @@ WYSIWYG.init = ()=>{
     WYSIWYG.el.onfocus = ()=>{ ATON.UI.inputFocus(true); };
     WYSIWYG.el.onblur  = ()=>{ ATON.UI.inputFocus(false); };
 
-    let els = document.getElementsByClassName("jodit-wysiwyg");
-    els[0].onfocus = ()=>{ ATON.UI.inputFocus(true); };
-    els[0].onblur = ()=>{ ATON.UI.inputFocus(false); };
+    //let els = document.getElementsByClassName("jodit-wysiwyg");
+    //els[0].onfocus = ()=>{ ATON.UI.inputFocus(true); };
+    //els[0].onblur = ()=>{ ATON.UI.inputFocus(false); };
+    
+    let els = document.querySelector(".jodit-wysiwyg");
+    els.onfocus = ()=>{ ATON.UI.inputFocus(true); };
+    els.onblur = ()=>{ ATON.UI.inputFocus(false); };
 };
 
 // Insert custom HTML in current cursor location or overwrite entire content

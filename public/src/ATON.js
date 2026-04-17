@@ -444,6 +444,9 @@ ATON._setupBaseListeners = ()=>{
         
         if (!ATON._bListenKeyboardEvents) return;
 
+        //console.log(e.target.nodeName)
+        if (e.target.nodeName==="INPUT" || e.target.nodeName==="TEXTAREA" || e.target.contenteditable) return;
+
         ATON.fire("KeyPress", e.key);
         //ATON.fire("KeyPress/"+e.key);
     }, false);

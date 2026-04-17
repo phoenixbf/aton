@@ -8,7 +8,7 @@
 ===========================================================================*/
 let WYSIWYG = {};
 
-WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link,video"; // image,video
+WYSIWYG.STD_TOOLBAR = "source,|,bold,italic,underline,|,ul,ol,fontsize,paragraph,|,hr,table,symbols,|,link,image,video"; // image,video
 
 WYSIWYG.el     = undefined;
 WYSIWYG.editor = undefined;

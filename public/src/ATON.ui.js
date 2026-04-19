@@ -399,14 +399,13 @@ UI.addBasicEvents = ()=>{
     });
 
     ATON.on("SemanticNodeLeave", (semid)=>{
+        UI.hideSemLabel();
+        UI.setCursorStyle("grab");
+
         let S = ATON.getSemanticNode(semid);
         if (S === undefined) return;
 
-        UI.hideSemLabel();
-
         S.restoreDefaultMaterial();
-
-        UI.setCursorStyle("grab");
 
         if (ATON.SUI.gSemIcons) ATON.SUI.gSemIcons.show();
     });

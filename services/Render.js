@@ -59,6 +59,9 @@ Render.setup = (app)=>{
 		
 		d.flareslist = [];
 		//for (let fid in Core.flares) d.flareslist.push(fid);
+		if (Core.config.hathor){
+			if (Core.config.hathor.flares) d.flareslist = Core.config.hathor.flares;
+		}
 	
 		let S = Core.readSceneJSON(d.sid);
 		if (S){

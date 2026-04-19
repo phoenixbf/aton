@@ -2418,6 +2418,11 @@ UI.createMediaItem = (options)=>{
         return el;
     }
 
+    if (ATON.Utils.isAudio(url)){
+        let el = UI.elem(`<audio controls controlsList="nodownload" src="${url}"></audio>`);
+        return el;
+    }
+
     return UI.createContainer();
 };
 

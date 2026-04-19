@@ -334,6 +334,13 @@ a {
     height: auto;
 }
 
+.aton-sidepanel audio {
+    display: block;
+    border-radius: var(--bs-border-radius);
+    margin:0 auto;
+}
+
+
 .aton-sidepanel iframe {
     width: 100%;
     height: 300px;

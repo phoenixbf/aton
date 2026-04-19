@@ -230,11 +230,6 @@ Core.CONF_MAIN = {
 */
 	},
 
-/*	Additional scripts to load for Hathor front-end
-	hathor:{
-		scripts: []
-	},
-*/
 	services: {
 		main: {
 			PORT: 8080,		// main ATON port
@@ -322,7 +317,7 @@ Core.init = ()=>{
 	Core.users  = Core.loadConfigFile("users.json", Core.CONF_USERS);
 
 	// 3D models base formats
-	Core.mpattern = "*.gltf,*.glb,*tileset.json,*.dzi,*.spz,*.splat,*.ksplat,*.sog,*.rad,meta.json"; //,*-sogs.zip";
+	Core.mpattern = "*.gltf,*.glb,*tileset.json,*.dzi,*.spz,*.splat,*.ksplat,*.sog,*.rad"; //,meta.json"; //,*-sogs.zip";
 
 	// Panoramic content
 	Core.panopattern = "*.jpg,*.hdr,*.exr,*.mp4,*.webm,*.m3u8";
@@ -369,17 +364,11 @@ Core.init = ()=>{
 	Core.Maat.init();
 
 	// Directly from config
+/*
 	Core.FEScripts = [];
 	if (Core.config.hathor){
 		for (let s in Core.config.hathor.scripts) Core.FEScripts.push(Core.config.hathor.scripts[s]);
 	}
-
-/*
-	console.log( Core.generateUserSID() );
-	console.log( Core.generateUserSID() );
-	console.log( Core.generateUserSID() );
-	console.log( Core.generateUserSID() );
-	console.log( Core.generateUserSID() );
 */
 };
 

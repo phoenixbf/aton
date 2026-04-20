@@ -1660,6 +1660,11 @@ UI.sideManageLayer = (nid)=>{
 
     console.log(elFrameMat.contentWindow.APP);
 */
+    // Clear
+    UI._elTR = [];
+    UI._elTP = [];
+    UI._elTS = [];
+
 
     let elTrans = ATON.UI.createNodeTransformControl({
         node: nid,
@@ -1693,9 +1698,19 @@ UI.sideManageLayer = (nid)=>{
     });
 
     let elRot = ATON.UI.getComponent(elTrans, "rotationControl");
-    let elInX = ATON.UI.getComponent(elRot, "inputX");
-    let elInY = ATON.UI.getComponent(elRot, "inputY");
-    let elInZ = ATON.UI.getComponent(elRot, "inputZ");
+    UI._elTR.push(ATON.UI.getComponent(elRot, "inputX"));
+    UI._elTR.push(ATON.UI.getComponent(elRot, "inputY"));
+    UI._elTR.push(ATON.UI.getComponent(elRot, "inputZ"));
+
+    let elPos = ATON.UI.getComponent(elTrans, "positionControl");
+    UI._elTP.push(ATON.UI.getComponent(elPos, "inputX"));
+    UI._elTP.push(ATON.UI.getComponent(elPos, "inputY"));
+    UI._elTP.push(ATON.UI.getComponent(elPos, "inputZ"));
+
+    let elScale = ATON.UI.getComponent(elTrans, "scaleControl");
+    UI._elTS.push(ATON.UI.getComponent(elScale, "inputX"));
+    UI._elTS.push(ATON.UI.getComponent(elScale, "inputY"));
+    UI._elTS.push(ATON.UI.getComponent(elScale, "inputZ"));
 
     elBody.append( ATON.UI.createTreeGroup({
         items:[
@@ -1717,16 +1732,16 @@ UI.sideManageLayer = (nid)=>{
                                     text: "Z &#9656; Y",
                                     classes: "btn-default",
                                     onpress: ()=>{
-                                        elInX.value = -(Math.PI * 0.5);
-                                        elInX.oninput();
+                                        UI._elTR[0].value = -(Math.PI * 0.5);
+                                        UI._elTR[0].oninput();
                                     }
                                 }),
                                 ATON.UI.createButton({
                                     text: "Z &#9656; -Y",
                                     classes: "btn-default",
                                     onpress: ()=>{
-                                        elInX.value = (Math.PI * 0.5);
-                                        elInX.oninput();
+                                        UI._elTR[0].value = (Math.PI * 0.5);
+                                        UI._elTR[0].oninput();
                                     }
                                 })
                             ]

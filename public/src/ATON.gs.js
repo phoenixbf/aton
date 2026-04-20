@@ -21,7 +21,7 @@ GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
 
-GS.MIN_INT_UPDATE = 60;
+GS.MIN_INT_UPDATE = 30;
 
 
 //Initializes the component
@@ -29,7 +29,7 @@ GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
     // V2.0
-
+/*
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
         pagedExtSplats: true
@@ -42,14 +42,21 @@ GS.realize = ()=>{
     ATON._rootVisible.add( GS._3DGSR );
 
     return;
-
+*/
 
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
+        pagedExtSplats: true
+        //target: { width, height, doubleBuffer: true },
         //originDistance: 1.0
         //premultipliedAlpha: false
     });
-    
+
+    //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
+    //GS._3DGSR.lodSplatScale = 0.5;
+
+    GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
+ 
     ATON._rootVisible.add( GS._3DGSR );
     //ATON.Nav._camera.add( GS._3DGSR );
 
@@ -66,7 +73,9 @@ GS.realize = ()=>{
         GS.MIN_PXRAD  = 2.0;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
+
         GS.MIN_INT_UPDATE = 200;
+        GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
 
         GS.MAX_PD = 0.8;
     }
@@ -96,12 +105,13 @@ GS.realize = ()=>{
 
 
     //GS._3DGSR.autoUpdate = true;
-
+/*
     GS._3DGSR.autoUpdate = false;
 
     GS._3DGSR.uPar = {
         scene: ATON._rootVisible,
-        viewToWorld: ATON.Nav._camera.matrixWorld
+        camera: ATON.Nav._camera
+        //viewToWorld: ATON.Nav._camera.matrixWorld
     };
 
     const upd = ()=>{
@@ -124,6 +134,7 @@ GS.realize = ()=>{
 
     //window.setInterval( upd, GS.updInt );
     window.setTimeout( upd, GS.updInt );
+*/
 
     // Events
     ATON.on("XRmode",(b)=>{
@@ -136,7 +147,7 @@ GS.realize = ()=>{
             //GS._3DGSR.clipXY    = 1.1;
         }
     });
-
+/*
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
         GS._3DGSR.update( GS._3DGSR.uPar );
     });
@@ -144,6 +155,7 @@ GS.realize = ()=>{
         //console.log(d)
         GS._3DGSR.update( GS._3DGSR.uPar );
     });
+*/
 };
 
 GS.update = ()=>{
@@ -223,26 +235,29 @@ GS.visitor = (N)=>{
 
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
-        //if (GS._3DGSR.maxPixelRadius > 8) GS._3DGSR.maxPixelRadius *= 0.5;
-
-        if (GS._3DGSR.minPixelRadius < 6) GS._3DGSR.minPixelRadius++;
-        if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.02;
-
+/*
+        if (GS._3DGSR.minPixelRadius < 4) GS._3DGSR.minPixelRadius++;
+        if (GS._3DGSR.minAlpha < 0.05) GS._3DGSR.minAlpha += 0.01;
+*/
         if (GS.updInt < 1000) GS.updInt += 200;
-        
-        console.log("GS lower perf");
+        //if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
+        //console.log(GS._3DGSR.minSortIntervalMs)
+
+        //console.log("GS lower perf");
     });
 
     ATON.on("RequestHigherRender", ()=>{
-        //if (GS._3DGSR.maxPixelRadius < GS.MAX_PXRAD) GS._3DGSR.maxPixelRadius *= 2.0;
-
+/*
         if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
-        if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.02;
-
+        if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.01;
+*/
         GS.updInt -= 200;
         GS.updInt = Math.max(GS.updInt, GS.MIN_INT_UPDATE);
 
-        console.log("GS higher perf");
+        //if (GS._3DGSR.minSortIntervalMs > GS.MIN_INT_UPDATE) GS._3DGSR.minSortIntervalMs -= 200;
+        //console.log(GS._3DGSR.minSortIntervalMs)
+
+        //console.log("GS higher perf");
     });
 };
 

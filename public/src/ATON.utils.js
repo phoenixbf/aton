@@ -217,7 +217,7 @@ Utils.is3DGS = ( filepath )=>{
     if (filepath.endsWith(".spz")) return true;
     if (filepath.endsWith(".splat")) return true;
     if (filepath.endsWith(".sog")) return true;
-    if (filepath.endsWith("meta.json")) return true; // soon deprecated
+    //if (filepath.endsWith("meta.json")) return true; // soon deprecated
     if (filepath.endsWith(".ksplat")) return true;
     if (filepath.endsWith(".rad")) return true;
 

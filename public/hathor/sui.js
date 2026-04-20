@@ -81,6 +81,23 @@ SUI.buildGizmoTC = ()=>{
             if (T){
                 HATHOR.ED.dirtyNodeTransformReq(T, ["pos","rot","scl"]);
                 //console.log(T)
+
+                // Update active transform if any
+                if (HATHOR.UI._elTR.length > 0){
+                    HATHOR.UI._elTR[0].value = T.rotation.x;
+                    HATHOR.UI._elTR[1].value = T.rotation.y;
+                    HATHOR.UI._elTR[2].value = T.rotation.z;
+                }
+                if (HATHOR.UI._elTP.length > 0){
+                    HATHOR.UI._elTP[0].value = T.position.x;
+                    HATHOR.UI._elTP[1].value = T.position.y;
+                    HATHOR.UI._elTP[2].value = T.position.z;
+                }
+                if (HATHOR.UI._elTS.length > 0){
+                    HATHOR.UI._elTS[0].value = T.scale.x;
+                    HATHOR.UI._elTS[1].value = T.scale.y;
+                    HATHOR.UI._elTS[2].value = T.scale.z;
+                }
                 
                 //if (SUI._gizmoCurrNode) HATHOR.UI.sideManageLayer(SUI._gizmoCurrNode.nid);
             }

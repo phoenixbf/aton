@@ -61,8 +61,8 @@ let printHelp = ()=>{
 `HELP
 ====================================
     --appid: the required unique App ID (short name, no spaces, no capitals)
-    --title: the human-readable App title
-    --descr: an optional brief description for this App
+    --title: the human-readable App title (spaces and capitals are allowed)
+    --descr: an optional brief description for this App (a summary with one or two concise sentences that explain value and functionality)
     --usestorage: enable persistent data storage for this App
     --author: author string (may contain name, surname and/or contact mail)
 `
@@ -149,6 +149,8 @@ let generateManifest = ()=>{
 
     if (apptitle) M.name = apptitle;
     M.short_name = appid;
+
+    if (appdescr) M.description = appdescr;
     
     M.display = "fullscreen";
     M.scope = "/";

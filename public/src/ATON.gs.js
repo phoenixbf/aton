@@ -28,25 +28,12 @@ GS.MIN_INT_UPDATE = 30;
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
-    // V2.0
-/*
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
-        pagedExtSplats: true
-        //target: { width, height, doubleBuffer: true },
-    });
-
-    //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
-    GS._3DGSR.lodSplatScale = 0.5;
-
-    ATON._rootVisible.add( GS._3DGSR );
-
-    return;
-*/
-
-    GS._3DGSR = new SPARK.SparkRenderer({
-        renderer: ATON._renderer,
-        pagedExtSplats: true
+        pagedExtSplats: true,
+    
+        accumExtSplats: true,
+        
         //target: { width, height, doubleBuffer: true },
         //originDistance: 1.0
         //premultipliedAlpha: false
@@ -54,6 +41,8 @@ GS.realize = ()=>{
 
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
     //GS._3DGSR.lodSplatScale = 0.5;
+
+    GS._3DGSR.enableLod = true;
 
     GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
  
@@ -96,15 +85,15 @@ GS.realize = ()=>{
 
     GS.updInt = GS.MIN_INT_UPDATE;
 
-    ATON.setAdaptiveDensityRange( 0.4, GS.MAX_PD );
+    ATON.setAdaptiveDensityRange( 0.5, GS.MAX_PD );
     ATON.setDefaultPixelDensity( GS.MAX_PD );
 
     GS.setupProfiler();
 
     ATON.XR.setDensity(0.5);
 
+    GS._3DGSR.autoUpdate = true;
 
-    //GS._3DGSR.autoUpdate = true;
 /*
     GS._3DGSR.autoUpdate = false;
 
@@ -178,8 +167,17 @@ GS.load = (url, N, onComplete)=>{
 
     let splats = new SPARK.SplatMesh({
         url: url,
-        paged: url.endsWith(".rad")? true : false,
-        //editable: false,
+        paged: url.endsWith(".rad")? true : undefined,
+        extSplats: true,
+        
+        raycastable: false,
+        editable: false,
+
+/*
+        lod: true,
+        lodAbove: 1000000,
+*/
+
 /*
         enableViewToObject: true,
         enableViewToWorld: true,
@@ -200,7 +198,7 @@ GS.load = (url, N, onComplete)=>{
 
             if (onComplete) onComplete();
 
-/* v2.0
+/* OLD
             splats.createLodSplats({ quality: false, rgbaArray: splats.splatRgba }).then(()=>{
                 splats.enableLod = true;
                 ATON._assetReqComplete(url);

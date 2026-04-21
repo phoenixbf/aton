@@ -1178,13 +1178,21 @@ Nav.computeDefaultHome = (dv, sceneBS)=>{
 
     if (sceneBS === undefined) sceneBS = ATON.getRootScene().getBound();
 
+    let c = sceneBS.center;
+    let r = sceneBS.radius;
+
+    if (r===undefined || r <= 0.0){
+        r = 1.0;
+        c = new THREE.Vector3();
+    }
+
     let eye = new THREE.Vector3(
-        sceneBS.center.x + (sceneBS.radius * dv.x * 1.5), 
-        sceneBS.center.y + (sceneBS.radius * dv.y * 1.5), 
-        sceneBS.center.z + (sceneBS.radius * dv.z * 1.5)
+        c.x + (r * dv.x * 1.5), 
+        c.y + (r * dv.y * 1.5), 
+        c.z + (r * dv.z * 1.5)
     );
 
-    Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(sceneBS.center);
+    Nav.homePOV = new ATON.POV().setPosition(eye).setTarget(c);
 };
 
 

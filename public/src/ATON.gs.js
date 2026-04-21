@@ -40,7 +40,7 @@ GS.realize = ()=>{
     });
 
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
-    //GS._3DGSR.lodSplatScale = 0.5;
+    GS._3DGSR.lodSplatScale = 0.5;
 
     GS._3DGSR.enableLod = true;
 

@@ -20,6 +20,7 @@ GS.MIN_PXRAD = 1;
 GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
+GS.LOD_SPLATSCALE = 0.5;
 
 GS.MIN_INT_UPDATE = 30;
 
@@ -40,7 +41,7 @@ GS.realize = ()=>{
     });
 
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
-    GS._3DGSR.lodSplatScale = 0.5;
+    GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
     
     GS._3DGSR.numLodFetchers = 3;
 
@@ -135,10 +136,13 @@ GS.realize = ()=>{
             GS._3DGSR.maxStdDev = 2.0;
             GS._3DGSR.numLodFetchers = 1;
             //GS._3DGSR.clipXY    = 0.9;
+
+            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.6;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
             //GS._3DGSR.clipXY    = 1.1;
+            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
     });
 
@@ -214,6 +218,8 @@ GS.load = (url, N, onComplete)=>{
             ATON._assetReqComplete(url);
             ATON.GS.visitor(N);
 
+            GS._bData = true;
+
             if (onComplete) onComplete();
 
 /* OLD
@@ -255,8 +261,8 @@ GS.setupProfiler = ()=>{
         if (GS._3DGSR.minPixelRadius < 4) GS._3DGSR.minPixelRadius++;
         if (GS._3DGSR.minAlpha < 0.05) GS._3DGSR.minAlpha += 0.01;
 
-        if (GS.updInt < 1000) GS.updInt += 200;
-        //if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
+        //if (GS.updInt < 1000) GS.updInt += 200;
+        if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS lower perf");
@@ -267,26 +273,45 @@ GS.setupProfiler = ()=>{
         if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
         if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.01;
 
-        GS.updInt -= 200;
-        GS.updInt = Math.max(GS.updInt, GS.MIN_INT_UPDATE);
+        //GS.updInt -= 200;
+        //GS.updInt = Math.max(GS.updInt, GS.MIN_INT_UPDATE);
 
-        //if (GS._3DGSR.minSortIntervalMs > GS.MIN_INT_UPDATE) GS._3DGSR.minSortIntervalMs -= 200;
+        if (GS._3DGSR.minSortIntervalMs > GS.MIN_INT_UPDATE) GS._3DGSR.minSortIntervalMs -= 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS higher perf");
     });
 };
 
-/*
+
 GS.update = ()=>{
-    if (!ATON.Nav.motionDetected()){
-        GS._3DGSR.autoUpdate = false;
+/*
+    if (!GS._bData) return;
+
+    if (ATON.XR._bPresenting){
+        if (ATON.Nav.motionDetected()){
+            GS._3DGSR.autoUpdate = false;
+            GS._3DGSR.enableLod = false;
+        }
+        else {
+            GS._3DGSR.autoUpdate = true;
+            GS._3DGSR.enableLod = true;
+        }
+
         return;
     }
 
 
-    GS._3DGSR.autoUpdate = true;
-};
+    if (!ATON.Nav.motionDetected()){
+        //GS._3DGSR.autoUpdate = false;
+        GS._3DGSR.enableLod = false;
+        return;
+    }
+
+    GS._3DGSR.enableLod = true;
+    //GS._3DGSR.autoUpdate = true;
 */
+};
+
 
 export default GS;

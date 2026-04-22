@@ -66,8 +66,11 @@ GS.realize = ()=>{
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
 
-        GS.MIN_INT_UPDATE = 200;
+        GS.MIN_INT_UPDATE = 500;
         GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
+
+        GS.LOD_SPLATSCALE *= 0.8;
+        GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         GS._3DGSR.numLodFetchers = 1;
 
@@ -145,7 +148,7 @@ GS.realize = ()=>{
             GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
     });
-
+/*
     ATON.on("NavInteraction", b =>{
         if (!ATON.device.isMobile) return;
 
@@ -155,7 +158,7 @@ GS.realize = ()=>{
         //if (b) GS._3DGSR.minSortIntervalMs = 1000;
         //else GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
     });
-
+*/
 /*
     ATON.on("AllNodeRequestsCompleted",(bFirst)=>{
         GS._3DGSR.update( GS._3DGSR.uPar );
@@ -258,8 +261,8 @@ GS.visitor = (N)=>{
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
 
-        if (GS._3DGSR.minPixelRadius < 4) GS._3DGSR.minPixelRadius++;
-        if (GS._3DGSR.minAlpha < 0.05) GS._3DGSR.minAlpha += 0.01;
+        if (GS._3DGSR.minPixelRadius < 3) GS._3DGSR.minPixelRadius++;
+        if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.01;
 
         //if (GS.updInt < 1000) GS.updInt += 200;
         if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
@@ -285,31 +288,38 @@ GS.setupProfiler = ()=>{
 
 
 GS.update = ()=>{
-/*
     if (!GS._bData) return;
 
+    // XR session
     if (ATON.XR._bPresenting){
         if (ATON.Nav.motionDetected()){
             GS._3DGSR.autoUpdate = false;
-            GS._3DGSR.enableLod = false;
+            //GS._3DGSR.enableLod = false;
         }
         else {
             GS._3DGSR.autoUpdate = true;
-            GS._3DGSR.enableLod = true;
+            //GS._3DGSR.enableLod = true;
         }
 
+        return;
+    }
+
+/*
+    // Mobile / low-prof
+    if (ATON.device.isMobile || ATON.device.lowGPU){
+        
         return;
     }
 
 
     if (!ATON.Nav.motionDetected()){
-        //GS._3DGSR.autoUpdate = false;
-        GS._3DGSR.enableLod = false;
+        GS._3DGSR.autoUpdate = false;
+        //GS._3DGSR.enableLod = false;
         return;
     }
 
-    GS._3DGSR.enableLod = true;
-    //GS._3DGSR.autoUpdate = true;
+    //GS._3DGSR.enableLod = true;
+    GS._3DGSR.autoUpdate = true;
 */
 };
 

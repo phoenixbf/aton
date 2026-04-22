@@ -62,7 +62,7 @@ GS.realize = ()=>{
     //GS._3DGSR.preBlurAmount = 0.3;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
-        GS.MIN_PXRAD  = 2.0;
+        //GS.MIN_PXRAD  = 2;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
 
@@ -260,9 +260,10 @@ GS.visitor = (N)=>{
 
 GS.setupProfiler = ()=>{
     ATON.on("RequestLowerRender", ()=>{
+        if (ATON.XR._bPresenting) return;
 
-        if (GS._3DGSR.minPixelRadius < 3) GS._3DGSR.minPixelRadius++;
-        if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.01;
+        //if (GS._3DGSR.minPixelRadius < 3) GS._3DGSR.minPixelRadius++;
+        //if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.01;
 
         //if (GS.updInt < 1000) GS.updInt += 200;
         if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
@@ -272,9 +273,10 @@ GS.setupProfiler = ()=>{
     });
 
     ATON.on("RequestHigherRender", ()=>{
+        if (ATON.XR._bPresenting) return;
 
-        if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
-        if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.01;
+        //if (GS._3DGSR.minPixelRadius > GS.MIN_PXRAD) GS._3DGSR.minPixelRadius--;
+        //if (GS._3DGSR.minAlpha > GS.MIN_ALPHA) GS._3DGSR.minAlpha -= 0.01;
 
         //GS.updInt -= 200;
         //GS.updInt = Math.max(GS.updInt, GS.MIN_INT_UPDATE);

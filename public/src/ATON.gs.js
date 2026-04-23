@@ -24,6 +24,8 @@ GS.LOD_SPLATSCALE = 0.5;
 
 GS.MIN_INT_UPDATE = 30;
 
+GS.FOV_ANG   = 90;  // 120
+GS.FOV_SCALE = 0.3; // 0.4
 
 //Initializes the component
 GS.realize = ()=>{
@@ -40,16 +42,15 @@ GS.realize = ()=>{
         //premultipliedAlpha: false
     });
 
+    GS._3DGSR.coneFov     = GS.FOV_ANG;
+    GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
+    GS._3DGSR.coneFoveate = GS.FOV_SCALE;
+
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
     GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
     
     GS._3DGSR.numLodFetchers = 3;
 
-/*
-    GS._3DGSR.coneFov = 40;
-    GS._3DGSR.coneFov0 = GS._3DGSR.coneFov * 0.7;
-    GS._3DGSR.coneFoveate = 0.2;
-*/
     GS._3DGSR.enableLod = true;
 
     GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
@@ -78,6 +79,10 @@ GS.realize = ()=>{
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         GS._3DGSR.numLodFetchers = 1;
+
+        GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
+        GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
+        GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
 
         GS.MAX_PD = 0.8;
     }
@@ -145,11 +150,20 @@ GS.realize = ()=>{
             GS._3DGSR.numLodFetchers = 1;
             //GS._3DGSR.clipXY    = 0.9;
 
+            GS._3DGSR.coneFov     = GS.FOV_ANG * 0.5;
+            GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
+            GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.5;
+
             GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.6;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
             //GS._3DGSR.clipXY    = 1.1;
+
+            GS._3DGSR.coneFov     = GS.FOV_ANG;
+            GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
+            GS._3DGSR.coneFoveate = GS.FOV_SCALE;
+
             GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
     });

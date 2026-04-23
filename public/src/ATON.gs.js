@@ -45,6 +45,11 @@ GS.realize = ()=>{
     
     GS._3DGSR.numLodFetchers = 3;
 
+/*
+    GS._3DGSR.coneFov = 40;
+    GS._3DGSR.coneFov0 = GS._3DGSR.coneFov * 0.7;
+    GS._3DGSR.coneFoveate = 0.2;
+*/
     GS._3DGSR.enableLod = true;
 
     GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;

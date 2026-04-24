@@ -6,7 +6,7 @@
 ===========================================================*/
 
 /**
-ATON Event Hub
+ATON Gaussian Splat component
 @namespace GS
 */
 let GS = {};

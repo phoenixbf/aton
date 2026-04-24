@@ -25,6 +25,8 @@ MatHub.init = ()=>{
         sel: { type:'vec4', value: new THREE.Vector4(0.0,0.0,0.0, 0.1) }
     };
 
+    MatHub._matLib = {}; // def mat library
+
     MatHub.addDefaults();
 };
 
@@ -431,6 +433,36 @@ MatHub.addDefaults = ()=>{
         side: THREE.DoubleSide
     });
 
+    MatHub.materials.amber = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(0.830,0.288,0.036),
+
+        metalness: 0.0,
+        roughness: 0.4,
+        ior: 1.5,
+        transmission: 0.75,
+        thickness: 0.1
+    });
+
+    MatHub.materials.glass = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.white,
+
+        metalness: 0.0,
+        roughness: 0.0,
+        ior: 1.52,
+        transmission: 1.0,
+        thickness: 0.1
+    });
+
+
+    // Default lib
+    MatHub.registerInLibrary( "wireframe", { title: "Wireframe" } );
+    MatHub.registerInLibrary( "invisible", { title: "Invisible" } );
+    MatHub.registerInLibrary( "defUI", { title: "X-Ray" } );
+    MatHub.registerInLibrary( "transWhite", { title: "Trans-White" } );
+    MatHub.registerInLibrary( "transBlack", { title: "Trans-Black" } );
+    MatHub.registerInLibrary( "amber", { title: "Amber" } );
+    MatHub.registerInLibrary( "glass", { title: "Glass" } );
+    MatHub.registerInLibrary( "normSlope", { title: "Trans-White" } );
 };
 
 //MatHub.getOrCreateSpriteSem
@@ -438,10 +470,11 @@ MatHub.addDefaults = ()=>{
 MatHub.addMaterial = (id, mat)=>{
     if (MatHub.materials[id]){
         console.log("MatHub: material "+id+" already registered");
-        return;
+        return false;
     }
 
     MatHub.materials[id] = mat;
+    return true;
 };
 
 MatHub.loadMaterial = (id, jsonfile)=>{
@@ -456,6 +489,33 @@ MatHub.loadMaterial = (id, jsonfile)=>{
 
 MatHub.getMaterial = (id)=>{
     return MatHub.materials[id];
+};
+
+/**
+Register a material in the main library
+@param {string} matid - material ID
+@param {object} o - object with material attributes (e.g.: "title")
+@example
+ATON.MatHub.registerInLibrary("mymat", { title: "My material", mat: material });
+*/
+MatHub.registerInLibrary = (matid, o)=>{
+    if (MatHub._matLib[matid]){
+        console.log("Material "+matid+" already registered.");
+        return;
+    }
+
+    if (o.mat) MatHub.addMaterial(matid, o.mat);
+    
+    MatHub._matLib[matid] = o;
+};
+
+/**
+Get entry from main material library
+@param {string} matid - material ID
+@returns {object} - entry object
+*/
+MatHub.getMaterialFromLibrary = (matid)=>{
+    return MatHub._matLib[matid];
 };
 
 MatHub.update = ()=>{

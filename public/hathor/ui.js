@@ -1581,18 +1581,24 @@ UI.createLayerModels = (N)=>{
 UI.createMaterialControl = (N)=>{
     if (!N) return undefined;
 
+    let matList = [];
+    matList.push({ title: "Use original", value: "_" });
+
+    for (let m in ATON.MatHub._matLib){
+        matList.push({
+            title: ATON.MatHub._matLib[m].title,
+            value: m
+        });
+    }
+
     let elBody = ATON.UI.createContainer();
     elBody.append(
         UI.createBlockGroup({
             items:[
                 ATON.UI.createSelect({
                     title: "Apply material...",
-                    items: [
-                        { title: "Use original", value: "_" },
-                        { title: "Wireframe", value: "wireframe" },
-                        { title: "Default UI", value: "defUI" },
-                        { title: "Invisible", value: "invisible" },
-                    ],
+                    items: matList,
+                    
                     onselect: (v)=>{
                         if (v === "_"){
                             HATHOR.ED.removeNodeMaterial({ nid: N.nid });

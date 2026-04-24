@@ -109,7 +109,7 @@ UI.createButtonShare = ()=>{
     //elEmbed.append(elEmbArea);
 
     elEmbed.append(
-        UI.createTextBlock("Embed in you website a static cover that links to this 3D scene or an interactive component (iframe):"),
+        UI.createTextBlock("Embed in your website a static cover that links to this 3D scene or an interactive component (iframe)"),
         UI.createBlockGroup({
             items:[
                 ATON.UI.createButton({

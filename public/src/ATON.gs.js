@@ -75,14 +75,14 @@ GS.realize = ()=>{
         GS.MIN_INT_UPDATE = 500;
         GS._3DGSR.minSortIntervalMs = GS.MIN_INT_UPDATE;
 
-        GS.LOD_SPLATSCALE *= 0.3;
+        GS.LOD_SPLATSCALE *= 0.7; //0.3;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         GS._3DGSR.numLodFetchers = 1;
 
-        GS._3DGSR.coneFov     = GS.FOV_ANG * 0.9;
+        GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
-        GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.9;
+        GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
 
         GS.MAX_PD = 0.8;
     }
@@ -325,14 +325,15 @@ GS.update = ()=>{
         return;
     }
 
-/*
+
     // Mobile / low-prof
     if (ATON.device.isMobile || ATON.device.lowGPU){
-        
+        if (ATON.Nav.motionDetected()) GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
+        else GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         return;
     }
 
-
+/*
     if (!ATON.Nav.motionDetected()){
         GS._3DGSR.autoUpdate = false;
         //GS._3DGSR.enableLod = false;

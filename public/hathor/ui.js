@@ -92,6 +92,78 @@ UI.createXRButton = ()=>{
     return UI._elXR;
 };
 
+UI.createButtonShare = ()=>{
+    let elBody = ATON.UI.createContainer({
+        style: "text-align: left"
+    });
+
+    let elEmbed = ATON.UI.createContainer();
+
+    let sid = ATON.SceneHub.currID;
+    let url = ATON.PATH_FE + sid;
+
+    let strStatic = "<a href='"+url+"'><img src='"+ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover'></a>";
+    let strInteractive = "<iframe style='height:500px; margin:0;' src='"+url+"' width='100%' height='500px' frameborder='0' allow='autoplay; fullscreen; xr-spatial-tracking' xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share allowfullscreen mozallowfullscreen='true' webkitallowfullscreen='true'></iframe>"
+
+    //let elEmbArea = ATON.UI.elem(`<textarea readonly></textarea>`);
+    //elEmbed.append(elEmbArea);
+
+    elEmbed.append(
+        UI.createTextBlock("Embed in you website a static cover that links to this 3D scene or an interactive component (iframe):"),
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "Static cover",
+                    icon: "bi-copy",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        navigator.clipboard.writeText(strStatic).then(
+                            () => {
+                                ATON.UI.showModal({
+                                    header: "Embed",
+                                    body: "HTML copied!"
+                                })
+                            }
+                        );
+                    }
+                }),
+
+                ATON.UI.createButton({
+                    text: "Interactive",
+                    icon: "bi-copy",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        navigator.clipboard.writeText(strInteractive).then(
+                            () => {
+                                ATON.UI.showModal({
+                                    header: "Embed",
+                                    body: "HTML copied!"
+                                })
+                            }
+                        );
+                    }
+                })
+            ]
+        })
+    );
+
+    elBody.append(
+        ATON.UI.createTreeGroup({
+            items:[{
+                title: "Embed",
+                content: elEmbed
+            }]
+        })
+    );
+
+    UI._elShare = ATON.UI.createButtonQR({
+        title: "Share",
+        content: elBody
+    });
+
+    return UI._elShare;
+};
+
 UI.createLayersButton = ()=>{
     UI._elLayers = ATON.UI.createButton({
         icon: "layers",
@@ -210,6 +282,7 @@ UI.createButtonUser = ()=>{
         text: "Presentation", // standard
         icon: "bi-easel",
         classes: "btn-default",
+        tooltip: "How your 3D scene will be presented to general users",
         onpress: ()=>{
             HATHOR.exitEditorMode();
             ATON.UI.hideModal();
@@ -220,6 +293,7 @@ UI.createButtonUser = ()=>{
         text: "Editor",
         icon: "edit",
         classes: "btn-default",
+        tooltip: "Compose, edit and enrich this 3D scene",
         onpress: ()=>{
             HATHOR.enterEditorMode();
             ATON.UI.hideModal();
@@ -369,7 +443,7 @@ UI.buildStandardInterface = ()=>{
 
         UI.createCollabButton(),
 
-        ATON.UI.createButtonQR(),
+        UI.createButtonShare(),
 
         UI.createXRButton(),
         UI.createCopyrightsButton()
@@ -397,7 +471,7 @@ UI.buildEditorInterface = ()=>{
 
         UI.createCollabButton(),
 
-        ATON.UI.createButtonQR(),
+        UI.createButtonShare(),
 
         UI.createXRButton(),
         UI.createCopyrightsButton()
@@ -424,7 +498,7 @@ UI.buildCustomInterface = (elements)=>{
         if (E==="ar")     UI._elMainToolbar.append(ATON.UI.createButtonAR());
         if (E==="vr")     UI._elMainToolbar.append(ATON.UI.createButtonVR());
 
-        if (E==="share")  UI._elMainToolbar.append(ATON.UI.createButtonQR());
+        if (E==="share")  UI._elMainToolbar.append(UI.createButtonShare());
         if (E==="fs")     UI._elMainToolbar.append(ATON.UI.createButtonFullscreen());
 
         if (E==="scene" || E==="info") UI._elMainToolbar.append(UI.createSceneButton());

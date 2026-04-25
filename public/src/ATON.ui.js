@@ -129,7 +129,7 @@ UI._setupBase = ()=>{
 
     // Centralized modal dialog // modal-fullscreen-md-down
     UI.elModal = UI.elem(`
-        <div class="modal fade modal-fullscreen-md-down" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal fade modal-fullscreen-md-down aton-modal" id="staticBackdrop" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" id="uiModal">
                 <div class="modal-content aton-std-bg" id="uiModalContent"></div>
             </div>
@@ -1126,7 +1126,7 @@ UI.createSwitch = (options)=>{
     let baseid = ATON.Utils.generateID("switch");
 
     let el = UI.elem(`
-        <div class="form-check form-switch aton-input">
+        <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="${baseid}">
         </div>
     `);

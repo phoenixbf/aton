@@ -83,6 +83,8 @@ HATHOR.enterEditorMode = ()=>{
     HATHOR.UI.enterEditorMode();
     HATHOR.SUI.enterEditorMode();
     HATHOR.ED.setPersistentModifications(true);
+
+    HATHOR.setURLParam("e", 1);
 };
  
 HATHOR.exitEditorMode = ()=>{
@@ -91,6 +93,8 @@ HATHOR.exitEditorMode = ()=>{
     HATHOR.UI.exitEditorMode();
     HATHOR.SUI.exitEditorMode();
     HATHOR.ED.setPersistentModifications(false);
+
+    HATHOR.setURLParam("e", undefined);
 };
 
 HATHOR.isEditorMode = ()=>{

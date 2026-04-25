@@ -324,6 +324,13 @@ a {
     backdrop-filter: blur(var(--aton-blur-radius));  
 }
 
+.aton-modal {
+/*
+    padding-top: 40px;
+    padding-bottom: 40px;
+*/
+}
+
 .aton-sidepanel img {
     width: 100%;
     height: auto;

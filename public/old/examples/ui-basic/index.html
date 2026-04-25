@@ -60,6 +60,20 @@ window.addEventListener( 'load', ()=>{
                                         console.log(v)
                                     }
                                 }),
+
+                                ATON.UI.createSwitch({
+                                    label: "testA",
+                                    onchange: (b)=>{
+                                        console.log(b)
+                                    }
+                                }),
+                                ATON.UI.createSwitch({
+                                    label: "testB",
+                                    value: true,
+                                    onchange: (b)=>{
+                                        console.log(b)
+                                    }
+                                }),
 /*
                                 ATON.UI.createTagsComponent({
                                     list: ["key1","key2","key3"],
@@ -95,7 +109,7 @@ window.addEventListener( 'load', ()=>{
                                 }),
 */
                                 ATON.UI.createButton({
-                                    variant:"primary",
+                                    //variant:"primary",
                                     text:"Open side panel",
                                     icon: "nav",
                                     onpress: ()=>{

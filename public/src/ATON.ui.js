@@ -638,7 +638,7 @@ Create back button
 */
 UI.createButtonBack = (options)=>{
     const std = {
-        icon: "back",
+        icon: "left",
         tooltip: "Go back",
         onpress: ()=>{
             history.back();
@@ -1112,25 +1112,26 @@ UI.createSelect = (options)=>{
 };
 
 /**
-Create a checkbox
-- options.label: the checkbox label
+Create a switch
+- options.label: the switch label
 - options.value: initial value (bool)
-- options.onchange: routine when checkbox changes state ((b)=>{ console.log(b) })
+- options.onchange: routine when switch changes state ((b)=>{ console.log(b) })
 
 @param {object} options - UI options object
 @returns {HTMLElement}
 */
-UI.createCheckbox = (options)=>{
+UI.createSwitch = (options)=>{
     if (!options) options = {};
 
-    let baseid = ATON.Utils.generateID("checkbox");
+    let baseid = ATON.Utils.generateID("switch");
 
     let el = UI.elem(`
-        <div style='display:block'>
-            <input class="form-check-input aton-input" type="checkbox" id="${baseid}">
-            <label class="form-check-label aton-input" for="${baseid}">${options.label}</label>
+        <div class="form-check form-switch aton-input">
+            <input class="form-check-input" type="checkbox" role="switch" id="${baseid}">
         </div>
     `);
+
+    if (options.label) el.append(UI.elem(`<label class="form-check-label" for="${baseid}">${options.label}</label>`));
 
     let elInput = el.children[0];
     if (options.value) elInput.setAttribute("checked",true);
@@ -2050,7 +2051,7 @@ UI.createPublicScenesGallery = (options) => {
 
     const generate = (entries)=>{
         entries.sort( UI.SCENES_SORTER );               
-        console.log(entries);
+        //console.log(entries);
 
         for (let scene of entries) {
             let bSample = scene.sid.startsWith("samples/");

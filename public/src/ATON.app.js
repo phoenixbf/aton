@@ -362,6 +362,25 @@ App.realize = (setup, update, swpath)=>{
 };
 
 /**
+Set or update URL parameter in the address bar
+@returns {string} param - the parameter
+@returns {string} value - the parameter value. If undefined, remove this parameter from URL
+@example
+ATON.App.setURLParam("s","samples/welcome");
+ATON.App.setURLParam("s", undefined);
+*/
+App.setURLParam = (param, value)=>{
+    if (!param) return App;
+
+    if (value !== undefined) App.params.set(param, value);
+    else App.params.delete(param);
+	
+	history.replaceState(null, null, "?" + App.params.toString());
+
+    return App;
+};
+
+/**
 Run the App. This typically happens inside window.addEventListener('load', ...) 
 @returns {boolean} - true on success
 @example

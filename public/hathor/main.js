@@ -98,6 +98,7 @@ HATHOR.isEditorMode = ()=>{
     return false;
 };
 
+// Check for edit permissions on current scene
 HATHOR.checkEditPermissions = (uid)=>{
     if (!HATHOR._sceneowner) HATHOR.UI._elModeED.setAttribute("disabled",true);
 
@@ -107,6 +108,26 @@ HATHOR.checkEditPermissions = (uid)=>{
     else {
         HATHOR.UI._elModeED.setAttribute("disabled",true);
     }
+};
+
+HATHOR.generateSceneEmbedHTML = (options)=>{
+    if (!options) options = {};
+
+    let html = "";
+
+    let sid = ATON.SceneHub.currID;
+    if (!sid) return "";
+    
+    let url = ATON.PATH_FE + sid;
+
+    if (options.static){
+        html = "<a href='"+url+"'><img src='"+ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover'></a>";
+        return html;
+    }
+
+    html = "<iframe style='height:500px; margin:0;' src='"+url+"' width='100%' height='500px' frameborder='0' allow='autoplay; fullscreen; xr-spatial-tracking' xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share allowfullscreen mozallowfullscreen='true' webkitallowfullscreen='true'></iframe>";
+
+    return html;
 };
 
 HATHOR.setupLogic = ()=>{

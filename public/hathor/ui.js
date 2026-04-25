@@ -99,12 +99,6 @@ UI.createButtonShare = ()=>{
 
     let elEmbed = ATON.UI.createContainer();
 
-    let sid = ATON.SceneHub.currID;
-    let url = ATON.PATH_FE + sid;
-
-    let strStatic = "<a href='"+url+"'><img src='"+ATON.PATH_RESTAPI2+"scenes/"+sid+"/cover'></a>";
-    let strInteractive = "<iframe style='height:500px; margin:0;' src='"+url+"' width='100%' height='500px' frameborder='0' allow='autoplay; fullscreen; xr-spatial-tracking' xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share allowfullscreen mozallowfullscreen='true' webkitallowfullscreen='true'></iframe>"
-
     //let elEmbArea = ATON.UI.elem(`<textarea readonly></textarea>`);
     //elEmbed.append(elEmbArea);
 
@@ -117,7 +111,9 @@ UI.createButtonShare = ()=>{
                     icon: "bi-copy",
                     classes: "btn-default",
                     onpress: ()=>{
-                        navigator.clipboard.writeText(strStatic).then(
+                        let html = HATHOR.generateSceneEmbedHTML({ static: true });
+
+                        navigator.clipboard.writeText(html).then(
                             () => {
                                 ATON.UI.showModal({
                                     header: "Embed",
@@ -133,7 +129,11 @@ UI.createButtonShare = ()=>{
                     icon: "bi-copy",
                     classes: "btn-default",
                     onpress: ()=>{
-                        navigator.clipboard.writeText(strInteractive).then(
+                        let html = HATHOR.generateSceneEmbedHTML({
+                            
+                        });
+
+                        navigator.clipboard.writeText(html).then(
                             () => {
                                 ATON.UI.showModal({
                                     header: "Embed",

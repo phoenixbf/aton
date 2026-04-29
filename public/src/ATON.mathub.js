@@ -453,6 +453,13 @@ MatHub.addDefaults = ()=>{
         thickness: 0.1
     });
 
+    MatHub.materials.gold = new THREE.MeshPhysicalMaterial({
+        color: new THREE.Color(1.0, 0.773, 0.307),
+
+        metalness: 1.0,
+        roughness: 0.0
+    });
+
 
     // Default lib
     MatHub.registerInLibrary( "wireframe", { title: "Wireframe" } );
@@ -462,6 +469,7 @@ MatHub.addDefaults = ()=>{
     MatHub.registerInLibrary( "transBlack", { title: "Trans-Black" } );
     MatHub.registerInLibrary( "amber", { title: "Amber" } );
     MatHub.registerInLibrary( "glass", { title: "Glass" } );
+    MatHub.registerInLibrary( "gold", { title: "Gold" } );
     MatHub.registerInLibrary( "normSlope", { title: "Trans-White" } );
 };
 

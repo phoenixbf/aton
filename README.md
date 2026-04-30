@@ -8,16 +8,17 @@
 ![Header](./public/res/aton-header.jpg)
 
 [ATON framework](http://osiris.itabc.cnr.it/aton/) - designed, developed and coordinated by B. Fanini (CNR ISPC, ex ITABC) - allows to create scalable, collaborative and *cross-device* 3D Web-Apps (mobile, desktop and immersive VR) targeting Cultural Heritage exploiting modern web standards, without any installation required for final users. ATON offers:
-* Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, immersive VR devices)
+* Responsive, adaptive and scalable presentation of interactive 3D content (mobile, desktop PCs, museum kiosks, XR devices)
 * Real-time collaborative multi-user features (*Photon* component)
 * Immersive VR (WebXR) for 3-DOF and 6-DOF devices
-* Multi-resolution for massive 3D datasets through OGC standards
+* Multi-resolution for massive 3D datasets through Cesium 3D Tiles v1.0 and v1.1 (OGC standard)
+* Support for 3D Gaussian Splats formats
 * Multi-touch interfaces
 * Spatial UI (3D labels, buttons, etc...) targeting immersive XR sessions
 * Built-in navigation modes, including *orbit*, *first-person*, *device-orientation* and *immersive VR*
 * 3D semantic annotations including free-form volumetric shapes
-* Fast, real-time 3D queries on visible and semantic graphs and UI nodes
-* Built-in front-end ("Hathor") with WYSIWYG rich HTML5 content editor
+* Built-in front-end ("Hathor") to present and edit/publish 3D scenes with advanced features
+* Fast, real-time 3D queries on standard and semantic scene-graphs and UI nodes
 * Built-in profiler (automatically adapt 3D presentation to different devices)
 * Built-in services to access 3D collections and scenes for multiple users via authentication
 * Built-in export of 3D scenes/models using different formats (gltf/glb, obj, usd,...) right from the browser
@@ -26,12 +27,11 @@
 * Physically-Based Rendering (PBR) for advanced materials and custom shaders for complex representations, including latest extensions
 * Advanced lighting, including IBL and multiple Light Probes
 * Camera/POV transitions, viewpoint handling and custom navigation constraints
-* Complex scene-graph manipulation, hierarchical culling, instancing, composition and cascading transformations
+* Scene-graph manipulation, layers, hierarchical culling, instancing, composition and cascading transformations
 * Scalable deployment, from low-cost SBCs (e.g. Raspberry Pi) to large infrastructures
-* Multi-temporal (4D) visualization
 * Easily extensible through *plug&play* apps architecture and plugins
 
-The framework also provides a *built-in* front-end and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative multi-user features and support for remote/immersive visual analytics.
+The framework provides a *built-in* front-end ("Hathor") and services based on [Node.js](https://nodejs.org/) for deployment on servers, infrastructures or single-board computers; real-time collaborative multi-user features and support for remote/immersive visual analytics.
 
 ## Getting started (quick)
 1) Install [Node.js](https://nodejs.org/) for your operating system.
@@ -88,9 +88,4 @@ You are more than welcome to contribute to the project by spotting bugs/issues a
 
 # TODO list
 
-- [ ] Move and refactor 2D user interface routines from ATON.FE into ATON.UI component (2D labels, popup system, input search, etc.)
-- [ ] Rewrite Hathor UI elements using new routines from ATON.UI.*
-- [ ] Improve main landing page (public gallery), port to ejs and provide more customization
-- [ ] New REST API (v2)
-- [ ] Rewrite Shu using ejs
-- [ ] Improve Shu UI (e.g. new scene, galleries) using new routines from ATON.UI
+- [ ] Rewrite developers examples with ATON.UI.* elements

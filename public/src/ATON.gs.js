@@ -53,6 +53,8 @@ GS.realize = ()=>{
 
     GS._3DGSR.enableLod = true;
 
+    GS._bMotion = false;
+
     GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
  
     ATON._rootVisible.add( GS._3DGSR );
@@ -75,14 +77,14 @@ GS.realize = ()=>{
         GS.MIN_SORT_INT = 500;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
-        GS.LOD_SPLATSCALE *= 0.7; //0.3;
+        GS.LOD_SPLATSCALE *= 0.5; //0.3;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         GS._3DGSR.numLodFetchers = 1;
 
-        GS._3DGSR.coneFov     = GS.FOV_ANG * 0.8;
+        GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
-        GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.8;
+        GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
 
         GS.MAX_PD = 0.8;
     }
@@ -150,11 +152,11 @@ GS.realize = ()=>{
             GS._3DGSR.numLodFetchers = 1;
             //GS._3DGSR.clipXY    = 0.9;
 
-            GS._3DGSR.coneFov     = GS.FOV_ANG * 0.5;
+            GS._3DGSR.coneFov     = GS.FOV_ANG * 0.8;
             GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
-            GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.5;
+            GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.8;
 
-            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.6;
+            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.5;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
@@ -322,6 +324,7 @@ GS.update = ()=>{
             //GS._3DGSR.enableLod = true;
         }
 
+        GS._bMotion = ATON.Nav.motionDetected();
         return;
     }
 
@@ -331,15 +334,20 @@ GS.update = ()=>{
         //if (ATON.Nav.motionDetected()) GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
         //else GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
-        if (ATON.Nav.motionDetected()){
+        if (ATON.Nav.motionDetected() /*|| ATON.Nav._bInteracting*/){
+            //GS._3DGSR.autoUpdate = false;
+
             GS._3DGSR.enableDriveLod = false;
             GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
         }
         else {
+            //GS._3DGSR.autoUpdate = true;
+
             GS._3DGSR.enableDriveLod = true;
             GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
 
+        GS._bMotion = ATON.Nav.motionDetected();
         return;
     }
 

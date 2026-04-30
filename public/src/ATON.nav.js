@@ -33,7 +33,7 @@ Nav.MODE_ORBIT  = 0;
 Nav.MODE_FP     = 1;
 Nav.MODE_DEVORI = 2;
 
-Nav.MOTION_THRES_ORI = 0.05;
+Nav.MOTION_THRES_ORI = 0.005; //0.05;
 Nav.MOTION_THRES_POS = 0.0001;// 0.000001;
 
 Nav.LocomotionNode = LocomotionNode;

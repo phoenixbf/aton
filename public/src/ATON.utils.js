@@ -662,6 +662,10 @@ Utils.registerAniMixers = (N, data)=>{
 
     if (!bAnimations) return;
 
+    if (N.type === ATON.NTYPES.SCENE) model.traverse(o => {
+        o.raycast = ATON.Utils.VOID_CAST;
+    });
+
     ATON._aniMixers.push(mixer);
 
     if (N._aniMixers === undefined) N._aniMixers = [];

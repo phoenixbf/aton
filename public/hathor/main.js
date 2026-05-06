@@ -73,6 +73,9 @@ HATHOR.setup = ()=>{
     HATHOR.SUI.setup();
     HATHOR.ED.setup();
 
+    let btse = HATHOR.params.get("mret");
+    if (btse) ATON.MRes.setBaseTSE( parseFloat(btse) );
+
     HATHOR.setupLogic();
 };
 
@@ -139,8 +142,8 @@ HATHOR.setupLogic = ()=>{
     ATON.on("AllFlaresReady",()=>{
         if (HATHOR._sidToLoad) HATHOR.loadScene( HATHOR._sidToLoad );
         else ATON.UI.showModal({
-                header: "No Scene"
-            });
+            header: "No Scene"
+        });
     });
 
     ATON.on("SceneJSONLoaded", HATHOR.onSceneJSONLoaded );

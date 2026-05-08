@@ -59,6 +59,7 @@ MatHub.addDefaults = ()=>{
     MatHub.colors.red    = new THREE.Color(1,0,0);
     MatHub.colors.blue   = new THREE.Color(0,0,1);
     MatHub.colors.orange = new THREE.Color(1,0.5,0);
+    MatHub.colors.gray   = new THREE.Color(0.5,0.5,0.5);
 
     MatHub.colors.defUI  = new THREE.Color(0.85,1,0.95); // 0,1,0.5
     
@@ -460,6 +461,21 @@ MatHub.addDefaults = ()=>{
         roughness: 0.0
     });
 
+    MatHub.materials.basicWhite = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.white,
+    });
+    MatHub.materials.basicGray = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.gray,
+    });
+    MatHub.materials.basicRed = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.red,
+    });
+    MatHub.materials.basicGreen = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.green,
+    });
+    MatHub.materials.basicBlue = new THREE.MeshPhysicalMaterial({
+        color: MatHub.colors.blue,
+    });
 
     // Default lib
     MatHub.registerInLibrary( "wireframe", { title: "Wireframe" } );
@@ -467,10 +483,19 @@ MatHub.addDefaults = ()=>{
     MatHub.registerInLibrary( "defUI", { title: "X-Ray" } );
     MatHub.registerInLibrary( "transWhite", { title: "Trans-White" } );
     MatHub.registerInLibrary( "transBlack", { title: "Trans-Black" } );
+    
+    MatHub.registerInLibrary( "basicWhite", { title: "Basic White" } );
+    MatHub.registerInLibrary( "basicGray", { title: "Basic Gray" } );
+    MatHub.registerInLibrary( "basicRed", { title: "Basic Red" } );
+    MatHub.registerInLibrary( "basicGreen", { title: "Basic Green" } );
+    MatHub.registerInLibrary( "basicBlue", { title: "Basic Blue" } );
+    
+    MatHub.registerInLibrary( "normSlope", { title: "Norm Slope" } );
+
     MatHub.registerInLibrary( "amber", { title: "Amber" } );
     MatHub.registerInLibrary( "glass", { title: "Glass" } );
     MatHub.registerInLibrary( "gold", { title: "Gold" } );
-    MatHub.registerInLibrary( "normSlope", { title: "Trans-White" } );
+    
 };
 
 //MatHub.getOrCreateSpriteSem

@@ -169,9 +169,9 @@ HATHOR.setupLogic = ()=>{
         else {
             ATON.UI.hideSidePanel();
             //HATHOR.UI.closeToolPanel();
-        }
 
-        //HATHOR.handleLayerPicking();
+            HATHOR.handleLayerPicking();
+        }
     });
 
     ATON.on("MouseRightButton", b => {

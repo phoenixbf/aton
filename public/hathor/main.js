@@ -380,6 +380,7 @@ HATHOR.onSceneJSONLoaded = ()=>{
 
 HATHOR.handleLayerPicking = ()=>{
     if (!HATHOR.isEditorMode()) return;
+    if (HATHOR.currTask !== undefined) return;
     if (!ATON._queryDataScene) return;
 
     let o = ATON._queryDataScene.o;

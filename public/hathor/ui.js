@@ -1216,6 +1216,7 @@ UI.sideScene = ()=>{
     let elKeywordsSection = ATON.UI.createContainer({/* classes: "hathor-tags-container"*/ });
     let elCoverSection = ATON.UI.createContainer({});
     let elVisSection = ATON.UI.createContainer({});
+    let elWFSection = ATON.UI.createContainer({}); // General scene Workflow (snapshots, etc.)
 
     elBody.append( ATON.UI.createTreeGroup({
         items:[
@@ -1233,7 +1234,14 @@ UI.sideScene = ()=>{
                 title: "Visibility",
                 open: false,
                 content: elVisSection,
+            },
+/*
+            {
+                title: "Workflow",
+                open: false,
+                content: elWFSection,
             }
+*/
         ]
     }));
 
@@ -1354,6 +1362,12 @@ UI.sideScene = ()=>{
         elVis
     );
 
+    // Workflow
+/*
+    elWFSection.append(
+
+    );
+*/
     // Panel
     UI.highlightTBPanel(UI._elScene);
     UI.openToolPanel({
@@ -2062,7 +2076,7 @@ UI.sideEnv = ()=>{
 
         ATON.UI.createSlider({
             label: "General Exposure",
-            range: [0.05, 5.0],
+            range: [0.05, 10.0],
             step: 0.05,
             value: ATON.getExposure(),
             classes: "w-100",

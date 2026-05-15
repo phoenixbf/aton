@@ -23,7 +23,7 @@ MRes.init = ()=>{
     // Cesium Tilesets
     MRes._tsets = [];
 
-    MRes._tsET = 20.0;   // Global tilesets error target (original: 6)
+    MRes._tsET = 16.0;   // Global tilesets error target (original: 6)
     MRes._tsB  = false;  // Show/Hide tiles bounds
     
     MRes._bTileBVH = true; // Build per-tile BVH
@@ -57,6 +57,7 @@ MRes.init = ()=>{
     // Plugins
     MRes._bFadeTiles = true;
     MRes._bShowTBounds = false;
+    MRes._bGS = true;
 
     // Events
     ATON.on("XRmode", (b)=>{
@@ -268,6 +269,22 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     // CC extract
     if (!bDZI) ATON.REQ.get( tsurl, ( data )=>{
+        if (MRes._bGS && ATON.GS.detectTilesetExtension(data)){
+            ts.registerPlugin(
+                new TILES.GaussianSplatPlugin({
+                    renderer: ATON._renderer,
+                    scene: ATON._rootVisible,
+                    sparkRendererOptions: {
+                        focalAdjustment: 2,
+                        //blurAmount: 0.15,
+                        clipXY: 1.0,
+                        accumExtSplats: true,
+                        maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : 2.8
+                    },
+                })
+            );
+        }
+
         ATON.CC.extract(data);
     });
 

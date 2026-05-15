@@ -55,6 +55,7 @@
     "@gltf-transform/functions": "^4.3.0",
     "@sparkjsdev/spark": "^2.0.0",
     "3d-tiles-renderer": "0.4.24",
+    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.7",
     "body-parser": "^2.2.2",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",
@@ -71,7 +72,7 @@
     "express-session": "^1.19.0",
     "fast-glob": "^3.3.3",
     "fast-json-patch": "^3.1.1",
-    "fs-extra": "^11.3.4",
+    "fs-extra": "^11.3.5",
     "glob": "^13.0.6",
     "gltf-pipeline": "^4.3.1",
     "http": "0.0.0",
@@ -94,11 +95,11 @@
     "swagger-ui-express": "^5.0.1",
     "three": "0.184.0",
     "three-custom-shader-material": "6.4.0",
-    "three-mesh-bvh": "0.9.9",
+    "three-mesh-bvh": "0.9.10",
     "three-mesh-ui": "^6.5.4",
     "uuid": "^14.0.0",
     "webdav-server": "^2.6.2",
-    "ws": "^8.20.0",
+    "ws": "^8.20.1",
     "zlibjs": "^0.3.1"
   }
 }

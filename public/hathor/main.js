@@ -388,7 +388,7 @@ HATHOR.handleLayerPicking = ()=>{
 
     //let bFound = false;
     while (o){
-        if (o.nid){
+        if (o.nid && o.nid !== ATON.ROOT_NID){
             //bFound = true;
             HATHOR.UI.sideManageLayer(o.nid);
             return;

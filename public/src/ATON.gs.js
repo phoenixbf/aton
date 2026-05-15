@@ -237,6 +237,10 @@ GS.load = (url, N, onComplete)=>{
 
             N.add( data );
 
+            data.traverse(o => {
+                o.raycast = ATON.Utils.VOID_CAST;
+            });
+
             //data.opacity = 0.1;          
 
             ATON._assetReqComplete(url);
@@ -307,6 +311,16 @@ GS.setupProfiler = ()=>{
 
         //console.log("GS higher perf");
     });
+};
+
+GS.detectTilesetExtension = (data)=>{
+    if (!data.extensions) return false;
+    if (!data.extensions["3DTILES_content_gltf"]) return false;
+
+    if (!data.extensions["3DTILES_content_gltf"].extensionsRequired) return false; 
+    if (!data.extensions["3DTILES_content_gltf"].extensionsRequired.includes("KHR_gaussian_splatting")) return false;
+
+    return true;
 };
 
 

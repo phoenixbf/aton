@@ -158,6 +158,7 @@ UI.createButtonShare = ()=>{
 
     UI._elShare = ATON.UI.createButtonQR({
         title: "Share",
+        //url: UI._shareURL,
         content: elBody
     });
 

@@ -182,12 +182,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
     // Use fading
+    let plugFade = undefined;
     if (MRes._bFadeTiles){
-        let FP = new TILES.TilesFadePlugin();
-        FP.fadeRootTiles = false;
-        FP.fadeDuration  = 400;
+        plugFade = new TILES.TilesFadePlugin();
+        plugFade.fadeRootTiles = false;
+        plugFade.fadeDuration  = 400;
         
-        ts.registerPlugin( FP );
+        ts.registerPlugin( plugFade );
     }
 
     // Show tiles bounds
@@ -287,6 +288,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             //MRes._gsTsets.push( plugGS );
             ts.registerPlugin( plugGS );
+            if (plugFade) ts.unregisterPlugin( plugFade );
 
             ATON.setAdaptiveDensityRange( 0.5, ATON.GS.MAX_PD );
             ATON.setDefaultPixelDensity( ATON.GS.MAX_PD );

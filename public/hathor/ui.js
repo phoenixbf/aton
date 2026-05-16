@@ -1407,13 +1407,6 @@ UI.modalSceneDescription = ()=>{
     elFooter.append(
         UI.createBlockGroup({
             items:[
-                ATON.UI.createButton({
-                    //icon: "cancel",
-                    text: "OK",
-                    classes: "btn-accent",
-                    onpress: ATON.UI.hideModal
-                }),
-
                 ATON.UI.createButtonVR({
                     //size: "large",
                     text: "VR",
@@ -1423,6 +1416,17 @@ UI.modalSceneDescription = ()=>{
                     //size: "large",
                     text: "AR",
                     classes: "btn-accent"
+                })
+            ]
+        }),
+        
+        UI.createBlockGroup({
+            items: [
+                ATON.UI.createButton({
+                    icon: "cancel",
+                    text: "OK",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
                 })
             ]
         })

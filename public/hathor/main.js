@@ -375,7 +375,10 @@ HATHOR.onSceneJSONLoaded = ()=>{
         console.log(r)
     });
 */
-    HATHOR.UI.modalSceneDescription();
+
+    let title = ATON.SceneHub.getTitle();
+    let descr = ATON.SceneHub.getDescription();
+    if (title || descr) HATHOR.UI.modalSceneDescription();
 };
 
 HATHOR.handleLayerPicking = ()=>{

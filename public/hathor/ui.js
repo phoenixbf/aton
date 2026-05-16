@@ -1383,8 +1383,12 @@ UI.modalSceneDescription = ()=>{
 
     let elBody = ATON.UI.createContainer();
 
+/*
     if (!title || !descr) return;
     if (descr.length < 1 || title.length < 1) return;
+*/
+    if (!title) title = "Untitled";
+    if (!descr || descr.length < 1) descr = "\"<p></p>\"";
 
     descr = JSON.parse(descr).trim();
 /*
@@ -1399,10 +1403,17 @@ UI.modalSceneDescription = ()=>{
     elBody.append( ATON.UI.elem("<div>"+descr+"</div>") );
 
     let elFooter = ATON.UI.createContainer({ classes: "w-100"});
-/*
+
     elFooter.append(
         UI.createBlockGroup({
             items:[
+                ATON.UI.createButton({
+                    //icon: "cancel",
+                    text: "OK",
+                    classes: "btn-accent",
+                    onpress: ATON.UI.hideModal
+                }),
+
                 ATON.UI.createButtonVR({
                     //size: "large",
                     text: "VR",
@@ -1416,7 +1427,6 @@ UI.modalSceneDescription = ()=>{
             ]
         })
     );
-*/
 
     ATON.UI.showModal({
         header: title,

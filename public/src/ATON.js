@@ -2463,10 +2463,6 @@ ATON._onFrame = ()=>{
 
     //ATON.fire("preframe");
 
-    // Render
-    //ATON._renderer.render( ATON._mainRoot, ATON.Nav._camera );
-
-
     if (ATON.XR._bPresenting) ATON.XR.update();
     else ATON.Nav._controls.update(ATON._dt);
 

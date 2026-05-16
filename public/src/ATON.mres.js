@@ -28,8 +28,9 @@ MRes.init = ()=>{
     
     MRes._bTileBVH = true; // Build per-tile BVH
 
+    // Custom scheduling callback
+    MRes._bCustomSchedCB = true;
     MRes._tsTasks = [];  // Tileset tasks
-
     MRes.tsSchedCB = func => {
         //setTimeout( func, 50);
         MRes._tsTasks.push( func );
@@ -245,8 +246,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     }
 */
 
-    ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
-    ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
+    if (MRes._bCustomSchedCB){
+        ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
+        ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
+    }
 
     ts.downloadQueue.maxJobs = 15; // 10
     ts.parseQueue.maxJobs    = 3; // 2
@@ -267,22 +270,27 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     N.noLP = true;
     //console.log(N)
 
-    // CC extract
+    // Extract from JSON
     if (!bDZI) ATON.REQ.get( tsurl, ( data )=>{
         if (MRes._bGS && ATON.GS.detectTilesetExtension(data)){
-            ts.registerPlugin(
-                new TILES.GaussianSplatPlugin({
-                    renderer: ATON._renderer,
-                    scene: ATON._rootVisible,
-                    sparkRendererOptions: {
-                        focalAdjustment: 2,
-                        //blurAmount: 0.15,
-                        clipXY: 1.0,
-                        accumExtSplats: true,
-                        maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : 2.8
-                    },
-                })
-            );
+            let plugGS = new TILES.GaussianSplatPlugin({
+                renderer: ATON._renderer,
+                scene: ATON._rootVisible,
+                sparkRendererOptions: {
+                    focalAdjustment: 2,
+                    //blurAmount: 0.15,
+                    clipXY: 1.0,
+                    accumExtSplats: true,
+                    maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : 2.8
+                },
+            });
+
+            //MRes._gsTsets.push( plugGS );
+            ts.registerPlugin( plugGS );
+
+            ATON.setAdaptiveDensityRange( 0.5, ATON.GS.MAX_PD );
+            ATON.setDefaultPixelDensity( ATON.GS.MAX_PD );
+            ATON.XR.setDensity(0.5);
         }
 
         ATON.CC.extract(data);
@@ -641,10 +649,17 @@ MRes.update = ()=>{
     //const nts = MRes._tsets.length;
     //if (nts < 1) return;
 
-    //ATON.Nav._camera.updateMatrixWorld();
-    //if (ATON.XR._cam) ATON.XR._cam.updateMatrixWorld();
+/*
+    if (ATON.XR._bPresenting){
+        ATON.Nav._camera.updateMatrixWorld();
+        if (ATON.XR._cam) ATON.XR._cam.updateMatrixWorld();
+    }
+*/
 
     //MRes._tsTasksFF = 0;
+
+    // When not using _tsTasks
+    if ( !MRes._bCustomSchedCB && ATON.Nav.motionDetected() ) return;
 
     for (let ts in MRes._tsets){
         const TS = MRes._tsets[ts];
@@ -661,6 +676,7 @@ MRes.update = ()=>{
 */
     if ( ATON.Nav.motionDetected() ) return;
 
+    if (!MRes._bCustomSchedCB) return;
     //console.log(MRes._tsTasks);
 
     let T = MRes._tsTasks.shift();

@@ -990,11 +990,11 @@ Nav.handleXRtransition = ()=>{
 
 // Update internal camera from currPOV 
 Nav.syncCurrCamera = ()=>{
+    let cam = Nav._camera;
+
     if (ATON.XR.isPresenting()) return;
 
     let ctrl  = Nav._controls;
-    let cam   = Nav._camera;
-    
     let pos = Nav._currPOV.pos;
     let tgt = Nav._currPOV.target;
 

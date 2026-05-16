@@ -42,6 +42,8 @@ GS.realize = ()=>{
         //premultipliedAlpha: false
     });
 
+    GS._3DGSR.raycast = ATON.Utils.VOID_CAST;
+
     GS._3DGSR.coneFov     = GS.FOV_ANG;
     GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
     GS._3DGSR.coneFoveate = GS.FOV_SCALE;

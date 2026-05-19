@@ -53,7 +53,7 @@
     "@gltf-transform/core": "^4.3.0",
     "@gltf-transform/extensions": "^4.3.0",
     "@gltf-transform/functions": "^4.3.0",
-    "@sparkjsdev/spark": "^2.0.0",
+    "@sparkjsdev/spark": "^2.1.0",
     "3d-tiles-renderer": "0.4.24",
     "3d-tiles-rendererjs-3dgs-plugin": "^0.1.7",
     "body-parser": "^2.2.2",

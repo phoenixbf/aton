@@ -72,6 +72,7 @@ load(url, onComplete){
         else this._vs = ATON.MediaFlow.getOrCreateVideoStream(this.nid, url, false);
 
         this._mediamesh.material = this._vs.matStream;
+        this._mediamesh.material.side = THREE.FrontSide;
 
         this._vs.el.addEventListener('loadedmetadata', (e)=>{
             self._yratio = self._vs.el.videoHeight / self._vs.el.videoWidth;
@@ -96,6 +97,7 @@ load(url, onComplete){
 
             self._mediamesh.material = ATON.MatHub.materials.chromakey.clone();
             self._mediamesh.material.uniforms.tBase.value = tex;
+            this._mediamesh.material.side = THREE.FrontSide;
 /*
             self._mediamesh.material = new THREE.MeshStandardMaterial({
                 map: texture,
@@ -172,6 +174,11 @@ toggleTitle(b){
 
 // TODO
 setBackdrop(opacity){
+    if (this._bd){
+        this._bd.material.opacity = opacity;
+        return;
+    }
+
     this._bd = new THREE.Mesh( new THREE.PlaneGeometry(1,1) );
     //this._bd.renderOrder = ATON.RO_SUI;
 

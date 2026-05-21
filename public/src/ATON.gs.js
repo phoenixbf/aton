@@ -27,15 +27,19 @@ GS.MIN_SORT_INT = 30;
 GS.FOV_ANG   = 90;  // 120
 GS.FOV_SCALE = 0.3; // 0.4
 
+GS.AUTOLOD_ABOVE = 4000000;
+
 //Initializes the component
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
+    GS._bAutoLOD = true;
+
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
-        pagedExtSplats: true,
-    
-        accumExtSplats: true,
+
+        //pagedExtSplats: true,
+        //accumExtSplats: true,
         
         //target: { width, height, doubleBuffer: true },
         //originDistance: 1.0
@@ -72,6 +76,8 @@ GS.realize = ()=>{
     //GS._3DGSR.preBlurAmount = 0.3;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
+        GS.AUTOLOD_ABOVE = 1000000;
+
         //GS.MIN_PXRAD  = 2;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
@@ -216,15 +222,14 @@ GS.load = (url, N, onComplete)=>{
     let splats = new SPARK.SplatMesh({
         url: url,
         paged: url.endsWith(".rad")? true : undefined,
-        extSplats: true,
+        
+        //extSplats: true,
         
         raycastable: false,
         editable: false,
 
-/*
-        lod: true,
-        lodAbove: 1000000,
-*/
+        lod: GS._bAutoLOD,
+        lodAbove: GS.AUTOLOD_ABOVE,
 
 /*
         enableViewToObject: true,

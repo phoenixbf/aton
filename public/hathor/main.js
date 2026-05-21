@@ -23,6 +23,7 @@ HATHOR.ED  = ED;
 // URL params
 HATHOR._sidToLoad = HATHOR.params.get('s');
 HATHOR._tb        = HATHOR.params.get('tb');
+HATHOR._collab    = HATHOR.params.get('c');
 
 HATHOR.MODE_STD    = 0;
 HATHOR.MODE_EDITOR = 1;
@@ -341,7 +342,7 @@ HATHOR.onSceneJSONLoaded = ()=>{
 
     ATON.checkAuth(
         (u)=>{
-            if (u.username===HATHOR._sceneowner){
+            if (u.username === HATHOR._sceneowner){
                 if (ed) HATHOR.enterEditorMode();
             }
 
@@ -366,8 +367,13 @@ HATHOR.onSceneJSONLoaded = ()=>{
     // General POV UI update
     HATHOR.UI.updatePOVs();
 
-    if (HATHOR.params.get('c')){
+    // Collab session via url
+    if (HATHOR._collab){
+        let s = String(HATHOR._collab);
 
+        if (!ATON.Photon.isConnected()){
+            ATON.Photon.connect();
+        }
     }
 
 /*
@@ -511,7 +517,9 @@ HATHOR.setupCollabLogic = ()=>{
             UI._elPhoton.style["background-color"] = strcol;
         }
 
-        if (UI._elTalkBTN) ATON.UI.showElement(UI._elTalkBTN); 
+        if (UI._elTalkBTN) ATON.UI.showElement(UI._elTalkBTN);
+
+        HATHOR.setURLParam("c", 1);
     });
 
     ATON.on("VRC_Disconnected", ()=>{
@@ -521,6 +529,8 @@ HATHOR.setupCollabLogic = ()=>{
         }
 
         if (UI._elTalkBTN) ATON.UI.hideElement(UI._elTalkBTN);
+
+        HATHOR.setURLParam("c", undefined);
     });
 
     ATON.on("VRC_SceneState", (sstate)=>{

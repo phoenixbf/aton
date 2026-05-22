@@ -39,7 +39,7 @@ GS.realize = ()=>{
         renderer: ATON._renderer,
 
         pagedExtSplats: true,
-        accumExtSplats: true,
+        //accumExtSplats: true, // poor perf.
         
         //target: { width, height, doubleBuffer: true },
         //originDistance: 1.0

@@ -33,12 +33,16 @@ GS.AUTOLOD_ABOVE = 5000000;
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
+    // Auto-generate LODs above certain threshold
     GS._bAutoLOD = true;
+
+    // Use direct raycast on gs
+    GS._bRaycast = false;
 
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
 
-        pagedExtSplats: true,
+        //pagedExtSplats: true, // poor perf.
         //accumExtSplats: true, // poor perf.
         
         //target: { width, height, doubleBuffer: true },
@@ -46,7 +50,11 @@ GS.realize = ()=>{
         //premultipliedAlpha: false
     });
 
-    GS._3DGSR.raycast = ATON.Utils.VOID_CAST;
+    if (!GS._bRaycast) GS._3DGSR.raycast = ATON.Utils.VOID_CAST;
+    else {
+        ATON._bqSceneCont        = false;
+        ATON._bQuerySemOcclusion = false;
+    }
 
     GS._3DGSR.coneFov     = GS.FOV_ANG;
     GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
@@ -65,11 +73,6 @@ GS.realize = ()=>{
  
     ATON._rootVisible.add( GS._3DGSR );
     //ATON.Nav._camera.add( GS._3DGSR );
-
-/*
-    ATON._bqSceneCont        = false;
-    ATON._bQuerySemOcclusion = false;
-*/
 
     GS._3DGSR.clipXY = 1.1;
     GS._3DGSR.focalAdjustment = 2.0;
@@ -223,9 +226,9 @@ GS.load = (url, N, onComplete)=>{
         url: url,
         paged: url.endsWith(".rad")? true : undefined,
         
-        extSplats: true,
+        //extSplats: true,
         
-        raycastable: false,
+        raycastable: GS._bRaycast,
         editable: false,
 
         lod: GS._bAutoLOD,
@@ -244,9 +247,7 @@ GS.load = (url, N, onComplete)=>{
 
             N.add( data );
 
-            data.traverse(o => {
-                o.raycast = ATON.Utils.VOID_CAST;
-            });
+            if (!GS._bRaycast) data.traverse(o => { o.raycast = ATON.Utils.VOID_CAST; });
 
             //data.opacity = 0.1;          
 
@@ -283,11 +284,11 @@ GS.visitor = (N)=>{
     });
 
     // Picking
-    N.disablePicking();
-/*
-    if (N.bPickable) N.enablePicking();
-    ATON._bqScene = true;
-*/
+    if (!GS._bRaycast) N.disablePicking();
+    else {
+        if (N.bPickable) N.enablePicking();
+        ATON._bqScene = true;
+    }
 };
 
 GS.setupProfiler = ()=>{

@@ -856,6 +856,20 @@ XR._deltaMotionController = (C)=>{
 */
 
 XR.update = ()=>{
+/*
+    if (XR._bPresenting){
+        let cam = ATON.Nav._camera;
+        if (cam){
+            cam.updateMatrixWorld();
+            ATON._renderer.xr.updateCamera(cam);
+        }
+
+        const xrCamera = renderer.xr.getCamera();
+
+        if (xrCamera) ATON.MRes.updateTSetsCamera(xrCamera);
+    }
+*/
+
     // XR-cam
 /*
     if (XR._cam){

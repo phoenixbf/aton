@@ -489,6 +489,8 @@ Nav.restorePreviousNavMode = ()=>{
 Nav._updCamera = (c)=>{
     if (c === undefined) c = Nav._camera; 
 
+    c.updateMatrixWorld();
+
     if (ATON.FX.composer){
         let PP = ATON.FX.composer.passes;
         if (PP){
@@ -1023,6 +1025,7 @@ Nav.syncCurrCamera = ()=>{
 
 // Main update routine
 Nav.update = ()=>{
+    //Nav._camera.updateMatrixWorld();
 
     //Nav._bXR = ATON.XR.isPresenting();
 

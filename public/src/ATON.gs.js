@@ -229,6 +229,8 @@ GS.load = (url, N, onComplete)=>{
         //extSplats: true,
         
         raycastable: GS._bRaycast,
+        //minRaycastOpacity: 0.2,
+        
         editable: false,
 
         lod: GS._bAutoLOD,

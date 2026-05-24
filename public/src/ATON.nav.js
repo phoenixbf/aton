@@ -489,7 +489,7 @@ Nav.restorePreviousNavMode = ()=>{
 Nav._updCamera = (c)=>{
     if (c === undefined) c = Nav._camera; 
 
-    c.updateMatrixWorld();
+    //c.updateMatrixWorld();
 
     if (ATON.FX.composer){
         let PP = ATON.FX.composer.passes;

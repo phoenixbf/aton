@@ -505,6 +505,10 @@ XR.onSessionStarted = ( session )=>{
 	ATON._renderer.xr.setSession( session ).then(()=>{
         XR.currSession = session;
         console.log(XR.currSession);
+        console.log("XR now presenting");
+
+        XR._bPresenting = true;
+        ATON.Nav._bInteracting = false;
 
         // AR session
         if (XR._sessionType === "immersive-ar"){
@@ -535,12 +539,9 @@ XR.onSessionStarted = ( session )=>{
         }
 
         XR._cam = ATON._renderer.xr.getCamera(/*ATON.Nav._camera*/); //.cameras[0];
-        if (XR._cam) ATON.Nav._updCamera( XR._cam );
-
-        XR._bPresenting = true;
-        ATON.Nav._bInteracting = false;
-
-        console.log("XR now presenting");
+        if (XR._cam){
+            ATON.Nav._updCamera( XR._cam );
+        }
 
         ATON.toggleShadows(false); // disable shadows for XR sessions
 
@@ -565,7 +566,7 @@ XR.onSessionStarted = ( session )=>{
 */
 
         // To be removed
-        ATON.flushPendingAF();
+        //ATON.flushPendingAF();
 
         ATON.fire("XRmode", true);
     });

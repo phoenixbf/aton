@@ -2953,6 +2953,8 @@ UI.createLoginForm = (options)=>{
     elUsername.append(elInputUN);
     elPassword.append(elInputPW);
 
+    let elStatus = UI.elem(`<div class="w-100" style="text-align:center; padding:8px"></div>`);
+
     let elEnter = ATON.UI.createButton({
         text: "Login",
         icon: "user",
@@ -2963,7 +2965,16 @@ UI.createLoginForm = (options)=>{
             let uname = elInputUN.value.trim();
             let passw = elInputPW.value.trim();
 
-            ATON.REQ.login(uname,passw, options.onSuccess, options.onFail);
+            ATON.REQ.login(
+                uname,
+                passw, 
+                options.onSuccess, 
+                ()=>{
+                    elStatus.innerHTML = "Incorrect username or password!";
+
+                    if (options.onFail) options.onFail();
+                }
+            );
         }
     });
 
@@ -2973,6 +2984,7 @@ UI.createLoginForm = (options)=>{
 
     el.append(elUsername);
     el.append(elPassword);
+    el.append(elStatus);
     
     el.append( UI.createContainer({ items:[ elEnter ], classes:"d-grid gap-2" }) );
 

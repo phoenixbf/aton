@@ -121,10 +121,11 @@ MRes.updateTSetsCamera = (cam)=>{
         TS.setCamera( cam );
 
         if (ATON._renderer.xr.isPresenting){
-
-            //let leftCam = cam.cameras[ 0 ];
-            //if ( leftCam ) TS.setResolution( cam, leftCam.viewport.z, leftCam.viewport.w );
-
+/*
+            let xrCam = renderer.xr.getCamera();
+            const leftCam = xrCam.cameras[ 0 ];
+            if ( leftCam ) TS.setResolution( xrCam, leftCam.viewport.z, leftCam.viewport.w );
+*/
             TS.setResolution( cam, 600,600 ); // 300
             //TS.setResolutionFromRenderer( cam, ATON._renderer );            
         }

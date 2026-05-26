@@ -24,7 +24,7 @@ GS.LOD_SPLATSCALE = 0.8; //0.5;
 
 GS.MIN_SORT_INT = 30;
 
-GS.FOV_ANG   = 90;  // 120
+GS.FOV_ANG   = 110;  // 120
 GS.FOV_SCALE = 0.3; // 0.4
 
 GS.AUTOLOD_ABOVE = 5000000;
@@ -57,7 +57,7 @@ GS.realize = ()=>{
     }
 
     GS._3DGSR.coneFov     = GS.FOV_ANG;
-    GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
+    GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.8;
     GS._3DGSR.coneFoveate = GS.FOV_SCALE;
 
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
@@ -85,18 +85,18 @@ GS.realize = ()=>{
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
 
-        GS.MIN_SORT_INT = 500;
+        GS.MIN_SORT_INT = 300;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
         GS.LOD_SPLATSCALE *= 0.4; //0.3;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         GS._3DGSR.numLodFetchers = 1;
-
+/*
         GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
         GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
-
+*/
         GS.MAX_PD = 0.9; //0.8;
     }
     

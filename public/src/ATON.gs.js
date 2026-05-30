@@ -37,7 +37,7 @@ GS.realize = ()=>{
     GS._bAutoLOD = true;
 
     // Use direct raycast on gs
-    GS._bRaycast = false;
+    GS._bRaycast = true;
 
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,

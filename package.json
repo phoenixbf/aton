@@ -66,7 +66,7 @@
     "cors": "^2.8.6",
     "del": "^8.0.1",
     "dotenv": "^17.4.2",
-    "ejs": "^5.0.2",
+    "ejs": "^6.0.1",
     "express": "^5.2.1",
     "express-basic-auth": "^1.2.1",
     "express-session": "^1.19.0",
@@ -91,7 +91,7 @@
     "session-file-store": "^1.5.0",
     "sharp": "^0.34.5",
     "socket.io": "^4.8.3",
-    "swagger-jsdoc": "^6.2.8",
+    "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
     "three": "0.184.0",
     "three-custom-shader-material": "6.4.0",
@@ -99,7 +99,7 @@
     "three-mesh-ui": "^6.5.4",
     "uuid": "^14.0.0",
     "webdav-server": "^2.6.2",
-    "ws": "^8.20.1",
+    "ws": "^8.21.0",
     "zlibjs": "^0.3.1"
   }
 }

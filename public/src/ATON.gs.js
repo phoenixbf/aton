@@ -37,7 +37,7 @@ GS.realize = ()=>{
     GS._bAutoLOD = true;
 
     // Use direct raycast on gs
-    GS._bRaycast = true;
+    GS._bRaycast = false;
 
     GS._3DGSR = new SPARK.SparkRenderer({
         renderer: ATON._renderer,
@@ -91,7 +91,7 @@ GS.realize = ()=>{
         GS.LOD_SPLATSCALE *= 0.4; //0.3;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
-        GS._3DGSR.numLodFetchers = 1;
+        //GS._3DGSR.numLodFetchers = 1;
 /*
         GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;

@@ -88,7 +88,7 @@ GS.realize = ()=>{
         GS.MIN_SORT_INT = 300;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
-        GS.LOD_SPLATSCALE *= 0.8; //0.4;
+        GS.LOD_SPLATSCALE *= 0.5; //0.4;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         //GS._3DGSR.numLodFetchers = 1;

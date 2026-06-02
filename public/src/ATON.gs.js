@@ -88,7 +88,7 @@ GS.realize = ()=>{
         GS.MIN_SORT_INT = 300;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
-        GS.LOD_SPLATSCALE *= 0.4; //0.3;
+        GS.LOD_SPLATSCALE *= 0.8; //0.4;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
         //GS._3DGSR.numLodFetchers = 1;
@@ -362,17 +362,24 @@ GS.update = ()=>{
             //GS._3DGSR.autoUpdate = false;
 
             GS._3DGSR.enableDriveLod = false;
-            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
+            //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
         }
         else {
             //GS._3DGSR.autoUpdate = true;
 
             GS._3DGSR.enableDriveLod = true;
-            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
+            //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
 
         GS._bMotion = ATON.Nav.motionDetected();
         return;
+    }
+
+    if (ATON.Nav.motionDetected() /*|| ATON.Nav._bInteracting*/){
+        GS._3DGSR.enableDriveLod = false;
+    }
+    else {
+        GS._3DGSR.enableDriveLod = true;
     }
 
 /*

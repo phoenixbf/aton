@@ -56,9 +56,14 @@ GS.realize = ()=>{
         ATON._bQuerySemOcclusion = false;
     }
 
-    GS._3DGSR.coneFov     = GS.FOV_ANG;
-    GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.8;
-    GS._3DGSR.coneFoveate = GS.FOV_SCALE;
+    GS._3DGSR.coneFov       = GS.FOV_ANG;
+    GS._3DGSR.coneFov0      = GS._3DGSR.coneFov * 0.8;
+    GS._3DGSR.coneFoveate   = GS.FOV_SCALE;
+    //GS._3DGSR.behindFoveate = 0.1;
+
+    //GS._3DGSR.sortRadial = false;
+    //GS._3DGSR.depthTest = false;
+    //GS._3DGSR.transparent = false;
 
     //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
     GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
@@ -82,7 +87,7 @@ GS.realize = ()=>{
         GS.AUTOLOD_ABOVE = 1500000;
 
         //GS.MIN_PXRAD  = 2;
-        GS.MAX_STDDEV = 2.0;
+        GS.MAX_STDDEV = 2.3;
         GS._3DGSR.clipXY = 1.0;
 
         GS.MIN_SORT_INT = 300;
@@ -91,7 +96,7 @@ GS.realize = ()=>{
         GS.LOD_SPLATSCALE *= 0.5; //0.4;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
 
-        //GS._3DGSR.numLodFetchers = 1;
+        GS._3DGSR.numLodFetchers = 1;
 /*
         GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
@@ -159,7 +164,7 @@ GS.realize = ()=>{
     // Events
     ATON.on("XRmode",(b)=>{
         if (b){
-            GS._3DGSR.maxStdDev = 2.0;
+            GS._3DGSR.maxStdDev = 2.3;
             GS._3DGSR.numLodFetchers = 1;
             //GS._3DGSR.clipXY    = 0.9;
 
@@ -222,18 +227,20 @@ GS.load = (url, N, onComplete)=>{
     ATON._assetReqNew(url);
     N.noLP = true;
 
+    let bRAD = url.endsWith(".rad");
+
     let splats = new SPARK.SplatMesh({
         url: url,
-        paged: url.endsWith(".rad")? true : undefined,
+        paged: bRAD? true : undefined,
         
         //extSplats: true,
         
         raycastable: GS._bRaycast,
         //minRaycastOpacity: 0.2,
         
-        editable: false,
+        //editable: false,
 
-        lod: GS._bAutoLOD,
+        lod: bRAD? false : GS._bAutoLOD,
         lodAbove: GS.AUTOLOD_ABOVE,
 
 /*

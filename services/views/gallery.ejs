@@ -38,8 +38,12 @@ window.addEventListener( 'load', ()=>{
                 elHeader.append(ATON.UI.elem("<h2><img class='aton-icon' style='margin-right:8px' src='"+ATON.UI.PATH_RES_ICONS+"gallery.png'>"+kw+"</h2>"));
         }
 
+        SHU.setPageWaiting();
+
         // Content
         ATON.REQ.get(endpoint, entries =>{
+
+                SHU.setPageComplete();
 
                 for (let s in entries){
                         const S = entries[s];

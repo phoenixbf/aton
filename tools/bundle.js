@@ -80,7 +80,7 @@ import * as ThreeMeshBVH from 'three-mesh-bvh';
 
 import * as TILES from '3d-tiles-renderer';
 import { TilesFadePlugin, ImplicitTilingPlugin, DeepZoomImagePlugin, DebugTilesPlugin, UpdateOnChangePlugin } from '3d-tiles-renderer/plugins';
-import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
+//import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
 
 //import { Loader3DTiles } from 'three-loader-3dtiles';
 
@@ -153,7 +153,8 @@ TILES.ImplicitTilingPlugin = ImplicitTilingPlugin;
 TILES.DeepZoomImagePlugin  = DeepZoomImagePlugin;
 TILES.UpdateOnChangePlugin = UpdateOnChangePlugin;
 TILES.DebugTilesPlugin     = DebugTilesPlugin;
-TILES.GaussianSplatPlugin  = GaussianSplatPlugin;
+//TILES.GaussianSplatPlugin  = GaussianSplatPlugin;
+
 //TILES.TileCompressionPlugin = TileCompressionPlugin;
 
 

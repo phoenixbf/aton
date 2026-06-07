@@ -15,7 +15,7 @@ GS._3DGSR = undefined;
 
 GS.MAX_PD = 1.0;
 
-GS.MAX_PXRAD = 512;
+GS.MAX_PXRAD = 200; //512;
 GS.MIN_PXRAD = 1;
 GS.MIN_ALPHA = 0.01;
 
@@ -86,11 +86,11 @@ GS.realize = ()=>{
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.AUTOLOD_ABOVE = 1500000;
 
-        //GS.MIN_PXRAD  = 2;
+        GS.MIN_PXRAD  = 3;
         GS.MAX_STDDEV = 2.3;
         GS._3DGSR.clipXY = 1.0;
 
-        GS.MIN_SORT_INT = 300;
+        GS.MIN_SORT_INT = 400;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
         GS.LOD_SPLATSCALE *= 0.5; //0.4;
@@ -307,8 +307,8 @@ GS.setupProfiler = ()=>{
         //if (GS._3DGSR.minPixelRadius < 3) GS._3DGSR.minPixelRadius++;
         //if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.01;
 
-        //if (GS.updInt < 1000) GS.updInt += 200;
-        if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
+        ///if (GS.updInt < 1000) GS.updInt += 200;
+        //if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS lower perf");
@@ -323,7 +323,7 @@ GS.setupProfiler = ()=>{
         //GS.updInt -= 200;
         //GS.updInt = Math.max(GS.updInt, GS.MIN_SORT_INT);
 
-        if (GS._3DGSR.minSortIntervalMs > GS.MIN_SORT_INT) GS._3DGSR.minSortIntervalMs -= 200;
+        //if (GS._3DGSR.minSortIntervalMs > GS.MIN_SORT_INT) GS._3DGSR.minSortIntervalMs -= 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS higher perf");

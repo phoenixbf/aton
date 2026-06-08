@@ -374,6 +374,7 @@ UI.buildBaseInterface = ()=>{
     UI._elUserToolbar   = ATON.UI.get("userToolbar");
     UI._elTasks         = ATON.UI.get("tasks");
     UI._elTaskDescr     = ATON.UI.get("task-descr");
+    UI._fsCover         = ATON.UI.get("fscover");
 
     ATON.UI.hideElement(UI._elTasks);
     ATON.UI.hideElement(UI._elTaskDescr);

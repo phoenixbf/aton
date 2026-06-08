@@ -15,19 +15,24 @@ GS._3DGSR = undefined;
 
 GS.MAX_PD = 1.0;
 
-GS.MAX_PXRAD = 200; //512;
+GS.MAX_PXRAD = 300; //512;
 GS.MIN_PXRAD = 1;
 GS.MIN_ALPHA = 0.01;
 
 GS.MAX_STDDEV = 2.8;
 GS.LOD_SPLATSCALE = 0.8; //0.5;
 
+GS.LOD_MAX_COUNT = 5000000;
+
+GS.LOD_MAX_COUNT_MOB = 400000;
+GS.LOD_MAX_COUNT_XR  = 200000;
+
 GS.MIN_SORT_INT = 30;
 
 GS.FOV_ANG   = 110;  // 120
 GS.FOV_SCALE = 0.3; // 0.4
 
-GS.AUTOLOD_ABOVE = 5000000;
+GS.AUTOLOD_ABOVE = GS.MAX_COUNT;
 
 //Initializes the component
 GS.realize = ()=>{
@@ -44,6 +49,10 @@ GS.realize = ()=>{
 
         //pagedExtSplats: true, // poor perf.
         //accumExtSplats: true, // poor perf.
+        pagedExtSplats: false,
+        accumExtSplats: false,
+
+        //enable2DGS: true,
         
         //target: { width, height, doubleBuffer: true },
         //originDistance: 1.0
@@ -65,8 +74,8 @@ GS.realize = ()=>{
     //GS._3DGSR.depthTest = false;
     //GS._3DGSR.transparent = false;
 
-    //GS._3DGSR.lodSplatCount = 500000; // already computed per-device
-    GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
+    GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT;
+    //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
     
     GS._3DGSR.numLodFetchers = 3;
 
@@ -84,24 +93,27 @@ GS.realize = ()=>{
     //GS._3DGSR.preBlurAmount = 0.3;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
+        GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
         GS.AUTOLOD_ABOVE = 1500000;
 
-        GS.MIN_PXRAD  = 3;
+        GS.MIN_PXRAD  = 2;
         GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
 
         GS.MIN_SORT_INT = 400;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
+        GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT;
+/*
         GS.LOD_SPLATSCALE *= 0.5; //0.4;
         GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
-
+*/
         GS._3DGSR.numLodFetchers = 1;
-/*
+
         GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
         GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
         GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
-*/
+
         GS.MAX_PD = 0.9; //0.8;
     }
     
@@ -172,7 +184,8 @@ GS.realize = ()=>{
             GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
             GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.8;
 
-            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.5;
+            //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.5;
+            GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
@@ -182,7 +195,8 @@ GS.realize = ()=>{
             GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
             GS._3DGSR.coneFoveate = GS.FOV_SCALE;
 
-            GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
+            //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
+            GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT;
         }
     });
 /*
@@ -308,7 +322,7 @@ GS.setupProfiler = ()=>{
         //if (GS._3DGSR.minAlpha < 0.1) GS._3DGSR.minAlpha += 0.01;
 
         ///if (GS.updInt < 1000) GS.updInt += 200;
-        //if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
+        if (GS._3DGSR.minSortIntervalMs < 1000) GS._3DGSR.minSortIntervalMs += 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS lower perf");
@@ -323,7 +337,7 @@ GS.setupProfiler = ()=>{
         //GS.updInt -= 200;
         //GS.updInt = Math.max(GS.updInt, GS.MIN_SORT_INT);
 
-        //if (GS._3DGSR.minSortIntervalMs > GS.MIN_SORT_INT) GS._3DGSR.minSortIntervalMs -= 200;
+        if (GS._3DGSR.minSortIntervalMs > GS.MIN_SORT_INT) GS._3DGSR.minSortIntervalMs -= 200;
         //console.log(GS._3DGSR.minSortIntervalMs)
 
         //console.log("GS higher perf");
@@ -368,13 +382,13 @@ GS.update = ()=>{
         if (ATON.Nav.motionDetected() /*|| ATON.Nav._bInteracting*/){
             //GS._3DGSR.autoUpdate = false;
 
-            GS._3DGSR.enableDriveLod = false;
+            //GS._3DGSR.enableDriveLod = false;
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
         }
         else {
             //GS._3DGSR.autoUpdate = true;
 
-            GS._3DGSR.enableDriveLod = true;
+            //GS._3DGSR.enableDriveLod = true;
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
         }
 
@@ -382,22 +396,14 @@ GS.update = ()=>{
         return;
     }
 
-    if (ATON.Nav.motionDetected() /*|| ATON.Nav._bInteracting*/){
+    // Desktop
+/*
+    if (ATON.Nav.motionDetected()){
         GS._3DGSR.enableDriveLod = false;
     }
     else {
         GS._3DGSR.enableDriveLod = true;
     }
-
-/*
-    if (!ATON.Nav.motionDetected()){
-        GS._3DGSR.autoUpdate = false;
-        //GS._3DGSR.enableLod = false;
-        return;
-    }
-
-    //GS._3DGSR.enableLod = true;
-    GS._3DGSR.autoUpdate = true;
 */
 };
 

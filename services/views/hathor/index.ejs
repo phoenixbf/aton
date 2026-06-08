@@ -39,6 +39,7 @@
 <style>
 :root {
     --hathor-ui-margin: 4px;
+    --hathor-fscover-blur: 8px;
 
     --jd-color-panel: rgba(var(--bs-body-color-rgb), 0.9);
     --jd-color-icon: white;
@@ -59,6 +60,44 @@
     display: block;
     border-radius: var(--bs-border-radius);
     margin:0 auto;
+}
+
+.hathor-fscover {
+    position: absolute;
+    z-index: 0;
+
+    margin: auto;
+
+    top:0;
+    left:0;
+
+    width: 100%;
+    height: 100%;
+
+    display:inline-block;
+    pointer-events: none;
+/*
+    background-image: url('/res/scenecover.jpg');
+*/  
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+
+    -webkit-filter: blur(var(--hathor-fscover-blur));
+    -moz-filter: blur(var(--hathor-fscover-blur));
+    -o-filter: blur(var(--hathor-fscover-blur));
+    -ms-filter: blur(var(--hathor-fscover-blur));
+    filter: blur(var(--hathor-fscover-blur));
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 500ms ease-in, visibility 0ms ease-in 500ms;
+}
+
+.hathor-fscover-show {
+    visibility: visible;
+    opacity: 0.5;
+    transition: opacity 500ms ease-in, visibility 0ms ease-in 500ms;
 }
 
 .hathor-main-toolbar {
@@ -314,11 +353,18 @@
 }
 
 .jodit-workplace {
-    background-color: rgba(var(--bs-body-bg-rgb), 0.3);
+    background-color: rgba(var(--bs-body-bg-rgb), 1.0) !important;
+    color: var(--bs-body-color) !important;
+
     padding: 4px;
     border: solid rgba(var(--bs-body-color-rgb), 0.1) 1px;
 
     min-height: 100px !important;
+}
+
+.jodit-jodit__workplace-slot_center_true {
+    background-color: rgba(var(--bs-body-bg-rgb), 1.0) !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-workplace img {
@@ -339,6 +385,8 @@
 
 .jodit-wysiwyg {
     padding: 4px;
+    background-color: rgba(var(--bs-body-bg-rgb), 1.0) !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-popup {
@@ -347,6 +395,7 @@
 
 .jodit-toolbar__box {
     width: 100%;
+    background-color: var(--bs-body-bg) !important;
 }
 
 .jodit-toolbar-button {
@@ -363,10 +412,10 @@
     background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
 }
 .jodit-toolbar-button__text {
-    color: white;
+    color: var(--bs-body-color) !important;
 }
 .jodit-toolbar-button__trigger {
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-tabs__buttons {
@@ -374,7 +423,7 @@
 }
 
 .jodit-dialog__panel {
-    color: white !important;
+    color: var(--bs-body-color) !important;
     background-color: rgba(var(--bs-body-bg-rgb), 0.8);
 
     -webkit-backdrop-filter: blur(var(--aton-blur-radius));
@@ -382,46 +431,46 @@
 }
 
 .jodit-ui-input__wrapper {
-    color: black !important;
+    color: var(--bs-body-bg) !important;
 }
 .jodit-ui-input__input {
-    color: black !important;
+    color: var(--bs-body-bg) !important;
 }
 
 .jodit-ui-button {
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 .jodit-ui-button:hover {
     background-color: rgba(var(--aton-colors-accent-rgb), 0.5) !important;
 }
 
 .jodit-ui-button__icon {
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-ui-button__icon svg {
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-ui-button__text {
     background-color: rgba(var(--aton-colors-accent-rgb), 0.0) !important;
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-icon {
-    color: white !important;
+    color: var(--bs-body-color) !important;
 }
 
 .jodit-ui-button_variant_primary {
-    color: black !important;
+    color: var(--bs-body-bg) !important;
     background-color: var(--aton-colors-accent) !important;
 }
 
 .jodit-ui-text-area__wrapper {
-    color: black !important;
+    color: var(--bs-body-bg) !important;
 }
 .jodit-ui-text-area__input {
-    color: black !important;
+    color: var(--bs-body-bg) !important;
 }
 
 </style>
@@ -459,6 +508,7 @@
 
 <body>
     <div id="sideToolbar" class="aton-toolbar-left hathor-main-toolbar"></div>
+    <div id="fscover" class="hathor-fscover hathor-fscover-show"></div>
 
     <div class="hathor-tasks-container">
         <div class="hathor-tasks" id="tasks"></div>

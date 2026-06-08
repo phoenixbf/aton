@@ -141,7 +141,11 @@ HATHOR.generateSceneEmbedHTML = (options)=>{
 HATHOR.setupLogic = ()=>{
     // All flares ready
     ATON.on("AllFlaresReady",()=>{
-        if (HATHOR._sidToLoad) HATHOR.loadScene( HATHOR._sidToLoad );
+        if (HATHOR._sidToLoad){
+            HATHOR.UI._fsCover.style.backgroundImage = "url('"+ATON.PATH_RESTAPI2+"scenes/"+HATHOR._sidToLoad+"/cover"+"')";
+
+            HATHOR.loadScene( HATHOR._sidToLoad );
+        }
         else ATON.UI.showModal({
             header: "No Scene"
         });
@@ -157,7 +161,7 @@ HATHOR.setupLogic = ()=>{
         
         if (!bFirst) return; // First time
 
-        //...
+        HATHOR.UI._fsCover.classList.remove("hathor-fscover-show")
     });
 
     ATON.on("Tap", (e)=>{

@@ -64,7 +64,7 @@ WYSIWYG.createToolbar = (options)=>{
 
 WYSIWYG.init = ()=>{
     WYSIWYG.editor = Jodit.make('#WYSIWYGeditor', {
-        //theme: "dark",
+        theme: "dark",
         //toolbarButtonSize: 'small',
         //height: 200,
 

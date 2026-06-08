@@ -87,7 +87,7 @@ GS.realize = ()=>{
         GS.AUTOLOD_ABOVE = 1500000;
 
         GS.MIN_PXRAD  = 3;
-        GS.MAX_STDDEV = 2.3;
+        GS.MAX_STDDEV = 2.0;
         GS._3DGSR.clipXY = 1.0;
 
         GS.MIN_SORT_INT = 400;
@@ -164,7 +164,7 @@ GS.realize = ()=>{
     // Events
     ATON.on("XRmode",(b)=>{
         if (b){
-            GS._3DGSR.maxStdDev = 2.3;
+            GS._3DGSR.maxStdDev = 2.0;
             GS._3DGSR.numLodFetchers = 1;
             //GS._3DGSR.clipXY    = 0.9;
 

@@ -52,13 +52,14 @@ MRes.init = ()=>{
     MRes._numTilesLoaded = 0;
     MRes._numTSLoaded    = 0;
 
-    // Use optimized load strategy
+    // Use optimized load strategy (load ancestors)
     MRes._bOptimizedLoad = false;
 
     // Plugins
     MRes._bFadeTiles = true;
     MRes._bShowTBounds = false;
     MRes._bGS = true;
+    MRes._GSR = undefined;
 
     // Events
     ATON.on("XRmode", (b)=>{
@@ -67,6 +68,16 @@ MRes.init = ()=>{
 
             if (b) TS.setXRSession( ATON.XR.currSession );
             else TS.setXRSession( null );
+        }
+
+        if (!MRes._GSR) return;
+
+        if (b){
+            MRes._GSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
+            MRes._GSR.maxStdDev = 2.0;
+        }
+        else {
+            MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
         }
     });
 };
@@ -215,7 +226,8 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
 
-    ts.optimizedLoadStrategy = MRes._bOptimizedLoad;
+    //ts.loadAncestors = MRes._bOptimizedLoad;
+
     //ts.loadSiblings = false; // Unstable
 
     //ts.errorThreshold  = 100;
@@ -294,6 +306,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             ATON.setAdaptiveDensityRange( 0.5, ATON.GS.MAX_PD );
             ATON.setDefaultPixelDensity( ATON.GS.MAX_PD );
             ATON.XR.setDensity(0.5);
+
+            MRes._GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
+            //MRes._GSR.minSortIntervalMs = 1000;
+
+            //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { lodSplatCount: ATON.GS.LOD_MAX_COUNT_XR });
         }
 
         ATON.CC.extract(data);
@@ -565,16 +582,6 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         //ATON.Utils._visitorCP();
     });
 
-    // Fired when the content of a model is loaded.
-    ts.addEventListener( 'load-content', ()=>{
-/*
-        ts.forEachLoadedModel((scene, tile)=>{
-            ATON.Utils._visitorCP(scene);
-        });
-*/
-        //ATON.Utils._visitorCP();
-    });
-
     // Fired when the tileset hierarchy is ready for "update to be called
     // again due to new content having loaded or asynchronous processing finished
     ts.addEventListener( 'needs-update', ()=>{
@@ -677,7 +684,15 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    if ( ATON.Nav.motionDetected() ) return;
+    if ( ATON.Nav.motionDetected() ){
+        //let GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
+        //console.log(GSR);
+
+        //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { autoUpdate: false });
+        return;
+    }
+
+    //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { autoUpdate: true });
 
     if (!MRes._bCustomSchedCB) return;
     //console.log(MRes._tsTasks);

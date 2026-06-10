@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON example</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+	// Realize base ATON and add base UI events
+    ATON.realize();
+    ATON.UI.addBasicEvents();
+
+    // We load a 3D scene
+    // Parameter is the "sid" (scene ID) that uniquely identify the scene on this ATON instance
+    ATON.App.loadScene("samples/montebelluna");
+
+    // Setup some UI
+    // Append a few prefab UI buttons to our main toolbar
+	ATON.UI.get("toolbar").append(
+        ATON.UI.createButtonHome(),
+        ATON.UI.createButtonVR(),   // VR button will show up only on secure connections and supported devices
+    );
+
+    // Create a button to open side panel
+    ATON.UI.get("side").append(
+        ATON.UI.createButton({
+            icon: "help",
+            onpress: openSidePanel
+        })
+    );
+
+    openSidePanel();
+});
+
+// Routine to open a sidepanel with some info
+let openSidePanel = ()=>{
+    ATON.UI.showSidePanel({
+        header: "Basic Scene",
+        body: ATON.UI.elem(`
+        <p>In this sample we setup basic UI buttons and load an existing 3D scene (a JSON scene descriptor).<br><br>
+        The JSON file contains all the references to resources (GLTF models, panoramas, media, etc.) typically located in the data collection folder.<br><br>
+        The scene-ID (or SID) - in this case <b>'samples/montebelluna'</b> - is unique for a given ATON instance up and running.
+        </p>`)
+    });
+};
+
+</script>
+</head>
+
+<body>
+    <div id="toolbar" class="aton-toolbar-top"></div>
+    <div id="side" class="aton-toolbar-bottom" style="position: absolute; right: 0px;"></div>
+
+    <div class="aton-poweredby" >
+        Powered by <a href="https://aton.ispc.cnr.it/site/" target="_blank">ATON</a>
+    </div>
+</body>

@@ -101,5 +101,8 @@
     "webdav-server": "^2.6.2",
     "ws": "^8.21.0",
     "zlibjs": "^0.3.1"
+  },
+  "allowScripts": {
+    "sharp@0.34.5": true
   }
 }

@@ -63,21 +63,28 @@ MRes.init = ()=>{
 
     // Events
     ATON.on("XRmode", (b)=>{
+        if (b) TILES.Scheduler.setXRSession( ATON.XR.currSession );
+        else TILES.Scheduler.setXRSession( null );
+
         for (let ts=0; ts < MRes._tsets.length; ts++){
             const TS = MRes._tsets[ts];
 
-            if (b) TS.setXRSession( ATON.XR.currSession );
-            else TS.setXRSession( null );
+            if (b){
+                if (TS._isGS) TS.errorTarget *= 50; // temp
+            }    
+            else {
+                //
+            }
         }
 
         if (!MRes._GSR) return;
 
         if (b){
-            MRes._GSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
-            MRes._GSR.maxStdDev = 2.0;
+            //MRes._GSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
+            //MRes._GSR.maxStdDev = 2.0;
         }
         else {
-            MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
+            //MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
         }
     });
 };
@@ -102,6 +109,11 @@ MRes.setTSetsErrorTarget = (e)=>{
     for (let ts in MRes._tsets){
         let TS = MRes._tsets[ts];
         TS.errorTarget = e;
+
+        // Per-ts multiplier
+        if (TS._etM) TS.errorTarget *= TS._etM;
+
+        if (TS.errorTarget < 1.0) TS.errorTarget = 1.0;
     }
 };
 
@@ -157,9 +169,9 @@ MRes.estimateTSErrorTarget = ()=>{
     let tse = MRes._tseBase;
 
     if (ATON.device.lowGPU || ATON.device.isMobile) tse *= 1.5; // += 4.0;
-    if (ATON.XR._bPresenting) tse *= 1.2;
+    //if (ATON.XR._bPresenting) tse *= 1.2;
 
-    if (tse < 1.0)  tse = 1.0;
+    if (tse < 1.0) tse = 1.0;
     //if (tse > 25.0) tse = 25.0;
 
     console.log("Estimated TSet error target: "+tse);
@@ -309,6 +321,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             MRes._GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
             //MRes._GSR.minSortIntervalMs = 1000;
+
+            ts._isGS = true;
+
+            //ts._etM = 20.0;
+            //ts.errorTarget *= ts._etM; 
 
             //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { lodSplatCount: ATON.GS.LOD_MAX_COUNT_XR });
         }

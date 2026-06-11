@@ -555,7 +555,7 @@ XR.onSessionStarted = ( session )=>{
         if (ATON.XPFNetwork.getNumXPFs()>0) ATON.setQueryRange(0.0, 100.0);
         else ATON.setQueryRange(0.0, XR.MAX_QUERY_DISTANCE);
 
-        ATON.MRes.estimateTSErrorTarget();
+        //ATON.MRes.estimateTSErrorTarget();
 
 /*
         // FIXME: needed bc selector radius is not applied
@@ -605,7 +605,7 @@ XR.onSessionEnded = ( /*event*/ )=>{
 
     ATON.setQueryRange(0.0, Infinity);
 
-    ATON.MRes.estimateTSErrorTarget();
+    //ATON.MRes.estimateTSErrorTarget();
 
     console.log("Quit XR");
 

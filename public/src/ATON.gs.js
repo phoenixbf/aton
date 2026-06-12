@@ -115,6 +115,8 @@ GS.realize = ()=>{
         GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.7;
 
         GS.MAX_PD = 0.9; //0.8;
+
+        GS.MIN_ALPHA = 0.05;
     }
     
     GS._3DGSR.minAlpha = GS.MIN_ALPHA;
@@ -186,6 +188,8 @@ GS.realize = ()=>{
 
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.5;
             GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
+
+            GS._3DGSR.autoUpdate = false;
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;

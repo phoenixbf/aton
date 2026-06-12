@@ -70,7 +70,9 @@ MRes.init = ()=>{
             const TS = MRes._tsets[ts];
 
             if (b){
-                if (TS._isGS) TS.errorTarget *= 50; // temp
+                if (TS._isGS){
+                    TS.errorTarget *= 50; // temp
+                }
             }    
             else {
                 //
@@ -80,11 +82,13 @@ MRes.init = ()=>{
         if (!MRes._GSR) return;
 
         if (b){
+            MRes._GSR.minAlpha = 0.05;
+            MRes._GSR.maxStdDev = 2.0;
             //MRes._GSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
-            //MRes._GSR.maxStdDev = 2.0;
         }
         else {
-            //MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
+            MRes._GSR.minAlpha  = ATON.GS.MIN_ALPHA;
+            MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
         }
     });
 };
@@ -306,8 +310,13 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     focalAdjustment: 2,
                     //blurAmount: 0.15,
                     clipXY: 1.0,
-                    accumExtSplats: true,
-                    maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : 2.8
+                    //accumExtSplats: true,
+
+                    minPixelRadius: ATON.GS.MIN_PXRAD,
+                    maxPixelRadius: ATON.GS.MAX_PXRAD,
+                    
+                    maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : ATON.GS.MAX_STDDEV,
+                    minAlpha: (ATON.device.lowGPU || ATON.device.isMobile)? 0.05 : ATON.GS.MIN_ALPHA
                 },
             });
 

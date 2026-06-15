@@ -71,7 +71,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 10; // temp
+                    TS.errorTarget *= 20; // temp
                 }
             }    
             else {
@@ -82,7 +82,7 @@ MRes.init = ()=>{
         if (!MRes._GSR) return;
 
         if (b){
-            MRes._GSR.minAlpha = 0.05;
+            MRes._GSR.minAlpha  = 0.05;
             MRes._GSR.maxStdDev = 2.0;
             MRes._GSR.clipXY    = ATON.GS.CLIP_XR;
 
@@ -306,20 +306,22 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     // Extract from JSON
     if (!bDZI) ATON.REQ.get( tsurl, ( data )=>{
         if (MRes._bGS && ATON.GS.detectTilesetExtension(data)){
+            ATON.GS.profileHW();
+
             let plugGS = new TILES.GaussianSplatPlugin({
                 renderer: ATON._renderer,
                 scene: ATON._rootVisible,
                 sparkRendererOptions: {
                     focalAdjustment: 2,
                     //blurAmount: 0.15,
-                    clipXY: 1.0,
+                    clipXY: ATON.GS.CLIP,
                     //accumExtSplats: true,
 
                     minPixelRadius: ATON.GS.MIN_PXRAD,
                     maxPixelRadius: ATON.GS.MAX_PXRAD,
                     
-                    maxStdDev: (ATON.device.lowGPU || ATON.device.isMobile)? 2.0 : ATON.GS.MAX_STDDEV,
-                    minAlpha: (ATON.device.lowGPU || ATON.device.isMobile)? 0.05 : ATON.GS.MIN_ALPHA
+                    maxStdDev: ATON.GS.MAX_STDDEV,
+                    minAlpha: ATON.GS.MIN_ALPHA
                 },
             });
 
@@ -329,7 +331,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
             ATON.setAdaptiveDensityRange( 0.5, ATON.GS.MAX_PD );
             ATON.setDefaultPixelDensity( ATON.GS.MAX_PD );
-            ATON.XR.setDensity(0.5);
+            ATON.XR.setDensity(ATON.GS.MAX_PD_XR);
 
             MRes._GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
             //MRes._GSR.minSortIntervalMs = 1000;

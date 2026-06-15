@@ -14,6 +14,7 @@ let GS = {};
 GS._3DGSR = undefined;
 
 GS.MAX_PD = 1.0;
+GS.MAX_PD_XR = 0.5;
 
 GS.MAX_PXRAD = 300; //512;
 GS.MIN_PXRAD = 1;
@@ -39,7 +40,8 @@ GS.AUTOLOD_ABOVE = GS.LOD_MAX_COUNT;
 
 
 
-GS.profile = ()=>{
+GS.profileHW = ()=>{
+    if (GS._bHW) return;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
@@ -54,14 +56,20 @@ GS.profile = ()=>{
         GS.MAX_PD = 0.9; //0.8;
 
         GS.MIN_ALPHA = 0.05;
+
+        // Foveation
+        GS.FOV_ANG   *= 0.7;
+        GS.FOV_SCALE *= 0.7;
     }
+
+    GS._bHW = true;
 };
 
 //Initializes the component
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
-    //GS.profile();
+    GS.profileHW();
 
     // Auto-generate LODs above certain threshold
     GS._bAutoLOD = true;
@@ -117,6 +125,7 @@ GS.realize = ()=>{
     GS._3DGSR.focalAdjustment = 2.0;
     //GS._3DGSR.preBlurAmount = 0.3;
 
+/*
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
         GS.AUTOLOD_ABOVE = 1500000;
@@ -130,10 +139,10 @@ GS.realize = ()=>{
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
 
         GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT;
-/*
-        GS.LOD_SPLATSCALE *= 0.5; //0.4;
-        GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
-*/
+
+        ///GS.LOD_SPLATSCALE *= 0.5; //0.4;
+        ///GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
+
         GS._3DGSR.numLodFetchers = 1;
 
         GS._3DGSR.coneFov     = GS.FOV_ANG * 0.7;
@@ -144,6 +153,7 @@ GS.realize = ()=>{
 
         GS.MIN_ALPHA = 0.05;
     }
+*/
     
     GS._3DGSR.minAlpha = GS.MIN_ALPHA;
     //GS._3DGSR.blurAmount = 0.3;
@@ -166,7 +176,7 @@ GS.realize = ()=>{
 
     GS.setupProfiler();
 
-    ATON.XR.setDensity(0.5);
+    ATON.XR.setDensity(GS.MAX_PD_XR);
 
     GS._3DGSR.autoUpdate = true;
 
@@ -208,9 +218,9 @@ GS.realize = ()=>{
             GS._3DGSR.numLodFetchers = 1;
             GS._3DGSR.clipXY    = GS.CLIP_XR;
 
-            GS._3DGSR.coneFov     = GS.FOV_ANG * 0.8;
-            GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
-            GS._3DGSR.coneFoveate = GS.FOV_SCALE * 0.8;
+            GS._3DGSR.coneFov     *= 0.8;  //GS.FOV_ANG * 0.8;
+            GS._3DGSR.coneFov0    *= 0.8; //GS._3DGSR.coneFov * 0.7;
+            GS._3DGSR.coneFoveate *= 0.8; //GS.FOV_SCALE * 0.8;
 
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE*0.5;
             GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
@@ -221,12 +231,14 @@ GS.realize = ()=>{
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
             GS._3DGSR.clipXY    = GS.CLIP;
 
-            GS._3DGSR.coneFov     = GS.FOV_ANG;
-            GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
-            GS._3DGSR.coneFoveate = GS.FOV_SCALE;
+            GS._3DGSR.coneFov     *= 1.25;
+            GS._3DGSR.coneFov0    *= 1.25;
+            GS._3DGSR.coneFoveate *= 1.25;
 
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;
             GS._3DGSR.lodSplatCount = GS.LOD_MAX_COUNT;
+
+            GS._3DGSR.autoUpdate = true;
         }
     });
 /*

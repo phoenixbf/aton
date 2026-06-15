@@ -71,7 +71,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 50; // temp
+                    TS.errorTarget *= 10; // temp
                 }
             }    
             else {
@@ -84,11 +84,14 @@ MRes.init = ()=>{
         if (b){
             MRes._GSR.minAlpha = 0.05;
             MRes._GSR.maxStdDev = 2.0;
+            MRes._GSR.clipXY    = ATON.GS.CLIP_XR;
+
             //MRes._GSR.lodSplatCount = GS.LOD_MAX_COUNT_XR;
         }
         else {
             MRes._GSR.minAlpha  = ATON.GS.MIN_ALPHA;
             MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
+            MRes._GSR.clipXY    = ATON.GS.CLIP;
         }
     });
 };

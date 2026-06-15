@@ -29,14 +29,39 @@ GS.LOD_MAX_COUNT_XR  = 200000;
 
 GS.MIN_SORT_INT = 30;
 
+GS.CLIP     = 1.1;
+GS.CLIP_XR  = 0.7;
+
 GS.FOV_ANG   = 110;  // 120
 GS.FOV_SCALE = 0.3; // 0.4
 
 GS.AUTOLOD_ABOVE = GS.LOD_MAX_COUNT;
 
+
+
+GS.profile = ()=>{
+
+    if (ATON.device.lowGPU || ATON.device.isMobile){
+        GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
+        GS.AUTOLOD_ABOVE = 1500000;
+
+        GS.MIN_PXRAD  = 2;
+        GS.MAX_STDDEV = 2.0;
+
+        GS.MIN_SORT_INT = 400;
+        GS.CLIP = 1.0;
+
+        GS.MAX_PD = 0.9; //0.8;
+
+        GS.MIN_ALPHA = 0.05;
+    }
+};
+
 //Initializes the component
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
+
+    //GS.profile();
 
     // Auto-generate LODs above certain threshold
     GS._bAutoLOD = true;
@@ -88,17 +113,18 @@ GS.realize = ()=>{
     ATON._rootVisible.add( GS._3DGSR );
     //ATON.Nav._camera.add( GS._3DGSR );
 
-    GS._3DGSR.clipXY = 1.1;
+    GS._3DGSR.clipXY = GS.CLIP;
     GS._3DGSR.focalAdjustment = 2.0;
     //GS._3DGSR.preBlurAmount = 0.3;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
         GS.AUTOLOD_ABOVE = 1500000;
+        GS.CLIP = 1.0;
 
         GS.MIN_PXRAD  = 2;
         GS.MAX_STDDEV = 2.0;
-        GS._3DGSR.clipXY = 1.0;
+        GS._3DGSR.clipXY = GS.CLIP;
 
         GS.MIN_SORT_INT = 400;
         GS._3DGSR.minSortIntervalMs = GS.MIN_SORT_INT;
@@ -180,7 +206,7 @@ GS.realize = ()=>{
         if (b){
             GS._3DGSR.maxStdDev = 2.0;
             GS._3DGSR.numLodFetchers = 1;
-            //GS._3DGSR.clipXY    = 0.9;
+            GS._3DGSR.clipXY    = GS.CLIP_XR;
 
             GS._3DGSR.coneFov     = GS.FOV_ANG * 0.8;
             GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;
@@ -193,7 +219,7 @@ GS.realize = ()=>{
         }
         else {
             GS._3DGSR.maxStdDev = GS.MAX_STDDEV;
-            //GS._3DGSR.clipXY    = 1.1;
+            GS._3DGSR.clipXY    = GS.CLIP;
 
             GS._3DGSR.coneFov     = GS.FOV_ANG;
             GS._3DGSR.coneFov0    = GS._3DGSR.coneFov * 0.7;

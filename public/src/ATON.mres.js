@@ -71,7 +71,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 20; // temp
+                    TS.errorTarget *= 50; // temp
                 }
             }    
             else {
@@ -306,7 +306,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     // Extract from JSON
     if (!bDZI) ATON.REQ.get( tsurl, ( data )=>{
         if (MRes._bGS && ATON.GS.detectTilesetExtension(data)){
-            ATON.GS.profileHW();
+            ATON.GS.configure();
 
             let plugGS = new TILES.GaussianSplatPlugin({
                 renderer: ATON._renderer,

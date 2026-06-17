@@ -40,8 +40,8 @@ GS.AUTOLOD_ABOVE = GS.LOD_MAX_COUNT;
 
 
 
-GS.profileHW = ()=>{
-    if (GS._bHW) return;
+GS.configure = ()=>{
+    if (GS._bConfHW) return;
 
     if (ATON.device.lowGPU || ATON.device.isMobile){
         GS.LOD_MAX_COUNT = GS.LOD_MAX_COUNT_MOB;
@@ -62,14 +62,14 @@ GS.profileHW = ()=>{
         GS.FOV_SCALE *= 0.7;
     }
 
-    GS._bHW = true;
+    GS._bConfHW = true;
 };
 
 //Initializes the component
 GS.realize = ()=>{
     if (GS._3DGSR) return; // Already realized
 
-    GS.profileHW();
+    GS.configure();
 
     // Auto-generate LODs above certain threshold
     GS._bAutoLOD = true;

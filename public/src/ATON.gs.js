@@ -31,7 +31,7 @@ GS.LOD_MAX_COUNT_XR  = 200000;
 GS.MIN_SORT_INT = 30;
 
 GS.CLIP     = 1.1;
-GS.CLIP_XR  = 0.7;
+GS.CLIP_XR  = 0.85;
 
 GS.FOV_ANG   = 110;  // 120
 GS.FOV_SCALE = 0.3; // 0.4
@@ -408,6 +408,9 @@ GS.update = ()=>{
         }
         else {
             GS._3DGSR.autoUpdate = true;
+            //if (GS._bMotion) GS._3DGSR.autoUpdate = true;
+            //else GS._3DGSR.autoUpdate = false;
+            
             //GS._3DGSR.enableLod = true;
         }
 
@@ -428,7 +431,8 @@ GS.update = ()=>{
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE * 0.5;
         }
         else {
-            //GS._3DGSR.autoUpdate = true;
+            //if (GS._bMotion) GS._3DGSR.autoUpdate = true;
+            //else GS._3DGSR.autoUpdate = false;
 
             //GS._3DGSR.enableDriveLod = true;
             //GS._3DGSR.lodSplatScale = GS.LOD_SPLATSCALE;

@@ -71,7 +71,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 50; // temp
+                    TS.errorTarget *= 30; // temp
                 }
             }    
             else {
@@ -92,6 +92,27 @@ MRes.init = ()=>{
             MRes._GSR.minAlpha  = ATON.GS.MIN_ALPHA;
             MRes._GSR.maxStdDev = ATON.GS.MAX_STDDEV;
             MRes._GSR.clipXY    = ATON.GS.CLIP;
+        }
+    });
+
+    ATON.on("RequestLowerRender", ()=>{
+        if (ATON.XR._bPresenting){
+            for (let ts=0; ts < MRes._tsets.length; ts++){
+                const TS = MRes._tsets[ts];
+
+                if (TS._isGS) TS.errorTarget *= 1.5;
+            }
+        }
+    });
+    ATON.on("RequestHigherRender", ()=>{
+        if (ATON.XR._bPresenting){
+            for (let ts=0; ts < MRes._tsets.length; ts++){
+                const TS = MRes._tsets[ts];
+
+                if (TS._isGS) TS.errorTarget /= 1.5;
+                
+                if (TS.errorTarget < 1.0) TS.errorTarget = 1.0;
+            }
         }
     });
 };

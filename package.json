@@ -89,7 +89,7 @@
     "performance-now": "^2.1.0",
     "recursive-copy": "^2.0.14",
     "session-file-store": "^1.5.0",
-    "sharp": "^0.35.1",
+    "sharp": "^0.35.2",
     "socket.io": "^4.8.3",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
@@ -97,7 +97,7 @@
     "three-custom-shader-material": "6.4.0",
     "three-mesh-bvh": "0.9.10",
     "three-mesh-ui": "^6.5.4",
-    "uuid": "^14.0.0",
+    "uuid": "^14.0.1",
     "webdav-server": "^2.6.2",
     "ws": "^8.21.0",
     "zlibjs": "^0.3.1"

@@ -187,15 +187,14 @@ Core.setupFlares = (app)=>{
 
 		let fbasepath = Core.DIR_FLARES + flarename + "/";
 
-		//Core.flares.push( flarename );
-
-		// Client (public) components
-/*
-		if (P.client){
-			for (let s in P.client.files) Core.FEScripts.push( "/flares/"+ flarename +"/"+ P.client.files[s] );
+		// Private (server)
+		let mainEntry = fbasepath + "main.js";
+		if (fs.existsSync(mainEntry)){
+			const M = require(mainEntry);
+			if (M.init) M.init(app);
 		}
-*/
-		// Server (private) components
+
+		// Server modules
 		if (P.server){
 			for (let m in P.server.modules){
 				let mname = P.server.modules[m];

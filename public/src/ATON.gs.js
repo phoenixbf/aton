@@ -30,6 +30,8 @@ GS.LOD_MAX_COUNT_XR  = 200000;
 
 GS.MIN_SORT_INT = 30;
 
+GS.MAX_SH = 3;
+
 GS.CLIP     = 1.1;
 GS.CLIP_XR  = 0.85;
 
@@ -60,6 +62,8 @@ GS.configure = ()=>{
         // Foveation
         GS.FOV_ANG   *= 0.7;
         GS.FOV_SCALE *= 0.7;
+
+        GS.MAX_SH = 1;
     }
 
     GS._bConfHW = true;
@@ -304,7 +308,7 @@ GS.load = (url, N, onComplete)=>{
         enableViewToWorld: true,
         enableWorldToView: true,
 */
-        //maxSh: 3,
+        maxSh: GS.MAX_SH,
 
         onLoad: (data)=>{
             data.quaternion.set(1, 0, 0, 0);

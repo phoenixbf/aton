@@ -15,7 +15,7 @@ Anuket client component for remote control
 Events:
 - "ANUKET_CONNECTED": fired when connected to Anuket service
 - "ANUKET_DISCONNECTED": fired when disconnected from Anuket service
-- "ANUKET_MSG": fired when a message is received (data is string)
+- "ANUKET_MSG": fired when a message is received (data is string or object)
 - "ANUKET_JOIN_REQ": fired when a session join is requested (data is session ID)
 
 @namespace Anuket
@@ -34,8 +34,25 @@ Anuket.init = ()=>{
     Anuket._ws   = undefined;
     Anuket._addr = `${ATON.BASE_URL}/anuket/`;
 
+    Anuket._role = undefined;
+
     Anuket._session = undefined;
+
+    // Multi-role logic
+    Anuket.logic = {};
 };
+
+Anuket.log = (msg)=>{
+    console.log("[Anuket] " + msg);
+};
+
+Anuket.isStringJSON = (str)=>{
+    if (str.startsWith("{")) return true;
+    if (str.startsWith("[")) return true;
+
+    return false;
+};
+
 
 /**
 Set Anuket service address
@@ -46,7 +63,7 @@ Anuket.setServiceAddress = (addr)=>{
 };
 
 /**
-Set Anuket service address
+Set session ID to join once connected
 @param {string} ssid - Session ID to join after successful connection to Anuket service
 */
 Anuket.setSessionID = (ssid)=>{
@@ -59,17 +76,6 @@ Return true if connected to Anuket service
 */
 Anuket.isConnected = ()=>{
     return (Anuket._cState === Anuket.CSTATE_CONNECTED);
-};
-
-Anuket.log = (msg)=>{
-    console.log("[Anuket] " + msg);
-};
-
-Anuket.isStringJSON = (str)=>{
-    if (str.startsWith("{")) return true;
-    if (str.startsWith("[")) return true;
-
-    return false;
 };
 
 /**
@@ -102,7 +108,7 @@ Anuket.connect = ()=>{
 
     Anuket._ws.addEventListener('message', (event)=>{
         let data = event.data;
-        
+
         if (Anuket.isStringJSON(data)) data = JSON.parse(data);
 
         ATON.fire("ANUKET_MSG", data);
@@ -159,27 +165,37 @@ Anuket.sendObject = (o)=>{
     Anuket._ws.send( JSON.stringify(o) );        
 };
 
+/**
+Set client role
+@param {string} role - a string representing the role of this client
+*/
+Anuket.setRole = (role)=>{
+    Anuket._role = role;
+};
 
-Anuket.setupLocalLogic = ( routine )=>{
-    if (!routine) return false;
-    
-    routine();
+Anuket.setLocalLogic = ( logic, role )=>{
+    if (role) Anuket._role = role;
+
+    if (!logic) return false;
+
+    //if (Anuket.logic[Anuket._role]) return false; // Already registered
+    //Anuket.logic[Anuket._role] = logic;
+
+    logic();
 
     return true;
 };
 
-// TODO: Load logic from external file
-/*
-Anuket.loadLogic = ( logicpath, role, onLoad )=>{
+// TODO: Load logic from external multi-role file
+Anuket.loadLogic = ( logicpath, onLoad )=>{
 
     ATON.loadScript( logicpath, ()=>{
         Anuket.log("Logic loaded");
 
-        if (role){
-            let setuproutine = F.logic[role];
-            if (setuproutine) setuproutine();
+        if (Anuket._role){
+            let L = Anuket.logic[Anuket._role];
 
-            Anuket.log("Role '"+role+"' set");
+            if (L) L();
         }
 
         Anuket.connect();
@@ -187,6 +203,5 @@ Anuket.loadLogic = ( logicpath, role, onLoad )=>{
         if (onLoad) onLoad();
     });
 };
-*/
 
 export default Anuket;

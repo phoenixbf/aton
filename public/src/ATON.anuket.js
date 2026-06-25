@@ -1,61 +1,92 @@
 /*
     ATON Anuket
 
+    Remote control/interaction client component for ATON
+    developed under CHANGES project, spoke 4 (https://www.fondazionechanges.org/en/spoke-4-en/) as a flare, and then integrated into the core
+
     authors:
         bruno.fanini_AT_cnr.it
 
 ===========================================================*/
 
 /**
-Anuket
+Anuket client component for remote control
+
+Events:
+- "ANUKET_CONNECTED": fired when connected to Anuket service
+- "ANUKET_DISCONNECTED": fired when disconnected from Anuket service
+- "ANUKET_MSG": fired when a message is received (data is string)
+- "ANUKET_JOIN_REQ": fired when a session join is requested (data is session ID)
+
 @namespace Anuket
 */
 let Anuket = {};
 
 // Connection states
-Anuket.CSTATE = {
-    DISCONNECTED: 0,
-    CONNECTING: 1,
-    CONNECTED: 2
-};
+Anuket.CSTATE_DISCONNECTED = 0;
+Anuket.CSTATE_CONNECTING   = 1;
+Anuket.CSTATE_CONNECTED    = 2;
 
 
 Anuket.init = ()=>{
-    Anuket._cState = Anuket.CSTATE.DISCONNECTED;
+    Anuket._cState = Anuket.CSTATE_DISCONNECTED;
 
     Anuket._ws   = undefined;
-    Anuket._addr = undefined;
+    Anuket._addr = `${ATON.BASE_URL}/anuket/`;
 
     Anuket._session = undefined;
 };
 
 /**
-Connect to Anuket service 
-@param {string} addr - url of Anuket websocket service
+Set Anuket service address
+@param {string} addr - address of Anuket websocket service (e.g. running on another node)
 */
-Anuket.connect = (addr)=>{
-    if (Anuket._cState === Anuket.CSTATE.CONNECTED){
-        console.log("Already connected to service");
-        return;
-    }
-    if (Anuket._cState === Anuket.CSTATE.CONNECTING){
-        console.log("Already connecting to service");
-        return;
-    }
+Anuket.setServiceAddress = (addr)=>{
+    Anuket._addr = addr;
+};
 
-    if (!addr){
-        console.log("Invalid connect address");
+/**
+Set Anuket service address
+@param {string} ssid - Session ID to join after successful connection to Anuket service
+*/
+Anuket.setSessionID = (ssid)=>{
+    Anuket._session = ssid;
+};
+
+/**
+Return true if connected to Anuket service
+@returns {boolean}
+*/
+Anuket.isConnected = ()=>{
+    return (Anuket._cState === Anuket.CSTATE_CONNECTED);
+};
+
+Anuket.log = (msg)=>{
+    console.log("[Anuket] " + msg);
+};
+
+/**
+Connect to Anuket service
+*/
+Anuket.connect = ()=>{
+    if (Anuket._cState === Anuket.CSTATE_CONNECTED){
+        Anuket.log("Already connected to service");
+        return;
+    }
+    if (Anuket._cState === Anuket.CSTATE_CONNECTING){
+        Anuket.log("Already connecting to service");
         return;
     }
 
     // Enter connecting state
-    Anuket._cState = Anuket.CSTATE.CONNECTING;
+    Anuket._cState = Anuket.CSTATE_CONNECTING;
+    Anuket.log("Connecting ("+ Anuket._addr +") ...");
 
-    Anuket._ws = new WebSocket(addr);
+    Anuket._ws = new WebSocket( Anuket._addr );
 
     Anuket._ws.addEventListener('open', (event)=>{
-        console.log("Connected!");
-        Anuket._cState = Anuket.CSTATE.CONNECTED;
+        Anuket.log("Connected!");
+        Anuket._cState = Anuket.CSTATE_CONNECTED;
 
         if (Anuket._session) Anuket.joinSession( Anuket._session );
 
@@ -70,15 +101,15 @@ Anuket.connect = (addr)=>{
     });
 
     Anuket._ws.addEventListener('close', (event)=>{ 
-        console.log('Connection has been closed');
-        Anuket._cState = Anuket.CSTATE.DISCONNECTED;
+        Anuket.log('Connection closed');
+        Anuket._cState = Anuket.CSTATE_DISCONNECTED;
 
         ATON.fire("ANUKET_DISCONNECTED");
     });
 
     Anuket._ws.addEventListener('error', (event)=>{ 
-        console.log('Error:' + event);
-        Anuket._cState = Anuket.CSTATE.DISCONNECTED;
+        Anuket.log('Error:' + event);
+        Anuket._cState = Anuket.CSTATE_DISCONNECTED;
 
         ATON.fire("ANUKET_DISCONNECTED");
     });
@@ -89,9 +120,12 @@ Join a session (subscribe)
 @param {string} ssid - session ID
 */
 Anuket.joinSession = (ssid)=>{
-    if (Anuket._cState !== Anuket.CSTATE.CONNECTED) return false;
+    if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
+    if (!ssid || ssid.length < 1) return false;
 
-    console.log("Request join session '"+ssid+"'");
+    Anuket._session = ssid;
+
+    Anuket.log("Request join session '"+ssid+"'");
 
     Anuket.sendMessage("#"+ssid);
     ATON.fire("ANUKET_JOIN_REQ", ssid);
@@ -102,7 +136,7 @@ Send message (string)
 @param {string} msg - string to send to current session participants
 */
 Anuket.sendMessage = (msg)=>{
-    if (Anuket._cState !== Anuket.CSTATE.CONNECTED) return false;
+    if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
 
     Anuket._ws.send(msg);
 };
@@ -112,9 +146,39 @@ Send object
 @param {object} o - object to send to current session participants
 */
 Anuket.sendObject = (o)=>{
-    if (Anuket._cState !== Anuket.CSTATE.CONNECTED) return false;
+    if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
 
     Anuket._ws.send( JSON.stringify(o) );        
 };
+
+
+Anuket.setupLocalLogic = ( routine )=>{
+    if (!routine) return false;
+    
+    routine();
+
+    return true;
+};
+
+// TODO: Load logic from external file
+/*
+Anuket.loadLogic = ( logicpath, role, onLoad )=>{
+
+    ATON.loadScript( logicpath, ()=>{
+        Anuket.log("Logic loaded");
+
+        if (role){
+            let setuproutine = F.logic[role];
+            if (setuproutine) setuproutine();
+
+            Anuket.log("Role '"+role+"' set");
+        }
+
+        Anuket.connect();
+
+        if (onLoad) onLoad();
+    });
+};
+*/
 
 export default Anuket;

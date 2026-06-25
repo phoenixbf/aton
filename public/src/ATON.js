@@ -46,6 +46,7 @@ import MRes from "./ATON.mres.js";
 import ASCII from "./ATON.ascii.js";
 import REQ from "./ATON.req.js";
 import GS from "./ATON.gs.js";
+import Anuket from "./ATON.anuket.js";
 
 // Classes
 ATON.Node       = Node;
@@ -78,6 +79,7 @@ ATON.MRes       = MRes;
 ATON.ASCII      = ASCII;
 ATON.REQ        = REQ;
 ATON.GS         = GS;
+ATON.Anuket     = Anuket;
 
 //==============================================================
 // Consts
@@ -818,6 +820,9 @@ ATON.realize = ( bNoRender )=>{
     // Photon
     ATON.Photon.init();
     ATON.VRoadcast = ATON.Photon; // compatibility with old apps (SOON TO BE REMOVED)
+
+    // Anuket
+    ATON.Anuket.init();
 
     // Media Flow
     ATON.MediaFlow.init();

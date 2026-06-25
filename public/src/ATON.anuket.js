@@ -65,6 +65,13 @@ Anuket.log = (msg)=>{
     console.log("[Anuket] " + msg);
 };
 
+Anuket.isStringJSON = (str)=>{
+    if (str.startsWith("{")) return true;
+    if (str.startsWith("[")) return true;
+
+    return false;
+};
+
 /**
 Connect to Anuket service
 */
@@ -95,7 +102,8 @@ Anuket.connect = ()=>{
 
     Anuket._ws.addEventListener('message', (event)=>{
         let data = event.data;
-        if (data.startsWith("{")) data = JSON.parse(data);
+        
+        if (Anuket.isStringJSON(data)) data = JSON.parse(data);
 
         ATON.fire("ANUKET_MSG", data);
     });

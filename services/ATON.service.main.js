@@ -168,13 +168,13 @@ Core.Render.setup(app);
 // Photon (previously VRoadcast)
 app.use('/vrc', createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	//ws: true, 
+	ws: true, 
 	pathRewrite: { '^/vrc': ''},
 	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	//ws: true, 
+	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
 	changeOrigin: true 
@@ -185,7 +185,8 @@ app.use('/anuket', createProxyMiddleware({
 	target: ANU_ADDR+":"+ANU_PORT, 
 	ws: true, 
 	pathRewrite: { '^/anuket': ''},
-	changeOrigin: true
+	changeOrigin: true,
+	secure: true
 }));
 
 

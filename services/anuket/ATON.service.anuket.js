@@ -29,6 +29,20 @@ if (aConfig.services.anuket){
 // console.log("Anuket service started on PORT:"+PORT);
 
 const app = express();
+
+app.use(
+	express.json({
+		limit: '100mb'
+	})
+);
+app.use(
+	express.urlencoded({
+		extended: true, 
+		limit: "100mb"
+	})
+);
+
+
 const server = app.listen(PORT, () => {
     console.log("Anuket service started on PORT:"+PORT);
 });

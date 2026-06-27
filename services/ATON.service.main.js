@@ -181,14 +181,15 @@ app.use('/svrc', createProxyMiddleware({
 }));
 
 // Anuket
-app.use('/anuket', createProxyMiddleware({ 
+const anuketProxy = createProxyMiddleware({ 
 	target: ANU_ADDR+":"+ANU_PORT, 
 	ws: true, 
-	pathRewrite: { '^/anuket': ''},
 	changeOrigin: true,
-	secure: true
-}));
+	secure: true,
+	pathRewrite: { '^/anuket': ''}
+});
 
+app.use("/anuket", anuketProxy);
 
 
 // 404
@@ -211,7 +212,9 @@ for (let fid in Core.flares){
 
 // START
 //==================================
-http.createServer(app).listen(PORT, ()=>{
+let gateway = http.createServer(app);
+
+gateway.listen(PORT, ()=>{
 	Core.printLogo();
 	
 	console.log("\nATON up and running!");
@@ -221,6 +224,9 @@ http.createServer(app).listen(PORT, ()=>{
 	console.log("\n");
 });
 
+gateway.on("upgrade", anuketProxy.upgrade);
+
+
 // HTTPS service
 if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 	let httpsOptions = {
@@ -228,13 +234,17 @@ if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 		cert: fs.readFileSync(pathCert, 'utf8')
 	};
 
-	https.createServer(httpsOptions, app).listen(PORT_SECURE, ()=>{ 
+	let sgateway = https.createServer(httpsOptions, app);
+
+	sgateway.listen(PORT_SECURE, ()=>{ 
 		console.log("\nHTTPS ATON up and running!");
 		console.log("- OFFLINE: https://localhost:"+PORT_SECURE);
 		for (let n in Core.nets) console.log("- NETWORK ('"+n+"'): https://"+Core.nets[n][0]+":"+PORT_SECURE);
 		
 		console.log("\n");
 	});
+
+	sgateway.on("upgrade", anuketProxy.upgrade);
 }
 else {
 	console.log("\nSSL certs not found:\n"+pathKey+"\n"+pathCert);

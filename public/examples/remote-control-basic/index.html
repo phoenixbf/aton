@@ -45,7 +45,12 @@ window.addEventListener( 'load', ()=>{
 
     // Remote control setup
     // We first setup a simple logic for this viewer
-    ATON.on("ANUKET_MSG",( povid )=>{
+    ATON.on("ANUKET_MSG",( msg )=>{
+        if (!msg.startsWith("pov:")) return;
+
+        let v = msg.split(":");
+        let povid = v[1];
+
         console.log("Received POV "+povid);
 
         if (povid === "home") ATON.Nav.requestHomePOV();

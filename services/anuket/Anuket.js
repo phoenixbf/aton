@@ -122,7 +122,6 @@ Anuket.setupWebSocketServer = (wss)=>{
         let uid = Anuket.generateClientID();
         let currssid = undefined;
 
-
         const requestSessionJoin = (reqses)=>{
             let S = Anuket.touchSession(reqses);
 
@@ -143,6 +142,7 @@ Anuket.setupWebSocketServer = (wss)=>{
         };
 
         console.log("Client "+uid+" connected!");
+        socket.send(1);
 
         //on message from client
         socket.on("message", data => {

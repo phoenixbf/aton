@@ -36,6 +36,9 @@ let PORT        = 8080;
 let PORT_SECURE = 8083;
 let VRC_PORT    = 8890;
 let VRC_ADDR    = "ws://localhost";
+let ANU_PORT    = 8891;
+let ANU_ADDR    = "ws://localhost";
+
 let PORT_WEBDAV = 8081;
 
 if (CONF.services.main.PORT) 
@@ -50,6 +53,11 @@ if (CONF.services.main.PORT_S)
 if (CONF.services.photon){
 	if (CONF.services.photon.PORT)    VRC_PORT = CONF.services.photon.PORT;
 	if (CONF.services.photon.address) VRC_ADDR = CONF.services.photon.address;
+}
+
+if (CONF.services.anuket){
+	if (CONF.services.anuket.PORT)    ANU_PORT = CONF.services.anuket.PORT;
+	if (CONF.services.anuket.address) ANU_ADDR = CONF.services.anuket.address;
 }
 
 // compatibility with previous configs
@@ -76,6 +84,23 @@ let logger = function(req, res, next){
 
 let app = express();
 
+// WebDav
+/*
+app.use("/dav", createProxyMiddleware({
+	target: "http://localhost:"+PORT_WEBDAV,
+    changeOrigin: true,
+    ws: true,
+    logLevel: "debug",
+	pathRewrite: {
+		"^/dav": "", // remove prefix
+	},
+
+    onProxyReq: (proxyReq, req, res) => {
+		proxyReq.setHeader("Connection", "keep-alive");
+	},
+}));
+*/
+
 //app.set('trust proxy', 1); 	// trust first proxy
 
 //app.use(compression());
@@ -91,24 +116,17 @@ app.use((req, res, next)=>{
 	next();
 });
 */
-app.use(express.json({ limit: '50mb' }));
-
-// Scenes redirect /s/<sid>
-/*
-app.get(/^\/s\/(.*)$/, function(req,res,next){
-	let sid = req.params[0];
-
-	//req.url     = "/fe";
-	//req.query.s = sid;
-	
-	res.redirect(url.format({
-		pathname:"/fe",
-		query: { "s": sid }
-	}));
-
-	next();
-});
-*/
+app.use(
+	express.json({
+		limit: '100mb'
+	})
+);
+app.use(
+	express.urlencoded({
+		extended: true, 
+		limit: "100mb"
+	})
+);
 
 // Data routing (advanced)
 //Core.setupDataRoute(app);
@@ -150,31 +168,27 @@ Core.Render.setup(app);
 // Photon (previously VRoadcast)
 app.use('/vrc', createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	ws: true, 
+	//ws: true, 
 	pathRewrite: { '^/vrc': ''},
 	changeOrigin: true
 }));
 app.use('/svrc', createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	ws: true, 
+	//ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
 	changeOrigin: true 
 }));
 
-// WebDav
-/*
-app.use('/dav', createProxyMiddleware({ 
-	//target: CONF.services.webdav.address+":"+PORT_WEBDAV, 
-	target: "http://localhost:"+PORT_WEBDAV,
-	pathRewrite: { '^/dav': ''},
-	changeOrigin: false, //true,
-	//xfwd: true,
-	//secure: true,
-
-	//router: { "/dav" : "http://localhost:"+PORT_WEBDAV }
+// Anuket
+app.use('/anuket', createProxyMiddleware({ 
+	target: ANU_ADDR+":"+ANU_PORT, 
+	ws: true, 
+	pathRewrite: { '^/anuket': ''},
+	changeOrigin: true
 }));
-*/
+
+
 
 // 404
 //==================================

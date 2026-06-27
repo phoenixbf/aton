@@ -12,6 +12,7 @@ const uuid = require('uuid');
 
 Anuket = {};
 Anuket.MAX_CLIENTS_PER_SESSION = 50;
+Anuket.PING_MSG = "PING";
 
 
 // Classes
@@ -146,6 +147,8 @@ Anuket.setupWebSocketServer = (wss)=>{
         //on message from client
         socket.on("message", data => {
             let d = data.toString();
+
+            if (d === Anuket.PING_MSG) return;
             
             console.log("Data received: "+d);
 

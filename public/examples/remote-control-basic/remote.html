@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON example</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+    ATON.realize2D();
+    ATON.UI.setTheme("light");
+
+    ATON.UI.get("povs").append(
+        ATON.UI.createButton({
+            icon: "home",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                ATON.Anuket.sendMessage("home");
+            }
+        }),
+
+        ATON.UI.createButton({
+            text: "Entrance",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                ATON.Anuket.sendMessage("pov-entrance");
+            }
+        }),
+
+        ATON.UI.createButton({
+            text: "Anvil",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                ATON.Anuket.sendMessage("pov-anvil");
+            }
+        }),
+
+        ATON.UI.createButton({
+            text: "Forge",
+            classes: "btn-default w-100",
+            onpress: ()=>{
+                ATON.Anuket.sendMessage("pov-forge");
+            }
+        })
+    );
+
+    ATON.Anuket.joinSession("montebelluna-remote-anuket");
+
+});
+</script>
+</head>
+
+<body>
+        <div id="examples" style="text-align: center; padding: 16px;">
+            <h2>Viewpoints<h2>
+            <div id="povs"></div>
+        </div>
+</body>

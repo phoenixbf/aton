@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON example</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+const REMOTE_CONTROL_URL = window.location.origin + "/examples/remote-control-basic/remote.html";
+
+window.addEventListener( 'load', ()=>{
+
+	// Realize base ATON and add base UI events
+    ATON.realize();
+    ATON.UI.addBasicEvents();
+
+    // We load a 3D scene
+    // Parameter is the "sid" (scene ID) that uniquely identify the scene on this ATON instance
+    ATON.App.loadScene("samples/montebelluna");
+
+    // Remote control setup
+    // We first setup a simple logic for this viewer
+    ATON.on("ANUKET_MSG",( povid )=>{
+        console.log("Received POV "+povid);
+
+        if (povid === "home") ATON.Nav.requestHomePOV();
+        else ATON.Nav.requestPOVbyID( povid );
+    });
+
+    // Then we join a specific session
+    ATON.Anuket.joinSession("montebelluna-remote-anuket");
+
+
+    // Setup some UI
+    // Append a few prefab UI buttons to our main toolbar
+	ATON.UI.get("toolbar").append(
+        ATON.UI.createButtonHome(),
+        ATON.UI.createButtonVR(),   // VR button will show up only on secure connections and supported devices
+    );
+
+    // Create a button to open side panel
+    ATON.UI.get("side").append(
+        ATON.UI.createButton({
+            icon: "help",
+            onpress: openSidePanel
+        })
+    );
+
+    openSidePanel();
+});
+
+// Routine to open a sidepanel with some info
+let openSidePanel = ()=>{
+
+    let elQR;
+
+    // Adds a QR code
+    if (!REMOTE_CONTROL_URL.startsWith("http://localhost")){
+        elQR = ATON.UI.createContainer({ classes: "aton-QR-container" });
+        new QRCode(elQR, REMOTE_CONTROL_URL);
+    }
+
+    ATON.UI.showSidePanel({
+        header: "Remote Control basic",
+        body: ATON.UI.createContainer({
+            items:[
+                ATON.UI.elem(`
+                    <p>In this sample we load a 3D scene and setup a remote control (a different webapp) via Anuket component. This page represents the viewer app: we first setup a simple logic where the remote app can request a scene viewpoint via <code>ATON.Nav.requestPOVbyID(povid)</code> once the POV ID is received.<br><br>
+                        
+                    The sample <a href="${REMOTE_CONTROL_URL}" target="_blank">remote app</a> allows to send POV IDs through basic ATON.UI buttons. Both the viewer (this page) and the remote app join the same Anuket session via <code>ATON.Anuket.joinSession("montebelluna-remote-anuket")</code> to communicate.
+                    </p>`
+                ),
+
+                elQR
+            ]
+        })
+    });
+};
+
+</script>
+</head>
+
+<body>
+    <div id="toolbar" class="aton-toolbar-top"></div>
+    <div id="side" class="aton-toolbar-bottom" style="position: absolute; right: 0px;"></div>
+
+    <div class="aton-poweredby" >
+        Powered by <a href="https://aton.ispc.cnr.it/site/" target="_blank">ATON</a>
+    </div>
+</body>

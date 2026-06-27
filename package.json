@@ -93,7 +93,7 @@
     "socket.io": "^4.8.3",
     "swagger-jsdoc": "^6.3.0",
     "swagger-ui-express": "^5.0.1",
-    "three": "0.184.0",
+    "three": "0.185.0",
     "three-custom-shader-material": "6.4.0",
     "three-mesh-bvh": "0.9.10",
     "three-mesh-ui": "^6.5.4",

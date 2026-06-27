@@ -247,8 +247,12 @@ Core.CONF_MAIN = {
 			PORT: 8081
 		},
 
-		maat: {
+		anuket: {
 			PORT: 8891
+		},
+		
+		maat: {
+			PORT: 8892
 		}
 	},
 

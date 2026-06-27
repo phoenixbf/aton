@@ -27,6 +27,9 @@ Anuket.CSTATE_DISCONNECTED = 0;
 Anuket.CSTATE_CONNECTING   = 1;
 Anuket.CSTATE_CONNECTED    = 2;
 
+Anuket.PING_MSG      = "PING";
+Anuket.PING_INTERVAL = 8000;
+
 
 Anuket.init = ()=>{
     Anuket._cState = Anuket.CSTATE_DISCONNECTED;
@@ -37,6 +40,20 @@ Anuket.init = ()=>{
     Anuket._role = undefined;
 
     Anuket._session = undefined;
+
+    Anuket._bAutoReconnect = false;
+    window.setInterval(()=>{
+        if (Anuket._bAutoReconnect && Anuket._session && Anuket._cState === Anuket.CSTATE_DISCONNECTED){
+            Anuket.log("Auto reconnection...");
+            Anuket.connect();
+        }
+
+        // Ping
+        if (Anuket.isConnected() && Anuket._ws.readyState === WebSocket.OPEN){
+            Anuket.sendMessage(Anuket.PING_MSG);
+        }
+
+    }, Anuket.PING_INTERVAL );
 
     // Multi-role logic
     Anuket.logic = {};
@@ -76,6 +93,15 @@ Return true if connected to Anuket service
 */
 Anuket.isConnected = ()=>{
     return (Anuket._cState === Anuket.CSTATE_CONNECTED);
+};
+
+/**
+Set auto reconnection.
+On disconnection Anuket will try to automatically reconnect and rejoin the session
+@param {bool} b - auto reconnection (true or false)
+*/
+Anuket.setAutoReconnect = (b)=>{
+    Anuket._bAutoReconnect = b;
 };
 
 /**
@@ -134,10 +160,15 @@ Join a session (subscribe)
 @param {string} ssid - session ID
 */
 Anuket.joinSession = (ssid)=>{
-    if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
     if (!ssid || ssid.length < 1) return false;
-
+    
     Anuket._session = ssid;
+    
+    //if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
+    if (Anuket._cState !== Anuket.CSTATE_CONNECTED){
+        Anuket.connect();
+        return true;
+    }
 
     Anuket.log("Request join session '"+ssid+"'");
 

@@ -941,6 +941,7 @@ ATON.realize2D = ()=>{
 
     ATON.EventHub.init();
     //ATON.Photon.init();
+    ATON.Anuket.init();
 
     //ATON.MediaFlow.init();
 

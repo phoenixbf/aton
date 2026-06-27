@@ -36,6 +36,23 @@ module.exports = {
       }
     },
 
+    // Anuket service
+    {
+      name          : 'ATON Anuket Service',
+      script        : 'services/anuket/ATON.service.anuket.js',
+      instances     : 1,
+      exec_mode     : 'cluster',
+      watch         : ["services","config"],
+      ignore_watch  : ["config/flares"],
+      merge_logs    : true,
+      max_memory_restart: "400M",
+      restart_delay : 1000,
+      //out_file     : "./logs/ATON.service.anuket.log",
+      env: {
+        "NODE_ENV" : "production",
+      }
+    },
+
     // WebDav service
     {
       name          : 'ATON WebDav Service',

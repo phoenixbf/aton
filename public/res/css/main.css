@@ -124,6 +124,17 @@ a {
 ::-moz-selection { background-color: rgba(var(--aton-colors-accent-rgb), 0.3); }
 ::-webkit-selection { background-color: rgba(var(--aton-colors-accent-rgb), 0.3); }
 
+code {
+    display: block;
+    font-family: monospace;
+
+    background-color: rgba(var(--bs-body-bg-rgb), 0.7);
+    padding: 8px;
+    color: var(--bs-body-color);
+
+    border-radius: var(--bs-border-radius);
+}
+
 /*=========================================
     ATON cascading classes (aton-*)
     to be applied on top of bootstrap 5

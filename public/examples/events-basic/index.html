@@ -37,18 +37,19 @@ window.addEventListener( 'load', ()=>{
     ATON.realize();
     ATON.UI.addBasicEvents();
 
-    // Sample scene with chaining
-    ATON.createSceneNode("ground")                      // create our scene node with ID 'ground'
-        .load("samples/models/basic/ground.gltf")       // load a sample GLTF from our local collection
-        .setScale(10.0)                                 // scale "ground" node 10x
-        .attachToRoot();                                // attach the node to main root
+    // Sample ground
+    ATON.createSceneNode("ground").load("samples/models/basic/aton-ground.gltf").setScale(10.0).attachToRoot();
 
 	// Create another node ("cube") and load a sample glTF
 	// then position it somewhere and attach to main root
-	ATON.createSceneNode("cube").load("samples/models/atoncube.gltf").setPosition(-4.0,0.5,4.0).attachToRoot();
+	ATON.createSceneNode("cube").load("samples/models/atoncube.gltf").setPosition(0,0.5,0).attachToRoot();
 
-	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
+	// We handle a sample keypress event
+	// When pressing 'w' or 's' we'll translate the cube node up and down
+	ATON.on("KeyPress", (k)=>{
+		if (k === 'w') ATON.getSceneNode("cube").position.y += 0.2;
+        if (k === 's') ATON.getSceneNode("cube").position.y -= 0.2;
+	});
 
     // Setup some UI
     // Append a few prefab UI buttons to our main toolbar
@@ -71,13 +72,11 @@ window.addEventListener( 'load', ()=>{
 // Routine to open a sidepanel with some info
 let openSidePanel = ()=>{
     ATON.UI.showSidePanel({
-        header: "Basic",
-        body: ATON.UI.elem(`<p>
-            In this sample we setup a minimal toolbar and a basic 3D scene. We create an ATON node ('ground') via:
-            <code>ATON.createSceneNode(nodeid)</code><br>
-
-            then create and position another node ('cube'). We also set a basic background panorama (360 equirectangular image) from samples collection via:
-            <code>ATON.setMainPanorama(url)</code>
+        header: "Basic Events",
+        body: ATON.UI.elem(`
+        <p>In this sample we listen to basic keypress events fired by ATON, to translate the node "cube" using:
+        <code>ATON.on("KeyPress", (k)=>{ ... }</code><br>
+        In this case keys 'w' and 's' to move up and down the cube.
         </p>`)
     });
 };

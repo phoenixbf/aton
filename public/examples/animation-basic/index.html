@@ -31,24 +31,24 @@
 <script type="module" src="/src/ATON.js"></script>
 
 <script>
+// This is a sample animated GLTF model from Cesium
+// See: https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/CesiumMan
+const remoteAnimURL = "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/CesiumMan/glTF-Draco/CesiumMan.gltf";
+
 window.addEventListener( 'load', ()=>{
 
 	// Realize base ATON and add base UI events
     ATON.realize();
     ATON.UI.addBasicEvents();
 
-    // Sample scene with chaining
-    ATON.createSceneNode("ground")                      // create our scene node with ID 'ground'
-        .load("samples/models/basic/ground.gltf")       // load a sample GLTF from our local collection
-        .setScale(10.0)                                 // scale "ground" node 10x
-        .attachToRoot();                                // attach the node to main root
+    // Create a node and load our animated model
+    ATON.createSceneNode("model").load(remoteAnimURL).attachToRoot();
 
-	// Create another node ("cube") and load a sample glTF
-	// then position it somewhere and attach to main root
-	ATON.createSceneNode("cube").load("samples/models/atoncube.gltf").setPosition(-4.0,0.5,4.0).attachToRoot();
-
-	// Loads main panorama (equirectangular)
-	ATON.setMainPanorama("samples/pano/defsky-grass.jpg");
+    // Set main panorama
+    ATON.setMainPanorama("samples/pano/hemi-sky-green.jpg");
+    
+    // Enable estimation of a general light probe
+    ATON.setAutoLP(true);
 
     // Setup some UI
     // Append a few prefab UI buttons to our main toolbar
@@ -71,13 +71,9 @@ window.addEventListener( 'load', ()=>{
 // Routine to open a sidepanel with some info
 let openSidePanel = ()=>{
     ATON.UI.showSidePanel({
-        header: "Basic",
-        body: ATON.UI.elem(`<p>
-            In this sample we setup a minimal toolbar and a basic 3D scene. We create an ATON node ('ground') via:
-            <code>ATON.createSceneNode(nodeid)</code><br>
-
-            then create and position another node ('cube'). We also set a basic background panorama (360 equirectangular image) from samples collection via:
-            <code>ATON.setMainPanorama(url)</code>
+        header: "Basic Animation",
+        body: ATON.UI.elem(`
+        <p>We load a sample remote animated glTF model from Khronos Group and attach it to our "model" node
         </p>`)
     });
 };

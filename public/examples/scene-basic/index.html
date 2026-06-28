@@ -64,7 +64,9 @@ let openSidePanel = ()=>{
     ATON.UI.showSidePanel({
         header: "Basic Scene",
         body: ATON.UI.elem(`
-        <p>In this sample we setup basic UI buttons and load an existing 3D scene (a JSON scene descriptor).<br><br>
+        <p>In this sample we setup basic UI buttons and load an existing 3D scene (a JSON scene descriptor) using:
+        <code>ATON.App.loadScene(sceneid)</code>    
+        <br>
         The JSON file contains all the references to resources (GLTF models, panoramas, media, etc.) typically located in the data collection folder.<br><br>
         The scene-ID (or SID) - in this case <b>'samples/montebelluna'</b> - is unique for a given ATON instance up and running.
         </p>`)

@@ -106,7 +106,7 @@ window.addEventListener( 'load', ()=>{
                 dir: "scene-basic",
                 keywords: {basic:1}
         });
-
+/*
         createExampleCard({
                 title: "Animated 3D Model",
                 dir: "animation1",
@@ -182,13 +182,23 @@ window.addEventListener( 'load', ()=>{
                 dir: "semantics-basic",
                 keywords: {semantic:1, annotation:1, query:1, object:1, shape:1}
         });
+*/
+
+/*
+        // Remote control
+        createExampleCard({
+                title: "Remote Control Basic",
+                dir: "remote-control-basic",
+                keywords: {anuket:1, remote:1}
+        });
+*/
 
         for (let k in sampleskw) elKeywords.append( createExampleKeyword(k) );
 });
 </script>
 </head>
 
-<body>
+<body class="shuBodyToolbar">
         <!-- Navbar -->
         <%- include('frags/navbar'); %>
 

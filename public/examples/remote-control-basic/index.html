@@ -44,12 +44,11 @@ window.addEventListener( 'load', ()=>{
     ATON.App.loadScene("samples/montebelluna");
 
     // Remote control setup
-    // We first setup a simple logic for this viewer
+    // We first setup a simple logic for this viewer, listening to incoming Anuket messages
     ATON.on("ANUKET_MSG",( msg )=>{
-        if (!msg.startsWith("pov:")) return;
+        if (!msg.povid) return; // Not a POV message, skip
 
-        let v = msg.split(":");
-        let povid = v[1];
+        let povid = msg.povid;
 
         console.log("Received POV "+povid);
 
@@ -57,7 +56,7 @@ window.addEventListener( 'load', ()=>{
         else ATON.Nav.requestPOVbyID( povid );
     });
 
-    // Then we join a specific session
+    // We join a shared session with remote app
     ATON.Anuket.joinSession("montebelluna-remote-anuket");
 
 

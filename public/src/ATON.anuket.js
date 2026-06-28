@@ -135,7 +135,10 @@ Anuket.connect = ()=>{
     Anuket._ws.addEventListener('message', (event)=>{
         let data = event.data;
 
-        if (Anuket.isStringJSON(data)) data = JSON.parse(data);
+        if (Anuket.isStringJSON(data)){
+            data = JSON.parse(data);
+            console.log(data)
+        }
 
         ATON.fire("ANUKET_MSG", data);
     });
@@ -150,7 +153,7 @@ Anuket.connect = ()=>{
     Anuket._ws.addEventListener('error', (event)=>{ 
         Anuket.log('Error');
         console.log(event);
-        
+
         Anuket._cState = Anuket.CSTATE_DISCONNECTED;
 
         ATON.fire("ANUKET_DISCONNECTED");
@@ -196,6 +199,17 @@ Anuket.sendObject = (o)=>{
     if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
 
     Anuket._ws.send( JSON.stringify(o) );        
+};
+
+/**
+Send object or string
+@param {object} data - object or string to send to current session participants
+*/
+Anuket.send = (data)=>{
+    if (!data) return;
+
+    if (typeof data === 'object' && data !== null) Anuket.sendObject(data);
+    else Anuket.sendMessage(data);
 };
 
 /**

@@ -187,6 +187,7 @@ Send message (string)
 */
 Anuket.sendMessage = (msg)=>{
     if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
+    if (!msg) return;
 
     Anuket._ws.send(msg);
 };
@@ -197,6 +198,7 @@ Send object
 */
 Anuket.sendObject = (o)=>{
     if (Anuket._cState !== Anuket.CSTATE_CONNECTED) return false;
+    if (!o) return;
 
     Anuket._ws.send( JSON.stringify(o) );        
 };

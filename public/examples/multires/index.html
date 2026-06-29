@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="/res/aton-logo.png" sizes="512x512" type="image/png">
+
+<!-- Add iOS meta tags and icons -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="ATON Sample">
+<link rel="apple-touch-icon" href="/res/aton-logo.png">
+<meta name="description" content="ATON Sample">
+<!-- Add meta theme-color -->
+<meta name="theme-color" content="#000000" />
+
+<title>ATON example</title>
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/vendors/bootstrap/css/bootstrap-icons/font/bootstrap-icons.min.css">
+<link rel="stylesheet" type="text/css" href="/res/css/main.css">
+
+<script type="text/javascript" src="/vendors/vendors.min.js"></script>
+<script type="text/javascript" src="/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script type="text/javascript" src="/dist/THREE.bundle.js"></script>
+
+<!-- <script type="module" src="/dist/ATON.min.js"></script> -->
+<script type="module" src="/src/ATON.js"></script>
+
+<script>
+window.addEventListener( 'load', ()=>{
+
+	// Realize base ATON and add base UI events
+    ATON.realize();
+    ATON.UI.addBasicEvents();
+
+    // This is our sample tileset url
+    // from NASA "Dingo Gap Mars dataset": https://github.com/NASA-AMMOS/3DTilesSampleData
+    const dingoGapTS = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize/0528_0260184_to_s64o256_colorize_tileset.json";
+    //const TS_URL = "https://raw.githubusercontent.com/NASA-AMMOS/3DTilesSampleData/master/msl-dingo-gap/0528_0260184_to_s64o256/0528_0260184_to_s64o256/0528_0260184_to_s64o256_tileset.json";
+
+    ATON.createSceneNode("DingoGap")
+        .setRotation(1.57079632679,0.0,0.0) // Y-up
+        .load(dingoGapTS)
+        .attachToRoot();
+
+
+    ATON.Nav.setHomePOV( 
+        new ATON.POV()
+            .setPosition(10,10,10)
+            .setTarget(0, 0, 0)
+    );
+
+    // Setup sample panorama
+    ATON.setMainPanorama("samples/pano/mars.jpg");
+
+    // Request home viewpoint
+    ATON.Nav.requestHome();
+
+
+    // Setup some UI
+    // Append a few prefab UI buttons to our main toolbar
+	ATON.UI.get("toolbar").append(
+        ATON.UI.createButtonHome(),
+        ATON.UI.createButtonVR(),   // VR button will show up only on secure connections and supported devices
+    );
+
+    // Create a button to open side panel
+    ATON.UI.get("side").append(
+        ATON.UI.createButton({
+            icon: "help",
+            onpress: openSidePanel
+        })
+    );
+
+    openSidePanel();
+});
+
+// Routine to open a sidepanel with some info
+let openSidePanel = ()=>{
+    ATON.UI.showSidePanel({
+        header: "Multi-resolution datasets",
+        body: ATON.UI.elem(`<p>
+            This sample shows how to load a single multi-resolution dataset (3D Tiles standard).<br><br>
+            <img src="https://raw.githubusercontent.com/NASA-AMMOS/3DTilesRendererJS/master/images/header-mars.png"><br>
+            In this case we create a standard ATON node, and then load a remote tileset ("Dingo Gap" Mars dataset) directly from <a href="https://github.com/NASA-AMMOS">NASA AMMOS project</a>.<br><br>
+
+            Note that ATON can load multiple multi-resolution datasets (from local collection or remote hosts) and mix them with standard glTF models or 360 content (static or dynamic).
+        </p>`)
+    });
+};
+
+</script>
+</head>
+
+<body>
+    <div id="toolbar" class="aton-toolbar-top"></div>
+    <div id="side" class="aton-toolbar-bottom" style="position: absolute; right: 0px;"></div>
+
+    <div class="aton-poweredby" >
+        Powered by <a href="https://aton.ispc.cnr.it/site/" target="_blank">ATON</a>
+    </div>
+</body>

@@ -66,6 +66,12 @@ window.addEventListener( 'load', ()=>{
 
         let createExampleCard = (o)=>{
                 let sampledir = "/examples/"+o.dir+"/";
+                let coverurl  = sampledir+"/cover.jpg";
+
+                if (o.dir === "app_template"){
+                        sampledir = ATON.PATH_WAPPS + o.dir;
+                        coverurl  = sampledir + "/appicon.png";
+                }
 
                 let elKW = ATON.UI.createContainer();
 
@@ -76,7 +82,7 @@ window.addEventListener( 'load', ()=>{
 
                 let el = ATON.UI.createCard({
                         title: o.title,
-                        cover: sampledir+"/cover.jpg",
+                        cover: coverurl,
                         url: sampledir,
                         keywords: o.keywords,
                         //classes: "aton-card-h400",
@@ -185,6 +191,12 @@ window.addEventListener( 'load', ()=>{
                 keywords: {semantic:1, annotation:1, query:1, object:1, shape:1}
         });
 */
+
+        createExampleCard({
+                title: "Basic App",
+                dir: "app_template",
+                keywords: {basic:1, app:1}
+        });
 
 /*
         // Remote control

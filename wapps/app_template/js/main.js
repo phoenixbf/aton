@@ -26,7 +26,26 @@ APP.setup = ()=>{
 	});
 };
 
-/* If you plan to use an update routine (executed continuously), you can place its logic here.
+/*
+	If you plan to use a local config for this app
+	this is a sample skeleton for loading a JSON config file from a given pathConfigFile (generally in a git ignored folder, e.g. config/)
+
+APP.loadConfig = ()=>{
+    ATON.REQ.get( pathConfigFile, ( data )=>{
+        console.log("Loaded config");
+
+		// Do something with loaded data
+
+    },()=>{
+		console.log("Config not found");
+	});
+};
+*/
+
+/*
+	If you plan to use an update routine (executed continuously)
+	you can place its logic here
+
 APP.update = ()=>{
 
 };

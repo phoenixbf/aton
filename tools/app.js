@@ -37,6 +37,7 @@ const optDefs = [
     { name: 'descr', type: String },   // Descrition
     { name: 'author', type: String },   // Author
     { name: 'usestorage', type: Boolean },  //
+    { name: 'useconfig', type: Boolean }
 ];
 
 const args = commandLineArgs(optDefs);
@@ -55,6 +56,7 @@ let appdescr = undefined;
 let author   = undefined;
 
 let bUseDataStorage = false;
+let bUseConfig      = false;
 
 let printHelp = ()=>{
     console.log(
@@ -64,6 +66,7 @@ let printHelp = ()=>{
     --title: the human-readable App title (spaces and capitals are allowed)
     --descr: an optional brief description for this App (a summary with one or two concise sentences that explain value and functionality)
     --usestorage: enable persistent data storage for this App
+    --useconfig: use local config
     --author: author string (may contain name, surname and/or contact mail)
 `
     );
@@ -76,6 +79,7 @@ let generateIndex = ()=>{
 
     let strAppID = "";
     if (bUseDataStorage) strAppID = `<meta name="aton:appid" content="${appid}">`;
+
 
     let strUI = "";
     //strUI = `<div id="toolbar" class="aton-toolbar-top"></div>`;
@@ -174,6 +178,22 @@ let generateJS = ()=>{
     let authorstr = "";
     if (args.author) authorstr = args.author;
 
+    let strConfig = "";
+    if (bUseConfig){
+        strConfig = `
+APP.loadConfig = ()=>{
+    ATON.REQ.get( APP.basePath + "config/conf.json", ( data )=>{
+        console.log("Loaded config");
+
+		// Do something with loaded data
+
+    },()=>{
+		console.log("Config not found");
+	});
+};
+        `;
+    }
+
     return `
 /*
 	Main js entry for template ATON web-app
@@ -203,6 +223,8 @@ APP.setup = ()=>{
 		console.log("All flares ready");
 	});
 };
+
+${strConfig}
 
 /* If you plan to use an update routine (executed continuously), you can place its logic here.
 APP.update = ()=>{
@@ -245,6 +267,7 @@ if (!fs.existsSync(Core.DIR_WAPPS)){
 
 if (args.descr) appdescr = args.descr.trim();
 if (args.usestorage) bUseDataStorage = true;
+if (args.useconfig) bUseConfig = true;
 if (args.title) apptitle = args.title;
 
 let appPath = Core.DIR_WAPPS + appid;
@@ -256,7 +279,15 @@ if (fs.existsSync(appPath)){
 
 makeDir.sync(appPath);
 makeDir.sync(appPath+"/js");
+
 if (bUseDataStorage) makeDir.sync(appPath+"/data");
+if (bUseConfig){
+    makeDir.sync(appPath+"/config");
+
+    let confPath = appPath+"/config/conf.json";
+
+    fs.writeFileSync( confPath, JSON.stringify( {}, null, 4 ) );
+}
 
 let pathManifest = appPath+"/app.webmanifest";
 let pathIndex    = appPath+"/index.html";

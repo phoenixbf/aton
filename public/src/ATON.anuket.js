@@ -12,7 +12,7 @@
 /**
 Anuket client component for remote control
 
-Events:
+Built-in events you can listen via ATON.on(event, (data) => { ... }):
 - "ANUKET_CONNECTED": fired when connected to Anuket service
 - "ANUKET_DISCONNECTED": fired when disconnected from Anuket service
 - "ANUKET_MSG": fired when a message is received (data is string or object)

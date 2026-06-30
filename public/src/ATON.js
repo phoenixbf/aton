@@ -11,6 +11,37 @@
 //'use strict';
 
 /**
+Built-in events you can listen via ATON.on(event, (data) => { ... }):
+
+- "Tap": fired when tap or click event happened
+- "DoubleTap": fired when dobule-tap or double-click happened
+- "MouseMidButton": fired when using mouse middle button (data is boolean)
+- "MouseRightButton": fired when using mouse right button (data is boolean)
+- "MouseWheel": fired on mouse wheel (data is delta)
+- "KeyPress": fired on keypress event (data is key)
+- "KeyUp": fired on key up event (data is key)
+
+- "MobileLandscapeMode": fired on mobile devices when switching to landscape mode
+- "MobilePortraitMode": fired on mobile devices when switching to portrait mode
+
+- "AllNodeRequestsCompleted": fired when all requested nodes resources are ready (loaded) - like glTF files, etc.
+- "MainPano": fired when static main panorama is loaded
+- "MainPanoHDR": fired when an HDR main panorama is loaded
+- "MainPanoVideo": fired when a dynamic (video-stream) main panorama is loaded
+
+- "SemanticNodeHover": fired when a semantic node is hovered (data is node ID)
+- "SemanticNodeLeave": fired when leaving a semantic node (data is node ID)
+
+- "UINodeHover": fired when a UI node is hovered (data is node ID)
+- "UINodeLeave": fired when leaving a UI node (data is node ID)
+
+- "RequestLowerRender": fired when dynamic profiler detects device is struggling to render content
+- "RequestHigherRender": fired when dynamic profiler detects device can switch to higher render capabilities 
+
+- "AllFlaresReady": fired when all requested flares are ready (loaded)
+
+- "Fullscreen": fired when entering or leaving fullscreen (data is boolean)
+
 @namespace ATON
 */
 let ATON = {};

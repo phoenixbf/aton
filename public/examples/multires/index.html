@@ -47,15 +47,14 @@ window.addEventListener( 'load', ()=>{
         .load(dingoGapTS)
         .attachToRoot();
 
+    // Setup sample panorama
+    ATON.setMainPanorama("samples/pano/mars.jpg");
 
     ATON.Nav.setHomePOV( 
         new ATON.POV()
             .setPosition(10,10,10)
             .setTarget(0, 0, 0)
     );
-
-    // Setup sample panorama
-    ATON.setMainPanorama("samples/pano/mars.jpg");
 
     // Request home viewpoint
     ATON.Nav.requestHome();

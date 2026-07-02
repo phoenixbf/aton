@@ -178,6 +178,9 @@ let generateJS = ()=>{
     let authorstr = "";
     if (args.author) authorstr = args.author;
 
+    let titlestr = "";
+    if (args.title) titlestr = "'"+args.title+"'";
+
     let strConfig = "";
     if (bUseConfig){
         strConfig = `
@@ -196,7 +199,8 @@ APP.loadConfig = ()=>{
 
     return `
 /*
-	Main js entry for template ATON web-app
+	Main js entry for ATON web-app ${titlestr}
+
     ${authorstr}
 
 ===============================================*/
@@ -289,11 +293,11 @@ if (bUseConfig){
     fs.writeFileSync( confPath, JSON.stringify( {}, null, 4 ) );
 }
 
-let pathManifest = appPath+"/app.webmanifest";
-let pathIndex    = appPath+"/index.html";
-let pathMainJS   = appPath+"/js/main.js";
-let pathLicense  = appPath+"/LICENSE";
-let pathReadMe   = appPath+"/README.md";
+let pathManifest  = appPath+"/app.webmanifest";
+let pathIndex     = appPath+"/index.html";
+let pathMainJS    = appPath+"/js/main.js";
+let pathLicense   = appPath+"/LICENSE";
+let pathReadMe    = appPath+"/README.md";
 
 /*
 fs.copyFileSync(APP_PWA_MANIFEST, pathManifest);

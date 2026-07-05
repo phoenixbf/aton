@@ -49,10 +49,10 @@
     "since 2017-06"
   ],
   "dependencies": {
-    "@gltf-transform/cli": "^4.4.0",
-    "@gltf-transform/core": "^4.4.0",
-    "@gltf-transform/extensions": "^4.4.0",
-    "@gltf-transform/functions": "^4.4.0",
+    "@gltf-transform/cli": "^4.4.1",
+    "@gltf-transform/core": "^4.4.1",
+    "@gltf-transform/extensions": "^4.4.1",
+    "@gltf-transform/functions": "^4.4.1",
     "@sparkjsdev/spark": "^2.1.0",
     "3d-tiles-renderer": "0.4.28",
     "3d-tiles-rendererjs-3dgs-plugin": "^0.1.14",

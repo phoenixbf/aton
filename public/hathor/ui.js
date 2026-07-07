@@ -586,7 +586,7 @@ UI.createBlockGroup = (options)=>{
 UI.showSemanticPanel = (semid)=>{
     UI.closeToolPanel();
 
-    // TODO: audio sound
+    HATHOR.playAudioFromSemanticNode(semid);
 
     let htmlContent = HATHOR.getHTMLDescriptionFromSemNode(semid);
     if (!htmlContent) return;

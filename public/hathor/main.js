@@ -59,6 +59,9 @@ HATHOR.setup = ()=>{
     //HATHOR._bLD = false;
     HATHOR._cLightDir = new THREE.Vector3();
 
+    // Audio SemNode
+    HATHOR._auSemNode = undefined;
+
     HATHOR._bRMB = false;
     HATHOR._bCollabLogicSet = false;
     
@@ -442,6 +445,31 @@ HATHOR.validateSemID = (semid)=>{
     if (semid.length < 1) return invalid;
 
     return { semid: semid, valid: true };
+};
+
+HATHOR.playAudioFromSemanticNode = (semid)=>{
+    if (!semid) return;
+
+    let S = ATON.getSemanticNode(semid);
+    if (!S) return;
+
+    let au = S.getAudio();
+    if (!au) return;
+
+    if (typeof au === "string" && !au.startsWith("data:audio")){
+        au = ATON.Utils.resolveCollectionURL(au);
+    }
+
+    if (!HATHOR._auSemNode) HATHOR._auSemNode = new THREE.Audio( ATON.AudioHub._listener );
+    else HATHOR._auSemNode.stop();
+
+    ATON.AudioHub._loader.load( au, (buffer)=>{
+        HATHOR._auSemNode.setBuffer( buffer );
+        HATHOR._auSemNode.setLoop( false );
+        //HATHOR._auSemNode.setVolume( 0.5 );
+        //HATHOR._auSemNode.setPlaybackRate(0.9);
+        HATHOR._auSemNode.play();
+    });
 };
 
 // Tasks

@@ -342,7 +342,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     maxPixelRadius: ATON.GS.MAX_PXRAD,
                     
                     maxStdDev: ATON.GS.MAX_STDDEV,
-                    minAlpha: ATON.GS.MIN_ALPHA
+                    minAlpha: ATON.GS.MIN_ALPHA,
+
+                    maxSh: ATON.GS.MAX_SH
                 },
             });
 

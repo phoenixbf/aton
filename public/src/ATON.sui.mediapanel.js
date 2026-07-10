@@ -25,6 +25,8 @@ constructor(uiid){
     this._resurl = undefined;
 
     this._mediamesh = undefined;
+    this._matpan = undefined;
+
     this._vs = undefined;
     this._yratio = 1.0;
 
@@ -71,8 +73,12 @@ load(url, onComplete){
         }
         else this._vs = ATON.MediaFlow.getOrCreateVideoStream(this.nid, url, false);
 
-        this._mediamesh.material = this._vs.matStream;
-        this._mediamesh.material.side = THREE.FrontSide;
+        if (this._matpan) this._mediamesh.material = this._matpan;
+        else {
+            this._mediamesh.material = this._vs.matStream;
+            this._mediamesh.material.side = THREE.FrontSide;
+        }
+        
 
         this._vs.el.addEventListener('loadedmetadata', (e)=>{
             self._yratio = self._vs.el.videoHeight / self._vs.el.videoWidth;
@@ -95,17 +101,12 @@ load(url, onComplete){
 
             self._mediamesh.scale.y = self._yratio;
 
-            self._mediamesh.material = ATON.MatHub.materials.chromakey.clone();
-            self._mediamesh.material.uniforms.tBase.value = tex;
-            this._mediamesh.material.side = THREE.FrontSide;
-/*
-            self._mediamesh.material = new THREE.MeshStandardMaterial({
-                map: texture,
-                transparent: true,
-                depthWrite: false,
-                side: THREE.DoubleSide
-            });
-*/
+            if (this._matpan) this._mediamesh.material = this._matpan;
+            else {
+                self._mediamesh.material = ATON.MatHub.materials.chromakey.clone();
+                self._mediamesh.material.uniforms.tBase.value = tex;
+                self._mediamesh.material.side = THREE.FrontSide;
+            }
 
             self._mediamesh.material.needsUpdate = true;
 
@@ -133,8 +134,22 @@ setColor(c){
     return this;
 }
 
-getMaterial(){
+/**
+Get panel material
+*/
+getPanelMaterial(){
+    if (!this._mediamesh) return undefined;
     return this._mediamesh.material;
+}
+
+/**
+Set panel material
+@param {THREE.Material} mat - the Material
+*/
+setPanelMaterial(mat){
+    this._matpan = mat;
+    if (this._mediamesh) this._mediamesh.material = mat;
+    return this;
 }
 
 _onContentLoad(){
@@ -164,6 +179,10 @@ setTitle(title){
     return this;
 }
 
+/**
+Toggle panel title
+@param {boolean} b - ON/OFF
+*/
 toggleTitle(b){
     if (!this._labelTitle) return this;
 

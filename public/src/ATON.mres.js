@@ -59,7 +59,10 @@ MRes.init = ()=>{
     MRes._bFadeTiles = true;
     MRes._bShowTBounds = false;
     MRes._bGS = true;
+
     MRes._GSR = undefined;
+    MRes._GSRpaused = false;
+    MRes._GSRupdint = undefined;
 
     // Events
     ATON.on("XRmode", (b)=>{
@@ -71,7 +74,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 30; // temp
+                    TS.errorTarget *= 5; // temp
                 }
             }    
             else {
@@ -96,25 +99,28 @@ MRes.init = ()=>{
     });
 
     ATON.on("RequestLowerRender", ()=>{
-        if (ATON.XR._bPresenting){
+        //if (ATON.XR._bPresenting){
             for (let ts=0; ts < MRes._tsets.length; ts++){
                 const TS = MRes._tsets[ts];
 
-                if (TS._isGS) TS.errorTarget *= 1.5;
+                if (TS._isGS) TS.errorTarget *= 2.0;
+                //console.log(TS.errorTarget);
             }
-        }
+        //}
     });
     ATON.on("RequestHigherRender", ()=>{
-        if (ATON.XR._bPresenting){
+        //if (ATON.XR._bPresenting){
             for (let ts=0; ts < MRes._tsets.length; ts++){
                 const TS = MRes._tsets[ts];
 
-                if (TS._isGS) TS.errorTarget /= 1.5;
+                if (TS._isGS) TS.errorTarget *= 0.8;
                 
-                if (TS.errorTarget < 1.0) TS.errorTarget = 1.0;
+                if (TS.errorTarget < MRes._tseBase) TS.errorTarget = MRes._tseBase;
+                //console.log(TS.errorTarget);
             }
-        }
+        //}
     });
+
 };
 
 MRes.clear = ()=>{
@@ -357,7 +363,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             ATON.XR.setDensity(ATON.GS.MAX_PD_XR);
 
             MRes._GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
-            //MRes._GSR.minSortIntervalMs = 1000;
+            MRes._GSRupdint = MRes._GSR.updateInternal; //.bind({});
 
             ts._isGS = true;
 
@@ -658,6 +664,23 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //MRes._tsets[tsurl] = ts;
 };
 
+MRes._toggleGSIntUpd = (b)=>{
+    if (!MRes._GSR) return;
+
+    if (!b){
+        if (!MRes._GSRupdint) MRes._GSRupdint = MRes._GSR.updateInternal;
+
+        if (!MRes._GSRpaused) MRes._GSR.updateInternal = async ()=> undefined;
+
+        MRes._GSRpaused = true; 
+    }
+    else {
+        if (MRes._GSRupdint && MRes._GSRpaused) MRes._GSR.updateInternal = MRes._GSRupdint;
+        
+        MRes._GSRpaused = false;
+    }
+};
+
 MRes.loadCesiumIONAsset = (ionAssID, N)=>{
     let tok = ATON.getAPIToken("cesium.ion");
 
@@ -739,14 +762,11 @@ MRes.update = ()=>{
     }
 */
     if ( ATON.Nav.motionDetected() ){
-        //let GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
-        //console.log(GSR);
-
-        //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { autoUpdate: false });
+        //if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(false);
         return;
     }
 
-    //TILES.updateSharedSparkRendererOptions( ATON._rootVisible, { autoUpdate: true });
+    //if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(true);
 
     if (!MRes._bCustomSchedCB) return;
     //console.log(MRes._tsTasks);

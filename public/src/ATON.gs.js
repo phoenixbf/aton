@@ -14,9 +14,9 @@ let GS = {};
 GS._3DGSR = undefined;
 
 GS.MAX_PD = 1.0;
-GS.MAX_PD_XR = 0.5;
+GS.MAX_PD_XR = 0.7;
 
-GS.MAX_PXRAD = 300; //512;
+GS.MAX_PXRAD = 400; //512;
 GS.MIN_PXRAD = 1;
 GS.MIN_ALPHA = 0.01;
 

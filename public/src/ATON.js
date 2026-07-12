@@ -2659,6 +2659,7 @@ ATON._handleQueries = ()=>{
     //ATON._rcRR = (ATON._rcRR+1) % 3;
 
     ATON._handleQueryUI();
+    //if (ATON._hoveredUI) return;
 
     if (ATON._bqScene && ATON._bqSceneCont){
         ATON._handleQueryScene();

@@ -216,6 +216,8 @@ code {
     min-width: 60px;
     min-height: 32px;
 
+    pointer-events: none;
+    
     /*transform-origin: top;*/
 }
 

@@ -1548,7 +1548,15 @@ UI.sideLayers = ()=>{
                     }
 
                 })
-            ] : []
+            ] : [],
+            onvischange: (b)=>{
+                if (!HATHOR.isEditorMode()) return;
+
+                HATHOR.ED.editNode({
+                    nid: nid,
+                    vis: b
+                });
+            }
 /*
             actions: [
                 ATON.UI.createButton({

@@ -2283,6 +2283,7 @@ Create layer control. By default it allows basic switching (on/off)
 - options.node: node ID (string) of the ATON node
 - options.mainlayeraction: main action on layer click, with nodeID argument
 - options.actions: optional list (array) of HTML elements (e.g. buttons) being added to this layer actions
+- options.onvischange: optional routine on visibility change: (visible)=>{ ... }
 
 Components: "actions"
 
@@ -2305,11 +2306,15 @@ UI.createLayerControl = (options)=>{
                 N.hide();
                 elVis.classList.remove("aton-btn-highlight");
                 elNode.classList.add("aton-layer-hidden");
+
+                if (options.onvischange) options.onvischange(false);
             }
             else {
                 N.show();
                 elVis.classList.add("aton-btn-highlight");
                 elNode.classList.remove("aton-layer-hidden");
+
+                if (options.onvischange) options.onvischange(true);
             }   
         }
     });

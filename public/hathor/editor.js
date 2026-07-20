@@ -275,6 +275,10 @@ ED.editNode = (o)=>{
         if (M) N.setMaterial(M);
     }
 
+    if (o.vis !== undefined){
+        N.toggle(o.vis);
+    }
+
     //====== Collab
     if (o.remote) return true;
 
@@ -307,6 +311,10 @@ ED.editNode = (o)=>{
     // Node material
     if (o.mat){
         E[gr].nodes[nid].material = o.mat;
+    }
+
+    if (o.vis !== undefined){
+        E[gr].nodes[nid].show = o.vis;
     }
 
     ATON.SceneHub.patch( E, ATON.SceneHub.MODE_ADD );

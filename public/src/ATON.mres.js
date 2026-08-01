@@ -113,9 +113,11 @@ MRes.init = ()=>{
             for (let ts=0; ts < MRes._tsets.length; ts++){
                 const TS = MRes._tsets[ts];
 
-                if (TS._isGS) TS.errorTarget *= 0.8;
-                
-                if (TS.errorTarget < MRes._tseBase) TS.errorTarget = MRes._tseBase;
+                if (TS._isGS){
+                    TS.errorTarget *= 0.8;
+
+                    if (TS.errorTarget < MRes._tseBase) TS.errorTarget = MRes._tseBase;
+                }
                 //console.log(TS.errorTarget);
             }
         //}
@@ -234,9 +236,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     // Plugins
     ts.registerPlugin( new TILES.ImplicitTilingPlugin() );
-    //ts.registerPlugin( new TILES.TileCompressionPlugin() );
+    ///ts.registerPlugin( new TILES.TileCompressionPlugin() );
 
-    if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
+    //if (bDZI) ts.registerPlugin( new TILES.DeepZoomImagePlugin( { center: true } ) );
+
+    if (bDZI) ts.registerPlugin( new TILES.GeneratedSurfacePlugin({
+		overlay: new TILES.DeepZoomOverlay( {
+			url: tsurl,
+		}),
+		applyOverlayTexture: true,
+	}));
+
     ts.registerPlugin( new TILES.UpdateOnChangePlugin() );
 
     // Use fading
@@ -251,7 +261,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
     // Show tiles bounds
     if (MRes._bShowTBounds){
-        let DTP = new TILES.DebugTilesPlugin();
+        let DTP = new DebugTilesPlugin();
         ts.registerPlugin( DTP );
         DTP.displayBoxBounds = true;
     }

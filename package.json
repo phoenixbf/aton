@@ -55,8 +55,8 @@
     "@gltf-transform/extensions": "^4.4.2",
     "@gltf-transform/functions": "^4.4.2",
     "@sparkjsdev/spark": "^2.1.0",
-    "3d-tiles-renderer": "0.5.0",
-    "3d-tiles-rendererjs-3dgs-plugin": "0.1.15",
+    "3d-tiles-renderer": "0.5.1",
+    "3d-tiles-rendererjs-3dgs-plugin": "0.1.16",
     "body-parser": "^2.3.0",
     "child_process": "^1.0.2",
     "clamp": "^1.0.1",
@@ -98,9 +98,9 @@
     "three-custom-shader-material": "6.4.0",
     "three-mesh-bvh": "0.9.14",
     "three-mesh-ui": "^6.5.4",
-    "uuid": "^14.0.1",
+    "uuid": "^14.0.2",
     "webdav-server": "^2.6.2",
-    "ws": "^8.21.1",
+    "ws": "^8.21.3",
     "zlibjs": "^0.3.1"
   },
   "allowScripts": {

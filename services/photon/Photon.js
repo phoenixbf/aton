@@ -153,6 +153,10 @@ Photon.onNewConnection = (socket)=>{
         }
     });
 
+    socket.on("connect_error", (err) => {
+        console.log(`Connect ERROR: ${err.message}`);
+    });
+
     socket.on('SENTER', (data)=>{
         sid     = data;
         session = Photon.touchSession(sid);

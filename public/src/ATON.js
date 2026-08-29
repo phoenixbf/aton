@@ -714,13 +714,14 @@ ATON.realize = ( bNoRender )=>{
 */
     ATON._aniMixers = [];
     
-    ATON._stdEncoding = THREE.LinearSRGBColorSpace;
-    //ATON._stdEncoding = THREE.SRGBColorSpace;
+    //ATON._stdEncoding = THREE.LinearSRGBColorSpace;
+    ATON._stdEncoding = THREE.SRGBColorSpace;
 
     ATON._renderer.outputColorSpace = ATON._stdEncoding;
     
     //ATON._renderer.toneMapping = THREE.NoToneMapping;
     ATON._renderer.toneMapping = THREE.LinearToneMapping;
+    
     ///ATON._renderer.toneMapping = THREE.CineonToneMapping;
     ///ATON._renderer.toneMapping = THREE.ACESFilmicToneMapping;
     

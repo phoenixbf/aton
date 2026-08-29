@@ -166,19 +166,25 @@ Core.Render.setup(app);
 //=================================================
 
 // Photon (previously VRoadcast)
-app.use('/vrc', createProxyMiddleware({ 
+const photonProxy = createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	//ws: true, 
+	ws: true, 
 	pathRewrite: { '^/vrc': ''},
-	changeOrigin: true
-}));
-app.use('/svrc', createProxyMiddleware({ 
+	changeOrigin: true,
+	//logger: console
+});
+
+const photonProxyS = createProxyMiddleware({ 
 	target: VRC_ADDR+":"+VRC_PORT, 
-	//ws: true, 
+	ws: true, 
 	pathRewrite: { '^/svrc': ''},
 	secure: true,
-	changeOrigin: true 
-}));
+	changeOrigin: true,
+	//logger: console
+});
+
+app.use('/vrc', photonProxy );
+app.use('/svrc', photonProxyS );
 
 // Anuket
 const anuketProxy = createProxyMiddleware({ 
@@ -186,7 +192,9 @@ const anuketProxy = createProxyMiddleware({
 	ws: true, 
 	changeOrigin: true,
 	secure: true,
-	pathRewrite: { '^/anuket': ''}
+	pathRewrite: { '^/anuket': ''},
+	//logger: console,
+	//logLevel: 'debug'
 });
 
 app.use("/anuket", anuketProxy);
@@ -224,7 +232,36 @@ gateway.listen(PORT, ()=>{
 	console.log("\n");
 });
 
-gateway.on("upgrade", anuketProxy.upgrade);
+// Setup gateway upgrades for proxies
+setupUpgrades = (gw)=>{
+	gw.on("upgrade",(req, socket, head) => {
+		const url = req.url || "";
+
+		if (url.startsWith("/svrc") && !socket._upg){
+			console.log("Upgrading Photon secure proxy...");
+			photonProxyS.upgrade(req, socket, head);
+			socket._upg = true;
+			return;
+		}
+
+		if (url.startsWith("/vrc") && !socket._upg){
+			console.log("Upgrading Photon proxy...");
+			photonProxy.upgrade(req, socket, head);
+			socket._upg = true;
+			return;
+		}
+
+		if (url.startsWith("/anuket") && !socket._upg){
+			console.log("Upgrading Anuket proxy...");
+			anuketProxy.upgrade(req, socket, head);
+			socket._upg = true;
+			return;
+		}
+
+	});
+};
+
+setupUpgrades(gateway);
 
 
 // HTTPS service
@@ -244,7 +281,7 @@ if (fs.existsSync(pathCert) && fs.existsSync(pathKey)){
 		console.log("\n");
 	});
 
-	sgateway.on("upgrade", anuketProxy.upgrade);
+	setupUpgrades(sgateway);
 }
 else {
 	console.log("\nSSL certs not found:\n"+pathKey+"\n"+pathCert);

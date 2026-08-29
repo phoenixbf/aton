@@ -29,7 +29,7 @@ MRes.init = ()=>{
     MRes._bTileBVH = true; // Build per-tile BVH
 
     // Custom scheduling callback
-    MRes._bCustomSchedCB = true;
+    MRes._bCustomSchedCB = false;
     MRes._tsTasks = [];  // Tileset tasks
     MRes.tsSchedCB = func => {
         //setTimeout( func, 50);
@@ -40,6 +40,8 @@ MRes.init = ()=>{
     MRes.estimateTSErrorTarget();
 
     MRes._tsuSync = 0;
+
+    MRes._tsProcInd = 0;
 
     MRes._bPCs = false; // Any PointCloud
 
@@ -56,13 +58,13 @@ MRes.init = ()=>{
     MRes._bOptimizedLoad = false;
 
     // Plugins
-    MRes._bFadeTiles = true;
+    MRes._bFadeTiles = false;
     MRes._bShowTBounds = false;
     MRes._bGS = true;
 
     MRes._GSR = undefined;
-    MRes._GSRpaused = false;
-    MRes._GSRupdint = undefined;
+    //MRes._GSRpaused = false;
+    //MRes._GSRupdint = undefined;
 
     // Events
     ATON.on("XRmode", (b)=>{
@@ -319,10 +321,11 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (MRes._bCustomSchedCB){
         ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
         ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
+        console.log(ts.downloadQueue)
     }
 
-    ts.downloadQueue.maxJobs = 15; // 10
-    ts.parseQueue.maxJobs    = 3; // 2
+    ts.downloadQueue.maxJobsPerOrigin = 15; // 10
+    ts.parseQueue.maxJobsPerOrigin    = 3; // 2
 
     //console.log(ts.downloadQueue.maxJobs); // 25
     //console.log(ts.parseQueue.maxJobs); // 5
@@ -345,9 +348,33 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
         if (MRes._bGS && ATON.GS.detectTilesetExtension(data)){
             ATON.GS.configure();
 
+            if (!MRes._GSR){
+                MRes._GSR = new TILES.GaussianSplatRenderer({
+                    renderer: ATON._renderer,
+
+                    focalAdjustment: 2,
+                    //blurAmount: 0.15,
+
+                    clipXY: ATON.GS.CLIP,
+                    //accumExtSplats: true,
+
+                    minPixelRadius: ATON.GS.MIN_PXRAD,
+                    maxPixelRadius: ATON.GS.MAX_PXRAD,
+                    
+                    maxStdDev: ATON.GS.MAX_STDDEV,
+                    minAlpha: ATON.GS.MIN_ALPHA,
+
+                    maxSh: ATON.GS.MAX_SH
+                });
+
+                ATON._rootVisible.add( MRes._GSR );
+            }
+
             let plugGS = new TILES.GaussianSplatPlugin({
+/*
                 renderer: ATON._renderer,
                 scene: ATON._rootVisible,
+
                 sparkRendererOptions: {
                     focalAdjustment: 2,
                     //blurAmount: 0.15,
@@ -362,6 +389,7 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
 
                     maxSh: ATON.GS.MAX_SH
                 },
+*/
             });
 
             //MRes._gsTsets.push( plugGS );
@@ -371,10 +399,10 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
             ATON.setAdaptiveDensityRange( 0.5, ATON.GS.MAX_PD );
             ATON.setDefaultPixelDensity( ATON.GS.MAX_PD );
             ATON.XR.setDensity(ATON.GS.MAX_PD_XR);
-
+/*
             MRes._GSR = TILES.getSparkRendererForScene( ATON._rootVisible );
             MRes._GSRupdint = MRes._GSR.updateInternal; //.bind({});
-
+*/
             ts._isGS = true;
 
             //ts._etM = 20.0;
@@ -674,23 +702,6 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //MRes._tsets[tsurl] = ts;
 };
 
-MRes._toggleGSIntUpd = (b)=>{
-    if (!MRes._GSR) return;
-
-    if (!b){
-        if (!MRes._GSRupdint) MRes._GSRupdint = MRes._GSR.updateInternal;
-
-        if (!MRes._GSRpaused) MRes._GSR.updateInternal = async ()=> undefined;
-
-        MRes._GSRpaused = true; 
-    }
-    else {
-        if (MRes._GSRupdint && MRes._GSRpaused) MRes._GSR.updateInternal = MRes._GSRupdint;
-        
-        MRes._GSRpaused = false;
-    }
-};
-
 MRes.loadCesiumIONAsset = (ionAssID, N)=>{
     let tok = ATON.getAPIToken("cesium.ion");
 
@@ -741,10 +752,25 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
     }
 */
 
+MRes.autoUpdateTSets = (b)=>{
+    for (let ts=0; ts < MRes._tsets.length; ts++){
+        const TS = MRes._tsets[ts];
+
+        TS.parseQueue.autoUpdate = b;
+        TS.processNodeQueue.autoUpdate = b;
+
+        //console.log(TS)
+    }
+
+    console.log(b);
+};
+
 // Main update (view-dependent tile processing)
 MRes.update = ()=>{
-    //const nts = MRes._tsets.length;
+    const nts = MRes._tsets.length;
     //if (nts < 1) return;
+
+    MRes._tsProcInd++;
 
 /*
     if (ATON.XR._bPresenting){
@@ -756,12 +782,26 @@ MRes.update = ()=>{
     //MRes._tsTasksFF = 0;
 
     // When not using _tsTasks
-    if ( !MRes._bCustomSchedCB && ATON.Nav.motionDetected() ) return;
 
+    if ( !MRes._bCustomSchedCB && ATON.Nav.motionDetected()){
+        //if (ATON.device.lowGPU || ATON.device.isMobile || ATON.XR._bPresenting) return;
+        //if (MRes._tsuSync>0) return;
+    }
+
+    if (nts>0){
+        let tsi = MRes._tsProcInd % nts;
+        let TS = MRes._tsets[tsi];
+        if (TS) TS.update();
+    }
+
+/*
     for (let ts in MRes._tsets){
         const TS = MRes._tsets[ts];
-        TS.update();
+        if (MRes._tsuSync < 1) TS.update();
     }
+*/
+    //if (ATON.Nav.motionDetected()) MRes.autoUpdateTSets(false);
+    //else MRes.autoUpdateTSets(true);
 
     // Tasks (intensive)
 /*
@@ -772,11 +812,14 @@ MRes.update = ()=>{
     }
 */
     if ( ATON.Nav.motionDetected() ){
-        //if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(false);
+        ///if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(false);
+        
+        //if (ATON.XR._bPresenting && MRes._GSR) MRes._GSR.autoUpdate = false;
         return;
     }
 
-    //if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(true);
+    ///if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(true);
+    //if (ATON.XR._bPresenting && MRes._GSR) MRes._GSR.autoUpdate = true;
 
     if (!MRes._bCustomSchedCB) return;
     //console.log(MRes._tsTasks);

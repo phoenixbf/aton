@@ -96,6 +96,8 @@ GS.realize = ()=>{
         //premultipliedAlpha: false
     });
 
+    if (ATON.FX.composer) GS._3DGSR.encodeLinear = true; // Color mgmt
+
     if (!GS._bRaycast) GS._3DGSR.raycast = ATON.Utils.VOID_CAST;
     else {
         ATON._bqSceneCont        = false;

@@ -23,7 +23,7 @@ import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
 //import { SMAAPass } from 'three/addons/postprocessing/SMAAPass.js';
 //import { SSAARenderPass } from 'three/addons/postprocessing/SSAARenderPass.js';
 //import { TAARenderPass } from 'three/addons/postprocessing/TAARenderPass.js';
-//import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
+import { GammaCorrectionShader } from 'three/addons/shaders/GammaCorrectionShader.js';
 //import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { SAOPass } from 'three/addons/postprocessing/SAOPass.js';
 import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
@@ -31,6 +31,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 //import { SobelOperatorShader } from 'three/addons/shaders/SobelOperatorShader.js';
 import { SSRPass } from 'three/addons/postprocessing/SSRPass.js';
 import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import { AnaglyphEffect } from 'three/addons/effects/AnaglyphEffect.js';
 import { CSM } from 'three/addons/csm/CSM.js';
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -84,6 +85,8 @@ const THREE = {
     UnrealBloomPass,
     SSRPass,
     BokehPass,
+    GammaCorrectionShader,
+    OutputPass,
 
     AnaglyphEffect,
     CSM,
@@ -162,8 +165,10 @@ window.SPARK = SPARK;
 /*
     3DTR 3DGS Plugin
 */
-import { GaussianSplatPlugin, getSparkRendererForScene } from '3d-tiles-rendererjs-3dgs-plugin';
+//import { GaussianSplatPlugin, getSparkRendererForScene } from '3d-tiles-rendererjs-3dgs-plugin';
 
+import { GaussianSplatRenderer } from 'gaussian-splat-lite';
+import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
 
 const TILES = {
     ...TILES_BASE,
@@ -174,9 +179,12 @@ const TILES = {
     UpdateOnChangePlugin,
     DebugTilesPlugin,
     GeneratedSurfacePlugin,
-
+/*
     GaussianSplatPlugin,
     getSparkRendererForScene
+*/
+    GaussianSplatPlugin,
+    GaussianSplatRenderer
 };
 
 window.TILES = TILES;

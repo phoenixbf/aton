@@ -20,6 +20,7 @@ FX.PASS_BLOOM = "p_bloom";
 FX.PASS_DOF   = "p_dof";
 FX.PASS_GAMMA = "p_gamma";
 FX.PASS_SOBEL = "p_sobel";
+FX.PASS_FINAL = "p_final";
 
 
 // Initialization (main renderer must be initialized already)
@@ -52,6 +53,8 @@ FX.init = ()=>{
     FX.passes[FX.PASS_BASE] = new THREE.RenderPass( ATON._mainRoot, ATON.Nav._camera );
     FX.composer.addPass( FX.passes[FX.PASS_BASE] );
     //console.log(FX.passes[FX.PASS_BASE]);
+
+    FX.passes[FX.PASS_FINAL] = new THREE.OutputPass();
 
 
     // SSR - TODO: check for variable rou implementation
@@ -163,7 +166,6 @@ FX.init = ()=>{
 
     // tone-mapping passes here (if any)
     
-    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
     //FX.composer.addPass( FX.passes[FX.PASS_AA] );
     
     FX.composer.addPass( FX.passes[FX.PASS_DOF] );
@@ -174,7 +176,7 @@ FX.init = ()=>{
 
     //FX.composer.addPass( FX.passes[FX.PASS_SOBEL] );
 
-    //FX.composer.addPass( FX.passes[FX.PASS_GAMMA] ); // - CHECK
+    FX.composer.addPass( FX.passes[FX.PASS_FINAL] );
 
     // Defaults
     FX.reset();

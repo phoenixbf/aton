@@ -362,6 +362,8 @@ Photon.connect = (ssid)=>{
         //opts.upgrade = false;
     }
 
+    //opts.transports = ['websocket']; 
+
     Photon._cstate = Photon.CSTATE.CONNECTING;
 
     Photon.socket = io.connect(Photon.address, opts); //, { 'force new connection': true });
@@ -439,10 +441,18 @@ Photon.appendToChatBox = (text)=>{
 // Handle incoming server msgs
 Photon._registerSocketHandlers = ()=>{
 
+    Photon.socket.io.engine.on("upgrade", ()=>{
+        const upgradedTransport = Photon.socket.io.engine.transport.name; // in most cases, "websocket"
+        console.log(upgradedTransport)
+    });
+
     // We connected to server
     Photon.socket.on('connect', ()=>{
         //Photon._connected = true;
         Photon._cstate = Photon.CSTATE.CONNECTED;
+
+        const transport = Photon.socket.io.engine.transport.name; // in most cases, "polling"
+        console.log(transport)
 
         // Join session
         if (Photon._reqSSID !== undefined) Photon.joinSession(Photon._reqSSID);
@@ -465,6 +475,13 @@ Photon._registerSocketHandlers = ()=>{
         Photon.appendToChatBox("<i>YOU disconnected from the Photon session</i>");
 
         console.log("Disconnected from Photon service!");
+/*
+        console.warn("DISCONNECTED", {
+            reason,
+            details,
+            transport: Photon.socket.io.engine.transport.name
+        });
+*/
         ATON.fire("VRC_Disconnected");
     });
 

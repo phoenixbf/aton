@@ -145,6 +145,8 @@ Anuket.connect = ()=>{
 
     Anuket._ws.addEventListener('close', (event)=>{ 
         Anuket.log('Connection closed');
+        console.log(event)
+
         Anuket._cState = Anuket.CSTATE_DISCONNECTED;
 
         ATON.fire("ANUKET_DISCONNECTED");

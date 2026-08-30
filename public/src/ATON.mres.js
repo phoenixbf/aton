@@ -58,7 +58,7 @@ MRes.init = ()=>{
     MRes._bOptimizedLoad = false;
 
     // Plugins
-    MRes._bFadeTiles = false;
+    MRes._bFadeTiles = false; //true; // issues with local transforms
     MRes._bShowTBounds = false;
     MRes._bGS = true;
 
@@ -284,13 +284,15 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     ts.errorTarget = MRes._tsET;
     if (bDZI) ts.errorTarget = 2.0;
 
-    //ts.loadAncestors = MRes._bOptimizedLoad;
+    ts.loadAncestors = true;
 
     //ts.loadSiblings = false; // Unstable
 
     //ts.errorThreshold  = 100;
 
     //ts.optimizeRaycast = false; // We already use BVH
+
+    //ts.maxTilesProcessed = 100; // 250;
 
 /*
     // Shared p-queues (removed for now it seems to stall with several tsets)
@@ -321,11 +323,17 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     if (MRes._bCustomSchedCB){
         ts.downloadQueue.schedulingCallback = MRes.tsSchedCB;
         ts.parseQueue.schedulingCallback    = MRes.tsSchedCB;
-        console.log(ts.downloadQueue)
+        //console.log(ts.downloadQueue)
     }
 
-    ts.downloadQueue.maxJobsPerOrigin = 15; // 10
-    ts.parseQueue.maxJobsPerOrigin    = 3; // 2
+    ts.downloadQueue.maxJobsPerOrigin = 6; // 10
+    ts.parseQueue.maxJobs             = 3; // 3
+    //ts.processNodeQueue.maxJobs       = 2;
+
+
+    //ts.downloadQueue.autoUpdate = false;
+    ts.parseQueue.autoUpdate = false;
+    ts.processNodeQueue.autoUpdate = false;
 
     //console.log(ts.downloadQueue.maxJobs); // 25
     //console.log(ts.parseQueue.maxJobs); // 5
@@ -753,24 +761,44 @@ $.getJSON( MRes.REST_API_CESIUMION_DEF_TOKEN, data => {
 */
 
 MRes.autoUpdateTSets = (b)=>{
-    for (let ts=0; ts < MRes._tsets.length; ts++){
+    const nts = MRes._tsets.length;
+
+    for (let ts=0; ts < nts; ts++){
         const TS = MRes._tsets[ts];
 
-        TS.parseQueue.autoUpdate = b;
+        //TS.downloadQueue.autoUpdate    = b;
+        TS.parseQueue.autoUpdate       = b;
         TS.processNodeQueue.autoUpdate = b;
+
+        if (b){
+            //TS.downloadQueue.tryRunJobs();
+            TS.parseQueue.tryRunJobs();
+            TS.processNodeQueue.tryRunJobs();
+        }
 
         //console.log(TS)
     }
 
-    console.log(b);
+    //console.log(b);
+};
+
+MRes.updateQueues = (b)=>{
+    for (let ts=0; ts < MRes._tsets.length; ts++){
+        const TS = MRes._tsets[ts];
+
+        TS.parseQueue.scheduleJobRun();
+        TS.processNodeQueue.scheduleJobRun();
+
+        //console.log(TS)
+    }
 };
 
 // Main update (view-dependent tile processing)
 MRes.update = ()=>{
     const nts = MRes._tsets.length;
-    //if (nts < 1) return;
+    if (nts < 1) return;
 
-    MRes._tsProcInd++;
+    MRes._tsProcInd = (MRes._tsProcInd + 1) % nts;
 
 /*
     if (ATON.XR._bPresenting){
@@ -783,16 +811,18 @@ MRes.update = ()=>{
 
     // When not using _tsTasks
 
-    if ( !MRes._bCustomSchedCB && ATON.Nav.motionDetected()){
+    if ( !MRes._bCustomSchedCB){
         //if (ATON.device.lowGPU || ATON.device.isMobile || ATON.XR._bPresenting) return;
         //if (MRes._tsuSync>0) return;
+
+        if (ATON.Nav.motionDetected()) MRes.autoUpdateTSets(false);
+        else MRes.autoUpdateTSets(true);
+
+        //return;
     }
 
-    if (nts>0){
-        let tsi = MRes._tsProcInd % nts;
-        let TS = MRes._tsets[tsi];
-        if (TS) TS.update();
-    }
+    let TS = MRes._tsets[MRes._tsProcInd];
+    if (TS) TS.update();
 
 /*
     for (let ts in MRes._tsets){

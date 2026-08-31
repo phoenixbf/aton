@@ -76,7 +76,7 @@ MRes.init = ()=>{
 
             if (b){
                 if (TS._isGS){
-                    TS.errorTarget *= 5; // temp
+                    //TS.errorTarget *= 5; // temp
                 }
             }    
             else {

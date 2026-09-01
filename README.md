@@ -88,4 +88,5 @@ You are more than welcome to contribute to the project by spotting bugs/issues a
 
 # TODO list
 
-- [ ] Rewrite developers examples with ATON.UI.* elements
+- [ ] Rewrite developers examples using new ATON.UI.* blueprints
+- [ ] Refactor Maat to improve performances + better scaling

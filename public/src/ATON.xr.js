@@ -137,11 +137,15 @@ XR.setupControllers = ()=>{
     XR.controllerModelFactory = new THREE.XRControllerModelFactory(null, ()=>{
         if (ATON.Photon.uid !== undefined) XR.setControllersMaterial( ATON.Photon.getAvatarMaterialByUID(ATON.Photon.uid) );
         else XR.setControllersMaterial(ATON.MatHub.materials.controllerRay);
+
+        ATON.SUI.visitor(XR.gControllers,true);
     });
 
 	XR.handModelFactory = new THREE.XRHandModelFactory(null, ()=>{
         if (ATON.Photon.uid !== undefined) XR.setControllersMaterial( ATON.Photon.getAvatarMaterialByUID(ATON.Photon.uid) );
         else XR.setControllersMaterial(ATON.MatHub.materials.controllerRay);
+
+        ATON.SUI.visitor(XR.gControllers,true);
     });
 
     XR._lastPosR = undefined;

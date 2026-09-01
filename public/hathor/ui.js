@@ -260,6 +260,17 @@ UI.createCopyrightsButton = ()=>{
     return UI._elCC;
 };
 
+UI.createHelpButton = ()=>{
+    UI._elHelp = ATON.UI.createButton({
+        //text: "Assets Copyrights",
+        icon: "help",
+        tooltip: "Help",
+        onpress: UI.modalHelp
+    });
+
+    return UI._elHelp;
+};
+
 UI.createToolsButton = ()=>{
     UI._elTools = ATON.UI.createButton({
         icon: "tools",
@@ -448,7 +459,8 @@ UI.buildStandardInterface = ()=>{
         UI.createButtonShare(),
 
         UI.createXRButton(),
-        UI.createCopyrightsButton()
+        UI.createCopyrightsButton(),
+        UI.createHelpButton()
     );
 
     UI.postToolbar();
@@ -476,7 +488,8 @@ UI.buildEditorInterface = ()=>{
         UI.createButtonShare(),
 
         UI.createXRButton(),
-        UI.createCopyrightsButton()
+        UI.createCopyrightsButton(),
+        UI.createHelpButton()
     );
 
     UI.postToolbar();
@@ -495,6 +508,7 @@ UI.buildCustomInterface = (elements)=>{
         if (E==="cc")     UI._elMainToolbar.append(UI.createCopyrightsButton());
         if (E==="fx")     UI._elMainToolbar.append(UI.createFXButton());
         if (E==="tools")  UI._elMainToolbar.append(UI.createToolsButton());
+        if (E==="help")   UI._elMainToolbar.append(UI.createHelpButton());
         
         if (E==="xr")     UI._elMainToolbar.append(UI.createXRButton());
         if (E==="ar")     UI._elMainToolbar.append(ATON.UI.createButtonAR());
@@ -2934,7 +2948,7 @@ UI.modalHelp = ()=>{
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>u</span></div>
-                    <div class='col-md-6'>User modal</div>
+                    <div class='col-md-6'>User panel</div>
                 </div>
                 <div class='row hathor-help-text'>
                     <div class='col-md-6' style='text-align:center'><span class='hathor-shortcut'>s</span></div>

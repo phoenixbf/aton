@@ -2960,28 +2960,38 @@ UI.createLoginForm = (options)=>{
 
     let elStatus = UI.elem(`<div class="w-100" style="text-align:center; padding:8px"></div>`);
 
+    const submit = ()=>{
+        let uname = elInputUN.value.trim();
+        let passw = elInputPW.value.trim();
+
+        ATON.REQ.login(
+            uname,
+            passw, 
+            options.onSuccess, 
+            ()=>{
+                elStatus.innerHTML = "Incorrect username or password!";
+
+                if (options.onFail) options.onFail();
+            }
+        );   
+    };
+
     let elEnter = ATON.UI.createButton({
         text: "Login",
         icon: "user",
         variant: "accent",
         classes: "px-4",
         //size: "large",
-        onpress: ()=>{
-            let uname = elInputUN.value.trim();
-            let passw = elInputPW.value.trim();
-
-            ATON.REQ.login(
-                uname,
-                passw, 
-                options.onSuccess, 
-                ()=>{
-                    elStatus.innerHTML = "Incorrect username or password!";
-
-                    if (options.onFail) options.onFail();
-                }
-            );
-        }
+        onpress: submit
     });
+
+    // Enter
+    elInputUN.onkeydown = (event)=>{
+        if (event.keyCode == 13) submit();
+    };
+    elInputPW.onkeydown = (event)=>{
+        if (event.keyCode == 13) submit();
+    };
 
     if (options.header) el.append(options.header);
     //else el.append( UI.elem(`<i class="bi bi-person" style="font-size:3em;"></i>`) );

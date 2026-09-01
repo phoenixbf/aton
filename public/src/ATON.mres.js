@@ -58,7 +58,7 @@ MRes.init = ()=>{
     MRes._bOptimizedLoad = false;
 
     // Plugins
-    MRes._bFadeTiles = false; //true; // issues with local transforms
+    MRes._bFadeTiles   = false; // issues with local transforms
     MRes._bShowTBounds = false;
     MRes._bGS = true;
 

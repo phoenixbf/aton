@@ -100,7 +100,7 @@
     "three-mesh-bvh": "0.9.14",
     "three-mesh-ui": "^6.5.4",
     "uuid": "^14.0.2",
-    "webdav-server": "^2.6.2",
+    "webdav-server": "^2.6.3",
     "ws": "^8.21.3",
     "zlibjs": "^0.3.1"
   },

@@ -141,8 +141,11 @@ code {
 =========================================*/
 
 .aton-body2D {
-    overflow: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
     
+    margin: 0px;
+
     font-family: "AFont" !important;
 
     touch-action: auto;

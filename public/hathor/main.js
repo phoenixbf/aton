@@ -183,12 +183,19 @@ HATHOR.setupLogic = ()=>{
             ATON.UI.hideSidePanel();
             //HATHOR.UI.closeToolPanel();
 
-            HATHOR.handleLayerPicking();
+            //HATHOR.handleLayerPicking();
         }
     });
 
     ATON.on("MouseRightButton", b => {
         HATHOR._bRMB = b;
+/*
+        if (b){
+            if (ATON._hoveredSemNode || HATHOR.currTask) return;
+            
+            HATHOR.handleLayerPicking();
+        }
+*/      
 /*
         if (b){
             if (ATON._hoveredSemNode){

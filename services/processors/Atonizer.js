@@ -26,7 +26,6 @@ const processGltf = gltfPipeline.processGltf;
 
 //const Jimp   = require('jimp');
 const sharp  = require('sharp');
-const imSize = require('image-size');
 
 
 // Command-line
@@ -171,36 +170,39 @@ Atonizer.processTextureFile = (imgPath)=>{
 
     Atonizer.processingTextures[imgPath] = true;
 
-    let w = imSize(imgPath).width;
-    let h = imSize(imgPath).height;
+    let bNeedResize = false;
 
     let im = sharp(imgPath);
 
-    let bNeedResize = false;
+    im.metadata().then(md => {
+        let w = md.width;
+        let h = md.height;
 
-    if (w > Atonizer.args.texsize){
-        bNeedResize = true;
-        w=Atonizer.args.texsize; 
-    }
-    if (h > Atonizer.args.texsize){
-        bNeedResize = true;
-        h=Atonizer.args.texsize; 
-    }
+        if (w > Atonizer.args.texsize){
+            bNeedResize = true;
+            w = Atonizer.args.texsize; 
+        }
+        if (h > Atonizer.args.texsize){
+            bNeedResize = true;
+            h = Atonizer.args.texsize; 
+        }
 
-    if (bNeedResize) im = im.resize(w,h);
+        if (bNeedResize) im = im.resize(w,h);
 
-    if (Atonizer.isJPEG(imgPath)) im = im.jpeg({ quality: Atonizer.args.texquality });
-    if (Atonizer.isPNG(imgPath))  im = im.png({ quality: Atonizer.args.texquality });
-  
-    im.toBuffer((err,buffer)=>{
-        if (err !== null) console.log(err);
+        if (Atonizer.isJPEG(imgPath)) im = im.jpeg({ quality: Atonizer.args.texquality });
+        if (Atonizer.isPNG(imgPath))  im = im.png({ quality: Atonizer.args.texquality });
+    
+        im.toBuffer((err,buffer)=>{
+            if (err !== null) console.log(err);
 
-        fs.writeFile(imgPath, buffer, (e)=>{
-            if (err !== null) console.log(e);
+            fs.writeFile(imgPath, buffer, (e)=>{
+                if (err !== null) console.log(e);
 
-            console.log("Texture "+imgPath+" processed");
+                console.log("Texture "+imgPath+" processed");
+            });
         });
     });
+
 };
 
 // DEPRECATED
@@ -209,8 +211,8 @@ Atonizer.processTextureFileJIMP = (imgPath)=>{
 
     Atonizer.processingTextures[imgPath] = true;
 
-    let w = imSize(imgPath).width;
-    let h = imSize(imgPath).height;
+    //let w = imSize(imgPath).width;
+    //let h = imSize(imgPath).height;
 
 /*
     sharp(imgPath)

@@ -1251,13 +1251,12 @@ UI.sideScene = ()=>{
                 open: false,
                 content: elVisSection,
             },
-/*
             {
                 title: "Workflow",
                 open: false,
                 content: elWFSection,
             }
-*/
+
         ]
     }));
 
@@ -1379,15 +1378,122 @@ UI.sideScene = ()=>{
     );
 
     // Workflow
-/*
     elWFSection.append(
+        ATON.UI.elem("<p class='hathor-text-block'>Manage your scene workflow. You can for instance clone this scene, or delete it</p>"),
 
+        UI.createBlockGroup({
+        items: [
+            ATON.UI.createButton({
+                text: "Clone",
+                icon: "copy",
+                classes: "btn-default",
+                onpress: ()=>{
+                    UI.modalCloneScene();
+                }
+            }),
+
+            ATON.UI.createButton({
+                text: "Delete",
+                icon: "delete",
+                classes: "btn-default",
+                onpress: ()=>{
+                    UI.modalDeleteScene()
+                }
+            }),
+            ]
+        })
     );
-*/
+
     // Panel
     UI.highlightTBPanel(UI._elScene);
     UI.openToolPanel({
         header: "Scene",
+        body: elBody
+    });
+};
+
+UI.modalCloneScene = ( options )=>{
+    let elBody = ATON.UI.createContainer();
+
+    let currSID = ATON.SceneHub.currID;
+    if (!currSID) return;
+
+    elBody.append(
+        ATON.UI.elem(`<p class='hathor-text-block'>You are about to clone scene (<b>${currSID}</b>). On success you'll be redirected to the new cloned scene</p>`),
+    );
+
+    elBody.append(
+        ATON.UI.createButton({
+            text: "Clone this scene",
+            icon: "copy",
+            classes: "btn-accent w-100",
+            onpress: ()=>{
+                ATON.checkAuth(
+                    (u)=>{
+                        let O = {
+                            fromScene: currSID
+                        }
+
+                        ATON.REQ.post("scenes/", O, (newsid)=>{
+                            console.log(newsid);
+                            if (!newsid) return;
+
+                            //if (options.onsuccess) options.onsuccess(newsid);
+                            window.location.href = ATON.PATH_FE + newsid;
+                        });
+                    }
+                );
+            }
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Clone this scene",
+        body: elBody
+    });
+};
+
+UI.modalDeleteScene = (options)=>{
+    let elBody = ATON.UI.createContainer();
+
+    let currSID = ATON.SceneHub.currID;
+    if (!currSID) return;
+
+    elBody.append(
+        ATON.UI.elem(`<p class='hathor-text-block'>Are you sure you want to delete scene <b>${currSID}</b>?</p>`),
+    );
+
+    elBody.append(
+        UI.createBlockGroup({
+            items:[
+                ATON.UI.createButton({
+                    text: "NO",
+                    classes: "btn-default",
+                    onpress: ATON.UI.hideModal
+                }),
+
+                ATON.UI.createButton({
+                    text: "YES",
+                    icon: "delete",
+                    classes: "btn-accent",
+                    onpress: ()=>{
+                        ATON.checkAuth(
+                            (u)=>{
+                                ATON.REQ.delete("scenes/"+currSID, (b)=>{
+
+                                    //if (options.onsuccess) options.onsuccess();
+                                    window.location.href = ATON.BASE_URL+"/myscenes/";
+                                });
+                            }
+                        );
+                    }
+                })
+            ]
+        })
+    );
+
+    ATON.UI.showModal({
+        header: "Clone this scene",
         body: elBody
     });
 };

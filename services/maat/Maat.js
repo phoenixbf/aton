@@ -21,7 +21,7 @@ Maat module serves as in-memory DB
 */
 let Maat = {};
 
-Maat.INTERVAL = 10000;
+Maat.INTERVAL = 20000;
 
 Maat.init = ()=>{
 	Maat.needScan = {};

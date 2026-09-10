@@ -99,9 +99,9 @@ canvas {
     cursor: -webkit-default;
 */
     cursor: move; /* fallback if grab cursor is unsupported */
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
+    cursor: grab !important;
+    cursor: -moz-grab !important;
+    cursor: -webkit-grab !important;
 
 /*
     touch-action: none;
@@ -111,9 +111,9 @@ canvas {
 }
 
 canvas:active {
-    cursor: grabbing;
-    cursor: -moz-grabbing;
-    cursor: -webkit-grabbing;
+    cursor: grabbing !important;
+    cursor: -moz-grabbing !important;
+    cursor: -webkit-grabbing !important;
 }
 
 a {

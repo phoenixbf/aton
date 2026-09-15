@@ -118,7 +118,7 @@ MRes.init = ()=>{
                 if (TS._isGS){
                     TS.errorTarget *= 0.8;
 
-                    if (TS.errorTarget < MRes._tseBase) TS.errorTarget = 4.0; //MRes._tseBase;
+                    if (TS.errorTarget < MRes._tseBase) TS.errorTarget = 8.0; //MRes._tseBase;
                 }
                 //console.log(TS.errorTarget);
             }
@@ -372,7 +372,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
                     maxStdDev: ATON.GS.MAX_STDDEV,
                     minAlpha: ATON.GS.MIN_ALPHA,
 
-                    maxSh: ATON.GS.MAX_SH
+                    maxSh: ATON.GS.MAX_SH,
+
+                    //autoStochastic: true
                 });
 
                 ATON._rootVisible.add( MRes._GSR );
@@ -800,6 +802,8 @@ MRes.update = ()=>{
 
     MRes._tsProcInd = (MRes._tsProcInd + 1) % nts;
 
+    const bMotion = ATON.Nav.motionDetected();
+
 /*
     if (ATON.XR._bPresenting){
         ATON.Nav._camera.updateMatrixWorld();
@@ -815,8 +819,14 @@ MRes.update = ()=>{
         //if (ATON.device.lowGPU || ATON.device.isMobile || ATON.XR._bPresenting) return;
         //if (MRes._tsuSync>0) return;
 
-        if (ATON.Nav.motionDetected()) MRes.autoUpdateTSets(false);
-        else MRes.autoUpdateTSets(true);
+        if (bMotion){
+            MRes.autoUpdateTSets(false);
+            //if (MRes._GSR) MRes._GSR.stochastic = true;
+        }
+        else {
+            MRes.autoUpdateTSets(true);
+            //if (MRes._GSR) MRes._GSR.stochastic = false;
+        }
 
         //return;
     }
@@ -841,7 +851,7 @@ MRes.update = ()=>{
         MRes._tsuSync = 0;
     }
 */
-    if ( ATON.Nav.motionDetected() ){
+    if ( bMotion ){
         ///if (ATON.XR._bPresenting) MRes._toggleGSIntUpd(false);
         
         //if (ATON.XR._bPresenting && MRes._GSR) MRes._GSR.autoUpdate = false;

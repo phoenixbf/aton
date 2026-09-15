@@ -700,7 +700,7 @@ ATON.realize = ( bNoRender )=>{
     ATON._avgFPSaccum = 0.0;
     ATON._avgFPS = 60.0;
 
-    ATON._dRenderBudgetMinFPS = 20.0;
+    ATON._dRenderBudgetMinFPS = 30.0; //20.0;
     ATON._dRenderBudgetMaxFPS = 55.0;
 
     // Adaptive Density

@@ -118,7 +118,7 @@ MRes.init = ()=>{
                 if (TS._isGS){
                     TS.errorTarget *= 0.8;
 
-                    if (TS.errorTarget < MRes._tseBase) TS.errorTarget = 8.0; //MRes._tseBase;
+                    if (TS.errorTarget < 8.0) TS.errorTarget = 8.0; //MRes._tseBase;
                 }
                 //console.log(TS.errorTarget);
             }

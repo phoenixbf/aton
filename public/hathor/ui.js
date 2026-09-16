@@ -1247,14 +1247,14 @@ UI.sideScene = ()=>{
                 content: elCoverSection
             },
             {
+                title: "Workflow",
+                open: true,
+                content: elWFSection,
+            },
+            {
                 title: "Visibility",
                 open: false,
                 content: elVisSection,
-            },
-            {
-                title: "Workflow",
-                open: false,
-                content: elWFSection,
             }
 
         ]
@@ -1493,7 +1493,7 @@ UI.modalDeleteScene = (options)=>{
     );
 
     ATON.UI.showModal({
-        header: "Clone this scene",
+        header: "Delete this scene",
         body: elBody
     });
 };

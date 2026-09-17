@@ -256,6 +256,18 @@ UI.hideModal = ()=>{
     UI._bModal = false;
 };
 
+UI.modalImage = (options)=>{
+    if (!options) return;
+    if (!options.url) return;
+
+    UI.showModal({
+        body: UI.elem(`<img src='${options.url}'></img>`),
+        wide: true
+    });
+
+    //ATON.UI.get("uiModal").classList.add("modal-xl");
+};
+
 /*===============================
     Side panel
 ===============================*/
@@ -2415,6 +2427,7 @@ UI.createMediaItem = (options)=>{
 
     if (ATON.Utils.isImage(url)){
         let el = UI.elem(`<img src='${url}'></img>`);
+
         return el;
     }
 

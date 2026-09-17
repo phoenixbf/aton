@@ -607,6 +607,15 @@ UI.showSemanticPanel = (semid)=>{
 
     let elContent = ATON.UI.elem("<div>"+htmlContent+"</div>");
 
+    // Media post-events
+    let imgs = elContent.getElementsByTagName('img');
+    for (let i=0; i<imgs.length; i++){
+        let img = imgs[i];
+        img.onclick = ()=>{
+            ATON.UI.modalImage({url: img.src });
+        }
+    }
+
     let editbtns = [];
 
     if (HATHOR.isEditorMode()){

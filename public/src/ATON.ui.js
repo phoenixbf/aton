@@ -261,6 +261,7 @@ UI.modalImage = (options)=>{
     if (!options.url) return;
 
     UI.showModal({
+        header: "Image",
         body: UI.elem(`<img src='${options.url}'></img>`),
         wide: true
     });

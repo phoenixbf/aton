@@ -350,6 +350,7 @@ code {
 .aton-sidepanel img {
     width: 100%;
     height: auto;
+    border-radius: var(--bs-border-radius);
 }
 
 .aton-sidepanel video {

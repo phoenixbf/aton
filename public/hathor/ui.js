@@ -614,6 +614,8 @@ UI.showSemanticPanel = (semid)=>{
         img.onclick = ()=>{
             ATON.UI.modalImage({url: img.src });
         }
+
+        img.classList.add("hathor-side-panel-img");
     }
 
     let editbtns = [];

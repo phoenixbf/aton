@@ -7,6 +7,7 @@
     - THREE mesh UI (https://www.npmjs.com/package/three-mesh-ui)
     - 3D Tiles Renderer (https://github.com/NASA-AMMOS/3DTilesRendererJS)
     - THREE custom shader material (https://www.npmjs.com/package/three-custom-shader-material)
+    - Gaussian Splat Lite for THREE.js (https://github.com/WilliamLiu-1997/Gaussian-Splat-Lite)
     - SPARK 3D Gaussian Splatting renderer for THREE.js (https://sparkjs.dev/)
     
 =================================================================================================*/

@@ -1536,6 +1536,17 @@ UI.modalSceneDescription = ()=>{
 
     let elFooter = ATON.UI.createContainer({ classes: "w-100"});
 
+    let elLow = UI.createBlockGroup({
+        items: [
+            ATON.UI.createButton({
+                icon: "cancel",
+                text: "OK",
+                classes: "btn-default",
+                onpress: ATON.UI.hideModal
+            })
+        ]
+    });
+
     elFooter.append(
         UI.createBlockGroup({
             items:[
@@ -1552,24 +1563,54 @@ UI.modalSceneDescription = ()=>{
             ]
         }),
         
-        UI.createBlockGroup({
-            items: [
-                ATON.UI.createButton({
-                    icon: "cancel",
-                    text: "OK",
-                    classes: "btn-default",
-                    onpress: ATON.UI.hideModal
-                })
-            ]
-        })
+        elLow
     );
 
-    ATON.UI.showModal({
-        header: title,
-        body: elBody,
-        footer: elFooter,
-        wide: true
-    });
+    ATON.checkAuth(
+        // Logged
+        (u)=>{
+/*
+            elLow.append(
+                ATON.UI.createButton({
+                    text: "Clone",
+                    icon: "copy",
+                    classes: "btn-default",
+                    onpress: ()=>{
+                        UI.modalCloneScene();
+                    }
+                })
+            );           
+*/
+            ATON.UI.showModal({
+                header: title,
+                body: elBody,
+                actions: [
+                    ATON.UI.createButton({
+                        //text: "Clone",
+                        tooltip: "Clone this scene",
+                        icon: "copy",
+                        classes: "btn-default",
+                        onpress: ()=>{
+                            UI.modalCloneScene();
+                        }
+                    })
+                ],
+                footer: elFooter,
+                wide: true
+            }); 
+
+        },
+        // Not logged
+        ()=>{
+            ATON.UI.showModal({
+                header: title,
+                body: elBody,
+                footer: elFooter,
+                wide: true
+            }); 
+        }
+    );
+
 };
 
 UI.modalEditSceneInfo = ()=>{

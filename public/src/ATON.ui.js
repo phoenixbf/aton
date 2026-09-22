@@ -202,6 +202,8 @@ Show centralized modal
 - options.header: main title (string)
 - options.body: main content of the side panel 
 - options.footer: optional footer HTML element
+- options.actions: optional list (array) of secondary action elements (e.g. buttons) in header
+- options.headelement: optional header HTML element
 - options.wide: optional bool for a wide modal
 
 @param {object} options - UI options object
@@ -223,6 +225,12 @@ UI.showModal = (options)=>{
         //el.append(options.header);
 
         el.innerHTML = "<h4 class='modal-title' id='staticBackdropLabel'>"+options.header+"</h4><button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close' onclick='ATON.UI.hideModal()'></button>";
+
+        if (options.actions){
+            for (let e in options.actions) el.prepend( options.actions[e] );
+        }
+
+        if (options.headelement) el.prepend(options.headelement);
 
         UI.elModalContent.append( el );
     }

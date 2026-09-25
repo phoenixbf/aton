@@ -270,7 +270,7 @@ UI.modalImage = (options)=>{
 
     UI.showModal({
         header: "Image",
-        body: UI.elem(`<img src='${options.url}'></img>`),
+        body: UI.elem(`<div style='text-align:center'><img src='${options.url}'></img></div>`),
         wide: true
     });
 

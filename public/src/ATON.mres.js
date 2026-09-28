@@ -331,9 +331,9 @@ MRes.loadTileSetFromURL = (tsurl, N, cesiumReq )=>{
     //ts.processNodeQueue.maxJobs       = 2;
 
 
-    //ts.downloadQueue.autoUpdate = false;
-    ts.parseQueue.autoUpdate = false;
-    ts.processNodeQueue.autoUpdate = false;
+    ///ts.downloadQueue.autoUpdate = false;
+    //ts.parseQueue.autoUpdate = false;
+    //ts.processNodeQueue.autoUpdate = false;
 
     //console.log(ts.downloadQueue.maxJobs); // 25
     //console.log(ts.parseQueue.maxJobs); // 5

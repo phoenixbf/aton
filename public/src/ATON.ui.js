@@ -72,7 +72,7 @@ UI.setCursorStyle = (cur)=>{
     let canvas = ATON._renderer.domElement;
     if (!canvas) return;
 
-    canvas.style.cursor = cur;
+    canvas.style.cssText = "cursor:"+cur+" !important";  //cursor = cur;
 };
 
 // Utility function to create DOM element from string

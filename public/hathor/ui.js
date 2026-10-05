@@ -921,7 +921,7 @@ UI.modalDeleteSemanticID = (semid)=>{
     );
 
     ATON.UI.showModal({
-        header: "Delete layer",
+        header: "Delete Semantic Node",
         body: elBody
     });
 };

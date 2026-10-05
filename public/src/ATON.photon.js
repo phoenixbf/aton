@@ -362,7 +362,7 @@ Photon.connect = (ssid)=>{
         //opts.upgrade = false;
     }
 
-    //opts.transports = ['websocket']; 
+    opts.transports = ['websocket']; 
 
     Photon._cstate = Photon.CSTATE.CONNECTING;
 

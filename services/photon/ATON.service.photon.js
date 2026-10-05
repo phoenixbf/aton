@@ -22,8 +22,12 @@ server.listen(PORT_VRC, ()=>{
     console.log('Photon service on *: '+PORT_VRC);
 });
 
-let io = socketio(server /*, { allowEIO3: true }*/);
-//io.set('transports', ['websocket']);
-
+let io = socketio(
+    server,
+    { 
+        //allowEIO3: true 
+        transports: ["websocket"] // "polling", "websocket", "webtransport"
+    }
+);
 
 Photon.init(io);

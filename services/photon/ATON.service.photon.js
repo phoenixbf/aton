@@ -26,7 +26,7 @@ let io = socketio(
     server,
     { 
         //allowEIO3: true 
-        transports: ["websocket"] // "polling", "websocket", "webtransport"
+        //transports: ["websocket"] // "polling", "websocket", "webtransport"
     }
 );
 

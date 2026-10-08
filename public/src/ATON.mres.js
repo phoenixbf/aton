@@ -799,10 +799,11 @@ MRes.updateQueues = (b)=>{
 MRes.update = ()=>{
     const nts = MRes._tsets.length;
     if (nts < 1) return;
+    
+    const bMotion = ATON.Nav.motionDetected();
+    //if (bMotion && ATON.XR._bPresenting) return;
 
     MRes._tsProcInd = (MRes._tsProcInd + 1) % nts;
-
-    const bMotion = ATON.Nav.motionDetected();
 
 /*
     if (ATON.XR._bPresenting){

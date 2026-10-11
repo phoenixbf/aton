@@ -96,7 +96,7 @@
     "swagger-ui-express": "^5.0.1",
     "three": "0.186.1",
     "three-custom-shader-material": "6.4.0",
-    "three-mesh-bvh": "0.9.15",
+    "three-mesh-bvh": "0.9.16",
     "three-mesh-ui": "^6.5.4",
     "uuid": "^14.0.2",
     "webdav-server": "^2.6.3",

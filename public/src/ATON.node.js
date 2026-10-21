@@ -600,6 +600,20 @@ autoFit(bCenter, maxRad){
 }
 
 /**
+Set render order for this node and its resources
+@param {number} ro - render order (integer)
+@example
+myNode.setRenderOrder(3)
+*/
+setRenderOrder(ro){
+    this.traverse(o =>{
+        if (o.isMesh) o.renderOrder = ro;
+    });
+
+    return this;
+}
+
+/**
 Set location (translation) of this node
 @example
 myNode.setPosition(1.0,3.0,0.0)

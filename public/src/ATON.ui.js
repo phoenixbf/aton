@@ -1933,7 +1933,7 @@ UI.createSceneCard = (options)=>{
         `);
 
     let el = ATON.UI.createCard({
-        title: (options.title)? options.title : usid, // "Scene"
+        title: (options.title)? options.title : "Untitled", // "Scene"
         keywords: kw,
         size: options.size,
         useblurtint: options.useblurtint,
@@ -2079,7 +2079,7 @@ UI.createPublicScenesGallery = (options) => {
 
             if (!bSample || (bSample && options.samples)) {
                 let card = ATON.UI.createSceneCard({
-                    title: scene.title? scene.title : scene.sid,
+                    title: scene.title,
                     sid: scene.sid,
                     showuser: true,
                     keywords: scene.kwords,
@@ -2126,7 +2126,7 @@ UI.createOwnScenesGallery = (options)=>{
                 for (let scene of entries) {
         
                     let card = ATON.UI.createSceneCard({
-                        title: scene.title? scene.title : scene.sid,
+                        title: scene.title,
                         sid: scene.sid,
                         keywords: scene.kwords,
                         useblurtint: true,

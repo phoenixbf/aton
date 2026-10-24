@@ -73,7 +73,6 @@ import { XRHandModelFactory } from 'three/addons/webxr/XRHandModelFactory.js';
 import { KTX2Loader } from 'three/addons/loaders/KTX2Loader.js';
 
 import { TransformControls } from 'three/addons/controls/TransformControls.js';
-window.TransformControls = TransformControls;
 
 const THREE = {
     ...THREE_BASE,

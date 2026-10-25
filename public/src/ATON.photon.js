@@ -443,7 +443,7 @@ Photon._registerSocketHandlers = ()=>{
 
     Photon.socket.io.engine.on("upgrade", ()=>{
         const upgradedTransport = Photon.socket.io.engine.transport.name; // in most cases, "websocket"
-        console.log(upgradedTransport)
+        console.log("Photon upgraded transport: "+upgradedTransport);
     });
 
     // We connected to server
@@ -452,7 +452,7 @@ Photon._registerSocketHandlers = ()=>{
         Photon._cstate = Photon.CSTATE.CONNECTED;
 
         const transport = Photon.socket.io.engine.transport.name; // in most cases, "polling"
-        console.log(transport)
+        //console.log(transport)
 
         // Join session
         if (Photon._reqSSID !== undefined) Photon.joinSession(Photon._reqSSID);

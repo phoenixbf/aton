@@ -498,6 +498,8 @@ ATON._setupBaseListeners = ()=>{
 };
 
 ATON._onResize = ()=>{
+    //if (ATON.XR._bPresenting) return;
+
     ATON.Nav._camera.aspect = window.innerWidth / window.innerHeight;
     ATON.Nav._camera.updateProjectionMatrix();
 

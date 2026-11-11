@@ -74,7 +74,7 @@
     "fast-glob": "^3.3.3",
     "fast-json-patch": "^3.1.1",
     "fs-extra": "^11.4.1",
-    "gaussian-splat-lite": "1.7.0",
+    "gaussian-splat-lite": "1.8.1",
     "glob": "^14.0.4",
     "gltf-pipeline": "^4.3.1",
     "http": "0.0.0",

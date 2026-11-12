@@ -118,7 +118,10 @@ MRes.init = ()=>{
                 if (TS._isGS){
                     TS.errorTarget *= 0.8;
 
-                    if (TS.errorTarget < 8.0) TS.errorTarget = 8.0; //MRes._tseBase;
+                    let minET = 2.0;
+                    if (ATON.device.lowGPU || ATON.device.isMobile || ATON.XR._bPresenting) minET = 4.0; // 8
+
+                    if (TS.errorTarget < minET) TS.errorTarget = minET;
                 }
                 //console.log(TS.errorTarget);
             }

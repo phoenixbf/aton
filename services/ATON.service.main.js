@@ -16,7 +16,7 @@ const url         = require('url');
 //const compression = require('compression');
 const path        = require('path');
 const cors        = require('cors');
-const chalk       = require('chalk');
+//const chalk       = require('chalk');
 
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
